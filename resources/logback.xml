@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- In order to instruct the configuration file to dump status data (even 
+	in the absence of errors), you need to set the debug attribute of the <configuration> 
+	element to true -->
+<!-- In order to instruct logback-classic to scan for changes in its configuration 
+	file and to automatically re-configure itself set the scan attribute of the 
+	<configuration> element to true -->
+<configuration debug="true" scan="true" scanPeriod="1 hour">
+	<!-- Every logger is attached to a logger context. By default, the logger 
+		context is called "default". However, you can set a different name with the 
+		help of the <contextName> configuration directive. Setting the context name 
+		helps to distinguish between multiple applications logging to the same target -->
+	<contextName>AveryDennison</contextName>
+	<variable name="applicationLogFile" value="logs/app-sys" />
+	<variable name="applicationAuditLogFile" value="logs/app-sys-audit" />
+	<variable name="applicationDBLogFile" value="logs/app-sys-db" />
+	<variable name="applicationLoggingLevel" value="INFO" />
+	<variable name="hibernateLoggingLevel" value="INFO" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="SYSTEM_LOG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- For having line number of class from where log request is generated 
+			we can use '%L', but due performance issues we are not using it -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${app.working.dir.path}/${applicationLogFile}.%d.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 5MB -->
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<MaxHistory>7</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{36} %class{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="AUDIT_LOG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${app.working.dir.path}/${applicationAuditLogFile}.%d.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 5MB -->
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<MaxHistory>7</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{36} %class{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="DB_LOG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${app.working.dir.path}/${applicationDBLogFile}.%d.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 5MB -->
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<MaxHistory>7</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="system" level="${applicationLoggingLevel}"
+		additivity="false">
+		<appender-ref ref="SYSTEM_LOG_FILE" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<!-- By default, each enabled logging request for a given logger will be 
+		forwarded to all the appenders in that logger as well as the appenders higher 
+		in the hierarchy . If additivity attribute of <logger> element is set to 
+		false, then it will not be forwarded to appenders higher in that hierarchy -->
+	<logger name="audit" level="${applicationLoggingLevel}"
+		additivity="false">
+		<appender-ref ref="AUDIT_LOG_FILE" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="db" level="${applicationLoggingLevel}" additivity="false">
+		<appender-ref ref="DB_LOG_FILE" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="org.hibernate" level="${hibernateLoggingLevel}" />
+
+	<!-- By default, root logger is parent logger of each hierarchy -->
+	<root level="${applicationLoggingLevel}">
+		<appender-ref ref="SYSTEM_LOG_FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
