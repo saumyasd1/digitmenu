@@ -51,6 +51,8 @@ public class Main {
 	public void boot() throws Exception {
 		// load embedded database - if enabled :)
 		loadEmbeddedDatabase();
+		// initialize spring content and hibernate
+		SpringConfig.getInstance();
 	}
 
 	public void shutdown() throws Exception {
@@ -63,24 +65,24 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new Main("/Users/amanjain/Desktop/AJ/workspace/AveryDennisonWeb")
+		new Main("/Users/amanjain/Desktop/AJ/workspace/AveryDennisonWeb_Git")
 				.boot();
 		System.out.println("*** Booted Successfully ***");
 		System.out.println(PathConfig.getLogbackConfigPath());
-		// PersonService personService = (PersonService) SpringConfig
-		// .getInstance().getBean("personService");
-		//
-		// Person person = new Person();
-		// person.setName("Test1");
-		// person.setEmail("t1@test1.com");
-		// try {
-		// personService.create(person);
-		// System.out.println("Person : " + person + " added successfully");
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// List<Person> persons = personService.readAll();
-		// System.out.println("The list of all persons = " + persons);
+		PersonService personService = (PersonService) SpringConfig
+				.getInstance().getBean("personService");
+
+		Person person = new Person();
+		person.setName("Test1");
+		person.setEmail("t1@test1.com");
+		try {
+			personService.create(person);
+			System.out.println("Person : " + person + " added successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		List<Person> persons = personService.readAll();
+		System.out.println("The list of all persons = " + persons);
 	}
 
 }
