@@ -1,0 +1,47 @@
+{
+    "services": {
+        "service": [
+            {
+                "item": {
+                    "ServiceName": "Home",
+                    "DisplayName": "Home",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+            {
+                "item": {
+                    "ServiceName": "OrderQueueScreen",
+                    "DisplayName": "Order Queue",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+            {
+                "item": {
+                    "ServiceName": "PartnerManagement",
+                    "DisplayName": "Partner Management",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+            {
+                "item": {
+                    "ServiceName": "AddressManage",
+                    "DisplayName": "Address Manage",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+            {
+                "item": {
+                    "ServiceName": "WebFormScreen",
+                    "DisplayName": "Web Form",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            }
+            
+        ]
+    }
+}
