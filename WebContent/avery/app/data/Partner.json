@@ -1,0 +1,27 @@
+{
+    "total": 1,
+    "partner": [
+        {
+	            
+	            "PartnerName": "Ningbo",
+	            "Address": "NINGBO SHENZHOU KNITTING CO LTD",
+	            "ContactPerson": "George Wu",
+	            "Phone": "86(0)574 8818 1234",
+	            "isActive":"Active"
+        },
+            {
+                "PartnerName": "Ningbo",
+	            "Address": "NINGBO SHENZHOU KNITTING CO LTD",
+	            "ContactPerson": "John Wu",
+	            "Phone": "86(0)574 8818 1234",
+	            "isActive":"Active"
+        },
+              {
+                "PartnerName": "Powker",
+	            "Address": "POWKER",
+	            "ContactPerson": "Tim Wu",
+	            "Phone": "86(0)574 8818 1234",
+	            "isActive":"Inactive"
+        }
+    ]
+}
