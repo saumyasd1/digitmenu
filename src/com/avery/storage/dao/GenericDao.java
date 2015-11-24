@@ -2,6 +2,9 @@ package com.avery.storage.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.avery.storage.Entity;
 
@@ -23,4 +26,8 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 
 	/** Remove an object from persistent storage in the database */
 	void delete(T persistentObject);
+	
+	void updateEntities(List<T> entities);
+	
+	Map readWithCriteria(MultivaluedMap queryMap) throws Exception;
 }
