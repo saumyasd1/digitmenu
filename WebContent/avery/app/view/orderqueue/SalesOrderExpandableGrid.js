@@ -1,113 +1,13 @@
-Ext.create('Ext.data.Store', {
-    storeId:'orderstore',
-    fields:['Division','Order Source','SOLD TO RBO Number',' Oracle Bill to Site Number','Oracle Ship to Site Number',' Shipping method','Customer PO Number','Retailer po/Customer job',' Oracle Item Number','Customer Item Number','Item Description','Orderded Qty','Date Ordered','Request date','promise date','Freight term','CSR','packing instruction','Shipping instruction','Invoice line instruction',' Division for Interface ERP ORG',' Bill to contact','Bill to tel','Bill to FAX','Bill to EMAIL','Ship to contact','Ship to tel',' Ship to FAX','Ship to EMAIL','Artwork hold','Artwork for Reference','Variable data Breakdown','Manu. Note','Order type','Order by','End customer','Shipping only note','Bank charge','Freight charge','Shipping hold','Production hold','Split ship set by','Agreement','Model serial Number','Waive MOQ','APO type'],
-    data:{'items':[{
-        "Division": "POHK",
-        "OrderSource": "ADEPTIA",
-        "SOLDTORBONumber": "33529",
-        "OracleBilltoSiteNumber": "123456",
-        "OracleShiptoSiteNumber": "23456",
-        "Shippingmethod": "SF EXPRESS",
-        "CustomerPONumber": "1034460",
-        "Retailerpo/Customerjob": "123",
-        "OracleItemNumber": "CB84364",
-        "CustomerItemNumber": "NUT-PFL1",
-        "ItemDescription": "Lindex Price Sticker",
-        "OrderdedQty": "2100",
-        "DateOrdered": "20151008",
-        "Requestdate": "20151008",
-        "promisedate": "20151018",
-        "Freightterm": "COLLECT",
-        "CSR": "YVONNELEUNG",
-        "packinginstruction": "Add Packing List,Pls Mark Gross & Net weight on P/L,S#SO-_3___PCS/SKU",
-        "Shippinginstruction": "SHIP TO address in chinese pls find the ship only notes",
-        "Invoicelineinstruction": "Style # is 12",
-        "DivisionforInterfaceERPORG": "PYT",
-        "Billtocontact": "SAM CHU",
-        "Billtotel": "85298999999",
-        "BilltoFAX": "85298999999",
-        "BilltoEMAIL": "SAMCHU@NINGBO.COM",
-        "Shiptocontact": "MARY CHAN",
-        "Shiptotel": "85298999999",
-        "ShiptoFAX": "85298999999",
-        "ShiptoEMAIL": "MARYCHAN@NINGBO.COM",
-        "Artworkhold": "Y",
-        "ArtworkforReference": "Y",
-        "VariabledataBreakdown": "Size M",
-        "ManuNote": "Produce Urgently",
-        "Ordertype": "PYT 24H",
-        "Orderby": "Miss Chang",
-        "Endcustomer": "COO CAMBODIA",
-        "Shippingonlynote": "Ship with other goods",
-        "Bankcharge": "10",
-        "Freightcharge": "90",
-        "Shippinghold": "Y",
-        "Productionhold": "Y",
-        "Splitshipsetby": "P",
-        "Agreement": "PY123343:00",
-        "ModelserialNumber": "123456",
-        "WaiveMOQ": "Y",
-        "APOtype": "APO",
-        "variableData": [
-            {
-                "Level": "Item",
-                "SKUNumber": "1128182",
-                "TypeSetterCode": "98",
-                "VariableFieldName": "Style",
-                "VariableFieldValue": "Western",
-                "FiberContentName": ""
-            },
-            {
-                "Level": "SKU",
-                "SKUNumber": "1128182",
-                "TypeSetterCode": "67",
-                "VariableFieldName": "Size",
-                "VariableFieldValue": "S",
-                "FiberContentName": ""
-            },
-            {
-                "Level": "SKU",
-                "SKUNumber": "1128182",
-                "TypeSetterCode": "90",
-                "VariableFieldName": "Color",
-                "VariableFieldValue": "Red",
-                "FiberContentName": ""
-            },
-            {
-                "Level": "Fiber",
-                "SKUNumber": "1128182",
-                "TypeSetterCode": "98",
-                "VariableFieldName": "FiberContent1",
-                "VariableFieldValue": "70",
-                "FiberContentName": "CO"
-            },
-            {
-                "Level": "Fiber",
-                "SKUNumber": "1128182",
-                "TypeSetterCode": "45",
-                "VariableFieldName": "FiberContent2",
-                "VariableFieldValue": "30",
-                "FiberContentName": "POL"
-            }
-        ]
-    }]},proxy: {
-        type: 'memory',
-        reader: {
-            type: 'json',
-            rootProperty: 'items'
-        }
-    }
-});
 Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid',{
 	extend:'Ext.grid.Panel',
 	xtype:'salesrrderexpandablegrid',
 	requires:['Ext.grid.Panel','AOC.ux.RowExpanderGrid'],
 	controller:'salesorder',
+	emptyText:'<div align=center>No data to display</div>',
     autoHeight:true,
     columnLines:true,
-    store: Ext.data.StoreManager.lookup('orderstore'),
     columns: [
-       { text: 'Division',  dataIndex: 'Division',editor:'textfield' },
+{ text: 'Division',  dataIndex: 'Division',editor:'textfield' },
 { text: 'OrderSource', dataIndex: 'OrderSource', editor:'textfield' },
 { text: 'SOLD TO RBO Number', dataIndex: 'SOLDTORBONumber',editor:'textfield' },
 { text: 'Oracle Bill to Site Number', dataIndex: 'OracleBilltoSiteNumber',editor:'textfield' },
@@ -127,7 +27,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid',{
 { text: 'packing instruction', dataIndex: 'packinginstruction',editor:'textfield' },
 { text: 'Shipping instruction', dataIndex: 'Shippinginstruction',editor:'textfield' },
 { text: 'Invoice line instruction', dataIndex: 'Invoicelineinstruction',editor:'textfield' },
-{ text: 'Division for Interface ERP ORG', dataIndex: 'DivisionforInterfaceERPORG',editor:'textfield' },
+{ text: 'Division for Interface ERP ORG', dataIndex: 'divisionforInterfaceERPORG',editor:'textfield' },
 { text: 'Bill to contact', dataIndex: 'Billtocontact',editor:'textfield' },
 { text: 'Bill to tel', dataIndex: 'Billtotel',editor:'textfield' },
 { text: 'Bill to EMAIL', dataIndex: 'BilltoEMAIL',editor:'textfield' },
