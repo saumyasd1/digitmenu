@@ -17,7 +17,7 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'orderSchemaType', mapping:'orderSchemaType',type: 'string'},
 		{name: 'orderSchemaID', mapping:'orderSchemaID',type: 'string'},
 		{name: 'orderMappingID', mapping:'orderMappingID',type: 'string'},
-		{name: 'isAttachmentRequired', mapping:'isAttachmentRequired',type: 'string'},
+		{name: 'attachmentRequired', mapping:'attachmentRequired',type: 'string'},
 		{name: 'attachmentSchemaType_1', mapping:'attachmentSchemaType_1',type: 'string'},
 		{name: 'attachmentMappingID_1', mapping:'attachmentMappingID_1',type: 'string'},
 		{name: 'attachmentIdentifier_1', mapping:'attachmentIdentifier_1',type: 'string'},
