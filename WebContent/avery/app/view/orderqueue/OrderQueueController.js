@@ -12,12 +12,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
    menuAction:function( menu, item, e, currentRecord){
 	   var id= currentRecord.get('id');
 	   this.runTime.setOrderQueueId(id);
+	   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 	   if(item.action=='viewSales'){
 		   var owner=this.getView().ownerCt;
 		   owner.insert({
 			   	xtype:'salesrrderexpandablegrid',
 			    flex:1
 		   });
+		   bulkUpdate.setText('<b>Sales Order</b>');
 		   owner.getLayout().setActiveItem(1);
 	   }else if(item.action=='cancelOrder'){
 		  this.cancelOrder(id);
@@ -39,6 +41,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			    flex:1,
 			    store:store
 		   });
+		   bulkUpdate.setText('<b> Order Line</b>');
 		   owner.getLayout().setActiveItem(1);
 	   }
    },
