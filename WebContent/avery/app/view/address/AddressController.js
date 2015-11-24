@@ -142,6 +142,7 @@ Ext.define('AOC.view.address.AddressController', {
 			valueObj=form.getRecord().getChanges() ;
 			length=Object.keys(valueObj).length;
 			Msg='<b>Address Updated Successfully</b>';
+			var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
 			url=applicationContext+'/rest/address';
@@ -149,35 +150,36 @@ Ext.define('AOC.view.address.AddressController', {
 			methodMode='POST';
 			length=1;
 			Msg='<b>Address Added Successfully</b>';
+			var parameters={
+					orgCode:valueObj.orgCode,
+					partnerName:valueObj.partnerName,
+					billToSiteNumber:valueObj.billToSiteNumber,
+					shipToSiteNumber:valueObj.shipToSiteNumber,
+					description:valueObj.description,
+					address1:valueObj.address1,
+					address2:valueObj.address2,
+					address3:valueObj.address3,
+					address4:valueObj.address4,
+					address:valueObj.address,
+					city:valueObj.city,
+					state:valueObj.state,
+					country:valueObj.country,
+					zip:valueObj.zip,
+					billToContact:valueObj.billToContact,
+					billToPhone1:valueObj.billToPhone1,
+					billToPhone2:valueObj.billToPhone2,
+					billToFax:valueObj.billToFax,
+					billToEmail:valueObj.billToEmail,
+					shipToContact:valueObj.shipToContact,
+					shipToPhone1:valueObj.shipToPhone1,
+					shipToPhone2:valueObj.shipToPhone2,
+					shippingMethod:valueObj.shippingMethod,
+					freightTerms:valueObj.freightTerms,
+					shippingInstructions:valueObj.shippingInstructions,
+					partner:{id:valueObj.partner_id},
+		    	};
 		}
-		var parameters={
-				orgCode:valueObj.orgCode,
-				partnerName:valueObj.partnerName,
-				billToSiteNumber:valueObj.billToSiteNumber,
-				shipToSiteNumber:valueObj.shipToSiteNumber,
-				description:valueObj.description,
-				address1:valueObj.address1,
-				address2:valueObj.address2,
-				address3:valueObj.address3,
-				address4:valueObj.address4,
-				address:valueObj.address,
-				city:valueObj.city,
-				state:valueObj.state,
-				country:valueObj.country,
-				zip:valueObj.zip,
-				billToContact:valueObj.billToContact,
-				billToPhone1:valueObj.billToPhone1,
-				billToPhone2:valueObj.billToPhone2,
-				billToFax:valueObj.billToFax,
-				billToEmail:valueObj.billToEmail,
-				shipToContact:valueObj.shipToContact,
-				shipToPhone1:valueObj.shipToPhone1,
-				shipToPhone2:valueObj.shipToPhone2,
-				shippingMethod:valueObj.shippingMethod,
-				freightTerms:valueObj.freightTerms,
-				shippingInstructions:valueObj.shippingInstructions,
-				partner:{id:valueObj.partner_id},
-	    	};
+	
 		if(length>0){
 			if(panel.getForm().isValid()){
 				Ext.Ajax.request( {
