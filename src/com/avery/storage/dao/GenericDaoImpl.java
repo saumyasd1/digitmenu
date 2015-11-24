@@ -3,13 +3,19 @@ package com.avery.storage.dao;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.avery.storage.Entity;
+import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.ProductLine;
 
 public abstract class GenericDaoImpl<T extends Entity, PK extends Serializable>
 		implements GenericDao<T, PK> {
@@ -85,5 +91,22 @@ public abstract class GenericDaoImpl<T extends Entity, PK extends Serializable>
 		// session.getTransaction().commit();
 		return entity;
 	}
-
+	
+	@Override
+	public void updateEntities(List<T> entities)  {
+		Session session = getSessionFactory().getCurrentSession();
+			for (T entity : entities) {
+				entity.preUpdateOp();
+				session.update(entity);
+				entity.postUpdateOp();
+			}
+	}
+	
+	@Override
+	public Map readWithCriteria(MultivaluedMap queryMap) throws Exception{
+		Map entities = getAllEntitiesWithCriteria(queryMap);
+		return entities;	
+	}
+	
+	public abstract Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception;
 }
