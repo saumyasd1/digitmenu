@@ -6,7 +6,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 			requires : ['Ext.window.MessageBox'],
 			border : false,
 			buttonAlign : 'right',
-			controller:'addressMain',
+			controller:'orderqueue',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
 			items : [ {
 			            xtype: 'fieldcontainer',
@@ -16,7 +16,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						
 							xtype : 'textfield',
 							fieldLabel : 'RBO',
-							name:'RBO',
+							name:'RBOName',
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right',
@@ -81,6 +81,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							xtype : 'combo',
 							fieldLabel : 'Product Line',
 							name:'ProductLineType',
+							itemId:'productLineComboItemId',
+							displayField:'productLineType',
+							valueField:'id',
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right'
@@ -109,7 +112,10 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						{
 							xtype : 'combo',
 							fieldLabel : 'Submission Type',
-							name:'Submission Type',
+							name:'OrderSource',
+							displayField:'OrderSource',
+							valueField:'OrderSource',
+							store :'OrderQueueStore',
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right'
@@ -128,8 +134,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							labelSeparator : '',
 							labelAlign : 'right',
 							items:[
-						            { boxLabel: 'Creation Date', name: 'date', inputValue: 'CreatedDate', checked: true },
-						            { boxLabel: 'Modified Date', name: 'date', inputValue: 'LastModifiedDate' }
+						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
+						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
 						            ]
 						},
 						{
