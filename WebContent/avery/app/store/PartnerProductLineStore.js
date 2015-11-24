@@ -7,8 +7,8 @@ Ext.define('AOC.store.PartnerProductLineStore', {
 	storeId:'PartnerProductLineStoreStoreId',
 	proxy: {
         type: 'ajax',
-          url : 'custom/AOC/app/data/PartnerProductLine.json',
-       // url : 'app/data/PartnerProductLine.json',
+       //   url : 'custom/AOC/app/data/PartnerProductLine.json',
+      
         reader: {
             type: 'json',
             rootProperty: 'partnerproductline'
