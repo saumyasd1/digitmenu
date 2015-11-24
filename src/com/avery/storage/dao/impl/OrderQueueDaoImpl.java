@@ -42,9 +42,30 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				String eDate=searchMap.get("toDate");
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			String partnerName=searchMap.get("partnerName");
-			if(partnerName!=null && !"".equals(partnerName)){
-				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
+			String PartnerName=searchMap.get("PartnerName");
+			if(PartnerName!=null && !"".equals(PartnerName)){
+				criteria.createAlias("partner", "partner");
+				criteria.add(Restrictions.ilike("partner"+".partnerName",PartnerName,MatchMode.ANYWHERE));
+			}
+			String RBOName=searchMap.get("RBOName");
+			if(RBOName!=null && !"".equals(RBOName)){
+				criteria.add(Restrictions.ilike("rboName",RBOName,MatchMode.ANYWHERE));
+			}
+			String Subject=searchMap.get("Subject");
+			if(Subject!=null && !"".equals(Subject)){
+				criteria.add(Restrictions.ilike("subject",Subject,MatchMode.ANYWHERE));
+			}
+			String Status=searchMap.get("Status");
+			if(Status!=null && !"".equals(Status)){
+				criteria.add(Restrictions.ilike("status",Status,MatchMode.ANYWHERE));
+			}
+			String EmailBody=searchMap.get("EmailBody");
+			if(EmailBody!=null && !"".equals(EmailBody)){
+				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
+			}
+			String OrderSource=searchMap.get("OrderSource");
+			if(OrderSource!=null && !"".equals(OrderSource)){
+				criteria.add(Restrictions.ilike("orderSource",OrderSource,MatchMode.ANYWHERE));
 			}
 		}
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
