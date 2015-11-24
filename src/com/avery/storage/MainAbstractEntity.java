@@ -21,10 +21,7 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 	public static final transient Logger logger = AppLogger.getSystemLogger();
 
 	@Id
-	@GenericGenerator(name = "sequence", strategy = "sequence", parameters = {
-			@org.hibernate.annotations.Parameter(name = "sequenceName", value = "sequence"),
-			@org.hibernate.annotations.Parameter(name = "allocationSize", value = "1"), })
-	@GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private long id;
 
@@ -35,19 +32,33 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	@Column(name = "CreatedDate")
+    private Date createdDate;
+	
+	@Column(name = "CreatedBy")
+    private String createdBy;
+	
+	@Column(name = "LastModifiedDate")
+    private Date lastModifiedDate;
+	
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	
+	@Column(name = "LastModifiedBy")
+    private String lastModifiedBy;
 
-	@Column(name = "CREATION_DATE")
-	private Date creationDate;
-
-	@Column(name = "LAST_MODIFIED_DATE")
-	private Date lastModifiedDate;
-
-	public Date getCreationDate() {
-		return creationDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public Date getLastModifiedDate() {
@@ -57,6 +68,18 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
+
+	public String getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(String lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
+	}
+
+	
+
+	
 
 	@Override
 	public String toString() {
