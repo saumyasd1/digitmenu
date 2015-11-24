@@ -87,8 +87,8 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "OrderMappingID")
 	private String orderMappingID;
 	
-	@Column(name = "IsAttachmentRequired")
-	private boolean isAttachmentRequired;
+	@Column(name = "AttachmentRequired")
+	private Boolean attachmentRequired;
 	
 	@Column(name = "AttachmentIdentifier_1")
 	private String attachmentIdentifier_1;
@@ -122,12 +122,6 @@ public class ProductLine extends MainAbstractEntity{
 
 	@Column(name = "AttachmentMappingID_3")
 	private String attachmentMappingID_3;
-
-	@Column(name = "OrderToProcessSchemaID")
-	private String orderToProcessSchemaID;
-
-	@Column(name = "OrderToProcessMappingID")
-	private String orderToProcessMappingID;
 
 	@Column(name = "PreProcessPID")
 	private String preProcessPID;
@@ -253,12 +247,12 @@ public class ProductLine extends MainAbstractEntity{
 		this.orderMappingID = orderMappingID;
 	}
 
-	public boolean isAttachmentRequired() {
-		return isAttachmentRequired;
+	public Boolean isAttachmentRequired() {
+		return attachmentRequired;
 	}
 
-	public void setAttachmentRequired(boolean isAttachmentRequired) {
-		this.isAttachmentRequired = isAttachmentRequired;
+	public void setAttachmentRequired(Boolean attachmentRequired) {
+		this.attachmentRequired = attachmentRequired;
 	}
 
 	public String getAttachmentIdentifier_1() {
@@ -347,22 +341,6 @@ public class ProductLine extends MainAbstractEntity{
 
 	public void setAttachmentMappingID_3(String attachmentMappingID_3) {
 		this.attachmentMappingID_3 = attachmentMappingID_3;
-	}
-
-	public String getOrderToProcessSchemaID() {
-		return orderToProcessSchemaID;
-	}
-
-	public void setOrderToProcessSchemaID(String orderToProcessSchemaID) {
-		this.orderToProcessSchemaID = orderToProcessSchemaID;
-	}
-
-	public String getOrderToProcessMappingID() {
-		return orderToProcessMappingID;
-	}
-
-	public void setOrderToProcessMappingID(String orderToProcessMappingID) {
-		this.orderToProcessMappingID = orderToProcessMappingID;
 	}
 
 	public String getPreProcessPID() {
