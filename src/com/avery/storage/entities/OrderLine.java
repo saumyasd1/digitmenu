@@ -78,8 +78,8 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "PartnerCustomerName")
     private String partnerCustomerName; 
 	
-	@Column(name = "IsBulk")
-    private boolean IsBulk; 
+	@Column(name = "Bulk")
+    private Boolean bulk; 
 	
 	@Column(name = "PartnerVendorName")
     private String partnerVendorName; 
@@ -413,8 +413,8 @@ public class OrderLine extends MainAbstractEntity{
 		this.partnerCustomerName = partnerCustomerName;
 	}
 
-	public boolean isIsBulk() {
-		return IsBulk;
+	public Boolean isBulk() {
+		return bulk;
 	}
 
 	public void setBulk(Boolean bulk) {
