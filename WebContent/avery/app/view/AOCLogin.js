@@ -60,7 +60,7 @@ Ext.define('AOC.view.AOCLogin',{
 					      {
         		            xtype: 'form',        
         		            frame: true,         
-        		            bodyPadding: 30,
+        		            bodyPadding: 50,
         		            defaults: {             
         		                xtype: 'textfield', 
         		                labelWidth : 100,
@@ -73,6 +73,10 @@ Ext.define('AOC.view.AOCLogin',{
         		                    fieldLabel: "<B>UserName</B>",
         		                    blankText : 'UserName Field is required',
         		                },
+        		            	{
+        		                	xtype :'tbspacer',
+        		                	width :20
+        		        		},
         		                {   
         		                    name: 'password',
         		                    fieldLabel: "<B>Password</B>",
