@@ -12,13 +12,15 @@ Ext.define('AOC.Application', {
 		'AOC.config.Runtime'
     ],
     controllers : [
-                   'MenuController'
+                   'MenuController' 
     ],
     views : ['Viewport'],
     launch : function(){
+    	myAppGlobal=this;
     	Ext.create('AOC.view.Viewport', {
-           
+    		activeItem:0
         });
+    	
     }
   
     });
