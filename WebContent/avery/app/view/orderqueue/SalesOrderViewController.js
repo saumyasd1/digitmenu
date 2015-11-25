@@ -2,6 +2,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.salesorder',
     requires : ['AOC.view.orderqueue.BulkUpdateSalesOrderGrid'],
+    runTime : AOC.config.Runtime,
     getUpdateScreen:function(){
     	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
       	 var height=viwport.getHeight()-20;
