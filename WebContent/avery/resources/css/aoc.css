@@ -1,0 +1,133 @@
+@CHARSET "ISO-8859-1";
+.x-grid-header-ct { border: 1px solid #000; background-color: #ece5e5 }
+.x-grid-header-ct .x-box-inner { border-bottom: 1px solid #000; background-color: #ece5e5}
+.x-grid-header-ct .x-box-inner .x-column-header-inner { border-right: 1px solid #000; background-color: #ece5e5 }
+.onoffswitch {
+  left: 47px;
+  position: relative;
+  width: 33px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  display: none;
+}
+
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  height: 17px;
+  cursor: pointer;
+  border: 1px solid #75ce5f;
+  border-radius: 20px;
+}
+
+.onoffswitch-inner-on, .onoffswitch-inner-off {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  -moz-transition: margin 0.3s ease-in 0s;
+  -webkit-transition: margin 0.3s ease-in 0s;
+  -o-transition: margin 0.3s ease-in 0s;
+  transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner-on:before, .onoffswitch-inner-on:after, .onoffswitch-inner-off:before, .onoffswitch-inner-off:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 15px;
+  padding: 0;
+  line-height: 15px;
+  font-size: 14px;
+  color: white;
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.onoffswitch-inner-off:before {
+  content: "";
+  padding-left: 8px;
+  background-color: #75ce5f;
+  color: white;
+}
+
+.onoffswitch-inner-off:after {
+  content: "";
+  padding-right: 8px;
+  background-color: #bcbcbc;
+  color: white;
+  text-align: right;
+}
+
+.onoffswitch-inner-on:before {
+  content: "";
+  padding-left: 8px;
+  background-color: #75ce5f;
+  color: white;
+}
+
+.onoffswitch-inner-on:after {
+  content: "";
+  padding-right: 8px;
+  background-color: #75ce5f;
+  color: white;
+  text-align: right;
+}
+.onoffswitch-switch {
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+  margin-right: 2px;
+  background: white;
+  border: 1px solid #d4d4d4;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 41px;
+  -moz-transition: all 0.3s ease-in 0s;
+  -webkit-transition: all 0.3s ease-in 0s;
+  -o-transition: all 0.3s ease-in 0s;
+  transition: all 0.3s ease-in 0s;
+}
+
+
+.onoff-text {
+  top: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  left: 10px;
+  right: 10px;
+  color: #636363;
+  position: absolute;
+}
+
+.text-style-switch, .text-style-switch-view {
+  color: #636363 !important;
+}
+
+.text-style-switch:hover {
+  color: #636363 !important;
+}
+.inline-div-style {
+  float: left;
+  display: inline;
+  color: #636363!important;
+}
+.on-text {
+  top: 6px;
+  font-weight: 500;
+  font-size: 11px;
+  left: 95px;
+  color: #636363;
+  position: absolute;
+}
+.custom-action { 
+border-right:none !important;
+}

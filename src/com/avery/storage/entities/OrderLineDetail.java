@@ -69,7 +69,12 @@ public class OrderLineDetail extends MainAbstractEntity{
 	@Column(name = "SentToOracleDate")
     private String sentToOracleDate;
 	
-
+	@Column(name = "Mandatory")
+    private String mandatory; 
+	
+	@Column(name = "DivisionforInterfaceERPORG")
+    private String divisionforInterfaceERPORG; 
+	
 	public OrderLine getOrderLineForVariableData() {
 		return orderLineForVariableData;
 	}
@@ -150,6 +155,23 @@ public class OrderLineDetail extends MainAbstractEntity{
 		this.sentToOracleDate = sentToOracleDate;
 	}
 
+	public String getMandatory() {
+		return mandatory;
+	}
+
+	public void setMandatory(String mandatory) {
+		this.mandatory = mandatory;
+	}
+	
+	public String getDivisionforInterfaceERPORG() {
+		return divisionforInterfaceERPORG;
+	}
+
+	public void setDivisionforInterfaceERPORG(String divisionforInterfaceERPORG) {
+		this.divisionforInterfaceERPORG = divisionforInterfaceERPORG;
+	}
+	
+	
 	@GET
 	@Path("/order/{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)

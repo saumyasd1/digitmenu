@@ -27,7 +27,7 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'OracleBilltoSiteNumber', mapping:'OracleBilltoSiteNumber',type: 'string'},
 	 		{name: 'OracleShiptoSiteNumber', mapping:'OracleShiptoSiteNumber',type: 'string'},
 	 		{name: 'Invoicelineinstruction', mapping:'Invoicelineinstruction',type: 'string'},
-	 		{name: 'DivisionforInterfaceERPORG', mapping:'DivisionforInterfaceERPORG',type: 'string'},
+	 		{name: 'divisionforInterfaceERPORG', mapping:'divisionforInterfaceERPORG',type: 'string'},
 	 		{name: 'Billtocontact', mapping:'Billtocontact',type: 'string'},
 	 		{name: 'Billtotel', mapping:'Billtotel',type: 'string'},
 	 		{name: 'BilltoFAX', mapping:'BilltoFAX',type: 'string'},

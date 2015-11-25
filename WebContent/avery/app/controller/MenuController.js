@@ -1,5 +1,6 @@
 Ext.define('AOC.controller.MenuController', {
 	extend :'Ext.app.Controller',
+	alias: 'controller.menuController',
 	stores:['MenuStore','PartnerManagementStore','AddressStore','OrderQueueStore'],
 	models:['MenuModel'],
 	views : ['base.BaseToolbar','Viewport','AOCHome'],
@@ -31,10 +32,7 @@ Ext.define('AOC.controller.MenuController', {
 	 menuInstructions : AOC.config.MenuInstructions,
 	 runTime : AOC.config.Runtime,
 	 init : function(){
-		 this.getMenuStoreStore().on({
-	            scope : this,            
-	            load : this.onLoadMenuBar
-	        });
+	
 		this.control({
 			 '#toolbarviewitemid[data]':{
 	            click : this.onClickToolbarButton
@@ -83,7 +81,8 @@ Ext.define('AOC.controller.MenuController', {
 	},
 	onLoadMenuBar : function(store, records, success, operation, eopts)
 	{
-		var menuView=this.getToolbar();
+		var menuController=myAppGlobal.getController('MenuController');
+		var menuView=menuController.getToolbar();
 		   if(menuView){
 		    menuView.getEl().dom.style.webkitBoxShadow = '0 0 2px 2px #888';
 		    menuView.getEl().dom.style.boxShadow = '0 0 2px 2px #888';
@@ -105,16 +104,16 @@ Ext.define('AOC.controller.MenuController', {
 	               parentService = record.data.parentservice;
 	               parentServiceNameArr = parentService.split("/");
 	               if (parentServiceNameArr[0] == 'AOC App' || parentServiceNameArr[0] == 'AOC APP')
-	            	   menubar = this.getToolbar();
+	            	   menubar = menuController.getToolbar();
 	               	 if (parentService != null && parentService != "") {
 	               		// add directly to the toolbar
 	               		data = service + "::" + record.data.displayname;
 	               		if (adminAddFlag){
 	               			if(align == 'Left' || align == 'left' || align == 'LEFT'){
-	               				leftButton.push(this.createButton(menubar, record, data, service));
+	               				leftButton.push(menuController.createButton(menubar, record, data, service));
 	               			}
 	               			if(align == 'Right' || align == 'right' || align == 'RIGHT'){
-	               				rightButton.push(this.createButton(menubar, record, data, service));
+	               				rightButton.push(menuController.createButton(menubar, record, data, service));
 	               			}
 	               		}
 	               	}
@@ -122,7 +121,7 @@ Ext.define('AOC.controller.MenuController', {
 	   menubar.add(leftButton);
 	   menubar.add('->');
 	   menubar.add(rightButton);
-	   this.getMainContainer().getLayout().setActiveItem(0);
+	   menuController.getMainContainer().getLayout().setActiveItem(0);
 	  },
 	  createButton : function(addTo, record, data, service){
 	      // add the button

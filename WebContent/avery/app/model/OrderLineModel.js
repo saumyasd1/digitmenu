@@ -98,7 +98,9 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'atoValidationFlag', mapping:'atoValidationFlag',type: 'string'},
 	 		{name: 'mandatoryVariableDataFieldFlag', mapping:'mandatoryVariableDataFieldFlag',type: 'string'},
 	 		{name: 'htlSizePageValidationFlag', mapping:'htlSizePageValidationFlag',type: 'string'},
-	 		{name: 'orderLineDetail', mapping:'orderLineDetail'}
-	     
+	 		{name: 'orderLineDetail', mapping:'orderLineDetail'},
+	 		{name: 'bulk', mapping:'bulk',type: 'boolean'},
+	 		{name: 'mandatory', mapping:'mandatory',type: 'string'}
+	 		
 	     ]
 });

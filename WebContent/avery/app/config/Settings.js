@@ -1,7 +1,8 @@
 Ext.define('AOC.config.Settings',{
     statics : {
         buttonIcons : {
-           aocHeader:'avery/resources/images/aoc-header.png'
+           aocHeader:'avery/resources/images/aoc-header.png',
+           logout:'avery/resources/images/logout.png'
         }
     }
 });

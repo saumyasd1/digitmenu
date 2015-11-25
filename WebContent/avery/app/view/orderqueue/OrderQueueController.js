@@ -12,13 +12,27 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
    menuAction:function( menu, item, e, currentRecord){
 	   var id= currentRecord.get('id');
 	   this.runTime.setOrderQueueId(id);
+	   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 	   if(item.action=='viewSales'){
 		   var owner=this.getView().ownerCt;
+		   var store=Ext.create('AOC.store.SalesOrderStore', {
+				proxy : {
+					type : 'rest',
+					 url : applicationContext+'/rest/salesorders/order/'+id,
+					reader:{
+				        type:'json', 
+				        rootProperty: 'ArrayList'
+				    }
+			}
+			});
 		   owner.insert({
 			   	xtype:'salesrrderexpandablegrid',
-			    flex:1
+			    flex:1,
+			    store:store
 		   });
+		   bulkUpdate.setText('<b>Sales Order</b>');
 		   owner.getLayout().setActiveItem(1);
+	
 	   }else if(item.action=='cancelOrder'){
 		  this.cancelOrder(id);
 	   }else if(item.action=='viewOrders'){
@@ -39,22 +53,41 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			    flex:1,
 			    store:store
 		   });
+		   bulkUpdate.setText('<b> Order Line</b>');
 		   owner.getLayout().setActiveItem(1);
 	   }
    },
-   openAdvancedSearchWindow:function(cmp,event){
+  openAdvancedSearchWindow:function(cmp,event){
 	   var temp=Ext.ComponentQuery.query('#orderqueueadvancesearchID')[0];
 		 if(!temp){
+			 
+				store = Ext.create('AOC.store.PartnerProductLineStore',{
+						storeId:'PartnerProductLineStoreStoreId',
+						totalCount:'total',
+						proxy: {
+							type: 'rest',
+					         url        : applicationContext+'/rest/productLines',
+					        reader      : {
+					            type          : 'json',
+					            rootProperty          : 'productlines',
+					            totalProperty : 'totalCount'
+					        }
+					    }
+					});
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:250,
-							width:420,
+						 	height:280,
+							width:600,
 							title:"Advance Search",
 							itemId:'orderqueueadvancesearchID',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
 						 	listeners:{ 
-					             beforedestroy: function(btn) {
+						 	      afterrender:function(obj){
+						 	    	 obj.down('#productLineComboItemId').bindStore(store);
+						 	    	 store.load();
+						 	},
+						 	beforedestroy: function(btn) {
 						 		 cmp.enable();
 						 	}
 				        },
@@ -79,29 +112,73 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					}
 					return false;
    },
-   getAddressBasedOnSearchParameters:function(){
-	   var valueObj=this.getView().getForm().getValues(false,true);
-   	//if(!valueObj.hasOwnProperty('datecriteriavalue'))
-   	//	valueObj.datecriteriavalue='CreatedDate';
+   getOrderBasedOnSearchParameters:function(store){
+	 	var valueObj=this.getView().getForm().getValues(false,true);
+    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
+    		valueObj.datecriteriavalue='createdDate';
 		var parameters=Ext.JSON.encode(valueObj);
-   	var grid=this.runTime.getActiveGrid();
-   	var store=grid.store;
-       store.proxy.setFilterParam('query');
-       store.setRemoteFilter(true);
-       if (!store.proxy.hasOwnProperty('filterParam')) {
-           store.proxy.setFilterParam('query');
-       }
-       store.proxy.encodeFilters = function(filters) {
-           return filters[0].getValue();
-       };
-       store.filter({
-       	id: 'query',
-           property:'query',
-           value:parameters
-       });
-       grid.down('#clearadvanedsearch').show();
-       this.getView().up('window').destroy();
-   },
+    	var grid=this.runTime.getActiveGrid();
+    	var store=grid.store;
+        store.proxy.setFilterParam('query');
+        store.setRemoteFilter(true);
+        if (!store.proxy.hasOwnProperty('filterParam')) {
+            store.proxy.setFilterParam('query');
+        }
+        store.proxy.encodeFilters = function(filters) {
+            return filters[0].getValue();
+        };
+        store.filter({
+        	id: 'query',
+            property:'query',
+            value:parameters
+        });
+        grid.down('#clearadvanedsearch').show();
+        this.getView().up('window').destroy();
+	},
+	clearAdvancedSerach:function(widget){
+		 var grid=this.getView();
+		   	var store = grid.store;
+			store.clearFilter();
+			store.loadPage(1);
+			widget.setVisible(false);
+			var temp=grid.lookupReference('#advancesearchbutton');
+		    temp.enable();
+	},
+	getQuickSearchResults:function(cmp){
+		var store=this.getView().store;
+		   var value=cmp.getValue();
+		   if(value!=null && value!=''){
+	       store.proxy.setFilterParam('query');
+	       var parameters='{"PartnerName":"'+value+'"}';
+	       store.setRemoteFilter(true);
+	       if (!store.proxy.hasOwnProperty('filterParam')) {
+	           store.proxy.setFilterParam('query');
+	       }
+	       store.proxy.encodeFilters = function(filters) {
+	           return filters[0].getValue();
+	       };
+	       store.filter({
+	    	   id: 'query',
+	           property:'query',
+	           value:parameters
+	       });
+		   }
+		   cmp.orderedTriggers[0].show();
+	},
+	   getSearchResults:function(cmp,e){
+		   var me=this;
+		   if (e.getKey() == e.ENTER) {
+			   me.getQuickSearchResults(cmp);
+		   }
+	   },
+	   clearSearchResults:function(cmp){
+		   var grid=this.getView();
+		   	var store = grid.store;
+			store.clearFilter();
+			store.loadPage(1);
+			cmp.setValue('');
+			cmp.orderedTriggers[0].hide();
+	   },
    showMenu : function(view,rowIndex,colIndex,item,e) {
 		var me=this,currentRecord=e.record;;
 			var menu=Ext.create('Ext.menu.Menu', {
@@ -128,15 +205,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 				}
    		});
    	menu.showAt(e.getX()-140,e.getY()+10);
-	},
-	clearAdvancedSerach:function(widget){
-		 var grid=this.getView();
-		   	var store = grid.store;
-			store.clearFilter();
-			store.loadPage(1);
-			widget.setVisible(false);
-			var temp=grid.down('#advancesearchbutton');
-		    temp.enable();
 	},
 	cancelOrder:function(id){
 		var me=this;

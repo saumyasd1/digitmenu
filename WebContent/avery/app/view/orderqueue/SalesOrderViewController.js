@@ -2,25 +2,23 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.salesorder',
     requires : ['AOC.view.orderqueue.BulkUpdateSalesOrderGrid'],
+    runTime : AOC.config.Runtime,
     getUpdateScreen:function(){
     	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
       	 var height=viwport.getHeight()-20;
       	 var width=viwport.getWidth()-20;
+      	 var id=this.runTime.getOrderQueueId();
       	var store=Ext.create('AOC.store.SalesOrderStore', {
       		extend : 'Ext.data.Store',
       		model:'AOC.model.SalesOrderModel',
       		autoLoad : true,
       		storeId:'SalesOrderId',
       		proxy : {
-      		//	timeout:parseInt(requestTimeoutforStore, 10),
-      			// load using HTTP
-      			
       			type : 'ajax',
-      			//url : 'powerpay/MenuItems/GET',
-      			url : 'avery/app/data/salesorder.json',
+      			 url : applicationContext+'/rest/salesorders/order/'+id,
       			reader:{
       		        type:'json', 
-      		        rootProperty: 'items'
+      		        rootProperty: 'ArrayList'
       		    }
       	}
       	});
@@ -39,6 +37,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		   win.show();
     },
     backButton:function(){
+    	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+    	  bulkUpdate.setText('<b>Order Queue</b>');
     	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
         panel.getLayout().setActiveItem(0);
         this.getView().destroy();

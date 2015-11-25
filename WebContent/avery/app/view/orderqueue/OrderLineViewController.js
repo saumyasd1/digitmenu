@@ -33,6 +33,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   win.show();
     },
     backButton:function(){
+    	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+   	     bulkUpdate.setText('<b>Order Queue</b>');
     	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
         panel.getLayout().setActiveItem(0);
         this.getView().destroy();
