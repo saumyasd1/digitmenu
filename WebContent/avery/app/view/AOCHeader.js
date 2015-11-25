@@ -1,42 +1,42 @@
 Ext.define('AOC.view.AOCHeader',{
-    extend : 'Ext.Component',
+    extend : 'Ext.form.Panel',
     alias : 'widget.aocheader',
     height : 60,
+    layout: 'fit',
     cls : 'intake-header',
     requires : ['AOC.config.Settings'],
     initComponent : function(){
         Ext.apply(this,{
-            html : this.buildMarkup()
+        	layout: {
+            	type: 'hbox'
+            	},
+        	//items:this.buildItem(),
+        	items:[
+                     {
+				        	           xtype: 'image',
+				       	               src: 'avery/resources/images/aoc-header.png',
+				       	               width:1300,
+				       	               height:60
+        	        },
+        	              {
+        	               xtype: 'button',
+        	               icon: 'avery/resources/images/logout.png',
+        	               margin:'20 0 0 0',
+       		  	    	   menu: {
+       		  	    	 		   
+       		  	    	 		    items: [{
+       		  	    	 		        text: 'Logout',
+       		  	    	 		        handler:function()
+       		  	    			        {
+       		  	    	 		  	    var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
+       		            			    activeCard.getLayout().setActiveItem(0);
+       		  	    			        }
+       		  	    	 		    }
+       		  	    	 		   ]
+       		  	    			}
+       		  	    	}
+        	              ]
         });
-    },
-    buildMarkup : function(){
-    	var me=this;
-   	        this.userButtonId = Ext.id();
-   	        this.helpButtonId = Ext.id();
-   	    
-     	var div= '<img src="'+AOC.config.Settings.buttonIcons.aocHeader+'"/>'+
-        '<div class="adeptia-header-buttons">'+
-        '<div class="button" id="' + this.userButtonId + '"></div>'+
-        '<div class="button" id="' + this.helpButtonId + '"></div>'+
-    '</div>';
-//         Ext.create('Ext.button.Button',{
-//             text :displayuserName,
-//             textAlign:'right',
-//             tooltip:tooltip,
-//             width:width,
-//             ui : 'adeptiaheaderbuttons',
-//             itemId : 'headeruserbutton',
-//             renderTo : me.userButtonId,
-//             //icon : PowerPay.config.Settings.buttonIcons.activeUser,
-//             menu: [{
-//                 text: 'Logout',
-//                 action :'openPopupForHeader',
-//                 itemId : 'logOutId',
-//                 data:'Logout'
-//             }]
-//         });
-   	     
-   	     return div;
-   	    }
-
+        this.callParent(arguments);
+    }
 });
