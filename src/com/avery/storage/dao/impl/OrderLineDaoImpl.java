@@ -65,7 +65,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	
 	@Override
-	public void bulkUpdade(String jsonData,boolean insertAddress){
+	public void bulkUpdate(String jsonData,boolean insertAddress){
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
