@@ -15,12 +15,24 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 	   if(item.action=='viewSales'){
 		   var owner=this.getView().ownerCt;
+		   var store=Ext.create('AOC.store.SalesOrderStore', {
+				proxy : {
+					type : 'rest',
+					 url : applicationContext+'/rest/salesorders/order/'+id,
+					reader:{
+				        type:'json', 
+				        rootProperty: 'ArrayList'
+				    }
+			}
+			});
 		   owner.insert({
 			   	xtype:'salesrrderexpandablegrid',
-			    flex:1
+			    flex:1,
+			    store:store
 		   });
 		   bulkUpdate.setText('<b>Sales Order</b>');
 		   owner.getLayout().setActiveItem(1);
+	
 	   }else if(item.action=='cancelOrder'){
 		  this.cancelOrder(id);
 	   }else if(item.action=='viewOrders'){
