@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,6 +24,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -36,6 +38,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.service.OrderLineService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -1274,26 +1277,15 @@ public class OrderLine extends MainAbstractEntity{
 	@Path("bulkupdate")
 	public Response updateEntities(@Context UriInfo ui,
 			@Context HttpHeaders hh, String data) {
-		Long currentObjId=0L;
-		ObjectReader updater=null;
+		String jsonData="";
+		boolean insertAddress=false;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-			List<OrderLine> list =new ArrayList<OrderLine>();
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
-			String[] objArray=data.split("@@@");
-			for(String t:objArray){
-				OrderLine orderLine = mapper.readValue(t,OrderLine.class);
-				currentObjId=orderLine.getId();
-				orderLine=orderLineService.read(currentObjId);
-				updater = mapper.readerForUpdating(orderLine);
-				orderLine = updater.readValue(t);
-				list.add(orderLine);
-			}
-			orderLineService.updateEntities(list);
+			Map<String,String> jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			insertAddress=Boolean.parseBoolean((String)jsonMap.get("isAddressModified"));
+			jsonData=(String)jsonMap.get("data");
+			orderLineService.bulkUpdate(jsonData, insertAddress);
 			return Response.ok().build();
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(

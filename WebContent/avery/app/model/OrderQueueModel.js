@@ -91,6 +91,6 @@ Ext.define('AOC.model.OrderQueueModel',{
 	         record.commit();
 	         return true;
 	    }
-	},
+	}
     ]
 });

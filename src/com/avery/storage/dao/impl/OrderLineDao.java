@@ -9,5 +9,6 @@ import com.avery.storage.entities.ProductLine;
 public interface OrderLineDao extends GenericDao<OrderLine, Long>{
 	
 	public List<OrderLine> readAllByOrderID(Long orderID);
+	public void bulkUpdate(String jsonData,boolean insertAddress);
 
 }

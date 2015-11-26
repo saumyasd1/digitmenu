@@ -1,6 +1,7 @@
 Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 	extend:'Ext.grid.Panel',
 	xtype:'orderlineexpandablegrid',
+	itemId:'orderlineexpandablegrid',
 	requires:['Ext.grid.Panel','AOC.ux.RowExpanderGrid'],
 	controller:'orderline',
 	emptyText:'<div align=center>No data to display</div>',
@@ -14,10 +15,30 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:170  },
 { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
 { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170  },
-{ text: 'Ship To Address', dataIndex: 'shipToAddress',width:170  },
+{ text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
+{ text: 'Ship To Contact', dataIndex: 'shipToContact',width:170  },
+{ text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170  },
+{ text: 'Ship To Address 2', dataIndex: 'shipToAddress2',width:170  },
+{ text: 'Ship To Address 3', dataIndex: 'shipToAddress3',width:170  },
+{ text: 'Ship To City', dataIndex: 'shipToCity',width:170  },
+{ text: 'Ship To Country', dataIndex: 'shipToCountry',width:170  },
+{ text: 'Ship To State', dataIndex: 'shipToState',width:170  },
+{ text: 'Ship To Zip', dataIndex: 'shipToZip',width:170  },
+{ text: 'Ship To Email', dataIndex: 'shipToEmail',width:170  },
+{ text: 'Ship To Fax', dataIndex: 'shiplToFax',width:170  },
+{ text: 'Ship To Telephone', dataIndex: 'shipToTelephone',width:170  },
 { text: 'Bill To Customer', dataIndex: 'billToCustomer',width:170 },
 { text: 'Bill To Contact', dataIndex: 'billToContact',width:170  },
-{ text: 'Bill To Address', dataIndex: 'BillToAddress',width:170  },
+{ text: 'Bill To Address 1', dataIndex: 'billToAddress1',width:170  },
+{ text: 'Bill To Address 2', dataIndex: 'billToAddress2',width:170  },
+{ text: 'Bill To Address 3', dataIndex: 'billToAddress3',width:170  },
+{ text: 'Bill To City', dataIndex: 'billToCity',width:170  },
+{ text: 'Bill To Country', dataIndex: 'billToCountry',width:170  },
+{ text: 'Bill To State', dataIndex: 'billToState',width:170  },
+{ text: 'Bill To Zip', dataIndex: 'billToZip',width:170  },
+{ text: 'Bill To Email', dataIndex: 'billToEmail',width:170  },
+{ text: 'Bill To Fax', dataIndex: 'billToFax',width:170  },
+{ text: 'Bill To Telephone', dataIndex: 'billToTelephone',width:170  },
 { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:180  },
 { text: 'Special Instruction', dataIndex: 'specialInstruction',width:170  },
 { text: 'Order Received Date', dataIndex: 'orderReceivedDate',width:170  },
@@ -68,7 +89,15 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 { text: 'Waive MOQ', dataIndex: 'waiveMOQ' ,width:180 },
 { text: 'APO Type', dataIndex: 'apoType' ,width:180 },
 { text: 'Sent To Oracle Date', dataIndex: 'sentToOracleDate' ,width:180 },
-{ text: 'Status', dataIndex: 'status' ,width:180 }
+{ text: 'Status', dataIndex: 'status' ,width:180 },
+{ text: 'ATO Validation Flag', dataIndex: 'atoValidationFlag',width:180 },
+{ text: 'Bulk Sample Validation Flag', dataIndex: 'bulkSampleValidationFlag',width:200 },
+{ text: 'Customer PO Flag', dataIndex: 'customerPOFlag',width:180 },
+{ text: 'Duplicate PO Flag', dataIndex: 'duplicatePOFlag',width:180 },
+{ text: 'Htl Size Page Validation Flag', dataIndex: 'htlSizePageValidationFlag',width:200 },
+{ text: 'Is Bulk', dataIndex: 'isBulk',width:180 },
+{ text: 'Mandatory Variable Data Field Flag', dataIndex: 'mandatoryVariableDataFieldFlag',width:240 },
+{ text: 'Moq Validation Flag', dataIndex: 'moqValidationFlag',width:180 }
     ],
     plugins:[{
 		ptype:'rowexpandergrid',
@@ -87,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
             columnLines: false,
             border:true,
             plugins:['rowediting'],
-            width:790,
+            width:793,
             autoHeight: true,
             frame: false,
             header:false
@@ -107,36 +136,41 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 		                	xtype :'tbspacer',
 		                	width :30
 		        	 },
-			         {
-			        	 xtype: 'radiogroup',
-			             items: [
-			                 { boxLabel: 'Order Line Update', name: 'rb', inputValue: '1' , checked: true},
-			                 {
-			                 	xtype :'tbspacer',
-			                 	width :15
-			         		 },
-			                 { boxLabel: 'Variable Order Update', name: 'rb', inputValue: '2'}
-			             ],
-			             listeners:{
-			            	 change:'radioButtonClick'
-			             }
-			         },
-			         {
-			        	 xtype: 'combo',
-			             hidden:true,
-			             displayField :'variableFieldName',
-			             valueField :'variableFieldName',
-			             reference :'variableFieldCombo'
-			         },
-			         {
-		                	xtype :'tbspacer',
-		                	width :30
-		        	 },
-			         {
-			              xtype: 'button',
-						  text:'<b>Submit</b>',
-						  handler:'getUpdateScreen'
-			         },
+		        	 {
+		        		 xtype:'form',
+		        		 reference :'form',
+		        		 layout:'hbox',
+		        		 items:[{
+				        	 xtype: 'radiogroup',
+				             items: [
+				                 { boxLabel: 'Order Line Update', name: 'rb', inputValue: '1' , checked: true},
+				                 {
+				                 	xtype :'tbspacer',
+				                 	width :15
+				         		 },
+				                 { boxLabel: 'Variable Order Update', name: 'rb', inputValue: '2'}
+				             ],
+				             listeners:{
+				            	 change:'radioButtonClick'
+				             }
+				         },
+				         {
+				        	 xtype: 'combo',
+				             hidden:true,
+				             displayField :'variableFieldName',
+				             valueField :'variableFieldName',
+				             reference :'variableFieldCombo'
+				         },
+				         {
+			                	xtype :'tbspacer',
+			                	width :30
+			        	 },
+				         {
+				              xtype: 'button',
+							  text:'<b>Submit</b>',
+							  handler:'getUpdateScreen'
+				         }]
+		        	 }
 					 ]
 }
 });

@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,14 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.Partner;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Repository
 public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
@@ -30,7 +37,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();;
 			criteria = session.createCriteria(OrderLine.class);
 			OrderQueue orderQueue = new OrderQueue();
 			orderQueue.setId(orderID);
@@ -56,6 +63,74 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void bulkUpdate(String jsonData,boolean insertAddress){
+		ObjectMapper mapper = new ObjectMapper();
+		Long currentObjId=0L;
+		ObjectReader updater=null;
+		String[] objArray=jsonData.split("@@@");
+		Session session = null;
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			session = getSessionFactory().getCurrentSession();
+			String t=null;
+			for(int i=0;i<objArray.length;i++){
+				t=objArray[i];
+				OrderLine orderLine = mapper.readValue(t,OrderLine.class);
+				currentObjId=orderLine.getId();
+				orderLine=(OrderLine) session.get(OrderLine.class,currentObjId);
+				updater = mapper.readerForUpdating(orderLine);
+				orderLine = updater.readValue(t);
+				orderLine.preUpdateOp();
+				session.update(orderLine);
+				orderLine.postUpdateOp();
+				if(i==0 && insertAddress){
+					Address adrObj=new Address();
+					adrObj.setBillToSiteNumber(orderLine.getOracleBilltoSiteNumber());
+					adrObj.setShipToSiteNumber(orderLine.getOracleShiptoSiteNumber());
+					adrObj.setAddress1(orderLine.getBillToAddress1());
+					adrObj.setAddress2(orderLine.getBillToAddress2());
+					adrObj.setAddress3(orderLine.getBillToAddress3());
+					adrObj.setCity(orderLine.getBillToCity());
+					adrObj.setCountry(orderLine.getBillToCountry());
+					adrObj.setState(orderLine.getBillToState());
+					adrObj.setBillToContact(orderLine.getBillToContact());
+					adrObj.setBillToFax(orderLine.getBillToFax());
+					adrObj.setBillToPhone1(orderLine.getBillToTelephone());
+					adrObj.setBillToEmail(orderLine.getBillToEmail());
+					adrObj.setShipToContact(orderLine.getShipToContact());
+					adrObj.setShipToPhone1(orderLine.getShipToTelephone());
+					adrObj.setShippingMethod(orderLine.getShippingMethod());
+					adrObj.setFreightTerms(orderLine.getFreightTerms());
+					adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+					adrObj.setDescription("Inserted By Adeptia");
+					adrObj.setCreatedBy("Adeptia");
+					adrObj.setCreatedDate(new Date());
+					Partner partnerObj=new Partner();
+					Long partnerId=0L;
+					if(orderLine.getPartnerID()!=null)
+						partnerId=Long.parseLong(orderLine.getPartnerID());
+					partnerObj.setId(partnerId);
+					adrObj.setPartner(partnerObj);
+					session.save(adrObj);
+				}
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
 
+	}
 	
 }

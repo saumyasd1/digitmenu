@@ -50,6 +50,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        success : function(response, opts) {
 		        	var jsonValue=Ext.decode(response.responseText);
 		        	var serviceStoreData = [];
+		        	if(jsonValue.length>0){
 		        	jsonValue.forEach(function(item){
                 		var service = [item];
                 		serviceStoreData.push(service);
@@ -59,6 +60,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
             	            data : serviceStoreData
                     });
 		        	comboField.bindStore(serviceStore);
+		        	}
 		        	comboField.setVisible(true);
 		        	Ext.getBody().unmask();
 		        },
@@ -71,22 +73,44 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}
     },
     saveOrderLine:function(){
-    	var grid=this.getView();
+    	var grid=this.getView(),me=this,insertAddess=false;
     	var store=grid.store,
     	parms ='';
-    	var updatedRecords=store.getModifiedRecords();
-    	Ext.each(updatedRecords,function(record){
-    		var obj=record.getChanges( ) ;
-    		obj.id=record.id;
-    		if(params=='')
-    			parms=parms+Ext.encode(obj);
-    		else 
-    			parms=parms+'@@@'+Ext.encode(obj);
-    		  
-    		 });
+    	var madatoryFieldEmpty=false,
+    	currentRecord=null,
+    	i=0, isAddressModified=false;
+    	for(i=0;i<store.getCount ();i++){
+    		currentRecord=store.getAt(i);
+    		if(currentRecord.get('oracleBilltoSiteNumber')=='' || currentRecord.get('oracleShiptoSiteNumber')==''){
+    			madatoryFieldEmpty=true;
+    			break;
+    		}
+    		if(i==0){
+    			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
+    				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
+    				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
+    				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber'))
+    					isAddressModified=true;
+    		}
+    		if(currentRecord.dirty){
+    			var obj=currentRecord.getChanges( ) ;
+        		obj.id=currentRecord.id;
+        		if(parms==''){
+        			parms=parms+Ext.encode(obj);
+        		}
+        		else 
+        			parms=parms+'@@@'+Ext.
+        			encode(obj);
+    		}
+    	}
+    	if(madatoryFieldEmpty){
+    		alert('Either the Oracle BilltoSite or Oracle shiptoSite number is empty at record number '+parseInt(i)+1+'. Please fill the value before proceeding.');
+    		return false;
+    	}
+    	var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(parms)+'}';
     	Ext.Ajax.request({
     		method:'PUT',
-	        jsonData:parms,
+	        jsonData:obj,
     		   url : applicationContext+'/rest/orderLines/bulkupdate',
 		        success : function(response, opts) {
 			  		Ext.Msg.alert('Order line successfully updated');
@@ -97,6 +121,13 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  }); 
-    	
+    },
+    cancelChanges:function(){
+    	var me=this;
+		Ext.Msg.confirm('', 'Are you sure you cancel the changes?',function(btn){
+			  if(btn=='yes'){
+				  me.getView().getStore().load();
+			  }
+		});
     }
 })
