@@ -109,6 +109,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					adrObj.setDescription("Inserted By Adeptia");
 					adrObj.setCreatedBy("Adeptia");
 					adrObj.setCreatedDate(new Date());
+					adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
 					Partner partnerObj=new Partner();
 					Long partnerId=0L;
 					if(orderLine.getPartnerID()!=null)
