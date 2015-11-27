@@ -10,4 +10,6 @@ public interface SalesOrderDao extends GenericDao<SalesOrder, Long>{
 	
 	public List<SalesOrder> readAllByOrderID(Long orderID);
 
+	public void bulkUpdate(String data);
+
 }
