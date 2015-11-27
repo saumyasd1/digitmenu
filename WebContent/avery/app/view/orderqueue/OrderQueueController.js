@@ -69,7 +69,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					         url        : applicationContext+'/rest/productLines',
 					        reader      : {
 					            type          : 'json',
-					            rootProperty          : 'productlines',
+					            rootProperty          : 'ArrayList',
 					            totalProperty : 'totalCount'
 					        }
 					    }
