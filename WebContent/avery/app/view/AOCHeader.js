@@ -30,6 +30,8 @@ Ext.define('AOC.view.AOCHeader',{
        		  	    			        {
        		  	    	 		  	    var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
        		            			    activeCard.getLayout().setActiveItem(0);
+       		            			    var login=Ext.ComponentQuery.query("#aocLoginItemId")[0];
+       		            			    login.getForm().reset();
        		  	    			        }
        		  	    	 		    }
        		  	    	 		   ]
