@@ -71,7 +71,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                {
         		                    name: 'userName',    
         		                    fieldLabel: "<B>UserName</B>",
-        		                    blankText : 'UserName Field is required',
+        		                    blankText : 'UserName Field is required'
         		                },
         		            	{
         		                	xtype :'tbspacer',
@@ -81,7 +81,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                    name: 'password',
         		                    fieldLabel: "<B>Password</B>",
         		                    inputType: 'password',
-        		                    blankText : 'Password Field is required',
+        		                    blankText : 'Password Field is required'
         		                }
         		            ]
         		        }
