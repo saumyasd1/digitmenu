@@ -12,9 +12,14 @@ Ext.define('AOC.model.OrderQueueModel',{
 		type: 'string'
 	}, {
 		name : 'ProductLineType',
-		mapping : 'productLine.name',
+		mapping : 'productLine.id',
 		type: 'string'
-	}, {
+	}, 
+	   {
+		name: 'productLineType', 
+	    mapping:'productLine.productLineType',
+	    type: 'string'},
+	{
 		name : 'Status',
 		mapping : 'status',
 		type: 'string'
@@ -70,8 +75,6 @@ Ext.define('AOC.model.OrderQueueModel',{
 	    type: 'string',
 	    convert: function( v, record ) {
 	    	var attachmentFileList=[];
-	    	var employees = [];
-			employees.push({id:100,name:'Yashwant',age:30});	
 	    	var OrderFile=[];
 	        var order=record.get('orderFileAttachment');
 	        var length= order.length;
