@@ -6,7 +6,7 @@
 Ext.define('AOC.view.Viewport', {
 	extend : 'Ext.container.Viewport',
 	itemId : 'viewportitemid',
-	requires : ['AOC.view.AOCLogin','AOC.view.AOCHeader','AOC.view.ToolbarView','AOC.view.orderqueue.OrderQueueView','AOC.view.partner.PartnerManagement','AOC.view.address.AddressManage','AOC.view.webform.WebOrderView'],
+	requires : ['AOC.view.AOCLogin','AOC.view.AOCHeader','AOC.view.ToolbarView','AOC.view.orderqueue.OrderQueueView','AOC.view.partner.PartnerManagement','AOC.view.address.AddressManage','AOC.view.webform.WebOrderView','AOC.view.archive.ArchiveManage'],
 	stores:[ 'PartnerManagementStore','AddressManageStore'],
 	initComponent : function(){
 		Ext.apply(this, {
@@ -61,6 +61,11 @@ Ext.define('AOC.view.Viewport', {
 							   },
 							   {
 							       xtype : 'weborderview',
+							    	cls : 'adeptia-home-entity',
+							    	 margins : '12 12 12 12'
+							   },
+							   {
+							       xtype : 'archivemanage',
 							    	cls : 'adeptia-home-entity',
 							    	 margins : '12 12 12 12'
 							   }
