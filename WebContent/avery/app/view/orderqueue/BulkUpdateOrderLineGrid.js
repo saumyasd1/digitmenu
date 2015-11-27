@@ -25,7 +25,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                         if(selection.startCell)
 							var store=grid.store;
                                 var intialCell=selection.startCell;
-                            var dataindex=intialCell.column.dataIndex;
+                                var dataindex=intialCell.column.dataIndex;
                                 var value=intialCell.record.get(dataindex);
                                 var initialrowIdx=intialCell.rowIdx;
                                 var lastrowIdx=selection.endCell.rowIdx;
