@@ -142,6 +142,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 		        		 layout:'hbox',
 		        		 items:[{
 				        	 xtype: 'radiogroup',
+				        	 reference:'radioGroup',
 				             items: [
 				                 { boxLabel: 'Order Line Update', name: 'rb', inputValue: '1' , checked: true},
 				                 {
