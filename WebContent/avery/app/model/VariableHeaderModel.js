@@ -1,6 +1,5 @@
 Ext.define('AOC.model.VariableHeaderModel',{
     extend: 'Ext.data.Model',
-	idProperty:null,
    fields: [
             {
     		name : 'level',
@@ -21,6 +20,14 @@ Ext.define('AOC.model.VariableHeaderModel',{
     	},{
     		name : 'fiberPercent',
     		mapping : 'fiberPercent'
+    	},
+    	{
+    		name : 'customerPONumber',
+    		mapping : 'orderLineForVariableData.customerPONumber'
+    	},
+    	{
+    		name : 'customerItemNumber',
+    		mapping : 'orderLineForVariableData.customerItemNumber'
     	}
         ]
 });
