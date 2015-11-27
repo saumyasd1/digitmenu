@@ -64,21 +64,6 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 		return null;
 	}
 
-
-	@Override
-	public Long create(SalesOrder newInstance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public SalesOrder read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	public void bulkUpdate(String data) {
 		ObjectMapper mapper = new ObjectMapper();
