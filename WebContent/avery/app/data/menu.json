@@ -40,6 +40,14 @@
                     "Align": "Left",
                     "Path": "AOC App"
                 }
+            },
+            {
+                "item": {
+                    "ServiceName": "ArchiveScreen",
+                    "DisplayName": "Archive",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
             }
             
         ]
