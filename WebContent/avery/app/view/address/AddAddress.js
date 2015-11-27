@@ -264,5 +264,5 @@ Ext.define('AOC.view.address.AddAddress',{
 		    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
 					else
 					   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
-		     },
+		     }
                  });

@@ -17,7 +17,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
         dockedItems : this.buildDockedItems(),
         viewConfig : {
 	            stripeRows : false,
-	            enableTextSelection : true,
+	            enableTextSelection : true
         }
     });
        this.callParent(arguments);

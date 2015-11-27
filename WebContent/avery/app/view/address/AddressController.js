@@ -176,8 +176,8 @@ Ext.define('AOC.view.address.AddressController', {
 					shippingMethod:valueObj.shippingMethod,
 					freightTerms:valueObj.freightTerms,
 					shippingInstructions:valueObj.shippingInstructions,
-					partner:{id:valueObj.partner_id},
-		    	};
+					partner:{id:valueObj.partner_id}
+		    	}
 		}
 	
 		if(length>0){
