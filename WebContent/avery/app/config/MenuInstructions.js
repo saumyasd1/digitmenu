@@ -12,7 +12,7 @@ Ext.define('AOC.config.MenuInstructions', {
 			fnc : 'loadHomePage'
 		},
 		PartnerManagement : {
-			tab : 'PowerPay APP',
+			tab : 'AOC APP',
 			controller : 'MenuController',
 			fnc : 'loadPartnerManagement'
 		},
@@ -22,9 +22,14 @@ Ext.define('AOC.config.MenuInstructions', {
 			fnc : 'loadWebFormScreen'
 		},
 		AddressManage : {
-			tab : 'PowerPay APP',
+			tab : 'AOC APP',
 			controller : 'MenuController',
 			fnc : 'loadAddressManage'
+		},
+		ArchiveScreen : {
+			tab : 'AOC APP',
+			controller : 'MenuController',
+			fnc : 'loadArchiveManage'
 		}
 },
 	constructor : function(config) {
