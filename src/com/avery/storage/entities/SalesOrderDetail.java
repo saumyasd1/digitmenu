@@ -42,7 +42,7 @@ public class SalesOrderDetail extends MainAbstractEntity{
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SalesOrderID", nullable = true)
-	private SalesOrder salesOrder;
+	private SalesOrder salesOrderForVariableData;
 	
 	@Column(name = "ProcessQueueID")
     private int processQueueID; 
@@ -84,13 +84,12 @@ public class SalesOrderDetail extends MainAbstractEntity{
 	@Column(name = "DivisionforInterfaceERPORG")
     private String divisionforInterfaceERPORG;
 	
-	
-	public SalesOrder getSalesOrder() {
-		return salesOrder;
+	public SalesOrder getSalesOrderForVariableData() {
+		return salesOrderForVariableData;
 	}
 
-	public void setSalesOrder(SalesOrder salesOrder) {
-		this.salesOrder = salesOrder;
+	public void setSalesOrderForVariableData(SalesOrder salesOrderForVariableData) {
+		this.salesOrderForVariableData = salesOrderForVariableData;
 	}
 
 	public int getProcessQueueID() {
@@ -243,6 +242,7 @@ public class SalesOrderDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixInAnnotations(SalesOrder.class, SalesOrderDetailMixIn.class);
 			SalesOrderDetailService salesOrderDetailService = (SalesOrderDetailService) SpringConfig
 					.getInstance().getBean("salesOrderDetailService");
 			salesOrderDetail = salesOrderDetailService.readByVariableName(entityId,variablfieldename);
