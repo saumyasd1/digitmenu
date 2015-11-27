@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,16 +54,32 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 
 
 	@Override
-	public List<OrderLineDetail> readByVariableName(Long orderID,String variablfieldename){
-		
+	public Map readByVariableName(Long orderID,String variablfieldename){
+		Map infoMap=new HashMap();
 		Session session = null;
 		Criteria criteria = null;
+		List<OrderLineDetail> list=null;
+		Boolean showFiberPercentage=false;
 		try{
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(OrderLineDetail.class);
 			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
 			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
-			return criteria.list();
+			if(variablfieldename.toLowerCase().contains("fibre".toLowerCase())){
+				criteria.add(Restrictions.ne("variabledatavalue", ""));
+				criteria.add(Restrictions.ne("fiberPercent", "0"));
+			}
+			list= criteria.list();
+			if(list.size()>0){
+				OrderLineDetail orderLineDetail=list.get(0);
+				String level=orderLineDetail.getLevel();
+				if(level.equalsIgnoreCase("fibre")){
+					showFiberPercentage=true;
+				}
+			}
+			infoMap.put("OrderLineDetail", criteria.list());
+			infoMap.put("showFiberPercentage", showFiberPercentage);
+			return infoMap;
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error in fetching order line variable for order queue id " + orderID+" and variable name "+variablfieldename, ex);
