@@ -2,9 +2,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.bulkUpdateVariableHeaderrGrid',
     itemId:'BulkUpdateVariableHeaderrGrid',
-	//store:'SalesOrderStore',
-	requires : [
-    ],
+	variableColumnName:null,
+	controller:'orderline',
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
     initComponent : function(){
@@ -13,39 +12,70 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
         Ext.apply(this,{
             columns : this.buildColumns(),
 			columnLines:true,
-			dockedItems : this.buildDockedItems(),
 			layout:'fit',
-			selModel: Ext.create("Ext.selection.CheckboxModel", {
-		        checkOnly : true,
-		        allowDeselect:true,					
-		        mode :'MULTI'
-			})
+			selModel: {
+			       type: 'spreadsheet'
+			    },
+			    plugins: {
+			        ptype: 'cellediting',
+			        clicksToEdit: 1
+			        
+			    },
+			    listeners:{
+		        	'selectionchange':function( grid, selection, eOpts ){
+                     if(selection.startCell)
+							var store=grid.store;
+                             var intialCell=selection.startCell;
+                         var dataindex=intialCell.column.dataIndex;
+                             var value=intialCell.record.get(dataindex);
+                             var initialrowIdx=intialCell.rowIdx;
+                             var lastrowIdx=selection.endCell.rowIdx;
+                             var start=initialrowIdx,end=lastrowIdx;
+                             if(lastrowIdx<initialrowIdx){
+                             	start=lastrowIdx;
+                             	end=initialrowIdx;
+                             }
+                             for(var i=(start+1);i<=end;i++){
+                                 store.getAt(i).set(dataindex,value);
+                             }
+		        	}
+		        }
+			    
         });
         this.callParent(arguments);
-
+        me.store.load(function(obj){
+        	debugger;
+        	var reader = me.store.proxy.reader;
+		    var showFiberPercentage=reader.createAccessor('showFiberPercentage')(reader.rawData);   
+		    me.columns[2].editor.readOnly=showFiberPercentage;
+		    if(showFiberPercentage)
+			    me.columns[3].show();
+		    else
+		    	me.columns[3].hide();
+	    });
     },
     buildColumns : function(){
     	var me=this;
-        return [{ text: "Level", dataIndex: 'Level' ,flex:1},
-                { text: "SKU Number", dataIndex: 'SKUNumber' ,flex:1},
-                { text: "TypeSetterCode", dataIndex: 'TypeSetterCode' ,flex:1},
-                { text: "Variable Field Name", dataIndex: 'VariableFieldName' ,flex:1},
-                { text: "Variable Field Value", dataIndex: 'VariableFieldValue' ,flex:1},
-                { text: "Fiber Content Name", dataIndex: 'FiberContentName',flex:1}
+        return [{ text: "Customer PO Number", dataIndex: 'customerPONumber' ,flex:1},
+                { text: "Customer Item Number", dataIndex: 'customerItemNumber' ,flex:1},
+                { text: me.variableColumnName, dataIndex: 'variabledatavalue' ,flex:1,editor:{xtype:'textfield'}},
+                { text: 'Fiber Content Percentage', dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
 		];
     },
-    buildDockedItems : function(){
-    	var me=this;
-        return [
-			{
-            xtype : 'pagingtoolbar',
-            dock : 'bottom',
-            ui : 'darktoolbar',
-            itemId:'pagingtoolbarVisitManage',
-           // store:me.store,
-            displayInfo:true,
-            plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
-            
-        }];
-    }
+    tbar: { 
+		height: 50,
+	    items : 
+	    	[
+			 {
+	              xtype:'button',
+				  text:'Save',
+				  handler:'saveOrderLineDetails'
+	         },
+	         {
+	              xtype:'button',
+				  text:'Cancel',
+				  handler:'cancelChanges'
+	         }
+			 ]
+}
 });
