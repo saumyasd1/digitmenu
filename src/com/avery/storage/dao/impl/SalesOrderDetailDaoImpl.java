@@ -1,9 +1,11 @@
 package com.avery.storage.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -75,6 +77,14 @@ public class SalesOrderDetailDaoImpl extends GenericDaoImpl<SalesOrderDetail, Lo
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
+	}
+
+
+	@Override
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
