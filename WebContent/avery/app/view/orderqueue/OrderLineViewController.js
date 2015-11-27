@@ -1,23 +1,47 @@
 Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderline',
-    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid'],
+    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel'],
     runTime : AOC.config.Runtime,
     getUpdateScreen:function(){
+    	var me=this;
     	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
       	 var height=viwport.getHeight()-20;
       	 var width=viwport.getWidth()-20;
       	 var id=this.runTime.getOrderQueueId();
-      	var store=Ext.create('AOC.store.OrderLineStore', {
-			proxy : {
-				type : 'rest',
-				url : applicationContext+'/rest/orderLines/order/'+id,
-				reader:{
-			        type:'json', 
-			        rootProperty: 'ArrayList'
-			    }
-		}
-		});
+      	 var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,store,win,innerGridType,comboValue='';
+      	 if(radioGroupValue=='2'){
+      		var comboField=this.lookupReference('variableFieldCombo');
+      		comboValue=comboField.getValue();
+      		if(comboValue=='' || comboValue==null){
+      			Ext.Msg.alert('', 'Please select a value from the drop down before drop down.');
+      			return false;
+      		}
+      		innerGridType='bulkUpdateVariableHeaderrGrid';
+      		store=Ext.create('AOC.store.OrderLineStore', {
+      			model:'AOC.model.VariableHeaderModel',
+    			proxy : {
+    				type : 'rest',
+    				url : applicationContext+'/rest/orderlinedetails/order/'+id+'/'+comboValue,
+    				reader:{
+    			        type:'json', 
+    			        rootProperty: 'OrderLineDetail'
+    			    }
+    			}
+    		}); 
+      	 }else{
+      		store=Ext.create('AOC.store.OrderLineStore', {
+    			proxy : {
+    				type : 'rest',
+    				url : applicationContext+'/rest/orderLines/order/'+id,
+    				reader:{
+    			        type:'json', 
+    			        rootProperty: 'ArrayList'
+    			    }
+    		}
+    		});
+      		innerGridType='bulkupdateorderlinegrid';
+      	 }
 		   var win=Ext.create('Ext.window.Window',{
 			 	height:height,
 				width:width,
@@ -26,8 +50,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				draggable: false,
 				modal:true,
 				items:[{
-					xtype:'bulkupdateorderlinegrid',
-					store:store
+					xtype:innerGridType,
+					store:store,
+					variableColumnName:comboValue
 				}]
 		   });
 		   win.show();
@@ -124,10 +149,39 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     },
     cancelChanges:function(){
     	var me=this;
-		Ext.Msg.confirm('', 'Are you sure you cancel the changes?',function(btn){
+		Ext.Msg.confirm('', 'Are you sure you want to cancel the changes?',function(btn){
 			  if(btn=='yes'){
 				  me.getView().getStore().load();
 			  }
 		});
+    },
+    saveOrderLineDetails:function(){
+    	var grid=this.getView(),me=this;
+    	var store=grid.store,
+    	parms ='';
+    	var updatedRecords=store.getModifiedRecords();
+    	Ext.each(updatedRecords,function(record){
+    		var obj=record.getChanges( ) ;
+    		obj.id=record.id;
+    		if(parms=='')
+    			parms=parms+Ext.encode(obj);
+    		else 
+    			parms=parms+'@@@'+Ext.encode(obj);
+    		  
+    		 });
+    	Ext.Ajax.request({
+    		method:'PUT',
+	        jsonData:parms,
+    		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+		        success : function(response, opts) {
+			  		Ext.Msg.alert('Order line successfully updated');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+    		  }); 
+    	
     }
 })
