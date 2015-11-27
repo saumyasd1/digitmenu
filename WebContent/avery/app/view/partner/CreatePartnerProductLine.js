@@ -209,8 +209,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		            enforceMaxLength: true,
-  		           
+  		            enforceMaxLength: true
         		}]
         		},
         		{
@@ -305,7 +304,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		            enforceMaxLength: true,
+  		            enforceMaxLength: true
         		}]
         		},
         		{
@@ -545,6 +544,5 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
 					else
 					   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
-		     },
-   
+		     }
                  });

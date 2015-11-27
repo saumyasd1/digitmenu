@@ -161,7 +161,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
          	       	    xtype :'tbspacer',
          	       	    width :190
          	         },
-         	         {boxLabel:'Inactive',name:'active',inputValue:'0',id:'Inactive'},
+         	         {boxLabel:'Inactive',name:'active',inputValue:'0',id:'Inactive'}
          	        			       ]
         		}
                ],

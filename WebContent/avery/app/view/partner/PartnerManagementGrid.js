@@ -18,7 +18,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
         dockedItems : this.buildDockedItems(),
         viewConfig : {
 	            stripeRows : false,
-	            enableTextSelection : true,
+	            enableTextSelection : true
         }
     });
     this.on({
@@ -35,7 +35,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'partnerName',
-            	            flex:0.5,
+            	            flex:0.5
             	            
                			},
 			            {
@@ -147,7 +147,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		              text:'New',
 		              itemId : 'newPartner',
 		              handler:'createpartner',
-		              hidden:false,
+		              hidden:false
 		              },
 		          '->',
 		      	     {
@@ -170,7 +170,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon,
+						icon: clearSearchIcon
 					}
 		          ];
 	},
