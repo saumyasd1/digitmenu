@@ -1,7 +1,9 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,9 +30,10 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineDetailMixIn;
-import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.service.OrderLineDetailService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
@@ -212,7 +216,7 @@ public class OrderLineDetail extends MainAbstractEntity{
 	public Response getByVariableName(@Context UriInfo ui,
 			@Context HttpHeaders hh, @PathParam("id") String orderId,@PathParam("variablename") String variablfieldename) {
 		Response.ResponseBuilder rb = null;
-		List<OrderLineDetail> orderLineDetail = null;
+		Map orderLineDetail = null;
 		try{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
@@ -240,6 +244,43 @@ public class OrderLineDetail extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
-	
+	@PUT
+    @Path("variablebulkupdate")
+    public Response updateEntities(@Context UriInfo ui,
+            @Context HttpHeaders hh, String data) {
+        Long currentObjId=0L;
+        ObjectReader updater=null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+                    false);
+            List<OrderLineDetail> list =new ArrayList<OrderLineDetail>();
+            OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
+                    .getInstance().getBean("orderLineDetailService");
+            String[] objArray=data.split("@@@");
+            for(String t:objArray){
+                OrderLineDetail orderLineDetail = mapper.readValue(t,OrderLineDetail.class);
+                currentObjId=orderLineDetail.getId();
+                orderLineDetail=orderLineDetailService.read(currentObjId);
+                updater = mapper.readerForUpdating(orderLineDetail);
+                orderLineDetail = updater.readValue(t);
+                list.add(orderLineDetail);
+            }
+            orderLineDetailService.updateEntities(list);
+            return Response.ok().build();
+        } catch (WebApplicationException ex) {
+            AppLogger.getSystemLogger().error(
+                    "Error while Permorfing variable bulk update", ex);
+            throw ex;
+        } catch (Exception e) {
+            AppLogger.getSystemLogger().error(
+                    "Error while Permorfing variable bulk update", e);
+            throw new WebApplicationException(Response
+                    .status(Status.INTERNAL_SERVER_ERROR)
+                    .entity(ExceptionUtils.getRootCauseMessage(e))
+                    .type(MediaType.TEXT_PLAIN_TYPE).build());
+        }
+    }
 
 }
