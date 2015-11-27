@@ -27,6 +27,10 @@ Ext.define('AOC.controller.MenuController', {
 	    {
 		   	selector : 'viewport #AddressManageGriditemId',
 	 	 	ref : 'addressManagegrid'
+	    },
+	    {
+		   	selector : 'viewport #archiveManageGriditemId',
+	 	 	ref : 'archiveManagegrid'
 	    }
 	 	],
 	 menuInstructions : AOC.config.MenuInstructions,
@@ -163,5 +167,14 @@ Ext.define('AOC.controller.MenuController', {
 		  this.getAddressManagegrid().down('#pagingtoolbar').bindStore(AddressStore);
 		  AddressStore.load();
 		  this.getMainContainer().getLayout().setActiveItem(2);
+	  },
+	  loadArchiveManage: function(){
+		  //var ArchiveStore=this.getArchiveStoreStore();
+		  //this.getArchiveManagegrid().bindStore(ArchiveStore);
+		  //this.runTime.setActiveGrid(this.getArchiveManagegrid());
+		  //debugger;
+		  //this.getArchiveManagegrid().down('#pagingtoolbar').bindStore(ArchiveStore);
+		 // ArchiveStore.load();
+		  this.getMainContainer().getLayout().setActiveItem(4);
 	  }
 })   
