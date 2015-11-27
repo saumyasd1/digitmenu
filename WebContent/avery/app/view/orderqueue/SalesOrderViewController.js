@@ -47,6 +47,41 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	
     },
     saveSalesOrder:function(){
-    	
+    	       var grid=this.getView();
+    	       var store=grid.store,
+    	       parms ='';
+    	       var updatedRecords=store.getModifiedRecords();
+    	       Ext.each(updatedRecords,function(record){
+    	           var obj=record.getChanges( ) ;
+    	           obj.id=record.id;
+    	           if(parms=='')
+    	               parms=parms+Ext.encode(obj);
+    	           else 
+    	               parms=parms+'@@@'+Ext.encode(obj);
+    	             
+    	            });
+    	       Ext.Ajax.request({
+    	           method:'PUT',
+    	            jsonData:parms,
+    	              url : applicationContext+'/rest/salesorders/bulkupdate',
+    	                success : function(response, opts) {
+    	                      Ext.Msg.alert('Sales Order successfully updated');
+    	                      Ext.getBody().unmask();
+    	                      me.getView().store.load();
+    	                },
+    	                failure: function(response, opts) {
+    	                    Ext.getBody().unmask();
+    	              }
+    	             }); 
+    	       
+    	   
+    },
+    cancelChanges:function(){
+    	var me=this;
+		Ext.Msg.confirm('', 'Are you sure you cancel the changes?',function(btn){
+			  if(btn=='yes'){
+				  me.getView().getStore().load();
+			  }
+		});
     }
 })
