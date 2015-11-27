@@ -30,6 +30,12 @@ public class SalesOrderService extends GenericEntityService<SalesOrder, Long>{
 		
 		return getSalesOrderDao().readAllByOrderID(entityId);
 		
+	}
+
+	@Transactional
+	public void bulkUpdate(String data) {
+		getSalesOrderDao().bulkUpdate(data);
+		
 	} 
 
 }
