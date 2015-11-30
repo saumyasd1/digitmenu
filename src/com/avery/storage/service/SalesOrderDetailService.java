@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class SalesOrderDetailService extends GenericEntityService<SalesOrderDeta
 		
 	} 
 	
-	public List<SalesOrderDetail> readByVariableName(Long entityId,String variablfieldename){
+	public Map readByVariableName(Long entityId,String variablfieldename){
 		
 		return getSalesOrderDetailDao().readByVariableName(entityId,variablfieldename);
 	}
