@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,23 +55,39 @@ public class SalesOrderDetailDaoImpl extends GenericDaoImpl<SalesOrderDetail, Lo
 	}
 	
 	@Override
-	public List<SalesOrderDetail> readByVariableName(Long orderID,String variablfieldename){
-		
+	public Map readByVariableName(Long orderID,String variablfieldename){
+		Map infoMap=new HashMap();
 		Session session = null;
 		Criteria criteria = null;
+		List<SalesOrderDetail> list=null;
+		Boolean showFiberPercentage=false;
 		try{
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(SalesOrderDetail.class);
 			criteria.add(Restrictions.eq("processQueueID", orderID.intValue()));
 			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
-			return criteria.list();
+			if(variablfieldename.toLowerCase().contains("fibre".toLowerCase())){
+				criteria.add(Restrictions.ne("variabledatavalue", ""));
+				criteria.add(Restrictions.ne("fiberPercent", "0"));
+			}
+			list= criteria.list();
+			if(list.size()>0){
+				SalesOrderDetail salesOrderDetail=list.get(0);
+				String level=salesOrderDetail.getLevel();
+				if(level.equalsIgnoreCase("fibre")){
+					showFiberPercentage=true;
+				}
+			}
+			infoMap.put("SalesOrderDetail", criteria.list());
+			infoMap.put("showFiberPercentage", showFiberPercentage);
+			return infoMap;
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
-					"Error in fetching order line variable for order queue id " + orderID+" and variable name "+variablfieldename, ex);
+					"Error in fetching Sales Order variable for order queue id " + orderID+" and variable name "+variablfieldename, ex);
 			throw ex;
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
-					"Error in fetching order line variable for order queue id " + orderID+" and variable name "+variablfieldename, e);
+					"Error in fetching Sales Order variable for order queue id " + orderID+" and variable name "+variablfieldename, e);
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
