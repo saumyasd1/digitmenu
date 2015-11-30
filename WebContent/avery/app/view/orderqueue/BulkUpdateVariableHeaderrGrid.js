@@ -44,7 +44,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
         });
         this.callParent(arguments);
         me.store.load(function(obj){
-        	debugger;
         	var reader = me.store.proxy.reader;
 		    var showFiberPercentage=reader.createAccessor('showFiberPercentage')(reader.rawData);   
 		    me.columns[2].editor.readOnly=showFiberPercentage;
