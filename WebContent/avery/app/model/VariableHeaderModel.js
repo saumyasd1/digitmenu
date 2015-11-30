@@ -28,6 +28,14 @@ Ext.define('AOC.model.VariableHeaderModel',{
     	{
     		name : 'customerItemNumber',
     		mapping : 'orderLineForVariableData.customerItemNumber'
+    	},
+    	{
+    		name : 'salesOrdercustomerPONumber',
+    		mapping : 'salesOrderForVariableData.customerPONumber'
+    	},
+    	{
+    		name : 'salesOrdercustomerItemNumber',
+    		mapping : 'salesOrderForVariableData.customerItemNumber'
     	}
         ]
 });
