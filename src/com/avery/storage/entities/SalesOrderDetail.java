@@ -1,8 +1,10 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,9 +31,12 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineDetailMixIn;
+import com.avery.storage.MixIn.SalesOrderDetailMixIn;
 import com.avery.storage.service.OrderLineDetailService;
 import com.avery.storage.service.SalesOrderDetailService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
@@ -208,7 +214,7 @@ public class SalesOrderDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			SalesOrderDetailService salesOrderDetailService = (SalesOrderDetailService) SpringConfig
 					.getInstance().getBean("salesOrderDetailService");
 			salesOrderDetail = salesOrderDetailService.readAllVariableByOrderID(entityId);
@@ -237,12 +243,13 @@ public class SalesOrderDetail extends MainAbstractEntity{
 	public Response getByVariableName(@Context UriInfo ui,
 			@Context HttpHeaders hh, @PathParam("id") String orderId,@PathParam("variablename") String variablfieldename) {
 		Response.ResponseBuilder rb = null;
-		List<SalesOrderDetail> salesOrderDetail = null;
+		Map salesOrderDetail = null;
 		try{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixInAnnotations(SalesOrder.class, SalesOrderDetailMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE,false);
 			SalesOrderDetailService salesOrderDetailService = (SalesOrderDetailService) SpringConfig
 					.getInstance().getBean("salesOrderDetailService");
 			salesOrderDetail = salesOrderDetailService.readByVariableName(entityId,variablfieldename);
@@ -264,6 +271,45 @@ public class SalesOrderDetail extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
+	
+	   @PUT
+	   @Path("variablebulkupdate")
+	   public Response updateEntities(@Context UriInfo ui,
+	           @Context HttpHeaders hh, String data) {
+	       Long currentObjId=0L;
+	       ObjectReader updater=null;
+	       try {
+	           ObjectMapper mapper = new ObjectMapper();
+	           mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+	           mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+	                   false);
+	           List<SalesOrderDetail> list =new ArrayList<SalesOrderDetail>();
+	           SalesOrderDetailService salesOrderDetailService = (SalesOrderDetailService) SpringConfig
+	                    .getInstance().getBean("salesOrderDetailService");
+	           String[] objArray=data.split("@@@");
+	           for(String t:objArray){
+	               SalesOrderDetail salesOrderDetail = mapper.readValue(t,SalesOrderDetail.class);
+	               currentObjId=salesOrderDetail.getId();
+	               salesOrderDetail=salesOrderDetailService.read(currentObjId);
+	               updater = mapper.readerForUpdating(salesOrderDetail);
+	               salesOrderDetail = updater.readValue(t);
+	               list.add(salesOrderDetail);
+	           }
+	           salesOrderDetailService.updateEntities(list);
+	           return Response.ok().build();
+	       } catch (WebApplicationException ex) {
+	           AppLogger.getSystemLogger().error(
+	                   "Error while Permorfing variable bulk update", ex);
+	           throw ex;
+	       } catch (Exception e) {
+	           AppLogger.getSystemLogger().error(
+	                   "Error while Permorfing variable bulk update", e);
+	           throw new WebApplicationException(Response
+	                   .status(Status.INTERNAL_SERVER_ERROR)
+	                   .entity(ExceptionUtils.getRootCauseMessage(e))
+	                   .type(MediaType.TEXT_PLAIN_TYPE).build());
+	       }
+	   }
 	
 
 }
