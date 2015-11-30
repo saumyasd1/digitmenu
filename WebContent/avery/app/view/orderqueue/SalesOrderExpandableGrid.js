@@ -94,6 +94,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid',{
 		        	 },
 			         {
 			        	 xtype: 'radiogroup',
+			        	 reference:'radioGroup',
 			             items: [
 			                 { boxLabel: 'Sales Order Update', name: 'rb', inputValue: '1' , checked: true},
 			                 {
@@ -105,6 +106,17 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid',{
 			             listeners:{
 			            	 change:'radioButtonClick'
 			             }
+			         },
+			         {
+		                	xtype :'tbspacer',
+		                	width :30
+		        	 },
+		        	 {
+			        	 xtype: 'combo',
+			             hidden:true,
+			             displayField :'variableFieldName',
+			             valueField :'variableFieldName',
+			             reference :'variableFieldCombo'
 			         },
 			         {
 		                	xtype :'tbspacer',
