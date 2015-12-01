@@ -170,6 +170,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 				              xtype: 'button',
 							  text:'<b>Submit</b>',
 							  handler:'getUpdateScreen'
+				         },
+				         {
+			                	xtype :'tbspacer',
+			                	width :40
+			        	 },
+				         {
+				              xtype: 'button',
+							  text:'<b>Validate</b>',
+							  handler:'validateOrderLine'
+				         },{
+			                	xtype :'tbspacer',
+			                	width :40
+			        	 },
+				         {
+				              xtype: 'button',
+							  text:'<b>View Sales Order</b>',
+							  handler:'viewSalesOrder'
 				         }]
 		        	 }
 					 ]
