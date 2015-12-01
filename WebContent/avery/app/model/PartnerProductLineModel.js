@@ -7,6 +7,8 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'rboName', mapping:'rboName',type: 'string'},
 		{name: 'productLineType', mapping:'productLineType',type: 'string'},
 		{name: 'csrName', mapping:'csrName',type: 'string'},
+		{name: 'csrEmail', mapping:'csrEmail',type: 'string'},
+		{name: 'orderEmailDomain', mapping:'orderEmailDomain',type: 'string'},
 		{name: 'packingInstruction', mapping:'packingInstruction',type: 'string'},
 		{name: 'splitShipSetBy', mapping:'splitShipSetBy',type: 'string'},
 		{name: 'invoiceLineInstruction', mapping:'invoiceLineInstruction',type: 'string'},
