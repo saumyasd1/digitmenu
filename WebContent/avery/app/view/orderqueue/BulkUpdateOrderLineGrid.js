@@ -3,6 +3,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     alias : 'widget.bulkupdateorderlinegrid',
     itemId:'BulkUpdateOrderlineGrid',
     controller:'orderline',
+    requires:['AOC.util.Helper'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
     initComponent : function(){
@@ -45,28 +46,29 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     },
     buildColumns : function(){
     	var me=this;
+    	helper = AOC.util.Helper;
         return [{ text: 'Customer PO Number',  dataIndex: 'customerPONumber', width:250},
                 { text: 'Ordered Date ', dataIndex: 'orderedDate',width:100 },
                 { text: 'Partner Customer Name', dataIndex: 'partnerCustomerName',width:170},
                 { text: 'Customer Request Date', dataIndex: 'customerRequestDate',width:170},
                 { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:170},
-                { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
-                { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170},
-                { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
-                { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170},
-                { text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170},
-                { text: 'Ship To Address 2', dataIndex: 'shipToAddress2',width:170},
-                { text: 'Ship To Address 3', dataIndex: 'shipToAddress3',width:170},
-                { text: 'Ship To City', dataIndex: 'shipToCity',width:170},
-                { text: 'Ship To Country', dataIndex: 'shipToCountry',width:170},
-                { text: 'Ship To State', dataIndex: 'shipToState',width:170},
-                { text: 'Ship To Zip', dataIndex: 'shipToZip',width:170},
-                { text: 'Ship To Email', dataIndex: 'shipToEmail',width:170},
-                { text: 'Ship To Fax', dataIndex: 'shiplToFax',width:170},
-                { text: 'Ship To Telephone', dataIndex: 'shipToTelephone',width:170},
-                { text: 'Bill To Customer', dataIndex: 'billToCustomer',width:170 },
-                { text: 'Bill To Contact', dataIndex: 'billToContact',width:170},
-                { text: 'Bill To Address 1', dataIndex: 'billToAddress1',width:170 },
+                { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170,editor:'textfield' },
+                { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170,editor:'textfield'},
+                { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 ,editor:'textfield'},
+                { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170,editor:'textfield'},
+                { text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170,editor:'textfield'},
+                { text: 'Ship To Address 2', dataIndex: 'shipToAddress2',width:170,editor:'textfield'},
+                { text: 'Ship To Address 3', dataIndex: 'shipToAddress3',width:170,editor:'textfield'},
+                { text: 'Ship To City', dataIndex: 'shipToCity',width:170,editor:'textfield'},
+                { text: 'Ship To Country', dataIndex: 'shipToCountry',width:170,editor:'textfield'},
+                { text: 'Ship To State', dataIndex: 'shipToState',width:170,editor:'textfield'},
+                { text: 'Ship To Zip', dataIndex: 'shipToZip',width:170,editor:'textfield'},
+                { text: 'Ship To Email', dataIndex: 'shipToEmail',width:170,editor:'textfield'},
+                { text: 'Ship To Fax', dataIndex: 'shiplToFax',width:170,editor:'textfield'},
+                { text: 'Ship To Telephone', dataIndex: 'shipToTelephone',width:170,editor:'textfield'},
+                { text: 'Bill To Customer', dataIndex: 'billToCustomer',width:170,editor:'textfield' },
+                { text: 'Bill To Contact', dataIndex: 'billToContact',width:170,editor:'textfield'},
+                { text: 'Bill To Address 1', dataIndex: 'billToAddress1',width:170 ,editor:'textfield'},
                 { text: 'Bill To Address 2', dataIndex: 'billToAddress2',width:170  ,editor:'textfield'},
                 { text: 'Bill To Address 3', dataIndex: 'billToAddress3',width:170  ,editor:'textfield'},
                 { text: 'Bill To City', dataIndex: 'billToCity',width:170 ,editor:'textfield'
@@ -77,9 +79,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 },
                 { text: 'Bill To Zip', dataIndex: 'billToZip',width:170  ,editor:'textfield'
                 },
-                { text: 'Bill To Email', dataIndex: 'billToEmail',width:170},
-                { text: 'Bill To Fax', dataIndex: 'billToFax',width:170},
-                { text: 'Bill To Telephone', dataIndex: 'billToTelephone',width:170},
+                { text: 'Bill To Email', dataIndex: 'billToEmail',width:170,editor:'textfield'},
+                { text: 'Bill To Fax', dataIndex: 'billToFax',width:170,editor:'textfield'},
+                { text: 'Bill To Telephone', dataIndex: 'billToTelephone',width:170,editor:'textfield'},
                 { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:180},
                 { text: 'Special Instruction', dataIndex: 'specialInstruction',width:170},
                 { text: 'Order Received Date', dataIndex: 'orderReceivedDate',width:170},
@@ -88,10 +90,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 { text: 'Oracle Ship to Site Number', dataIndex: 'oracleShiptoSiteNumber' ,width:180,editor:'textfield' },
                 { text: 'Shipping Method', dataIndex: 'shippingMethod',width:170,editor:{
                 		xtype:'combo',
-                		store:[['ACS','ACS'],['ADP GLOBAL EXPRESS','ADP GLOBAL EXPRESS']]
+                		 displayField :'variableFieldName',
+			             valueField :'variableFieldName',
+                		store:Ext.data.StoreManager.lookup('ShippingMethodId')==null?helper.getVariableComboStore('ShippingMethod'):Ext.data.StoreManager.lookup('ShippingMethodId')
                 	} 
                 },
-                { text: 'Retailer PO/Customer Job', dataIndex: 'retailerPO_CustomerJob',width:180},
+                { text: 'Retailer PO/Customer Job', dataIndex: 'retailerPO_CustomerJob',width:180,editor:'textfield'},
                 { text: 'Avery Item Number', dataIndex: 'averyItemNumber',width:180},
                 { text: 'Customer Item Number', dataIndex: 'customerItemNumber' ,width:180 },
                 { text: 'Item Description', dataIndex: 'itemDescription',width:150},
@@ -109,30 +113,71 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 { text: 'Customer Ordered Qty', dataIndex: 'customerOrderedQty',width:180},
                 { text: 'Calculated Orderded Qty', dataIndex: 'calculatedOrderdedQty',width:180},
                 { text: 'Order Date', dataIndex: 'orderDate',width:160},
-                { text: 'Promise Date', dataIndex: 'promiseDate',width:160},
-                { text: 'Freight Terms', dataIndex: 'freightTerms',width:160},
-                { text: 'CSR', dataIndex: 'csr',width:160 },
-                { text: 'Packing Instruction', dataIndex: 'packingInstruction',width:180 },
-                { text: 'Shipping Instructions', dataIndex: 'shippingInstructions',width:180},
-                { text: 'Invoice line Instruction', dataIndex: 'invoicelineInstruction' ,width:180},
-                { text: 'Division for Interface ERPORG', dataIndex: 'divisionforInterfaceERPORG' ,width:180},
-                { text: 'Artwork hold', dataIndex: 'artworkhold',width:180 },
-                { text: 'Artwork work attachment', dataIndex: 'artworkworkattachment' ,width:180 },
-                { text: 'Variable Data Breakdown', dataIndex: 'variableDataBreakdown' ,width:180 },
-                { text: 'Manufacturing notes', dataIndex: 'manufacturingnotes' ,width:180 },
-                { text: 'Order type', dataIndex: 'ordertype' ,width:180 },
-                { text: 'Order by', dataIndex: 'orderby' ,width:180 },
-                { text: 'End customer', dataIndex: 'endcustomer' ,width:180 },
-                { text: 'Shipping only notes', dataIndex: 'shippingonlynotes' ,width:180 },
-                { text: 'Bank Charge', dataIndex: 'bankCharge' ,width:180 },
-                { text: 'Freight Charge', dataIndex: 'freightCharge' ,width:180 },
-                { text: 'Shipping hold', dataIndex: 'shippinghold' ,width:180 },
-                { text: 'Production hold', dataIndex: 'productionhold' ,width:180 },
-                { text: 'Split shipset', dataIndex: 'splitshipset' ,width:180 },
-                { text: 'Agreement', dataIndex: 'agreement' ,width:180 },
-                { text: 'Model Serial Number', dataIndex: 'modelSerialNumber' ,width:180 },
+                { text: 'Promise Date', dataIndex: 'promiseDate',width:160,editor:'datefield'},
+                { text: 'Freight Terms', dataIndex: 'freightTerms',width:160,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('FreightTermsId')==null?helper.getVariableComboStore('FreightTerms'):Ext.data.StoreManager.lookup('FreightTermsId')	
+                	}  },
+                { text: 'CSR', dataIndex: 'csr',width:160,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('CSRId')==null?helper.getVariableComboStore('CSR'):Ext.data.StoreManager.lookup('CSRId')	
+                	} },
+                { text: 'Packing Instruction', dataIndex: 'packingInstruction',width:180 ,editor:'textfield'},
+                { text: 'Shipping Instructions', dataIndex: 'shippingInstructions',width:180,editor:'textfield'},
+                { text: 'Invoice line Instruction', dataIndex: 'invoicelineInstruction' ,width:180,editor:'textfield'},
+                { text: 'Division for Interface ERPORG', dataIndex: 'divisionforInterfaceERPORG' ,width:180,editor:'textfield'},
+                { text: 'Artwork hold', dataIndex: 'artworkhold',width:180,editor:'checkbox' },
+                { text: 'Artwork work attachment', dataIndex: 'artworkworkattachment' ,width:180 ,editor:'checkbox'},
+                { text: 'Variable Data Breakdown', dataIndex: 'variableDataBreakdown' ,width:180,editor:'textfield' },
+                { text: 'Manufacturing notes', dataIndex: 'manufacturingnotes' ,width:180,editor:'textfield' },
+                { text: 'Order type', dataIndex: 'ordertype' ,width:180,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('OrderTypeId')==null?helper.getVariableComboStore('OrderType'):Ext.data.StoreManager.lookup('OrderTypeId')	
+                	}  
+                },
+                { text: 'Order by', dataIndex: 'orderby' ,width:180 ,editor:'textfield'},
+                { text: 'End customer', dataIndex: 'endcustomer' ,width:180 ,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('EndCustomerId')==null?helper.getVariableComboStore('EndCustomer'):Ext.data.StoreManager.lookup('EndCustomerId')	
+                	}},
+                { text: 'Shipping only notes', dataIndex: 'shippingonlynotes' ,width:180,editor:'textfield' },
+                { text: 'Bank Charge', dataIndex: 'bankCharge' ,width:180,editor: {
+                    xtype: 'numberfield',
+                    maxLength :8,
+                    minValue: 0
+                }
+                },
+                { text: 'Freight Charge', dataIndex: 'freightCharge' ,width:180,editor: {
+                    xtype: 'numberfield',
+                    maxLength :8,
+                    minValue: 0
+                }
+                },
+                { text: 'Shipping hold', dataIndex: 'shippinghold' ,width:180 ,editor:'checkbox'},
+                { text: 'Production hold', dataIndex: 'productionhold' ,width:180 ,editor:'checkbox'},
+                { text: 'Split shipset', dataIndex: 'splitshipset' ,width:180,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('SplitShipsetId')==null?helper.getVariableComboStore('SplitShipset'):Ext.data.StoreManager.lookup('SplitShipsetId')	
+                	} },
+                { text: 'Agreement', dataIndex: 'agreement' ,width:180 ,editor:'textfield'},
+                { text: 'Model Serial Number', dataIndex: 'modelSerialNumber' ,width:180 ,editor:'textfield'},
                 { text: 'Waive MOQ', dataIndex: 'waiveMOQ' ,width:180 ,editor:'checkbox'},
-                { text: 'APO Type', dataIndex: 'apoType' ,width:180 },
+                { text: 'APO Type', dataIndex: 'apoType' ,width:180,editor:{
+            		xtype:'combo',
+           		 	displayField :'variableFieldName',
+		            valueField :'variableFieldName',
+		            store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
+                	}},
                 { text: 'Sent To Oracle Date', dataIndex: 'sentToOracleDate' ,width:180 }
 		];
     },
