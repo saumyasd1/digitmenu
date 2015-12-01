@@ -23,11 +23,8 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'Status',
 		mapping : 'status',
 		type: 'string'
-	}, {
-		name : 'ReceivedDate',
-		mapping : 'receivedDate',
-		type: 'string'
-	}, {
+	},
+	{
 		name : 'SenderEmailID',
 		mapping : 'senderEmailID',
 		type: 'string'
@@ -40,10 +37,16 @@ Ext.define('AOC.model.OrderQueueModel',{
 		mapping : 'emailBody',
 		type: 'string'
 	}, {
-		name : 'ReceivedDate',
+		name : 'receivedDate',
 		mapping : 'receivedDate',
 		type: 'string'
-	}, {
+	}, 
+	{
+		name : 'submittedDate',
+		mapping : 'submittedDate',
+		type: 'string'
+	},
+	{
 		name : 'OrderSource',
 		mapping : 'orderSource',
 		type: 'string'
@@ -59,8 +62,8 @@ Ext.define('AOC.model.OrderQueueModel',{
 		mapping : 'Comments',
 		type: 'string'
 	}, {
-		name : 'Error',
-		mapping : 'Error',
+		name : 'error',
+		mapping : 'error',
 		type: 'string'
 	},{
 		name : 'attachmentFileList',
