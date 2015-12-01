@@ -183,5 +183,66 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	          }
     		  }); 
     	
+    },
+    validateOrderLine:function(){
+    	Ext.getBody().mask('Validating....');
+    	var id=this.runTime.getOrderQueueId(),me=this;
+    	Ext.Ajax.request({
+    		method:'GET',
+    		   url : applicationContext+'/rest/router/orderqueue/'+id,
+		        success : function(response, opts) {
+		        	var jsonValue=Ext.decode(response.responseText);
+		        	var status=jsonValue.status;
+		        	if(status=='success')
+		        		Ext.Msg.alert('','Order was successfully validated');
+		        	else
+		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+    		  }); 
+    },
+    viewSalesOrder:function(){
+    	Ext.getBody().mask('Loading....');
+    	var id=this.runTime.getOrderQueueId(),me=this;
+    	Ext.Ajax.request({
+    		method:'GET',
+    		   url : applicationContext+'/rest/router/salesorder/'+id,
+		        success : function(response, opts) {
+		        	var jsonValue=Ext.decode(response.responseText);
+		        	var status=jsonValue.status;
+		        	if(status=='success'){
+		        		 var owner=me.getView().ownerCt;
+		      		   var store=Ext.create('AOC.store.SalesOrderStore', {
+		      				proxy : {
+		      					type : 'rest',
+		      					 url : applicationContext+'/rest/salesorders/order/'+id,
+		      					reader:{
+		      				        type:'json', 
+		      				        rootProperty: 'ArrayList'
+		      				    }
+		      			}
+		      			});
+		      		   owner.insert({
+		      			   	xtype:'salesrrderexpandablegrid',
+		      			    flex:1,
+		      			    store:store
+		      		   });
+		      		   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+		      		   bulkUpdate.setText('<b>Sales Order</b>');
+		      		   owner.getLayout().setActiveItem(2);
+		        	}
+		        	else
+		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+    		  }); 
     }
 })
