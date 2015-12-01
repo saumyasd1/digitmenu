@@ -28,7 +28,6 @@ Ext.define('AOC.util.Helper',{
    return html;
   },
   getVariableComboStore:function(variableName){
-	  debugger;
 	  var store=null;
 	        var response = Ext.Ajax.request({
 	            async: false,
@@ -51,5 +50,22 @@ Ext.define('AOC.util.Helper',{
   }else
 	  return null;
 	  
-  }
+  },
+  BulkUpdate:function(grid, selection, eOpts){
+          if(selection.startCell)
+				var store=grid.store;
+                  var intialCell=selection.startCell;
+                  var dataindex=intialCell.column.dataIndex;
+                  var value=intialCell.record.get(dataindex);
+                  var initialrowIdx=intialCell.rowIdx;
+                  var lastrowIdx=selection.endCell.rowIdx;
+                  var start=initialrowIdx,end=lastrowIdx;
+                  if(lastrowIdx<initialrowIdx){
+                  	start=lastrowIdx;
+                  	end=initialrowIdx;
+                  }
+                  for(var i=(start+1);i<=end;i++){
+                      store.getAt(i).set(dataindex,value);
+                  }
+  	}
 });
