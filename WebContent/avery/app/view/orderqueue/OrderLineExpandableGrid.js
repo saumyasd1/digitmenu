@@ -15,8 +15,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:170  },
 { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
 { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170  },
-{ text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 },
-{ text: 'Ship To Contact', dataIndex: 'shipToContact',width:170  },
 { text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170  },
 { text: 'Ship To Address 2', dataIndex: 'shipToAddress2',width:170  },
 { text: 'Ship To Address 3', dataIndex: 'shipToAddress3',width:170  },
@@ -95,7 +93,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 { text: 'Customer PO Flag', dataIndex: 'customerPOFlag',width:180 },
 { text: 'Duplicate PO Flag', dataIndex: 'duplicatePOFlag',width:180 },
 { text: 'Htl Size Page Validation Flag', dataIndex: 'htlSizePageValidationFlag',width:200 },
-{ text: 'Is Bulk', dataIndex: 'isBulk',width:180 },
+{ text: 'Bulk', dataIndex: 'bulk',width:180 },
 { text: 'Mandatory Variable Data Field Flag', dataIndex: 'mandatoryVariableDataFieldFlag',width:240 },
 { text: 'Moq Validation Flag', dataIndex: 'moqValidationFlag',width:180 }
     ],

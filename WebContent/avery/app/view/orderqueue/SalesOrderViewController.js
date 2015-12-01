@@ -105,7 +105,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	}
     },
     saveSalesOrder:function(){
-    	       var grid=this.getView();
+    	       var grid=this.getView();me=this;
     	       var store=grid.store,
     	       parms ='';
     	       var updatedRecords=store.getModifiedRecords();

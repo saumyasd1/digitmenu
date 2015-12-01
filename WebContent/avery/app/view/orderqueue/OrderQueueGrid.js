@@ -45,7 +45,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Date Received',
             width:150,
-			dataIndex:'ReceivedDate'
+			dataIndex:'receivedDate'
         },
         {
             text : 'Sender EmailID',
@@ -63,11 +63,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'EmailBody'
         },
 		{
-            text : 'Received Date',
-            width:150,
-			dataIndex:'ReceivedDate'
-        },
-		{
             text : 'Order Source',
             width:150,
 			dataIndex:'OrderSource'
@@ -80,7 +75,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Submitted Date',
             width:150,
-			dataIndex:'SubmittedDate'
+			dataIndex:'submittedDate'
         },
         {
             text : 'Order File',
@@ -111,7 +106,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Error Message',
             width:150,
-			dataIndex:'Error'
+			dataIndex:'error'
         },
 		{
             text : 'Actions',
