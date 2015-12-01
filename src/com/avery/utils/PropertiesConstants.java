@@ -41,5 +41,11 @@ public interface PropertiesConstants {
 	String PROPERTY_LOGBACK_CONFIG = "logback.configurationFile";
 
 	String PROPERTY_APP_LOG_FILE = "app.log.file";
+	
+	String ADEPTIA_SERVER_URL="app.server.url";
+	
+	String ADEPTIA_SERVER_USERNAME="app.server.userName";
+	
+	String ADEPTIA_SERVER_PASSWORD="app.server.password";
 
 }
