@@ -4,6 +4,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
     itemId:'BulkUpdateVariableHeaderrGrid',
 	variableColumnName:null,
 	controller:'orderline',
+	requires:['AOC.util.Helper'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
     initComponent : function(){
@@ -22,23 +23,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 			        
 			    },
 			    listeners:{
-		        	'selectionchange':function( grid, selection, eOpts ){
-                     if(selection.startCell)
-							var store=grid.store;
-                             var intialCell=selection.startCell;
-                         var dataindex=intialCell.column.dataIndex;
-                             var value=intialCell.record.get(dataindex);
-                             var initialrowIdx=intialCell.rowIdx;
-                             var lastrowIdx=selection.endCell.rowIdx;
-                             var start=initialrowIdx,end=lastrowIdx;
-                             if(lastrowIdx<initialrowIdx){
-                             	start=lastrowIdx;
-                             	end=initialrowIdx;
-                             }
-                             for(var i=(start+1);i<=end;i++){
-                                 store.getAt(i).set(dataindex,value);
-                             }
-		        	}
+			    	 helper:AOC.util.Helper,
+			    	 'selectionchange':function( grid, selection, eOpts ){
+			    		 helper.BulkUpdate( grid, selection, eOpts);
+			    	 }
 		        }
 			    
         });

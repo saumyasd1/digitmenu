@@ -3,6 +3,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
     alias : 'widget.bulkupdatesalesordergrid',
     itemId:'BulkUpdateSalesOrderGrid',
     controller:'salesorder',
+    requires:['AOC.util.Helper'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
     initComponent : function(){
@@ -22,23 +23,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 			        
 			    },
 			    listeners:{
-			    	'selectionchange':function( grid, selection, eOpts ){
-                        if(selection.startCell)
-							var store=grid.store;
-                                var intialCell=selection.startCell;
-                                var dataindex=intialCell.column.dataIndex;
-                                var value=intialCell.record.get(dataindex);
-                                var initialrowIdx=intialCell.rowIdx;
-                                var lastrowIdx=selection.endCell.rowIdx;
-                                var start=initialrowIdx,end=lastrowIdx;
-                                if(lastrowIdx<initialrowIdx){
-                                	start=lastrowIdx;
-                                	end=initialrowIdx;
-                                }
-                                for(var i=(start+1);i<=end;i++){
-                                    store.getAt(i).set(dataindex,value);
-                                }
-		        	}
+			    	 helper:AOC.util.Helper,
+			    	 'selectionchange':function( grid, selection, eOpts ){
+			    		 helper.BulkUpdate( grid, selection, eOpts);
+			    	 }
 		        }
         });
         this.callParent(arguments);
@@ -52,7 +40,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 { text: 'SOLD TO RBO Number', dataIndex: 'soldTORBONumber',editor:'textfield' },
 { text: 'Oracle Bill to Site Number', dataIndex: 'oracleBilltoSiteNumber',editor:'textfield' },
 { text: 'Oracle Ship to Site Number', dataIndex: 'oracleShiptoSiteNumber',editor:'textfield' },
-{ text: 'Shipping method', dataIndex: 'shippingMethod',editor:{xtype:'combo',store:[['ACS','ACS'],['ADP GLOBAL EXPRESS','ADP GLOBAL EXPRESS'],['AIRTRANS LOG - BY AIR','AIRTRANS LOG - BY AIR'],['A-LINK','A-LINK']]} },
+{ text: 'Shipping Method', dataIndex: 'shippingMethod',width:170,editor:{
+	xtype:'combo',
+	 displayField :'variableFieldName',
+     valueField :'variableFieldName',
+	 store:Ext.data.StoreManager.lookup('ShippingMethodId')==null?helper.getVariableComboStore('ShippingMethod'):Ext.data.StoreManager.lookup('ShippingMethodId')
+}
+},
 { text: 'Customer PO Number', dataIndex: 'customerPONumber',editor:'textfield' },
 { text: 'Retailer poCustomer job', dataIndex: 'retailerPO_CustomerJob',editor:'textfield' },
 { text: 'Oracle Item Number', dataIndex: 'oracleItemNumber',editor:'textfield' },
@@ -63,7 +57,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 { text: 'Request date', dataIndex: 'ustomerRequestDate',editor:'textfield' },
 { text: 'promise date', dataIndex: 'promiseDate',editor:'textfield' },
 { text: 'Freight term', dataIndex: 'freightTerms',editor:'textfield' },
-{ text: 'CSR', dataIndex: 'csr',editor:'textfield' },
+{ text: 'CSR', dataIndex: 'csr',width:160,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('CSRId')==null?helper.getVariableComboStore('CSR'):Ext.data.StoreManager.lookup('CSRId')	
+	} },
 { text: 'packing instruction', dataIndex: 'packinginstruction',editor:'textfield' },
 { text: 'Shipping instruction', dataIndex: 'shippingInstructions',editor:'textfield' },
 { text: 'Invoice line instruction', dataIndex: 'invoicelineInstruction',editor:'textfield' },
@@ -79,19 +78,45 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 { text: 'Artwork work attachment', dataIndex: 'artworkworkattachment',editor:'checkbox' },
 { text: 'Variable data Breakdown', dataIndex: 'variableDataBreakdown',editor:'textfield' },
 { text: 'Manu. Note', dataIndex: 'manufacturingnotes',editor:'textfield' },
-{ text: 'Order type', dataIndex: 'ordertype',editor:'textfield' },
+{ text: 'Order type', dataIndex: 'ordertype' ,width:180,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('OrderTypeId')==null?helper.getVariableComboStore('OrderType'):Ext.data.StoreManager.lookup('OrderTypeId')	
+	}  
+},
 { text: 'Order by', dataIndex: 'orderby',editor:'textfield' },
-{ text: 'End customer', dataIndex: 'endcustomer',editor:'textfield' },
+{ text: 'End customer', dataIndex: 'endcustomer' ,width:180 ,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('EndCustomerId')==null?helper.getVariableComboStore('EndCustomer'):Ext.data.StoreManager.lookup('EndCustomerId')	
+	}},
 { text: 'Shipping only note', dataIndex: 'shippingonlynotes',editor:'textfield' },
 { text: 'Bank charge', dataIndex: 'bankCharge',editor:'textfield' },
-{ text: 'Freight charge', dataIndex: 'freightCharge',editor:'textfield' },
+{ text: 'Freight Terms', dataIndex: 'freightTerms',width:160,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('FreightTermsId')==null?helper.getVariableComboStore('FreightTerms'):Ext.data.StoreManager.lookup('FreightTermsId')	
+	}  },
 { text: 'Shipping hold', dataIndex: 'shippinghold',editor:'checkbox' },
 { text: 'Production hold', dataIndex: 'productionhold',editor:'checkbox' },
-{ text: 'Split ship set by', dataIndex: 'splitshipset',editor:'textfield' },
+{ text: 'Split shipset', dataIndex: 'splitshipset' ,width:180,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('SplitShipsetId')==null?helper.getVariableComboStore('SplitShipset'):Ext.data.StoreManager.lookup('SplitShipsetId')	
+	} },
 { text: 'Agreement', dataIndex: 'agreement',editor:'textfield' },
 { text: 'Model serial Number', dataIndex: 'modelSerialNumber',editor:'textfield' },
 { text: 'Waive MOQ', dataIndex: 'waiveMOQ',editor:'checkbox' },
-{ text: 'APO type', dataIndex: 'apoType',editor:'textfield' }
+{ text: 'APO Type', dataIndex: 'apoType' ,width:180,editor:{
+	xtype:'combo',
+	 	displayField :'variableFieldName',
+    valueField :'variableFieldName',
+    store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
+	}},
     ];
     },
     tbar: { 
