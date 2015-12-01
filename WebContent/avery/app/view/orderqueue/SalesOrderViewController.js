@@ -62,9 +62,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
       	 },
     backButton:function(){
     	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-    	  bulkUpdate.setText('<b>Order Queue</b>');
-    	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
-        panel.getLayout().setActiveItem(0);
+    	 var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
+    	 var activeIndex = panel.items.indexOf(this.getView());
+    	 if(activeIndex==1)
+    	   bulkUpdate.setText('<b>Order Queue</b>');
+    	 else
+    		 bulkUpdate.setText('<b>Order line</b>'); 
+        panel.getLayout().setActiveItem(parseInt(activeIndex)-1);
         this.getView().destroy();
     },
     radioButtonClick:function(obj,newValue,oldValue){
