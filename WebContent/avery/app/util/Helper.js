@@ -26,5 +26,30 @@ Ext.define('AOC.util.Helper',{
 	html +='<span class="on-text'+cssClass+'">'+'<b>Active'+'</b></span>';
     html+='</span>';
    return html;
+  },
+  getVariableComboStore:function(variableName){
+	  debugger;
+	  var store=null;
+	        var response = Ext.Ajax.request({
+	            async: false,
+	            url: applicationContext+'/rest/orderconfigurations/variable/'+variableName,
+	        });
+	        var items = Ext.decode(response.responseText);
+	      	var jsonValue=Ext.decode(response.responseText);
+        	var serviceStoreData = [];
+        	if(jsonValue.length>0){
+        	jsonValue.forEach(function(item){
+      		var service = [item];
+      		serviceStoreData.push(service);
+      	});
+        	store =  Ext.create('Ext.data.ArrayStore',{
+        		storeId:variableName+'id',
+       	   		fields : ['variableFieldName'],	
+  	            data : serviceStoreData
+          });
+        	return store;
+  }else
+	  return null;
+	  
   }
 });
