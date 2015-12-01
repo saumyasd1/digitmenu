@@ -109,45 +109,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            maxLength : '50',
   		            enforceMaxLength: true,
   		            blankText : 'RBO Name is required'
-//  		            listeners : {
-//		        		blur : function(obj,e){
-//		    				if(!obj.isValid())
-//		    					obj.setFieldStyle('background-image:url(/adeptia/custom/AOC/resources/images/invalid_field.png);background-repeat:no-repeat;background-position:right;');
-//		    				else{
-//		    					var value=obj.getValue(),url='';
-//		    					if(me.editMode){
-//		    						url= 'aoc/ProductLine/GET?action=checkDuplicateValueInDB';
-//		    					}else{
-//		    						url= 'aoc/ProductLine/GET?action=checkDuplicateValueInDB';
-//		    					}
-//		    					Ext.Ajax.request({
-//		    			            timeout : parseInt(requestTimeoutforStore, 10),
-//		    			            url : url,
-//		    			            params:{
-//		    			            	rboName:value
-//		    			            },
-//		    			            success : function (response, callOptions) {
-//		    						var jsonValue=response.responseText;
-//		    						jsonValue= Ext.decode(jsonValue);
-//		    						var valueExist=jsonValue.valueExist;
-//		    						if(valueExist){
-//		    							obj.up('window').down('#messageFieldItemId').setValue('<font size=2 color=red>RBO Name with value '+value+' already exist in the database.');
-//		    							obj.up('window').down('#messageFieldItemId').setVisible(true);
-//		    							obj.focus();
-//		    			        		obj.setFieldStyle('background-image:url(/adeptia/custom/AOC/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
-//		    						}else{
-//		    							obj.up('window').down('#messageFieldItemId').setVisible(false);
-//		    							obj.setFieldStyle('background-image:url(/adeptia/custom/AOC/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
-//		    						}
-//		    					},
-//		    					failure:function(){
-//		    					}
-//		    					});
-//		    					}
-//		    			} ,
-//		    			 blur : this.notifyByImage,
-//		                focus : this.notifyByMessage
-//			                }
         		},
         		{
                 	xtype :'tbspacer',
@@ -166,7 +127,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            labelAlign:'right',
   		            maxLength : '50',
   		            enforceMaxLength: true
-        		
         		}]
         		},
         		{   xtype: 'fieldcontainer',
@@ -249,6 +209,53 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'right',
         			name: 'orderMappingID',
         			fieldLabel:'Order Detail MappingID',//?/
+        			value:'',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 500,
+  		            labelSeparator : '',
+  		            labelAlign:'right',
+  		            maxLength : '50',
+  		            enforceMaxLength: true
+        		}]
+        		},
+        		{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{   xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[{
+        			xtype:'textfield',
+        			itemId:'CSRItemId',
+        			labelAlign:'right',
+        			name: 'csrEmail',
+        			fieldLabel:'CSR Email',
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 500,
+  		            labelSeparator : '',
+  		            labelAlign:'right',
+  		            maxLength : '100',
+  		            enforceMaxLength: true,
+  		            blankText : 'CSR is required',
+  		            listeners : {
+  		            	 blur : this.notifyByImage,
+ 	                	focus : this.notifyByMessage
+ 	                    }
+        		},
+        		{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{
+        			xtype:'textfield',
+        			itemId:'OEDItemId',
+        			labelAlign:'right',
+        			name: 'orderEmailDomain',
+        			fieldLabel:'Order Email Domain',//?/
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
