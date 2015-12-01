@@ -2,6 +2,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
 	extend:'Ext.panel.Panel',
 	alias:'widget.weborderpage',
 	itemId:'weborderpageItemId',
+	controller:'webFormMain',
 	requires:['AOC.view.webform.AttachmentInfoGrid'],
 	bodyPadding: 5,
 	width: 700,
@@ -21,8 +22,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         buildButtons : function(){
             return [{
             	text : 'Save',
-                scope : this,
-                action : 'SaveDetails'
+                handler : 'SaveDetails'
             },
             {
             	text : 'Cancel',
@@ -45,7 +45,13 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         			layout:'hbox',
         			items:[{
         				xtype:'combo',
-        				emptyText:'Partner Name'
+        				emptyText:'Partner Name',
+        				store:'PartnerManagementStore',
+        				valueField:'id',
+        				displayField:'partnerName',
+        				listeners:{
+        					'change':'onPartnerChange'
+        				}
         			},
         			{
                     	xtype :'tbspacer',
@@ -53,7 +59,11 @@ Ext.define('AOC.view.webform.WebOrderPage',{
             		},
         			{
         				xtype:'combo',
-        				emptyText:'RBO'
+        				emptyText:'RBO',
+        				reference:'rboCombo',
+        				displayField:'rboName',
+        				valueField:'rboId',
+        				disabled:true
         			},
         			{
                     	xtype :'tbspacer',
@@ -61,7 +71,11 @@ Ext.define('AOC.view.webform.WebOrderPage',{
             		},
         			{
         				xtype:'combo',
-        				emptyText:'Product Line'
+        				reference:'productLineCombo',
+        				displayField:'productLineType',
+        				valueField:'id',
+        				emptyText:'Product Line',
+        				disabled:true
         			}]
         		},{
                 	xtype :'tbspacer',
@@ -150,19 +164,14 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         		},
         		{
         			xtype:'combobox',
-        			itemId:'OFTItemId',
-        			labelAlign:'right',
         			name: 'orderFileType',
         			fieldLabel:'Order File Type',
         			emptyText:'File Type',
         			labelSeparator:'',
-                    allowBlank: false,
                     labelWidth : 100,
   		            width : 500,
   		            labelSeparator : '',
-  		            labelAlign:'right',
-  		            maxLength : '50',
-  		            enforceMaxLength: true
+  		            labelAlign:'right'
         		},
         		{
                 	xtype :'tbspacer',
@@ -177,7 +186,12 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         			width : 500,
         			allowBlank : false, 
         			forceSelection : true,
-        			 enforceMaxLength: true
+        			 enforceMaxLength: true,
+        			 listeners:{
+        				 'change':function(obj,value){
+        					 debugger;
+        				 }
+        			 }
         			},
         		{
                 	xtype :'tbspacer',
