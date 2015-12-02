@@ -1,6 +1,8 @@
 package com.avery.utils;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import org.codehaus.jackson.JsonParseException;
@@ -11,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 public class ApplicationUtils {
 
+	public static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    
 	public static HashMap<String,String> convertJSONtoMaps(String jsonStr) throws JsonParseException, JsonMappingException, IOException {
 		HashMap<String,String> map = new HashMap<String,String>();
 		JSONObject jsonObj = null;
