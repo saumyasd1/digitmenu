@@ -12,6 +12,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
    menuAction:function( menu, item, e, currentRecord){
 	   var id= currentRecord.get('id');
 	   this.runTime.setOrderQueueId(id);
+	   this.runTime.setOrderQueueActiveRecord(currentRecord);
 	   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 	   if(item.action=='viewSales'){
 		   var owner=this.getView().ownerCt;
@@ -115,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
    getOrderBasedOnSearchParameters:function(store){
 	 	var valueObj=this.getView().getForm().getValues(false,true);
     	if(!valueObj.hasOwnProperty('datecriteriavalue'))
-    		valueObj.datecriteriavalue='createdDate';
+    		valueObj.datecriteriavalue='receivedDate';
 		var parameters=Ext.JSON.encode(valueObj);
     	var grid=this.runTime.getActiveGrid();
     	var store=grid.store;
