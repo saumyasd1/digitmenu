@@ -31,7 +31,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },
 		{
             text : 'RBO',
-            width:60,
+            width:80,
             dataIndex:'RBOName'
         },{
             text : 'Product Line', 
@@ -43,13 +43,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'Status'
         },
 		{
-            text : 'Date Received',
-            width:150,
+            text : 'Process Date',
+            width:98,
 			dataIndex:'receivedDate'
         },
         {
             text : 'Sender EmailID',
-            width:150,
+            width:128,
 			dataIndex:'SenderEmailID'
         },
 		{
@@ -64,17 +64,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },
 		{
             text : 'Order Source',
-            width:150,
+            width:66,
 			dataIndex:'OrderSource'
         },
 		{
             text : 'Submitted By',
-            width:150,
+            width:82,
 			dataIndex:'SubmittedBy'
         },
 		{
             text : 'Submitted Date',
-            width:150,
+            width:95,
 			dataIndex:'submittedDate'
         },
         {
@@ -189,9 +189,5 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         	method : 'GET'
         });
 	}
-//    	
-//    	//this.getView().refreshNode(record);
-//    	if(e.target.className=='attachment')
-//    		alert(e.target.accessKey);
     }
 });
