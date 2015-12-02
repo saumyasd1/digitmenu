@@ -26,12 +26,21 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
   },
   buildColumns : function(){
     	var me=this;
-        return [
+        return [          
+                        {
+				            text : 'Action',
+				            width:150,
+				            xtype:'actioncolumn',
+				            flex:0.5,
+				  	        items:[{
+						  	    	  icon:menuIcon,
+						  	    	  handler: 'showmenu'
+  	                              }]
+                        },
         			    {  
             	            text : 'Partner Name',
             	          	width:120,
             	            sortable : true,
-            	           // value:me.partnerName,
             	            flex:1.5,
             	            renderer: function(v,cell,rec){
     			                return me.partnerName;
@@ -71,17 +80,8 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            width:150,
 				            dataIndex:'splitShipSetBy',
 				            flex:1
-                        },
-                        {
-				            text : 'Action',
-				            width:150,
-				            xtype:'actioncolumn',
-				            flex:1,
-				  	        items:[{
-				  	    	  icon:menuIcon,
-				  	    	  handler: 'showmenu'
-				  	      }]
                         }
+                      
         ];
     },
 	 buildtbar:function(){
