@@ -58,10 +58,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   win.show();
     },
     backButton:function(){
-    	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-   	     bulkUpdate.setText('<b>Order Queue</b>');
+    	var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+   	    bulkUpdate.setText('<b>Order Queue</b>');
     	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
         panel.getLayout().setActiveItem(0);
+        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
+        var currentRecord=this.runTime.getOrderQueueActiveRecord();
+        var row = ordeQueueGrid.getView().getRow(currentRecord);
+        var el = Ext.fly(row);
+        el.highlight("#c1ddf1", {
+            attr: "backgroundColor",
+            duration: 5000
+        });
         this.getView().destroy();
     },
     radioButtonClick:function(obj,newValue,oldValue){
