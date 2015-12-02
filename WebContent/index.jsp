@@ -14,7 +14,4 @@ int pageSize=25;
 	<!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" type="text/javascript" src="avery/bootstrap.js"></script>
 </head>
-<body>
-<h1>Welcome! This is Avery Dennison web application - powered by Adeptia.</h1>
-</body>
 </html>
