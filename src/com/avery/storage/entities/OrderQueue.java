@@ -13,8 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -33,6 +37,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -77,7 +82,7 @@ public class OrderQueue extends MainAbstractEntity{
 	private String emailBody;
 	
 	@Column(name = "ReceivedDate")
-	private String receivedDate;
+	private Date receivedDate;
 	
 	@Column(name = "OrderSource")
 	private String orderSource;
@@ -184,11 +189,11 @@ public class OrderQueue extends MainAbstractEntity{
 		this.emailBody = emailBody;
 	}
 
-	public String getReceivedDate() {
+	public Date getReceivedDate() {
 		return receivedDate;
 	}
 
-	public void setReceivedDate(String receivedDate) {
+	public void setReceivedDate(Date receivedDate) {
 		this.receivedDate = receivedDate;
 	}
 
@@ -248,6 +253,7 @@ public class OrderQueue extends MainAbstractEntity{
 			orderQueue = orderQueueService.readWithCriteria(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
+			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orderQueue);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
