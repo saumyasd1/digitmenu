@@ -69,6 +69,14 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	 else
     		 bulkUpdate.setText('<b>Order line</b>'); 
         panel.getLayout().setActiveItem(parseInt(activeIndex)-1);
+        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
+        var currentRecord=this.runTime.getOrderQueueActiveRecord();
+        var row = ordeQueueGrid.getView().getRow(currentRecord);
+        var el = Ext.fly(row);
+        el.highlight("#c1ddf1", {
+            attr: "backgroundColor",
+            duration: 5000
+        });
         this.getView().destroy();
     },
     radioButtonClick:function(obj,newValue,oldValue){
