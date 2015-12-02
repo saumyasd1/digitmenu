@@ -34,7 +34,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		   owner.getLayout().setActiveItem(1);
 	
 	   }else if(item.action=='cancelOrder'){
-		  this.cancelOrder(id);
+		  this.getCancelOrderWindow(id);
 	   }else if(item.action=='viewOrders'){
 		   var owner=this.getView().ownerCt;
 		   var store=Ext.create('AOC.store.OrderLineStore', {
@@ -75,9 +75,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					    }
 					});
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:280,
+						 	height:260,
 							width:600,
-							title:"Advance Search",
+							title:advancedSearchWindowTitle,
 							itemId:'orderqueueadvancesearchID',
 							layout: 'fit',
 							draggable: false,
@@ -180,14 +180,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			cmp.orderedTriggers[0].hide();
 	   },
    showMenu : function(view,rowIndex,colIndex,item,e) {
-		var me=this,currentRecord=e.record;;
+		var me=this,currentRecord=e.record,hideCancelOption=false;
+		var status=currentRecord.get('Status');
+		if(status==cancelStatus){
+			hideCancelOption=true;
+		}
 			var menu=Ext.create('Ext.menu.Menu', {
    		    width: 150,
+				//layout:'fit',
    		    margin: '0 0 10 0',
    		 items: [{
-				text: 'Cancel Order',
-				action:'cancelOrder'
-			},{
 				text: 'View Order Line',
 				action:'viewOrders'
 			},{
@@ -196,6 +198,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			},{
 				text: 'ReSubmit Order',
 				action:'reSubmitOrder'
+			},
+			{
+				text: 'Cancel Order',
+				action:'cancelOrder',
+				hidden:hideCancelOption
 			}
 		  ],
 		  listeners : {
@@ -206,25 +213,34 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
    		});
    	menu.showAt(e.getX()-140,e.getY()+10);
 	},
-	cancelOrder:function(id){
+	getCancelOrderWindow:function(id){
 		var me=this;
-		Ext.Msg.confirm('', 'Are you sure you want to cancel the order?',function(btn){
-			  if(btn=='yes'){
-				  var parameters='{\"status\":\"Cancelled\"}';
-					Ext.Ajax.request( {
-				        url : applicationContext+'/rest/orders/'+id,
-				        method:'PUT',
-				        jsonData:parameters,
-				        success : function(response, opts) {
-					  		Ext.Msg.alert('Order cancelled successfully');
-					  		Ext.getBody().unmask();
-					  		me.getView().store.load();
-				        },
-				        failure: function(response, opts) {
-				        	Ext.getBody().unmask();
-			          }
-			  	});
-			  }
-		});
+		var win=Ext.create('AOC.view.orderqueue.CancelOrderWindow');
+		win.show();
+	},
+	cancelOrder:function(){
+		var id=this.runTime.getOrderQueueId(),me=this;
+		var commentArea=this.getView().lookupReference('commentArea');
+		var comment=commentArea.getValue();
+		var parameters='{\"status\":\"'+cancelStatus+'\"';
+		if(comment!=''){
+			parameters=parameters+',\"comment\":\"'+comment+'\"';
+		}
+		parameters=parameters+'}';
+		Ext.Ajax.request( {
+	        url : applicationContext+'/rest/orders/'+id,
+	        method:'PUT',
+	        jsonData:parameters,
+	        success : function(response, opts) {
+		  		Ext.Msg.alert('Order cancelled successfully');
+		  		Ext.ComponentQuery.query('#OrderQueueGridItemId')[0].getStore().load();
+		  		Ext.getBody().unmask();
+		  		me.getView().destroy();
+	        },
+	        failure: function(response, opts) {
+	        	Ext.getBody().unmask();
+	        	me.getView().destroy();
+          }
+  	});
 	}
 })
