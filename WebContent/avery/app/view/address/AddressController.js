@@ -77,7 +77,7 @@ Ext.define('AOC.view.address.AddressController', {
 				 temp = Ext.create('Ext.window.Window',{
 						 	height:250,
 							width:420,
-							title:"Advance Search",
+							title:advancedSearchWindowTitle,
 							itemId:'addressAdvancedSerach',
 							layout: 'fit',
 							draggable: false,
