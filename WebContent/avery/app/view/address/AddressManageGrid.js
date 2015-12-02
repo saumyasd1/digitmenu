@@ -24,7 +24,17 @@ Ext.define('AOC.view.address.AddressManageGrid', {
   },
   buildColumns : function(){
     	var me=this;
-        return [
+	        return [   
+	                    {
+				            text : 'Action',
+				            width:150,
+				            xtype:'actioncolumn',
+				            flex:0.8,
+				  	        items:[{
+				  	        		icon:menuIcon,
+				  	    			handler: 'showMenu'
+	  	                          }]
+	                    },
         			    {  
             	            text : 'ORG Code',
             	          	width:120,
@@ -83,17 +93,8 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				            width:150,
 				            dataIndex:'shipToPhone1',
 				            flex:1
-                        },
-                        {
-				            text : 'Action',
-				            width:150,
-				            xtype:'actioncolumn',
-				            flex:1,
-				  	        items:[{
-				  	        		icon:menuIcon,
-				  	    			handler: 'showMenu'
-				  	      }]
                         }
+                       
         ];
     },
 	 buildtbar:function(){
