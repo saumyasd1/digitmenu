@@ -169,7 +169,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 			 temp = Ext.create('Ext.window.Window',{
 					 	height:250,
 						width:420,
-						title:"Advance Search",
+						title:advancedSearchWindowTitle,
 						itemId:'partneradvancesearchItemId',
 						layout: 'fit',
 						draggable: false,
