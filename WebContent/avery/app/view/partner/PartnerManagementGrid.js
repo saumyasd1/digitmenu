@@ -30,6 +30,36 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
   buildColumns : function(){
     	var me=this;
         return [
+		                {
+				            text : '',
+				            xtype:'actioncolumn',
+				            width:25,
+				            baseCls:'custom-action',
+				  	        items:[
+							  	      {
+							  	    	  icon:editIcon,
+							  	    	  handler:'editpartnermanagement'
+							  	      }]
+		                },
+		                {
+				            text : 'Action',
+				            width:140,
+				            baseCls:'custom-action',
+				  	        renderer: function(v,cell,rec){
+			                          return me.actionTpl.apply(rec.data);
+			            }
+		                },
+		                {
+				            text : '',
+				            xtype:'actioncolumn',
+				            width:25,
+				            baseCls:'custom-action',
+				  	        items:[
+				  	      {
+						  	    	  icon:menuIcon,
+						  	    	  handler: 'showmenu'
+				  	      }]
+		                },
         			    {  
             	            text : 'Partner Name',
             	          	width:120,
@@ -58,37 +88,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 				            sortable : true,
 				            dataIndex:'phone',
 				            flex:0.5
-			            },
-			            {
-				            text : '',
-				            xtype:'actioncolumn',
-				            width:25,
-				            baseCls:'custom-action',
-				  	        items:[
-				  	      {
-				  	    	  icon:editIcon,
-				  	    	  handler:'editpartnermanagement'
-				  	      }]
-                        },
-                        {
-				            text : 'Action',
-				            width:140,
-				            baseCls:'custom-action',
-				  	    renderer: function(v,cell,rec){
-			                return me.actionTpl.apply(rec.data);
 			            }
-                        },
-                        {
-				            text : '',
-				            xtype:'actioncolumn',
-				            width:25,
-				            baseCls:'custom-action',
-				  	        items:[
-				  	      {
-				  	    	  icon:menuIcon,
-				  	    	  handler: 'showmenu'
-				  	      }]
-                        }
         ];
     },
     buildActionTpl : function(){
@@ -115,7 +115,8 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
     },
 	 onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		 var me=this;
-	            if(e.target.className.indexOf("onoffswitch">1))
+		 if(cellIndex==1){
+	            if(e.target.className.indexOf("onoffswitch"==1))
 	            {
 	            	var status =record.get('active');
 	            	Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to change the status of this partner</b>', function(response) {
@@ -138,6 +139,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
              }
 	            });
 	 }
+		 }
 	 },
 	 buildtbar:function(){
 		var me=this;
