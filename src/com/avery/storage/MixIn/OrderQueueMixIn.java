@@ -12,13 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 public abstract class OrderQueueMixIn {
-	
-//		@JsonIgnore
-//		public abstract Set<ProductLine> getProductLine();
-		
-		
-	/*	@JsonIgnore
-		public abstract Set<OrderFileAttachment> getOrderFileAttachment() ;*/
 		
 		@JsonIgnore
 		public abstract Partner getPartnerObj(); 
@@ -26,8 +19,6 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract String getRboID();
 		
-		@JsonIgnore
-		public abstract String getReceivedDate();
 		
 		@JsonIgnore
 		public abstract Blob getFileData();
