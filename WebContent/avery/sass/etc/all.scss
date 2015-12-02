@@ -130,3 +130,15 @@
 .custom-action { 
 border-right:none !important;
 }
+.x-column-header-inner, .x-column-header-inner span { white-space:normal !important; }
+.x-column-header {
+    border-right: 1px solid #cecece;
+    color: #666666;
+    font: 300 12px/15px helvetica, arial, verdana, sans-serif !important;
+    outline: 0;
+    background-color: #FFFFFF;
+}
+.x-column-header-inner {
+     padding: 4px 0px 7px 0px !important; 
+     text-align:center;
+}
