@@ -52,6 +52,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 				layout: 'fit',
 				draggable: false,
 				modal:true,
+				listeners:{ 
+			 	      close:function(obj,eOpts){
+			 	    	 var salesorder=Ext.ComponentQuery.query('#salesrrderexpandablegrid')[0];
+			 	    	     salesorder.bindStore(store);
+			 	    	     store.load();
+			 	}
+				},
 				items:[{
 					xtype:innerGridType,
 					store:store,

@@ -37,9 +37,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
         return [
 { text: 'Division',  dataIndex: 'division',editor:'textfield' },
 { text: 'OrderSource', dataIndex: 'orderSource', editor:'textfield' },
-{ text: 'SOLD TO RBO Number', dataIndex: 'soldTORBONumber',editor:'textfield' },
-{ text: 'Oracle Bill to Site Number', dataIndex: 'oracleBilltoSiteNumber',editor:'textfield' },
-{ text: 'Oracle Ship to Site Number', dataIndex: 'oracleShiptoSiteNumber',editor:'textfield' },
+{ text: 'SOLD TO RBO #', dataIndex: 'soldTORBONumber',editor:'textfield' },
+{ text: 'Oracle Bill to Site #', dataIndex: 'oracleBilltoSiteNumber',editor:'textfield' },
+{ text: 'Oracle Ship to Site #', dataIndex: 'oracleShiptoSiteNumber',editor:'textfield' },
 { text: 'Shipping Method', dataIndex: 'shippingMethod',width:170,editor:{
 	xtype:'combo',
 	 displayField :'variableFieldName',
@@ -47,10 +47,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	 store:Ext.data.StoreManager.lookup('ShippingMethodId')==null?helper.getVariableComboStore('ShippingMethod'):Ext.data.StoreManager.lookup('ShippingMethodId')
 }
 },
-{ text: 'Customer PO Number', dataIndex: 'customerPONumber',editor:'textfield' },
+{ text: 'Customer PO #', dataIndex: 'customerPONumber',editor:'textfield' },
 { text: 'Retailer poCustomer job', dataIndex: 'retailerPO_CustomerJob',editor:'textfield' },
-{ text: 'Oracle Item Number', dataIndex: 'oracleItemNumber',editor:'textfield' },
-{ text: 'Customer Item Number', dataIndex: 'customerItemNumber',editor:'textfield' },
+{ text: 'Oracle Item #', dataIndex: 'oracleItemNumber',editor:'textfield' },
+{ text: 'Customer Item #', dataIndex: 'customerItemNumber',editor:'textfield' },
 { text: 'Item Description', dataIndex: 'itemDescription',editor:'textfield' },
 { text: 'Orderded Qty', dataIndex: 'orderdedQty',editor:'textfield' },
 { text: 'Date Ordered', dataIndex: 'dateOrdered',editor:'textfield' },
@@ -109,7 +109,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
     store:Ext.data.StoreManager.lookup('SplitShipsetId')==null?helper.getVariableComboStore('SplitShipset'):Ext.data.StoreManager.lookup('SplitShipsetId')	
 	} },
 { text: 'Agreement', dataIndex: 'agreement',editor:'textfield' },
-{ text: 'Model serial Number', dataIndex: 'modelSerialNumber',editor:'textfield' },
+{ text: 'Model serial #', dataIndex: 'modelSerialNumber',editor:'textfield' },
 { text: 'Waive MOQ', dataIndex: 'waiveMOQ',editor:'checkbox' },
 { text: 'APO Type', dataIndex: 'apoType' ,width:180,editor:{
 	xtype:'combo',

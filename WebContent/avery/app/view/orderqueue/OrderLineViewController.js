@@ -49,10 +49,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				layout: 'fit',
 				draggable: false,
 				modal:true,
+				listeners:{ 
+			 	      close:function(obj,eOpts){
+			 	    	 var orderline=Ext.ComponentQuery.query('#orderlineexpandablegrid')[0];
+			 	    	     orderline.bindStore(store);
+			 	    	     store.load();
+			 	}
+				},
 				items:[{
 					xtype:innerGridType,
 					store:store,
-					variableColumnName:comboValue
+					variableColumnName:comboValue,
 				}]
 		   });
 		   win.show();
