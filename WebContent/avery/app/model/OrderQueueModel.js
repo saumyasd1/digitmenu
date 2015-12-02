@@ -12,7 +12,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 		type: 'string'
 	}, {
 		name : 'ProductLineType',
-		mapping : 'productLine.id',
+		mapping : 'productLine.productLineType',
 		type: 'string'
 	}, 
 	   {
@@ -59,7 +59,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 		mapping : 'OrderFile'
 	}, {
 		name : 'Comments',
-		mapping : 'Comments',
+		mapping : 'comment',
 		type: 'string'
 	}, {
 		name : 'error',
