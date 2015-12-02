@@ -66,12 +66,15 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        layout: 'hbox',
 	                        margin : '5 0 0 5',
 	                        items:[{
-							xtype : 'textfield',
+							xtype : 'combo',
 							fieldLabel : ' Order Status',
 							name:'Status',
 							width:280,
 							labelSeparator : '',
-							labelAlign : 'right'
+							labelAlign : 'right',
+							store:[['Order Received','Order Received'],['Order Pre-processed','Order Pre-processed'],['Waiting CS Verification','Waiting CS Verification'],
+							       ['CS Verified','CS Verified'],['Submitted to Oracle','Submitted to Oracle'],['Cancelled','Cancelled'],
+							       ['Order Error','Order Error']]
 						    },
 						{
 							xtype : 'tbspacer',
@@ -93,34 +96,6 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							xtype : 'tbspacer',
 							height:5
 						},
-						{ 
-							xtype: 'fieldcontainer',
-	                        layout: 'hbox',
-	                        margin : '5 0 0 5',
-	                        items:[{
-							xtype : 'textfield',
-							fieldLabel : 'PO',
-							name:'PO',
-							width:280,
-							labelSeparator : '',
-							labelAlign : 'right'
-						    },
-						{
-							xtype : 'tbspacer',
-							height:5
-						},
-						{
-							xtype : 'combo',
-							fieldLabel : 'Submission Type',
-							name:'OrderSource',
-							displayField:'OrderSource',
-							valueField:'OrderSource',
-							store :'OrderQueueStore',
-							width:280,
-							labelSeparator : '',
-							labelAlign : 'right'
-						}]
-						},
 						{
 							xtype : 'tbspacer',
 							height:5
@@ -134,8 +109,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							labelSeparator : '',
 							labelAlign : 'right',
 							items:[
-						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
-						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
+						            { boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
+						            { boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
 						            ]
 						},
 						{
