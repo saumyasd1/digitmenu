@@ -339,7 +339,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 animCollapse: false,
                 collapsible: true,
                 collapsed :true,
-                title: 'Advance Propeties',
+                title: 'Advanced Properties',
                 titleCollapse: true,
                 region: 'south',
                 items:[ {
@@ -395,8 +395,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                   			xtype:'textfield',
                 			itemId:'OHMItemId',
                 			labelAlign:'right',
-                			name: 'orderMappingID',
-                			fieldLabel:'Order Header MappingID',//?/
+                			name: 'orderSchemaID',
+                			fieldLabel:'Order SchemaID',//?/
                 			value:'',
                 			labelSeparator:'',
                             labelWidth : 200,
@@ -415,7 +415,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			itemId:'ODMItemId',
             			labelAlign:'right',
             			name: 'orderMappingID',
-            			fieldLabel:'Order Detail MappingID',//?/
+            			fieldLabel:'Order MappingID',//?/
             			value:'',
             			labelSeparator:'',
                         labelWidth : 200,
