@@ -77,7 +77,7 @@ public class OrderQueue extends MainAbstractEntity{
 	private String emailBody;
 	
 	@Column(name = "ReceivedDate")
-	private Date receivedDate;
+	private String receivedDate;
 	
 	@Column(name = "OrderSource")
 	private String orderSource;
@@ -184,11 +184,11 @@ public class OrderQueue extends MainAbstractEntity{
 		this.emailBody = emailBody;
 	}
 
-	public Date getReceivedDate() {
+	public String getReceivedDate() {
 		return receivedDate;
 	}
 
-	public void setReceivedDate(Date receivedDate) {
+	public void setReceivedDate(String receivedDate) {
 		this.receivedDate = receivedDate;
 	}
 
