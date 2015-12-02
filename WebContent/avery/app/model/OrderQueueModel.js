@@ -1,6 +1,6 @@
 Ext.define('AOC.model.OrderQueueModel',{
     extend: 'Ext.data.Model',
-	idProperty:null,
+	idProperty:'id',
     fields: [
         {
 		name : 'PartnerName',
@@ -12,7 +12,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 		type: 'string'
 	}, {
 		name : 'ProductLineType',
-		mapping : 'productLine.id',
+		mapping : 'productLine.productLineType',
 		type: 'string'
 	}, 
 	   {
