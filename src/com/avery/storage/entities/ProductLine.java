@@ -48,6 +48,9 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "RBOName")
 	private String rboName;
 	
+	@Column(name = "RBOID")
+	private String rboId;
+	
 	@Column(name = "ProductLineType")
 	private String productLineType;
 	
@@ -351,6 +354,13 @@ public class ProductLine extends MainAbstractEntity{
 		this.preProcessPID = preProcessPID;
 	}
 
+	public String getRboId() {
+		return rboId;
+	}
+
+	public void setRboId(String rboId) {
+		this.rboId = rboId;
+	}
 	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
