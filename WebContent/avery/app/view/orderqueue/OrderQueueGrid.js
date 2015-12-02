@@ -26,20 +26,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     	var me=this;
         return [{
             text : 'Partner Name',
-            width:150,
+            width:80,
             dataIndex:'PartnerName'
         },
 		{
             text : 'RBO',
-            width:150,
+            width:60,
             dataIndex:'RBOName'
         },{
             text : 'Product Line', 
-            width:150,
+            width:80,
             dataIndex:'ProductLineType'
         },{
             text : 'Order Status',
-            width:150,
+            width:80,
 			dataIndex:'Status'
         },
 		{
@@ -95,7 +95,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				if(v)
 					return '<div><span class="viewattachment" style="cursor:pointer;color : #0085cf !important;">View Attachments</span></div>';
 				else
-					return '<div>No attachment Available</div>'
+					return '<div>N/A</div>'
         }
         },
 		{
@@ -109,10 +109,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'error'
         },
 		{
-            text : 'Actions',
-            width:100,
+            text : 'Action',
+            width:60,
 			xtype:'actioncolumn',
 			locked   : true,
+			menuDisabled  :true,
 			items:[{
 			  icon:menuIcon,
 			  handler:'showMenu'
