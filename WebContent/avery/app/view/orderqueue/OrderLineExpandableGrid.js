@@ -102,6 +102,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
 		gridConfig:{
 			nestedGridRefrence:'orderLineDetail',
 			modal:'AOC.model.VariableHeaderModel', 
+			cls:'nestedGrid',
             columns: [
                 {xtype: 'rownumberer'},
                 { text: 'Level', dataIndex: 'level' ,width:100},
