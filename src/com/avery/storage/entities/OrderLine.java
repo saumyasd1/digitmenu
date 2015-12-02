@@ -1117,6 +1117,7 @@ public class OrderLine extends MainAbstractEntity{
 			orderLine = orderLineService.readAll();
 			if (orderLine == null)
 				throw new Exception("Unable to find Order Line");
+			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orderLine);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -1260,6 +1261,7 @@ public class OrderLine extends MainAbstractEntity{
 			orderLine = orderLineService.readAllByOrderID(entityId);
 			if (orderLine == null)
 				throw new Exception("Unable to find Order Line");
+			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orderLine);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
