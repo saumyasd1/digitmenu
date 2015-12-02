@@ -189,7 +189,6 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         			 enforceMaxLength: true,
         			 listeners:{
         				 'change':function(obj,value){
-        					 debugger;
         				 }
         			 }
         			},
@@ -211,10 +210,10 @@ Ext.define('AOC.view.webform.WebOrderPage',{
   		            labelAlign:'right',
   		            maxLength : '50',
   		            enforceMaxLength: true,
-  		            handler:function()
-  		            {
-  		            	
-  		            }
+  		             multiple: true, // multiupload (multiple attr)
+  		            listeners:{
+     				 'change':'change'
+     			 }
         		},
         		{
                 	xtype :'tbspacer',
@@ -228,7 +227,8 @@ Ext.define('AOC.view.webform.WebOrderPage',{
 						 xtype:'attachmentinfoGrid',
 					     height: 200,
 					     width:550,
-					     flex:1
+					     flex:1,
+					    // store:me.store
 					 }]
         		  }
                ],
