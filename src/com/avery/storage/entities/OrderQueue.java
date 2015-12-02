@@ -88,11 +88,27 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "SubmittedDate")
 	private Date submittedDate;
 	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setProductLine(ProductLine productLine) {
+		this.productLine = productLine;
+	}
+
+
 	@Column(name = "Status")
 	private String status;
 	
 	@Column(name = "Error")
 	private String error;
+	
+	@Column(name = "Comment")
+	private String comment;
 	
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(mappedBy = "orderQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -142,10 +158,6 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public ProductLine getProductLine() {
 		return productLine;
-	}
-
-	public void setProductLineId(ProductLine productLine) {
-		this.productLine = productLine;
 	}
 
 	public String getSenderEmailID() {
