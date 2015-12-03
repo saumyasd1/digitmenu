@@ -22,6 +22,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             	'afterrender':function(obj){
             	if(me.rec!=null){
             		var form=me.down('form').loadRecord(me.rec);
+            		var AdvancedPropertiesForm=me.down('#AdvancedPropertiesForm').loadRecord(me.rec);
             	}
             }
             }
@@ -63,9 +64,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		    labelSeparator:'',
                     labelWidth : 200,
 		            width : 500,
-		            labelSeparator : '',
 		            readOnly:true,
-		            labelAlign:'right',
 		            maxLength : '50',
 		            enforceMaxLength: true
         		},
@@ -151,14 +150,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'CSRItemId',
         			labelAlign:'right',
         			name: 'csrEmail',
+        			value:'',
         			fieldLabel:'CSR Email',
         			allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 500,
   		            height:50,
-  		            labelSeparator : '',
-  		            labelAlign:'right',
   		            maxLength : '100',
   		            enforceMaxLength: true,
   		            blankText : 'CSR is required',
@@ -334,6 +332,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         	},
         	{
         		xtype: 'form',
+        		itemId:'AdvancedPropertiesForm',
                 width:1100,
                 collapseDirection: 'top',
                 animCollapse: false,
