@@ -37,5 +37,12 @@ public class OrderLineService extends GenericEntityService<OrderLine, Long>{
 		getOrderLineDao().bulkUpdate(jsonData,insertAddress);
 		
 	}
+	
+	@Transactional
+	public void bulkUpdateAll(String jsonData,boolean insertAddress,Long orderQueueId){
+		
+		getOrderLineDao().bulkUpdateAllById(jsonData,insertAddress,orderQueueId);
+		
+	}
 
 }
