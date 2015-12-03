@@ -98,7 +98,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 { text: 'Customer Ordered Qty.', dataIndex: 'customerOrderedQty',width:106  },
                 { text: 'Calculated Orderded Qty.', dataIndex: 'calculatedOrderdedQty',width:106  },
                 { text: 'Order Date', dataIndex: 'orderDate',width:88  },
-                { text: 'Promise Date', dataIndex: 'promiseDate',width:88,editor:'datefield'},
+                { text: 'Promise Date', dataIndex: 'promiseDate',width:88,editor:new Ext.form.DateField({
+                	disabled : false,
+                	format: 'Y-m-d'
+                	}),
+                	renderer: function(field) { 
+                		var formated = Ext.util.Format.date(field, 'Y-m-d');
+                		return formated;
+                		}	
+                		},
                 { text: 'Freight Terms', dataIndex: 'freightTerms',width:130,editor:{
             		xtype:'combo',
            		 	displayField :'variableFieldName',
