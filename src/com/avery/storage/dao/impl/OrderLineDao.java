@@ -10,5 +10,5 @@ public interface OrderLineDao extends GenericDao<OrderLine, Long>{
 	
 	public List<OrderLine> readAllByOrderID(Long orderID);
 	public void bulkUpdate(String jsonData,boolean insertAddress);
-
+	public void bulkUpdateAllById(String jsonData,boolean insertAddress,Long orderQueueId);
 }
