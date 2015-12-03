@@ -59,7 +59,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid',{
 		requires:['AOC.model.VariableHeaderModel'],
 		gridConfig:{
 			nestedGridRefrence:'salesOrderDetail',
-    		//store:'nestedStore1', 
+			cls:'nestedGrid',
 			modal:'AOC.model.VariableHeaderModel',
 			 columns: [
 		                {xtype: 'rownumberer'},
