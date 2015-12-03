@@ -9,16 +9,20 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var createproductline=this.getView();
 		var panel=createproductline.down('#listPanel');
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0];
-		var valueObj='',form=this.getView().down('form');
+		var valueObj='',valueObj2='',form=this.getView().down('form');
+		var AdvancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
 		var editMode=this.getView().editMode,url='';
 		var length=0;
 		if(editMode){
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
 			form.updateRecord();
+			AdvancedPropertiesForm.updateRecord();
 			methodMode='PUT';
 			valueObj=form.getRecord().getChanges();
+			valueObj2=AdvancedPropertiesForm.getRecord().getChanges();
 			var parameters=Ext.JSON.encode(valueObj);
+			var parameters=Ext.JSON.encode(valueObj2);
 			length=Object.keys(valueObj).length;
 			Msg='<b>Product Line Updated Successfully</b>';
 		}
@@ -29,6 +33,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			partner={id:Id,partnerName:partnerName};
 			url=applicationContext+'/rest/productLines';
 			valueObj=form.getValues(false,true,false,true);
+			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
 			parameters={
 					rboName:valueObj.rboName,
 					productLineType:valueObj.productLineType,
@@ -40,23 +45,21 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					attachmentMappingName2:valueObj.attachmentMappingName2,
 					variableDataBreakdown:valueObj.variableDataBreakdown,
 					shippingOnlyNotes:valueObj.shippingOnlyNotes,
-					orderSchemaType:valueObj.orderSchemaType,
-					orderSchemaID:valueObj.orderSchemaID,
-					orderMappingID:valueObj.orderMappingID,
-					isAttachmentRequired:valueObj.isAttachmentRequired,
-					attachmentSchemaType_1:valueObj.attachmentSchemaType_1,
-					attachmentMappingID_1:valueObj.attachmentMappingID_1,
-					attachmentIdentifier_1:valueObj.attachmentIdentifier_1,
-					attachmentSchemaID_2:valueObj.attachmentSchemaID_2,
-					attachmentSchemaType_2:valueObj.attachmentSchemaType_2,
-					attachmentMappingID_2:valueObj.attachmentMappingID_2,
-					attachmentIdentifier_2:valueObj.attachmentIdentifier_2,
-					attachmentSchemaID_3:valueObj.attachmentSchemaID_3,
-					attachmentSchemaType_3:valueObj.attachmentSchemaType_3,
-					attachmentMappingID_3:valueObj.attachmentMappingID_3,
-					attachmentIdentifier_3:valueObj.attachmentIdentifier_3,
-					orderToProcessSchemaID:valueObj.orderToProcessSchemaID,
-					orderToProcessMappingID:valueObj.orderToProcessMappingID,
+					orderSchemaType:valueObj2.orderSchemaType,
+					orderSchemaID:valueObj2.orderSchemaID,
+					orderMappingID:valueObj2.orderMappingID,
+					attachmentRequired:valueObj2.attachmentRequired,
+					attachmentSchemaType_1:valueObj2.attachmentSchemaType_1,
+					attachmentMappingID_1:valueObj2.attachmentMappingID_1,
+					attachmentIdentifier_1:valueObj2.attachmentIdentifier_1,
+					attachmentSchemaID_2:valueObj2.attachmentSchemaID_2,
+					attachmentSchemaType_2:valueObj2.attachmentSchemaType_2,
+					attachmentMappingID_2:valueObj2.attachmentMappingID_2,
+					attachmentIdentifier_2:valueObj2.attachmentIdentifier_2,
+					attachmentSchemaID_3:valueObj2.attachmentSchemaID_3,
+					attachmentSchemaType_3:valueObj2.attachmentSchemaType_3,
+					attachmentMappingID_3:valueObj2.attachmentMappingID_3,
+					attachmentIdentifier_3:valueObj2.attachmentIdentifier_3,
 					partner:partner
 		    	};
 			methodMode='POST';
@@ -113,14 +116,13 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	var me=this;
 	 {
 		 {
-			 
 				var menu=Ext.create('Ext.menu.Menu', {
      		    width: 100,
      		    margin: '0 0 10 0',
      		    items: [{
      		        text: 'Edit',
      		        handler:function()
-     		        {
+     		        {    
      		    	    var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
      	      			if(!win){
      	      				var data=e.record;
