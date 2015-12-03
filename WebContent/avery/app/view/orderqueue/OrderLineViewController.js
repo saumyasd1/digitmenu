@@ -119,7 +119,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var madatoryFieldEmpty=false,
     	currentRecord=null,
     	i=0, isAddressModified=false;
-    	for(i=0;i<store.getCount ();i++){
+    	for(i=0;i<store.getCount();i++){
     		currentRecord=store.getAt(i);
     		if(currentRecord.get('oracleBilltoSiteNumber')=='' || currentRecord.get('oracleShiptoSiteNumber')==''){
     			madatoryFieldEmpty=true;
@@ -259,5 +259,35 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  }); 
+    },
+    updateOrderLine:function(editor, context, eOpts){
+    	var ctx = context,me=this,
+        idx = ctx.rowIdx,
+        currentRecord = ctx.store.getAt(idx),parms='';
+    	var obj=currentRecord.getChanges( ) ;
+    	obj.id=currentRecord.id;
+    	var isAddressModified=false;
+    	var runTime = AOC.config.Runtime;
+    	if(idx==0){
+			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
+				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
+				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
+				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber'))
+					isAddressModified=true;
+		}
+		var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+    	Ext.Ajax.request({
+    		method:'PUT',
+	        jsonData:obj,
+    		   url : applicationContext+'/rest/orderLines/bulkupdate',
+		        success : function(response, opts) {
+			  		Ext.Msg.alert('Order line successfully updated');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+    		  });
     }
 })
