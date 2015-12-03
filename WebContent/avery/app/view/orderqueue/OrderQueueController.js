@@ -61,7 +61,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
   openAdvancedSearchWindow:function(cmp,event){
 	   var temp=Ext.ComponentQuery.query('#orderqueueadvancesearchID')[0];
 		 if(!temp){
-			 
 				store = Ext.create('AOC.store.PartnerProductLineStore',{
 						storeId:'PartnerProductLineStoreStoreId',
 						totalCount:'total',
@@ -73,8 +72,26 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					            rootProperty          : 'ArrayList',
 					            totalProperty : 'totalCount'
 					        }
+					    },
+					    listeners: {
+					        'load' :  function(store,records,options) {
+					        	var uniqueValueArray=store.collect('productLineType');
+					        	var serviceStoreData = [];
+					        	if(uniqueValueArray.length>0){
+					        		uniqueValueArray.forEach(function(item){
+			                		var service = [item];
+			                		serviceStoreData.push(service);
+			                	});
+					        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+			                 	   		fields : ['productLineType'],	
+			            	            data : serviceStoreData
+			                    });
+					        	temp.down('#productLineComboItemId').bindStore(serviceStore);
+					        	}
+					        }
 					    }
 					});
+				
 				 temp = Ext.create('Ext.window.Window',{
 						 	height:240,
 							width:600,
@@ -83,9 +100,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 							layout: 'fit',
 							draggable: false,
 							modal:true,
+							store:store,
 						 	listeners:{ 
 						 	      afterrender:function(obj){
-						 	    	 obj.down('#productLineComboItemId').bindStore(store);
+						 	    	 
 						 	    	 store.load();
 						 	},
 						 	beforedestroy: function(btn) {
