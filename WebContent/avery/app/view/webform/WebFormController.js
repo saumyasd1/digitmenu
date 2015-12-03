@@ -14,10 +14,38 @@ Ext.define('AOC.view.webform.WebFormController', {
 			            type          : 'json',
 			            rootProperty          : 'productlines'
 			        }
+			    },
+			    listeners: {
+			        'load' :  function(store,records,options) {
+			        	var uniqueValueArray1=store.collect('rboName');
+			        	var serviceStoreData1= [];
+			        	  if(uniqueValueArray1.length>0){
+			        		 uniqueValueArray1.forEach(function(item){
+		                	 var service = [item];
+		                	 serviceStoreData1.push(service);
+		                   });
+			        	     var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+	                 	   	 fields : ['rboName'],	
+	            	         data : serviceStoreData1
+	                    });
+			        	rboCombo.bindStore(serviceStore);
+			        	}
+			        	var uniqueValueArray2=store.collect('productLineType');
+			        	var serviceStoreData2= [];
+			        	  if(uniqueValueArray2.length>0){
+			        		  uniqueValueArray2.forEach(function(item){
+	                		  var service = [item];
+	                		  serviceStoreData2.push(service);
+	                    	 });
+			        	      var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+	                 	   		fields : ['productLineType'],	
+	            	            data : serviceStoreData2
+	                         });
+			        	      productLineCombo.bindStore(serviceStore);
+			        	     }
+			        }
 			    }
 			});
-    	productLineCombo.bindStore(store);
-    	rboCombo.bindStore(store);
     	productLineCombo.enable();
     	rboCombo.enable();
     },

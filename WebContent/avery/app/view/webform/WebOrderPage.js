@@ -62,7 +62,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         				emptyText:'RBO',
         				reference:'rboCombo',
         				displayField:'rboName',
-        				valueField:'rboId',
+        				valueField:'rboName',
         				disabled:true
         			},
         			{
@@ -73,7 +73,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         				xtype:'combo',
         				reference:'productLineCombo',
         				displayField:'productLineType',
-        				valueField:'id',
+        				valueField:'productLineType',
         				emptyText:'Product Line',
         				disabled:true
         			}]
