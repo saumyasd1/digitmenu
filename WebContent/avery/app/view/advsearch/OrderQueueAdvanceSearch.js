@@ -86,7 +86,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							name:'ProductLineType',
 							itemId:'productLineComboItemId',
 							displayField:'productLineType',
-							valueField:'id',
+							valueField:'productLineType',
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right'
