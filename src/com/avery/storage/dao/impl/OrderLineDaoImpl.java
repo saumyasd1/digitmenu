@@ -88,35 +88,76 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(i==0 && insertAddress){
-					Address adrObj=new Address();
-					adrObj.setBillToSiteNumber(orderLine.getOracleBilltoSiteNumber());
-					adrObj.setShipToSiteNumber(orderLine.getOracleShiptoSiteNumber());
-					adrObj.setAddress1(orderLine.getBillToAddress1());
-					adrObj.setAddress2(orderLine.getBillToAddress2());
-					adrObj.setAddress3(orderLine.getBillToAddress3());
-					adrObj.setCity(orderLine.getBillToCity());
-					adrObj.setCountry(orderLine.getBillToCountry());
-					adrObj.setState(orderLine.getBillToState());
-					adrObj.setBillToContact(orderLine.getBillToContact());
-					adrObj.setBillToFax(orderLine.getBillToFax());
-					adrObj.setBillToPhone1(orderLine.getBillToTelephone());
-					adrObj.setBillToEmail(orderLine.getBillToEmail());
-					adrObj.setShipToContact(orderLine.getShipToContact());
-					adrObj.setShipToPhone1(orderLine.getShipToTelephone());
-					adrObj.setShippingMethod(orderLine.getShippingMethod());
-					adrObj.setFreightTerms(orderLine.getFreightTerms());
-					adrObj.setShippingInstructions(orderLine.getShippingInstructions());
-					adrObj.setDescription("Inserted By Adeptia");
-					adrObj.setCreatedBy("Adeptia");
-					adrObj.setCreatedDate(new Date());
-					adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
-					Partner partnerObj=new Partner();
-					Long partnerId=0L;
-					if(orderLine.getPartnerID()!=null)
-						partnerId=Long.parseLong(orderLine.getPartnerID());
-					partnerObj.setId(partnerId);
-					adrObj.setPartner(partnerObj);
-					session.save(adrObj);
+					insertIntoAddress(orderLine);
+				}
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
+	
+	private void insertIntoAddress(OrderLine orderLine){
+		Session session = getSessionFactory().getCurrentSession();
+		Address adrObj=new Address();
+		adrObj.setBillToSiteNumber(orderLine.getOracleBilltoSiteNumber());
+		adrObj.setShipToSiteNumber(orderLine.getOracleShiptoSiteNumber());
+		adrObj.setAddress1(orderLine.getBillToAddress1());
+		adrObj.setAddress2(orderLine.getBillToAddress2());
+		adrObj.setAddress3(orderLine.getBillToAddress3());
+		adrObj.setCity(orderLine.getBillToCity());
+		adrObj.setCountry(orderLine.getBillToCountry());
+		adrObj.setState(orderLine.getBillToState());
+		adrObj.setBillToContact(orderLine.getBillToContact());
+		adrObj.setBillToFax(orderLine.getBillToFax());
+		adrObj.setBillToPhone1(orderLine.getBillToTelephone());
+		adrObj.setBillToEmail(orderLine.getBillToEmail());
+		adrObj.setShipToContact(orderLine.getShipToContact());
+		adrObj.setShipToPhone1(orderLine.getShipToTelephone());
+		adrObj.setShippingMethod(orderLine.getShippingMethod());
+		adrObj.setFreightTerms(orderLine.getFreightTerms());
+		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+		adrObj.setDescription("Inserted By Adeptia");
+		adrObj.setCreatedBy("Adeptia");
+		adrObj.setCreatedDate(new Date());
+		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+		Partner partnerObj=new Partner();
+		Long partnerId=0L;
+		if(orderLine.getPartnerID()!=null)
+			partnerId=Long.parseLong(orderLine.getPartnerID());
+		partnerObj.setId(partnerId);
+		adrObj.setPartner(partnerObj);
+		session.save(adrObj);
+	}
+	@Override
+	public void bulkUpdateAllById(String jsonData,boolean insertAddress,Long orderQueueId){
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectReader updater=null;
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			List<OrderLine> entities = readAllByOrderID(orderQueueId);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			for(OrderLine orderLine:entities){
+				updater = mapper.readerForUpdating(orderLine);
+				orderLine = updater.readValue(jsonData);
+				orderLine.preUpdateOp();
+				session.update(orderLine);
+				orderLine.postUpdateOp();
+				if(insertAddress){
+					insertIntoAddress(orderLine);
+					insertAddress=false;
 				}
 			}
 		}catch (WebApplicationException ex) {
