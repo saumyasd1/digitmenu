@@ -1281,13 +1281,26 @@ public class OrderLine extends MainAbstractEntity{
 			@Context HttpHeaders hh, String data) {
 		String jsonData="";
 		boolean insertAddress=false;
+		boolean updateAll=true;
+		Long bulkUpdateAllById=0L;
+		Map<String,String> jsonMap=null;
 		try {
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
-			Map<String,String> jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
 			insertAddress=Boolean.parseBoolean((String)jsonMap.get("isAddressModified"));
 			jsonData=(String)jsonMap.get("data");
-			orderLineService.bulkUpdate(jsonData, insertAddress);
+			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
+			if(updateAll){
+				if((String)jsonMap.get("orderQueueId")!=null){
+					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
+					orderLineService.bulkUpdateAll(jsonData, insertAddress,bulkUpdateAllById);
+				}else{
+					throw new Exception("Unable to update all records as the Order Queue Id is not present");
+				}
+			}
+			else
+				orderLineService.bulkUpdate(jsonData, insertAddress);
 			return Response.ok().build();
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
