@@ -1,8 +1,8 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +24,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -38,6 +37,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.service.OrderLineService;
+import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -1249,20 +1249,27 @@ public class OrderLine extends MainAbstractEntity{
 			@Context HttpHeaders hh, @PathParam("id") String orderId) {
 		Response.ResponseBuilder rb = null;
 		List<OrderLine> orderLine = null;
+		Map orderLineMap=new HashMap();
+		int salesOrderCount=0;
 		try{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixInAnnotations(OrderLine.class, OrderLineMixIn.class);
 			mapper.addMixInAnnotations(OrderLineDetail.class, OrderLineMixIn.class);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
 			orderLine = orderLineService.readAllByOrderID(entityId);
 			if (orderLine == null)
 				throw new Exception("Unable to find Order Line");
+			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
+						.getInstance().getBean("salesOrderService");
+			salesOrderCount=salesOrderService.getCountByOrderID(entityId);
+			orderLineMap.put("orderLine", orderLine);
+			orderLineMap.put("salesOrderCount", salesOrderCount);
 			mapper.setDateFormat(ApplicationUtils.df);
-			mapper.writeValue(writer, orderLine);
+			mapper.writeValue(writer, orderLineMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
