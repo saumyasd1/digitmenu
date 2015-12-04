@@ -1068,11 +1068,26 @@ public class SalesOrder extends MainAbstractEntity{
 	public Response updateEntities(@Context UriInfo ui,
 			@Context HttpHeaders hh, String data) {
 		String jsonData="";
+		boolean updateAll=true;
+		Long bulkUpdateAllById=0L;
+		Map<String,String> jsonMap=null;
 		try {
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
-			salesOrderService.bulkUpdate(data);
-			return Response.ok().build();
+			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			jsonData=(String)jsonMap.get("data");
+			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
+			if(updateAll){
+				if((String)jsonMap.get("orderQueueId")!=null){
+					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
+					salesOrderService.bulkUpdateAll(jsonData,bulkUpdateAllById);
+				}else{
+					throw new Exception("Unable to update all records as the Order Queue Id is not present");
+				}
+			}
+			else
+			    salesOrderService.bulkUpdate(jsonData);
+			   return Response.ok().build();
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Permorfing bulk update", ex);
