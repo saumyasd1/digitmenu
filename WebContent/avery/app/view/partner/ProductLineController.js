@@ -288,5 +288,5 @@ if(!temp){
 			store.loadPage(1);
 			cmp.setValue('');
 			cmp.orderedTriggers[0].hide();
-	   },
+	   }
 });

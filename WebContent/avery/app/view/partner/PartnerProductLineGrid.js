@@ -19,7 +19,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
         dockedItems : this.buildDockedItems(),
         viewConfig : {
 	            stripeRows : false,
-	            enableTextSelection : true,
+	            enableTextSelection : true
         }
     });
        this.callParent(arguments);
@@ -99,7 +99,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 			              text:'New',
 			              itemId : 'newPartner',
 			              handler:'createproductline',
-			              hidden:false,
+			              hidden:false
 		              },
 		          '->',
 		          {
@@ -122,7 +122,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon,
+						icon: clearSearchIcon
 					}
 		          ];
 	},

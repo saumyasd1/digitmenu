@@ -22,8 +22,8 @@ Ext.define('AOC.view.partner.PartnerManagement', {
     			{
     				xtype:'partnerproductlinegrid',
 					CartId:1,
-					itemId: 'partnerproductlinegriditemId',
-					//isGridEditable:true
+					itemId: 'partnerproductlinegriditemId'
+					
     			}
     			]
     		}],
@@ -43,9 +43,8 @@ Ext.define('AOC.view.partner.PartnerManagement', {
 				        	  style:
 				        	         'text-align: center;'
 				        	        ,
-				        	        labelStyle: "font-size:8px;",
-				        	  //defaultValue:'<font color="black" size:1px > <b>Showing Partner Information. Please try Advance search for better options. '/*from '+ (Ext.Date.format(new Date(),'m-d-Y')) +' to ' +(Ext.Date.format(new Date(),'m-d-Y'))*/+'</b><font>',
-				        	 // value:'<font color="black" size:1px > <b>Showing Partner Information. Please try Advance search for better options. '/*from '+ (Ext.Date.format(new Date(),'m-d-Y')) +' to ' +(Ext.Date.format(new Date(),'m-d-Y'))*/+'</b><font>'
+				        	        labelStyle: "font-size:8px;"
+				        	  
 				          }]
 			}]
 	 	});
