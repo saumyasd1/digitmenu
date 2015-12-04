@@ -95,7 +95,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                }
         		            ]
         		        }
-        		    ],
+        		    ]
         	}]
         },
         notifyByMessage : function(config){
