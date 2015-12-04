@@ -16,7 +16,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 			dockedItems : this.buildDockedItems(),
 			viewConfig : {
 				stripeRows : true,
-				enableTextSelection : true,
+				enableTextSelection : true
 			}
 		});
 		this.callParent(arguments);

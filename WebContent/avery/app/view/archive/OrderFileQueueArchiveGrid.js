@@ -2,7 +2,6 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 	extend : 'Ext.grid.Panel',
 	itemId : 'orderFileQueueArchiveManageGriditemId',
     alias : 'widget.ar_orderfilequeue',
-    //requires:['AOC.view.ux.CustomSearchField'],
 	emptyText:'<div align=center> No data to display.</div>',
 	recordBeingEdit:null,
 	initComponent : function(){
@@ -10,13 +9,10 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:true,
-        /*tbar: { height: 40,
-    		    items : me.buildtbar()
-              },*/
         dockedItems : this.buildDockedItems(),
         viewConfig : {
 	            stripeRows : true,
-	            enableTextSelection : true,
+	            enableTextSelection : true
         }
     });
        this.callParent(arguments);

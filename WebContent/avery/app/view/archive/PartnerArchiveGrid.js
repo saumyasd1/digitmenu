@@ -16,7 +16,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 			dockedItems : this.buildDockedItems(),
 			viewConfig : {
 				stripeRows : true,
-				enableTextSelection : true,
+				enableTextSelection : true
 			}
 		});
 		this.callParent(arguments);
