@@ -207,5 +207,45 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  });
+    },
+    submitOrder:function(){
+        var id = this.runTime.getOrderQueueId(),
+        me = this;
+    var parameters = '{\"status\":\"' + submitToOracleStatus + '\"';
+    parameters = parameters + '}';
+    Ext.Ajax.request({
+        url: applicationContext + '/rest/orders/' + id,
+        method: 'PUT',
+        jsonData: parameters,
+        success: function(response, opts) {
+            Ext.Msg.alert('Order submission successful');
+            Ext.getBody().unmask();
+        },
+        failure: function(response, opts) {
+            Ext.getBody().unmask();
+        }
+    });
+    },
+    cancelSalesOrderLine:function(){
+    	Ext.getBody().mask('Validating....');
+    	var id=this.runTime.getOrderQueueId(),me=this;
+    	Ext.Ajax.request({
+    		method:'GET',
+    		   url : applicationContext+'/rest/router/cancelsalesorder/'+id,
+		        success : function(response, opts) {
+		        	var jsonValue=Ext.decode(response.responseText);
+		        	var status=jsonValue.status;
+		        	if(status=='success')
+		        		Ext.Msg.alert('','Sales Order was successfully cancelled');
+		        	else
+		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	debugger;
+		        	Ext.getBody().unmask();
+	          }
+    		  }); 
     }
 })
