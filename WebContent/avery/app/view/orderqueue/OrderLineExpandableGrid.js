@@ -9,10 +9,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
     columnLines:true,
     columns: [
               { text: 'Customer PO #',  dataIndex: 'customerPONumber', width:250  },
-              { text: 'Ordered Date ', dataIndex: 'orderedDate',width:90 },
               { text: 'Partner Customer Name', dataIndex: 'partnerCustomerName',width:126  },
-              { text: 'Customer Request Date', dataIndex: 'customerRequestDate',width:91   },
               { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:111  },
+              { text: 'Bulk', dataIndex: 'bulk',width:50 },
               { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170,editor:'textfield' },
               { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170 ,editor:'textfield' },
               { text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170 ,editor:'textfield' },
@@ -37,7 +36,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
               { text: 'Bill To Email', dataIndex: 'billToEmail',width:170 ,editor:'textfield' },
               { text: 'Bill To Fax', dataIndex: 'billToFax',width:130 ,editor:'textfield' },
               { text: 'Bill To Telephone', dataIndex: 'billToTelephone',width:130,editor:'textfield'  },
-              { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:102  },
               { text: 'Special Instruction', dataIndex: 'specialInstruction',width:170  },
               { text: 'Order Received Date', dataIndex: 'orderReceivedDate',width:93  },
               { text: 'Sold To RBO#', dataIndex: 'soldTORBONumber' ,width:100 },
@@ -57,17 +55,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
               { text: 'Customer Color Code', dataIndex: 'customerColorCode',width:102  },
               { text: 'Customer Color Description', dataIndex: 'customerColorDescription',width:102  },
               { text: 'Customer Size', dataIndex: 'customerSize',width:102  },
-              { text: 'Customer Unit Price', dataIndex: 'customerUnitPrice',width:102 },
-              { text: 'Customer Cost', dataIndex: 'customerCost',width:102  },
               { text: 'Contract #', dataIndex: 'contractNumber',width:130  },
               { text: 'Style No', dataIndex: 'styleNo',width:111 },
-              { text: 'Customer Item # 1', dataIndex: 'customerItemNumber1',width:88},
-              { text: 'Customer Item # 2', dataIndex: 'customerItemNumber2',width:88},
               { text: 'Customer Season', dataIndex: 'customerSeason' ,width:93 },
-              { text: 'Customer UOM', dataIndex: 'customerUOM',width:93  },
               { text: 'Customer Ordered Qty.', dataIndex: 'customerOrderedQty',width:106  },
-              { text: 'Calculated Orderded Qty.', dataIndex: 'calculatedOrderdedQty',width:106  },
-              { text: 'Order Date', dataIndex: 'orderDate',width:88  },
+              { text: 'Ordered Date ', dataIndex: 'orderedDate',width:90 },
+              { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:102  },
               { text: 'Promise Date', dataIndex: 'promiseDate',width:88
 //            	  ,editor:{
 //            	  xtype:'datefield',
@@ -134,14 +127,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
             	}},
               { text: 'Sent To Oracle Date', dataIndex: 'sentToOracleDate' ,width:100 },
               { text: 'Status', dataIndex: 'status' ,width:180 },
-              { text: 'ATO Validation', dataIndex: 'atoValidationFlag',width:79 },
-              { text: 'Bulk Sample Validation', dataIndex: 'bulkSampleValidationFlag',width:89 },
-              { text: 'Customer PO', dataIndex: 'customerPOFlag',width:60 },
-              { text: 'Duplicate PO', dataIndex: 'duplicatePOFlag',width:60 },
-              { text: 'Htl Size Page Validation', dataIndex: 'htlSizePageValidationFlag',width:100 },
-              { text: 'Bulk', dataIndex: 'bulk',width:50 },
-              { text: 'Mandatory Variable Present', dataIndex: 'mandatoryVariableDataFieldFlag',width:120 },
-              { text: 'MOQ Check', dataIndex: 'moqValidationFlag',width:100 }
+              { text: 'ATO Required(Y/N)', dataIndex: 'atoValidationFlag',width:79 },
+              { text: 'ATO Mandatory(S/F)', dataIndex: 'mandatoryVariableDataFieldFlag',width:120 },
+              { text: 'Bulk Sample(S/F)', dataIndex: 'bulkSampleValidationFlag',width:89 },
+              { text: 'Cust.PO#', dataIndex: 'customerPOFlag',width:60 },
+              { text: 'Dup.PO(S/F)', dataIndex: 'duplicatePOFlag',width:60 },
+              { text: 'Size Page(S/F)', dataIndex: 'htlSizePageValidationFlag',width:100 },
+              { text: 'MOQ(S/F)', dataIndex: 'moqValidationFlag',width:100 }
     ],
     plugins:[{
 		ptype:'rowexpandergrid',
@@ -175,7 +167,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
         	'edit':'updateOrderLine'
         },
         bulKUpdate:function(editor, context){
+           
+            this.suspendEvent('edit');
         	this.completeEdit();
+        	this.resumeEvent('edit');
         	var me=this;
         	var ctx = this.context,
             idx = ctx.rowIdx,
@@ -198,7 +193,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid',{
     		        success : function(response, opts) {
     			  		Ext.Msg.alert('','Order line successfully updated');
     			  		Ext.getBody().unmask();
-    			  		me.getView().store.load();
+    			  		this.getView().store.load();
     		        },
     		        failure: function(response, opts) {
     		        	Ext.getBody().unmask();
