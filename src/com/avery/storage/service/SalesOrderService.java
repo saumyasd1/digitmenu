@@ -43,5 +43,10 @@ public class SalesOrderService extends GenericEntityService<SalesOrder, Long>{
 		getSalesOrderDao().bulkUpdateAllById(jsonData,orderQueueId);
 		
 	}
-
+	
+	@Transactional
+	public int getCountByOrderID(Long orderID){
+		return getSalesOrderDao().getCountByOrderID(orderID);
+		
+	}
 }
