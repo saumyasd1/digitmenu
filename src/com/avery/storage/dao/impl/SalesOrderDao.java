@@ -12,4 +12,6 @@ public interface SalesOrderDao extends GenericDao<SalesOrder, Long>{
 
 	public void bulkUpdate(String data);
 
+	public void bulkUpdateAllById(String jsonData, Long orderQueueId);
+
 }

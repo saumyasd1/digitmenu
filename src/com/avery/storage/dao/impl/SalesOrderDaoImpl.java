@@ -37,7 +37,7 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SalesOrder.class);
 			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
 			return criteria.list();
@@ -65,11 +65,11 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 	}
 
 	@Override
-	public void bulkUpdate(String data) {
+	public void bulkUpdate(String jsonData) {
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
-		String[] objArray=data.split("@@@");
+		String[] objArray=jsonData.split("@@@");
 		Session session = null;
 		try{
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -101,6 +101,39 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
+	}
+	
+	@Override
+	public void bulkUpdateAllById(String jsonData,Long orderQueueId){
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectReader updater=null;
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			List<SalesOrder> entities = readAllByOrderID(orderQueueId);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			for(SalesOrder salesOrder:entities){
+				updater = mapper.readerForUpdating(salesOrder);
+				salesOrder = updater.readValue(jsonData);
+				salesOrder.preUpdateOp();
+				session.update(salesOrder);
+				salesOrder.postUpdateOp();
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
 	}
 
 	
