@@ -116,7 +116,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
     store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
-	}},
+	}}
     ];
     },
     tbar: { 
