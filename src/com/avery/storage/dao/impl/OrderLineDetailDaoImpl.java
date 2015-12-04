@@ -31,7 +31,7 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderLineDetail.class);
 			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
 			criteria.setProjection( Projections.projectionList()
@@ -61,7 +61,7 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		List<OrderLineDetail> list=null;
 		Boolean showFiberPercentage=false;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderLineDetail.class);
 			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
 			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
