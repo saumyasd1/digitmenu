@@ -150,7 +150,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	   
     },
     saveSalesOrderDetails:function(){
-    	debugger;
      	var grid=this.getView(),me=this;
     	var store=grid.store,
     	parms ='';
@@ -185,5 +184,28 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 				  me.getView().getStore().load();
 			  }
 		});
+    },
+    updateSalesOrder:function(editor, context, eOpts){
+    	debugger;
+    	var ctx = context,me=this,
+        idx = ctx.rowIdx,
+        currentRecord = ctx.store.getAt(idx),parms='';
+    	var obj=currentRecord.getChanges( ) ;
+    	obj.id=currentRecord.id;
+    	var runTime = AOC.config.Runtime;
+    	var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+    	Ext.Ajax.request({
+    		method:'PUT',
+	        jsonData:obj,
+    		   url : applicationContext+'/rest/salesorders/bulkupdate',
+		        success : function(response, opts) {
+			  		Ext.Msg.alert('','Sales Order successfully updated');
+			  		Ext.getBody().unmask();
+			  		me.getView().store.load();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+    		  });
     }
 })
