@@ -22,6 +22,7 @@ import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.SalesOrder;
+import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -136,5 +137,29 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 
 	}
 
-	
+	@Override
+	public int getCountByOrderID(Long orderID){
+		
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(SalesOrder.class);
+			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			int totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+			return totalCount;
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching sales order for order queue id " + orderID, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching sales order for order queue id " + orderID, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
 }
