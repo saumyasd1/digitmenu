@@ -36,7 +36,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },{
             text : 'Product Line', 
             width:80,
-            dataIndex:'ProductLineType'
+            dataIndex:'productLineType'
         },{
             text : 'Order Status',
             width:80,
