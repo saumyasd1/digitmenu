@@ -31,7 +31,7 @@ Ext.define('AOC.util.Helper',{
 	  var store=null;
 	        var response = Ext.Ajax.request({
 	            async: false,
-	            url: applicationContext+'/rest/orderconfigurations/variable/'+variableName,
+	            url: applicationContext+'/rest/orderconfigurations/variable/'+variableName
 	        });
 	        var items = Ext.decode(response.responseText);
 	      	var jsonValue=Ext.decode(response.responseText);
