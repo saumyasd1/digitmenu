@@ -204,7 +204,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var id=this.runTime.getOrderQueueId(),me=this;
     	Ext.Ajax.request({
     		method:'GET',
-    		   url : applicationContext+'/rest/router/orderqueue/'+id,
+    		   url : applicationContext+'/rest/router/orderqueue/69',
 		        success : function(response, opts) {
 		        	var jsonValue=Ext.decode(response.responseText);
 		        	var status=jsonValue.status;
@@ -222,43 +222,55 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     },
     viewSalesOrder:function(){
     	Ext.getBody().mask('Loading....');
-    	var id=this.runTime.getOrderQueueId(),me=this;
-    	Ext.Ajax.request({
-    		method:'GET',
-    		   url : applicationContext+'/rest/router/salesorder/'+id,
-		        success : function(response, opts) {
-		        	var jsonValue=Ext.decode(response.responseText);
-		        	var status=jsonValue.status;
-		        	if(status=='success'){
-		        		 var owner=me.getView().ownerCt;
-		      		   var store=Ext.create('AOC.store.SalesOrderStore', {
-		      				proxy : {
-		      					type : 'rest',
-		      					 url : applicationContext+'/rest/salesorders/order/'+id,
-		      					reader:{
-		      				        type:'json', 
-		      				        rootProperty: 'ArrayList'
-		      				    }
-		      			}
-		      			});
-		      		   owner.insert({
-		      			   	xtype:'salesrrderexpandablegrid',
-		      			    flex:1,
-		      			    store:store
-		      		   });
-		      		   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-		      		   bulkUpdate.setText('<b>Sales Order</b>');
-		      		   owner.getLayout().setActiveItem(2);
-		        	}
-		        	else
-		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-			  		Ext.getBody().unmask();
-			  		me.getView().store.load();
+    	var id=this.runTime.getOrderQueueId(),me=this,
+    	salesOrderCount=this.runTime.getSalesOrderCount();
+    	var proceed=true;
+    	if(salesOrderCount==0){
+    		Ext.Ajax.request({
+        		method:'GET',
+        		async:false,
+     		    url : applicationContext+'/rest/router/salesorder/69',
+     		    success : function(response, opts) {
+     		    	var jsonValue=Ext.decode(response.responseText);
+ 		        	var status=jsonValue.status;
+ 		        	if(status=='success'){
+ 		        		proceed=true;
+ 		        	}
+ 		        	else{
+ 		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+ 		        		proceed=false;
+ 		        		Ext.getBody().unmask();
+ 		        	}
 		        },
 		        failure: function(response, opts) {
+		        	proceed=false;
+		        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
 		        	Ext.getBody().unmask();
 	          }
-    		  }); 
+    		});
+    	}
+    	if(proceed){
+    	var owner=me.getView().ownerCt;
+		   var store=Ext.create('AOC.store.SalesOrderStore', {
+				proxy : {
+					type : 'rest',
+					 url : applicationContext+'/rest/salesorders/order/'+id,
+					reader:{
+				        type:'json', 
+				        rootProperty: 'ArrayList'
+				    }
+			}
+			});
+		   owner.insert({
+			   	xtype:'salesrrderexpandablegrid',
+			    flex:1,
+			    store:store
+		   });
+		   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+		   bulkUpdate.setText('<b>Sales Order</b>');
+		   owner.getLayout().setActiveItem(2); 
+		   Ext.getBody().unmask();
+    	}
     },
     updateOrderLine:function(editor, context, eOpts){
     	var ctx = context,me=this,
@@ -289,5 +301,16 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  });
+    },
+    changeButtonText:function(obj){
+    	Ext.getBody().mask('Loading...');
+    	var salesOrderbutton=this.getView().lookupReference('salesOrderbutton');
+    	var reader = obj.proxy.reader;
+	    var showFiberPercentage=reader.createAccessor('showFiberPercentage')(reader.rawData);   
+	    if(showFiberPercentage==0)
+	    	salesOrderbutton.setText(viewSalesOrderBtnText);
+	    else 
+	    	salesOrderbutton.setText(createSalesOrderBtnText);
+	    Ext.getBody().unmask();
     }
 })
