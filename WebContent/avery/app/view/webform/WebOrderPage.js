@@ -227,8 +227,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
 						 xtype:'attachmentinfoGrid',
 					     height: 200,
 					     width:550,
-					     flex:1,
-					    // store:me.store
+					     flex:1
 					 }]
         		  }
                ],
