@@ -59,7 +59,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				items:[{
 					xtype:innerGridType,
 					store:store,
-					variableColumnName:comboValue,
+					variableColumnName:comboValue
 				}]
 		   });
 		   win.show();
@@ -153,7 +153,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderLines/bulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('Order line successfully updated');
+			  		Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -189,7 +189,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:parms,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('Order line successfully updated');
+			  		Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -281,7 +281,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderLines/bulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('Order line successfully updated');
+			  		Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
