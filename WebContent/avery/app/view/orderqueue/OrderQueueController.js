@@ -39,7 +39,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 flex: 1,
                 store: store
             });
-            bulkUpdate.setText('<b>Sales Order</b>');
+            bulkUpdate.setText('<b>Sales Order</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
+ 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
+ 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
             owner.getLayout().setActiveItem(1);
 
         } else if (item.action == 'cancelOrder') {
@@ -57,6 +59,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                     }
                 }
             });
+            bulkUpdate.setText('<b> Order Line</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
+ 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
+ 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
         }
     },
     openAdvancedSearchWindow: function(cmp, event) {
