@@ -419,7 +419,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Status',
         dataIndex: 'status',
         width: 180,
-        editor: 'textfield'
+        editor: {
+        	xtype:'combo',
+        	editable:false,
+        	displayField:'value',
+			valueField:'code',
+        	store:Ext.data.StoreManager.lookup('orderfilequeueid')
+        },
+		renderer:function(v){
+			var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+			var statusRecord=store.findRecord( 'code', v);
+			if(statusRecord.get('value')!='')
+				return statusRecord.get('value');
+			else
+				return '';
+		}
     }, {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',
