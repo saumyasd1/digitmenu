@@ -60,6 +60,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					attachmentSchemaType_3:valueObj2.attachmentSchemaType_3,
 					attachmentMappingID_3:valueObj2.attachmentMappingID_3,
 					attachmentIdentifier_3:valueObj2.attachmentIdentifier_3,
+					csrEmail:valueObj.csrEmail,
+					preProcessPID:valueObj2.preProcessPID,
 					partner:partner
 		    	};
 			methodMode='POST';
