@@ -160,7 +160,25 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
            		 	displayField :'variableFieldName',
 		            valueField :'variableFieldName',
 		            store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
-                	}}
+                	}},
+                	{
+                        text: 'Status',
+                        dataIndex: 'status',
+                        width: 180,
+                        editor: {
+                        	xtype:'combo',
+                        	editable:false,
+                        	displayField:'value',
+							valueField:'code',
+                        	store:Ext.data.StoreManager.lookup('orderfilequeueid')
+                        },
+            			renderer:function(v){
+            				var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+            				var statusRecord=store.findRecord( 'code', v);
+            				if(statusRecord.get('value')!='')
+            					return statusRecord.get('value');
+            			}
+                    }
 		];
     },
     tbar: { 
