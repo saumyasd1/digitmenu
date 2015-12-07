@@ -32,6 +32,7 @@ public class OrderLineDetailService extends GenericEntityService<OrderLineDetail
 		
 	} 
 	
+	@Transactional
 	public Map readByVariableName(Long entityId,String variablfieldename){
 		
 		return getOrderLineDetailDao().readByVariableName(entityId,variablfieldename);
