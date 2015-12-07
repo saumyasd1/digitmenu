@@ -366,21 +366,22 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		{
                 	xtype :'tbspacer',
                 	width :30
-        		},
-        		  {
-           			xtype:'textfield',
-           			itemId:'OHItemId',
-           			labelAlign:'right',
-           			name: 'orderMappingID',
-           			fieldLabel:'Order Header Schema Name ',
-           			labelSeparator:'',
-                       labelWidth : 200,
-     		            width : 500,
-     		            labelSeparator : '',
-     		            labelAlign:'right',
-     		            maxLength : '50',
-     		            enforceMaxLength: true
-           		}]
+        		},{
+          			xtype:'textfield',
+        			itemId:'OHMItemId',
+        			labelAlign:'right',
+        			name: 'orderSchemaID',
+        			fieldLabel:'Order SchemaID',//?/
+        			value:'',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 500,
+  		            labelSeparator : '',
+  		            labelAlign:'right',
+  		            maxLength : '50',
+  		            enforceMaxLength: true
+        		}
+        		  ]
         		 },
                      {
                        	xtype :'tbspacer',
@@ -392,10 +393,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                           margin : '5 0 0 5',
                           items:[{
                   			xtype:'textfield',
-                			itemId:'OHMItemId',
+                			itemId:'ODMItemId',
                 			labelAlign:'right',
-                			name: 'orderSchemaID',
-                			fieldLabel:'Order SchemaID',//?/
+                			name: 'orderMappingID',
+                			fieldLabel:'Order MappingID',//?/
                 			value:'',
                 			labelSeparator:'',
                             labelWidth : 200,
@@ -411,10 +412,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
               		},
               		{
             			xtype:'textfield',
-            			itemId:'ODMItemId',
+            			itemId:'PreProcessPID',
             			labelAlign:'right',
-            			name: 'orderMappingID',
-            			fieldLabel:'Order MappingID',//?/
+            			name: 'PreProcessPID',
+            			fieldLabel:'Pre Process PID',//?/
             			value:'',
             			labelSeparator:'',
                         labelWidth : 200,
@@ -424,124 +425,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            maxLength : '50',
       		            enforceMaxLength: true
             		}]
-              		},
-                    {
-                    	xtype :'tbspacer',
-                    	width :30
-            		},
-            		
-            		 {
-              			xtype: 'fieldcontainer',
-                          layout: 'hbox',
-                          margin : '5 0 0 5',
-                          items:[{
-                  			xtype:'textfield',
-                			itemId:'OEDItemId',
-                			labelAlign:'right',
-                			name: 'orderEmailDomain',
-                			fieldLabel:'Order Email Domain',//?/
-                			value:'',
-                			labelSeparator:'',
-                            labelWidth : 200,
-          		            width : 500,
-          		            labelSeparator : '',
-          		            labelAlign:'right',
-          		            maxLength : '50',
-          		            enforceMaxLength: true
-                		},
-              		{
-                      	xtype :'tbspacer',
-                      	width :30
-              		},
-              		{
-            			xtype:'textfield',
-            			itemId:'AItemId',
-            			labelAlign:'right',
-            			name: 'attachmentIdentifier_1',
-            			fieldLabel:'Attachment Identifier 1',
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 500,
-      		            maxLength : '50',
-      		            enforceMaxLength: true
-            		}]
-              		},
-            		 {
-              			xtype: 'fieldcontainer',
-                         layout: 'hbox',
-                         margin : '5 0 0 5',
-                        items:[{
-            			xtype:'textfield',
-            			itemId:'ASTItemId',
-            			labelAlign:'right',
-            			name: 'attachmentSchemaType_1',
-            			fieldLabel:'Attachment Schema Type 1',
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 500,
-      		            maxLength : '50',
-      		            enforceMaxLength: true
-            		},
-            		{
-                    	xtype :'tbspacer',
-                    	width :30
-            		},
-            		{
-            			xtype:'textfield',
-            			itemId:'AItemId',
-            			labelAlign:'right',
-            			name: 'attachmentSchemaType_1',
-            			fieldLabel:'Attachment Schema Name 1',//?/
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 500,
-      		            labelSeparator : '',
-      		            labelAlign:'right',
-      		            maxLength : '50',
-      		            enforceMaxLength: true
-            		
-            		}]
-            		 },
-            		{
-                    	xtype :'tbspacer',
-                    	width :30
-            		},
-            		{
-            			xtype: 'fieldcontainer',
-                        layout: 'hbox',
-                        margin : '5 0 0 5',
-                        items:[{
-            			xtype:'textfield',
-            			itemId:'AMNItemId',
-            			labelAlign:'right',
-            			name: 'attachmentMappingID_1',
-            			fieldLabel:'Attachment Mapping  Name',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 500,
-       		            maxLength : '50',
-      		            enforceMaxLength: true
-            		},
-            		{
-                    	xtype :'tbspacer',
-                    	width :30
-            		},
-            		{
-            			xtype:'textfield',
-            			itemId:'MNItemId',
-            			labelAlign:'right',
-            			name: 'attachmentMappingID_2',
-            			fieldLabel:'Attachment Mapping Name 2',
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 500,
-      		            enforceMaxLength: true
-            		}]
-            		}]
+              		}
+]
                 },
                 {
                 	xtype :'tbspacer',
