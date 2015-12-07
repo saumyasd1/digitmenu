@@ -215,6 +215,16 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         text: 'Agreement',
         dataIndex: 'agreement',
         editor: 'textfield'
+    },{
+        text: 'Status',
+        dataIndex: 'status',
+        width: 180,
+        renderer:function(v){
+        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+			var statusRecord=store.findRecord( 'code', v);
+			if(statusRecord.get('value')!='')
+				return statusRecord.get('value');
+		}
     }, {
         text: 'Model serial #',
         dataIndex: 'modelSerialNumber',
