@@ -604,23 +604,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
                 reference: 'variableFieldCombo'
-            }, {
+            },  {
                 xtype: 'tbspacer',
-                width: 30
-            }, {
+                width: 20
+            },{
                 xtype: 'button',
-                text: '<b>Submit</b>',
+                text: bulkUpdateButtonText,
                 handler: 'getUpdateScreen'
             }, {
                 xtype: 'tbspacer',
-                width: 40
+                width: 20
             }, {
                 xtype: 'button',
                 text: '<b>Validate</b>',
                 handler: 'validateOrderLine'
             }, {
                 xtype: 'tbspacer',
-                width: 40
+                width: 20
             }, {
                 xtype: 'button',
                 reference: 'salesOrderbutton',
