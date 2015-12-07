@@ -67,5 +67,30 @@ Ext.define('AOC.util.Helper',{
                   for(var i=(start+1);i<=end;i++){
                       store.getAt(i).set(dataindex,value);
                   }
-  	}
+  	},
+    getCodeStore:function(type){
+  	  var store=null;
+  	    var store=null;
+        var response = Ext.Ajax.request({
+            async: false,
+            url: applicationContext+'/rest/code/type/'+type
+        });
+        var items = Ext.decode(response.responseText);
+      	var jsonValue=Ext.decode(response.responseText);
+    	var serviceStoreData = [];
+    	if(jsonValue.length>0){
+    	jsonValue.forEach(function(item){
+  		var service = item;
+  		serviceStoreData.push(service);
+  	});
+    	store =  Ext.create('Ext.data.Store',{
+    		storeId:type+'id',
+    		fields : ['code','value'],	
+	            data : serviceStoreData
+      });
+    	return store;
+}else
+  return null;
+          	return store;
+    }
 });
