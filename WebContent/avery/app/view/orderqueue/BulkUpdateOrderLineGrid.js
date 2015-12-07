@@ -34,11 +34,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     buildColumns : function(){
     	var me=this;
     	helper = AOC.util.Helper;
-        return [{ text: 'Customer PO #',  dataIndex: 'customerPONumber', width:250},
-                { text: 'Ordered Date ', dataIndex: 'orderedDate',width:90  },
-                { text: 'Partner Customer Name', dataIndex: 'partnerCustomerName',width:126},
-                { text: 'Customer Request Date', dataIndex: 'customerRequestDate',width:91},
-                { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:111},
+        return [{ text: 'Customer PO #',  dataIndex: 'customerPONumber', width:250,editor:'textfield'},
+                { text: 'Ordered Date ', dataIndex: 'orderedDate',width:90 ,xtype:'datecolumn',format:dateFormat,editor: 'datefield'},
+                { text: 'Partner Customer Name', dataIndex: 'partnerCustomerName',width:126,editor:'textfield'},
+                { text: 'Partner Vendor Name', dataIndex: 'partnerVendorName',width:111,editor:'textfield'},
                 { text: 'Ship To Customer', dataIndex: 'shipToCustomer',width:170 ,editor:'textfield'},
                 { text: 'Ship To Contact', dataIndex: 'shipToContact',width:170,editor:'textfield'},
                 { text: 'Ship To Address 1', dataIndex: 'shipToAddress1',width:170,editor:'textfield'},
@@ -67,9 +66,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 { text: 'Bill To Email', dataIndex: 'billToEmail',width:170,editor:'textfield'},
                 { text: 'Bill To Fax', dataIndex: 'billToFax',width:130,editor:'textfield'},
                 { text: 'Bill To Telephone', dataIndex: 'billToTelephone',width:130,editor:'textfield'},
-                { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:102},
+                { text: 'Requested Devlivery Date', dataIndex: 'requestedDevliveryDate',width:102, xtype:'datecolumn',format:dateFormat,editor: 'datefield'},
                 { text: 'Special Instruction', dataIndex: 'specialInstruction',width:170},
-                { text: 'Order Received Date', dataIndex: 'orderReceivedDate',width:93},
                 { text: 'Sold To RBO#', dataIndex: 'soldTORBONumber' ,width:100 },
                 { text: 'Bill to Site #', dataIndex: 'oracleBilltoSiteNumber',width:100,editor:'textfield'},
                 { text: 'Ship to Site #', dataIndex: 'oracleShiptoSiteNumber' ,width:100,editor:'textfield' },
@@ -81,31 +79,23 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 	} 
                 },
                 { text: 'Retailer PO/Customer Job', dataIndex: 'retailerPO_CustomerJob',width:115,editor:'textfield'},
-                { text: 'Avery Item #', dataIndex: 'averyItemNumber',width:88  },
-                { text: 'Customer Item #', dataIndex: 'customerItemNumber' ,width:88 },
-                { text: 'Item Description', dataIndex: 'itemDescription',width:102  },
-                { text: 'Customer Color Code', dataIndex: 'customerColorCode',width:102  },
-                { text: 'Customer Color Description', dataIndex: 'customerColorDescription',width:102  },
-                { text: 'Customer Size', dataIndex: 'customerSize',width:102  },
-                { text: 'Customer Unit Price', dataIndex: 'customerUnitPrice',width:102 },
-                { text: 'Customer Cost', dataIndex: 'customerCost',width:102  },
-                { text: 'Contract #', dataIndex: 'contractNumber',width:130  },
-                { text: 'Style No', dataIndex: 'styleNo',width:111 },
-                { text: 'Customer Item # 1', dataIndex: 'customerItemNumber1',width:88},
-                { text: 'Customer Item # 2', dataIndex: 'customerItemNumber2',width:88},
-                { text: 'Customer Season', dataIndex: 'customerSeason' ,width:93 },
-                { text: 'Customer UOM', dataIndex: 'customerUOM',width:93  },
-                { text: 'Customer Ordered Qty.', dataIndex: 'customerOrderedQty',width:106  },
-                { text: 'Calculated Orderded Qty.', dataIndex: 'calculatedOrderdedQty',width:106  },
-                { text: 'Order Date', dataIndex: 'orderDate',width:88  },
-                { text: 'Promise Date', dataIndex: 'promiseDate',width:88,editor:new Ext.form.DateField({
-                	disabled : false,
-                	format: 'Y-m-d'
-                	}),
-                	renderer: function(field) { 
-                		var formated = Ext.util.Format.date(field, 'Y-m-d');
-                		return formated;
-                		}	
+                { text: 'Avery Item #', dataIndex: 'averyItemNumber',width:88 ,editor:'textfield' },
+                { text: 'Customer Item #', dataIndex: 'customerItemNumber' ,width:88,editor:'textfield' },
+                { text: 'Item Description', dataIndex: 'itemDescription',width:102 ,editor:'textfield' },
+                { text: 'Customer Color Code', dataIndex: 'customerColorCode',width:102,editor:'textfield'  },
+                { text: 'Customer Color Description', dataIndex: 'customerColorDescription',width:102 ,editor:'textfield' },
+                { text: 'Customer Size', dataIndex: 'customerSize',width:102 ,editor:'textfield' },
+                { text: 'Customer Unit Price', dataIndex: 'customerUnitPrice',width:102 ,editor:'textfield'},
+                { text: 'Customer Cost', dataIndex: 'customerCost',width:102 ,editor:'textfield' },
+                { text: 'Contract #', dataIndex: 'contractNumber',width:130 ,editor:'textfield' },
+                { text: 'Style No', dataIndex: 'styleNo',width:111,editor:'textfield' },
+                { text: 'Customer Item # 1', dataIndex: 'customerItemNumber1',width:88,editor:'textfield'},
+                { text: 'Customer Item # 2', dataIndex: 'customerItemNumber2',width:88,editor:'textfield'},
+                { text: 'Customer Season', dataIndex: 'customerSeason' ,width:93,editor:'textfield' },
+                { text: 'Customer UOM', dataIndex: 'customerUOM',width:93  ,editor:'textfield'},
+                { text: 'Customer Ordered Qty.', dataIndex: 'customerOrderedQty',width:106 ,editor:'textfield' },
+                { text: 'Calculated Orderded Qty.', dataIndex: 'calculatedOrderdedQty',width:106,editor:'textfield'  },
+                { text: 'Promise Date', dataIndex: 'promiseDate',width:88, xtype:'datecolumn',format:dateFormat,editor: 'datefield'	
                 		},
                 { text: 'Freight Terms', dataIndex: 'freightTerms',width:130,editor:{
             		xtype:'combo',
@@ -170,8 +160,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
            		 	displayField :'variableFieldName',
 		            valueField :'variableFieldName',
 		            store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
-                	}},
-                { text: 'Sent To Oracle Date', dataIndex: 'sentToOracleDate' ,width:100 }
+                	}}
 		];
     },
     tbar: { 
