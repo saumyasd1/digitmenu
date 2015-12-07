@@ -60,10 +60,6 @@ public class OrderQueue extends MainAbstractEntity{
 	@JoinColumn(name = "PartnerID")
 	private Partner partner;
 	
-
-	@Column(name = "RBOID")
-	private String rboId;
-	
 	@Column(name = "RBOName")
 	private String rboName;
 	
@@ -145,13 +141,6 @@ public class OrderQueue extends MainAbstractEntity{
 		this.partner = partner;
 	}
 
-	public String getRboId() {
-		return rboId;
-	}
-
-	public void setRboId(String rboId) {
-		this.rboId = rboId;
-	}
 
 	public String getRboName() {
 		return rboName;
