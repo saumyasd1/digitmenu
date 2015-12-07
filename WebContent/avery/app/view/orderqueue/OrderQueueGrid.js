@@ -24,6 +24,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     },
     buildColumns : function(){
     	var me=this;
+    	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [{
             text : 'Partner Name',
             width:80,
@@ -40,7 +41,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },{
             text : 'Order Status',
             width:80,
-			dataIndex:'Status'
+			dataIndex:'Status',
+			editor:{
+				xtype:'combo',
+				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+			},
+			renderer:function(v){
+				var statusRecord=store.findRecord( 'code', v);
+				if(statusRecord.get('value')!='')
+					return statusRecord.get('value');
+			}
         },
 		{
             text : 'Process Date',
