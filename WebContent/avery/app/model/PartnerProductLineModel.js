@@ -32,7 +32,9 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'attachmentMappingID_3', mapping:'attachmentMappingID_3',type: 'string'},
 		{name: 'attachmentIdentifier_3', mapping:'attachmentIdentifier_3',type: 'string'},
 		{name: 'orderToProcessSchemaID', mapping:'orderToProcessSchemaID',type: 'string'},
-		{name: 'orderToProcessMappingID', mapping:'orderToProcessMappingID',type: 'string'}
+		{name: 'orderToProcessMappingID', mapping:'orderToProcessMappingID',type: 'string'},
+		{name: 'preProcessPID', mapping:'preProcessPID',type: 'string'}
 			    ]
+
 });
 
