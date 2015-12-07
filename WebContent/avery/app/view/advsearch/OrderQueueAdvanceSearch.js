@@ -72,9 +72,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right',
-							store:[['Order Received','Order Received'],['Order Pre-processed','Order Pre-processed'],['Waiting CS Verification','Waiting CS Verification'],
-							       ['CS Verified','CS Verified'],['Submitted to Oracle','Submitted to Oracle'],['Cancelled','Cancelled'],
-							       ['Order Error','Order Error']]
+							displayField:'value',
+							valueField:'code',
+							store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 						    },
 						{
 							xtype : 'tbspacer',
