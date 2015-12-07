@@ -11,19 +11,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     columns: [{
         text: 'Customer PO #',
         dataIndex: 'customerPONumber',
-        width: 250
+        width: 250,
+        editor: 'textfield'
     }, {
         text: 'Partner Customer Name',
         dataIndex: 'partnerCustomerName',
-        width: 126
+        width: 126,
+        editor: 'textfield'
     }, {
         text: 'Partner Vendor Name',
         dataIndex: 'partnerVendorName',
-        width: 111
+        width: 111,
+        editor: 'textfield'
     }, {
         text: 'Bulk',
         dataIndex: 'bulk',
-        width: 50
+        width: 50,
+        editor: 'textfield'
     }, {
         text: 'Ship To Customer',
         dataIndex: 'shipToCustomer',
@@ -147,15 +151,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'Special Instruction',
         dataIndex: 'specialInstruction',
-        width: 170
+        width: 170,
+        editor: 'textfield'
     }, {
         text: 'Order Received Date',
         dataIndex: 'orderReceivedDate',
-        width: 93
+        width: 93,
+        hidden:true
     }, {
         text: 'Sold To RBO#',
         dataIndex: 'soldTORBONumber',
-        width: 100
+        width: 100,
+        editor: 'textfield'
     }, {
         text: 'Bill to Site #',
         dataIndex: 'oracleBilltoSiteNumber',
@@ -184,64 +191,81 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'Avery Item #',
         dataIndex: 'averyItemNumber',
-        width: 88
+        width: 88,
+        editor: 'textfield'
     }, {
         text: 'Customer Item #',
         dataIndex: 'customerItemNumber',
-        width: 88
+        width: 88,
+        editor: 'textfield'
     }, {
         text: 'Item Description',
         dataIndex: 'itemDescription',
-        width: 102
+        width: 102,
+        editor: 'textfield'
     }, {
         text: 'Customer Color Code',
         dataIndex: 'customerColorCode',
-        width: 102
+        width: 102,
+        editor: 'textfield'
     }, {
         text: 'Customer Color Description',
         dataIndex: 'customerColorDescription',
-        width: 102
+        width: 102,
+        editor: 'textfield'
     }, {
         text: 'Customer Size',
         dataIndex: 'customerSize',
-        width: 102
+        width: 102,
+        editor: 'textfield'
     }, {
         text: 'Contract #',
         dataIndex: 'contractNumber',
-        width: 130
+        width: 130,
+        editor: 'textfield'
     }, {
         text: 'Style No',
         dataIndex: 'styleNo',
-        width: 111
+        width: 111,
+        editor: 'textfield'
     }, {
         text: 'Customer Season',
         dataIndex: 'customerSeason',
-        width: 93
+        width: 93,
+        editor: 'textfield'
     }, {
         text: 'Customer Ordered Qty.',
         dataIndex: 'customerOrderedQty',
-        width: 106
+        width: 106,
+        editor: 'textfield'
     }, {
         text: 'Ordered Date ',
         dataIndex: 'orderedDate',
-        width: 90
+        width: 90,
+        xtype:'datecolumn',
+        format:dateFormat,
+        editor: 'datefield'
     }, {
         text: 'Requested Devlivery Date',
         dataIndex: 'requestedDevliveryDate',
-        width: 102
+        width: 102,
+        format:dateFormat,
+        xtype:'datecolumn',
+        editor: 'datefield'
     }, {
         text: 'Promise Date',
         dataIndex: 'promiseDate',
-        width: 88
-            //            	  ,editor:{
-            //            	  xtype:'datefield',
-            //            	  format: 'd/m/Y',
-            //            	  submitFormat: 'Y-m-d H:i:s'
-            //              }
+        xtype: 'datecolumn',   
+        format:dateFormat,
+        width: 88,
+        editor:{
+            	  xtype:'datefield'
+        }
     }, {
         text: 'Freight Terms',
         dataIndex: 'freightTerms',
-        width: 130
+        width: 130,
+        editor: 'textfield'
     }, {
         text: 'CSR',
         dataIndex: 'csr',
@@ -388,39 +412,49 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'Sent To Oracle Date',
         dataIndex: 'sentToOracleDate',
-        width: 100
+        width: 100,
+        hidden:true,
+        editor: 'textfield'
     }, {
         text: 'Status',
         dataIndex: 'status',
-        width: 180
+        width: 180,
+        editor: 'textfield'
     }, {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',
-        width: 79
+        width: 79,
+        editor: 'textfield'
     }, {
         text: 'ATO Mandatory(S/F)',
         dataIndex: 'mandatoryVariableDataFieldFlag',
-        width: 120
+        width: 120,
+        editor: 'textfield'
     }, {
         text: 'Bulk Sample(S/F)',
         dataIndex: 'bulkSampleValidationFlag',
-        width: 89
+        width: 89,
+        editor: 'textfield'
     }, {
         text: 'Cust.PO#',
         dataIndex: 'customerPOFlag',
-        width: 60
+        width: 60,
+        editor: 'textfield'
     }, {
         text: 'Dup.PO(S/F)',
         dataIndex: 'duplicatePOFlag',
-        width: 60
+        width: 60,
+        editor: 'textfield'
     }, {
         text: 'Size Page(S/F)',
         dataIndex: 'htlSizePageValidationFlag',
-        width: 100
+        width: 100,
+        editor: 'textfield'
     }, {
         text: 'MOQ(S/F)',
         dataIndex: 'moqValidationFlag',
-        width: 100
+        width: 100,
+        editor: 'textfield'
     }],
     plugins: [{
         ptype: 'rowexpandergrid',
@@ -498,7 +532,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 success: function(response, opts) {
                     Ext.Msg.alert('', 'Order line successfully updated');
                     Ext.getBody().unmask();
-                    this.getView().store.load();
+                    ctx.store.load();
                 },
                 failure: function(response, opts) {
                     Ext.getBody().unmask();
