@@ -15,6 +15,7 @@ cancelText='<b>cancel</b>',
 cancelSalesOrderText='<b>Cancel Sales Order</b>',
 salesOrdersumbitText='<b>Submit to System</b>',
 submitToOracleStatus='6',
-dateFormat='Y-m-d'
+dateFormat='Y-m-d',
+bulkUpdateButtonText='<b>Bulk Update</b>'
 ;
 
