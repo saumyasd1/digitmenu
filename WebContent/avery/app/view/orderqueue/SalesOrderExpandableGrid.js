@@ -276,43 +276,44 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             frame: false,
             header: false
         }
-    }, {
-        ptype: 'rowediting',
-        clicksToEdit: 1,
-        saveAndNextBtn: true,
-        controller: 'salesorder',
-        listeners: {
-            'edit': 'updateSalesOrder'
-        },
-        bulKUpdate: function(editor, context) {
-            debugger;
-            this.suspendEvent('edit');
-            this.completeEdit();
-            this.resumeEvent('edit');
-            var me = this;
-            var ctx = this.context,
-                idx = ctx.rowIdx,
-                currentRecord = ctx.store.getAt(idx);
-            var obj = currentRecord.getChanges();
-            var runTime = AOC.config.Runtime;
-            var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
-            Ext.Ajax.request({
-                method: 'PUT',
-                jsonData: obj,
-                url: applicationContext + '/rest/salesorders/bulkupdate',
-                success: function(response, opts) {
-                    Ext.Msg.alert('', 'Sales Order successfully updated');
-                    Ext.getBody().unmask();
-                    me.getView().store.load();
-                },
-                failure: function(response, opts) {
-                    Ext.getBody().unmask();
-                }
-            });
-
-        }
-
-    }],
+    }
+//    , {
+//        ptype: 'rowediting',
+//        clicksToEdit: 1,
+//        saveAndNextBtn: true,
+//        controller: 'salesorder',
+//        listeners: {
+//            'edit': 'updateSalesOrder'
+//        },
+//        bulKUpdate: function(editor, context) {
+//            this.suspendEvent('edit');
+//            this.completeEdit();
+//            this.resumeEvent('edit');
+//            var me = this;
+//            var ctx = this.context,
+//                idx = ctx.rowIdx,
+//                currentRecord = ctx.store.getAt(idx);
+//            var obj = currentRecord.getChanges();
+//            var runTime = AOC.config.Runtime;
+//            var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+//            Ext.Ajax.request({
+//                method: 'PUT',
+//                jsonData: obj,
+//                url: applicationContext + '/rest/salesorders/bulkupdate',
+//                success: function(response, opts) {
+//                    Ext.Msg.alert('', 'Sales Order successfully updated');
+//                    Ext.getBody().unmask();
+//                    me.getView().store.load();
+//                },
+//                failure: function(response, opts) {
+//                    Ext.getBody().unmask();
+//                }
+//            });
+//
+//        }
+//
+//    }
+    ],
     tbar: {
         height: 50,
         items: [{
@@ -321,10 +322,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             handler: 'backButton'
         }, {
             xtype: 'tbspacer',
-            width: 30
+            width: 30,
+            hidden: true
         }, {
             xtype: 'radiogroup',
             reference: 'radioGroup',
+            hidden:true,
             items: [{
                 boxLabel: 'Sales Order Update',
                 name: 'rb',
@@ -343,7 +346,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             }
         }, {
             xtype: 'tbspacer',
-            width: 30
+            width: 30,
+            hidden: true
         }, {
             xtype: 'combo',
             hidden: true,
@@ -352,25 +356,27 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             reference: 'variableFieldCombo'
         }, {
             xtype: 'tbspacer',
-            width: 30
+            width: 30,
+            hidden: true
         }, {
             xtype: 'button',
+            hidden:true,
             text: '<b>Submit</b>',
             handler: 'getUpdateScreen'
         }, {
             xtype: 'tbspacer',
             width: 30
-        }, {
+        },'->', {
             xtype: 'button',
-            text: cancelText,
+            text: cancelSalesOrderText,
             handler: 'cancelSalesOrderLine'
         }, {
             xtype: 'tbspacer',
-            width: 30
+            width: 15
         }, {
             xtype: 'button',
             text: salesOrdersumbitText,
             handler: 'submitOrder'
-        }, ]
+        }]
     }
 });
