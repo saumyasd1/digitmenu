@@ -429,6 +429,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			else
 				return '';
 		}
+    },
+    {
+        text: 'Comment',
+        dataIndex: 'comment',
+        width: 100,
+        editor: 'textfield'
     }, {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',

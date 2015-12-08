@@ -457,7 +457,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				var statusRecord=store.findRecord( 'code', v);
 				if(statusRecord.get('value')!='')
 					return statusRecord.get('value');
+				else 
+					return '';
 			}
+        },
+        {
+            text: 'Comment',
+            dataIndex: 'comment',
+            width: 100,
+            editor: 'textfield'
         }
 		];
     },
