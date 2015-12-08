@@ -185,8 +185,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         dataIndex: 'bankCharge',
         editor: 'textfield'
     }, {
-        text: 'Freight Terms',
-        dataIndex: 'freightTerms',
+        text: 'Freight Charges',
+        dataIndex: 'freightCharge',
         width: 160,
         editor: {
             xtype: 'combo',
@@ -216,16 +216,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         text: 'Agreement',
         dataIndex: 'agreement',
         editor: 'textfield'
-    },{
-        text: 'Status',
-        dataIndex: 'status',
-        width: 180,
-        renderer:function(v){
-        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-			var statusRecord=store.findRecord( 'code', v);
-			if(statusRecord.get('value')!='')
-				return statusRecord.get('value');
-		}
     }, {
         text: 'Model serial #',
         dataIndex: 'modelSerialNumber',
@@ -244,6 +234,17 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             valueField: 'variableFieldName',
             store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
         }
+    },
+    {
+        text: 'Status',
+        dataIndex: 'status',
+        width: 180,
+        renderer:function(v){
+        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+			var statusRecord=store.findRecord( 'code', v);
+			if(statusRecord.get('value')!='')
+				return statusRecord.get('value');
+		}
     }],
     plugins: [{
         ptype: 'rowexpandergrid',
