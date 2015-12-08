@@ -318,17 +318,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 119,
             editor: 'textfield'
         }, {
-            text: 'Division for Interface ERPORG',
+            text: 'Division For Interface ERPORG',
             dataIndex: 'divisionforInterfaceERPORG',
             width: 120,
             editor: 'textfield'
         }, {
-            text: 'Artwork hold',
+            text: 'Artwork Hold',
             dataIndex: 'artworkhold',
             width: 84,
             editor: 'checkbox'
         }, {
-            text: 'Artwork work attachment',
+            text: 'Artwork Work Attachment',
             dataIndex: 'artworkworkattachment',
             width: 110,
             editor: 'checkbox'
@@ -338,12 +338,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 110,
             editor: 'textfield'
         }, {
-            text: 'Manufacturing notes',
+            text: 'Manufacturing Notes',
             dataIndex: 'manufacturingnotes',
             width: 107,
             editor: 'textfield'
         }, {
-            text: 'Order type',
+            text: 'Order Type',
             dataIndex: 'ordertype',
             width: 115,
             editor: {
@@ -353,12 +353,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
             }
         }, {
-            text: 'Order by',
+            text: 'Order By',
             dataIndex: 'orderby',
             width: 115,
             editor: 'textfield'
         }, {
-            text: 'End customer',
+            text: 'End Customer',
             dataIndex: 'endcustomer',
             width: 115,
             editor: {
@@ -368,7 +368,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
             }
         }, {
-            text: 'Shipping only notes',
+            text: 'Shipping Only Notes',
             dataIndex: 'shippingonlynotes',
             width: 150,
             editor: 'textfield'
@@ -391,17 +391,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 minValue: 0
             }
         }, {
-            text: 'Shipping hold',
+            text: 'Shipping Hold',
             dataIndex: 'shippinghold',
             width: 83,
             editor: 'checkbox'
         }, {
-            text: 'Production hold',
+            text: 'Production Hold',
             dataIndex: 'productionhold',
             width: 77,
             editor: 'checkbox'
         }, {
-            text: 'Split shipset',
+            text: 'Split Shipset',
             dataIndex: 'splitshipset',
             width: 81,
             editor: {
