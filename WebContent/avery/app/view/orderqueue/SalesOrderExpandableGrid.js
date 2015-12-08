@@ -59,9 +59,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         editor: 'textfield'
     }, {
         text: 'Orderded Qty',
-        dataIndex: 'orderdedQty',
-        editor: 'textfield',
-        hidden:true
+        dataIndex: 'customerOrderedQty',
+        editor: 'textfield'
     }, {
         text: 'Date Ordered',
         dataIndex: 'dateOrdered',
