@@ -67,6 +67,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'promiseDate', mapping:'promiseDate',type: 'date'},
 	 		{name: 'freightTerms', mapping:'freightTerms',type: 'string'},
 	 		{name: 'csr', mapping:'csr',type: 'string'},
+	 		{name: 'comment', mapping:'comment',type: 'string'},
 	 		{name: 'packingInstruction', mapping:'packingInstruction',type: 'string'},
 	 		{name: 'shippingInstructions', mapping:'shippingInstructions',type: 'string'},
 	 		{name: 'invoicelineInstruction', mapping:'invoicelineInstruction',type: 'string'},
