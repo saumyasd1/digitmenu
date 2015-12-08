@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.avery.storage.dao.GenericDao;
+import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderLineDetail;
 
 public interface OrderLineDetailDao extends GenericDao<OrderLineDetail, Long>{
