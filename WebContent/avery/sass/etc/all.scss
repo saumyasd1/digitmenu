@@ -142,3 +142,10 @@ border-right:none !important;
      padding: 4px 0px 7px 0px !important; 
      text-align:center;
 }
+.nestedGrid .x-grid-header-ct { border: 1px solid #000; background-color: #fbf5f5 !important }
+.nestedGrid .x-grid-header-ct .x-box-inner { border-bottom: 1px solid #000; background-color:#fbf5f5 !important}
+.nestedGrid .x-grid-header-ct .x-box-inner .x-column-header-inner { border-right: 1px solid #000; background-color: #fbf5f5 !important}
+.custom-column .x-column-header-inner
+{
+    background-color: yellow !important; 
+}
