@@ -78,8 +78,8 @@ Ext.define('AOC.util.Helper',{
         var items = Ext.decode(response.responseText);
       	var jsonValue=Ext.decode(response.responseText);
     	var serviceStoreData = [];
-    	if(jsonValue.length>0){
-    	jsonValue.forEach(function(item){
+    	if(jsonValue.ArrayList.length>0){
+    	jsonValue.ArrayList.forEach(function(item){
   		var service = item;
   		serviceStoreData.push(service);
   	});
