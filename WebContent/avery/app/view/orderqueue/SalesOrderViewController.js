@@ -213,7 +213,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     var parameters = '{\"status\":\"' + submitToOracleStatus + '\"';
     parameters = parameters + '}';
     Ext.Ajax.request({
-        url: applicationContext + '/rest/orders/' + id,
+        url: applicationContext + '/rest/orders/submittosystem/' + id,
         method: 'PUT',
         jsonData: parameters,
         success: function(response, opts) {
