@@ -432,37 +432,44 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',
-        width: 79
+        width: 79,
+        cls: 'custom-column'
     }, {
         text: 'ATO Mandatory(S/F)',
         dataIndex: 'mandatoryVariableDataFieldFlag',
-        width: 120
-    }, {
+        width: 120,
+        cls: 'custom-column'
+    },{
         text: 'Bulk',
         dataIndex: 'bulk',
-        width: 50
-    },{
+        width: 50,
+        cls: 'custom-column'
+    }, {
         text: 'Bulk Sample(S/F)',
         dataIndex: 'bulkSampleValidationFlag',
-        width: 89
+        width: 89,
+        cls: 'custom-column'
     }, {
         text: 'Cust.PO#',
         dataIndex: 'customerPOFlag',
-        width: 60
+        width: 60,
+        cls: 'custom-column'
     }, {
         text: 'Dup.PO(S/F)',
         dataIndex: 'duplicatePOFlag',
-        width: 60
-         }, 
-    {
+        width: 60,
+        cls: 'custom-column'
+    }, {
         text: 'Size Page(S/F)',
         dataIndex: 'htlSizePageValidationFlag',
-        width: 100
-    }, 
-    {
+        width: 100,
+        cls: 'custom-column'
+    }, {
         text: 'MOQ(S/F)',
         dataIndex: 'moqValidationFlag',
-        width: 100
+        width: 100,
+        editor: 'textfield',
+        cls: 'custom-column'
     }],
     plugins: [{
         ptype: 'rowexpandergrid',
@@ -491,13 +498,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }, {
                 text: "Variable Field Value",
                 dataIndex: 'variabledatavalue',
-                width: 140,
-                editor: 'textfield'
+                width: 140
             }, {
                 text: "Fiber Content Percentage",
                 dataIndex: 'fiberPercent',
-                width: 155,
-                editor: 'textfield'
+                width: 155
             }],
             columnLines: false,
             border: true,
@@ -540,10 +545,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             width: 793,
             autoHeight: true,
             frame: false,
-            header: false,
+            header: false
         }
-        },
-        {
+    }, {
         ptype: 'rowediting',
         clicksToEdit: 1,
         saveAndNextBtn: true,
