@@ -31,6 +31,8 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineDetailMixIn;
 import com.avery.storage.service.OrderLineDetailService;
+import com.avery.storage.service.OrderLineService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -248,28 +250,28 @@ public class OrderLineDetail extends MainAbstractEntity{
     @Path("variablebulkupdate")
     public Response updateEntities(@Context UriInfo ui,
             @Context HttpHeaders hh, String data) {
-        Long currentObjId=0L;
-        ObjectReader updater=null;
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-                    false);
-            List<OrderLineDetail> list =new ArrayList<OrderLineDetail>();
-            OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
-                    .getInstance().getBean("orderLineDetailService");
-            String[] objArray=data.split("@@@");
-            for(String t:objArray){
-                OrderLineDetail orderLineDetail = mapper.readValue(t,OrderLineDetail.class);
-                currentObjId=orderLineDetail.getId();
-                orderLineDetail=orderLineDetailService.read(currentObjId);
-                updater = mapper.readerForUpdating(orderLineDetail);
-                orderLineDetail = updater.readValue(t);
-                list.add(orderLineDetail);
-            }
-            orderLineDetailService.updateEntities(list);
-            return Response.ok().build();
-        } catch (WebApplicationException ex) {
+		String jsonData="";
+		boolean updateAll=true;
+		Long bulkUpdateAllById=0L;
+		Map<String,String> jsonMap=null;
+		try {
+			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
+					.getInstance().getBean("orderLineDetailService");
+			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			jsonData=(String)jsonMap.get("data");
+			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
+			if(updateAll){
+				if((String)jsonMap.get("orderQueueId")!=null){
+					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
+					orderLineDetailService.bulkUpdateAll(jsonData,bulkUpdateAllById);
+				}else{
+					throw new Exception("Unable to update all records as the Order Queue Id is not present");
+				}
+			}
+			else
+				orderLineDetailService.bulkUpdate(jsonData);
+			return Response.ok().build();
+		}  catch (WebApplicationException ex) {
             AppLogger.getSystemLogger().error(
                     "Error while Permorfing variable bulk update", ex);
             throw ex;
