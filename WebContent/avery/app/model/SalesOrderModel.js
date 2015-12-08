@@ -15,6 +15,7 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'customerItemNumber', mapping:'customerItemNumber',type: 'string'},
 	 		{name: 'itemDescription', mapping:'itemDescription',type: 'string'},
 	 		{name: 'orderdedQty', mapping:'orderdedQty',type: 'string'},
+	 		{name: 'customerOrderedQty', mapping:'customerOrderedQty',type: 'string'},
 	 		{name: 'dateOrdered', mapping:'dateOrdered',type: 'string'},
 	 		{name: 'ustomerRequestDate', mapping:'ustomerRequestDate',type: 'string'},
 	 		{name: 'promiseDate', mapping:'promiseDate',type: 'string'},
