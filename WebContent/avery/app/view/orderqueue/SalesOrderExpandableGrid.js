@@ -243,6 +243,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			var statusRecord=store.findRecord( 'code', v);
 			if(statusRecord.get('value')!='')
 				return statusRecord.get('value');
+			else
+				return '';
 		}
     }],
     plugins: [{
