@@ -260,6 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		});
     	}
     	if(proceed){
+    		var currentRecord=this.runTime.getOrderQueueActiveRecord();
     	var owner=me.getView().ownerCt;
 		   var store=Ext.create('AOC.store.SalesOrderStore', {
 				proxy : {
@@ -277,7 +278,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			    store:store
 		   });
 		   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-		   bulkUpdate.setText('<b>Sales Order</b>');
+		   bulkUpdate.setText('<b>Sales Order</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
+ 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
+ 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
 		   owner.getLayout().setActiveItem(2); 
 		   Ext.getBody().unmask();
     	}
