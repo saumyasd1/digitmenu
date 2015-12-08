@@ -599,35 +599,37 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     change: 'radioButtonClick'
                 }
             }, {
+                xtype: 'tbspacer',
+                width: 20
+            },{
                 xtype: 'combo',
                 hidden: true,
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
                 reference: 'variableFieldCombo'
-            },  {
-                xtype: 'tbspacer',
-                width: 20
-            },{
-                xtype: 'button',
-                text: bulkUpdateButtonText,
-                handler: 'getUpdateScreen'
-            }, {
-                xtype: 'tbspacer',
-                width: 20
-            }, {
-                xtype: 'button',
-                text: '<b>Validate</b>',
-                handler: 'validateOrderLine'
-            }, {
-                xtype: 'tbspacer',
-                width: 20
-            }, {
-                xtype: 'button',
-                reference: 'salesOrderbutton',
-                hidden:!me.dataPresent,
-                text: AOC.config.Runtime.getSalesOrderCount() == 0 ? createSalesOrderBtnText : viewSalesOrderBtnText,
-                handler: 'viewSalesOrder'
             }]
+        },'->', {
+            xtype: 'button',
+            text: bulkUpdateButtonText,
+            handler: 'getUpdateScreen'
+        }, {
+            xtype: 'tbspacer',
+            width: 15
+        }, {
+            xtype: 'button',
+            text: '<b>Validate</b>',
+            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
+            handler: 'validateOrderLine'
+        }, {
+            xtype: 'tbspacer',
+            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
+            width: 15
+        }, {
+            xtype: 'button',
+            reference: 'salesOrderbutton',
+            hidden:!me.dataPresent,
+            text: AOC.config.Runtime.getSalesOrderCount() == 0 ? createSalesOrderBtnText : viewSalesOrderBtnText,
+            handler: 'viewSalesOrder'
         }];
     }
 });
