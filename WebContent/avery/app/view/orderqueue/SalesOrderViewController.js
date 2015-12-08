@@ -71,10 +71,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
     	 var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
     	 var activeIndex = panel.items.indexOf(this.getView());
+    	 var currentRecord=this.runTime.getOrderQueueActiveRecord();
     	 if(activeIndex==1)
     	   bulkUpdate.setText('<b>Order Queue</b>');
     	 else
-    		 bulkUpdate.setText('<b>Order line</b>'); 
+    		 bulkUpdate.setText('<b> Order Line</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
+   				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
+   				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
         panel.getLayout().setActiveItem(parseInt(activeIndex)-1);
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
         var currentRecord=this.runTime.getOrderQueueActiveRecord();
