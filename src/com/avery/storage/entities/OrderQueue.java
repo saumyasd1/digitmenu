@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,6 +38,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -365,5 +367,51 @@ public class OrderQueue extends MainAbstractEntity{
 		return rb.build();
 
 	}
+	@PUT
+	@Path("submittosystem/{orderqueueid:[0-9]+}")
+	public Response submitToSystem(@Context UriInfo ui,
+			@Context HttpHeaders hh, String data, @PathParam("orderqueueid") String orderQueueId) {
+		Long orderQueueEntityId = Long.parseLong(orderQueueId);
+		try {
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderQueueService.submitOrderToSystem(data,orderQueueEntityId);
+			   return Response.ok().build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while submitting order to system", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while submitting order to system", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 	
+	@PUT
+	@Path("cancelorder/{id:[0-9]+}")
+	public Response cancelOrder(@Context UriInfo ui,
+			@Context HttpHeaders hh, String data, @PathParam("id") String orderQueueId) {
+		Long orderQueueEntityId = Long.parseLong(orderQueueId);
+		try {
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderQueueService.cancelOrder(data,orderQueueEntityId);
+			   return Response.ok().build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling order", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling order", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 }
