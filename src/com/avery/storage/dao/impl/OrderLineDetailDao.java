@@ -10,7 +10,13 @@ public interface OrderLineDetailDao extends GenericDao<OrderLineDetail, Long>{
 	
 	public List<OrderLineDetail> readAllVariableByOrderID(Long orderID);
 	
+	public List<OrderLineDetail> readAllByOrderID(Long orderID);
+	
 	public Map readByVariableName(Long orderID,String variablfieldename);
+
+	public void bulkUpdate(String jsonData);
+
+	public void bulkUpdateAllById(String jsonData, Long orderQueueId);
 	
 
 }
