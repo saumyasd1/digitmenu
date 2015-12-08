@@ -1050,6 +1050,7 @@ public class SalesOrder extends MainAbstractEntity{
 			salesOrder = salesOrderService.readAllByOrderID(entityId);
 			if (salesOrder == null)
 				throw new Exception("Unable to find Sales Order");
+			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, salesOrder); 
 			rb = Response.ok(writer.toString());  
 		} catch (WebApplicationException ex) {
@@ -1101,6 +1102,5 @@ public class SalesOrder extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-	
 	
 }
