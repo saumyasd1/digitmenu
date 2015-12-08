@@ -14,21 +14,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 250,
         editor: 'textfield'
     }, {
-        text: 'Partner Customer Name',
+        text: 'Customer Name',
         dataIndex: 'partnerCustomerName',
         width: 126,
         editor: 'textfield'
     }, {
-        text: 'Partner Vendor Name',
+        text: 'Vendor Name',
         dataIndex: 'partnerVendorName',
         width: 111,
         editor: 'textfield'
-    }, {
-        text: 'Bulk',
-        dataIndex: 'bulk',
-        width: 50,
-        editor: 'textfield'
-    }, {
+    },  {
         text: 'Ship To Customer',
         dataIndex: 'shipToCustomer',
         width: 170,
@@ -437,38 +432,37 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',
-        width: 79,
-        editor: 'textfield'
+        width: 79
     }, {
         text: 'ATO Mandatory(S/F)',
         dataIndex: 'mandatoryVariableDataFieldFlag',
-        width: 120,
-        editor: 'textfield'
+        width: 120
     }, {
+        text: 'Bulk',
+        dataIndex: 'bulk',
+        width: 50
+    },{
         text: 'Bulk Sample(S/F)',
         dataIndex: 'bulkSampleValidationFlag',
-        width: 89,
-        editor: 'textfield'
+        width: 89
     }, {
         text: 'Cust.PO#',
         dataIndex: 'customerPOFlag',
-        width: 60,
-        editor: 'textfield'
+        width: 60
     }, {
         text: 'Dup.PO(S/F)',
         dataIndex: 'duplicatePOFlag',
-        width: 60,
-        editor: 'textfield'
-    }, {
+        width: 60
+         }, 
+    {
         text: 'Size Page(S/F)',
         dataIndex: 'htlSizePageValidationFlag',
-        width: 100,
-        editor: 'textfield'
-    }, {
+        width: 100
+    }, 
+    {
         text: 'MOQ(S/F)',
         dataIndex: 'moqValidationFlag',
-        width: 100,
-        editor: 'textfield'
+        width: 100
     }],
     plugins: [{
         ptype: 'rowexpandergrid',
@@ -497,21 +491,59 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }, {
                 text: "Variable Field Value",
                 dataIndex: 'variabledatavalue',
-                width: 140
+                width: 140,
+                editor: 'textfield'
             }, {
                 text: "Fiber Content Percentage",
                 dataIndex: 'fiberPercent',
-                width: 155
+                width: 155,
+                editor: 'textfield'
             }],
             columnLines: false,
             border: true,
-            plugins: ['rowediting'],
+            plugins: [{
+                ptype: 'rowediting',
+                clicksToEdit: 1,
+                saveAndNextBtn: true,
+                controller: 'orderline',
+                listeners: {
+                    'edit': 'updateOrderLinedetail'
+                },
+                bulKUpdate: function(editor, context) {
+                	debugger;
+                    this.suspendEvent('edit');
+                    this.completeEdit();
+                    this.resumeEvent('edit');
+                    var me = this;
+                    var ctx = this.context,
+                        idx = ctx.rowIdx,
+                        currentRecord = ctx.store.getAt(idx);
+                    var obj = currentRecord.getChanges();
+                    var runTime = AOC.config.Runtime;
+                    var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+                    Ext.Ajax.request({
+                        method: 'PUT',
+                        jsonData: obj,
+                        url: applicationContext + '/rest/orderlinedetails/variablebulkupdate',
+                        success: function(response, opts) {
+                            Ext.Msg.alert('', 'Order line Detail successfully updated');
+                            Ext.getBody().unmask();
+                            ctx.store.load();
+                        },
+                        failure: function(response, opts) {
+                            Ext.getBody().unmask();
+                        }
+                    });
+
+                }
+            }],
             width: 793,
             autoHeight: true,
             frame: false,
-            header: false
+            header: false,
         }
-    }, {
+        },
+        {
         ptype: 'rowediting',
         clicksToEdit: 1,
         saveAndNextBtn: true,
@@ -520,7 +552,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             'edit': 'updateOrderLine'
         },
         bulKUpdate: function(editor, context) {
-
             this.suspendEvent('edit');
             this.completeEdit();
             this.resumeEvent('edit');
