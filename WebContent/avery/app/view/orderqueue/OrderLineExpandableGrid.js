@@ -287,17 +287,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 119,
         editor: 'textfield'
     }, {
-        text: 'Division for Interface ERPORG',
+        text: 'Division For Interface ERPORG',
         dataIndex: 'divisionforInterfaceERPORG',
         width: 120,
         editor: 'textfield'
     }, {
-        text: 'Artwork hold',
+        text: 'Artwork Hold',
         dataIndex: 'artworkhold',
         width: 84,
         editor: 'checkbox'
     }, {
-        text: 'Artwork work attachment',
+        text: 'Artwork Work Attachment',
         dataIndex: 'artworkworkattachment',
         width: 110,
         editor: 'checkbox'
@@ -307,12 +307,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 110,
         editor: 'textfield'
     }, {
-        text: 'Manufacturing notes',
+        text: 'Manufacturing Notes',
         dataIndex: 'manufacturingnotes',
         width: 107,
         editor: 'textfield'
     }, {
-        text: 'Order type',
+        text: 'Order Type',
         dataIndex: 'ordertype',
         width: 115,
         editor: {
@@ -322,12 +322,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
         }
     }, {
-        text: 'Order by',
+        text: 'Order By',
         dataIndex: 'orderby',
         width: 115,
         editor: 'textfield'
     }, {
-        text: 'End customer',
+        text: 'End Customer',
         dataIndex: 'endcustomer',
         width: 115,
         editor: {
@@ -337,7 +337,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
         }
     }, {
-        text: 'Shipping only notes',
+        text: 'Shipping Only Notes',
         dataIndex: 'shippingonlynotes',
         width: 150,
         editor: 'textfield'
@@ -360,17 +360,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             minValue: 0
         }
     }, {
-        text: 'Shipping hold',
+        text: 'Shipping Hold',
         dataIndex: 'shippinghold',
         width: 83,
         editor: 'checkbox'
     }, {
-        text: 'Production hold',
+        text: 'Production Hold',
         dataIndex: 'productionhold',
         width: 77,
         editor: 'checkbox'
     }, {
-        text: 'Split shipset',
+        text: 'Split Shipset',
         dataIndex: 'splitshipset',
         width: 81,
         editor: {
@@ -498,11 +498,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }, {
                 text: "Variable Field Value",
                 dataIndex: 'variabledatavalue',
-                width: 140
+                width: 140,
+                editor: 'textfield'
             }, {
                 text: "Fiber Content Percentage",
                 dataIndex: 'fiberPercent',
-                width: 155
+                width: 155,
+                editor: 'textfield'
             }],
             columnLines: false,
             border: true,
@@ -510,12 +512,31 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 ptype: 'rowediting',
                 clicksToEdit: 1,
                 saveAndNextBtn: true,
-                controller: 'orderline',
-                listeners: {
-                    'edit': 'updateOrderLinedetail'
+                listeners:{
+                edit:function(editor, context, eOpts){
+                	var ctx = context,me=this,
+                    idx = ctx.rowIdx,
+                    currentRecord = ctx.store.getAt(idx),parms='';
+                	var obj=currentRecord.getChanges( ) ;
+                	obj.id=currentRecord.id;
+                	var runTime = AOC.config.Runtime;
+            		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+                	Ext.Ajax.request({
+                		method:'PUT',
+            	        jsonData:obj,
+                		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+            		        success : function(response, opts) {
+            			  		Ext.Msg.alert('','Order line Detail successfully updated');
+            			  		Ext.getBody().unmask();
+            			  		me.getView().store.load();
+            		        },
+            		        failure: function(response, opts) {
+            		        	Ext.getBody().unmask();
+            	          }
+                		  });
+                }
                 },
                 bulKUpdate: function(editor, context) {
-                	debugger;
                     this.suspendEvent('edit');
                     this.completeEdit();
                     this.resumeEvent('edit');
