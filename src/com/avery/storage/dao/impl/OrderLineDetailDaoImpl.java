@@ -20,6 +20,10 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderLineDetail;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Repository
 public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long> implements
@@ -101,5 +105,98 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void bulkUpdate(String jsonData){
+		ObjectMapper mapper = new ObjectMapper();
+		Long currentObjId=0L;
+		ObjectReader updater=null;
+		String[] objArray=jsonData.split("@@@");
+		Session session = null;
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			session = getSessionFactory().getCurrentSession();
+			String t=null;
+			for(int i=0;i<objArray.length;i++){
+				t=objArray[i];
+				OrderLineDetail orderLineDetail = mapper.readValue(t,OrderLineDetail.class);
+				currentObjId=orderLineDetail.getId();
+				orderLineDetail=(OrderLineDetail) session.get(OrderLineDetail.class,currentObjId);
+				updater = mapper.readerForUpdating(orderLineDetail);
+				orderLineDetail = updater.readValue(t);
+				orderLineDetail.preUpdateOp();
+				session.update(orderLineDetail);
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
+	@Override
+	public void bulkUpdateAllById(String jsonData,Long orderQueueId){
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectReader updater=null;
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			List<OrderLineDetail> entities = readAllByOrderID(orderQueueId);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			for(OrderLineDetail orderLineDetail:entities){
+				updater = mapper.readerForUpdating(orderLineDetail);
+				orderLineDetail = updater.readValue(jsonData);
+				orderLineDetail.preUpdateOp();
+				session.update(orderLineDetail);
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
+	@Override
+	public List<OrderLineDetail> readAllByOrderID(Long orderID){
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(OrderLineDetail.class);
+			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			return criteria.list();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line for order queue id " + orderID, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line for order queue id " + orderID, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
 	
 }
