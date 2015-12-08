@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.OrderLineDetailDao;
+import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderLineDetail;
 
 @Component
@@ -31,11 +32,29 @@ public class OrderLineDetailService extends GenericEntityService<OrderLineDetail
 		return getOrderLineDetailDao().readAllVariableByOrderID(entityId);
 		
 	} 
+	@Transactional
+	public List<OrderLine> readAllByOrderID(Long entityId){
+		
+		return getOrderLineDetailDao().readAllByOrderID(entityId);
+		
+	} 
 	
 	@Transactional
 	public Map readByVariableName(Long entityId,String variablfieldename){
 		
 		return getOrderLineDetailDao().readByVariableName(entityId,variablfieldename);
+	}
+
+	@Transactional
+	public void bulkUpdate(String jsonData) {
+		getOrderLineDetailDao().bulkUpdate(jsonData);
+		
+	}
+
+	@Transactional
+	public void bulkUpdateAll(String jsonData, Long orderQueueId) {
+		 getOrderLineDetailDao().bulkUpdateAllById(jsonData,orderQueueId);
+		
 	}
 
 
