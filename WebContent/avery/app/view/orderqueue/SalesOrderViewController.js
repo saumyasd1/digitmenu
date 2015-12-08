@@ -186,7 +186,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		});
     },
     updateSalesOrder:function(editor, context, eOpts){
-    	debugger;
     	var ctx = context,me=this,
         idx = ctx.rowIdx,
         currentRecord = ctx.store.getAt(idx),parms='';
@@ -243,7 +242,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 			  		me.getView().store.load();
 		        },
 		        failure: function(response, opts) {
-		        	debugger;
 		        	Ext.getBody().unmask();
 	          }
     		  }); 
