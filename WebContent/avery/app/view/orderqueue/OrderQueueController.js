@@ -255,7 +255,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         }
         parameters = parameters + '}';
         Ext.Ajax.request({
-            url: applicationContext + '/rest/orders/' + id,
+            url: applicationContext + '/rest/orders/cancelorder/' + id,
             method: 'PUT',
             jsonData: parameters,
             success: function(response, opts) {
