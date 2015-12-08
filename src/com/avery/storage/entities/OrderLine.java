@@ -333,8 +333,29 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "MandatoryVariableDataFieldFlag")
     private String mandatoryVariableDataFieldFlag; 
 	
+	@Column(name = "Comment")
+    private String comment; 
+	
+	@Column(name = "PONumber")
+    private String poNumber;
+	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getPoNumber() {
+		return poNumber;
+	}
+
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
+	}
 	@Column(name = "HTLSizePageValidationFlag")
-    private String htlSizePageValidationFlag; 
+    private String htlSizePageValidationFlag;
 	
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(mappedBy = "orderLineForVariableData", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
