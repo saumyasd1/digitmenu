@@ -33,7 +33,7 @@ public class OrderLineDetailService extends GenericEntityService<OrderLineDetail
 		
 	} 
 	@Transactional
-	public List<OrderLine> readAllByOrderID(Long entityId){
+	public List<OrderLineDetail> readAllByOrderID(Long entityId){
 		
 		return getOrderLineDetailDao().readAllByOrderID(entityId);
 		
