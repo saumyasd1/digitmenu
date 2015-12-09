@@ -6,7 +6,7 @@
 Ext.define('AOC.view.Viewport', {
 	extend : 'Ext.container.Viewport',
 	itemId : 'viewportitemid',
-	requires : ['AOC.view.AOCLogin','AOC.view.AOCHeader','AOC.view.ToolbarView','AOC.view.orderqueue.OrderQueueView','AOC.view.partner.PartnerManagement','AOC.view.address.AddressManage','AOC.view.webform.WebOrderView','AOC.view.archive.ArchiveManage'],
+	requires : ['AOC.view.AOCHome','AOC.view.AOCLogin','AOC.view.AOCHeader','AOC.view.ToolbarView','AOC.view.orderqueue.OrderQueueView','AOC.view.partner.PartnerManagement','AOC.view.address.AddressManage','AOC.view.webform.WebOrderView','AOC.view.archive.ArchiveManage'],
 	stores:[ 'PartnerManagementStore','AddressManageStore'],
 	initComponent : function(){
 		Ext.apply(this, {
@@ -41,10 +41,10 @@ Ext.define('AOC.view.Viewport', {
 					 		type : 'card',
 					 		deferredRender : true
 					  	},
-						activeItem : 0,
+						activeItem : 5,
 						itemId:'AOCContainer',
 						items:[
-						       {
+						        {
 						    	   xtype : 'orderqueueview' ,
 						    	   cls : 'adeptia-home-entity',
 						    	   margins : '12 12 12 12'
@@ -68,7 +68,12 @@ Ext.define('AOC.view.Viewport', {
 							       xtype : 'archivemanage',
 							    	cls : 'adeptia-home-entity',
 							    	 margins : '12 12 12 12'
-							   }
+							   },
+							   {
+						    	   xtype : 'aochome',
+						    	   cls : 'adeptia-home-entity',
+						    	   margins : '12 12 12 12'
+						       }
 						       ]
 					}
 								                     ]
