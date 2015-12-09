@@ -22,6 +22,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         this.runTime.setOrderQueueId(id);
         this.runTime.setOrderQueueActiveRecord(currentRecord);
         var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+        if(item)
         if (item.action == 'viewSales') {
             var owner = this.getView().ownerCt;
             var store = Ext.create('AOC.store.SalesOrderStore', {
@@ -208,10 +209,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     showMenu: function(view, rowIndex, colIndex, item, e) {
         var me = this,
             currentRecord = e.record,
-            hideCancelOption = false;
+            disableCancelOption = false,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=false;
         var status = currentRecord.get('Status');
+        var error = currentRecord.get('error');
         if (status == cancelStatus) {
-            hideCancelOption = true;
+        	disableCancelOption = true;
+            disableOrderLineOption=true;
+            disableSalesOrderOption=true;
+        }
+        if(error!=''){
+        	disableOrderLineOption=true;
+        	disableSalesOrderOption=true;
         }
         var menu = Ext.create('Ext.menu.Menu', {
             width: 150,
@@ -219,17 +227,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             margin: '0 0 10 0',
             items: [{
                 text: 'View Order Line',
-                action: 'viewOrders'
+                action: 'viewOrders',
+                disabled:disableOrderLineOption
             }, {
                 text: 'View Sales Order',
-                action: 'viewSales'
+                action: 'viewSales',
+                disabled: disableSalesOrderOption
             }, {
                 text: 'ReSubmit Order',
-                action: 'reSubmitOrder'
+                action: 'reSubmitOrder',
+                disabled: disableResubmitOrder
             }, {
                 text: 'Cancel Order',
                 action: 'cancelOrder',
-                hidden: hideCancelOption
+                disabled: disableCancelOption
             }],
             listeners: {
                 click: function(menu, item, e) {
@@ -269,6 +280,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 me.getView().destroy();
             }
         });
+    },
+    closeWindow:function(obj){
+    	this.getView().destroy();
     },
     changeButtonText: function(obj) {
         Ext.getBody().mask('Loading...');
