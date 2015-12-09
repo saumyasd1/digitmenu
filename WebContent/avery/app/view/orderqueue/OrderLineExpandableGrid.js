@@ -477,70 +477,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield',
         cls: 'custom-column'
     }],
-    plugins: [{
-        ptype: 'rowexpandergrid',
-        gridConfig: {
-            nestedGridRefrence: 'orderLineDetail',
-            modal: 'AOC.model.VariableHeaderModel',
-            cls: 'nestedGrid',
-            columns: [{
-                xtype: 'rownumberer'
-            }, {
-                text: 'Level',
-                dataIndex: 'level',
-                width: 100
-            }, {
-                text: "SKU #",
-                dataIndex: 'skuno',
-                width: 100
-            }, {
-                text: "TypeSetterCode",
-                dataIndex: 'typesetter',
-                width: 130
-            }, {
-                text: "Variable Field Name",
-                dataIndex: 'variablefieldname',
-                width: 140
-            }, {
-                text: "Variable Field Value",
-                dataIndex: 'variabledatavalue',
-                width: 140,
-                editor: 'textfield'
-            }, {
-                text: "Fiber Content Percentage",
-                dataIndex: 'fiberPercent',
-                width: 155,
-                editor: 'textfield'
-            }],
-            columnLines: false,
-            border: true,
-            plugins: [{
+    initComponent: function() {
+        var me = this;
+        this.fieldArray = [];
+        Ext.apply(this, {
+            tbar: {
+                height: 50,
+                items: me.buildtbar()
+            },
+            plugins: [me.getRowExpander(), {
                 ptype: 'rowediting',
-                clicksToEdit: 1,
+                clicksToEdit: 2,
+                autoCancel:false,
                 saveAndNextBtn: true,
-                listeners:{
-                edit:function(editor, context, eOpts){
-                	var ctx = context,me=this,
-                    idx = ctx.rowIdx,
-                    currentRecord = ctx.store.getAt(idx),parms='';
-                	var obj=currentRecord.getChanges( ) ;
-                	obj.id=currentRecord.id;
-                	var runTime = AOC.config.Runtime;
-            		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
-                	Ext.Ajax.request({
-                		method:'PUT',
-            	        jsonData:obj,
-                		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
-            		        success : function(response, opts) {
-            			  		Ext.Msg.alert('','Order line Detail successfully updated');
-            			  		Ext.getBody().unmask();
-            			  		me.getView().store.load();
-            		        },
-            		        failure: function(response, opts) {
-            		        	Ext.getBody().unmask();
-            	          }
-                		  });
-                }
+                controller: 'orderline',
+                listeners: {
+                    'edit': 'updateOrderLine'
                 },
                 bulKUpdate: function(editor, context) {
                     this.suspendEvent('edit');
@@ -551,14 +503,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                         idx = ctx.rowIdx,
                         currentRecord = ctx.store.getAt(idx);
                     var obj = currentRecord.getChanges();
+                    var isAddressModified = false;
                     var runTime = AOC.config.Runtime;
-                    var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+                    if (idx == 0) {
+                        if (currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') || currentRecord.isModified('billToAddress3') ||
+                            currentRecord.isModified('billToCity') || currentRecord.isModified('billToState') || currentRecord.isModified('billToZip') ||
+                            currentRecord.isModified('billToCountry') || currentRecord.isModified('billToTelephone') || currentRecord.isModified('billToFax') ||
+                            currentRecord.isModified('oracleBilltoSiteNumber') || currentRecord.isModified('oracleBilltoSiteNumber'))
+                            isAddressModified = true;
+                    }
+                    var obj = '{"isAddressModified":' + isAddressModified + ',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
                     Ext.Ajax.request({
                         method: 'PUT',
                         jsonData: obj,
-                        url: applicationContext + '/rest/orderlinedetails/variablebulkupdate',
+                        url: applicationContext + '/rest/orderLines/bulkupdate',
                         success: function(response, opts) {
-                            Ext.Msg.alert('', 'Order line Detail successfully updated');
+                            Ext.Msg.alert('', 'Order line successfully updated');
                             Ext.getBody().unmask();
                             ctx.store.load();
                         },
@@ -568,63 +528,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     });
 
                 }
-            }],
-            width: 793,
-            autoHeight: true,
-            frame: false,
-            header: false
-        }
-    }, {
-        ptype: 'rowediting',
-        clicksToEdit: 1,
-        saveAndNextBtn: true,
-        controller: 'orderline',
-        listeners: {
-            'edit': 'updateOrderLine'
-        },
-        bulKUpdate: function(editor, context) {
-            this.suspendEvent('edit');
-            this.completeEdit();
-            this.resumeEvent('edit');
-            var me = this;
-            var ctx = this.context,
-                idx = ctx.rowIdx,
-                currentRecord = ctx.store.getAt(idx);
-            var obj = currentRecord.getChanges();
-            var isAddressModified = false;
-            var runTime = AOC.config.Runtime;
-            if (idx == 0) {
-                if (currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') || currentRecord.isModified('billToAddress3') ||
-                    currentRecord.isModified('billToCity') || currentRecord.isModified('billToState') || currentRecord.isModified('billToZip') ||
-                    currentRecord.isModified('billToCountry') || currentRecord.isModified('billToTelephone') || currentRecord.isModified('billToFax') ||
-                    currentRecord.isModified('oracleBilltoSiteNumber') || currentRecord.isModified('oracleBilltoSiteNumber'))
-                    isAddressModified = true;
-            }
-            var obj = '{"isAddressModified":' + isAddressModified + ',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
-            Ext.Ajax.request({
-                method: 'PUT',
-                jsonData: obj,
-                url: applicationContext + '/rest/orderLines/bulkupdate',
-                success: function(response, opts) {
-                    Ext.Msg.alert('', 'Order line successfully updated');
-                    Ext.getBody().unmask();
-                    ctx.store.load();
-                },
-                failure: function(response, opts) {
-                    Ext.getBody().unmask();
-                }
-            });
-
-        }
-    }],
-    initComponent: function() {
-        var me = this;
-        this.fieldArray = [];
-        Ext.apply(this, {
-            tbar: {
-                height: 50,
-                items: me.buildtbar()
-            }
+            }]
         });
         this.callParent(arguments);
     },
@@ -693,5 +597,150 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             text: AOC.config.Runtime.getSalesOrderCount() == 0 ? createSalesOrderBtnText : viewSalesOrderBtnText,
             handler: 'viewSalesOrder'
         }];
+    },
+    getRowExpander:function(){
+    	var rowExpander=new AOC.ux.RowExpanderGrid({
+//    		renderer: function(v, p, record) {
+//    			debugger;
+//                if (record.get('listeRetourChaqueJour') != "") {
+//                    p.cellAttr = 'rowspan="2"';
+//                    return '<div class="x-grid3-row-expander"></div>';
+//                } else {
+//                    p.id = '';
+//                    return '&#160;';
+//                }
+//    },
+    gridConfig: {
+        nestedGridRefrence: 'orderLineDetail',
+        modal: 'AOC.model.VariableHeaderModel',
+        cls: 'nestedGrid',
+        columns: [{
+            xtype: 'rownumberer'
+        }, {
+            text: 'Level',
+            dataIndex: 'level',
+            width: 100
+        }, {
+            text: "SKU #",
+            dataIndex: 'skuno',
+            width: 100
+        }, {
+            text: "TypeSetterCode",
+            dataIndex: 'typesetter',
+            width: 130
+        }, {
+            text: "Variable Field Name",
+            dataIndex: 'variablefieldname',
+            width: 140
+        }, {
+            text: "Variable Field Value",
+            dataIndex: 'variabledatavalue',
+            width: 140
+        }, {
+            text: "Fiber Content Percentage",
+            dataIndex: 'fiberPercent',
+            width: 155
+        }],
+        columnLines: false,
+        border: true,
+        plugins: [{
+            ptype: 'rowexpandergrid',
+            gridConfig: {
+                nestedGridRefrence: 'orderLineDetail',
+                modal: 'AOC.model.VariableHeaderModel',
+                cls: 'nestedGrid',
+                columns: [{
+                    xtype: 'rownumberer'
+                }, {
+                    text: 'Level',
+                    dataIndex: 'level',
+                    width: 100
+                }, {
+                    text: "SKU #",
+                    dataIndex: 'skuno',
+                    width: 100
+                }, {
+                    text: "TypeSetterCode",
+                    dataIndex: 'typesetter',
+                    width: 130
+                }, {
+                    text: "Variable Field Name",
+                    dataIndex: 'variablefieldname',
+                    width: 140
+                }, {
+                    text: "Variable Field Value",
+                    dataIndex: 'variabledatavalue',
+                    width: 140,
+                    editor: 'textfield'
+                }, {
+                    text: "Fiber Content Percentage",
+                    dataIndex: 'fiberPercent',
+                    width: 155,
+                    editor: 'textfield'
+                }],
+                columnLines: false,
+                border: true,
+                plugins: [{
+                    ptype: 'rowediting',
+                    clicksToEdit: 1,
+                    saveAndNextBtn: true,
+                    listeners:{
+                    edit:function(editor, context, eOpts){
+                    	var ctx = context,me=this,
+                        idx = ctx.rowIdx,
+                        currentRecord = ctx.store.getAt(idx),parms='';
+                    	var obj=currentRecord.getChanges( ) ;
+                    	obj.id=currentRecord.id;
+                    	var runTime = AOC.config.Runtime;
+                		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+                    	Ext.Ajax.request({
+                    		method:'PUT',
+                	        jsonData:obj,
+                    		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+                		        success : function(response, opts) {
+                			  		Ext.Msg.alert('','Order line Detail successfully updated');
+                			  		Ext.getBody().unmask();
+                			  		me.getView().store.load();
+                		        },
+                		        failure: function(response, opts) {
+                		        	Ext.getBody().unmask();
+                	          }
+                    		  });
+                    }
+                    },
+                    bulKUpdate: function(editor, context) {
+                        this.suspendEvent('edit');
+                        this.completeEdit();
+                        this.resumeEvent('edit');
+                        var me = this;
+                        var ctx = this.context,
+                            idx = ctx.rowIdx,
+                            currentRecord = ctx.store.getAt(idx);
+                        var obj = currentRecord.getChanges();
+                        var runTime = AOC.config.Runtime;
+                        var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+                        Ext.Ajax.request({
+                            method: 'PUT',
+                            jsonData: obj,
+                            url: applicationContext + '/rest/orderlinedetails/variablebulkupdate',
+                            success: function(response, opts) {
+                                Ext.Msg.alert('', 'Order line Detail successfully updated');
+                                Ext.getBody().unmask();
+                                ctx.store.load();
+                            },
+                            failure: function(response, opts) {
+                                Ext.getBody().unmask();
+                            }
+                        });
+
+                    }
+                }],
+        width: 793,
+        autoHeight: true,
+        frame: false,
+        header: false
+    }
+    	});
+    	return rowExpander;
     }
 });
