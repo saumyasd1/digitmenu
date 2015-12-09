@@ -51,19 +51,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				modal:true,
 				listeners:{ 
 			 	      close:function(obj,eOpts){
-			 	    	 store=Ext.create('AOC.store.OrderLineStore', {
-			     			proxy : {
-			     				type : 'rest',
-			     				url : applicationContext+'/rest/orderLines/order/'+id,
-			     				reader:{
-			     			        type:'json', 
-			     			        rootProperty: 'ArrayList'
-			     			    }
-			     			}
-			 	    	 });
 			 	    	 var orderline=Ext.ComponentQuery.query('#orderlineexpandablegrid')[0];
-			 	    	     orderline.bindStore(store);
-			 	    	     store.load();
+			 	    	     orderline.store.load();
 			 	}
 				},
 				items:[{
@@ -194,9 +183,10 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			parms=parms+'@@@'+Ext.encode(obj);
     		  
     		 });
+    	var obj='{"data":'+Ext.encode(parms)+'}';
     	Ext.Ajax.request({
     		method:'PUT',
-	        jsonData:parms,
+	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
 			  		Ext.Msg.alert('','Order line successfully updated');
