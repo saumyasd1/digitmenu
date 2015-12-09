@@ -108,7 +108,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         dataIndex: 'billToContact',
         editor: 'textfield'
     }, {
-        text: 'Bill To Tel',
+        text: 'Bill To Telephone',
         dataIndex: 'billToTEL',
         editor: 'textfield'
     }, {
@@ -124,7 +124,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         dataIndex: 'shipTOContact',
         editor: 'textfield'
     }, {
-        text: 'Ship To Tel',
+        text: 'Ship To Telephone',
         dataIndex: 'shipTOTEL',
         editor: 'textfield'
     }, {
