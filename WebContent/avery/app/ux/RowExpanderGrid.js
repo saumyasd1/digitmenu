@@ -26,6 +26,8 @@ Ext.define('AOC.ux.RowExpanderGrid', {
     ],
     alias: 'plugin.rowexpandergrid',
      gridConfig:null,
+     expandOnDblClick:false,
+     expandOnEnter:false,
      setCmp: function(outerGrid) {
 		var me = this;
 		this.rowBodyTpl=new Ext.XTemplate('<div class="detailData"></div>');
@@ -59,5 +61,51 @@ Ext.define('AOC.ux.RowExpanderGrid', {
     	 me.gridConfig.store=store;
 		 var innerGrid=Ext.create('Ext.grid.Panel',me.gridConfig);
 		 innerGrid.render(detailData[0]);
+    },
+    getHeaderConfig: function() {
+        var me = this,
+            lockable = me.grid.ownerLockable;
+
+        return {
+            width: me.headerWidth,
+            lockable: false,
+            autoLock: true,
+            sortable: false,
+            resizable: false,
+            draggable: false,
+            hideable: false,
+            menuDisabled: true,
+            tdCls: Ext.baseCSSPrefix + 'grid-cell-special',
+            innerCls: Ext.baseCSSPrefix + 'grid-cell-inner-row-expander',
+            renderer: function(type, config, cell, rowIndex, cellIndex, e, view) {
+            	var me=this;
+            	var record=config.record;
+            	var nestedGridRefrence=me.features[0].rowExpander.gridConfig.nestedGridRefrence;
+            	var length=record.get(nestedGridRefrence).length;
+            	if(length!=0)
+            		return '<div class="' + Ext.baseCSSPrefix + 'grid-row-expander" role="presentation"></div>';
+            	else
+            		return '<div class="hiderowexpander" role="presentation"></div>';
+            },
+            processEvent: function(type, view, cell, rowIndex, cellIndex, e, record) {
+                if (e.getTarget('.' + Ext.baseCSSPrefix + 'grid-row-expander')) {
+                    if (type === "click") {
+                        me.toggleRow(rowIndex, record);
+                        return me.selectRowOnExpand;
+                    }
+                }
+            },
+
+            // This column always migrates to the locked side if the locked side is visible.
+            // It has to report this correctly so that editors can position things correctly
+            isLocked: function() {
+                return lockable && (lockable.lockedGrid.isVisible() || this.locked);
+            },
+
+            // In an editor, this shows nothing.
+            editRenderer: function() {
+                return '&#160;';
+            }
+        };
     }
 });
