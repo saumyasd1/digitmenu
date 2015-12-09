@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +57,8 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
 				criteria.add(disCriteria);
 			}
-		}
+		}   
+		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
