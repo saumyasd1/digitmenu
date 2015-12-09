@@ -125,7 +125,7 @@ Ext.define('AOC.controller.MenuController', {
 	   menubar.add(leftButton);
 	   menubar.add('->');
 	   menubar.add(rightButton);
-	   menuController.getMainContainer().getLayout().setActiveItem(0);
+	   menuController.getMainContainer().getLayout().setActiveItem(5);
 	  },
 	  createButton : function(addTo, record, data, service){
 	      // add the button
@@ -141,7 +141,7 @@ Ext.define('AOC.controller.MenuController', {
 	      return btn;
 	  },
 	  loadHomePage : function(){
-		  this.getMainContainer().getLayout().setActiveItem(0);
+		  this.getMainContainer().getLayout().setActiveItem(5);
 	  },
 	  loadPartnerManagement: function(){
 		  var PartnerManagementStore=this.getPartnerManagementStoreStore();
