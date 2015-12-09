@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -62,6 +63,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				criteria.add(Restrictions.ilike("productLineType", productLineType,MatchMode.ANYWHERE));
 			}
 		}
+	     	criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;

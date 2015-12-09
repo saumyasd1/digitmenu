@@ -13,6 +13,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -49,6 +50,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
 			}
 		}
+		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
@@ -57,6 +59,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
+		
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("partners", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
