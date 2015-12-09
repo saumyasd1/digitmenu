@@ -26,6 +26,51 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     	var me=this;
     	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [{
+        	xtype:'rownumberer'
+        },{
+            text : '',
+            width:25,
+			xtype:'actioncolumn',
+			menuDisabled  :true,
+			items:[{
+			  icon:menuIcon,
+			  handler:'showMenu'
+		  }]
+        },
+        {
+            text : '',
+            width:40,
+			dataIndex:'Comments',
+			renderer:function(v,cell,record){
+				if(v)
+					return '<div><img class="viewcomment" src="' + CommentIcon + '" /></div>';
+				else
+					return '';
+        }
+        },{
+            text : 'Order File',
+            width:45,
+			dataIndex:'OrderFile',
+			renderer:function(v){
+				if(v.length!=0){
+					var fileName=v[0].fileName
+					return '<div><img data-qtip="'+fileName+'" accessKey="orderFile" class="viewattachment" src="' + attacheImageSrc + '" /></div>';
+				}else 
+					return '';
+        }
+        },
+        {
+            text : 'Additional data',
+            width:75,
+            hideable: true,
+            dataIndex:'attachmentPresent',
+			renderer:function(v,cell,record){
+				if(v)
+					return '<div><img class="viewattachment" src="' + attacheImageSrc + '" /></div>';
+				else
+					return ''
+        }
+        },{
             text : 'Partner Name',
             width:80,
             dataIndex:'PartnerName'
@@ -50,6 +95,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				var statusRecord=store.findRecord( 'code', v);
 				if(statusRecord.get('value')!='')
 					return statusRecord.get('value');
+				else
+					return '';
 			}
         },
 		{
@@ -73,9 +120,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'EmailBody'
         },
 		{
-            text : 'Order Source',
-            width:66,
-			dataIndex:'OrderSource'
+            text : '',
+            width:40,
+			dataIndex:'OrderSource',
+			renderer:function(v,cell,record){
+				if(v=='Email')
+					return '<div><img src="' + MailIcon + '" /></div>';
+				else
+					return '<div><img src="' + BrowseIcon + '" /></div>';
+        }
         },
 		{
             text : 'Submitted By',
@@ -87,47 +140,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width:95,
 			dataIndex:'submittedDate'
         },
-        {
-            text : 'Order File',
-            width:150,
-			dataIndex:'OrderFile',
-			renderer:function(v){
-				if(v.length!=0)
-					return '<span accessKey="orderFile" class="" style="cursor:pointer;color : #0085cf !important;">'+v[0].fileName+'</span></div>';
-        }
-        },
-        {
-            text : 'Attachment',
-            width:150,
-            hideable: true,
-            dataIndex:'attachmentPresent',
-			renderer:function(v,cell,record){
-				if(v)
-					return '<div><span class="viewattachment" style="cursor:pointer;color : #0085cf !important;">View Attachments</span></div>';
-				else
-					return '<div>N/A</div>'
-        }
-        },
-		{
-            text : 'Comments',
-            width:150,
-			dataIndex:'Comments'
-        },
 		{
             text : 'Error Message',
             width:150,
 			dataIndex:'error'
-        },
-		{
-            text : 'Action',
-            width:60,
-			xtype:'actioncolumn',
-			locked   : true,
-			menuDisabled  :true,
-			items:[{
-			  icon:menuIcon,
-			  handler:'showMenu'
-		  }]
         }
 		];
     },
@@ -199,5 +215,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         	method : 'GET'
         });
 	}
+	else if(e.target.className=='viewcomment')
+		{
+		if(cellIndex=='2')
+		   var html=e.record.data.Comments;
+		    tooTip = new Ext.ToolTip({
+		    target:e.target,
+		    html:html
+		    });
+		    tooTip.show();
+		
+		}
     }
 });
