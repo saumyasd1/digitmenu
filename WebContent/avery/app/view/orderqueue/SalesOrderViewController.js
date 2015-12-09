@@ -220,7 +220,10 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
         method: 'PUT',
         jsonData: parameters,
         success: function(response, opts) {
-            Ext.Msg.alert('Order submission successful');
+        	me.getView().lookupReference('submitOrder').hide();
+    		me.getView().lookupReference('lastTab').hide();
+            Ext.Msg.alert('Alert','Order submission successful');
+            me.getView().store.load();
             Ext.getBody().unmask();
         },
         failure: function(response, opts) {
@@ -237,8 +240,9 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		        success : function(response, opts) {
 		        	var jsonValue=Ext.decode(response.responseText);
 		        	var status=jsonValue.status;
-		        	if(status=='success')
+		        	if(status=='success'){
 		        		Ext.Msg.alert('','Sales Order was successfully cancelled');
+		        	}
 		        	else
 		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
 			  		Ext.getBody().unmask();
