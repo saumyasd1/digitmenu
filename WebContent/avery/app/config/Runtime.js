@@ -6,7 +6,8 @@ Ext.define('AOC.config.Runtime',{
         windowInEditMode:false,
         orderQueueId:null,
         orderQueueActiveRecord:null,
-        salesOrderCount:0
+        salesOrderCount:0,
+        hideSubmitToSystemButton:false
     },
     constructor : function(config){
         this.initConfig(config);
