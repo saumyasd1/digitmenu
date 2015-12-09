@@ -600,16 +600,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     getRowExpander:function(){
     	var rowExpander=new AOC.ux.RowExpanderGrid({
-//    		renderer: function(v, p, record) {
-//    			debugger;
-//                if (record.get('listeRetourChaqueJour') != "") {
-//                    p.cellAttr = 'rowspan="2"';
-//                    return '<div class="x-grid3-row-expander"></div>';
-//                } else {
-//                    p.id = '';
-//                    return '&#160;';
-//                }
-//    },
     gridConfig: {
         nestedGridRefrence: 'orderLineDetail',
         modal: 'AOC.model.VariableHeaderModel',
@@ -643,43 +633,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         }],
         columnLines: false,
         border: true,
-        plugins: [{
-            ptype: 'rowexpandergrid',
-            gridConfig: {
-                nestedGridRefrence: 'orderLineDetail',
-                modal: 'AOC.model.VariableHeaderModel',
-                cls: 'nestedGrid',
-                columns: [{
-                    xtype: 'rownumberer'
-                }, {
-                    text: 'Level',
-                    dataIndex: 'level',
-                    width: 100
-                }, {
-                    text: "SKU #",
-                    dataIndex: 'skuno',
-                    width: 100
-                }, {
-                    text: "TypeSetterCode",
-                    dataIndex: 'typesetter',
-                    width: 130
-                }, {
-                    text: "Variable Field Name",
-                    dataIndex: 'variablefieldname',
-                    width: 140
-                }, {
-                    text: "Variable Field Value",
-                    dataIndex: 'variabledatavalue',
-                    width: 140,
-                    editor: 'textfield'
-                }, {
-                    text: "Fiber Content Percentage",
-                    dataIndex: 'fiberPercent',
-                    width: 155,
-                    editor: 'textfield'
-                }],
-                columnLines: false,
-                border: true,
                 plugins: [{
                     ptype: 'rowediting',
                     clicksToEdit: 1,
