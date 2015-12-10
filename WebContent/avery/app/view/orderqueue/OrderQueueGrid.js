@@ -40,6 +40,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : '',
             width:40,
 			dataIndex:'Comments',
+			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
 					var comment=rec.data.Comments;
@@ -54,6 +55,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : '',
             width:40,
 			dataIndex:'error',
+			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
 					var error=rec.data.error;
@@ -62,7 +64,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				else
 					return '';
         }
-        },{
+        },
+        {
+            text : '',
+            width:40,
+			dataIndex:'OrderSource',
+			menuDisabled  :true,
+			renderer:function(v,cell,record){
+				if(v=='Email')
+					return '<div><img src="' + MailIcon + '" /></div>';
+				else
+					return '<div><img src="' + BrowseIcon + '" /></div>';
+        }
+        },
+        {
             text : 'Order File',
             width:45,
 			dataIndex:'OrderFile',
@@ -100,7 +115,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             dataIndex:'productLineType'
         },{
             text : 'Order Status',
-            width:80,
+            width:120,
 			dataIndex:'Status',
 			editor:{
 				xtype:'combo',
@@ -122,27 +137,34 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         {
             text : 'Sender EmailID',
             width:128,
-			dataIndex:'SenderEmailID'
+			dataIndex:'SenderEmailID',
+			renderer:function(v){
+				if(v){
+					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+				}else 
+					return '';
+        }
         },
 		{
             text : 'Subject',
             width:150,
-			dataIndex:'Subject'
+			dataIndex:'Subject',
+			renderer:function(v){
+				if(v){
+					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+				}else 
+					return '';
+        }
         },
 		{
             text : 'Email Body',
             width:150,
-			dataIndex:'EmailBody'
-        },
-		{
-            text : '',
-            width:40,
-			dataIndex:'OrderSource',
-			renderer:function(v,cell,record){
-				if(v=='Email')
-					return '<div><img src="' + MailIcon + '" /></div>';
-				else
-					return '<div><img src="' + BrowseIcon + '" /></div>';
+			dataIndex:'EmailBody',
+			renderer:function(v){
+				if(v){
+					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+				}else 
+					return '';
         }
         },
 		{
@@ -178,7 +200,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 					handler:'openAdvancedSearchWindow'
 				 },
 			{
-				// icon : PowerPay.config.Settings.buttonIcons.error,
 				hidden:true, 
 				itemId:'clearadvanedsearch',
 				handler:'clearAdvancedSerach'
