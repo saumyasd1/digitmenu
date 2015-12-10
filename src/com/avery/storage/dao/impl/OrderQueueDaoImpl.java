@@ -78,6 +78,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(OrderSource!=null && !"".equals(OrderSource)){
 				criteria.add(Restrictions.ilike("orderSource",OrderSource,MatchMode.ANYWHERE));
 			}
+			String ProductLineType=searchMap.get("ProductLineType");
+			if(ProductLineType!=null && !"".equals(ProductLineType)){
+				criteria.createAlias("productLine", "productLine");
+				criteria.add(Restrictions.ilike("productLine"+".productLineType",ProductLineType,MatchMode.ANYWHERE));
+			}
 		}
 		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
