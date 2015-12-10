@@ -625,11 +625,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         }, {
             text: "Variable Field Value",
             dataIndex: 'variabledatavalue',
-            width: 140
+            width: 140,
+            editor: 'textfield'
         }, {
             text: "Fiber Content Percentage",
             dataIndex: 'fiberPercent',
-            width: 155
+            width: 155,
+            editor: 'textfield'
         }],
         columnLines: false,
         border: true,
