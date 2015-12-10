@@ -23,7 +23,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         this.callParent(arguments);
     },
     buildColumns : function(){
-    	var me=this;
     	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [{
         	xtype:'rownumberer'
@@ -41,9 +40,25 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : '',
             width:40,
 			dataIndex:'Comments',
-			renderer:function(v,cell,record){
-				if(v)
-					return '<div><img class="viewcomment" src="' + CommentIcon + '" /></div>';
+			renderer:function(value, metadata,rec){
+				if(value){
+					var comment=rec.data.Comments;
+		           return '<div><img data-qtip=" '+comment+'"  src="' + CommentIcon + '" /></div>';
+				}
+				else
+					return '';
+			} 
+		   	},
+			
+        {
+            text : '',
+            width:40,
+			dataIndex:'error',
+			renderer:function(value, metadata,rec){
+				if(value){
+					var error=rec.data.error;
+					return '<div><img data-qtip=" '+error+'" src="' + errorIcon + '" /></div>';
+				}
 				else
 					return '';
         }
@@ -139,11 +154,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Submitted Date',
             width:95,
 			dataIndex:'submittedDate'
-        },
-		{
-            text : 'Error Message',
-            width:150,
-			dataIndex:'error'
         }
 		];
     },
@@ -161,14 +171,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				 },
 	            {
 					xtype:'button',
-					refrence:'advancesearchbutton',
+					itemId:'advancesearchbutton',
 					text:advSearchText,
 					icon   : advSearchIcon,
 					iconAlign: "right",
 					handler:'openAdvancedSearchWindow'
 				 },
 			{
-				//icon   : PowerPay.config.Settings.buttonIcons.error,
+				// icon : PowerPay.config.Settings.buttonIcons.error,
 				hidden:true, 
 				itemId:'clearadvanedsearch',
 				handler:'clearAdvancedSerach'
@@ -215,16 +225,5 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         	method : 'GET'
         });
 	}
-	else if(e.target.className=='viewcomment')
-		{
-		if(cellIndex=='2')
-		   var html=e.record.data.Comments;
-		    tooTip = new Ext.ToolTip({
-		    target:e.target,
-		    html:html
-		    });
-		    tooTip.show();
-		
-		}
     }
 });
