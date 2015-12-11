@@ -201,6 +201,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				 },
 			{
 				hidden:true, 
+				icon   : clearSearchIcon,
 				itemId:'clearadvanedsearch',
 				handler:'clearAdvancedSerach'
 			}
