@@ -259,7 +259,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var id = this.runTime.getOrderQueueId(),
             me = this;
         var commentArea = this.getView().lookupReference('commentArea');
-        var comment = commentArea.getValue();
+        var comment = commentArea.getValue().replace(/\n/g, '::');
         var parameters = '{\"status\":\"' + cancelStatus + '\"';
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';

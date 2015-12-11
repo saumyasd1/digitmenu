@@ -158,9 +158,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			orderQueueObj=(OrderQueue) session.get(OrderQueue.class,entityId);
 			updater = mapper.readerForUpdating(orderQueueObj);
 			orderQueueObj = updater.readValue(data);
+			commentString=orderQueueObj.getComment().replace("::", "\n");
+			orderQueueObj.setComment(commentString);
 			orderQueueObj.preUpdateOp();
 			session.update(orderQueueObj);
 			orderQueueObj.postUpdateOp();
+			commentString="";
 			String status=orderQueueObj.getStatus();
 			String comment=orderQueueObj.getComment();
 			if(!"".equals(comment)){
