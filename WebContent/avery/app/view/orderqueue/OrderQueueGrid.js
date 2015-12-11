@@ -44,7 +44,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			renderer:function(value, metadata,rec){
 				if(value){
 					var comment=rec.data.Comments;
-		           return '<div><img data-qtip=" '+comment+'"  src="' + CommentIcon + '" /></div>';
+		           return '<div><img data-qtip=" '+comment+'"  src="' + commentIcon + '" /></div>';
 				}
 				else
 					return '';
@@ -72,9 +72,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
 				if(v=='Email')
-					return '<div><img data-qtip="Email" src="' + MailIcon + '" /></div>';
+					return '<div><img data-qtip="Email" src="' + mailIcon + '" /></div>';
 				else
-					return '<div><img data-qtip="Web" src="' + BrowseIcon + '" /></div>';
+					return '<div><img data-qtip="Web" src="' + browseIcon + '" /></div>';
         }
         },
         {
