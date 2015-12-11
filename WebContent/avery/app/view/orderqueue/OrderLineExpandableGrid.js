@@ -632,6 +632,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 reference: 'radioGroup',
                 items: [{
                     boxLabel: 'Order Line Update',
+                   // labelCls : 'nowrap',
+                    labelWidth:100,
                     name: 'rb',
                     inputValue: '1',
                     checked: true
@@ -640,6 +642,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     width: 15
                 }, {
                     boxLabel: 'Variable Order Update',
+                    //labelCls : 'nowrap',
+                    labelWidth:120,
                     name: 'rb',
                     inputValue: '2'
                 }],
