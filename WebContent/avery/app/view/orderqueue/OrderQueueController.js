@@ -168,7 +168,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         store.clearFilter();
         store.loadPage(1);
         widget.setVisible(false);
-        var temp = grid.lookupReference('#advancesearchbutton');
+        var temp = grid.down('#advancesearchbutton');
         temp.enable();
     },
     getQuickSearchResults: function(cmp) {
