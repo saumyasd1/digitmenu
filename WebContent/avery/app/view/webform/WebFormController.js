@@ -50,13 +50,15 @@ Ext.define('AOC.view.webform.WebFormController', {
     	rboCombo.enable();
     },
     SaveDetails:function(obj){
-    	var me=this;
-    	    form = obj.up('form');
+    	   var form = this.getView().down('form').getForm();
+    	    if(form.isValid())
     			form.submit({
-    	             url: 'powerpay/Order/PUT?action=uploadFile',
-    	             headers : {'Content-type':'multipart/form-data'},
+    	             
+    	             method: 'POST',
+    	             //headers : {'Content-type':'multipart/form-data'},
     				 waitMsg: 'Uploading your file...',
-    				 success : function(form, action) {
+    				 scope : this,
+    		    	    success : function(form,action){
     	            		var responseText='',response=action.response;
     						if (response != null) {
     	                          
@@ -67,22 +69,74 @@ Ext.define('AOC.view.webform.WebFormController', {
     					  }
     			 			});
     },
-    change:function(obj,value){
+    onAttachemnetChange:function(obj,value){
+    	Ext.getBody().mask('Loading......');
+    	var form=this.getView();
 		   var value=value.substring(value.lastIndexOf("\\"));
 		    value=value.replace("\\"," ");
-		   var fileType=value.substr(value.lastIndexOf('.') + 1);
-		   var fileName=value.substr(0,value.lastIndexOf('.')).trim();
-			var AttachmentInfoGriditemId=Ext.ComponentQuery.query("#AttachmentInfoGriditemId")[0];
-			var store = Ext.create('AOC.store.WebformStore',{
-				storeId:'WebformStoreId',
-				fields : [ 'sn', 'fileName', 'fileType' ],
-				 data : [ {
-					 sn : "1",
-					 fileName : fileName,
-					 fileType : fileType
-				 }]
-			});
-			AttachmentInfoGriditemId.bindStore(store);
+		   this.insertFileInGrid(value,'Attachment',true);
+		   var count=obj.name.replace('attachment','');
+		   var i=parseInt(count)+1;
+		   form.add({
+       			xtype:'fileuploadfield',
+       			labelAlign:'right',
+       			name: 'attachment'+i,
+       			fieldLabel:'Attachments',
+       			labelSeparator:'',
+                   allowBlank: true,
+                   labelWidth : 100,
+ 		            width : 500,
+ 		            labelSeparator : '',
+ 		            labelAlign:'right',
+ 		            maxLength : '50',
+ 		            enforceMaxLength: true,
+ 		            listeners:{
+    				 'change':'onAttachemnetChange'
+    			 }
+		   });
+		   obj.hide();
+		   Ext.getBody().unmask();
+	 },
+	 insertFileInGrid:function(fileName,fileType,multiAllowed){
+		 var AttachmentInfoGriditemId=this.getView().nextSibling('#AttachmentInfoGriditemId');
+			var store=AttachmentInfoGriditemId.store;
+			if(store.storeId!='WebformStoreId'){
+				var store = Ext.create('AOC.store.WebformStore',{
+					storeId:'WebformStoreId',
+					fields : [ 'fileName', 'fileType' ],
+					 data : [{
+						
+						 fileName : fileName,
+						 fileType : fileType
+					 } ]
+				});
+				AttachmentInfoGriditemId.bindStore(store);
+			}else{
+				if(!multiAllowed){
+					var index=store.find('fileType',fileType);
+					if(index!=-1){
+						store.removeAt(index);
+					}
+				}
+					store.add({
+						
+						 fileName : fileName,
+						 fileType : fileType
+					 });
+			}
 			store.load();
+	 },
+	 onOrderFileChange:function(obj,value){
+		 var value=value.substring(value.lastIndexOf("\\"));
+		    value=value.replace("\\"," ");
+		   this.insertFileInGrid(value,'Order File Type',false);
+	 },
+	 onAttachmentGridCellClick:function(obj,value){
+		 
+	 },
+	 onProductLineSelection:function(obj){
+		 var store=obj.store;
+		 this.getView().enable();
+		 debugger;
 	 }
 });
