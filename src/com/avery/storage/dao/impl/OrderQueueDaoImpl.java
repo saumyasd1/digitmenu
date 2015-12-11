@@ -122,6 +122,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			q.setString("value",status);
 			q.setLong("id",entityId);
 			q.executeUpdate();
+			String orderLineUpdateQueryString = "update OrderLine set status=:value where orderQueueForOrderLine=:id";
+			Query orderLineUpdateQuery = session.createQuery(orderLineUpdateQueryString);
+			orderLineUpdateQuery.setString("value",status);
+			orderLineUpdateQuery.setLong("id",entityId);
+			orderLineUpdateQuery.executeUpdate();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing bulk update ", ex);
