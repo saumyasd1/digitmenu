@@ -2,20 +2,22 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.attachmentinfoGrid',
     itemId:'AttachmentInfoGriditemId',
+    controller:'webFormMain',
 	emptyText:'<div align=center> No records found.Please try with different search values.</div>',
     initComponent : function(){
         Ext.apply(this,{
             columns : this.buildColumns(),
 			columnLines:true,
-			layout:'fit'
+			layout:'fit',
+			listeners:{
+				'cellclick':'onAttachmentGridCellClick'
+			}
         });
         this.callParent(arguments);
     },
     buildColumns : function(){
         return [{
-        	text : 'S.No.',
-          	flex :1,
-            dataIndex:'sn'
+        	xtype:'rownumberer'
         },{
             text : 'File Name',
             flex :1,
@@ -26,6 +28,14 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             flex :1,
             data : '',
 			dataIndex:'fileType'
+        },
+        {
+            text : 'Delete',
+            width :45,
+            data : '',
+            renderer:function(v,cell,record){
+					return '<div><img class="viewattachment" src="' + deleteImageSrc + '" /></div>';
+        }
         }];
     }
 });
