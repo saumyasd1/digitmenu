@@ -260,7 +260,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Freight Terms',
         dataIndex: 'freightTerms',
         width: 130,
-        editor: 'textfield'
+        editor: {
+                xtype: 'combo',
+                displayField: 'variableFieldName',
+                valueField: 'variableFieldName',
+                store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
+            }
     }, {
         text: 'CSR',
         dataIndex: 'csr',
