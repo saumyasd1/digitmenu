@@ -1,7 +1,12 @@
 package com.avery.storage.entities;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.sql.Blob;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,11 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.ws.rs.GET;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -27,7 +33,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
@@ -38,7 +47,6 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.service.OrderQueueService;
-import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -414,4 +422,92 @@ public class OrderQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
+	@POST
+    @Path("/attachments/{orderid}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response callServicePostMultipart(@Context UriInfo uriInfo,
+            @Context HttpHeaders hh,@PathParam("orderid") String orderid, FormDataMultiPart formParams) {
+        try {
+            return Response.ok(
+                    processRequest(uriInfo.getQueryParameters(),
+                            uriInfo.getPathParameters(), formParams, hh))
+                    .build();
+
+        }catch(WebApplicationException wae){
+            throw wae;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new WebApplicationException(Response
+                    .status(Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
+        }
+    }
+    
+    public String processRequest(MultivaluedMap<String, String> queryMap,
+            MultivaluedMap<String, String> pathParamMap,
+            FormDataMultiPart formParams, HttpHeaders headers) throws Exception {
+
+        // fetch transaction id which we will execute and a custom
+        // transactionPID will be used
+        String transactionId = pathParamMap.getFirst("orderid");
+        
+        Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
+
+        // Usually each value in fieldsByName will be a list of length 1.
+        // Assuming each field in the form is a file, just loop through them.
+
+        String baseLocation = null;
+        FileOutputStream outstream = null;
+        String fileName = null;
+        
+        for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
+            String field = entry.getKey();
+            FormDataBodyPart formdata = entry.getValue().get(0);
+            try {
+                if (formdata != null) {
+                    InputStream stream = ((FormDataBodyPart) formParams
+                            .getField(field)).getEntityAs(InputStream.class);
+                    fileName = ((FormDataBodyPart) formParams.getField(field))
+                            .getContentDisposition().getFileName();
+                    if(fileName.contains("/"))
+                        throw new WebApplicationException(Response
+                                .status(Status.BAD_REQUEST).entity("file name is invalid").build());
+                    
+                    OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
+                    Blob blob = new SerialBlob(IOUtils.toByteArray(stream));
+                    orderFileAttachment.setFileData(blob);
+                    
+                    
+                    baseLocation = "E://Attachment";
+                    File folder = new File(baseLocation);
+                    if (!folder.exists()) {
+                        folder.mkdirs();
+                    }
+                    outstream = new FileOutputStream(new File(baseLocation
+                            + File.separator + fileName));
+                    int read = 0;
+                    byte[] bytes = new byte[1024];
+    
+                    while ((read = stream.read(bytes)) != -1) {
+                        outstream.write(bytes, 0, read);
+                    }
+                    
+                    System.out.println("Done!");
+    
+                    
+                }
+            }catch(WebApplicationException wae){
+                throw wae;
+            } catch (Exception e) {
+                e.printStackTrace();
+                // file is not available so execute process flow without file.
+            }finally{
+                if(outstream != null)
+                    outstream.close();
+            }
+        }
+        
+      
+        return "";
+    }
 }
