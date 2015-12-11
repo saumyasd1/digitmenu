@@ -295,12 +295,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Artwork Hold',
         dataIndex: 'artworkhold',
         width: 84,
-        editor: 'checkbox'
+        editor: 'checkbox',
+        renderer: function(value) {
+            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        }
     }, {
         text: 'Artwork Work Attachment',
         dataIndex: 'artworkworkattachment',
         width: 110,
-        editor: 'checkbox'
+        editor: 'checkbox',
+        renderer: function(value) {
+            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        }
     }, {
         text: 'Variable Data Breakdown',
         dataIndex: 'variableDataBreakdown',
@@ -363,12 +369,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Shipping Hold',
         dataIndex: 'shippinghold',
         width: 83,
-        editor: 'checkbox'
+        editor: 'checkbox',
+        renderer: function(value) {
+            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        }
     }, {
         text: 'Production Hold',
         dataIndex: 'productionhold',
         width: 77,
-        editor: 'checkbox'
+        editor: 'checkbox',
+        renderer: function(value) {
+            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        }
     }, {
         text: 'Split Shipset',
         dataIndex: 'splitshipset',
@@ -393,7 +405,30 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Waive MOQ',
         dataIndex: 'waiveMOQ',
         width: 59,
-        editor: 'checkbox'
+        editor: {
+        	xtype:'checkbox',
+        	listeners:{
+        		'render': function(obj) {
+            		var value=obj.ownerCt.context.record.get('waiveMOQ');
+                	if(value=='Y' || value=='y')
+                		obj.setValue(true);
+                	else
+                		obj.setValue(false);
+                },
+        		'change':function(obj,newValue,oldValue){
+        		  	if(newValue==true)
+                		obj.setNewValue('Y');
+        		  	else
+        		  		obj.setNewValue('N');
+        		}
+        	}
+        },
+        renderer: function(value) {
+        	if(value=='Y' || value=='y')
+        		return "<input type='checkbox' checked>";
+        	else
+        		return "<input type='checkbox' disabled>";
+        }
     }, {
         text: 'APO Type',
         dataIndex: 'apoType',
@@ -439,12 +474,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'ATO Required(Y/N)',
         dataIndex: 'atoValidationFlag',
         width: 79,
-        cls: 'custom-column'
+        cls: 'custom-column',
+       	renderer:function(v){
+			if(v=='Y'){
+				return '<div><span data-qtip="YES" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="No" />'+v+'</span></div>';;
+    }
     }, {
         text: 'ATO Mandatory(S/F)',
         dataIndex: 'mandatoryVariableDataFieldFlag',
         width: 120,
-        cls: 'custom-column'
+        cls: 'custom-column',
+       	renderer:function(v){
+			if(v=='S'){
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
+    }
     },{
         text: 'Bulk',
         dataIndex: 'bulk',
@@ -454,28 +501,58 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Bulk Sample(S/F)',
         dataIndex: 'bulkSampleValidationFlag',
         width: 89,
-        cls: 'custom-column'
+        cls: 'custom-column',
+    	renderer:function(v){
+			if(v=='F'){
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';;
+    }
     }, {
         text: 'Cust.PO#',
         dataIndex: 'customerPOFlag',
         width: 60,
-        cls: 'custom-column'
+        cls: 'custom-column',
+      	renderer:function(v){
+			if(v=='S'){
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
+    }
     }, {
         text: 'Dup.PO(S/F)',
         dataIndex: 'duplicatePOFlag',
         width: 60,
-        cls: 'custom-column'
+        cls: 'custom-column',
+       	renderer:function(v){
+			if(v=='S'){
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
+    }
     }, {
         text: 'Size Page(S/F)',
         dataIndex: 'htlSizePageValidationFlag',
         width: 100,
-        cls: 'custom-column'
+        cls: 'custom-column',
+       	renderer:function(v){
+			if(v=='S'){
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
+    }
     }, {
         text: 'MOQ(S/F)',
         dataIndex: 'moqValidationFlag',
         width: 100,
         editor: 'textfield',
-        cls: 'custom-column'
+        cls: 'custom-column',
+       	renderer:function(v){
+			if(v=='F'){
+				return '<div><span data-qtip="Failure" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="Success" />'+v+'</span></div>';;
+    }
     }],
     initComponent: function() {
         var me = this;
