@@ -112,25 +112,19 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}
     },
     saveOrderLine:function(){
+    	var mask = Ext.getBody().mask('Loading');
+    	mask.dom.style.zIndex = '99999';
     	var grid=this.getView(),me=this,insertAddess=false;
     	var store=grid.store,
     	parms ='';
     	var madatoryFieldEmpty=false,
     	currentRecord=null,
     	i=0, isAddressModified=false;
-    	for(i=0;i<store.getCount();i++){
-    		currentRecord=store.getAt(i);
-    		if(currentRecord.get('oracleBilltoSiteNumber')=='' || currentRecord.get('oracleShiptoSiteNumber')==''){
-    			madatoryFieldEmpty=true;
-    			break;
-    		}
-    		if(i==0){
-    			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
-    				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
-    				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
-    				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber'))
-    					isAddressModified=true;
-    		}
+    	var i=0;
+    	var updatedRecords=store.getModifiedRecords();
+    	Ext.each(updatedRecords,function(currentRecord){
+    		debugger;
+    		i=store.find('id',currentRecord.id);
     		if(currentRecord.dirty){
     			var obj=currentRecord.getChanges( ) ;
         		obj.id=currentRecord.id;
@@ -141,11 +135,23 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         			parms=parms+'@@@'+Ext.
         			encode(obj);
     		}
-    	}
-    	if(madatoryFieldEmpty){
-    		alert('Either the Oracle BilltoSite or Oracle shiptoSite number is empty at record number '+parseInt(i)+1+'. Please fill the value before proceeding.');
-    		return false;
-    	}
+    		if(i==0){
+    			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
+    				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
+    				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
+    				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber')){
+    				if(currentRecord.get('oracleBilltoSiteNumber')!='' && currentRecord.get('oracleBilltoSiteNumber')!='')
+    					isAddressModified=true;
+    			}
+    		}
+    		var obj=currentRecord.getChanges( ) ;
+    		obj.id=currentRecord.id;
+    		if(parms=='')
+    			parms=parms+Ext.encode(obj);
+    		else 
+    			parms=parms+'@@@'+Ext.encode(obj);
+    		  
+    		 });
     	var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(parms)+'}';
     	Ext.Ajax.request({
     		method:'PUT',
