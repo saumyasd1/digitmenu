@@ -72,9 +72,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
 				if(v=='Email')
-					return '<div><img src="' + MailIcon + '" /></div>';
+					return '<div><img data-qtip="Email" src="' + MailIcon + '" /></div>';
 				else
-					return '<div><img src="' + BrowseIcon + '" /></div>';
+					return '<div><img data-qtip="Web" src="' + BrowseIcon + '" /></div>';
         }
         },
         {
