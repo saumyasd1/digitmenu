@@ -76,7 +76,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			String OrderSource=searchMap.get("OrderSource");
 			if(OrderSource!=null && !"".equals(OrderSource)){
-				criteria.add(Restrictions.ilike("orderSource",OrderSource,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.eq("orderSource",OrderSource));
 			}
 			String ProductLineType=searchMap.get("ProductLineType");
 			if(ProductLineType!=null && !"".equals(ProductLineType)){
