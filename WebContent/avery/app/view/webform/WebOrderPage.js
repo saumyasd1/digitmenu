@@ -31,7 +31,6 @@ Ext.define('AOC.view.webform.WebOrderPage',{
             }];
         },
         buildItem:function(){
-        	var me=this;
         	return [{
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
@@ -39,19 +38,16 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         	}, {
  				xtype:'panel',
  				layout:'vbox',
- 				
  				items:[
 				{
 					 xtype:'weborderform',
-				    //height: 200,
-				    margin:'5 5 5 5',
-				    width:550,
+				     margin:'5 5 5 5'
 				},
 				 {
 					 xtype:'attachmentinfoGrid',
 				     height: 200,
 				     margin:'5 5 5 5',
-				     width:550,
+				     width:550
 				 }]
     		  }]
         }
