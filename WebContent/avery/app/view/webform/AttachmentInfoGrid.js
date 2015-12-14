@@ -3,7 +3,6 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
     alias : 'widget.attachmentinfoGrid',
     itemId:'AttachmentInfoGriditemId',
     controller:'webFormMain',
-	emptyText:'<div align=center> No records found.Please try with different search values.</div>',
     initComponent : function(){
         Ext.apply(this,{
             columns : this.buildColumns(),
@@ -34,7 +33,7 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             width :45,
             data : '',
             renderer:function(v,cell,record){
-					return '<div><img class="viewattachment" src="' + deleteImageSrc + '" /></div>';
+					return '<div><img class="deleteClass" src="' + deleteImageSrc + '" /></div>';
         }
         }];
     }
