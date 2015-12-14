@@ -165,11 +165,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.description,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.description
         		},
         		{
                 	xtype :'tbspacer',
@@ -188,8 +185,6 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            width : 500,
   		            labelSeparator : '',
   		            labelAlign:'right',
-  		            //maxLength : '50',
-  		            //minLength:'6',
   		            enforceMaxLength: true,
   		            value:me.rec==null?'':me.rec.shippingInstruction,
   		            listeners : {
@@ -220,11 +215,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.billToSiteNumber,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.billToSiteNumber
         		},
         		{
                 	xtype :'tbspacer',
@@ -273,9 +265,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.billContact,
+  		            value:me.rec==null?'':me.rec.billContact
         		},
         		{
                 	xtype :'tbspacer',
@@ -324,11 +315,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.billToPhone1,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.billToPhone1
         		},
         		{
                 	xtype :'tbspacer',
@@ -378,9 +366,7 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelAlign:'right',
   		            maxLength : '50',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.billToPhone2,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.billToPhone2
         		},
         		{
                 	xtype :'tbspacer',
@@ -428,12 +414,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            width : 400,
   		            labelSeparator : '',
   		            labelAlign:'right',
-  		            //maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.address1,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.address1
         		},
         		{
                 	xtype :'tbspacer',
@@ -480,11 +462,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.address3,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.address3
         		},
         		{
                 	xtype :'tbspacer',
@@ -531,11 +510,8 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		           // minLength:'6',
   		            enforceMaxLength: true,
-  		            value:me.rec==null?'':me.rec.city,
-  		          
-  		         
+  		            value:me.rec==null?'':me.rec.city
         		},
         		{
                 	xtype :'tbspacer',
@@ -554,8 +530,6 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            width : 500,
   		            labelSeparator : '',
   		            labelAlign:'right',
-  		            //maxLength : '50',
-  		            //minLength:'6',
   		            enforceMaxLength: true,
   		            value:me.rec==null?'':me.rec.state,
   		            listeners : {
@@ -584,8 +558,6 @@ Ext.define('AOC.view.address.CreateAddressManage',{
   		            width : 400,
   		            labelSeparator : '',
   		            labelAlign:'right',
-  		           // maxLength : '50',
-  		            //minLength:'6',
   		            enforceMaxLength: true,
   		            value:me.rec==null?'':me.rec.zip,
   		            listeners : {
