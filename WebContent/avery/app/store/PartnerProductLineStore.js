@@ -4,15 +4,6 @@ Ext.define('AOC.store.PartnerProductLineStore', {
 	autoLoad : true,
 	remoteSort: true,
 	totalCount:'total',
-	storeId:'PartnerProductLineStoreStoreId',
-	proxy: {
-        type: 'ajax',
-       //   url : 'custom/AOC/app/data/PartnerProductLine.json',
-      
-        reader: {
-            type: 'json',
-            rootProperty: 'partnerproductline'
-        }
-    }
+	storeId:'PartnerProductLineStoreStoreId'
 });
 
