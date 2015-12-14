@@ -1,6 +1,5 @@
 package com.avery.storage.entities;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -46,6 +45,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
+import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -443,71 +443,111 @@ public class OrderQueue extends MainAbstractEntity{
         }
     }
     
-    public String processRequest(MultivaluedMap<String, String> queryMap,
-            MultivaluedMap<String, String> pathParamMap,
-            FormDataMultiPart formParams, HttpHeaders headers) throws Exception {
+	public String processRequest(MultivaluedMap<String, String> queryMap,
+			MultivaluedMap<String, String> pathParamMap,
+			FormDataMultiPart formParams, HttpHeaders headers) throws Exception {
 
-        // fetch transaction id which we will execute and a custom
-        // transactionPID will be used
-        String transactionId = pathParamMap.getFirst("orderid");
-        
-        Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
+		// fetch transaction id which we will execute and a custom
+		// transactionPID will be used
+		String transactionId = pathParamMap.getFirst("orderid");
+		Long partnerid = Long.parseLong(formParams.getField("partnerName").getValue());
+		String emailid = formParams.getField("email").getValue();
+		String emailBody = formParams.getField("emailBody").getValue();
+		String subjectline = formParams.getField("subject").getValue();
+		String productLineType = formParams.getField("productLineType").getValue();
+		String rboName = formParams.getField("rboName").getValue();
+		Date date = new Date();
+		
+		
+		Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
+		Long productLineTypeId = Long.parseLong(productLineType);
+		OrderQueue orderQueue = new OrderQueue();
+		Partner partner = new Partner();
+		partner.setId(partnerid);
+		ProductLine productLine = new ProductLine();
+		productLine.setId(productLineTypeId);
+		orderQueue.setPartner(partner);
+		orderQueue.setSenderEmailID(emailid);
+		orderQueue.setSubject(subjectline);
+		orderQueue.setRboName(rboName);
+		orderQueue.setProductLine(productLine);
+		orderQueue.setOrderSource("Web");
+		orderQueue.setSubmittedDate(date);
+		orderQueue.setCreatedDate(date);
+		orderQueue.setStatus("16");
+		orderQueue.setEmailBody(emailBody);
+		
+		
+		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+				.getInstance().getBean("orderQueueService");
+		
+		Long orderqueueid = orderQueueService.create(orderQueue);
+		
+		orderQueue.setId(orderqueueid);
+		
+	
+	    // Usually each value in fieldsByName will be a list of length 1.
+	    // Assuming each field in the form is a file, just loop through them.
 
-        // Usually each value in fieldsByName will be a list of length 1.
-        // Assuming each field in the form is a file, just loop through them.
-
-        String baseLocation = null;
-        FileOutputStream outstream = null;
-        String fileName = null;
-        
-        for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
-            String field = entry.getKey();
-            FormDataBodyPart formdata = entry.getValue().get(0);
-            try {
-                if (formdata != null) {
-                    InputStream stream = ((FormDataBodyPart) formParams
-                            .getField(field)).getEntityAs(InputStream.class);
-                    fileName = ((FormDataBodyPart) formParams.getField(field))
-                            .getContentDisposition().getFileName();
-                    if(fileName.contains("/"))
-                        throw new WebApplicationException(Response
-                                .status(Status.BAD_REQUEST).entity("file name is invalid").build());
-                    
-                    OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
-                    Blob blob = new SerialBlob(IOUtils.toByteArray(stream));
-                    orderFileAttachment.setFileData(blob);
-                    
-                    
-                    baseLocation = "E://Attachment";
-                    File folder = new File(baseLocation);
-                    if (!folder.exists()) {
-                        folder.mkdirs();
-                    }
-                    outstream = new FileOutputStream(new File(baseLocation
-                            + File.separator + fileName));
-                    int read = 0;
-                    byte[] bytes = new byte[1024];
-    
-                    while ((read = stream.read(bytes)) != -1) {
-                        outstream.write(bytes, 0, read);
-                    }
-                    
-                    System.out.println("Done!");
-    
-                    
-                }
-            }catch(WebApplicationException wae){
-                throw wae;
-            } catch (Exception e) {
-                e.printStackTrace();
-                // file is not available so execute process flow without file.
-            }finally{
-                if(outstream != null)
-                    outstream.close();
-            }
-        }
-        
-      
-        return "";
-    }
+		String baseLocation = null;
+		FileOutputStream outstream = null;
+		String fileName = null;
+		String type = null;
+		String fileExtension = null;
+		String fileContentType = null;
+		
+		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
+		    String field = entry.getKey();
+		    FormDataBodyPart formdata = entry.getValue().get(0);
+		    try {
+				if (formdata != null) {
+					InputStream stream = ((FormDataBodyPart) formParams
+							.getField(field)).getEntityAs(InputStream.class);
+					String value = ((FormDataBodyPart) formParams
+							.getField(field)).getValueAs(String.class);
+					fileName = ((FormDataBodyPart) formParams.getField(field))
+							.getContentDisposition().getFileName();
+					type = ((FormDataBodyPart) formParams.getField(field))
+							.getMediaType().toString();
+					
+					if(!type.equalsIgnoreCase(MediaType.TEXT_PLAIN)){
+					
+					fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+					
+					if (field.equalsIgnoreCase("orderFileType"))
+							{
+						fileContentType = "Order";
+					} else {
+						fileContentType = "AdditionalData";
+					}
+					OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
+					Blob blob = new SerialBlob(IOUtils.toByteArray(stream));
+					orderFileAttachment.setFileData(blob);
+					orderFileAttachment.setOrderQueue(orderQueue);
+					orderFileAttachment.setPartnerObj(partner);
+					orderFileAttachment.setReceivedDate(date);
+					orderFileAttachment.setFileName(fileName);
+					orderFileAttachment.setFileExtension(fileExtension);
+					orderFileAttachment.setFileContentType(fileContentType);
+					orderFileAttachment.setCreatedDate(new Date());
+					OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+							.getInstance().getBean("orderFileAttachmentService");
+					orderFileAttachmentService.create(orderFileAttachment);
+					}
+				}
+			}catch(WebApplicationException wae){
+				throw wae;
+			} catch (Exception e) {
+				e.printStackTrace();
+				// file is not available so execute process flow without file.
+			}finally{
+				if(outstream != null)
+					outstream.close();
+			}
+		}
+		orderQueue = orderQueueService.read(orderqueueid);
+		orderQueue.setStatus("1");
+		orderQueueService.update(orderQueue);
+		return "{\"success\":true}";
+	}
 }
