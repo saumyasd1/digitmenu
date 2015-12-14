@@ -123,7 +123,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var i=0;
     	var updatedRecords=store.getModifiedRecords();
     	Ext.each(updatedRecords,function(currentRecord){
-    		debugger;
     		i=store.find('id',currentRecord.id);
     		if(currentRecord.dirty){
     			var obj=currentRecord.getChanges( ) ;
