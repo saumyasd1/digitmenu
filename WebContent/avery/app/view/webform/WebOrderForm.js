@@ -1,3 +1,10 @@
+Ext.apply(Ext.form.VTypes, {
+             excelUpload: function(val, field) {                              
+                                 var fileName = /^.*\.(gif|png|bmp|jpg|jpeg)$/i;
+                                 return fileName.test(val);
+                           },                 
+             excelUploadText: 'Image must be in .gif,.png,.bmp,.jpg,.jpeg format'
+  });
 Ext.define('AOC.view.webform.WebOrderForm',{
 	extend:'Ext.form.Panel',
 	alias:'widget.weborderform',
@@ -6,7 +13,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	bodyPadding: 5,
 	width: 700,
 	border:false,
-	url: applicationContext+'/rest/orders/attachments/1',
 	 layout: {
         type: 'vbox'
     },
@@ -14,8 +20,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	var me=this;
     	this.fieldArray = [],
             Ext.apply(this,{
-                items:this.buildItem(),
-                //buttons:this.buildButtons()
+                items:this.buildItem()
             });
             this.callParent(arguments);
         },
@@ -48,18 +53,21 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				displayField:'rboName',
         				name:'rboName',
         				valueField:'rboName',
-        				disabled:true
+        				disabled:true,
+        				listeners:{
+        					'change':'onRBOChange'
+        				}
         			},
         			{
                     	xtype :'tbspacer',
-                    	width :20
+                    	width :15
             		},
         			{
         				xtype:'combo',
         				reference:'productLineCombo',
         				displayField:'productLineType',
-        				valueField:'productLineType',
-        				editable:false,
+        				valueField:'id',
+        				editable:true,
         				name:'productLineType',
         				emptyText:'Product Line',
         				disabled:true,
@@ -76,19 +84,16 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			itemId:'PNItemId',
         			labelAlign:'right',
         			name: 'email',
+        			reference:'email',
+        			vtype:'email',
         			fieldLabel:'Sender Email',
         			value:'',
         		    labelSeparator:'',
         		    disabled:true,
-                    allowBlank: true,
+                    allowBlank: false,
                     labelWidth : 100,
 		            width : 500,
-		            labelSeparator : '',
-		            labelAlign:'right',
-		           // minLength:'4',//added check for minimum user name length
-		            maxLength : '50',
-		            blankText : 'Name field is required',
-		            enforceMaxLength: true
+		            labelSeparator : ''
 		        
         		},
         		{
@@ -100,6 +105,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			itemId:'RNtemId',
         			labelAlign:'right',
         			name: 'subject',
+        			reference:'subject',
         			fieldLabel:'Email Subject',
         			value:'',
         			labelSeparator:'',
@@ -118,7 +124,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			xtype:'textareafield',
         			itemId:'AItemId',
         			labelAlign:'right',
-        			name: 'address',
+        			name: 'emailBody',
+        			reference:'emailBody',
         			fieldLabel:'Email Body',
         			value:'',
         			labelSeparator:'',
@@ -136,35 +143,21 @@ Ext.define('AOC.view.webform.WebOrderForm',{
                 	xtype :'tbspacer',
                 	width :10
         		},
-        		{   
-        			xtype:'datefield',
-        			itemId:'ODItemId',
-        			labelAlign:'right',
-        			name: 'orderDate',
-        			disabled:true,
-        			fieldLabel:'Order Date',
-        			labelSeparator:'',
-                    allowBlank: true,
-                    labelWidth : 100,
-  		            width : 500,
-  		            labelSeparator : '',
-  		            labelAlign:'right',
-  		            maxLength : '50',
-   		            enforceMaxLength: true
-        		},
         		{
                 	xtype :'tbspacer',
                 	width :10
         		},
         		{ 
         			xtype : 'fileuploadfield', 
-        			name : 'orderFileType', 
+        			name : 'orderFileType',
+        			reference:'orderFileType',
         			fieldLabel : 'Order File Type', 
         			labelSeparator:'',
         			labelWidth : 100,
         			width : 500,
         			allowBlank : true, 
         			disabled:true,
+        			//vtype:'excelUpload',
         			forceSelection : true,
         			 enforceMaxLength: true,
         			 listeners:{
@@ -177,9 +170,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         		},
         		{   
         			xtype:'fileuploadfield',
-        			itemId:'AItemId',
         			labelAlign:'right',
         			name: 'attachment1',
+        			reference: 'attachment1',
         			fieldLabel:'Attachments',
         			labelSeparator:'',
                     allowBlank: true,
@@ -188,14 +181,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            width : 500,
   		            labelSeparator : '',
   		            labelAlign:'right',
-  		            maxLength : '50',
-  		            enforceMaxLength: true,
-  		             multiple: true, // multiupload (multiple attr)
   		            listeners:{
      				 'change':'onAttachemnetChange'
      			 }
         		}
                ]
-               
         }
 });
