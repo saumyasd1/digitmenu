@@ -94,7 +94,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     },{
-        text: 'PO #',
+        text: 'PO #<font color=red>*</font>',
         dataIndex: 'poNumber',
         width: 100,
         editor: 'textfield',
@@ -262,7 +262,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 93,
         hidden:true
     }, {
-        text: 'Sold To RBO#',
+        text: 'Sold To RBO#<font color=red>*</font>',
         dataIndex: 'soldTORBONumber',
         width: 100,
         editor: 'textfield',
@@ -274,7 +274,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }
         }
     }, {
-        text: 'Bill to Site #',
+        text: 'Bill to Site #<font color=red>*</font>',
         dataIndex: 'oracleBilltoSiteNumber',
         width: 100,
         editor: 'textfield',
@@ -286,7 +286,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }
         }
     }, {
-        text: 'Ship to Site #',
+        text: 'Ship to Site #<font color=red>*</font>',
         dataIndex: 'oracleShiptoSiteNumber',
         width: 100,
         editor: 'textfield',
@@ -313,7 +313,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 115,
         editor: 'textfield'
     }, {
-        text: 'Avery Item #',
+        text: 'Avery Item #<font color=red>*</font>',
         dataIndex: 'averyItemNumber',
         width: 88,
         editor: 'textfield',
@@ -365,7 +365,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 93,
         editor: 'textfield'
     }, {
-        text: 'Customer Ordered Qty.',
+        text: 'Customer Ordered Qty.<font color=red>*</font>',
         dataIndex: 'customerOrderedQty',
         width: 106,
         editor: 'textfield',
@@ -377,7 +377,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }
         } 
     }, {
-        text: 'Ordered Date ',
+        text: 'Ordered Date<font color=red>*</font> ',
         dataIndex: 'orderedDate',
         width: 90,
         xtype:'datecolumn',
