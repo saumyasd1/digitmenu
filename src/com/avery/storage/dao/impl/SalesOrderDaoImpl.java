@@ -145,7 +145,7 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 		try{
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SalesOrder.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			criteria.add(Restrictions.eq("orderQueueID", orderID));
 			int totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 			return totalCount;
 		}catch (WebApplicationException ex) {
