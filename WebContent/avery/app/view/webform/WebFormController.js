@@ -70,10 +70,18 @@ Ext.define('AOC.view.webform.WebFormController', {
     			 			});
     },
     onAttachemnetChange:function(obj,value){
+    	if(value!=null && value!=''){
     	Ext.getBody().mask('Loading......');
     	var form=this.getView();
 		   var value=value.substring(value.lastIndexOf("\\"));
 		    value=value.replace("\\"," ");
+		    var extension=value.substring(value.lastIndexOf(".")+1);
+		    	if(extension!='pdf'){
+		    		obj.reset( );
+		    		Ext.Msg.alert('',uploadOnlyPdfFileAlert);
+		    		Ext.getBody().unmask();
+		    		return false;
+		    	}
 		   var count=obj.name.replace('attachment','');
 		   var i=parseInt(count)+1;
 		   form.add({
@@ -95,6 +103,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		   this.insertFileInGrid(value,'Attachment',true,count);
 		   obj.hide();
 		   Ext.getBody().unmask();
+    	}
 	 },
 	 insertFileInGrid:function(fileName,fileType,multiAllowed,i){
 		 var AttachmentInfoGriditemId=this.getView().nextSibling('#AttachmentInfoGriditemId');
@@ -131,7 +140,17 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 onOrderFileChange:function(obj,value){
 		 var value=value.substring(value.lastIndexOf("\\"));
 		    value=value.replace("\\"," ");
-		   this.insertFileInGrid(value,'Order File Type',false);
+		    if(value!=null && value!=''){
+			    var extension=value.substring(value.lastIndexOf(".")+1);
+			    if(obj.orderSchemaType=='Excel'){
+			    	if(extension!='xls' && extension!='xlsx'){
+			    		obj.reset( );
+			    		Ext.Msg.alert('',uploadOnlyExcelFileAlert);
+			    		return false;
+			    	}
+			    }
+			    this.insertFileInGrid(value,'Order File Type',false);
+		    }
 	 },
 	 onAttachmentGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 	    	if(e.target.className=='deleteClass'){
@@ -161,6 +180,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 var record=store.getById(newValue);
 			 var orderSchemaType=record.get('orderSchemaType'),attachmentRequired=record.get('attachmentRequired');
 			 this.getView().lookupReference('subject').enable();
+			 this.getView().lookupReference('orderFileType').orderSchemaType=orderSchemaType;
 			 if(!attachmentRequired){
 				 this.getView().lookupReference('attachment1').hide();
 				 this.getView().lookupReference('attachment1').allowBlank=true;
