@@ -92,5 +92,18 @@ Ext.define('AOC.util.Helper',{
 }else
   return null;
           	return store;
+    },
+    getOrderLineEditor:function(record,value){
+    	var store=record.store;
+    	var i=store.find('id',record.id);
+    	if(i==0 && (record.isModified(value)?record.getModified(value)=='':record.get(value)=='')){
+        return Ext.create('Ext.grid.CellEditor', {
+            field: {
+                xtype: 'textfield',
+                allowBlank: false
+            }
+        });
+    }else
+    	return false;
     }
 });
