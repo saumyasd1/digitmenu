@@ -4,6 +4,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     itemId:'OrderQueueGridItemId',
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	controller: 'orderqueue',
+	requires:['Ext.form.action.StandardSubmit'],
     initComponent : function(){
 	var me=this;
 	this.fieldArray = [];
