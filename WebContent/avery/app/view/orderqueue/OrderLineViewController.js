@@ -124,22 +124,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var updatedRecords=store.getModifiedRecords();
     	Ext.each(updatedRecords,function(currentRecord){
     		i=store.find('id',currentRecord.id);
-    		if(currentRecord.dirty){
-    			var obj=currentRecord.getChanges( ) ;
-        		obj.id=currentRecord.id;
-        		if(parms==''){
-        			parms=parms+Ext.encode(obj);
-        		}
-        		else 
-        			parms=parms+'@@@'+Ext.
-        			encode(obj);
-    		}
     		if(i==0){
-    			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
-    				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
-    				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
-    				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber')){
-    				if(currentRecord.get('oracleBilltoSiteNumber')!='' && currentRecord.get('oracleBilltoSiteNumber')!='')
+    				if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleBilltoSiteNumber')){
     					isAddressModified=true;
     			}
     		}
@@ -239,7 +225,10 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
      		    	var jsonValue=Ext.decode(response.responseText);
  		        	var status=jsonValue.status;
  		        	if(status=='success'){
- 		        		proceed=true;
+ 		        		proceed=false;
+ 		        		me.getView().store.load();
+ 		        		//me.getView().lookupReference('salesOrderbutton').setText(viewSalesOrderBtnText);
+ 		        		Ext.Msg.alert('',salesOrderCreationMsg);
  		        	}
  		        	else{
  		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
@@ -277,8 +266,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
  				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
  				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
 		   owner.getLayout().setActiveItem(2); 
-		   Ext.getBody().unmask();
     	}
+    	Ext.getBody().unmask();
     },
     updateOrderLine:function(editor, context, eOpts){
     	var ctx = context,me=this,
@@ -331,5 +320,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  });
+    },
+    cancelOrder:function(){
+    	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
+        win.show();
     }
 })
