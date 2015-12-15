@@ -125,7 +125,26 @@ public class OrderQueue extends MainAbstractEntity{
 	@OneToMany(mappedBy = "orderQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<OrderFileAttachment> orderFileAttachment;
 	
+	private transient int orderLineCount;
 	
+	private transient int salesOrderCount;
+	
+	public int getOrderLineCount() {
+		return orderLineCount;
+	}
+
+	public void setOrderLineCount(int orderLineCount) {
+		this.orderLineCount = orderLineCount;
+	}
+
+	public int getSalesOrderCount() {
+		return salesOrderCount;
+	}
+
+	public void setSalesOrderCount(int salesOrderCount) {
+		this.salesOrderCount = salesOrderCount;
+	}
+
 	public Set<OrderFileAttachment> getOrderFileAttachment() {
 		return orderFileAttachment;
 	}
