@@ -77,10 +77,17 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					false);
 			session = getSessionFactory().getCurrentSession();
 			String t=null;
+			boolean insertShipAddress=false,insertBillAddress=false;
 			for(int i=0;i<objArray.length;i++){
 				t=objArray[i];
 				OrderLine orderLine = mapper.readValue(t,OrderLine.class);
 				currentObjId=orderLine.getId();
+				if(i==0 && !orderLine.getOracleBilltoSiteNumber().equals("")){ // check if oracle bill site number is empty, if not then insert  a record in address
+					insertBillAddress=true;
+				}
+				if(i==0 && !orderLine.getOracleShiptoSiteNumber().equals("")){ // check if oracle ship site number is empty, if not then insert  a record in address
+					insertShipAddress=true;
+				}
 				orderLine=(OrderLine) session.get(OrderLine.class,currentObjId);
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(t);
@@ -88,7 +95,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(i==0 && insertAddress){
-					insertIntoAddress(orderLine);
+					if(insertBillAddress)
+						insertBillAddress(orderLine);
+					if(insertShipAddress)
+						insertShipAddress(orderLine);
 				}
 			}
 		}catch (WebApplicationException ex) {
@@ -130,6 +140,66 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		adrObj.setCreatedBy("Adeptia");
 		adrObj.setCreatedDate(new Date());
 		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+		Partner partnerObj=new Partner();
+		Long partnerId=0L;
+		if(orderLine.getPartnerID()!=null)
+			partnerId=Long.parseLong(orderLine.getPartnerID());
+		partnerObj.setId(partnerId);
+		adrObj.setPartner(partnerObj);
+		session.save(adrObj);
+	}
+	private void insertShipAddress(OrderLine orderLine){
+		Session session = getSessionFactory().getCurrentSession();
+		Address adrObj=new Address();
+		adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
+		adrObj.setAddress1(orderLine.getShipToAddress1());
+		adrObj.setAddress2(orderLine.getShipToAddress2());
+		adrObj.setAddress3(orderLine.getShipToAddress3());
+		adrObj.setCity(orderLine.getShipToCity());
+		adrObj.setCountry(orderLine.getShipToCountry());
+		adrObj.setState(orderLine.getShipToState());
+		adrObj.setFax(orderLine.getShipToFax());
+		adrObj.setPhone1(orderLine.getShipToTelephone());
+		adrObj.setEmail(orderLine.getShipToEmail());
+		adrObj.setContact(orderLine.getShipToContact());
+		adrObj.setShippingMethod(orderLine.getShippingMethod());
+		adrObj.setFreightTerms(orderLine.getFreightTerms());
+		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+		adrObj.setDescription("Inserted By Adeptia");
+		adrObj.setCreatedBy("Adeptia");
+		adrObj.setCreatedDate(new Date());
+		adrObj.setSiteType("S");
+		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+		Partner partnerObj=new Partner();
+		Long partnerId=0L;
+		if(orderLine.getPartnerID()!=null)
+			partnerId=Long.parseLong(orderLine.getPartnerID());
+		partnerObj.setId(partnerId);
+		adrObj.setPartner(partnerObj);
+		session.save(adrObj);
+	}
+	private void insertBillAddress(OrderLine orderLine){
+		Session session = getSessionFactory().getCurrentSession();
+		Address adrObj=new Address();
+		adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
+		adrObj.setAddress1(orderLine.getBillToAddress1());
+		adrObj.setAddress2(orderLine.getBillToAddress2());
+		adrObj.setAddress3(orderLine.getBillToAddress3());
+		adrObj.setCity(orderLine.getBillToCity());
+		adrObj.setCountry(orderLine.getBillToCountry());
+		adrObj.setState(orderLine.getBillToState());
+		adrObj.setFax(orderLine.getBillToFax());
+		adrObj.setPhone1(orderLine.getBillToTelephone());
+		adrObj.setEmail(orderLine.getBillToEmail());
+		adrObj.setContact(orderLine.getBillToContact());
+		adrObj.setShippingMethod(orderLine.getShippingMethod());
+		adrObj.setFreightTerms(orderLine.getFreightTerms());
+		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+		adrObj.setDescription("Inserted By Adeptia");
+		adrObj.setCreatedBy("Adeptia");
+		adrObj.setCreatedDate(new Date());
+		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+		adrObj.setSiteType("B");
 		Partner partnerObj=new Partner();
 		Long partnerId=0L;
 		if(orderLine.getPartnerID()!=null)
