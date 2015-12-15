@@ -19,7 +19,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			    plugins: {
 			        ptype: 'cellediting',
 			        clicksToEdit: 1
-			        
 			    },
 			    listeners:{
 			    	 helper:AOC.util.Helper,
@@ -60,120 +59,179 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 170,
             editor: 'textfield'
         }, {
+            text: 'Ship to Site #',
+            dataIndex: 'oracleShiptoSiteNumber',
+            width: 100,
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
+        },{
             text: 'Ship To Contact',
             dataIndex: 'shipToContact',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Address 1',
             dataIndex: 'shipToAddress1',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Address 2',
             dataIndex: 'shipToAddress2',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Address 3',
             dataIndex: 'shipToAddress3',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To City',
             dataIndex: 'shipToCity',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Country',
             dataIndex: 'shipToCountry',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To State',
             dataIndex: 'shipToState',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Zip',
             dataIndex: 'shipToZip',
             width: 85,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Email',
             dataIndex: 'shipToEmail',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Fax',
             dataIndex: 'shiplToFax',
             width: 130,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Ship To Telephone',
             dataIndex: 'shipToTelephone',
             width: 130,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
         }, {
             text: 'Bill To Customer',
             dataIndex: 'billToCustomer',
             width: 170,
             editor: 'textfield'
         }, {
+        	xtype:'gridcolumn',
+            text: 'Bill to Site #',
+            dataIndex: 'oracleBilltoSiteNumber',
+            width: 100,
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
+        },{
             text: 'Bill To Contact',
             dataIndex: 'billToContact',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Address 1',
             dataIndex: 'billToAddress1',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Address 2',
             dataIndex: 'billToAddress2',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Address 3',
             dataIndex: 'billToAddress3',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To City',
             dataIndex: 'billToCity',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Country',
             dataIndex: 'billToCountry',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To State',
             dataIndex: 'billToState',
             width: 112,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Zip',
             dataIndex: 'billToZip',
             width: 85,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Email',
             dataIndex: 'billToEmail',
             width: 170,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Fax',
             dataIndex: 'billToFax',
             width: 130,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Bill To Telephone',
             dataIndex: 'billToTelephone',
             width: 130,
-            editor: 'textfield'
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            }
         }, {
             text: 'Special Instruction',
             dataIndex: 'specialInstruction',
@@ -189,17 +247,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'soldTORBONumber',
             width: 100,
             editor: 'textfield'
-        }, {
-            text: 'Bill to Site #',
-            dataIndex: 'oracleBilltoSiteNumber',
-            width: 100,
-            editor: 'textfield'
-        }, {
-            text: 'Ship to Site #',
-            dataIndex: 'oracleShiptoSiteNumber',
-            width: 100,
-            editor: 'textfield'
-        }, {
+        },   {
             text: 'Shipping Method',
             dataIndex: 'shippingMethod',
             width: 170,
