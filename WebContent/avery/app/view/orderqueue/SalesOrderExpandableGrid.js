@@ -382,16 +382,17 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         },'->', {
             xtype: 'button',
             text: cancelSalesOrderText,
+            hidden: true,
             handler: 'cancelSalesOrderLine'
         }, {
             xtype: 'tbspacer',
             width: 15,
-            hidden:AOC.config.Runtime.getHideSubmitToSystemButton(),
+            hidden:true,
             reference:'lastTab'
         }, {
             xtype: 'button',
             reference:'submitOrder',
-            hidden:AOC.config.Runtime.getHideSubmitToSystemButton(),
+            hidden:true,
             text: salesOrdersumbitText,
             handler: 'submitOrder'
         }]
