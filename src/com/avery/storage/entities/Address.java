@@ -111,7 +111,81 @@ public class Address extends MainAbstractEntity {
 	@Column(name = "ShippingInstructions")
     private String shippingInstructions;  
 	
+	@Column(name = "SiteNumber")
+    private String siteNumber; 
 	
+	public String getSiteNumber() {
+		return siteNumber;
+	}
+
+	public void setSiteNumber(String siteNumber) {
+		this.siteNumber = siteNumber;
+	}
+	@Column(name = "Contact")
+    private String Contact;  
+	
+	@Column(name = "Phone1")
+    private String Phone1;  
+	
+	@Column(name = "Phone2")
+    private String Phone2;  
+	
+	@Column(name = "Fax")
+    private String Fax;  
+	
+	@Column(name = "Email")
+    private String Email; 
+	
+	@Column(name = "SiteType")
+    private String siteType; 
+
+	public String getContact() {
+		return Contact;
+	}
+
+	public void setContact(String contact) {
+		Contact = contact;
+	}
+
+	public String getPhone1() {
+		return Phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		Phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return Phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		Phone2 = phone2;
+	}
+
+	public String getFax() {
+		return Fax;
+	}
+
+	public void setFax(String fax) {
+		Fax = fax;
+	}
+
+	public String getEmail() {
+		return Email;
+	}
+
+	public void setEmail(String email) {
+		Email = email;
+	}
+
+	public String getSiteType() {
+		return siteType;
+	}
+
+	public void setSiteType(String siteType) {
+		this.siteType = siteType;
+	}
 
 	public String getOrgCode() {
 		return orgCode;
