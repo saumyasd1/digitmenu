@@ -739,11 +739,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             width: 15
         }, {
             xtype: 'button',
+            reference:'cancelOrderButton',
+            text: '<b>Cancel Order</b>',
+            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
+            handler: 'cancelOrder'
+        },{
+            xtype: 'tbspacer',
+            width: 15
+        }, {
+            xtype: 'button',
+            reference:'validateButton',
             text: '<b>Validate</b>',
             hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
             handler: 'validateOrderLine'
         }, {
             xtype: 'tbspacer',
+            reference:'validatetabber',
             hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
             width: 15
         }, {
