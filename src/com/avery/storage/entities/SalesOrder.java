@@ -49,7 +49,7 @@ public class SalesOrder extends MainAbstractEntity{
 	private static final long serialVersionUID = -6121468415641006948L;
 
 	@Column(name = "OrderQueueID")
-    private int orderQueueID; 
+    private Long orderQueueID; 
 	
 	@Column(name = "OrderFileAttchmentID")
     private int orderFileAttchmentID; 
@@ -295,11 +295,11 @@ public class SalesOrder extends MainAbstractEntity{
 	this.salesOrderDetail = salesOrderDetail;
 	}
 
-	public int getOrderQueueID() {
+	public Long getOrderQueueID() {
 		return orderQueueID;
 	}
 
-	public void setOrderQueueID(int orderQueueID) {
+	public void setOrderQueueID(Long orderQueueID) {
 		this.orderQueueID = orderQueueID;
 	}
 
