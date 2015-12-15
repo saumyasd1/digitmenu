@@ -210,16 +210,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var me = this,
             currentRecord = e.record,
             disableCancelOption = false,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=false;
-        var status = currentRecord.get('Status');
+        var status = currentRecord.get('Status'),orderLineCount=currentRecord.get('orderLineCount'),salesOrderCount=currentRecord.get('salesOrderCount');
         var error = currentRecord.get('error');
         if (status == cancelStatus) {
         	disableCancelOption = true;
-            disableOrderLineOption=true;
-            disableSalesOrderOption=true;
         }
-        if(error!=''){
-        	disableOrderLineOption=true;
+//        if(error!=''){
+//        	disableOrderLineOption=true;
+//        	disableSalesOrderOption=true;
+//        }
+        if(salesOrderCount==0){
         	disableSalesOrderOption=true;
+        }
+        if(orderLineCount==0){
+        	disableOrderLineOption=true;
         }
         var menu = Ext.create('Ext.menu.Menu', {
             width: 150,
@@ -251,7 +255,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         menu.showAt(e.getX() - 140, e.getY() + 10);
     },
     getCancelOrderWindow: function(id) {
-        var me = this;
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
     },
@@ -308,10 +311,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             owner.getLayout().setActiveItem(1);
         } else {
             var salesOrderbutton = orderlineexpandablegrid.lookupReference('salesOrderbutton');
+            var validatebutton = orderlineexpandablegrid.lookupReference('validateButton'),
+            validatetabber= orderlineexpandablegrid.lookupReference('validatetabber');
             if (salesOrderCount == 0) {
-                salesOrderbutton.setText(createSalesOrderBtnText);
+                salesOrderbutton.setText(salesOrdersumbitText);
+                validatebutton.show();
+                validatetabber.show();
             } else {
                 salesOrderbutton.setText(viewSalesOrderBtnText);
+                validatebutton.hide();
+                validatetabber.hide();
             }
         }
         Ext.getBody().unmask();
