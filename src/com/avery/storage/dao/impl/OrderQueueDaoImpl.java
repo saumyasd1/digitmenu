@@ -2,6 +2,7 @@ package com.avery.storage.dao.impl;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -93,8 +96,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
+		List list = criteria.list();
+		OrderQueue orderQueue = null;
+		for (Object obj : list) {
+			orderQueue = (OrderQueue) obj;
+			long id = orderQueue.getId();
+			orderQueue.setOrderLineCount(getCountBasedOnOrderId(OrderLine.class,id,"orderQueueForOrderLine.id"));
+			orderQueue.setSalesOrderCount(getCountBasedOnOrderId(SalesOrder.class,id,"orderQueueID"));
+		}
         entitiesMap.put("totalCount", totalCount);
-        entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
+        entitiesMap.put("orders", new LinkedHashSet(list));
 		return entitiesMap;
 	}
 
@@ -190,5 +201,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
+	}
+	private int getCountBasedOnOrderId(Class clazz,Long OrderId,String propertyName) throws Exception{
+		int count=0;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(clazz);
+		criteria.add(Restrictions.eq(propertyName, OrderId));
+		count=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		return count;
 	}
 }
