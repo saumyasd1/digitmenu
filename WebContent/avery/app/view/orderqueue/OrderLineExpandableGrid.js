@@ -9,10 +9,102 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     autoHeight: true,
     columnLines: true,
     columns: [{
-        text: 'Customer PO #',
-        dataIndex: 'customerPONumber',
-        width: 250,
-        editor: 'textfield'
+        text: 'ATO Mandatory(S/F)',
+        dataIndex: 'mandatoryVariableDataFieldFlag',
+        width: 120,
+    	renderer:function(value, metadata,rec){
+    		var mandatoryVariableDataFieldFlag=rec.data.mandatoryVariableDataFieldFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    }, {
+        text: 'Bulk Sample(S/F)',
+        dataIndex: 'bulkSampleValidationFlag',
+        width: 89,
+    	renderer:function(value, metadata,rec){
+    		var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    }, {
+        text: 'Cust.PO#',
+        dataIndex: 'customerPOFlag',
+        width: 60,
+        renderer:function(value, metadata,rec){
+    		var customerPOFlag=rec.data.customerPOFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    }, {
+        text: 'Dup.PO(S/F)',
+        dataIndex: 'duplicatePOFlag',
+        width: 60,
+    	renderer:function(value, metadata,rec){
+    		var duplicatePOFlag=rec.data.duplicatePOFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    }, {
+        text: 'Size Page(S/F)',
+        dataIndex: 'htlSizePageValidationFlag',
+        width: 100,
+    	renderer:function(value, metadata,rec){
+    		var htlSizePageValidationFlag=rec.data.htlSizePageValidationFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    }, {
+        text: 'MOQ(S/F)',
+        dataIndex: 'moqValidationFlag',
+        width: 100,
+        editor: 'textfield',
+    	renderer:function(value, metadata,rec){
+    		var moqValidationFlag=rec.data.moqValidationFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + successImageSrc + '" /></div>';
+			}
+			else{
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+			}
+    }
+    },{
+        text: 'PO #',
+        dataIndex: 'poNumber',
+        width: 100,
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(value=='') {
+            	meta.style = cellColor;
+            } else {
+            	 return value;
+            }
+        }
     }, {
         text: 'Customer Name',
         dataIndex: 'partnerCustomerName',
@@ -23,7 +115,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'partnerVendorName',
         width: 111,
         editor: 'textfield'
-    },  {
+    }, 
+    {
+        text: 'ATO Required(Y/N)',
+        dataIndex: 'atoValidationFlag',
+        width: 79,
+       	renderer:function(v){
+			if(v=='Y'){
+				return '<div><span data-qtip="YES" />'+v+'</span></div>';
+			}else 
+				return '<div><span data-qtip="No" />'+v+'</span></div>';;
+    }
+    },
+    {
+        text: 'Bulk',
+        dataIndex: 'bulk',
+        width: 50
+    },{
         text: 'Ship To Customer',
         dataIndex: 'shipToCustomer',
         width: 170,
@@ -157,17 +265,38 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Sold To RBO#',
         dataIndex: 'soldTORBONumber',
         width: 100,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(value=='') {
+            	meta.style = cellColor;
+            } else {
+            	 return value;
+            }
+        }
     }, {
         text: 'Bill to Site #',
         dataIndex: 'oracleBilltoSiteNumber',
         width: 100,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(value=='') {
+            	meta.style = cellColor;
+            } else {
+            	 return value;
+            }
+        }
     }, {
         text: 'Ship to Site #',
         dataIndex: 'oracleShiptoSiteNumber',
         width: 100,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(value=='') {
+            	meta.style = cellColor;
+            } else {
+            	 return value;
+            }
+        }
     }, {
         text: 'Shipping Method',
         dataIndex: 'shippingMethod',
@@ -187,7 +316,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Avery Item #',
         dataIndex: 'averyItemNumber',
         width: 88,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(value=='') {
+            	meta.style = cellColor;
+            } else {
+            	 return value;
+            }
+        }
     }, {
         text: 'Customer Item #',
         dataIndex: 'customerItemNumber',
@@ -232,14 +368,28 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Customer Ordered Qty.',
         dataIndex: 'customerOrderedQty',
         width: 106,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer : function(value, meta) {
+            if(parseInt(value) > 0) {
+               return value;
+            } else {
+                meta.style = cellColor;
+            }
+        } 
     }, {
         text: 'Ordered Date ',
         dataIndex: 'orderedDate',
         width: 90,
         xtype:'datecolumn',
         format:dateFormat,
-        editor: 'datefield'
+        editor: 'datefield',
+        renderer : function(value, meta) {
+            if(parseInt(value) > 0) {
+               return value;
+            } else {
+                meta.style = cellColor;
+            }
+        } 
     }, {
         text: 'Requested Devlivery Date',
         dataIndex: 'requestedDevliveryDate',
@@ -421,18 +571,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 		obj.setValue(false);
                 },
         		'change':function(obj,newValue,oldValue){
+        			var record=obj.ownerCt.context.record;
         		  	if(newValue==true)
-                		obj.setNewValue('Y');
+        		  		record.set('waiveMOQ','Y');
         		  	else
-        		  		obj.setNewValue('N');
+        		  		record.set('waiveMOQ','N');
         		}
         	}
         },
-        renderer: function(value) {
+        renderer: function(value,row) {
+        	var record=row.record;
+        	var value=record.get('waiveMOQ');
         	if(value=='Y' || value=='y')
         		return "<input type='checkbox' checked>";
         	else
-        		return "<input type='checkbox' disabled>";
+        		return "<input type='checkbox'>";
         }
     }, {
         text: 'APO Type',
@@ -475,89 +628,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'comment',
         width: 100,
         editor: 'textfield'
-    }, {
-        text: 'ATO Required(Y/N)',
-        dataIndex: 'atoValidationFlag',
-        width: 79,
-        cls: 'custom-column',
-       	renderer:function(v){
-			if(v=='Y'){
-				return '<div><span data-qtip="YES" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="No" />'+v+'</span></div>';;
-    }
-    }, {
-        text: 'ATO Mandatory(S/F)',
-        dataIndex: 'mandatoryVariableDataFieldFlag',
-        width: 120,
-        cls: 'custom-column',
-       	renderer:function(v){
-			if(v=='S'){
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
-    }
-    },{
-        text: 'Bulk',
-        dataIndex: 'bulk',
-        width: 50,
-        cls: 'custom-column'
-    }, {
-        text: 'Bulk Sample(S/F)',
-        dataIndex: 'bulkSampleValidationFlag',
-        width: 89,
-        cls: 'custom-column',
-    	renderer:function(v){
-			if(v=='F'){
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';;
-    }
-    }, {
-        text: 'Cust.PO#',
-        dataIndex: 'customerPOFlag',
-        width: 60,
-        cls: 'custom-column',
-      	renderer:function(v){
-			if(v=='S'){
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
-    }
-    }, {
-        text: 'Dup.PO(S/F)',
-        dataIndex: 'duplicatePOFlag',
-        width: 60,
-        cls: 'custom-column',
-       	renderer:function(v){
-			if(v=='S'){
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
-    }
-    }, {
-        text: 'Size Page(S/F)',
-        dataIndex: 'htlSizePageValidationFlag',
-        width: 100,
-        cls: 'custom-column',
-       	renderer:function(v){
-			if(v=='S'){
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';;
-    }
-    }, {
-        text: 'MOQ(S/F)',
-        dataIndex: 'moqValidationFlag',
-        width: 100,
-        editor: 'textfield',
-        cls: 'custom-column',
-       	renderer:function(v){
-			if(v=='F'){
-				return '<div><span data-qtip="Failure" />'+v+'</span></div>';
-			}else 
-				return '<div><span data-qtip="Success" />'+v+'</span></div>';;
-    }
     }],
     initComponent: function() {
         var me = this;
@@ -680,7 +750,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'button',
             reference: 'salesOrderbutton',
             hidden:!me.dataPresent,
-            text: AOC.config.Runtime.getSalesOrderCount() == 0 ? createSalesOrderBtnText : viewSalesOrderBtnText,
+            text: AOC.config.Runtime.getSalesOrderCount() == 0 ? salesOrdersumbitText : viewSalesOrderBtnText,
             handler: 'viewSalesOrder'
         }];
     },
