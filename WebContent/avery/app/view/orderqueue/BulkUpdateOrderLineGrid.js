@@ -2,7 +2,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.bulkupdateorderlinegrid',
     itemId:'BulkUpdateOrderlineGrid',
-    controller:'orderline',
+    controller:'orderlinebulkupdate',
     requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
