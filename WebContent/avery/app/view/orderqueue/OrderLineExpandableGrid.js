@@ -377,18 +377,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }
         } 
     }, {
-        text: 'Ordered Date<font color=red>*</font> ',
+        text: 'Ordered Date<font color=red>*</font>',
         dataIndex: 'orderedDate',
         width: 90,
         xtype:'datecolumn',
         format:dateFormat,
         editor: 'datefield',
         renderer : function(value, meta) {
-            if(value!='' || value != null) {
-               return value;
-            } else {
+            if(value=='' || value == null) {
                 meta.style = cellColor;
             }
+                else
+                	return Ext.Date.format(value,'Y-m-d');
         } 
     }, {
         text: 'Requested Devlivery Date',
