@@ -251,25 +251,13 @@ public class OrderLineDetail extends MainAbstractEntity{
     public Response updateEntities(@Context UriInfo ui,
             @Context HttpHeaders hh, String data) {
 		String jsonData="";
-		boolean updateAll=true;
-		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
 		try {
 			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
 					.getInstance().getBean("orderLineDetailService");
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
 			jsonData=(String)jsonMap.get("data");
-			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
-			if(updateAll){
-				if((String)jsonMap.get("orderQueueId")!=null){
-					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
-					orderLineDetailService.bulkUpdateAll(jsonData,bulkUpdateAllById);
-				}else{
-					throw new Exception("Unable to update all records as the Order Queue Id is not present");
-				}
-			}
-			else
-				orderLineDetailService.bulkUpdate(jsonData);
+			orderLineDetailService.bulkUpdate(jsonData);
 			return Response.ok().build();
 		}  catch (WebApplicationException ex) {
             AppLogger.getSystemLogger().error(
@@ -284,5 +272,32 @@ public class OrderLineDetail extends MainAbstractEntity{
                     .type(MediaType.TEXT_PLAIN_TYPE).build());
         }
     }
-
+	@PUT
+	@Path("/variablebulkupdate/{variablename}")
+    public Response updateAllEntitiesByOrderId(@Context UriInfo ui,
+            @Context HttpHeaders hh, String data,@PathParam("variablename") String variablfieldename) {
+		String jsonData="";
+		Long bulkUpdateAllById=0L;
+		Map<String,String> jsonMap=null;
+		try {
+			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
+					.getInstance().getBean("orderLineDetailService");
+			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			jsonData=(String)jsonMap.get("data");
+			bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
+			orderLineDetailService.bulkUpdateAll(jsonData,bulkUpdateAllById,variablfieldename);
+			return Response.ok().build();
+		}  catch (WebApplicationException ex) {
+            AppLogger.getSystemLogger().error(
+                    "Error while Permorfing variable bulk update", ex);
+            throw ex;
+        } catch (Exception e) {
+            AppLogger.getSystemLogger().error(
+                    "Error while Permorfing variable bulk update", e);
+            throw new WebApplicationException(Response
+                    .status(Status.INTERNAL_SERVER_ERROR)
+                    .entity(ExceptionUtils.getRootCauseMessage(e))
+                    .type(MediaType.TEXT_PLAIN_TYPE).build());
+        }
+    }
 }
