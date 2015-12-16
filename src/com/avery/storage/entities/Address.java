@@ -122,61 +122,61 @@ public class Address extends MainAbstractEntity {
 		this.siteNumber = siteNumber;
 	}
 	@Column(name = "Contact")
-    private String Contact;  
+    private String contact;  
 	
 	@Column(name = "Phone1")
-    private String Phone1;  
+    private String phone1;  
 	
 	@Column(name = "Phone2")
-    private String Phone2;  
+    private String phone2;  
 	
 	@Column(name = "Fax")
-    private String Fax;  
+    private String fax;  
 	
 	@Column(name = "Email")
-    private String Email; 
+    private String email; 
 	
 	@Column(name = "SiteType")
     private String siteType; 
 
 	public String getContact() {
-		return Contact;
+		return contact;
 	}
 
 	public void setContact(String contact) {
-		Contact = contact;
+		this.contact = contact;
 	}
 
 	public String getPhone1() {
-		return Phone1;
+		return phone1;
 	}
 
 	public void setPhone1(String phone1) {
-		Phone1 = phone1;
+		this.phone1 = phone1;
 	}
 
 	public String getPhone2() {
-		return Phone2;
+		return phone2;
 	}
 
 	public void setPhone2(String phone2) {
-		Phone2 = phone2;
+		this.phone2 = phone2;
 	}
 
 	public String getFax() {
-		return Fax;
+		return fax;
 	}
 
 	public void setFax(String fax) {
-		Fax = fax;
+		this.fax = fax;
 	}
 
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
 
 	public String getSiteType() {
