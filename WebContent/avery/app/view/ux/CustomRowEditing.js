@@ -1181,7 +1181,7 @@ Ext.define('AOC.view.RowEditorButtons', {
 });
 
 Ext.define('AOC.view.ux.CustomRowEditing', {
-    override: 'Ext.grid.plugin.RowEditing',
+	extend: 'Ext.grid.plugin.RowEditing',
     alias: 'plugin.customrowediting',
     initEditor: function() {
         return new Ext.grid.RowEditor(this.initEditorConfig());
