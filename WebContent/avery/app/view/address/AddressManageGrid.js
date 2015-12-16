@@ -57,41 +57,40 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Bill to site#',
+				        	text : 'SiteNumber',
 				          	width:120,
 				            sortable : true,
-				            dataIndex:'billToSiteNumber',
-				            flex:1.5
-			            },
-			            {
-				        	text : 'Ship to site#',
-				          	width:120,
-				            sortable : true,
-				            dataIndex:'shipToSiteNumber',
+				            dataIndex:'siteNumber',
 				            flex:1.5
 			            },
 		                {
-				            text : 'Bill to contact',
+				            text : 'Contact',
 				            width:150,
-				            dataIndex:'billToContact',
+				            dataIndex:'contact',
 				            flex:1
                         },
                         {
-				            text : 'Bill to tel#',
+				            text : 'Phone1',
 				            width:150,
-				            dataIndex:'billToPhone1',
+				            dataIndex:'phone1',
 				            flex:1
                         },
                         {
-				            text : 'Ship to contact',
+				            text : 'Fax',
 				            width:150,
-				            dataIndex:'shipToContact',
+				            dataIndex:'fax',
 				            flex:1
                         },
                         {
-				            text : 'Ship to tel#',
+				            text : 'Email',
 				            width:150,
-				            dataIndex:'shipToPhone1',
+				            dataIndex:'email',
+				            flex:1
+                        },
+                        {
+				            text : 'SiteType',
+				            width:150,
+				            dataIndex:'siteType',
 				            flex:1
                         }
                        
