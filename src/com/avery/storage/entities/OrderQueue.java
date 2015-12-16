@@ -121,6 +121,9 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "Comment")
 	private String comment;
 	
+	@Column(name = "PONumber")
+	private String pONumber;
+	
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(mappedBy = "orderQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<OrderFileAttachment> orderFileAttachment;
@@ -253,6 +256,13 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public void setError(String error) {
 		this.error = error;
+	}
+	public String getPONumber() {
+		return pONumber;
+	}
+
+	public void setPONumber(String pONumber) {
+		this.pONumber = pONumber;
 	}
 
 	@Override
