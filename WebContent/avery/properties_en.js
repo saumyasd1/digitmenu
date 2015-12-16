@@ -28,6 +28,7 @@ cellColor='background-color:#FFC7B0;',
 orderReceivedStatus='1',
 orderError='2',
 orderPreProcessedStatus='3',
+waitingForCSRStatus='4',
 submitToOracleStatus='6',	
 cancelStatus='8'
 ;
