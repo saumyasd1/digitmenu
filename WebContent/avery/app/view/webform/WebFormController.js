@@ -204,7 +204,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 this.getView().lookupReference('subject').disable();
 			 this.getView().lookupReference('emailBody').disable();
 			 this.getView().lookupReference('email').disable();
-			 this.getView().lookupReference('attachment1').disable();
+			 //this.getView().lookupReference('attachment1').disable();
 			 this.getView().lookupReference('orderFileType').disable();
 		 }
 		 
