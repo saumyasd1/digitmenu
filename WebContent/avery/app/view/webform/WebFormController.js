@@ -43,7 +43,9 @@ Ext.define('AOC.view.webform.WebFormController', {
     SaveDetails:function(obj){
     	Ext.getBody().mask('Saving....');
     	   var form = this.getView().down('form').getForm(),me=this;
-    	    if(form.isValid())
+    	   var messageField=this.getView().down('#messageFieldItemId');
+    	    if(form.isValid()){
+    	    	
     			form.submit({
     				url: applicationContext+'/rest/orders/attachments/1',
     		        getParams: function(useModelValues) {
@@ -68,6 +70,12 @@ Ext.define('AOC.view.webform.WebFormController', {
     	            	     Ext.getBody().unmask();
     					  }
     			 			});
+    }
+    	    else{
+    	    	Ext.getBody().unmask();
+    	    	var message=messageField.setValue('Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
+    	    	message.setVisible(true);
+    		}
     },
     onAttachemnetChange:function(obj,value){
     	if(value!=null && value!=''){
