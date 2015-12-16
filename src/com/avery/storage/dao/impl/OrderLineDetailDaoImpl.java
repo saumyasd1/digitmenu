@@ -60,20 +60,10 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 	@Override
 	public Map readByVariableName(Long orderID,String variablfieldename){
 		Map infoMap=new HashMap();
-		Session session = null;
-		Criteria criteria = null;
 		List<OrderLineDetail> list=null;
 		Boolean showFiberPercentage=false;
 		try{
-			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(OrderLineDetail.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
-			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
-			if(variablfieldename.toLowerCase().contains("fibre".toLowerCase())){
-				criteria.add(Restrictions.ne("variabledatavalue", ""));
-				criteria.add(Restrictions.ne("fiberPercent", "0"));
-			}
-			list= criteria.list();
+			list= readListByVariableName(orderID,variablfieldename);
 			if(list.size()>0){
 				OrderLineDetail orderLineDetail=list.get(0);
 				String level=orderLineDetail.getLevel();
@@ -81,7 +71,7 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 					showFiberPercentage=true;
 				}
 			}
-			infoMap.put("OrderLineDetail", criteria.list());
+			infoMap.put("OrderLineDetail", list);
 			infoMap.put("showFiberPercentage", showFiberPercentage);
 			return infoMap;
 		}catch (WebApplicationException ex) {
@@ -144,13 +134,13 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 
 	}
 	@Override
-	public void bulkUpdateAllById(String jsonData,Long orderQueueId){
+	public void bulkUpdateAllById(String jsonData,Long orderQueueId,String variableName){
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
-			List<OrderLineDetail> entities = readAllByOrderID(orderQueueId);
+			List<OrderLineDetail> entities = readListByVariableName(orderQueueId,variableName);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
@@ -197,6 +187,30 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		}
 		
 	}
-	
+	public List readListByVariableName(Long orderID,String variablfieldename){
+		Session session = null;
+		Criteria criteria = null;
+		List<OrderLineDetail> list=null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(OrderLineDetail.class);
+			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
+			list= criteria.list();
+			return list;
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line variable for order queue id " + orderID+" and variable name "+variablfieldename, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line variable for order queue id " + orderID+" and variable name "+variablfieldename, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
 	
 }
