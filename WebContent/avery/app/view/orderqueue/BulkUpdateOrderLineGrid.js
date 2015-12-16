@@ -6,6 +6,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
+	reserveScrollbar:true,
     initComponent : function(){
 	var me=this;
 	this.fieldArray = [];
