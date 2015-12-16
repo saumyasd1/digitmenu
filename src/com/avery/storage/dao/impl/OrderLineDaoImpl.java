@@ -82,10 +82,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				t=objArray[i];
 				OrderLine orderLine = mapper.readValue(t,OrderLine.class);
 				currentObjId=orderLine.getId();
-				if(i==0 && !orderLine.getOracleBilltoSiteNumber().equals("")){ // check if oracle bill site number is empty, if not then insert  a record in address
+				if(i==0 && orderLine.getOracleBilltoSiteNumber() !=null && !"".equals(orderLine.getOracleBilltoSiteNumber())){ // check if oracle bill site number is empty, if not then insert  a record in address
 					insertBillAddress=true;
 				}
-				if(i==0 && !orderLine.getOracleShiptoSiteNumber().equals("")){ // check if oracle ship site number is empty, if not then insert  a record in address
+				if(i==0 && orderLine.getOracleShiptoSiteNumber() !=null && !"".equals(orderLine.getOracleShiptoSiteNumber())){ // check if oracle ship site number is empty, if not then insert  a record in address
 					insertShipAddress=true;
 				}
 				orderLine=(OrderLine) session.get(OrderLine.class,currentObjId);
