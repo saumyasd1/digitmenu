@@ -21,6 +21,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var id = currentRecord.get('id');
         this.runTime.setOrderQueueId(id);
         this.runTime.setOrderQueueActiveRecord(currentRecord);
+        this.runTime.setOrderQueueStatus(currentRecord.get('Status'));
         var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
         if(item)
         if (item.action == 'viewSales') {
@@ -273,7 +274,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             method: 'PUT',
             jsonData: parameters,
             success: function(response, opts) {
-                Ext.Msg.alert('Order cancelled successfully');
+                Ext.Msg.alert('',orderCancelSuccessAlert);
                 Ext.ComponentQuery.query('#OrderQueueGridItemId')[0].getStore().load();
                 Ext.getBody().unmask();
                 me.getView().destroy();
