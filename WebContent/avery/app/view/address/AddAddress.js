@@ -62,7 +62,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[{
         			xtype:'textfield',
         			name: 'orgCode',
-        			fieldLabel:'ORG Code',
+        			fieldLabel:'ORG Code<font color=red>*</font>',
         			allowBlank: false,
     		        listeners : {
 	                    blur : this.notifyByImage,
@@ -72,7 +72,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'combobox',
 	        			name: 'partner_id',
-	        			fieldLabel:'Partner Name',
+	        			fieldLabel:'Partner Name<font color=red>*</font>',
 	        			displayField:'partnerName',
 						valueField:'id',
 					    store :'PartnerManagementStore',
@@ -85,7 +85,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'description',
-	        			fieldLabel:'Description',
+	        			fieldLabel:'Description<font color=red>*</font>',
 	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -94,8 +94,8 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'billToSiteNumber',
-	        			fieldLabel:'Bill To Site Number',
+	        			name: 'siteNumber',
+	        			fieldLabel:'Site Number<font color=red>*</font>',
 	        		    allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -104,18 +104,8 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'billToContact',
-	        			fieldLabel:'Bill To Contact'
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'billToPhone1',
-	        			fieldLabel:'Bill To Phone 1'
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'billToPhone2',
-	        			fieldLabel:'Bill To Phone 2'
+	        			name: 'phone1',
+	        			fieldLabel:'Phone 1'
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -134,13 +124,18 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
+	        			name: 'country',
+	        			fieldLabel:'Country'
+	        		},
+	        		{
+	        			xtype:'textfield',
 	        			name: 'zip',
 	        			fieldLabel:'Zip'
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'billToEmail',
-	        			fieldLabel:'Bill To Email',
+	        			name: 'email',
+	        			fieldLabel:'Email<font color=red>*</font>',
 	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 	        			allowBlank: false,
 	      		        listeners : {
@@ -163,7 +158,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[{
         			xtype:'textfield',
         			name: 'shippingMethod',
-        			fieldLabel:'Shipping Method',
+        			fieldLabel:'Shipping Method<font color=red>*</font>',
         			allowBlank: false,
      		        listeners : {
 	                    blur : this.notifyByImage,
@@ -173,7 +168,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'freightTerms',
-	        			fieldLabel:'Freight Terms',
+	        			fieldLabel:'Freight Terms<font color=red>*</font>',
 	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -183,7 +178,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'shippingInstructions',
-	        			fieldLabel:'Shipping Instructions',
+	        			fieldLabel:'Shipping Instructions<font color=red>*</font>',
 	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -191,29 +186,25 @@ Ext.define('AOC.view.address.AddAddress',{
 	   	                     }
 	        		},
 	        		{
-	        			xtype:'textfield',
-	        			name: 'shipToSiteNumber',
-	        			fieldLabel:'Ship To Site Number',
-	        			allowBlank: false,
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
-	   	                     }
+	        			xtype:'combobox',
+	        			name: 'siteType',
+	        			fieldLabel:'Site Type<font color=red>*</font>',
+					    store :[['B','billToSiteNumber'],['S','shipToSiteNumber']],
+					    allowBlank: false,
+      		            listeners : {
+	                        blur : this.notifyByImage,
+   	                	    focus : this.notifyByMessage
+   	                     }
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'shipToContact',
-	        			fieldLabel:'Ship To Contact'
+	        			name: 'contact',
+	        			fieldLabel:'Contact'
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'shipToPhone1',
-	        			fieldLabel:'Ship To Phone 1'
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'shipToPhone2',
-	        			fieldLabel:'Ship To Phone 2'
+	        			name: 'phone2',
+	        			fieldLabel:'Phone 2'
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -232,13 +223,8 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'country',
-	        			fieldLabel:'Country'
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'billToFax',
-	        			fieldLabel:'Bill To Fax',
+	        			name: 'fax',
+	        			fieldLabel:'Fax<font color=red>*</font>',
 	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
