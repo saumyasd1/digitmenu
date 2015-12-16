@@ -92,6 +92,45 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							labelAlign : 'right'
 						}]
 						},
+						{ 
+							xtype: 'fieldcontainer',
+	                        layout: 'hbox',
+	                        margin : '5 0 0 5',
+	                        items:[{
+							xtype : 'textfield',
+							fieldLabel : 'Sender EmailID',
+							name:'SenderEmailID',
+							width:280,
+							labelSeparator : '',
+							labelAlign : 'right',
+						    },
+						{
+							xtype : 'tbspacer',
+							height:5
+						},
+						{
+							xtype : 'textfield',
+							fieldLabel : 'Order track#',
+							name:'id',
+							width:280,
+							labelSeparator : '',
+							labelAlign : 'right'
+						}]
+						},
+						{ 
+							xtype: 'fieldcontainer',
+	                        layout: 'hbox',
+	                        margin : '5 0 0 5',
+	                        items:[
+						   {
+							xtype : 'textfield',
+							fieldLabel : 'PO#',
+							name:'pONumber',
+							width:280,
+							labelSeparator : '',
+							labelAlign : 'right'
+						}]
+						},
 						{
 							xtype : 'tbspacer',
 							height:5
