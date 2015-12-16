@@ -384,7 +384,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         format:dateFormat,
         editor: 'datefield',
         renderer : function(value, meta) {
-            if(parseInt(value) > 0) {
+            if(value!='' || value != null) {
                return value;
             } else {
                 meta.style = cellColor;
@@ -865,4 +865,4 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	});
     	return rowExpander;
     }
-});
+})
