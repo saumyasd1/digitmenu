@@ -213,7 +213,15 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
+		boolean insertBillAddress=false,insertShipAddress=false;
 		try{
+			OrderLine tempObj=mapper.readValue(jsonData,OrderLine.class);;
+			if(insertAddress && tempObj.getOracleBilltoSiteNumber() !=null && !"".equals(tempObj.getOracleBilltoSiteNumber())){ // check if oracle bill site number is empty, if not then insert  a record in address
+				insertBillAddress=true;
+			}
+			if(insertAddress && tempObj.getOracleShiptoSiteNumber() !=null && !"".equals(tempObj.getOracleShiptoSiteNumber())){ // check if oracle ship site number is empty, if not then insert  a record in address
+				insertShipAddress=true;
+			}
 			session = getSessionFactory().getCurrentSession();
 			List<OrderLine> entities = readAllByOrderID(orderQueueId);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -226,7 +234,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(insertAddress){
-					insertIntoAddress(orderLine);
+					if(insertBillAddress)
+						insertBillAddress(orderLine);
+					if(insertShipAddress)
+						insertShipAddress(orderLine);
 					insertAddress=false;
 				}
 			}
