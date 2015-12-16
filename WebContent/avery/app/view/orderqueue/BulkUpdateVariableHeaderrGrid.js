@@ -3,7 +3,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
     alias : 'widget.bulkUpdateVariableHeaderrGrid',
     itemId:'BulkUpdateVariableHeaderrGrid',
 	variableColumnName:null,
-	controller:'orderline',
+	controller:'orderlinebulkupdate',
 	requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
