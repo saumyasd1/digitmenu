@@ -84,6 +84,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'id'
         },
         {
+            text : 'PO#',
+            width:45,
+			dataIndex:'pONumber'
+        },
+        {
             text : 'Order File',
             width:45,
 			dataIndex:'OrderFile',
