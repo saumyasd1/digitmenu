@@ -35,10 +35,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     	var me=this;
     	helper = AOC.util.Helper;
         return [{
-            text: 'Customer PO #',
-            dataIndex: 'customerPONumber',
+            text: 'PO #<font color=red>*</font>',
+            dataIndex: 'poNumber',
             width: 250,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
+            }
         }, {
             text: 'Customer Name',
             dataIndex: 'partnerCustomerName',
@@ -59,12 +66,34 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'shipToCustomer',
             width: 170,
             editor: 'textfield'
-        }, {
-            text: 'Ship to Site #',
+        },{
+        	xtype:'gridcolumn',
+            text: 'Bill to Site #<font color=red>*</font>',
+            dataIndex: 'oracleBilltoSiteNumber',
+            width: 100,
+            getEditor: function(record) {
+            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            },
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
+            }
+        },{
+            text: 'Ship to Site #<font color=red>*</font>',
             dataIndex: 'oracleShiptoSiteNumber',
             width: 100,
             getEditor: function(record) {
             	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            },
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
             }
         },{
             text: 'Ship To Contact',
@@ -148,14 +177,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'billToCustomer',
             width: 170,
             editor: 'textfield'
-        }, {
-        	xtype:'gridcolumn',
-            text: 'Bill to Site #',
-            dataIndex: 'oracleBilltoSiteNumber',
-            width: 100,
-            getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
-            }
         },{
             text: 'Bill To Contact',
             dataIndex: 'billToContact',
@@ -244,10 +265,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             hidden:true
         }, {
-            text: 'Sold To RBO#',
+            text: 'Sold To RBO#<font color=red>*</font>',
             dataIndex: 'soldTORBONumber',
             width: 100,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
+            }
         },   {
             text: 'Shipping Method',
             dataIndex: 'shippingMethod',
@@ -264,10 +292,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 115,
             editor: 'textfield'
         }, {
-            text: 'Avery Item #',
+            text: 'Avery Item #<font color=red>*</font>',
             dataIndex: 'averyItemNumber',
             width: 88,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
+            }
         }, {
             text: 'Customer Item #',
             dataIndex: 'customerItemNumber',
@@ -309,17 +344,31 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             editor: 'textfield'
         }, {
-            text: 'Customer Ordered Qty.',
+            text: 'Customer Ordered Qty.<font color=red>*</font>',
             dataIndex: 'customerOrderedQty',
             width: 106,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta) {
+                if(parseInt(value) > 0) {
+                   return value;
+                } else {
+                    meta.style = cellColor;
+                }
+            } 
         }, {
-            text: 'Ordered Date ',
+            text: 'Ordered Date<font color=red>*</font>',
             dataIndex: 'orderedDate',
             width: 90,
             xtype:'datecolumn',
             format:dateFormat,
-            editor: 'datefield'
+            editor: 'datefield',
+            renderer : function(value, meta) {
+                if(value=='' || value == null) {
+                    meta.style = cellColor;
+                }
+                    else
+                    	return Ext.Date.format(value,'Y-m-d');
+            }
         }, {
             text: 'Requested Devlivery Date',
             dataIndex: 'requestedDevliveryDate',
@@ -478,7 +527,33 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Waive MOQ',
             dataIndex: 'waiveMOQ',
             width: 59,
-            editor: 'checkbox'
+            editor: {
+            	xtype:'checkbox',
+            	listeners:{
+            		'render': function(obj) {
+                		var value=obj.ownerCt.context.record.get('waiveMOQ');
+                    	if(value=='Y' || value=='y')
+                    		obj.setValue(true);
+                    	else
+                    		obj.setValue(false);
+                    },
+            		'change':function(obj,newValue,oldValue){
+            			var record=obj.ownerCt.context.record;
+            		  	if(newValue==true)
+            		  		record.set('waiveMOQ','Y');
+            		  	else
+            		  		record.set('waiveMOQ','N');
+            		}
+            	}
+            },
+            renderer: function(value,row) {
+            	var record=row.record;
+            	var value=record.get('waiveMOQ');
+            	if(value=='Y' || value=='y')
+            		return "<input type='checkbox' checked>";
+            	else
+            		return "<input type='checkbox'>";
+            }
         }, {
             text: 'APO Type',
             dataIndex: 'apoType',
