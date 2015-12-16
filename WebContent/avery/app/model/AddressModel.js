@@ -34,7 +34,14 @@ Ext.define('AOC.model.AddressModel',{
 		{name: 'shipToPhone2', mapping:'shipToPhone2',type: 'string'},
 		{name: 'shippingMethod', mapping:'shippingMethod',type: 'string'},
 		{name: 'freightTerms', mapping:'freightTerms',type: 'string'},
-		{name: 'shippingInstructions', mapping:'shippingInstructions',type: 'string'}
+		{name: 'shippingInstructions', mapping:'shippingInstructions',type: 'string'},
+		{name: 'siteNumber', mapping:'siteNumber',type: 'string'},
+		{name: 'contact', mapping:'contact',type: 'string'},
+		{name: 'phone1', mapping:'phone1',type: 'string'},
+		{name: 'phone2', mapping:'phone2',type: 'string'},
+		{name: 'fax', mapping:'fax',type: 'string'},
+		{name: 'email', mapping:'email',type: 'string'},
+		{name: 'siteType', mapping:'siteType',type: 'string'}
 	    ]
 });
 
