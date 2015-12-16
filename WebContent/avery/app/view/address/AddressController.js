@@ -153,8 +153,7 @@ Ext.define('AOC.view.address.AddressController', {
 			var parameters={
 					orgCode:valueObj.orgCode,
 					partnerName:valueObj.partnerName,
-					billToSiteNumber:valueObj.billToSiteNumber,
-					shipToSiteNumber:valueObj.shipToSiteNumber,
+					siteNumber:valueObj.siteNumber,
 					description:valueObj.description,
 					address1:valueObj.address1,
 					address2:valueObj.address2,
@@ -165,17 +164,15 @@ Ext.define('AOC.view.address.AddressController', {
 					state:valueObj.state,
 					country:valueObj.country,
 					zip:valueObj.zip,
-					billToContact:valueObj.billToContact,
-					billToPhone1:valueObj.billToPhone1,
-					billToPhone2:valueObj.billToPhone2,
-					billToFax:valueObj.billToFax,
-					billToEmail:valueObj.billToEmail,
-					shipToContact:valueObj.shipToContact,
-					shipToPhone1:valueObj.shipToPhone1,
-					shipToPhone2:valueObj.shipToPhone2,
+					contact:valueObj.contact,
+					phone1:valueObj.phone1,
+					phone2:valueObj.phone2,
+					fax:valueObj.fax,
+					email:valueObj.email,
 					shippingMethod:valueObj.shippingMethod,
 					freightTerms:valueObj.freightTerms,
 					shippingInstructions:valueObj.shippingInstructions,
+					siteType:valueObj.siteType,
 					partner:{id:valueObj.partner_id}
 		    	}
 		}
