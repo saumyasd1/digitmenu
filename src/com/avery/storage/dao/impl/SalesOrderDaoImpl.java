@@ -40,7 +40,7 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 		try{
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SalesOrder.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			criteria.add(Restrictions.eq("orderQueueID", orderID));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
