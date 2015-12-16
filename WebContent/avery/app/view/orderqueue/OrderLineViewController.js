@@ -199,11 +199,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var isAddressModified=false;
     	var runTime = AOC.config.Runtime;
     	if(idx==0){
-			if(currentRecord.isModified('billToAddress1') || currentRecord.isModified('billToAddress2') ||currentRecord.isModified('billToAddress3')||
-				currentRecord.isModified('billToCity')|| currentRecord.isModified('billToState')|| currentRecord.isModified('billToZip')||
-				currentRecord.isModified('billToCountry')|| currentRecord.isModified('billToTelephone')|| currentRecord.isModified('billToFax')||
-				currentRecord.isModified('oracleBilltoSiteNumber')|| currentRecord.isModified('oracleBilltoSiteNumber'))
-					isAddressModified=true;
+    		if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
+				isAddressModified=true;
+    	  }
 		}
 		var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
@@ -245,5 +243,61 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     cancelOrder:function(){
     	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
+    },
+    outerGridBulkUpdate:function(editorPlugin,editor,context){
+    	editorPlugin.suspendEvent('edit');
+    	editorPlugin.completeEdit();
+      editorPlugin.resumeEvent('edit');
+      var ctx = editorPlugin.context,
+          idx = ctx.rowIdx,
+          currentRecord = ctx.store.getAt(idx);
+      var obj = currentRecord.getChanges();
+      var isAddressModified = false;
+      var runTime = AOC.config.Runtime;
+      if (idx == 0) {
+    	  if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
+				isAddressModified=true;
+    	  }
+      }
+      var obj = '{"isAddressModified":' + isAddressModified + ',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+      Ext.Ajax.request({
+          method: 'PUT',
+          jsonData: obj,
+          url: applicationContext + '/rest/orderLines/bulkupdate',
+          success: function(response, opts) {
+              Ext.Msg.alert('', 'Order line successfully updated');
+              Ext.getBody().unmask();
+              ctx.store.load();
+          },
+          failure: function(response, opts) {
+              Ext.getBody().unmask();
+          }
+      });
+    },
+    OuterGridBeforeEditEvent:function(obj,context){
+    	var record=context.record,grid=this.getView();
+    	var me=this,orderQueueStatus=runtime.getOrderQueueStatus();
+    	if(orderQueueStatus==waitingForCSRStatus){
+    		var store=grid.store;
+    		var i=store.find('id',record.id);
+        	if(i==0){
+        		if(record.isModified('oracleBilltoSiteNumber')?record.getModified('oracleBilltoSiteNumber')=='':record.get(value)==''){
+        			grid.getPlugin('rowEditing').editor.form.findField('oracleBilltoSiteNumber').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToContact').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress1').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress2').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress3').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToCity').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToCountry').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToState').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToZip').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToEmail').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToFax').enable();
+        			grid.getPlugin('rowEditing').editor.form.findField('billToTelephone').enable();
+        		}
+        			
+        	}
+    	}else
+    		return false;
     }
 })
