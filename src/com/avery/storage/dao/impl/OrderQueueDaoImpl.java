@@ -86,6 +86,19 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.createAlias("productLine", "productLine");
 				criteria.add(Restrictions.ilike("productLine"+".productLineType",ProductLineType,MatchMode.ANYWHERE));
 			}
+			String SenderEmailID=searchMap.get("SenderEmailID");
+			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
+				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
+			}
+			String OrderTrackingID=searchMap.get("id");
+			Long Id=Long.parseLong(OrderTrackingID);
+			if(Id!=null && !"".equals(Id)){
+				criteria.add(Restrictions.eq("id",Id));
+			}
+			String PONumber=searchMap.get("pONumber");
+			if(PONumber!=null && !"".equals(PONumber)){
+				criteria.add(Restrictions.eq("pONumber",PONumber));
+			}
 		}
 		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
