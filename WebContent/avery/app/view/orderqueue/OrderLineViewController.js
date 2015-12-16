@@ -69,8 +69,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
         panel.getLayout().setActiveItem(0);
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
-        var currentRecord=this.runTime.getOrderQueueActiveRecord();
-        var row = ordeQueueGrid.getView().getRow(currentRecord);
+        var store=ordeQueueGrid.store.find('id',this.runTime.getOrderQueueId());
+        var row = ordeQueueGrid.getView().getRow(store);
         var el = Ext.fly(row);
         el.highlight("#c1ddf1", {
             attr: "backgroundColor",
@@ -117,15 +117,12 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var grid=this.getView(),me=this,insertAddess=false;
     	var store=grid.store,
     	parms ='';
-    	var madatoryFieldEmpty=false,
-    	currentRecord=null,
-    	i=0, isAddressModified=false;
-    	var i=0;
+    	var i=0, isAddressModified=false;
     	var updatedRecords=store.getModifiedRecords();
     	Ext.each(updatedRecords,function(currentRecord){
     		i=store.find('id',currentRecord.id);
     		if(i==0){
-    				if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleBilltoSiteNumber')){
+    				if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
     					isAddressModified=true;
     			}
     		}
