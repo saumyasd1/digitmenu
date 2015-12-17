@@ -26,17 +26,7 @@ Ext.define('AOC.view.address.AddAddress',{
             });
             this.callParent(arguments);
         },
-        buildButtons : function(){
-            return [{
-            	text : 'Save',
-                handler:'saveAddressDetails'
-            },
-            {
-            	text : 'Cancel',
-                handler : 'closeWindow'
-            }];
-        },
-        
+   
         buildItem:function(){
         	var me=this;
         	return [{
@@ -51,7 +41,7 @@ Ext.define('AOC.view.address.AddAddress',{
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'vbox',
-                    margin : '5 0 0 10',
+                    margin : '5 0 0 5',
                     defaults:{
             			labelAlign:'right',
             			labelWidth : 150,
@@ -135,14 +125,14 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'email',
-	        			fieldLabel:'Email<font color=red>*</font>',
+	        			fieldLabel:'Email',
 	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 	   	                	focus : this.notifyByMessage
 	   	                     }
-	        		}]
+	        		}
+	        		]
         		},
         		{   xtype: 'fieldcontainer',
                     layout: 'vbox',
@@ -156,20 +146,25 @@ Ext.define('AOC.view.address.AddAddress',{
       		           
             		},
                     items:[{
-        			xtype:'textfield',
+        			xtype:'combo',
         			name: 'shippingMethod',
-        			fieldLabel:'Shipping Method<font color=red>*</font>',
-        			allowBlank: false,
+        			fieldLabel:'Shipping Method',
+                    displayField: 'variableFieldName',
+                    valueField: 'variableFieldName',
+                    store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
      		        listeners : {
 	                    blur : this.notifyByImage,
   	                	focus : this.notifyByMessage
   	                     }
 	        		},
 	        		{
-	        			xtype:'textfield',
+	        			xtype:'combo',
 	        			name: 'freightTerms',
-	        			fieldLabel:'Freight Terms<font color=red>*</font>',
-	        			allowBlank: false,
+	        			fieldLabel:'Freight Terms',
+	                    displayField: 'variableFieldName',
+	                    valueField: 'variableFieldName',
+	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
+	                 
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 	   	                	focus : this.notifyByMessage
@@ -178,8 +173,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'shippingInstructions',
-	        			fieldLabel:'Shipping Instructions<font color=red>*</font>',
-	        			allowBlank: false,
+	        			fieldLabel:'Shipping Instructions',
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 	   	                	focus : this.notifyByMessage
@@ -224,16 +218,37 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'fax',
-	        			fieldLabel:'Fax<font color=red>*</font>',
-	        			allowBlank: false,
+	        			fieldLabel:'Fax',
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 	   	                	focus : this.notifyByMessage
 	   	                     }
-	        		}]
+	        		}
+	        		 ]
         		}
-               ],
-        		buttons:this.buildButtons()
+               ]
+        		
+        	},{
+        		xtype:'container',
+        		layout: {
+        	        type: 'hbox',
+        	        pack: 'center'
+        	    },
+        		items:[{   xtype :'button',
+                	text : 'Save',
+                    handler:'saveAddressDetails',
+                    width : 70
+                },
+                {
+                	xtype:'tbspacer',
+                	width:20
+                },{  
+        			xtype :'button',
+                	text : 'Cancel',
+                    handler : 'closeWindow',
+                    width : 70
+                }
+        		       ]
         	}]
         },
         notifyByMessage : function(config){
