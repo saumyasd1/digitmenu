@@ -231,7 +231,6 @@ Ext.override(Ext.grid.RowEditor, {
     onBeforeViewRefresh: function(view) {
         var me = this,
             viewDom = view.el.dom;
-
         if (me.el.dom.parentNode === viewDom) {
             viewDom.removeChild(me.el.dom);
         }
@@ -1186,7 +1185,6 @@ Ext.define('AOC.view.ux.CustomRowEditing', {
     initEditor: function() {
         return new Ext.grid.RowEditor(this.initEditorConfig());
     },
-    
     initEditorConfig: function(){
         var me       = this,
             grid     = me.grid,
@@ -1223,9 +1221,10 @@ Ext.define('AOC.view.ux.CustomRowEditing', {
         if (Ext.isEmpty(columnHeader)) {
             columnHeader = me.grid.getTopLevelVisibleColumnManager().getHeaderAtIndex(0);
         }
-
+        
         if (editor.beforeEdit() !== false) {
         	context = me.getEditingContext(record, columnHeader);
+        	me.fireEvent('beforeedit',editor,context,record);
             if (context) {
                 me.context = context;
 
