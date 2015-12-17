@@ -35,9 +35,22 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     	var me=this;
     	helper = AOC.util.Helper;
         return [{
-            text: 'PO #<font color=red>*</font>',
+            text: 'PO#<font color=red>*</font>',
             dataIndex: 'poNumber',
-            width: 250,
+            width: 120,
+            editor: 'textfield',
+            renderer : function(value, meta) {
+                if(value=='') {
+                	meta.style = cellColor;
+                } else {
+                	 return value;
+                }
+            }
+        },
+        {
+            text: 'Avery Item#<font color=red>*</font>',
+            dataIndex: 'averyItemNumber',
+            width: 88,
             editor: 'textfield',
             renderer : function(value, meta) {
                 if(value=='') {
@@ -47,6 +60,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 }
             }
         }, {
+            text: 'Customer Item#',
+            dataIndex: 'customerItemNumber',
+            width: 88,
+            editor: 'textfield'
+        },{
             text: 'Customer Name',
             dataIndex: 'partnerCustomerName',
             width: 126,
@@ -60,7 +78,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Bulk',
             dataIndex: 'bulk',
             width: 50,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer:function(value){
+    			if(value==true){
+    				return 'Y';
+    			}
+    			else{
+    				return 'N';
+    			}
+        }
         }, {
             text: 'Ship To Customer',
             dataIndex: 'shipToCustomer',
@@ -292,23 +318,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 115,
             editor: 'textfield'
         }, {
-            text: 'Avery Item #<font color=red>*</font>',
-            dataIndex: 'averyItemNumber',
-            width: 88,
-            editor: 'textfield',
-            renderer : function(value, meta) {
-                if(value=='') {
-                	meta.style = cellColor;
-                } else {
-                	 return value;
-                }
-            }
-        }, {
-            text: 'Customer Item #',
-            dataIndex: 'customerItemNumber',
-            width: 88,
-            editor: 'textfield'
-        }, {
             text: 'Item Description',
             dataIndex: 'itemDescription',
             width: 102,
@@ -429,12 +438,50 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Artwork Hold',
             dataIndex: 'artworkhold',
             width: 84,
-            editor: 'checkbox'
+            editor: {
+            	xtype:'checkbox',
+            	listeners:{
+            		'change':function(obj,newValue,oldValue){
+            			var record=obj.ownerCt.context.record;
+            		  	if(newValue==true)
+            		  		record.set('artworkhold',true);
+            		  	else
+            		  		record.set('artworkhold',false);
+            		}
+            	}
+            },
+            renderer: function(value,row) {
+            	var record=row.record;
+            	var value=record.get('artworkhold');
+            	if(value==true)
+            		return "<input type='checkbox' checked>";
+            	else
+            		return "<input type='checkbox'>";
+            }
         }, {
             text: 'Artwork Work Attachment',
             dataIndex: 'artworkworkattachment',
             width: 110,
-            editor: 'checkbox'
+            editor: {
+            	xtype:'checkbox',
+            	listeners:{
+            		'change':function(obj,newValue,oldValue){
+            			var record=obj.ownerCt.context.record;
+            		  	if(newValue==true)
+            		  		record.set('artworkworkattachment',true);
+            		  	else
+            		  		record.set('artworkworkattachment',false);
+            		}
+            	}
+            },
+            renderer: function(value,row) {
+            	var record=row.record;
+            	var value=record.get('artworkworkattachment');
+            	if(value=='true')
+            		return "<input type='checkbox' checked>";
+            	else
+            		return "<input type='checkbox'>";
+            }
         }, {
             text: 'Variable Data Breakdown',
             dataIndex: 'variableDataBreakdown',
@@ -497,12 +544,50 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Shipping Hold',
             dataIndex: 'shippinghold',
             width: 83,
-            editor: 'checkbox'
+            editor: {
+            	xtype:'checkbox',
+            	listeners:{
+            		'change':function(obj,newValue,oldValue){
+            			var record=obj.ownerCt.context.record;
+            		  	if(newValue==true)
+            		  		record.set('shippinghold',true);
+            		  	else
+            		  		record.set('shippinghold',false);
+            		}
+            	}
+            },
+            renderer: function(value,row) {
+            	var record=row.record;
+            	var value=record.get('shippinghold');
+            	if(value==true)
+            		return "<input type='checkbox' checked>";
+            	else
+            		return "<input type='checkbox'>";
+            }
         }, {
             text: 'Production Hold',
             dataIndex: 'productionhold',
             width: 77,
-            editor: 'checkbox'
+            editor: {
+            	xtype:'checkbox',
+            	listeners:{
+            		'change':function(obj,newValue,oldValue){
+            			var record=obj.ownerCt.context.record;
+            		  	if(newValue==true)
+            		  		record.set('productionhold',true);
+            		  	else
+            		  		record.set('productionhold',false);
+            		}
+            	}
+            },
+            renderer: function(value,row) {
+            	var record=row.record;
+            	var value=record.get('productionhold');
+            	if(value==true)
+            		return "<input type='checkbox' checked>";
+            	else
+            		return "<input type='checkbox'>";
+            }
         }, {
             text: 'Split Shipset',
             dataIndex: 'splitshipset',
@@ -530,13 +615,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: {
             	xtype:'checkbox',
             	listeners:{
-            		'render': function(obj) {
-                		var value=obj.ownerCt.context.record.get('waiveMOQ');
-                    	if(value=='Y' || value=='y')
-                    		obj.setValue(true);
-                    	else
-                    		obj.setValue(false);
-                    },
             		'change':function(obj,newValue,oldValue){
             			var record=obj.ownerCt.context.record;
             		  	if(newValue==true)
@@ -549,7 +627,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             renderer: function(value,row) {
             	var record=row.record;
             	var value=record.get('waiveMOQ');
-            	if(value=='Y' || value=='y')
+            	if(value=='true')
             		return "<input type='checkbox' checked>";
             	else
             		return "<input type='checkbox'>";
