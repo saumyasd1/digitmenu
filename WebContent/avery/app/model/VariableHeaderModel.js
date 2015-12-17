@@ -34,6 +34,10 @@ Ext.define('AOC.model.VariableHeaderModel',{
     		mapping : 'salesOrderForVariableData.customerPONumber'
     	},
     	{
+    		name : 'mandatory',
+    		mapping : 'mandatory'
+    	},
+    	{
     		name : 'salesOrdercustomerItemNumber',
     		mapping : 'salesOrderForVariableData.customerItemNumber'
     	}
