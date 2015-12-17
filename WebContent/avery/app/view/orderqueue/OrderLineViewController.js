@@ -137,33 +137,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var id=this.runTime.getOrderQueueId(),me=this,
     	salesOrderCount=this.runTime.getSalesOrderCount();
     	var proceed=true;
-    	if(salesOrderCount==0){
-    		Ext.Ajax.request({
-        		method:'GET',
-        		async:false,
-     		    url : applicationContext+'/rest/router/salesorder/'+id,
-     		    success : function(response, opts) {
-     		    	var jsonValue=Ext.decode(response.responseText);
- 		        	var status=jsonValue.status;
- 		        	if(status=='success'){
- 		        		proceed=false;
- 		        		me.getView().store.load();
- 		        		//me.getView().lookupReference('salesOrderbutton').setText(viewSalesOrderBtnText);
- 		        		Ext.Msg.alert('',salesOrderCreationMsg);
- 		        	}
- 		        	else{
- 		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
- 		        		proceed=false;
- 		        		Ext.getBody().unmask();
- 		        	}
-		        },
-		        failure: function(response, opts) {
-		        	proceed=false;
-		        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-		        	Ext.getBody().unmask();
-	          }
-    		});
-    	}
     	if(proceed){
     		var currentRecord=this.runTime.getOrderQueueActiveRecord();
     	var owner=me.getView().ownerCt;
@@ -189,6 +162,52 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   owner.getLayout().setActiveItem(2); 
     	}
     	Ext.getBody().unmask();
+    },
+    submitSalesOrder:function(){
+    	Ext.getBody().mask('Loading...');
+    	var proceed=true,record;
+    	var grid=this.getView(),store=grid.store;
+    	if(grid.mandatoryFieldMissing){
+			proceed=false;
+			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
+			Ext.getBody().unmask();
+			return false;
+		}
+    	if(grid.mandatoryValidationFieldMissing){
+    		proceed=false;
+    		store.load();
+			Ext.Msg.alert('',orderLineMandatoryValidationFieldMissingAlt);
+			grid.showMandatoryValidationField=true;
+			Ext.getBody().unmask();
+			return false;
+    	}
+    	if(proceed)
+    		var id=this.runTime.getOrderQueueId(),me=this;
+    	Ext.Ajax.request({
+    		method:'GET',
+    		async:false,
+ 		    url : applicationContext+'/rest/router/salesorder/'+id,
+ 		    success : function(response, opts) {
+ 		    	var jsonValue=Ext.decode(response.responseText);
+		        	var status=jsonValue.status;
+		        	if(status=='success'){
+		        		proceed=false;
+		        		me.getView().store.load();
+		        		Ext.Msg.alert('',salesOrderCreationMsg);
+		        		Ext.getBody().unmask();
+		        	}
+		        	else{
+		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+		        		proceed=false;
+		        		Ext.getBody().unmask();
+		        	}
+	        },
+	        failure: function(response, opts) {
+	        	proceed=false;
+	        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+	        	Ext.getBody().unmask();
+          }
+		});
     },
     updateOrderLine:function(editor, context, eOpts){
     	var ctx = context,me=this,
@@ -274,14 +293,15 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
           }
       });
     },
-    OuterGridBeforeEditEvent:function(obj,context){
+    outerGridBeforeEditEvent:function(obj,context){
+    	debugger;
     	var record=context.record,grid=this.getView();
-    	var me=this,orderQueueStatus=runtime.getOrderQueueStatus();
+    	var me=this,orderQueueStatus=this.runTime.getOrderQueueStatus();
     	if(orderQueueStatus==waitingForCSRStatus){
     		var store=grid.store;
     		var i=store.find('id',record.id);
         	if(i==0){
-        		if(record.isModified('oracleBilltoSiteNumber')?record.getModified('oracleBilltoSiteNumber')=='':record.get(value)==''){
+        		if(record.isModified('oracleBilltoSiteNumber')?record.getModified('oracleBilltoSiteNumber')=='':record.get('oracleBilltoSiteNumber')==''){
         			grid.getPlugin('rowEditing').editor.form.findField('oracleBilltoSiteNumber').enable();
         			grid.getPlugin('rowEditing').editor.form.findField('billToContact').enable();
         			grid.getPlugin('rowEditing').editor.form.findField('billToAddress1').enable();
@@ -299,5 +319,13 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         	}
     	}else
     		return false;
+    },
+    innerGridBeforeEditEvent:function(obj,context){
+    	var record=context.record,grid=context.grid,
+    	level=record.get('level');
+    	if(level==fiberLevel){
+    		grid.editingPlugin.editor.form.findField('fiberPercent').enable();
+    	}else
+    		grid.editingPlugin.editor.form.findField('fiberPercent').disable();
     }
 })
