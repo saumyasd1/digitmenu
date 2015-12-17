@@ -71,7 +71,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			String Status=searchMap.get("Status");
 			if(Status!=null && !"".equals(Status)){
-				criteria.add(Restrictions.ilike("status",Status,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.eq("status",Status));
 			}
 			String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
@@ -91,8 +91,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
 			}
 			String OrderTrackingID=searchMap.get("id");
-			Long Id=Long.parseLong(OrderTrackingID);
-			if(Id!=null && !"".equals(Id)){
+			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
+				Long Id=Long.parseLong(OrderTrackingID);
 				criteria.add(Restrictions.eq("id",Id));
 			}
 			String PONumber=searchMap.get("pONumber");
