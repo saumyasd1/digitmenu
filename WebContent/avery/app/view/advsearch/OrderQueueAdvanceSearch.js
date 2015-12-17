@@ -102,7 +102,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							name:'SenderEmailID',
 							width:280,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'right'
 						    },
 						{
 							xtype : 'tbspacer',
@@ -125,7 +125,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						   {
 							xtype : 'textfield',
 							fieldLabel : 'PO#',
-							name:'pONumber',
+							name:'ponumber',
 							width:280,
 							labelSeparator : '',
 							labelAlign : 'right'
