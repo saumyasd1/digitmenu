@@ -32,6 +32,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
@@ -39,6 +40,7 @@ import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.service.OrderLineService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -1329,6 +1331,12 @@ public class OrderLine extends MainAbstractEntity{
 			}
 			else
 				orderLineService.bulkUpdate(jsonData, insertAddress);
+			boolean triggerValidationFlow = PropertiesConfig
+					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
+			if(triggerValidationFlow){
+				Router router=new Router();
+				router.validateOrder(Long.parseLong((String)jsonMap.get("orderQueueId")));
+			}
 			return Response.ok().build();
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
