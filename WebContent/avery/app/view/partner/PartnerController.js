@@ -291,6 +291,6 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	     			  win.show();
 	     			}
 	     		    }else
-	     		  	Ext.Msg.alert('Alert Message','<b>This Prtner is Active. To edit a Partner, it must be InActive. Please InActive it before edit it.</b>');
+	     		  	Ext.Msg.alert('Alert Message',editPartnerMsg);
 		   }
 });
