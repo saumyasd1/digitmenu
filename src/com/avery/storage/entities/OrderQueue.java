@@ -122,7 +122,7 @@ public class OrderQueue extends MainAbstractEntity{
 	private String comment;
 	
 	@Column(name = "PONumber")
-	private String pONumber;
+	private String ponumber;
 	
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(mappedBy = "orderQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -258,11 +258,11 @@ public class OrderQueue extends MainAbstractEntity{
 		this.error = error;
 	}
 	public String getPONumber() {
-		return pONumber;
+		return ponumber;
 	}
 
-	public void setPONumber(String pONumber) {
-		this.pONumber = pONumber;
+	public void setPONumber(String ponumber) {
+		this.ponumber = ponumber;
 	}
 
 	@Override
