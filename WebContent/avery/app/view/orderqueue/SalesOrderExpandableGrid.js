@@ -7,6 +7,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     emptyText: '<div align=center>No data to display</div>',
     autoHeight: true,
     columnLines: true,
+    nestedGridRefrence: 'salesOrderDetail',
     columns: [{
         text: 'Division',
         dataIndex: 'division',
@@ -248,47 +249,59 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		}
     }],
     plugins: [{
-        ptype: 'rowexpandergrid',
-        requires: ['AOC.model.VariableHeaderModel'],
-        gridConfig: {
-            nestedGridRefrence: 'salesOrderDetail',
-            cls: 'nestedGrid',
-            modal: 'AOC.model.VariableHeaderModel',
-            columns: [{
-                xtype: 'rownumberer'
-            }, {
-                text: 'Level',
-                dataIndex: 'level',
-                width: 100
-            }, {
-                text: "SKU #",
-                dataIndex: 'skuno',
-                width: 100
-            }, {
-                text: "TypeSetterCode",
-                dataIndex: 'typesetter',
-                width: 130
-            }, {
-                text: "Variable Field Name",
-                dataIndex: 'variablefieldname',
-                width: 140
-            }, {
-                text: "Variable Field Value",
-                dataIndex: 'variabledatavalue',
-                width: 140
-            }, {
-                text: "Fiber Content Percentage",
-                dataIndex: 'fiberPercent',
-                width: 155
-            }],
-            columnLines: false,
-            border: true,
-            plugins: ['rowediting'],
-            width: 790,
-            autoHeight: true,
-            frame: false,
-            header: false
-        }
+        ptype: 'cmprowexpander',
+		 createComponent: function(view,record,htmlnode,index) {
+			 var data=record.get('salesOrderDetail');
+			 var store = Ext.create('AOC.store.VariableHeaderStore', {
+	    		    autoLoad: true,
+	    		    modal: 'AOC.model.VariableHeaderModel',
+	    		    data : data,
+	    		    proxy: {
+	    		        type: 'memory'
+	    		    }
+	    		});
+		      return Ext.create('Ext.grid.Panel',{
+		    	  nestedGridRefrence: 'salesOrderDetail',
+		          modal: 'AOC.model.VariableHeaderModel',
+		          cls: 'nestedGrid',
+		          store:store,
+		          columns: [{
+		              xtype: 'rownumberer'
+		          }, {
+		              text: 'Level',
+		              dataIndex: 'level',
+		              width: 100
+		          }, {
+		              text: "SKU #",
+		              dataIndex: 'skuno',
+		              width: 100
+		          }, {
+		              text: "TypeSetterCode",
+		              dataIndex: 'typesetter',
+		              width: 130
+		          }, {
+		              text: "Variable Field Name",
+		              dataIndex: 'variablefieldname',
+		              width: 140
+		          }, {
+		              text: "Variable Field Value",
+		              dataIndex: 'variabledatavalue',
+		              width: 140
+		          }, {
+		              text: "Fiber Content Percentage",
+		              dataIndex: 'fiberPercent',
+		              xtype:'gridcolumn',
+		              width: 155
+		          }],
+		          columnLines: false,
+		          border: true,
+		         // plugins: me.getInnerGridPlugin(),
+		          width: 793,
+		          autoHeight: true,
+		          frame: false,
+		          header: false
+		      }) ;
+		    }
     }
 //    , {
 //        ptype: 'rowediting',
