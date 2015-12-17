@@ -29,9 +29,19 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
   },
   buildColumns : function(){
     	var me=this;
-        return [
-		                {
-				            text : '',
+		        return [       {
+		            header:"<img src="+menuIcon+">",
+		            xtype:'actioncolumn',
+		            width:25,
+		            baseCls:'custom-action',
+		  	        items:[
+		  	      {
+				  	    	  icon:menuIcon,
+				  	    	  handler: 'showmenu'
+		  	      }]
+		        },
+				          {
+		        	        header:"<img src="+editIcon+">",
 				            xtype:'actioncolumn',
 				            width:25,
 				            baseCls:'custom-action',
@@ -48,17 +58,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 				  	        renderer: function(v,cell,rec){
 			                          return me.actionTpl.apply(rec.data);
 			            }
-		                },
-		                {
-				            text : '',
-				            xtype:'actioncolumn',
-				            width:25,
-				            baseCls:'custom-action',
-				  	        items:[
-				  	      {
-						  	    	  icon:menuIcon,
-						  	    	  handler: 'showmenu'
-				  	      }]
 		                },
         			    {  
             	            text : 'Partner Name',
