@@ -196,11 +196,14 @@ if(!temp){
 			 });
         }
 			if (Ext.isIE || Ext.isGecko) {
-				browser = "IE";
-				var width = temp.width; //width of advanced search panel
-				box = this.getBox();
-				width=width-25; //remove margin
-	        		temp.showAt(box.x-width,box.y+26);
+			    browser = "IE";
+			    var d = Ext.get(event.getTarget());
+			    var width = temp.width; //width of advanced search panel
+			   // box = this.getBox();
+			    width = width - 25; //remove margin
+			    x = d.getX();
+			    y = d.getY();
+			    temp.showAt(x - width, y + 26);
 			}
 			else if (Ext.isChrome || Ext.isSafari) {
 				 browser = "Chrome";
