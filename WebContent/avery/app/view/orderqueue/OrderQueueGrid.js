@@ -28,7 +28,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         return [{
         	xtype:'rownumberer'
         },{
-            text : '',
+        	header: '<img src="' + menuIcon + '" />',
             width:25,
 			xtype:'actioncolumn',
 			menuDisabled  :true,
@@ -38,14 +38,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		  }]
         },
         {
-            text : '',
+        	header: '<img src="' + commentIcon + '" />',
             width:40,
 			dataIndex:'Comments',
 			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
 					var comment=rec.data.Comments;
-		           return '<div><img data-qtip=" '+comment+'"  src="' + commentIcon + '" /></div>';
+		           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' + commentIcon + '" /></div>';
 				}
 				else
 					return '';
@@ -53,14 +53,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		   	},
 			
         {
-            text : '',
+		    header: '<img src="' + errorIcon + '" />',
             width:40,
 			dataIndex:'error',
 			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
 					var error=rec.data.error;
-					return '<div><img data-qtip=" '+error+'" src="' + errorIcon + '" /></div>';
+					return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' + errorIcon + '" /></div>';
 				}
 				else
 					return '';
@@ -73,9 +73,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
 				if(v=='Email')
-					return '<div><img data-qtip="Email" src="' + mailIcon + '" /></div>';
+					return '<div><img data-qtip="<font color=blue>Email</font>" src="' + mailIcon + '" /></div>';
 				else
-					return '<div><img data-qtip="Web" src="' + browseIcon + '" /></div>';
+					return '<div><img data-qtip="<font color=blue>Web</font>" src="' + browseIcon + '" /></div>';
         }
         },
         {
@@ -85,8 +85,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },
         {
             text : 'PO#',
-            width:45,
-			dataIndex:'pONumber'
+            width:120,
+			dataIndex:'ponumber'
         },
         {
             text : 'Order File',
@@ -146,7 +146,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'receivedDate'
         },
         {
-            text : 'Sender EmailID',
+            text : 'Sender Email ID',
             width:128,
 			dataIndex:'SenderEmailID',
 			renderer:function(v){
@@ -162,7 +162,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'Subject',
 			renderer:function(v){
 				if(v){
-					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+					return '<div><span data-qtip="<font color=blue>'+v+'</font>" />'+v+'</span></div>';
 				}else 
 					return '';
         }
@@ -173,7 +173,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'EmailBody',
 			renderer:function(v){
 				if(v){
-					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+					return '<div><span data-qtip="<font color=blue>'+v+'<font>" />'+v+'</span></div>';
 				}else 
 					return '';
         }
