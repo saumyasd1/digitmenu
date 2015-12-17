@@ -294,7 +294,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
       });
     },
     outerGridBeforeEditEvent:function(obj,context){
-    	debugger;
+    	
     	var record=context.record,grid=this.getView();
     	var me=this,orderQueueStatus=this.runTime.getOrderQueueStatus();
     	if(orderQueueStatus==waitingForCSRStatus){
