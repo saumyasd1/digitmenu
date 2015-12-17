@@ -26,6 +26,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
@@ -33,6 +34,7 @@ import com.avery.storage.MixIn.OrderLineDetailMixIn;
 import com.avery.storage.service.OrderLineDetailService;
 import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -258,6 +260,12 @@ public class OrderLineDetail extends MainAbstractEntity{
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
 			jsonData=(String)jsonMap.get("data");
 			orderLineDetailService.bulkUpdate(jsonData);
+			boolean triggerValidationFlow = PropertiesConfig
+					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
+			if(triggerValidationFlow){
+				Router router=new Router();
+				router.validateOrder(Long.parseLong((String)jsonMap.get("orderQueueId")));
+			}
 			return Response.ok().build();
 		}  catch (WebApplicationException ex) {
             AppLogger.getSystemLogger().error(
@@ -286,6 +294,12 @@ public class OrderLineDetail extends MainAbstractEntity{
 			jsonData=(String)jsonMap.get("data");
 			bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
 			orderLineDetailService.bulkUpdateAll(jsonData,bulkUpdateAllById,variablfieldename);
+			boolean triggerValidationFlow = PropertiesConfig
+					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
+			if(triggerValidationFlow){
+				Router router=new Router();
+				router.validateOrder(bulkUpdateAllById);
+			}
 			return Response.ok().build();
 		}  catch (WebApplicationException ex) {
             AppLogger.getSystemLogger().error(
