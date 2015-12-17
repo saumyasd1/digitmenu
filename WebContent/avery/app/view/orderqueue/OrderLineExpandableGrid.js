@@ -7,8 +7,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     emptyText: '<div align=center>No data to display</div>',
     dataPresent:false,
     autoHeight: true,
+    nestedGridRefrence:'orderLineDetail',
     columnLines: true,
     reserveScrollbar:true,
+    mandatoryFieldMissing:false,
+    mandatoryValidationFieldMissing:false,
+    showMandatoryValidationField:false,
     columns: [{
         text: 'ATO Mandatory(S/F)',
         dataIndex: 'mandatoryVariableDataFieldFlag',
@@ -20,6 +24,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+				if(rec.get('status')==waitingForCSRStatus)
+					this.mandatoryValidationFieldMissing=true;
 				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -34,6 +40,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+				if(rec.get('status')==waitingForCSRStatus)
+					this.mandatoryValidationFieldMissing=true;
 				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -99,9 +107,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'poNumber',
         width: 100,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
             } else {
             	 return value;
             }
@@ -131,7 +142,26 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     {
         text: 'Bulk',
         dataIndex: 'bulk',
-        width: 50
+        width: 60,
+        editor:{
+        	xtype:'combo',
+        	store:[[true,'Y'],[false,'N']]
+        },
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+    		var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
+    		var checkvalue=bulkSampleValidationFlag.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div>'+v+'</div>';
+			}
+			else{
+					if(this.showMandatoryValidationField)
+						metadata.style = mandatoryValidationCellColor;
+					return '<div>'+v+'</div>';
+			}
+    }
     },{
         text: 'Ship To Customer',
         dataIndex: 'shipToCustomer',
@@ -197,9 +227,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'oracleBilltoSiteNumber',
         width: 100,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
             } else {
             	 return value;
             }
@@ -269,7 +302,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	readOnly:true
         },
         setEditor:function(record){
-        	debugger;
         }
     }, {
         text: 'Special Instruction',
@@ -286,9 +318,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'soldTORBONumber',
         width: 100,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
             } else {
             	 return value;
             }
@@ -298,9 +333,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'oracleShiptoSiteNumber',
         width: 100,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
             } else {
             	 return value;
             }
@@ -325,9 +363,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'averyItemNumber',
         width: 88,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
             } else {
             	 return value;
             }
@@ -377,11 +418,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'customerOrderedQty',
         width: 106,
         editor: 'textfield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(parseInt(value) > 0) {
                return value;
             } else {
-                meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+                    meta.style = cellColor;
+            	}
             }
         } 
     }, {
@@ -391,9 +435,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         xtype:'datecolumn',
         format:dateFormat,
         editor: 'datefield',
-        renderer : function(value, meta) {
+        renderer : function(value, meta,record) {
             if(value=='' || value == null) {
-                meta.style = cellColor;
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+                    meta.style = cellColor;
+            	}
             }
                 else
                 	return Ext.Date.format(value,'Y-m-d');
@@ -647,6 +694,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             },
             plugins: me.getOuterGridPlugin()
         });
+        me.store.on('beforeload',function(){
+        	me.mandatoryFieldMissing=false;
+        });
         this.callParent(arguments);
     },
     buildtbar: function() {
@@ -700,79 +750,99 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             text: bulkUpdateButtonText,
             handler: 'getUpdateScreen'
         }, {
-            xtype: 'tbspacer',
-            width: 15
-        }, {
-            xtype: 'button',
-            reference:'cancelOrderButton',
-            text: '<b>Cancel Order</b>',
-            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
-            handler: 'cancelOrder'
-        },{
-            xtype: 'tbspacer',
-            width: 15
-        }, {
             xtype: 'button',
             reference:'validateButton',
             text: '<b>Validate</b>',
-            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
             handler: 'validateOrderLine'
-        }, {
-            xtype: 'tbspacer',
-            reference:'validatetabber',
-            hidden:AOC.config.Runtime.getSalesOrderCount() == 0 ? false : true,
-            width: 15
-        }, {
+        },{
+            xtype: 'button',
+            reference:'cancelOrderButton',
+            text: '<b>Cancel Order</b>',
+            handler: 'cancelOrder'
+        },{
             xtype: 'button',
             reference: 'salesOrderbutton',
-            hidden:!me.dataPresent,
-            text: AOC.config.Runtime.getSalesOrderCount() == 0 ? salesOrdersumbitText : viewSalesOrderBtnText,
+            text: salesOrdersumbitText,
+            handler: 'submitSalesOrder'
+        },{
+            xtype: 'button',
+            reference: 'salesOrderbutton',
+            text: viewSalesOrderBtnText,
             handler: 'viewSalesOrder'
         }];
     },
     getRowExpander:function(){
     	var me=this,rowExpander=new AOC.ux.RowExpanderGrid({
-    gridConfig: {
-        nestedGridRefrence: 'orderLineDetail',
-        modal: 'AOC.model.VariableHeaderModel',
-        cls: 'nestedGrid',
-        columns: [{
-            xtype: 'rownumberer'
-        }, {
-            text: 'Level',
-            dataIndex: 'level',
-            width: 100
-        }, {
-            text: "SKU #",
-            dataIndex: 'skuno',
-            width: 100
-        }, {
-            text: "TypeSetterCode",
-            dataIndex: 'typesetter',
-            width: 130
-        }, {
-            text: "Variable Field Name",
-            dataIndex: 'variablefieldname',
-            width: 140
-        }, {
-            text: "Variable Field Value",
-            dataIndex: 'variabledatavalue',
-            width: 140,
-            editor: 'textfield'
-        }, {
-            text: "Fiber Content Percentage",
-            dataIndex: 'fiberPercent',
-            width: 155,
-            editor: 'textfield'
-        }],
-        columnLines: false,
-        border: true,
-        plugins: me.getInnerGridPlugin(),
-        width: 793,
-        autoHeight: true,
-        frame: false,
-        header: false
-    }
+    		 createComponent: function(view,record,htmlnode,index) {
+    			 var data=record.get('orderLineDetail');
+    			 var store = Ext.create('AOC.store.VariableHeaderStore', {
+    	    		    autoLoad: true,
+    	    		    modal: 'AOC.model.VariableHeaderModel',
+    	    		    data : data,
+    	    		    proxy: {
+    	    		        type: 'memory'
+    	    		    }
+    	    		});
+    		      return Ext.create('Ext.grid.Panel',{
+    		    	  nestedGridRefrence: 'orderLineDetail',
+    		          modal: 'AOC.model.VariableHeaderModel',
+    		          cls: 'nestedGrid',
+    		          store:store,
+    		          columns: [{
+    		              xtype: 'rownumberer'
+    		          }, {
+    		              text: 'Level',
+    		              dataIndex: 'level',
+    		              width: 100
+    		          }, {
+    		              text: "SKU #",
+    		              dataIndex: 'skuno',
+    		              width: 100
+    		          }, {
+    		              text: "TypeSetterCode",
+    		              dataIndex: 'typesetter',
+    		              width: 130
+    		          }, {
+    		              text: "Variable Field Name",
+    		              dataIndex: 'variablefieldname',
+    		              width: 140
+    		          }, {
+    		              text: "Variable Field Value",
+    		              dataIndex: 'variabledatavalue',
+    		              width: 140,
+    		              editor: 'textfield',
+    		              renderer:function(v, metadata,rec){
+    		          		var mandatory=rec.get('mandatory');
+    		      			if(mandatory=='Y'){
+    		      				if(v==''){
+    		      					if(me.showMandatoryValidationField)
+    		      						metadata.style = mandatoryValidationCellColor;
+    		      				}
+    		      				return '<div>'+v+'</div>';
+    		      			}
+    		      			else{
+    		      					return '<div>'+v+'</div>';
+    		      			}
+    		          }
+    		          }, {
+    		              text: "Fiber Content Percentage",
+    		              dataIndex: 'fiberPercent',
+    		              xtype:'gridcolumn',
+    		              width: 155,
+    		              editor: {
+    		            	  xtype:'textfield',
+    		            	  disabled:true
+    		              }
+    		          }],
+    		          columnLines: false,
+    		          border: true,
+    		          plugins: me.getInnerGridPlugin(),
+    		          width: 793,
+    		          autoHeight: true,
+    		          frame: false,
+    		          header: false
+    		      }) ;
+    		    }
     	});
     	
     	return rowExpander;
@@ -785,6 +855,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     			clicksToEdit: 1,
                 saveAndNextBtn: true,
                 listeners:{
+                	beforeEdit:function(editor,context){
+                		grid.getController().innerGridBeforeEditEvent(editor,context);
+                	},
                 edit:function(editor, context, eOpts){
                 	var ctx = context,me=this,
                     idx = ctx.rowIdx,
@@ -800,7 +873,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             		        success : function(response, opts) {
             			  		Ext.Msg.alert('','Order line Detail successfully updated');
             			  		Ext.getBody().unmask();
-            			  		ctx.store.load();
+            			  		grid.store.load();
             		        },
             		        failure: function(response, opts) {
             		        	Ext.getBody().unmask();
@@ -826,7 +899,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                         success: function(response, opts) {
                             Ext.Msg.alert('', 'Order line Detail successfully updated');
                             Ext.getBody().unmask();
-                            ctx.store.load();
+                            grid.store.load();
                         },
                         failure: function(response, opts) {
                             Ext.getBody().unmask();
@@ -855,7 +928,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 controller: 'orderline',
                 listeners: {
                     'edit': 'updateOrderLine',
-                    'beforeedit':'OuterGridBeforeEditEvent'
+                    'beforeEdit':'outerGridBeforeEditEvent'
                 },
                 bulKUpdate: function(editor,context){
                 	this.getCmp().getController().outerGridBulkUpdate(this,editor,context);
