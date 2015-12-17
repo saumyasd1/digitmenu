@@ -35,27 +35,7 @@ public class Router {
 		Integer retryInterval = null;
 		try {
 			Long orderId = Long.parseLong(id);
-			StringWriter writer = new StringWriter();
-			String adeptiaServerURL=PropertiesConfig
-					.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
-			String userName=PropertiesConfig
-					.getString(PropertiesConstants.ADEPTIA_SERVER_USERNAME);
-			String password=PropertiesConfig
-					.getString(PropertiesConstants.ADEPTIA_SERVER_PASSWORD);
-			String url = adeptiaServerURL+"/adeptia/publishProviderByRest/AV_WSP_Validator_Process/profile?FileQueueID="+orderId.intValue();
-			Response response = RestClient.invoke(
-					url,
-					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
-					"get", null, null, null, null, userName, password,1,1,AppLogger.getSystemLogger());
-			
-			
-			/*Response response = invoke(
-					"http://www.espncricinfo.com",
-					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
-					GET_OPERATION, null, null, null, null, null, null);*/
-//			System.out.println(response.readEntity(String.class));
-			
-		//	mapper.writeValue(writer, String.class);
+			Response response=validateOrder(orderId);
 			rb = Response.ok(response.readEntity(String.class));
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
@@ -72,7 +52,21 @@ public class Router {
 		return rb.build();
 
 	}
-
+	public Response validateOrder(Long orderId) throws Exception{
+		StringWriter writer = new StringWriter();
+		String adeptiaServerURL=PropertiesConfig
+				.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
+		String userName=PropertiesConfig
+				.getString(PropertiesConstants.ADEPTIA_SERVER_USERNAME);
+		String password=PropertiesConfig
+				.getString(PropertiesConstants.ADEPTIA_SERVER_PASSWORD);
+		String url = adeptiaServerURL+"/adeptia/publishProviderByRest/AV_WSP_Validator_Process/profile?FileQueueID="+orderId.intValue();
+		Response response = RestClient.invoke(
+				url,
+				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
+				"get", null, null, null, null, userName, password,1,1,AppLogger.getSystemLogger());
+		return response;
+	}
 	@GET
 	@Path("/salesorder/{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
