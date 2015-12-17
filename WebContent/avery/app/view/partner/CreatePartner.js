@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
 	itemId:'createpartnerItemId',
 	controller:'partnerMain',
 	bodyPadding: 5,
-	width: 700,
+	width: 600,
 	border:false,
     modal:true,
     draggable:false,
@@ -12,6 +12,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
     rec:null,
     partnerId:null,
     partnerName:null,
+    buttonAlign:'center',
     initComponent : function(){
     	var me=this;
     	this.fieldArray = [],
@@ -27,16 +28,6 @@ Ext.define('AOC.view.partner.CreatePartner',{
             });
             this.callParent(arguments);
 
-        },
-        buildButtons : function(){
-            return [{
-            	text : 'Save',
-                handler : 'SaveDetails'
-            },
-            {
-            	text : 'Cancel',
-                handler : 'CancelDetails'
-            }];
         },
         buildItem:function(){
         	var me=this;
@@ -163,9 +154,36 @@ Ext.define('AOC.view.partner.CreatePartner',{
          	         },
          	         {boxLabel:'Inactive',name:'active',inputValue:'0',id:'Inactive'}
          	        			       ]
-        		}
-               ],
-        		buttons:this.buildButtons()
+        		},
+        		{
+                	xtype :'tbspacer',
+                	width :10
+        		},
+        		  { xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 10',
+                    items:[
+                           {
+                	xtype :'tbspacer',
+                	width :180
+        		          },{
+                    xtype :'button',
+                	text : 'Save',
+                    handler : 'SaveDetails',
+                    width : 70
+                    
+                },{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+                {   xtype :'button',
+                	text : 'Cancel',
+                    handler : 'CancelDetails',
+                    width : 70
+                   
+                }]
+        		  }
+               ]
         	}]
         },
         notifyByMessage : function(config){
