@@ -92,10 +92,13 @@ Ext.define('AOC.view.address.AddressController', {
 		         }
 					if (Ext.isIE || Ext.isGecko) {
 						browser = "IE";
-						var width = temp.width; 
-						box = this.getBox();
-						width=width-25; 
-	   	        		temp.showAt(box.x-width,box.y+26);
+						 var d = Ext.get(event.getTarget());
+						 var width = temp.width;
+						 width=width-25; 
+						 x=d.getX();
+						 y=d.getY();
+						//box = this.getBox();
+	   	        		temp.showAt(x-width,y+26);
 					}
 					else if (Ext.isChrome || Ext.isSafari) {
 						 browser = "Chrome";
