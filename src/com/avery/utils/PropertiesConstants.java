@@ -47,5 +47,7 @@ public interface PropertiesConstants {
 	String ADEPTIA_SERVER_USERNAME="app.server.userName";
 	
 	String ADEPTIA_SERVER_PASSWORD="app.server.password";
+	
+	String TRIGGER_VALIDATION_ON_SAVE_FLAG="app.validation.trigger";
 
 }
