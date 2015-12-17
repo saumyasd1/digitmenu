@@ -51,8 +51,8 @@ Ext.define('AOC.model.OrderQueueModel',{
 		mapping : 'orderSource',
 		type: 'string'
 	}, {
-		name : 'pONumber',
-		mapping : 'pONumber',
+		name : 'ponumber',
+		mapping : 'ponumber',
 		type: 'string'
 	},{
 		name : 'SubmittedBy',
