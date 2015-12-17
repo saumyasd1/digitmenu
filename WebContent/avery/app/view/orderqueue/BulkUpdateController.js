@@ -2,6 +2,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderlinebulkupdate',
     requires : ['AOC.model.VariableHeaderModel'],
+    runTime: AOC.config.Runtime,
     saveOrderLine:function(){ // this function is called when the orline line is updated by bulk update
     	var mask = Ext.getBody().mask('Loading');
     	mask.dom.style.zIndex = '99999';
@@ -25,7 +26,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     			parms=parms+'@@@'+Ext.encode(obj);
     		  
     		 });
-    	var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(parms)+'}';
+    	var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(parms)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
@@ -62,7 +63,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     			parms=parms+'@@@'+Ext.encode(obj);
     		  
     		 });
-    	var obj='{"data":'+Ext.encode(parms)+'}';
+    	var obj='{"data":'+Ext.encode(parms)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
