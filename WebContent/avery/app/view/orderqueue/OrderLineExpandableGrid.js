@@ -14,9 +14,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     mandatoryValidationFieldMissing:false,
     showMandatoryValidationField:false,
     columns: [{
-        text: 'ATO Mandatory(S/F)',
+        text: 'ATO Mandatory',
         dataIndex: 'mandatoryVariableDataFieldFlag',
-        width: 120,
+        width: 65,
     	renderer:function(value, metadata,rec){
     		var mandatoryVariableDataFieldFlag=rec.data.mandatoryVariableDataFieldFlag;
     		var checkvalue=value.trim();
@@ -30,9 +30,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     }, {
-        text: 'Bulk Sample(S/F)',
+        text: 'Bulk Sample',
         dataIndex: 'bulkSampleValidationFlag',
-        width: 89,
+        width: 65,
     	renderer:function(value, metadata,rec){
     		var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
     		var checkvalue=value.trim();
@@ -46,9 +46,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     }, {
-        text: 'Cust.PO#',
+        text: 'Cust. PO#',
         dataIndex: 'customerPOFlag',
-        width: 60,
+        width: 40,
         renderer:function(value, metadata,rec){
     		var customerPOFlag=rec.data.customerPOFlag;
     		var checkvalue=value.trim();
@@ -60,9 +60,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     }, {
-        text: 'Dup.PO(S/F)',
+        text: 'Dup. PO',
         dataIndex: 'duplicatePOFlag',
-        width: 60,
+        width: 40,
     	renderer:function(value, metadata,rec){
     		var duplicatePOFlag=rec.data.duplicatePOFlag;
     		var checkvalue=value.trim();
@@ -74,9 +74,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     }, {
-        text: 'Size Page(S/F)',
+        text: 'Size Page',
         dataIndex: 'htlSizePageValidationFlag',
-        width: 100,
+        width: 40,
     	renderer:function(value, metadata,rec){
     		var htlSizePageValidationFlag=rec.data.htlSizePageValidationFlag;
     		var checkvalue=value.trim();
@@ -88,9 +88,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     }, {
-        text: 'MOQ(S/F)',
+        text: 'MOQ',
         dataIndex: 'moqValidationFlag',
-        width: 100,
+        width: 50,
         editor: 'textfield',
     	renderer:function(value, metadata,rec){
     		var moqValidationFlag=rec.data.moqValidationFlag;
@@ -105,7 +105,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },{
         text: 'PO #<font color=red>*</font>',
         dataIndex: 'poNumber',
-        width: 100,
+        width: 120,
         editor: 'textfield',
         renderer : function(value, meta,record) {
             if(value=='') {
@@ -129,9 +129,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield'
     }, 
     {
-        text: 'ATO Required(Y/N)',
+        text: 'ATO Required',
         dataIndex: 'atoValidationFlag',
-        width: 79,
+        width: 65,
        	renderer:function(v){
 			if(v=='Y'){
 				return '<div><span data-qtip="YES" />'+v+'</span></div>';
@@ -505,17 +505,49 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Artwork Hold',
         dataIndex: 'artworkhold',
         width: 84,
-        editor: 'checkbox',
-        renderer: function(value) {
-            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        editor: {
+        	xtype:'checkbox',
+        	listeners:{
+        		'change':function(obj,newValue,oldValue){
+        			var record=obj.ownerCt.context.record;
+        		  	if(newValue==true)
+        		  		record.set('artworkhold',true);
+        		  	else
+        		  		record.set('artworkhold',false);
+        		}
+        	}
+        },
+        renderer: function(value,row) {
+        	var record=row.record;
+        	var value=record.get('artworkhold');
+        	if(value==true)
+        		return "<input type='checkbox' checked>";
+        	else
+        		return "<input type='checkbox'>";
         }
     }, {
         text: 'Artwork Work Attachment',
         dataIndex: 'artworkworkattachment',
         width: 110,
-        editor: 'checkbox',
-        renderer: function(value) {
-            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        editor: {
+        	xtype:'checkbox',
+        	listeners:{
+        		'change':function(obj,newValue,oldValue){
+        			var record=obj.ownerCt.context.record;
+        		  	if(newValue==true)
+        		  		record.set('artworkworkattachment',true);
+        		  	else
+        		  		record.set('artworkworkattachment',false);
+        		}
+        	}
+        },
+        renderer: function(value,row) {
+        	var record=row.record;
+        	var value=record.get('artworkworkattachment');
+        	if(value=='true')
+        		return "<input type='checkbox' checked>";
+        	else
+        		return "<input type='checkbox'>";
         }
     }, {
         text: 'Variable Data Breakdown',
@@ -579,17 +611,49 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Shipping Hold',
         dataIndex: 'shippinghold',
         width: 83,
-        editor: 'checkbox',
-        renderer: function(value) {
-            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        editor: {
+        	xtype:'checkbox',
+        	listeners:{
+        		'change':function(obj,newValue,oldValue){
+        			var record=obj.ownerCt.context.record;
+        		  	if(newValue==true)
+        		  		record.set('shippinghold',true);
+        		  	else
+        		  		record.set('shippinghold',false);
+        		}
+        	}
+        },
+        renderer: function(value,row) {
+        	var record=row.record;
+        	var value=record.get('shippinghold');
+        	if(value==true)
+        		return "<input type='checkbox' checked>";
+        	else
+        		return "<input type='checkbox'>";
         }
     }, {
         text: 'Production Hold',
         dataIndex: 'productionhold',
         width: 77,
-        editor: 'checkbox',
-        renderer: function(value) {
-            return "<input type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+        editor: {
+        	xtype:'checkbox',
+        	listeners:{
+        		'change':function(obj,newValue,oldValue){
+        			var record=obj.ownerCt.context.record;
+        		  	if(newValue==true)
+        		  		record.set('productionhold',true);
+        		  	else
+        		  		record.set('productionhold',false);
+        		}
+        	}
+        },
+        renderer: function(value,row) {
+        	var record=row.record;
+        	var value=record.get('productionhold');
+        	if(value==true)
+        		return "<input type='checkbox' checked>";
+        	else
+        		return "<input type='checkbox'>";
         }
     }, {
         text: 'Split Shipset',
@@ -618,26 +682,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: {
         	xtype:'checkbox',
         	listeners:{
-        		'render': function(obj) {
-            		var value=obj.ownerCt.context.record.get('waiveMOQ');
-                	if(value=='Y' || value=='y')
-                		obj.setValue(true);
-                	else
-                		obj.setValue(false);
-                },
         		'change':function(obj,newValue,oldValue){
         			var record=obj.ownerCt.context.record;
         		  	if(newValue==true)
-        		  		record.set('waiveMOQ','Y');
+        		  		record.set('waiveMOQ',true);
         		  	else
-        		  		record.set('waiveMOQ','N');
+        		  		record.set('waiveMOQ',false);
         		}
         	}
         },
         renderer: function(value,row) {
         	var record=row.record;
         	var value=record.get('waiveMOQ');
-        	if(value=='Y' || value=='y')
+        	if(value=='true')
         		return "<input type='checkbox' checked>";
         	else
         		return "<input type='checkbox'>";
