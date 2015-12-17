@@ -103,7 +103,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 		            width : 500,
 		            labelSeparator : '',
 		            listeners:{
-	      				  blur : this.notifyByImage,
+	      				  blur : this.notifyByImage
 	      			 }
 		        
         		},
@@ -130,7 +130,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            blankText : 'Name field is required',
   		            enforceMaxLength: true,
   		          listeners:{
-      				  blur : this.notifyByImage,
+      				  blur : this.notifyByImage
       			 }
         		},
         		{
@@ -153,7 +153,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            blankText : 'Name field is required',
   		            enforceMaxLength: true,
   		          listeners:{
-      				  blur : this.notifyByImage,
+      				  blur : this.notifyByImage
       			 }
         		},
         		{
@@ -178,7 +178,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			 enforceMaxLength: true,
         			 listeners:{
          				 'change':'onOrderFileChange',
-         				  blur : this.notifyByImage,
+         				  blur : this.notifyByImage
          			 }
         			},
         		{
@@ -200,7 +200,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            labelAlign:'right',
   		            listeners:{
      				 'change':'onAttachemnetChange',
-     				  blur : this.notifyByImage,
+     				  blur : this.notifyByImage
      			 }
         		}
                ]
@@ -210,5 +210,5 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
 				else
 				   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
-	     },
+	     }
 });
