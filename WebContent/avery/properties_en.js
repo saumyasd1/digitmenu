@@ -30,6 +30,9 @@ orderError='2',
 orderPreProcessedStatus='3',
 waitingForCSRStatus='4',
 submitToOracleStatus='6',	
-cancelStatus='8'
+cancelStatus='8',
+	
+fiberLevel='FIBRE',
+mandatoryValidationCellColor='background-color:yellow'
 ;
 
