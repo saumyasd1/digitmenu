@@ -30,7 +30,9 @@ orderReceivedStatus='1',
 orderError='2',
 orderPreProcessedStatus='3',
 waitingForCSRStatus='4',
-submitToOracleStatus='6',	
+salesOrderCreatedStatus='5',
+submitToOracleStatus='6',
+
 cancelStatus='8',
 	
 fiberLevel='FIBRE',
