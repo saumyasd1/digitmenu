@@ -24,7 +24,7 @@ deleteImageSrc='avery/resources/images/delete.png',
 warningImageSrc='avery/resources/images/warning.jpg',
 successImageSrc='avery/resources/images/success.jpg',
 cellColor='background-color:#FFC7B0;',
-editPartnerMsg='<b>This partner is Active. To edit a partner , it must be InActive. Would you like to turn it InActive.</b>',
+editPartnerMsg='<b>This partner is Active. To edit a partner , it must be InActive.</b>',
 //Status Code
 orderReceivedStatus='1',
 orderError='2',
