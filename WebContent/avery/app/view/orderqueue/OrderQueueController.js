@@ -66,7 +66,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
             cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
             form=orderlineexpandablegrid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-            
             if(status != waitingForCSRStatus) {
             	validateButton.disable();
             	bulkUpdateButton.disable();
@@ -276,34 +275,5 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
-    },
-    cancelOrder: function() {
-        var id = this.runTime.getOrderQueueId(),
-            me = this;
-        var commentArea = this.getView().lookupReference('commentArea');
-        var comment = commentArea.getValue().replace(/\n/g, '::');
-        var parameters = '{\"status\":\"' + cancelStatus + '\"';
-        if (comment != '') {
-            parameters = parameters + ',\"comment\":\"' + comment + '\"';
-        }
-        parameters = parameters + '}';
-        Ext.Ajax.request({
-            url: applicationContext + '/rest/orders/cancelorder/' + id,
-            method: 'PUT',
-            jsonData: parameters,
-            success: function(response, opts) {
-                Ext.Msg.alert('',orderCancelSuccessAlert);
-                Ext.ComponentQuery.query('#OrderQueueGridItemId')[0].getStore().load();
-                Ext.getBody().unmask();
-                me.getView().destroy();
-            },
-            failure: function(response, opts) {
-                Ext.getBody().unmask();
-                me.getView().destroy();
-            }
-        });
-    },
-    closeWindow:function(obj){
-    	this.getView().destroy();
     }
 })
