@@ -316,15 +316,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         } else {
             var salesOrderbutton = orderlineexpandablegrid.lookupReference('salesOrderbutton');
             var validatebutton = orderlineexpandablegrid.lookupReference('validateButton'),
-            validatetabber= orderlineexpandablegrid.lookupReference('validatetabber');
+          //  validatetabber= orderlineexpandablegrid.lookupReference('validatetabber');
             if (salesOrderCount == 0) {
                 salesOrderbutton.setText(salesOrdersumbitText);
                 validatebutton.show();
-                validatetabber.show();
+              //  validatetabber.show();
             } else {
                 salesOrderbutton.setText(viewSalesOrderBtnText);
                 validatebutton.hide();
-                validatetabber.hide();
+                //validatetabber.hide();
             }
         }
         Ext.getBody().unmask();
