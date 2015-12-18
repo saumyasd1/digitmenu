@@ -103,7 +103,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
-					this.validationFieldMissing=true;
+				if(rec.get('status')==waitingForCSRStatus && rec.get('waiveMOQ')=='false')
+					this.mandatoryValidationFieldMissing=true;
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -114,9 +115,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield',
         renderer : function(value, meta,record) {
             if(value=='') {
+            	meta.style = cellColor;
             	if(record.get('status')==waitingForCSRStatus){
             		this.mandatoryFieldMissing=true;
-            		meta.style = cellColor;
             	}
             } else {
             	 return value;
@@ -425,12 +426,20 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield',
         renderer : function(value, meta,record) {
             if(parseInt(value) > 0) {
+            	if(this.showMandatoryValidationField){
+	            	if(record.get('status')==waitingForCSRStatus && record.get('waiveMOQ')=='false'){
+		            	var moqValidationFlag=record.data.moqValidationFlag;
+		        		var moqValidationFlag=moqValidationFlag.trim();
+		    			if(moqValidationFlag.substr(0,1)=='F'){
+		                    meta.style = mandatoryValidationCellColor;
+		            	}
+	            	}
+            	}
                return value;
             } else {
-            	if(record.get('status')==waitingForCSRStatus){
-            		this.mandatoryFieldMissing=true;
-                    meta.style = cellColor;
-            	}
+	            		this.mandatoryFieldMissing=true;
+	                    meta.style = cellColor;
+	                    return value;
             }
         } 
     }, {
@@ -701,8 +710,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	var value=record.get('waiveMOQ');
         	if(value=='true')
         		return "<input type='checkbox' checked>";
-        	else
-        		return "<input type='checkbox'>";
+        	else{
+        		return "<input type='checkbox'>";	
+        	}
         }
     }, {
         text: 'APO Type',
@@ -758,6 +768,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         });
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
+        	me.mandatoryValidationFieldMissing=false;
         });
         this.callParent(arguments);
     },
@@ -939,9 +950,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     			clicksToEdit: 1,
                 saveAndNextBtn: true,
                 listeners:{
-                	beforeEdit:function(editor,context){
-                		grid.getController().innerGridBeforeEditEvent(editor,context);
-                	},
                 edit:function(editor, context, eOpts){
                 	var ctx = context,me=this,
                     idx = ctx.rowIdx,
@@ -965,6 +973,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 		  });
                 }
                 },
+                'beforeEdit':function(editor,context){
+            		var flag=grid.getController().innerGridBeforeEditEvent(editor,context);
+            		return flag;
+            	},
                 bulKUpdate: function(editor, context) {
                     this.suspendEvent('edit');
                     this.completeEdit();
