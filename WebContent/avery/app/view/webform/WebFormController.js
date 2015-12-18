@@ -17,6 +17,7 @@ Ext.define('AOC.view.webform.WebFormController', {
   		var service = item;
   		serviceStoreData.push(service);
   	});
+    	debugger;
     	store =  Ext.create('Ext.data.Store',{
     		fields:['id'],
 	            data : serviceStoreData
@@ -34,8 +35,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 	         data : serviceStoreData1
         });
     	     productLineCombo.bindStore(store);
-    	rboCombo.bindStore(serviceStore);
-    	rboCombo.enable();
+    	     rboCombo.bindStore(serviceStore);
+    	     rboCombo.enable();
     	  }
     	}
     	}
@@ -215,16 +216,29 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 var productLineCombo=this.getView().lookupReference('productLineCombo');
 		 productLineCombo.setValue('');
 		 var store=productLineCombo.store;
-		 store.clearFilter();
-		 store.load();
+		 var uniqueValueArray1=store.collect('productLineType');
+		 var serviceStoreData1= [];
+   	  if(uniqueValueArray1.length>0){
+   		 uniqueValueArray1.forEach(function(item){
+   			 var index=store.find('productLineType',item);
+   			 var currentRecord=store.getAt(index);
+       	     serviceStoreData1.push(currentRecord);
+          });
+   	     var serviceStore =  Ext.create('Ext.data.Store',{
+    	   	 fields : ['productLineType'],	
+	         data : serviceStoreData1
+       });
+   	  serviceStore.clearFilter();
+   	  serviceStore.load();
 		 productLineCombo.bindStore();
-		 store.filterBy(function(record){
+		 serviceStore.filterBy(function(record){
 			 if(record.get('rboName')==newValue)
 				 return true;
        });
-		 productLineCombo.bindStore(store);
+		 productLineCombo.bindStore(serviceStore);
 		 productLineCombo.enable();
 		 Ext.getBody().unmask();
+		 }
 		 }
 	 }
 });
