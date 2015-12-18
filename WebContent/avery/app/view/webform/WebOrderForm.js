@@ -101,7 +101,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
                     allowBlank: false,
                     labelWidth : 100,
 		            width : 500,
-		            labelSeparator : '',
+		            blankText : 'Sender Email is required',
 		            listeners:{
 	      				  blur : this.notifyByImage
 	      			 }
@@ -127,9 +127,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		            blankText : 'Name field is required',
-  		            enforceMaxLength: true,
-  		          listeners:{
+  		            blankText : 'Email Subject is required',
+  		            listeners:{
       				  blur : this.notifyByImage
       			 }
         		},
@@ -150,9 +149,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            labelSeparator : '',
   		            labelAlign:'right',
   		            maxLength : '50',
-  		            blankText : 'Name field is required',
-  		            enforceMaxLength: true,
-  		          listeners:{
+  		            blankText :'Email Body is required',
+  		            listeners:{
       				  blur : this.notifyByImage
       			 }
         		},
@@ -176,6 +174,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			disabled:true,
         			forceSelection : true,
         			 enforceMaxLength: true,
+        			blankText :'Order File Type is required',
         			 listeners:{
          				 'change':'onOrderFileChange',
          				  blur : this.notifyByImage
