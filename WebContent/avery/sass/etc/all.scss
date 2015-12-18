@@ -152,3 +152,7 @@ border-right:none !important;
 .hiderowexpander .x-grid-cell-inner-row-expander {
      padding: 0px 0px 0px 0px; 
 }
+
+.invalid .x-grid-row-expander{
+	background-color: yellow !important;
+}
