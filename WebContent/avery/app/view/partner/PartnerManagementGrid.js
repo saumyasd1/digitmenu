@@ -114,7 +114,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
     },
 	 onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		 var me=this;
-		 if(cellIndex==1){
+		 if(cellIndex==2){
 	            if(e.target.className.indexOf("onoffswitch"==1))
 	            {
 	            	var status =record.get('active');
