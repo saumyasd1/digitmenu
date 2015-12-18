@@ -238,7 +238,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     {
         text: 'Status',
         dataIndex: 'status',
-        width: 180,
+        width: 150,
         renderer:function(v){
         	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
 			var statusRecord=store.findRecord( 'code', v);
@@ -247,7 +247,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			else
 				return '';
 		}
-    }],
+    },
+    {
+  	  text: 'System Status',
+        dataIndex: 'systemstatus',
+        width: 180
+  }],
     plugins: [{
         ptype: 'cmprowexpander',
 		 createComponent: function(view,record,htmlnode,index) {
