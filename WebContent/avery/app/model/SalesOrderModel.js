@@ -49,6 +49,7 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'agreement', mapping:'agreement',type: 'string'},
 	 		{name: 'modelSerialNumber', mapping:'modelSerialNumber',type: 'string'},
 	 		{name: 'waiveMOQ', mapping:'waiveMOQ',type: 'string'},
-	 		{name: 'apoType', mapping:'apoType',type: 'string'}
+	 		{name: 'apoType', mapping:'apoType',type: 'string'},
+	 		{name: 'systemstatus', mapping:'systemstatus',type: 'string'}
 	     ]
 });
