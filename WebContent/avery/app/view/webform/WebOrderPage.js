@@ -8,27 +8,16 @@ Ext.define('AOC.view.webform.WebOrderPage',{
 	width: 700,
 	border:false,
 	 layout: {
-        type: 'hbox',
-        pack: 'center'
+        type: 'vbox',
+        pack: 'center',
+        align: 'center'
     },
     initComponent : function(){
     	this.fieldArray = [],
             Ext.apply(this,{
-                items:this.buildItem(),
-                buttons:this.buildButtons()
+                items:this.buildItem()
             });
             this.callParent(arguments);
-        },
-        buildButtons : function(){
-            return [{
-            	text : 'Save',
-                handler : 'SaveDetails'
-            },
-            {
-            	text : 'Cancel',
-                scope : this,
-                action : 'CancelDetails'
-            }];
         },
         buildItem:function(){
         	return [{
@@ -49,6 +38,30 @@ Ext.define('AOC.view.webform.WebOrderPage',{
 				     margin:'5 5 5 5',
 				     width:550
 				 }]
-    		  }]
+    		  },
+    		  {
+          		xtype:'container',
+          		layout: {
+          	        type: 'hbox',
+          	        pack: 'center',
+          	        align:'center'
+          	    },
+          		items:[{ 
+          			  xtype :'button',
+                  	  text : 'Save',
+                      handler:'SaveDetails',
+                      width : 80
+                  },
+                  {
+                  	xtype:'tbspacer',
+                  	width:70
+                  },{  
+          			xtype :'button',
+                  	text : 'Cancel',
+                    handler : 'CancelDetails',
+                    width : 80
+                  }
+          		       ]
+          	}]
         }
 });
