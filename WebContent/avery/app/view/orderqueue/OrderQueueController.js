@@ -3,15 +3,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     alias: 'controller.orderqueue',
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 'AOC.view.advsearch.OrderQueueAdvanceSearch', 'AOC.view.orderqueue.OrderLineExpandableGrid'],
     runTime: AOC.config.Runtime,
-    config: {
-        listen: {
-            store: {
-                '#OrderLineStoreId': {
-                    load: 'changeButtonText'
-                }
-            }
-        }
-    },
     getOrdersBasedOnSearchParameters: function() {
         var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {});
         var bulkupdategrid = this.getView();
@@ -49,7 +40,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         } else if (item.action == 'cancelOrder') {
             this.getCancelOrderWindow(id);
         } else if (item.action == 'viewOrders') {
+        	Ext.getBody().mask('Loading...');
             var owner = this.getView().ownerCt;
+            var status=currentRecord.get('Status');
             var store = Ext.create('AOC.store.OrderLineStore', {
                 storeId: 'OrderLineStoreId',
                 proxy: {
@@ -61,9 +54,34 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                     }
                 }
             });
+            owner.insert({
+                xtype: 'orderlineexpandablegrid',
+                flex: 1,
+                store: store
+            });
+            orderlineexpandablegrid = owner.child('#orderlineexpandablegrid');
+            var validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
+            bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
+            salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
+            salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
+            cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
+            form=orderlineexpandablegrid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
+            if(status != waitingForCSRStatus) {
+            	validateButton.disable();
+            	bulkUpdateButton.disable();
+            	salesViewOrderbutton.disable();
+            	salesOrderbutton.disable();
+            	cancelOrderButton.disable();
+            	form.disable();
+            }
+            if(salesOrderCount!=0){
+            	salesViewOrderbutton.enable();
+            }
             bulkUpdate.setText('<b> Order Line</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
  				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
  				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
+            owner.getLayout().setActiveItem(1);
+            Ext.getBody().unmask();
         }
     },
     openAdvancedSearchWindow: function(cmp, event) {
@@ -213,16 +231,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     showMenu: function(view, rowIndex, colIndex, item, e) {
         var me = this,
             currentRecord = e.record,
-            disableCancelOption = false,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=false;
+            disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
         var status = currentRecord.get('Status'),orderLineCount=currentRecord.get('orderLineCount'),salesOrderCount=currentRecord.get('salesOrderCount');
         var error = currentRecord.get('error');
-        if (status == cancelStatus) {
-        	disableCancelOption = true;
+        if (status == orderError) {
+        	disableCancelOption = false;
+        	disableResubmitOrder=false;
         }
-//        if(error!=''){
-//        	disableOrderLineOption=true;
-//        	disableSalesOrderOption=true;
-//        }
         if(salesOrderCount==0){
         	disableSalesOrderOption=true;
         }
@@ -261,73 +276,5 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
-    },
-    cancelOrder: function() {
-        var id = this.runTime.getOrderQueueId(),
-            me = this;
-        var commentArea = this.getView().lookupReference('commentArea');
-        var comment = commentArea.getValue().replace(/\n/g, '::');
-        var parameters = '{\"status\":\"' + cancelStatus + '\"';
-        if (comment != '') {
-            parameters = parameters + ',\"comment\":\"' + comment + '\"';
-        }
-        parameters = parameters + '}';
-        Ext.Ajax.request({
-            url: applicationContext + '/rest/orders/cancelorder/' + id,
-            method: 'PUT',
-            jsonData: parameters,
-            success: function(response, opts) {
-                Ext.Msg.alert('',orderCancelSuccessAlert);
-                Ext.ComponentQuery.query('#OrderQueueGridItemId')[0].getStore().load();
-                Ext.getBody().unmask();
-                me.getView().destroy();
-            },
-            failure: function(response, opts) {
-                Ext.getBody().unmask();
-                me.getView().destroy();
-            }
-        });
-    },
-    closeWindow:function(obj){
-    	this.getView().destroy();
-    },
-    changeButtonText: function(obj) {
-        Ext.getBody().mask('Loading...');
-        var owner = this.getView().ownerCt;
-        var orderlineexpandablegrid = owner.child('#orderlineexpandablegrid');
-        var reader = obj.proxy.reader,dataPresent=true;
-        var salesOrderCount = reader.createAccessor('salesOrderCount')(reader.rawData);
-        this.runTime.setSalesOrderCount(salesOrderCount);
-        var count=obj.getCount();
-        if(count==0){
-        	dataPresent=false;
-        }
-        if (orderlineexpandablegrid == null) {
-            var orederLineConfig = {
-                xtype: 'orderlineexpandablegrid',
-                flex: 1,
-                dataPresent:dataPresent,
-                store: obj
-            };
-            owner.insert(orederLineConfig);
-            //bulkUpdate.setText('<b> Order Line</b>');
-            orderlineexpandablegrid = owner.child('#orderlineexpandablegrid');
-            owner.getLayout().setActiveItem(1);
-        } else {
-            var salesOrderbutton = orderlineexpandablegrid.lookupReference('salesOrderbutton');
-            var validatebutton = orderlineexpandablegrid.lookupReference('validateButton');
-           // validatetabber= orderlineexpandablegrid.lookupReference('validatetabber');
-            if (salesOrderCount == 0) {
-            	debugger;
-                salesOrderbutton.setText(salesOrdersumbitText);
-                validatebutton.show();
-              // validatetabber.show();
-            } else {
-                salesOrderbutton.setText(viewSalesOrderBtnText);
-                validatebutton.hide();
-               // validatetabber.hide();
-            }
-        }
-        Ext.getBody().unmask();
     }
 })
