@@ -95,9 +95,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				Long Id=Long.parseLong(OrderTrackingID);
 				criteria.add(Restrictions.eq("id",Id));
 			}
-			String PONumber=searchMap.get("pONumber");
+			String PONumber=searchMap.get("ponumber");
 			if(PONumber!=null && !"".equals(PONumber)){
-				criteria.add(Restrictions.eq("pONumber",PONumber));
+				criteria.add(Restrictions.eq("ponumber",PONumber));
 			}
 		}
 		    criteria.addOrder(Order.desc("lastModifiedDate"));
