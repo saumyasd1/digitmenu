@@ -13,6 +13,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     mandatoryFieldMissing:false,
     mandatoryValidationFieldMissing:false,
     showMandatoryValidationField:false,
+    validationFieldMissing:false,
     columns: [{
         text: 'ATO Mandatory',
         dataIndex: 'mandatoryVariableDataFieldFlag',
@@ -56,6 +57,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -70,6 +72,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -84,6 +87,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -99,6 +103,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + successImageSrc + '" /></div>';
 			}
 			else{
+					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
@@ -117,7 +122,27 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             	 return value;
             }
         }
+    },
+    {
+        text: 'Avery Item #<font color=red>*</font>',
+        dataIndex: 'averyItemNumber',
+        width: 88,
+        renderer : function(value, meta,record) {
+            if(value=='') {
+            	if(record.get('status')==waitingForCSRStatus){
+            		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
+            	}
+            } else {
+            	 return value;
+            }
+        }
     }, {
+        text: 'Customer Item #',
+        dataIndex: 'customerItemNumber',
+        width: 88
+        
+    },{
         text: 'Customer Name',
         dataIndex: 'partnerCustomerName',
         width: 126,
@@ -357,26 +382,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Retailer PO/Customer Job',
         dataIndex: 'retailerPO_CustomerJob',
         width: 115,
-        editor: 'textfield'
-    }, {
-        text: 'Avery Item #<font color=red>*</font>',
-        dataIndex: 'averyItemNumber',
-        width: 88,
-        editor: 'textfield',
-        renderer : function(value, meta,record) {
-            if(value=='') {
-            	if(record.get('status')==waitingForCSRStatus){
-            		this.mandatoryFieldMissing=true;
-            		meta.style = cellColor;
-            	}
-            } else {
-            	 return value;
-            }
-        }
-    }, {
-        text: 'Customer Item #',
-        dataIndex: 'customerItemNumber',
-        width: 88,
         editor: 'textfield'
     }, {
         text: 'Item Description',
@@ -765,48 +770,69 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         }, {
             xtype: 'tbspacer',
             width: 30
-        }, {
-            xtype: 'form',
-            reference: 'form',
-            layout: 'hbox',
-            items: [{
-                xtype: 'radiogroup',
-                reference: 'radioGroup',
-                items: [{
-                    boxLabel: 'Order Line Update',
-                   // labelCls : 'nowrap',
-                    labelWidth:100,
-                    name: 'rb',
-                    inputValue: '1',
-                    checked: true
-                }, {
-                    xtype: 'tbspacer',
-                    width: 15
-                }, {
-                    boxLabel: 'Variable Order Update',
-                    //labelCls : 'nowrap',
-                    labelWidth:120,
-                    name: 'rb',
-                    inputValue: '2'
-                }],
-                listeners: {
-                    change: 'radioButtonClick'
-                }
-            }, {
-                xtype: 'tbspacer',
-                width: 20
-            },{
-                xtype: 'combo',
-                hidden: true,
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                reference: 'variableFieldCombo'
-            }]
-        },'->', {
-            xtype: 'button',
-            text: bulkUpdateButtonText,
-            handler: 'getUpdateScreen'
-        }, {
+        },
+        {
+        	 xtype:'fieldset',
+             columnWidth: 1,
+             title: '',
+             collapsible: true,
+             defaultType: 'textfield',
+             defaults: {anchor: '100%'},
+             layout: 'anchor',
+             items :[{
+            	 layout: 'hbox',
+                 xtype:"container",
+                 items: [ {
+	            xtype: 'form',
+	            reference: 'form',
+	            layout: 'hbox',
+	            items: [{
+	                xtype: 'radiogroup',
+	                reference: 'radioGroup',
+	                items: [{
+	                    boxLabel: 'Order Line Update',
+	                    labelWidth:100,
+	                    name: 'rb',
+	                    inputValue: '1',
+	                    checked: true
+                        }, 
+                        {
+		                    xtype: 'tbspacer',
+		                    width: 15
+		                },
+		                {
+		                    boxLabel: 'Variable Order Update',
+		                    labelWidth:120,
+		                    name: 'rb',
+		                    inputValue: '2'
+                         }],
+			                listeners: {
+			                    change: 'radioButtonClick'
+			                }
+                        },
+                            {
+				                xtype: 'tbspacer',
+				                width: 20
+                           },{
+			                xtype: 'combo',
+			                hidden: true,
+			                displayField: 'variableFieldName',
+			                valueField: 'variableFieldName',
+			                reference: 'variableFieldCombo'
+                       }]
+			              },{
+			                  xtype: 'tbspacer',
+			                  width: 20
+			              },
+			              {
+				            xtype: 'button',
+				            text: bulkUpdateButtonText,
+				            reference:'bulkUpdateButton',
+				            handler: 'getUpdateScreen'
+	                 }]
+                 }]
+        },'->',
+	        {
             xtype: 'button',
             reference:'validateButton',
             text: '<b>Validate</b>',
@@ -823,9 +849,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             handler: 'submitSalesOrder'
         },{
             xtype: 'button',
-            reference: 'salesOrderbutton',
+            reference: 'salesViewOrderbutton',
             text: viewSalesOrderBtnText,
-            handler: 'viewSalesOrder'
+            handler: 'viewSalesOrder',
+            disabled:true
         }];
     },
     getRowExpander:function(){

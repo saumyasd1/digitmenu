@@ -51,7 +51,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Avery Item#<font color=red>*</font>',
             dataIndex: 'averyItemNumber',
             width: 88,
-            editor: 'textfield',
             renderer : function(value, meta) {
                 if(value=='') {
                 	meta.style = cellColor;
@@ -62,8 +61,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         }, {
             text: 'Customer Item#',
             dataIndex: 'customerItemNumber',
-            width: 88,
-            editor: 'textfield'
+            width: 88
         },{
             text: 'Customer Name',
             dataIndex: 'partnerCustomerName',

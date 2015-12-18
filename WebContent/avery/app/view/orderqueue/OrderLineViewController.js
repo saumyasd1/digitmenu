@@ -302,18 +302,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		var i=store.find('id',record.id);
         	if(i==0){
         		if(record.isModified('oracleBilltoSiteNumber')?record.getModified('oracleBilltoSiteNumber')=='':record.get('oracleBilltoSiteNumber')==''){
-        			grid.getPlugin('rowEditing').editor.form.findField('oracleBilltoSiteNumber').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToContact').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress1').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress2').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress3').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToCity').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToCountry').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToState').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToZip').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToEmail').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToFax').enable();
-        			grid.getPlugin('rowEditing').editor.form.findField('billToTelephone').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('oracleBilltoSiteNumber').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToContact').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress1').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress2').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToAddress3').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToCity').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToCountry').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToState').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToZip').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToEmail').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToFax').enable();
+//        			grid.getPlugin('rowEditing').editor.form.findField('billToTelephone').enable();
         		}
         			
         	}

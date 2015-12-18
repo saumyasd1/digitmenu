@@ -1,7 +1,7 @@
 Ext.define('AOC.view.orderqueue.CancelOrderWindow',{
 	extend:'Ext.window.Window',
 	xtype:'cancelOrderWindow',
-	controller:'cancelOrderController',
+	controller:'orderqueue',
 	width:370,
 	closable:false,
 	header:false,
