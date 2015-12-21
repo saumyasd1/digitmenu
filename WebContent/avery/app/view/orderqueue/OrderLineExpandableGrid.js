@@ -171,6 +171,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 60,
         editor:{
         	xtype:'combo',
+        	editable:false,
         	store:[[true,'Y'],[false,'N']]
         },
         renderer:function(value, metadata,rec){
@@ -377,6 +378,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
         }
     }, {
@@ -460,7 +462,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 	return Ext.Date.format(value,'Y-m-d');
         } 
     }, {
-        text: 'Requested Devlivery Date',
+        text: 'Requested Delivery Date',
         dataIndex: 'requestedDevliveryDate',
         width: 102,
         format:dateFormat,
@@ -483,6 +485,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
             }
     }, {
@@ -493,6 +496,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
         }
     }, {
@@ -581,6 +585,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
         }
     }, {
@@ -596,6 +601,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
         }
     }, {
@@ -677,6 +683,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
         }
     }, {
@@ -722,6 +729,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             xtype: 'combo',
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
+            editable:false,
             store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
         }
     }, {
@@ -761,7 +769,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         this.fieldArray = [];
         Ext.apply(this, {
             tbar: {
-                height: 50,
+                height: 70,
                 items: me.buildtbar()
             },
             plugins: me.getOuterGridPlugin()
@@ -769,6 +777,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
+        	me.mandatoryFieldMissing=false;
         });
         this.callParent(arguments);
     },
@@ -786,20 +795,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	 xtype:'fieldset',
              columnWidth: 1,
              title: '',
-             collapsible: true,
+             collapsible: false,
              defaultType: 'textfield',
-             defaults: {anchor: '100%'},
-             layout: 'anchor',
              items :[{
-            	 layout: 'hbox',
-                 xtype:"container",
-                 items: [ {
 	            xtype: 'form',
 	            reference: 'form',
+	            margin:'10 10 10 10',
 	            layout: 'hbox',
 	            items: [{
 	                xtype: 'radiogroup',
 	                reference: 'radioGroup',
+	                layout:'hbox',
 	                items: [{
 	                    boxLabel: 'Order Line Update',
 	                    labelWidth:100,
@@ -827,21 +833,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                            },{
 			                xtype: 'combo',
 			                hidden: true,
+			                editable:false,
 			                displayField: 'variableFieldName',
 			                valueField: 'variableFieldName',
 			                reference: 'variableFieldCombo'
-                       }]
-			              },{
-			                  xtype: 'tbspacer',
-			                  width: 20
-			              },
-			              {
+                       },{
 				            xtype: 'button',
 				            text: bulkUpdateButtonText,
 				            reference:'bulkUpdateButton',
 				            handler: 'getUpdateScreen'
-	                 }]
-                 }]
+                       }
+                       ]
+			              }]
         },'->',
 	        {
             xtype: 'button',
