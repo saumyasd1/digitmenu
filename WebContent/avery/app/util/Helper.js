@@ -62,8 +62,8 @@ Ext.define('AOC.util.Helper',{
                       var lastrowIdx=selection.endCell.rowIdx;
                       var start=initialrowIdx,end=lastrowIdx;
                       if(lastrowIdx<initialrowIdx){
-                      	start=lastrowIdx;
-                      	end=initialrowIdx;
+                      	start=lastrowIdx-1;
+                      	end=initialrowIdx-1;
                       }
                       for(var i=(start+1);i<=end;i++){
                           store.getAt(i).set(dataindex,value);
