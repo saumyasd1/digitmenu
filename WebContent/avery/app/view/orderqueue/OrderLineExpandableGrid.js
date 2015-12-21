@@ -240,7 +240,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield'
     }, {
         text: 'Ship To Fax',
-        dataIndex: 'shiplToFax',
+        dataIndex: 'shipToFax',
         width: 130,
         editor: 'textfield'
     }, {
