@@ -73,7 +73,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     }
     	    else{
     	    	Ext.getBody().unmask();
-    	    	var message=messageField.setValue('Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
+    	    	var message=messageField.setValue('<font size=2 color=red>Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
     	    	message.setVisible(true);
     		}
     },
@@ -245,5 +245,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 this.getView().down('form').reset();
 		 var messageField=this.getView().down('#messageFieldItemId');
 		 var message=messageField.setValue('');
-	 }
+	 },
+	 notifyByMessage : function(config){
+     	var messageField=this.getView().down('#messageFieldItemId');
+		var message=messageField.setValue('');
+		    message.setVisible(true);
+			   }
 });
