@@ -91,15 +91,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		else{
 			if(createproductline.editMode)
-				createproductline.setTitle('Edit Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src="/adeptia/custom/PowerPay/resources/images/invalid_field.jpg" width="15" height="15"></font>');
+				createproductline.setTitle('Edit Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
 			else
-				createproductline.setTitle('Add Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src="/adeptia/custom/PowerPay/resources/images/invalid_field.jpg" width="15" height="15"></font>');
+				createproductline.setTitle('Add Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
     },
 	CancelDetails:function()
-	{   
+	{       
+		    Ext.getBody().unmask();
 			this.getView().destroy();
 			this.runTime.setWindowInEditMode(false);
 			this.runTime.getActiveGrid().store.load();
