@@ -199,9 +199,9 @@ Ext.define('AOC.view.address.AddressController', {
       	});
 		}else{
 			if(createaddress.editMode)
-				createaddress.setTitle('Edit Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src="/adeptia/custom/PowerPay/resources/images/invalid_field.jpg" width="15" height="15"></font>');
+				createaddress.setTitle('Edit Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
 			else
-				createaddress.setTitle('Add Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src="/adeptia/custom/PowerPay/resources/images/invalid_field.jpg" width="15" height="15"></font>');
+				createaddress.setTitle('Add Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
