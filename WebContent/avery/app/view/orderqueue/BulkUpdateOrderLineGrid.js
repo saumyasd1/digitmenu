@@ -188,7 +188,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         }, {
             text: 'Ship To Fax',
-            dataIndex: 'shiplToFax',
+            dataIndex: 'shipToFax',
             width: 130,
             getEditor: function(record) {
             	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
