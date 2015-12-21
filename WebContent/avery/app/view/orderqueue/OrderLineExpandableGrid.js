@@ -115,9 +115,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'textfield',
         renderer : function(value, meta,record) {
             if(value=='') {
-            	meta.style = cellColor;
             	if(record.get('status')==waitingForCSRStatus){
             		this.mandatoryFieldMissing=true;
+            		meta.style = cellColor;
             	}
             } else {
             	 return value;
@@ -438,9 +438,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	            	}
             	}
                return value;
-            } else {
-	            		this.mandatoryFieldMissing=true;
-	                    meta.style = cellColor;
+            } else {	
+            	if(record.get('status')==waitingForCSRStatus){
+	            	this.mandatoryFieldMissing=true;
+	                   meta.style = cellColor;
+            }
 	                    return value;
             }
         } 
@@ -777,7 +779,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
-        	me.mandatoryFieldMissing=false;
+        	me.validationFieldMissing=false;
         });
         this.callParent(arguments);
     },
