@@ -39,9 +39,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'poNumber',
             width: 120,
             editor: 'textfield',
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record ) {
                 if(value=='') {
-                	meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 } else {
                 	 return value;
                 }
@@ -51,9 +52,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Avery Item#<font color=red>*</font>',
             dataIndex: 'averyItemNumber',
             width: 88,
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(value=='') {
-                	meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 } else {
                 	 return value;
                 }
@@ -98,9 +100,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             getEditor: function(record) {
             	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             },
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(value=='') {
-                	meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 } else {
                 	 return value;
                 }
@@ -112,9 +115,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             getEditor: function(record) {
             	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             },
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(value=='') {
-                	meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 } else {
                 	 return value;
                 }
@@ -293,9 +297,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'soldTORBONumber',
             width: 100,
             editor: 'textfield',
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(value=='') {
-                	meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 } else {
                 	 return value;
                 }
@@ -308,6 +313,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
             }
         }, {
@@ -355,11 +361,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'customerOrderedQty',
             width: 106,
             editor: 'textfield',
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(parseInt(value) > 0) {
                    return value;
                 } else {
-                    meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 }
             } 
         }, {
@@ -369,9 +376,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             xtype:'datecolumn',
             format:dateFormat,
             editor: 'datefield',
-            renderer : function(value, meta) {
+            renderer : function(value, meta,record) {
                 if(value=='' || value == null) {
-                    meta.style = cellColor;
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
                 }
                     else
                     	return Ext.Date.format(value,'Y-m-d');
@@ -400,6 +408,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
             }
         }, {
@@ -410,6 +419,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
             }
         }, {
@@ -498,6 +508,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
             }
         }, {
@@ -513,6 +524,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
             }
         }, {
@@ -594,6 +606,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
             }
         }, {
@@ -638,6 +651,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 xtype: 'combo',
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
+                editable:false,
                 store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
             }
         }, {
@@ -654,6 +668,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	xtype:'combo',
             	editable:false,
             	displayField:'value',
+            	editable:false,
 				valueField:'code',
             	store:Ext.data.StoreManager.lookup('orderfilequeueid')
             },
