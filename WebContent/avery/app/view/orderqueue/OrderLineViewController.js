@@ -226,6 +226,47 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			}else
     				Ext.getBody().unmask();
     		});
+    	}else{
+    		var id=me.runTime.getOrderQueueId();
+	    	Ext.Ajax.request({
+	    		method:'GET',
+	    		async:false,
+	 		    url : applicationContext+'/rest/router/salesorder/'+id,
+	 		    success : function(response, opts) {
+	 		    	var jsonValue=Ext.decode(response.responseText);
+			        	var status=jsonValue.status;
+			        	if(status=='success'){
+			        		proceed=false;
+			        		me.getView().store.load();
+			        		var orderlineexpandablegrid = me.getView(),
+			                validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
+			                bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
+			                salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
+			                salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
+			                cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
+			                form=orderlineexpandablegrid.lookupReference('form');
+		                	validateButton.disable();
+		                	bulkUpdateButton.disable();
+		                	salesViewOrderbutton.enable();
+		                	salesOrderbutton.disable();
+		                	cancelOrderButton.disable();
+		                	form.disable();
+		                	me.runTime.setAllowOrderLineEdit(false);
+			        		Ext.Msg.alert('',salesOrderCreationMsg);
+			        		Ext.getBody().unmask();
+			        	}
+			        	else{
+			        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+			        		proceed=false;
+			        		Ext.getBody().unmask();
+			        	}
+		        },
+		        failure: function(response, opts) {
+		        	proceed=false;
+		        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+		        	Ext.getBody().unmask();
+	          }
+			});
     	}
     	
     },
@@ -235,14 +276,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         currentRecord = ctx.store.getAt(idx),parms='';
     	var obj=currentRecord.getChanges( ) ;
     	obj.id=currentRecord.id;
-    	var isAddressModified=false;
+    	var insertBillAddress=false,insertShipAddress=false;
     	var runTime = AOC.config.Runtime;
     	if(idx==0){
-    		if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
-				isAddressModified=true;
+    		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''){
+    			insertBillAddress=true;
     	  }
+    		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''){
+    			insertShipAddress=true;
+    		}
 		}
-		var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+		var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
@@ -291,14 +335,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
           idx = ctx.rowIdx,
           currentRecord = ctx.store.getAt(idx);
       var obj = currentRecord.getChanges();
-      var isAddressModified = false;
-      var runTime = AOC.config.Runtime;
-      if (idx == 0) {
-    	  if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
-				isAddressModified=true;
-    	  }
-      }
-      var obj = '{"isAddressModified":' + isAddressModified + ',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+      var insertBillAddress=false,insertShipAddress=false;
+  	var runTime = AOC.config.Runtime;
+  	if(idx==0){
+  		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''){
+  			insertBillAddress=true;
+  	  }
+  		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''){
+  			insertShipAddress=true;
+  		}
+		}
+		var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
       Ext.Ajax.request({
           method: 'PUT',
           jsonData: obj,
