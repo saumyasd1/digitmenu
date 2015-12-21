@@ -230,6 +230,7 @@ Ext.define('AOC.view.address.AddressController', {
     	menu.showAt(e.getXY());
 	},
 	closeWindow: function(){
+		Ext.getBody().unmask();
 		this.getView().destroy();
 		this.runTime.setWindowInEditMode(false);
 		this.runTime.getActiveGrid().store.load();
