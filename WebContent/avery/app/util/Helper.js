@@ -37,7 +37,7 @@ Ext.define('AOC.util.Helper',{
 	      	var jsonValue=Ext.decode(response.responseText);
         	var serviceStoreData = [];
         	if(jsonValue.length>0){
-        	jsonValue.forEach(function(item){
+        		Ext.Array.forEach(jsonValue,function(item){
       		var service = [item];
       		serviceStoreData.push(service);
       	});
@@ -55,17 +55,19 @@ Ext.define('AOC.util.Helper',{
           if(selection.startCell)
 				var store=grid.store;
                   var intialCell=selection.startCell;
-                  var dataindex=intialCell.column.dataIndex;
-                  var value=intialCell.record.get(dataindex);
-                  var initialrowIdx=intialCell.rowIdx;
-                  var lastrowIdx=selection.endCell.rowIdx;
-                  var start=initialrowIdx,end=lastrowIdx;
-                  if(lastrowIdx<initialrowIdx){
-                  	start=lastrowIdx;
-                  	end=initialrowIdx;
-                  }
-                  for(var i=(start+1);i<=end;i++){
-                      store.getAt(i).set(dataindex,value);
+                  if(intialCell!=null){
+                	  var dataindex=intialCell.column.dataIndex;
+                	  var value=intialCell.record.get(dataindex);
+                      var initialrowIdx=intialCell.rowIdx;
+                      var lastrowIdx=selection.endCell.rowIdx;
+                      var start=initialrowIdx,end=lastrowIdx;
+                      if(lastrowIdx<initialrowIdx){
+                      	start=lastrowIdx;
+                      	end=initialrowIdx;
+                      }
+                      for(var i=(start+1);i<=end;i++){
+                          store.getAt(i).set(dataindex,value);
+                      }
                   }
   	},
     getCodeStore:function(type){
@@ -79,7 +81,7 @@ Ext.define('AOC.util.Helper',{
       	var jsonValue=Ext.decode(response.responseText);
     	var serviceStoreData = [];
     	if(jsonValue.ArrayList.length>0){
-    	jsonValue.ArrayList.forEach(function(item){
+    		Ext.Array.forEach(jsonValue.ArrayList,function(item){
   		var service = item;
   		serviceStoreData.push(service);
   	});
@@ -96,7 +98,7 @@ Ext.define('AOC.util.Helper',{
     getOrderLineEditor:function(record,value){
     	var store=record.store;
     	var i=store.find('id',record.id);
-    	if(i==0 && (record.isModified(value)?record.getModified(value)=='':record.get(value)=='')){
+    	if(i==0){
         return Ext.create('Ext.grid.CellEditor', {
             field: {
                 xtype: 'textfield',
