@@ -65,7 +65,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	
 	@Override
-	public void bulkUpdate(String jsonData,boolean insertAddress){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress){
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
@@ -82,11 +82,11 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				t=objArray[i];
 				OrderLine orderLine = mapper.readValue(t,OrderLine.class);
 				currentObjId=orderLine.getId();
-				if(i==0 && orderLine.getOracleBilltoSiteNumber() !=null && !"".equals(orderLine.getOracleBilltoSiteNumber())){ // check if oracle bill site number is empty, if not then insert  a record in address
-					insertBillAddress=true;
+				if(i==0){ 
+					insertBillAddress=insertAddress.get("insertBillAddress");
 				}
-				if(i==0 && orderLine.getOracleShiptoSiteNumber() !=null && !"".equals(orderLine.getOracleShiptoSiteNumber())){ // check if oracle ship site number is empty, if not then insert  a record in address
-					insertShipAddress=true;
+				if(i==0){ 
+					insertShipAddress=insertAddress.get("insertShipAddress");
 				}
 				orderLine=(OrderLine) session.get(OrderLine.class,currentObjId);
 				updater = mapper.readerForUpdating(orderLine);
@@ -94,7 +94,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.preUpdateOp();
 				session.update(orderLine);
 				orderLine.postUpdateOp();
-				if(i==0 && insertAddress){
+				if(i==0){
 					if(insertBillAddress)
 						insertBillAddress(orderLine);
 					if(insertShipAddress)
@@ -149,78 +149,88 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		session.save(adrObj);
 	}
 	private void insertShipAddress(OrderLine orderLine){
-		Session session = getSessionFactory().getCurrentSession();
-		Address adrObj=new Address();
-		adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
-		adrObj.setAddress1(orderLine.getShipToAddress1());
-		adrObj.setAddress2(orderLine.getShipToAddress2());
-		adrObj.setAddress3(orderLine.getShipToAddress3());
-		adrObj.setCity(orderLine.getShipToCity());
-		adrObj.setCountry(orderLine.getShipToCountry());
-		adrObj.setState(orderLine.getShipToState());
-		adrObj.setFax(orderLine.getShipToFax());
-		adrObj.setPhone1(orderLine.getShipToTelephone());
-		adrObj.setEmail(orderLine.getShipToEmail());
-		adrObj.setContact(orderLine.getShipToContact());
-		adrObj.setShippingMethod(orderLine.getShippingMethod());
-		adrObj.setFreightTerms(orderLine.getFreightTerms());
-		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
-		adrObj.setDescription("Inserted By Adeptia");
-		adrObj.setCreatedBy("Adeptia");
-		adrObj.setCreatedDate(new Date());
-		adrObj.setSiteType("S");
-		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
-		Partner partnerObj=new Partner();
-		Long partnerId=0L;
-		if(orderLine.getPartnerID()!=null)
-			partnerId=Long.parseLong(orderLine.getPartnerID());
-		partnerObj.setId(partnerId);
-		adrObj.setPartner(partnerObj);
-		session.save(adrObj);
+		String shipToAddress1=orderLine.getShipToAddress1();
+		String shipToAddress2=orderLine.getShipToAddress2();
+		String address=(shipToAddress2==null?"":shipToAddress2)+(shipToAddress1==null?"":shipToAddress1);
+		if(!address.equals("")){
+			Session session = getSessionFactory().getCurrentSession();
+			Address adrObj=new Address();
+			adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
+			adrObj.setAddress1(orderLine.getShipToAddress1());
+			adrObj.setAddress2(orderLine.getShipToAddress2());
+			adrObj.setAddress3(orderLine.getShipToAddress3());
+			adrObj.setCity(orderLine.getShipToCity());
+			adrObj.setCountry(orderLine.getShipToCountry());
+			adrObj.setState(orderLine.getShipToState());
+			adrObj.setFax(orderLine.getShipToFax());
+			adrObj.setPhone1(orderLine.getShipToTelephone());
+			adrObj.setEmail(orderLine.getShipToEmail());
+			adrObj.setContact(orderLine.getShipToContact());
+			adrObj.setShippingMethod(orderLine.getShippingMethod());
+			adrObj.setFreightTerms(orderLine.getFreightTerms());
+			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			adrObj.setDescription("Inserted By Adeptia");
+			adrObj.setCreatedBy("Adeptia");
+			adrObj.setCreatedDate(new Date());
+			adrObj.setSiteType("S");
+			adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+			Partner partnerObj=new Partner();
+			Long partnerId=0L;
+			if(orderLine.getPartnerID()!=null)
+				partnerId=Long.parseLong(orderLine.getPartnerID());
+			partnerObj.setId(partnerId);
+			adrObj.setPartner(partnerObj);
+			session.save(adrObj);
+		}
 	}
 	private void insertBillAddress(OrderLine orderLine){
-		Session session = getSessionFactory().getCurrentSession();
-		Address adrObj=new Address();
-		adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
-		adrObj.setAddress1(orderLine.getBillToAddress1());
-		adrObj.setAddress2(orderLine.getBillToAddress2());
-		adrObj.setAddress3(orderLine.getBillToAddress3());
-		adrObj.setCity(orderLine.getBillToCity());
-		adrObj.setCountry(orderLine.getBillToCountry());
-		adrObj.setState(orderLine.getBillToState());
-		adrObj.setFax(orderLine.getBillToFax());
-		adrObj.setPhone1(orderLine.getBillToTelephone());
-		adrObj.setEmail(orderLine.getBillToEmail());
-		adrObj.setContact(orderLine.getBillToContact());
-		adrObj.setShippingMethod(orderLine.getShippingMethod());
-		adrObj.setFreightTerms(orderLine.getFreightTerms());
-		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
-		adrObj.setDescription("Inserted By Adeptia");
-		adrObj.setCreatedBy("Adeptia");
-		adrObj.setCreatedDate(new Date());
-		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
-		adrObj.setSiteType("B");
-		Partner partnerObj=new Partner();
-		Long partnerId=0L;
-		if(orderLine.getPartnerID()!=null)
-			partnerId=Long.parseLong(orderLine.getPartnerID());
-		partnerObj.setId(partnerId);
-		adrObj.setPartner(partnerObj);
-		session.save(adrObj);
+		String billToAddress1=orderLine.getBillToAddress1();
+		String billToAddress2=orderLine.getBillToAddress2();
+		String address=(billToAddress2==null?"":billToAddress2)+(billToAddress1==null?"":billToAddress1);
+		if(!address.equals("")){
+			Session session = getSessionFactory().getCurrentSession();
+			Address adrObj=new Address();
+			adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
+			adrObj.setAddress1(billToAddress1);
+			adrObj.setAddress2(billToAddress2);
+			adrObj.setAddress3(orderLine.getBillToAddress3());
+			adrObj.setCity(orderLine.getBillToCity());
+			adrObj.setCountry(orderLine.getBillToCountry());
+			adrObj.setState(orderLine.getBillToState());
+			adrObj.setFax(orderLine.getBillToFax());
+			adrObj.setPhone1(orderLine.getBillToTelephone());
+			adrObj.setEmail(orderLine.getBillToEmail());
+			adrObj.setContact(orderLine.getBillToContact());
+			adrObj.setShippingMethod(orderLine.getShippingMethod());
+			adrObj.setFreightTerms(orderLine.getFreightTerms());
+			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			adrObj.setDescription("Inserted By Adeptia");
+			adrObj.setCreatedBy("Adeptia");
+			adrObj.setCreatedDate(new Date());
+			adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+			adrObj.setSiteType("B");
+			Partner partnerObj=new Partner();
+			Long partnerId=0L;
+			if(orderLine.getPartnerID()!=null)
+				partnerId=Long.parseLong(orderLine.getPartnerID());
+			partnerObj.setId(partnerId);
+			adrObj.setPartner(partnerObj);
+			session.save(adrObj);
+		}
 	}
 	@Override
-	public void bulkUpdateAllById(String jsonData,boolean insertAddress,Long orderQueueId){
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId){
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
-		boolean insertBillAddress=false,insertShipAddress=false;
+		boolean insertBillAddress=false,insertShipAddress=false,insertAddress=true;
 		try{
 			OrderLine tempObj=mapper.readValue(jsonData,OrderLine.class);;
-			if(insertAddress && tempObj.getOracleBilltoSiteNumber() !=null && !"".equals(tempObj.getOracleBilltoSiteNumber())){ // check if oracle bill site number is empty, if not then insert  a record in address
-				insertBillAddress=true;
+			if(insertAddress){ 
+				insertBillAddress=flagMap.get("insertBillAddress");
 			}
-			if(insertAddress && tempObj.getOracleShiptoSiteNumber() !=null && !"".equals(tempObj.getOracleShiptoSiteNumber())){ // check if oracle ship site number is empty, if not then insert  a record in address
-				insertShipAddress=true;
+			if(insertAddress){ 
+				insertShipAddress=flagMap.get("insertShipAddress");
 			}
 			session = getSessionFactory().getCurrentSession();
 			List<OrderLine> entities = readAllByOrderID(orderQueueId);
