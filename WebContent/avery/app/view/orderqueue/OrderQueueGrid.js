@@ -44,7 +44,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
-					var comment=rec.data.Comments;
+					var comment=Ext.String.htmlEncode(rec.data.Comments);
 		           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' + commentIcon + '" /></div>';
 				}
 				else
@@ -59,7 +59,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(value, metadata,rec){
 				if(value){
-					var error=rec.data.error;
+					var error=Ext.String.htmlEncode(rec.data.error);
 					return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' + errorIcon + '" /></div>';
 				}
 				else
