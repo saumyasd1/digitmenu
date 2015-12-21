@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,16 +33,16 @@ public class OrderLineService extends GenericEntityService<OrderLine, Long>{
 	} 
 	
 	@Transactional
-	public void bulkUpdate(String jsonData,boolean insertAddress){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> flagMap){
 		
-		getOrderLineDao().bulkUpdate(jsonData,insertAddress);
+		getOrderLineDao().bulkUpdate(jsonData, flagMap);
 		
 	}
 	
 	@Transactional
-	public void bulkUpdateAll(String jsonData,boolean insertAddress,Long orderQueueId){
+	public void bulkUpdateAll(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId){
 		
-		getOrderLineDao().bulkUpdateAllById(jsonData,insertAddress,orderQueueId);
+		getOrderLineDao().bulkUpdateAllById(jsonData,flagMap,orderQueueId);
 		
 	}
 
