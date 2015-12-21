@@ -21,10 +21,6 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         },
         buildItem:function(){
         	return [{
-        		xtype:'displayfield',
-        		itemId:'messageFieldItemId',
-        		hidden:true
-        	}, {
  				xtype:'panel',
  				layout:'vbox',
  				items:[
@@ -57,7 +53,7 @@ Ext.define('AOC.view.webform.WebOrderPage',{
                   	width:70
                   },{  
           			xtype :'button',
-                  	text : 'Cancel',
+                  	text : ResetText,
                     handler : 'CancelDetails',
                     width : 80
                   }
