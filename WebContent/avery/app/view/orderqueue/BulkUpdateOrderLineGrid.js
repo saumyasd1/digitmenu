@@ -377,7 +377,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     	return Ext.Date.format(value,'Y-m-d');
             }
         }, {
-            text: 'Requested Devlivery Date',
+            text: 'Requested Delivery Date',
             dataIndex: 'requestedDevliveryDate',
             width: 102,
             format:dateFormat,
