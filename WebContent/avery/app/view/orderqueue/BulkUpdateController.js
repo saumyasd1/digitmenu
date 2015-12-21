@@ -9,15 +9,19 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	var grid=this.getView(),me=this;
     	var store=grid.store,
     	parms ='';
-    	var i=0, isAddressModified=false;
+    	var i=0, insertShipAddress=false,insertBillAddress=false;
     	var updatedRecords=store.getModifiedRecords();
     	Ext.each(updatedRecords,function(currentRecord){
     		i=store.find('id',currentRecord.id);
     		if(i==0){
-    				if(currentRecord.isModified('oracleBilltoSiteNumber') ||  currentRecord.isModified('oracleShiptoSiteNumber')){
-    					isAddressModified=true;
+    			if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''){
+    	  			insertBillAddress=true;
+    	  	  }
+    	  		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''){
+    	  			insertShipAddress=true;
+    	  		}
     			}
-    		}
+    			
     		var obj=currentRecord.getChanges( ) ;
     		obj.id=currentRecord.id;
     		if(parms=='')
@@ -26,7 +30,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     			parms=parms+'@@@'+Ext.encode(obj);
     		  
     		 });
-    	var obj='{"isAddressModified":'+isAddressModified+',"data":'+Ext.encode(parms)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'"}';
+    	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(parms)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
