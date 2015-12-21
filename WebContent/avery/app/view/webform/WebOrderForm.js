@@ -44,7 +44,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				allowBlank : false, 
         				displayField:'partnerName',
         				listeners:{
-        					'change':'onPartnerChange'
+        					'change':'onPartnerChange',
+        					'focus': 'notifyByMessage'
         				}
         			},
         			{
@@ -62,7 +63,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				allowBlank : false, 
         				disabled:true,
         				listeners:{
-        					'change':'onRBOChange'
+        					'change':'onRBOChange',
+        					'focus': 'notifyByMessage'
         				}
         			},
         			{
@@ -80,7 +82,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				allowBlank : false, 
         				disabled:true,
         				listeners:{
-        					'change':'onProductLineSelection'
+        					'change':'onProductLineSelection',
+        					'focus': 'notifyByMessage'
         				}
         			}]
         		},{
@@ -103,7 +106,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 		            width : 500,
 		            blankText : 'Sender Email is required',
 		            listeners:{
-	      				  blur : this.notifyByImage
+	      				  blur : this.notifyByImage,
+	      				'focus': 'notifyByMessage'
 	      			 }
 		        
         		},
@@ -129,7 +133,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            maxLength : '50',
   		            blankText : 'Email Subject is required',
   		            listeners:{
-      				  blur : this.notifyByImage
+      				  blur : this.notifyByImage,
+      				'focus': 'notifyByMessage'
       			 }
         		},
         		{
@@ -151,7 +156,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            maxLength : '50',
   		            blankText :'Email Body is required',
   		            listeners:{
-      				  blur : this.notifyByImage
+      				  blur : this.notifyByImage,
+      				'focus': 'notifyByMessage'
       			 }
         		},
         		{
@@ -177,7 +183,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			blankText :'Order File Type is required',
         			 listeners:{
          				 'change':'onOrderFileChange',
-         				  blur : this.notifyByImage
+         				  blur : this.notifyByImage,
+         				 'focus': 'notifyByMessage'
          			 }
         			},
         		{
@@ -199,11 +206,13 @@ Ext.define('AOC.view.webform.WebOrderForm',{
   		            labelAlign:'right',
   		            listeners:{
      				 'change':'onAttachemnetChange',
-     				  blur : this.notifyByImage
+     				  blur : this.notifyByImage,
+     				  'focus': 'notifyByMessage'
      			 }
         		}
                ]
         },
+       
         notifyByImage : function(config){
 	    	 if(config.isValid())
 	    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
