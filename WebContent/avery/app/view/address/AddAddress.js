@@ -126,11 +126,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        			xtype:'textfield',
 	        			name: 'email',
 	        			fieldLabel:'Email',
-	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
-	   	                     }
+	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
 	        		}
 	        		]
         		},
@@ -151,11 +147,7 @@ Ext.define('AOC.view.address.AddAddress',{
         			fieldLabel:'Shipping Method',
                     displayField: 'variableFieldName',
                     valueField: 'variableFieldName',
-                    store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
-     		        listeners : {
-	                    blur : this.notifyByImage,
-  	                	focus : this.notifyByMessage
-  	                     }
+                    store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
 	        		},
 	        		{
 	        			xtype:'combo',
@@ -163,21 +155,12 @@ Ext.define('AOC.view.address.AddAddress',{
 	        			fieldLabel:'Freight Terms',
 	                    displayField: 'variableFieldName',
 	                    valueField: 'variableFieldName',
-	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
-	                 
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
-	   	                     }
+	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'shippingInstructions',
-	        			fieldLabel:'Shipping Instructions',
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
-	   	                     }
+	        			fieldLabel:'Shipping Instructions'
 	        		},
 	        		{
 	        			xtype:'combobox',
@@ -218,11 +201,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'fax',
-	        			fieldLabel:'Fax',
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
-	   	                     }
+	        			fieldLabel:'Fax'
 	        		}
 	        		 ]
         		}
@@ -262,8 +241,8 @@ Ext.define('AOC.view.address.AddAddress',{
 		   },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
-		    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.jpg);background-repeat:no-repeat;background-position:right;');
+		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');
 					else
-					   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
+					   config.setFieldStyle('background-image:url('+errorIcon+');background-repeat:no-repeat;background-position:right;');
 		     }
                  });
