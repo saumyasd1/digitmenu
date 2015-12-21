@@ -17,7 +17,6 @@ Ext.define('AOC.view.webform.WebFormController', {
   		var service = item;
   		serviceStoreData.push(service);
   	});
-    	debugger;
     	store =  Ext.create('Ext.data.Store',{
     		fields:['id'],
 	            data : serviceStoreData
@@ -240,5 +239,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 Ext.getBody().unmask();
 		 }
 		 }
+	 },
+	 CancelDetails:function()
+	 {
+		 this.getView().down('form').reset();
+		 var messageField=this.getView().down('#messageFieldItemId');
+		 var message=messageField.setValue('');
 	 }
 });
