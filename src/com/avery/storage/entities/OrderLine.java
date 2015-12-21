@@ -1310,27 +1310,32 @@ public class OrderLine extends MainAbstractEntity{
 	public Response updateEntities(@Context UriInfo ui,
 			@Context HttpHeaders hh, String data) {
 		String jsonData="";
-		boolean insertAddress=false;
+		boolean insertShipAddress=false;
+		boolean insertBillAddress=false;
 		boolean updateAll=true;
+		Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
 		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
 		try {
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
-			insertAddress=Boolean.parseBoolean((String)jsonMap.get("isAddressModified"));
+			insertShipAddress=Boolean.parseBoolean((String)jsonMap.get("insertShipAddress"));
+			insertBillAddress=Boolean.parseBoolean((String)jsonMap.get("insertBillAddress"));
 			jsonData=(String)jsonMap.get("data");
+			flagMap.put("insertBillAddress", insertBillAddress);
+			flagMap.put("insertShipAddress", insertShipAddress);
 			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
 			if(updateAll){
 				if((String)jsonMap.get("orderQueueId")!=null){
 					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
-					orderLineService.bulkUpdateAll(jsonData, insertAddress,bulkUpdateAllById);
+					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById);
 				}else{
 					throw new Exception("Unable to update all records as the Order Queue Id is not present");
 				}
 			}
 			else
-				orderLineService.bulkUpdate(jsonData, insertAddress);
+				orderLineService.bulkUpdate(jsonData, flagMap);
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){
