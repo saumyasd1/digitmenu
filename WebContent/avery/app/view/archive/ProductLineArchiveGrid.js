@@ -2,6 +2,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 	extend : 'Ext.grid.Panel',
 	itemId : 'productLineArchiveGrid',
 	alias : 'widget.ar_partner_rboproductline',
+	controller:'productlineMain',
 	//requires:['AOC.view.ux.CustomSearchField'],
 	emptyText : '<div align=center> No data to display.</div>',
 	recordBeingEdit : null,
@@ -10,9 +11,9 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 		Ext.apply(this, {
 			columns : this.buildColumns(),
 			columnLines : true,
-			/*tbar: { height: 40,
+			tbar: { height: 40,
 			items : me.buildtbar()
-			},*/
+			},
 			dockedItems : this.buildDockedItems(),
 			viewConfig : {
 				stripeRows : true,
@@ -116,6 +117,25 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 			}
 		];
 	},
+	 buildtbar:function(){
+			var me=this;
+			 	return [
+					    '->' ,{
+							xtype:'button',
+							itemId:'advancesearchbutton',
+							text:advSearchText,
+							icon: advSearchIcon,
+							iconAlign: "right",
+					    	handler:'openAdvancedSearchWindow'
+						 },
+						{
+							itemId: 'clearadvanedsearch',
+							hidden:true, 
+							handler : 'clearAdvancedSerach',
+							icon: clearSearchIcon
+						}
+					 ];
+							},
 	buildDockedItems : function () {
 		var me = this;
 		return [{

@@ -18,7 +18,12 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 					collapsible : false,
 					activeItem : 0,
 					hidden : false,
-					items : [
+					items : [{
+						   xtype:'displayfield',
+						   itemId:'messageitemId',
+					       value:'<center><font size=2>No data to display,Please Select Table</font></center>'
+					}
+					      
 					]
 				}
 			],
@@ -35,12 +40,12 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 							ui : 'darktoolbar',
 							reference : 'cmbformArchive',
 							border : false,
-							buttonAlign : 'right',
+							buttonAlign : 'center',
 							layout : 'column',
 							style : 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
 							items : [{
 									xtype : 'combobox',
-									//id : 'cmbArchiveTables',
+									itemId:'choosetable',
 									fieldLabel : 'Choose Table',
 									store : Ext.create('Ext.data.Store', {
 										fields : ['displayTableName', 'tableName'],
@@ -77,37 +82,17 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 									editable : false
 								}, {
 									xtype : 'tbspacer',
-									width : 20
-								}, {
-									xtype : 'datefield',
-									//anchor: '100%',
-									fieldLabel : 'From',
-									name : 'fromDate',
-									reference : 'fromDate',
-									maxValue : new Date()
-								}, {
-									xtype : 'tbspacer',
-									width : 20
-								}, {
-									xtype : 'datefield',
-									//anchor: '100%',
-									fieldLabel : 'To',
-									name : 'toDate',
-									reference : 'toDate',
-									maxValue : new Date()
-								}, {
-									xtype : 'tbspacer',
-									width : 20
-								}, {
+									width : 20,
+									margin:'5 0 0 500'
+								},
+						        {
 									xtype : 'button',
-									//refrence:'advancesearchbutton',
 									text : 'Get Table Data',
 									icon : advSearchIcon,
 									iconAlign : "right",
 									listeners : {
 										click : 'onButtonClick'
 									}
-									//handler:'openAdvancedSearchWindow'
 								}
 							]
 						}
