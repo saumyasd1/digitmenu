@@ -359,6 +359,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            width : 500,
       		            labelSeparator : '',
       		            labelAlign:'right',
+      		            editable:false,
       		            store: [['Excel', 'Excel']],
       		            maxLength : '50',
       		            enforceMaxLength: true
