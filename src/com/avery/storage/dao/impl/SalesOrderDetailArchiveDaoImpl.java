@@ -8,6 +8,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
@@ -45,7 +46,7 @@ SalesOrderDetailArchiveDao {
 		String pageNo=(String) queryMap.getFirst("page");
 		if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType="lastModifiedDate";
+			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
 				String sDate=searchMap.get("fromDate");
 				String eDate=searchMap.get("toDate");
@@ -56,7 +57,8 @@ SalesOrderDetailArchiveDao {
 				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
 			}*/
 		}
-			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;

@@ -8,6 +8,9 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
@@ -45,17 +48,18 @@ PartnerArchiveDao {
 		String pageNo=(String) queryMap.getFirst("page");
 		if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType="lastModifiedDate";
+			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
 				String sDate=searchMap.get("fromDate");
 				String eDate=searchMap.get("toDate");
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			/*String partnerName=searchMap.get("partnerName");
+			String partnerName=searchMap.get("partnerName");
 			if(partnerName!=null && !"".equals(partnerName)){
-				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
-			}*/
+				criteria.add(Restrictions.ilike("partnername", partnerName,MatchMode.ANYWHERE));
+			}
 		}
+		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
