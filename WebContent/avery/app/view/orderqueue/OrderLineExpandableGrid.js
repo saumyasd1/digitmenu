@@ -774,7 +774,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 height: 70,
                 items: me.buildtbar()
             },
-            plugins: me.getOuterGridPlugin()
+            plugins: me.getOuterGridPlugin(),
+            listeners:{
+            	'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+            	if(cellIndex==0){
+            		return false;
+            	}
+            }
+            }
         });
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
