@@ -25,7 +25,7 @@ Ext.define('AOC.view.partner.PartnerController', {
 		else{
 			url=applicationContext+'/rest/partners';
 			valueObj=form.getValues(false,true,false,true);
-			valueObj.active=false;
+			//valueObj.active=false;
 			methodMode='POST';
 			length=1;
 			Msg='<b>Partner Added Successfully</b>';
@@ -100,10 +100,6 @@ showmenu:function(view,rowIndex,colIndex,item,e){
  				{  
 	 					var data=e.record;
 		     			var id=data.id;
-	     			   var partnerStatus=data.get('active');
-	     			   if(partnerStatus==true)
-	     			   Ext.Msg.alert('Alert Message','<b>Partner can not be deleted because it is in Active state</b>');  
-	     			   else
 	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this partner</b>', function(response) {
 	     				  if (response == 'yes') {
 	     						Ext.Ajax.request({
@@ -282,8 +278,6 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		   editpartnermanagement:function(view,rowIndex,colIndex,item,e)
 		   {
 			   var data=e.record;
-			   var partnerStatus=data.get('active');
-	     		    if(partnerStatus==false){
 	     		    	var win=Ext.ComponentQuery.query('#createpartnerItemId')[0];
 		     			if(!win){
 		     			    
@@ -299,7 +293,5 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     			});
 	     			  win.show();
 	     			}
-	     		    }else
-	     		  	Ext.Msg.alert('Alert Message',editPartnerMsg);
 		   }
 });
