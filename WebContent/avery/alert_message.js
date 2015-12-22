@@ -1,4 +1,4 @@
-var webSubmissionSuccesFulMsg='The form was successfully sumbitted. Please go to Order Queue to see your order.',
+var webSubmissionSuccesFulMsg='The form was successfully submitted. Please go to Order Queue to see your order.',
 salesOrderCreationMsg='Sales Order was successfully created',
 uploadOnlyExcelFileAlert='Please attach only xls or xlxs type of files',
 uploadOnlyPdfFileAlert='Please attach only pdf type of files',
