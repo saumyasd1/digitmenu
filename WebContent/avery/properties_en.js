@@ -38,6 +38,8 @@ cancelStatus='8',
 	
 fiberLevel='FIBRE',
 mandatoryValidationCellColor='background-color:yellow',
-undoChangesText='Undo'
+undoChangesText='Undo',
+averyItemNotFoundText='NOT FOUND'
+
 ;
 
