@@ -278,6 +278,9 @@ public class SalesOrder extends MainAbstractEntity{
 	@Column(name = "HTLSizePageValidationFlag")
     private String htlSizePageValidationFlag; 
 	
+	@Column(name = "System_Status")
+    private String systemstatus; 
+	
 	
 	/*@OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<SalesOrderDetail> salesOrderDetail;*/
@@ -896,6 +899,13 @@ public class SalesOrder extends MainAbstractEntity{
 		this.htlSizePageValidationFlag = htlSizePageValidationFlag;
 	}
 
+	public String getSystemstatus() {
+		return systemstatus;
+	}
+
+	public void setSystemstatus(String systemstatus) {
+		this.systemstatus = systemstatus;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
