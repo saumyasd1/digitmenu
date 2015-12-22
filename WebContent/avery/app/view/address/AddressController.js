@@ -5,6 +5,10 @@ Ext.define('AOC.view.address.AddressController', {
     runTime : AOC.config.Runtime,
     getAddressBasedOnSearchParameters: function() {
 		 	var valueObj=this.getView().getForm().getValues(false,true);
+		 	var FromDate=valueObj.fromDate;
+		 	var ToDate=valueObj.toDate;
+		 	if(FromDate<=ToDate)
+		 		{
 	    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
 	    		valueObj.datecriteriavalue='createdDate';
 			var parameters=Ext.JSON.encode(valueObj);
@@ -24,7 +28,13 @@ Ext.define('AOC.view.address.AddressController', {
 	            value:parameters
 	        });
 	        grid.down('#clearadvanedsearch').show();
-	        this.getView().up('window').destroy();
+	        this.getView().up('window').hide();
+		 		}
+		 	 else
+		 		 {
+				    var addresssearch=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
+				        addresssearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+		 		 }
 		},
 		clearAdvancedSerach:function(widget){
 			 var grid=this.getView();
@@ -71,14 +81,14 @@ Ext.define('AOC.view.address.AddressController', {
 				cmp.orderedTriggers[0].hide();
 		   },
 	openAdvancedSearchWindow:function(cmp,event){
-		var temp=Ext.ComponentQuery.query('#addressAdvancedSerach')[0];
+		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
 		cmp.disable();
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:250,
+						 	height:270,
 							width:420,
 							title:advancedSearchWindowTitle,
-							itemId:'addressAdvancedSerach',
+							itemId:'addressAdvancedSerachwindow',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
