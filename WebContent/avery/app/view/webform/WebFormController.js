@@ -49,9 +49,72 @@ Ext.define('AOC.view.webform.WebFormController', {
     			form.submit({
     				url: applicationContext+'/rest/orders/attachments/1',
     		        getParams: function(useModelValues) {
-    		            var falseVal = false,
-    		                fieldParams = this.form.getValues(falseVal, true, this.submitEmptyText !== falseVal, useModelValues,  true);
+    		            var fieldParams = this.form.getValues(false,true,false,true);
     		            return Ext.apply({}, fieldParams);
+    		        },
+    		        buildForm: function() {
+    		            var me = this,
+    		                fieldsSpec = [],
+    		                formSpec, formEl,
+    		                basicForm = me.form,
+    		                params = me.getParams(),
+    		                uploadFields = [],
+    		                uploadEls = [],
+    		                fields = basicForm.getFields().items,
+    		                i,
+    		                len = fields.length,
+    		                field, key, value, v, vLen, el;
+    		            for (i = 0; i < len; ++i) {
+    		                field = fields[i];
+    		                if (field.isFileUpload() && field.isDirty()) {
+    		                    uploadFields.push(field);
+    		                }
+    		            }
+    		            for (key in params) {
+    		                if (params.hasOwnProperty(key)) {
+    		                    value = params[key];
+    		                    if (Ext.isArray(value)) {
+    		                        vLen = value.length;
+    		                        for (v = 0; v < vLen; v++) {
+    		                            fieldsSpec.push(me.getFieldConfig(key, value[v]));
+    		                        }
+    		                    } else {
+    		                        fieldsSpec.push(me.getFieldConfig(key, value));
+    		                    }
+    		                }
+    		            }
+    		            formSpec = {
+    		                tag: 'form',
+    		                role: 'presentation',
+    		                action: me.getUrl(),
+    		                method: me.getMethod(),
+    		                target: me.target ? (Ext.isString(me.target) ? me.target : Ext.fly(me.target).dom.name) : '_self',
+    		                style: 'display:none',
+    		                cn: fieldsSpec
+    		            };
+    		            if (!formSpec.target) {
+    		                Ext.Error.raise('Invalid form target.');
+    		            }
+    		            
+    		            if (uploadFields.length) {
+    		                formSpec.encoding = formSpec.enctype = 'multipart/form-data';
+    		            }
+    		            
+    		            formEl = Ext.DomHelper.append(Ext.getBody(), formSpec);
+    		            
+    		            
+    		            
+    		            len = uploadFields.length;
+    		            for (i = 0; i < len; ++i) {
+    		                el = uploadFields[i].extractFileInput();
+    		                formEl.appendChild(el);
+    		                uploadEls.push(el);
+    		            }
+    		            return {
+    		                formEl: formEl,
+    		                uploadFields: uploadFields,
+    		                uploadEls: uploadEls
+    		            };
     		        },
     	             method: 'POST',
     				 waitMsg: 'Uploading your file...',
@@ -73,7 +136,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     }
     	    else{
     	    	Ext.getBody().unmask();
-    	    	var message=messageField.setValue('<font size=2 color=red>Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
+    	    	var message=messageField.setValue('Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
     	    	message.setVisible(true);
     		}
     },
@@ -239,16 +302,5 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 Ext.getBody().unmask();
 		 }
 		 }
-	 },
-	 CancelDetails:function()
-	 {
-		 this.getView().down('form').reset();
-		 var messageField=this.getView().down('#messageFieldItemId');
-		 var message=messageField.setValue('');
-	 },
-	 notifyByMessage : function(config){
-     	var messageField=this.getView().down('#messageFieldItemId');
-		var message=messageField.setValue('');
-		    message.setVisible(true);
-			   }
+	 }
 });
