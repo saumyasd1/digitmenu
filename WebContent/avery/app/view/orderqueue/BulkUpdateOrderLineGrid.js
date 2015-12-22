@@ -700,7 +700,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	         },
 	         {
 	              xtype:'button',
-				  text:'Cancel',
+				  text:undoChangesText,
 				  handler:'cancelChanges'
 	         }
 			 ]
