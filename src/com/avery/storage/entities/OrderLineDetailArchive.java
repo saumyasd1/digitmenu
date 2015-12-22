@@ -27,6 +27,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.service.OrderLineDetailArchiveService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -242,6 +243,7 @@ public class OrderLineDetailArchive extends MainAbstractEntity {
 					.readWithCriteria(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find archives");
+			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
