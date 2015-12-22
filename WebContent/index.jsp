@@ -1,10 +1,16 @@
+<!DOCTYPE html>
 <%
 String applicationContext = request.getContextPath();
 int pageSize=25;
 %>
-<!doctype html>
+
 <html lang="en">
 <head>
+<style type="text/css">
+::-ms-clear {
+   display: none;
+}
+</style>
   <meta charset="UTF-8">
   <title>Avery Dennison Web App</title>    
   <script>
