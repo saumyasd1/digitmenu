@@ -82,11 +82,16 @@ Ext.define('AOC.view.AOCLogin',{
         		                		{
         		                			var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
         		                			activeCard.getLayout().setActiveItem(1);
-        		                			var menuStore=Ext.create('AOC.store.MenuStore');
-        		                        	var menuController=myAppGlobal.getController('MenuController');
-        		                        	menuStore.on({
-        		                        		load : menuController.onLoadMenuBar
-        		                        	});
+        		                			var menuStore=Ext.data.StoreManager.lookup('MenuStoreId');
+        		                			if(menuStore==null){
+        		                				menuStore=Ext.create('AOC.store.MenuStore');
+            		                        	var menuController=myAppGlobal.getController('MenuController');
+            		                        	menuStore.on({
+            		                        		load : menuController.onLoadMenuBar
+            		                        	});
+        		                			}else{
+            		                			activeCard.getLayout().getActiveItem().down('#AOCContainer').getLayout().setActiveItem(5);
+        		                			}
         		                		}else{
         		                			var Msg=me.down('#messageFieldItemId');
         		                			Msg.setValue('Either UserName or Password is not correct');
