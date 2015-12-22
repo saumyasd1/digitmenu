@@ -61,13 +61,14 @@ Ext.define('AOC.view.archive.ArchiveController', {
 		
 		openAdvancedSearchWindow:function(cmp,event)
 		{
-				 var temp=Ext.ComponentQuery.query('#archivesearchItemId')[0];
+			
+				 var temp=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:200,
+						 	height:220,
 							width:420,
 							title:advancedSearchWindowTitle,
-							itemId:'archivesearchItemId',
+							itemId:'archivesearchItemIdwin',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
@@ -101,30 +102,18 @@ Ext.define('AOC.view.archive.ArchiveController', {
 					return false;
 			},
 			getArchiveBasedOnSearchParameters: function() {
-				debugger;
 				var currentView=Ext.ComponentQuery.query('#archivemanageitemId')[0];
 				archiveView=currentView.down('#archivePanel');
 				var grid=archiveView.getLayout().getActiveItem();
-				  var valueObj=this.getView().getForm().getValues(false,true);
-		    	  if(!valueObj.hasOwnProperty('datecriteriavalue'))
+				var valueObj=this.getView().getForm().getValues(false,true);
+				var FromDate=valueObj.fromDate;
+				var ToDate=valueObj.toDate;
+				 if(FromDate<=ToDate)
+				 		{
+		    	 if(!valueObj.hasOwnProperty('datecriteriavalue'))
 		    		valueObj.datecriteriavalue='createdDate';
 				    var parameters=Ext.JSON.encode(valueObj);
 		    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
-//		    		var archiveStore=Ext.create('AOC.store.ArchiveStore', {
-//						proxy : {
-//							type : 'rest',
-//							url : applicationContext+'/rest/'+valueObj.tableName,
-//							//params : parameters,
-//							reader:{
-//						        type:'json', 
-//						        rootProperty: valueObj.tableName,
-//						        totalProperty : 'totalCount'
-//						    },
-//					        headers     : {
-//					            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
-//					        }
-//					}
-//					});
 		    	var store=grid.store;
 		        store.proxy.setFilterParam('query');
 		        store.setRemoteFilter(true);
@@ -141,9 +130,17 @@ Ext.define('AOC.view.archive.ArchiveController', {
 		        });
 		        grid.down('#clearadvanedsearch').show();
 		        this.getView().up('window').destroy();
+				 		}
+			     else
+			    	 {
+			    var archivesearch=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
+				    archivesearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+			    	 }
 			},
 			clearAdvancedSerach:function(widget){
-				 var grid=this.getView();
+					var currentView=Ext.ComponentQuery.query('#archivemanageitemId')[0];
+					archiveView=currentView.down('#archivePanel');
+					var grid=archiveView.getLayout().getActiveItem();
 				   	var store = grid.store;
 					store.clearFilter();
 					store.loadPage(1);
