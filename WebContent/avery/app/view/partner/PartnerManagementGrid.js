@@ -9,7 +9,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	initComponent : function(){
 	var me=this;
     Ext.apply(this,{
-    	actionTpl   : me.buildActionTpl(),
         columns : this.buildColumns(),
 		columnLines:true,
         tbar: { height: 40,
@@ -20,10 +19,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	            stripeRows : false,
 	            enableTextSelection : true
         }
-    });
-    this.on({
-        scope:this,
-        cellclick :this.onCellClickToView
     });
        this.callParent(arguments);
   },
@@ -50,14 +45,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 							  	    	  icon:editIcon,
 							  	    	  handler:'editpartnermanagement'
 							  	      }]
-		                },
-		                {
-				            text : 'Action',
-				            width:140,
-				            baseCls:'custom-action',
-				  	        renderer: function(v,cell,rec){
-			                          return me.actionTpl.apply(rec.data);
-			            }
 		                },
         			    {  
             	            text : 'Partner Name',
@@ -90,56 +77,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 			            }
         ];
     },
-    buildActionTpl : function(){
-        var me = this;
-        helper = AOC.util.Helper;
-        return Ext.create('Ext.XTemplate',
-        		  '{[this.getHtmlForSwitch(values)]}',
-                 {
-        	getHtmlForSwitch : function(v){
-            		var event = '',
-            		status='';
-            		if(v.active ==true){
-            			event = 'pause';
-            		    status ='on';
-            		}
-            		else{
-            			event = 'start';
-            			status = 'off';
-            		}
-               return helper.getSwitchButtonHtml(event, status, '');
-        	}
-            }
-        );
-    },
-	 onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-		 var me=this;
-		 if(cellIndex==2){
-	            if(e.target.className.indexOf("onoffswitch"==1))
-	            {
-	            	var status =record.get('active');
-	            	Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to change the status of this partner</b>', function(response) {
-	     				  if (response == 'yes') {
-	     					  var parameters='{\"active\":'+!status+'}';
-	     						Ext.Ajax.request( {
-	     							method:'PUT',
-	     							url:applicationContext+'/rest/partners/'+record.get('id'),
-	     							jsonData : parameters,
-       				            success : function(response, opts) {
-       								Ext.Msg.alert('Alert Message','<b>Partner status changed Succesfully</b>');
-       							me.store.load();
-       				        },
-       				        failure: function(response, opts) { 
-       				        	
-       				        }
-       		        	});
-	     				  }else if(response == 'no'){
-	     				  return true;
-             }
-	            });
-	 }
-		 }
-	 },
 	 buildtbar:function(){
 		var me=this;
 			return [
