@@ -162,13 +162,14 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 },
 	openAdvancedSearchWindow:function(cmp,event)
 	{
-			 var temp=Ext.ComponentQuery.query('#partneradvancesearchItemId')[0];
+	 var temp=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
 	 if(!temp){
+	
 			 temp = Ext.create('Ext.window.Window',{
 					 	height:250,
 						width:420,
 						title:advancedSearchWindowTitle,
-						itemId:'partneradvancesearchItemId',
+						itemId:'partneradvancesearchWindowItemId',
 						layout: 'fit',
 						draggable: false,
 						modal:true,
@@ -203,6 +204,10 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		},
 			getPartnerBasedOnSearchParameters: function() {
 		 	var valueObj=this.getView().getForm().getValues(false,true);
+		 	var FromDate=valueObj.fromDate;
+		 	var ToDate=valueObj.toDate;
+		 	if(FromDate<=ToDate)
+		 		{
 	    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
 	    		valueObj.datecriteriavalue='createdDate';
 			var parameters=Ext.JSON.encode(valueObj);
@@ -229,7 +234,13 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	            value:parameters
 	        });
 	        grid.down('#clearadvanedsearch').show();
-	        this.getView().up('window').destroy();
+	        this.getView().up('window').hide();
+		 }
+		 else
+			 {
+		    var partnersearch=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
+		 	partnersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);;
+			 }
 		},
 		clearAdvancedSerach:function(widget){
 			 var grid=this.getView();
