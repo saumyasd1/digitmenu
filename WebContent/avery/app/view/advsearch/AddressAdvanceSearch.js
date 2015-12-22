@@ -6,10 +6,16 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 			buttonAlign : 'right',
 			controller:'addressMain',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [
+			items : [    {
+							xtype:'displayfield',
+							itemId:'messageFieldItemId',
+							value:'',
+							hidden:true,
+							margin:'5 0 0 10'
+                         },
 						{
 							xtype:'tbspacer',
-							height:20
+							height:2
 						},
 						{
 							xtype : 'textfield',

@@ -8,7 +8,18 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 			buttonAlign : 'right',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
 			items : [
-								{
+				           {
+								xtype:'displayfield',
+								itemId:'messageFieldItemId',
+								value:'',
+								hidden:true,
+								margin:'5 0 0 10'
+	                       },
+							{
+								xtype:'tbspacer',
+								height:2
+							},
+						{
 							xtype : 'radiogroup',
 							itemId: 'archivedatecriteriavalue',
 							fieldLabel : 'Date Criteria',

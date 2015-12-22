@@ -8,7 +8,19 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 			buttonAlign : 'right',
 			controller:'orderqueue',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [ {
+			items : [  
+			         {
+							xtype:'displayfield',
+							itemId:'messageFieldItemId',
+							value:'',
+							hidden:true,
+							margin:'5 0 0 10'
+                     },
+						{
+							xtype:'tbspacer',
+							height:5
+						},
+			          {
 			            xtype: 'fieldcontainer',
 	                    layout: 'hbox',
 	                    margin : '5 0 0 5',
