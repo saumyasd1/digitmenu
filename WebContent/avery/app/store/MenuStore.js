@@ -2,6 +2,7 @@ Ext.define('AOC.store.MenuStore', {
 	extend : 'Ext.data.Store',
 	model:'AOC.model.MenuModel',
 	autoLoad : true,
+	storeId:'MenuStoreId',
 	proxy : {
 	//	timeout:parseInt(requestTimeoutforStore, 10),
 		// load using HTTP
