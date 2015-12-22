@@ -167,6 +167,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             valueObj.datecriteriavalue = 'receivedDate';
         var parameters = Ext.JSON.encode(valueObj);
         var grid = this.runTime.getActiveGrid();
+    	var archievegrid=Ext.ComponentQuery.query('#orderFileQueueArchiveManageGriditemId')[0];
+    	if(archievegrid !=null)
+    		{
+    		var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
+    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
+			var grid=archievegrid;
+    		}
         var store = grid.store;
         store.proxy.setFilterParam('query');
         store.setRemoteFilter(true);
