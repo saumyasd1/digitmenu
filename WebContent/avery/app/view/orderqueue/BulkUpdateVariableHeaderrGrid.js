@@ -60,7 +60,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	         },
 	         {
 	              xtype:'button',
-				  text:'Cancel',
+				  text:undoChangesText,
 				  handler:'cancelChanges'
 	         }
 			 ]
