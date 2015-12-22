@@ -85,7 +85,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         }
     },
     openAdvancedSearchWindow: function(cmp, event) {
-        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchID')[0];
+        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
         if (!temp) {
             store = Ext.create('AOC.store.PartnerProductLineStore', {
                 storeId: 'PartnerProductLineStoreStoreId',
@@ -119,10 +119,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             });
 
             temp = Ext.create('Ext.window.Window', {
-                height: 290,
+                height: 320,
                 width: 600,
                 title: advancedSearchWindowTitle,
-                itemId: 'orderqueueadvancesearchID',
+                itemId: 'orderqueueadvancesearchIDWindow',
                 layout: 'fit',
                 draggable: false,
                 modal: true,
@@ -163,6 +163,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     getOrderBasedOnSearchParameters: function(store) {
         var valueObj = this.getView().getForm().getValues(false, true);
+        var FromDate=valueObj.fromDate;
+	 	var ToDate=valueObj.toDate;
+	 	if(FromDate<=ToDate)
+	 		{
         if (!valueObj.hasOwnProperty('datecriteriavalue'))
             valueObj.datecriteriavalue = 'receivedDate';
         var parameters = Ext.JSON.encode(valueObj);
@@ -189,7 +193,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             value: parameters
         });
         grid.down('#clearadvanedsearch').show();
-        this.getView().up('window').destroy();
+        this.getView().up('window').hide();
+	 		}
+	 	else
+	 		{
+	 	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+	 	ordersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);;
+	 		}
     },
     clearAdvancedSerach: function(widget) {
         var grid = this.getView();
