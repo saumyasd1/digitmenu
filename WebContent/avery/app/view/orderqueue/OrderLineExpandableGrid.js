@@ -135,7 +135,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             		meta.style = cellColor;
             	}
             } else {
-            	 return value;
+            	if(value==averyItemNotFoundText)
+            		meta.style = cellColor;
+            	return value;
             }
         }
     }, {
