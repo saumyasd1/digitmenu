@@ -97,11 +97,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			String PONumber=searchMap.get("ponumber");
 			if(PONumber!=null && !"".equals(PONumber)){
-				criteria.add(Restrictions.eq("ponumber",PONumber));
+				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
 			}
 		}
-		    criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+			criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
