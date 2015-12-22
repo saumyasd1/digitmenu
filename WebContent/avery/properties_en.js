@@ -37,6 +37,7 @@ submitToOracleStatus='6',
 cancelStatus='8',
 	
 fiberLevel='FIBRE',
-mandatoryValidationCellColor='background-color:yellow'
+mandatoryValidationCellColor='background-color:yellow',
+undoChangesText='Undo'
 ;
 
