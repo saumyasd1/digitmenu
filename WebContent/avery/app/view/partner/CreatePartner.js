@@ -135,30 +135,6 @@ Ext.define('AOC.view.partner.CreatePartner',{
                 	xtype :'tbspacer',
                 	width :10
         		},
-        		{
-        			xtype:'radiogroup',
-        			itemId:'ACItemId',
-        			labelAlign:'right',
-        			name: 'active',
-        			fieldLabel:'Active',
-        			value:'',
-        			labelSeparator:'',
-                    labelWidth : 100,
-  		            width : 500,
-  		            hidden:true,
-         	        items:[
-         	        {boxLabel:'Active',name:'active',inputValue:'1',id:'active'},
-         	         {
-         	       	    xtype :'tbspacer',
-         	       	    width :190
-         	         },
-         	         {boxLabel:'Inactive',name:'active',inputValue:'0',id:'Inactive'}
-         	        			       ]
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :10
-        		},
         		  { xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 10',
