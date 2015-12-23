@@ -8,7 +8,34 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     autoHeight: true,
     columnLines: true,
     nestedGridRefrence: 'salesOrderDetail',
-    columns: [{
+    columns: [
+               {
+        text: 'Status',
+        dataIndex: 'status',
+        width: 150,
+        renderer:function(v){
+        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+			var statusRecord=store.findRecord( 'code', v);
+			if(statusRecord.get('value')!='')
+				{
+				var va=statusRecord.get('value');
+			    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
+				}
+			else
+				return '';
+		}
+    },
+    {
+  	  text: 'System Status',
+        dataIndex: 'systemstatus',
+        width: 85,
+    	renderer:function(v){
+			if(v){
+				return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+			}else 
+				return '';
+    }
+  },{
         text: 'Division',
         dataIndex: 'division',
         editor: 'textfield'
@@ -234,25 +261,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             valueField: 'variableFieldName',
             store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
         }
-    },
-    {
-        text: 'Status',
-        dataIndex: 'status',
-        width: 150,
-        renderer:function(v){
-        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-			var statusRecord=store.findRecord( 'code', v);
-			if(statusRecord.get('value')!='')
-				return statusRecord.get('value');
-			else
-				return '';
-		}
-    },
-    {
-  	  text: 'System Status',
-        dataIndex: 'systemstatus',
-        width: 180
-  }],
+    }
+   ],
     plugins: [{
         ptype: 'cmprowexpander',
 		 createComponent: function(view,record,htmlnode,index) {
