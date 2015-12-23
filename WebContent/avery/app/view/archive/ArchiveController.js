@@ -61,7 +61,6 @@ Ext.define('AOC.view.archive.ArchiveController', {
 		
 		openAdvancedSearchWindow:function(cmp,event)
 		{
-			
 				 var temp=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
@@ -129,15 +128,17 @@ Ext.define('AOC.view.archive.ArchiveController', {
 		            value:parameters
 		        });
 		        grid.down('#clearadvanedsearch').show();
-		        this.getView().up('window').destroy();
+		        this.getView().up('window').hide();
 				 		}
 			     else
 			    	 {
-			    var archivesearch=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
+			       var archivesearch=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
 				    archivesearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
 			    	 }
 			},
 			clearAdvancedSerach:function(widget){
+				    var win = Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
+				    win.close();
 					var currentView=Ext.ComponentQuery.query('#archivemanageitemId')[0];
 					archiveView=currentView.down('#archivePanel');
 					var grid=archiveView.getLayout().getActiveItem();
