@@ -188,10 +188,11 @@ if(!temp){
 					layout: 'fit',
 					draggable: false,
 					modal:true,
+					closeAction:'hide',
 				 	listeners:{ 
-			             beforedestroy: function(btn) {
-				 		 cmp.enable();
-				 	}
+//			             beforedestroy: function(btn) {
+//				 		 cmp.enable();
+//				 	}
 		        },
 				 	items : [{  xtype : 'productlineadvancesearch' }]
 			 });
@@ -269,7 +270,7 @@ if(!temp){
 	},
 	clearAdvancedSerach:function(widget){
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-		 temp.close();
+		 temp.destroy();
 		 var grid=this.getView();
 		   	var store = grid.store;
 			store.clearFilter();
