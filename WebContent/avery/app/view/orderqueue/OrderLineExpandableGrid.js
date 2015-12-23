@@ -108,6 +108,29 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + warningImageSrc + '" /></div>';
 			}
     }
+    },
+    {
+        text: 'Status',
+        dataIndex: 'status',
+        width: 180,
+        editor: {
+        	xtype:'combo',
+        	editable:false,
+        	displayField:'value',
+			valueField:'code',
+        	store:Ext.data.StoreManager.lookup('orderfilequeueid')
+        },
+		renderer:function(v){
+			var store=Ext.data.StoreManager.lookup('orderfilequeueid');
+			var statusRecord=store.findRecord( 'code', v);
+			if(statusRecord.get('value')!='')
+				{
+				var va=statusRecord.get('value');
+			    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
+	         	}
+			else
+				return '';
+		}
     },{
         text: 'PO #<font color=red>*</font>',
         dataIndex: 'poNumber',
@@ -406,7 +429,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }, {
         text: 'Customer Size',
         dataIndex: 'customerSize',
-        width: 102,
+        width: 72,
         editor: 'textfield'
     }, {
         text: 'Contract #',
@@ -742,26 +765,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 100,
         hidden:true,
         editor: 'textfield'
-    }, {
-        text: 'Status',
-        dataIndex: 'status',
-        width: 180,
-        editor: {
-        	xtype:'combo',
-        	editable:false,
-        	displayField:'value',
-			valueField:'code',
-        	store:Ext.data.StoreManager.lookup('orderfilequeueid')
-        },
-		renderer:function(v){
-			var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-			var statusRecord=store.findRecord( 'code', v);
-			if(statusRecord.get('value')!='')
-				return statusRecord.get('value');
-			else
-				return '';
-		}
-    },
+    }, 
     {
         text: 'Comment',
         dataIndex: 'comment',
