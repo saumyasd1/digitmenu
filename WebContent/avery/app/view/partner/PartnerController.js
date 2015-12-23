@@ -173,10 +173,11 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 						layout: 'fit',
 						draggable: false,
 						modal:true,
+						closeAction:'hide',
 					 	listeners:{ 
-				             beforedestroy: function(btn) {
-					 		 cmp.enable();
-					 	}
+//				             beforedestroy: function(btn) {
+//					 		 cmp.enable();
+//					 	}
 			        },
 					 	items : [{  xtype : 'partneradvancesearch' }]
 				 });
@@ -244,7 +245,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		},
 		clearAdvancedSerach:function(widget){
 			 var temp=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
-			 temp.close();
+			 temp.destroy();
 			 var grid=this.getView();
 			   	var store = grid.store;
 				store.clearFilter();
