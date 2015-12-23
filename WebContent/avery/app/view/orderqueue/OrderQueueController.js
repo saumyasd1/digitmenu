@@ -202,6 +202,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	 		}
     },
     clearAdvancedSerach: function(widget) {
+    	var temp=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+    	temp.close();
         var grid = this.getView();
         var store = grid.store;
         store.clearFilter();
