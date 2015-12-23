@@ -37,6 +37,9 @@ Ext.define('AOC.view.address.AddressController', {
 		 		 }
 		},
 		clearAdvancedSerach:function(widget){
+			 var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
+			
+			 temp.close();
 			 var grid=this.getView();
 			   	var store = grid.store;
 				store.clearFilter();
@@ -82,7 +85,6 @@ Ext.define('AOC.view.address.AddressController', {
 		   },
 	openAdvancedSearchWindow:function(cmp,event){
 		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-		cmp.disable();
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
 						 	height:270,
