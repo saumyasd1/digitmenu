@@ -313,5 +313,10 @@ if(!temp){
 			store.loadPage(1);
 			cmp.setValue('');
 			cmp.orderedTriggers[0].hide();
-	   }
+	   },
+	   notifyByMessage:function()
+	    {
+		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
+		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
+	    }
 });
