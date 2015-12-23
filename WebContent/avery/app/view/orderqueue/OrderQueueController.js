@@ -198,7 +198,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	 	else
 	 		{
 	 	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-	 	ordersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);;
+	 	ordersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
 	 		}
     },
     clearAdvancedSerach: function(widget) {
@@ -295,5 +295,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
+    },
+    notifyByMessage:function()
+    {
+    	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+	 	ordersearch.down('#messageFieldItemId').setValue('').setVisible(true);
     }
 })
