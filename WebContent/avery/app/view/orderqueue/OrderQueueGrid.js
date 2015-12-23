@@ -135,13 +135,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			renderer:function(v){
 				var statusRecord=store.findRecord( 'code', v);
 				if(statusRecord.get('value')!='')
-					return statusRecord.get('value');
+				   {
+					var va=statusRecord.get('value');
+				    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
+				   }
 				else
 					return '';
 			}
         },
 		{
-            text : 'Process Date',
+            text : 'Processed Date',
             width:98,
 			dataIndex:'receivedDate'
         },
