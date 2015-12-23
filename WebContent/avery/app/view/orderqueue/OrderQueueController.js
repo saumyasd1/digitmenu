@@ -127,9 +127,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 draggable: false,
                 modal: true,
                 store: store,
+                closeAction:'hide',
                 listeners: {
                     afterrender: function(obj) {
-
                         store.load();
                     },
                     beforedestroy: function(btn) {
@@ -203,7 +203,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     clearAdvancedSerach: function(widget) {
     	var temp=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-    	temp.close();
+    	temp.destroy();
         var grid = this.getView();
         var store = grid.store;
         store.clearFilter();
