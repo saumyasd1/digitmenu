@@ -268,6 +268,8 @@ if(!temp){
 	 		 } 	
 	},
 	clearAdvancedSerach:function(widget){
+		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
+		 temp.close();
 		 var grid=this.getView();
 		   	var store = grid.store;
 			store.clearFilter();
