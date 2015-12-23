@@ -98,7 +98,8 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
 							                }
-							        }
+							        },
+							        'focus': 'notifyByMessage'
 						},
 						{
 							xtype:'tbspacer',

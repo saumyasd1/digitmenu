@@ -85,7 +85,8 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
-							                }
+							                },
+							                'focus': 'notifyByMessage'
 							        }
 						},
 						{

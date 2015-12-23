@@ -98,7 +98,8 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 							    render : function(datefield) {
 							        /// code to convert GMT String to date object
 							        datefield.setValue(new Date());
-							                }
+							                },
+						 'focus': 'notifyByMessage'
 							        }
 						},
 						{

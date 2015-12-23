@@ -202,7 +202,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
-							                }
+							                },
+							     'focus': 'notifyByMessage'
 							        }
 						}]
 						},
