@@ -243,6 +243,8 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 			 }
 		},
 		clearAdvancedSerach:function(widget){
+			 var temp=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
+			 temp.close();
 			 var grid=this.getView();
 			   	var store = grid.store;
 				store.clearFilter();
