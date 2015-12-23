@@ -162,6 +162,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 },
 	openAdvancedSearchWindow:function(cmp,event)
 	{
+		debugger;
 	 var temp=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
 	 if(!temp){
 	
@@ -307,5 +308,10 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     			});
 	     			  win.show();
 	     			}
-		   }
+		   },
+		   notifyByMessage:function()
+		    {
+			   var partnersearch=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
+			   partnersearch.down('#messageFieldItemId').setValue('').setVisible(true);
+		    }
 });
