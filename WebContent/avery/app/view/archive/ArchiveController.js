@@ -71,6 +71,7 @@ Ext.define('AOC.view.archive.ArchiveController', {
 							layout: 'fit',
 							draggable: false,
 							modal:true,
+							closeAction:'hide',
 						 	listeners:{ 
 					             beforedestroy: function(btn) {
 						 		 cmp.enable();
@@ -138,7 +139,7 @@ Ext.define('AOC.view.archive.ArchiveController', {
 			},
 			clearAdvancedSerach:function(widget){
 				    var win = Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
-				    win.close();
+				    win.destroy();
 					var currentView=Ext.ComponentQuery.query('#archivemanageitemId')[0];
 					archiveView=currentView.down('#archivePanel');
 					var grid=archiveView.getLayout().getActiveItem();
