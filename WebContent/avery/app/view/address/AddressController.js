@@ -264,5 +264,10 @@ Ext.define('AOC.view.address.AddressController', {
 		        	});
 			  }
 		});
-	}
+	},
+	  notifyByMessage:function()
+	    {
+		  var addresssearch=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
+		  addresssearch.down('#messageFieldItemId').setValue('').setVisible(true);
+	    }
 });
