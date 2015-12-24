@@ -78,7 +78,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                		valueObj=me.form.getValues(false,true,false,true);
         		                		var UserName=valueObj.userName;
         		                		var password=valueObj.password;
-        		                		if(UserName=="aoc_user" && password=="indigo1")
+        		                		if(UserName==loginUserName && password==loginPassword)
         		                		{
         		                			var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
         		                			activeCard.getLayout().setActiveItem(1);
