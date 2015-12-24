@@ -24,10 +24,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     				Ext.each(updatedRecords,function(currentRecord){
     		    		i=store.find('id',currentRecord.id);
     		    		if(i==0){
-    		    			if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''){
+    		    			if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!='' && currentRecord.getModified('oracleBilltoSiteNumber')==''){
     		    	  			insertBillAddress=true;
     		    	  	  }
-    		    	  		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''){
+    		    	  		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!='' && currentRecord.getModified('oracleShiptoSiteNumber')==''){
     		    	  			insertShipAddress=true;
     		    	  		}
     		    			}
