@@ -48,6 +48,7 @@ import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -87,6 +88,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "EmailBody")
 	private String emailBody;
 	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
 	@Column(name = "ReceivedDate")
 	private Date receivedDate;
 	
@@ -96,6 +98,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "SubmittedBy")
 	private String submittedBy;
 	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
 	@Column(name = "SubmittedDate")
 	private Date submittedDate;
 	
@@ -501,10 +504,10 @@ public class OrderQueue extends MainAbstractEntity{
 		orderQueue.setRboName(rboName);
 		orderQueue.setProductLine(productLine);
 		orderQueue.setOrderSource("Web");
-		orderQueue.setSubmittedDate(date);
 		orderQueue.setCreatedDate(date);
 		orderQueue.setStatus("16");
 		orderQueue.setEmailBody(emailBody);
+		orderQueue.setReceivedDate(date);
 		
 		
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
