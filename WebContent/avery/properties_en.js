@@ -39,7 +39,9 @@ cancelStatus='8',
 fiberLevel='FIBRE',
 mandatoryValidationCellColor='background-color:yellow',
 undoChangesText='Undo',
-averyItemNotFoundText='NOT FOUND'
+averyItemNotFoundText='NOT FOUND',
+loginUserName='aoc_devuser',
+loginPassword='p@ssw0rd'
 
 ;
 
