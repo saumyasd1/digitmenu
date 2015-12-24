@@ -94,7 +94,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	if(jsonValue.length>0){
 		        	jsonValue.forEach(function(item){
                 		var service = [item];
-                		serviceStoreData.push(service);
+                		if(item!=qtyVariableLabel)
+                			serviceStoreData.push(service);
                 	});
 		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
                  	   		fields : ['variableFieldName'],	
@@ -422,7 +423,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	if(!this.runTime.getAllowOrderLineEdit())
     		return false;
     	var record=context.record,grid=context.grid,
-    	level=record.get('level');
+    	level=record.get('level'),variablefieldname=record.get('variablefieldname');
+    	if(variablefieldname==qtyVariableLabel)
+    		return false;
     	if(level==fiberLevel){
     		grid.editingPlugin.editor.form.findField('fiberPercent').enable();
     	}else
