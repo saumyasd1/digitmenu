@@ -2,8 +2,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.bulkupdateorderlinegrid',
     itemId:'BulkUpdateOrderlineGrid',
+    requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel','AOC.view.orderqueue.BulkUpdateController'],
     controller:'orderlinebulkupdate',
-    requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
 	reserveScrollbar:true,
@@ -22,9 +22,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			        clicksToEdit: 1
 			    },
 			    listeners:{
-			    	 helper:AOC.util.Helper,
 			    	 'selectionchange':function( grid, selection, eOpts ){
-			    		 helper.BulkUpdate( grid, selection, eOpts);
+			    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
 			    	 }
 		        	}
         });
@@ -369,7 +368,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Contract #',
             dataIndex: 'contractNumber',
             width: 130,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta,record) {
+                if(value !='') {
+                   return value;
+                } else {
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
+                }
+            }
         }, {
             text: 'Style No',
             dataIndex: 'styleNo',
@@ -486,9 +493,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('artworkhold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Artwork Work Attachment',
@@ -510,9 +517,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('artworkworkattachment');
             	if(value=='true')
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Variable Data Breakdown',
@@ -594,9 +601,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('shippinghold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Production Hold',
@@ -618,9 +625,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('productionhold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Split Shipset',
@@ -663,9 +670,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('waiveMOQ');
             	if(value=='true')
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'APO Type',
