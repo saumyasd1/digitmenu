@@ -368,7 +368,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Contract #',
             dataIndex: 'contractNumber',
             width: 130,
-            editor: 'textfield'
+            editor: 'textfield',
+            renderer : function(value, meta,record) {
+                if(value !='') {
+                   return value;
+                } else {
+                	if(record.get('status')==waitingForCSRStatus)
+                		meta.style = cellColor;
+                }
+            }
         }, {
             text: 'Style No',
             dataIndex: 'styleNo',
@@ -485,9 +493,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('artworkhold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Artwork Work Attachment',
@@ -509,9 +517,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('artworkworkattachment');
             	if(value=='true')
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Variable Data Breakdown',
@@ -593,9 +601,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('shippinghold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Production Hold',
@@ -617,9 +625,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('productionhold');
             	if(value==true)
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'Split Shipset',
@@ -662,9 +670,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	var record=row.record;
             	var value=record.get('waiveMOQ');
             	if(value=='true')
-            		return "<input type='checkbox' checked>";
+            		return "<input type='checkbox' checked disabled>";
             	else
-            		return "<input type='checkbox'>";
+            		return "<input type='checkbox' disabled>";
             }
         }, {
             text: 'APO Type',
