@@ -1,6 +1,6 @@
 Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.cancelOrderController',
+    alias: 'controller.cancelOrder',
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 'AOC.view.advsearch.OrderQueueAdvanceSearch', 'AOC.view.orderqueue.OrderLineExpandableGrid'],
     runTime: AOC.config.Runtime,
     cancelOrder: function() {
