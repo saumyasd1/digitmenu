@@ -2,8 +2,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.bulkupdateorderlinegrid',
     itemId:'BulkUpdateOrderlineGrid',
+    requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel','AOC.view.orderqueue.BulkUpdateController'],
     controller:'orderlinebulkupdate',
-    requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
 	reserveScrollbar:true,
@@ -22,9 +22,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			        clicksToEdit: 1
 			    },
 			    listeners:{
-			    	 helper:AOC.util.Helper,
 			    	 'selectionchange':function( grid, selection, eOpts ){
-			    		 helper.BulkUpdate( grid, selection, eOpts);
+			    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
 			    	 }
 		        	}
         });
