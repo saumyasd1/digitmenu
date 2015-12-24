@@ -41,7 +41,8 @@ mandatoryValidationCellColor='background-color:yellow',
 undoChangesText='Undo',
 averyItemNotFoundText='NOT FOUND',
 loginUserName='aoc_devuser',
-loginPassword='p@ssw0rd'
+loginPassword='p@ssw0rd',
+qtyVariableLabel='QTY'
 
 ;
 
