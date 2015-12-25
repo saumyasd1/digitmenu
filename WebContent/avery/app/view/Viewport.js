@@ -1,7 +1,7 @@
 /**
  * The main application viewport, which displays the whole application
  * 
- * @extends Ext.Viewport
+ * @extends  Ext.Viewport
  */
 Ext.define('AOC.view.Viewport', {
 	extend : 'Ext.container.Viewport',
