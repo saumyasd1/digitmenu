@@ -3,6 +3,15 @@ Ext.define('AOC.util.Helper',{
     config : {
         mainContainerTip : null
     },
+    constructor : function(config){
+	 var ordderColorMap =new Ext.util.HashMap();
+	 ordderColorMap.add('Received','#ff1a8c');
+	 ordderColorMap.add('Waiting CS Review','#ffff1a');
+	 ordderColorMap.add('Waiting System Response','#1a74ff');
+	 ordderColorMap.add('Successful','#48d148');
+	 ordderColorMap.add('Failed','#ff1a1a');
+	 this.orderColorMap=ordderColorMap;
+    },
   getSwitchButtonHtml: function(event, status, cssClass){
 	  var switchBorder='',
 	  circlePadding;
@@ -107,5 +116,13 @@ Ext.define('AOC.util.Helper',{
         });
     }else
     	return false;
+    },
+    createToolTip : function(el,lit,anchor){
+        var me     = this;
+        return Ext.create('Ext.tip.ToolTip', {
+            target : el,
+            html   : lit,
+            anchor : (anchor) ? anchor : 'top'
+        });
     }
 });
