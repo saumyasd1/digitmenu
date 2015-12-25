@@ -43,7 +43,7 @@ int pageSize=25;
     <script id="microloader" type="text/javascript" src="avery/bootstrap.js"></script>
 </head>
 <body>
-<div id="loading">
+<div  id="loading">
 		<div id="loading-text">
 		<div><img style="width:60px;height:60px" src="avery/resources/images/logo_avery.gif"></div>
 			Loading...
