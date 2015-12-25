@@ -12,7 +12,7 @@ Ext.define('AOC.view.Viewport', {
 	            'AOC.view.AOCHeader'
 	            ],
 	stores:[ 'PartnerManagementStore','AddressManageStore'],
-	initComponent : function(){
+	initComponent: function(){
 		Ext.apply(this, {
 			layout : {
 				type : 'card',
@@ -36,7 +36,8 @@ Ext.define('AOC.view.Viewport', {
 					},
 					{
 						region : 'center',
-						xtype : 'canwas'
+						xtype : 'canwas',
+						style  : AOC.config.Settings.getBaseBackgroundColor()
 					}
 					]
 					}
