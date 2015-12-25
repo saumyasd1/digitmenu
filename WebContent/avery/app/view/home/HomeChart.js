@@ -35,7 +35,7 @@ Ext.define('AOC.view.home.HomeChart',{
             items   : [{
                 xtype  : 'component',
                 margin:'0 0 0 50',
-                html   : '<div style="font-weight:600;font-size:20px">Orders Summary</div>'
+                html   : '<div  style="font-weight:600;font-size:20px">Orders Summary</div>'
             },'->',{
                 xtype        : 'checkbox',
                 checked      : true,
