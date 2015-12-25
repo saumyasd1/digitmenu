@@ -12,7 +12,7 @@ Ext.define('AOC.view.Viewport', {
 	            'AOC.view.AOCHeader'
 	            ],
 	stores:[ 'PartnerManagementStore','AddressManageStore'],
-	initComponent: function(){
+	initComponent : function(){
 		Ext.apply(this, {
 			layout : {
 				type : 'card',
