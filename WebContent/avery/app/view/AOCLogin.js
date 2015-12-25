@@ -1,12 +1,8 @@
 Ext.define('AOC.view.AOCLogin',{
-	extend:'Ext.form.Panel',
+	extend:'Ext.Container',
 	alias:'widget.aocLogin',
 	itemId:'aocLoginItemId',
-	bodyPadding: 5,
-	width: 600,
-	border:true,
-    modal:true,
-    initComponent : function(){
+	initComponent : function(){
     	var me=this;
     	this.fieldArray = [],
             Ext.apply(this,{
@@ -15,8 +11,7 @@ Ext.define('AOC.view.AOCLogin',{
                 	type: 'vbox',
                 	align: 'center',
                 	pack: 'center'
-                	},
-                title: '<B><font size=4><center>Welcome to Accelerated Order Capture</center></font></B>'
+                	}
             });
             this.callParent(arguments);
 
@@ -24,74 +19,88 @@ Ext.define('AOC.view.AOCLogin',{
         buildItem:function(){
         	var me=this;
         	return [{
-        		items: [
-							{
-								xtype:'displayfield',
-								itemId:'messageFieldItemId',
-								vale:'',
-								hidden:false
-							},
-					      {
         		            xtype: 'form',        
-        		            frame: true,         
-        		            bodyPadding:30,
+        		            bodyPadding:'30 50 50 50',
         		            border:true,
-        		            title:'<B>LOGIN</B>',
+        		            bodyStyle:{"border-radius":"10px"},
+        		            style  : AOC.config.Settings.getBaseBackgroundColor(),
+        		            layout: {
+        	                	type: 'vbox',
+        	                	align: 'center',
+        	                	pack: 'center'
+        	                	},
         		            defaults: {             
         		                xtype: 'textfield', 
-        		                labelWidth : 65,
         			            width : 350,
-        			            height:10,
+        			            hideLabel:true,
+        			            height:40,
         			            allowBlank:false
-        		            },
-        		            items: [
+        		              },
+        		               items: [{
+				       xtype:'image',
+				       border:false,
+				       width:100,
+				       height:100,
+				       src:'avery/resources/images/logo_avery.gif'
+				        },
+				        {
+				         xtype:'component',
+				         html:'<div style="width:100%;text-align:center;font-size:18px;font-weight:500;">Accelerated Order Capture</div>'
+				        },
         		                {
-        		                    name: 'userName',    
-        		                    fieldLabel: "<B>UserName</B>",
+        		                    name: 'userName',
+        		                    margin:'30 0 0 0',
         		                    blankText : 'UserName Field is required',
-        		                    emptyText:'USERNAME'
+        		                    emptyText:'Username'
         		                },
-        		            	{
-        		                	xtype :'tbspacer',
-        		                	width :20
-        		        		},
         		                {   
         		                    name: 'password',
-        		                    fieldLabel: "<B>Password</B>",
         		                    inputType: 'password',
+        		                    margin:'-1 0 0 0',
         		                    blankText : 'Password Field is required',
-        		                    emptyText:'PASSWORD'
+        		                    emptyText:'Password'
         		                },
         		                {
-        		                	xtype :'tbspacer',
-        		                	width :20,
-        		                	height:10
-        		        		},
+        		                    xtype:'fieldcontainer',
+        		                    margin:'10 0 0 0',
+        		                    layout:'hbox',
+        		                    items:[{
+        		                    	xtype : 'checkbox',
+        		                    	width:245,
+        		                    	boxLabel : '<div style="padding:0px 0px 0px 0px !important;" >Remember me</div>',
+        		                    	oldValue : false,
+        		                    	listeners : {
+        		                    		scope : this,
+        		                    		change :function( cmp, newValue, oldValue){
+        		                    		}
+        		                    	}
+        		                    
+        		                    },{
+        		                	xtype:'displayfield',
+        		                	flex:1,
+        		                	value:'<div >Forgot Password?</div>'
+        		                    }]
+        		                },
         		                {
         		                	xtype :'button',
+        		                	margin :'20 0 0 0',
         		                	text : 'LOGIN',
-        		                	labelWidth : 65,
-             			            width : 350,
-             			            height:30,
+             			                width : 350,
+             			                height:40,
         		                	handler: function() 
         		                	{
-        		                		valueObj=me.form.getValues(false,true,false,true);
+        		                		var valueObj=me.down('form').getValues();
         		                		var UserName=valueObj.userName;
         		                		var password=valueObj.password;
-        		                		if(UserName==loginUserName && password==loginPassword)
+        		                		if(UserName=="aoc_user" && password=="indigo1")
         		                		{
         		                			var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
         		                			activeCard.getLayout().setActiveItem(1);
-        		                			var menuStore=Ext.data.StoreManager.lookup('MenuStoreId');
-        		                			if(menuStore==null){
-        		                				menuStore=Ext.create('AOC.store.MenuStore');
-            		                        	var menuController=myAppGlobal.getController('MenuController');
-            		                        	menuStore.on({
-            		                        		load : menuController.onLoadMenuBar
-            		                        	});
-        		                			}else{
-            		                			activeCard.getLayout().getActiveItem().down('#AOCContainer').getLayout().setActiveItem(5);
-        		                			}
+        		                			var menuStore=Ext.create('AOC.store.MenuStore');
+        		                        	var menuController=myAppGlobal.getController('MenuController');
+        		                        	menuStore.on({
+        		                        		load : menuController.onLoadMenuBar
+        		                        	});
         		                		}else{
         		                			var Msg=me.down('#messageFieldItemId');
         		                			Msg.setValue('Either UserName or Password is not correct');
@@ -101,7 +110,6 @@ Ext.define('AOC.view.AOCLogin',{
         		            ]
         		        }
         		    ]
-        	}]
         },
         notifyByMessage : function(config){
 			   var me = this;
