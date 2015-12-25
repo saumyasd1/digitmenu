@@ -16,7 +16,7 @@ Ext.define('AOC.view.Viewport', {
 		Ext.apply(this, {
 			layout : {
 				type : 'card',
-				activeItem:1,
+				activeItem:0,
 			        deferredRender : true
 			    },
 			    items : [
