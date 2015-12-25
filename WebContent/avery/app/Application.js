@@ -16,6 +16,11 @@ Ext.define('AOC.Application', {
     ],
     views : ['Viewport'],
     launch : function(){
+	 Ext.fly('loading').fadeOut({
+             callback : function(){
+                 Ext.fly('loading').destroy();
+             }
+         });
     	myAppGlobal=this;
     	Ext.create('AOC.view.Viewport', {
     		activeItem:0
