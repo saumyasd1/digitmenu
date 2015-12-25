@@ -1,9 +1,10 @@
 Ext.define('AOC.controller.MenuController', {
 	extend :'Ext.app.Controller',
 	alias: 'controller.menuController',
-	stores:['MenuStore','PartnerManagementStore','AddressStore','OrderQueueStore'],
+	requires:['AOC.view.ux.Callout'],
+	stores:['Sections','MenuStore','PartnerManagementStore','AddressStore','OrderQueueStore','HomePageOders'],
 	models:['MenuModel'],
-	views : ['base.BaseToolbar','Viewport','AOCHome'],
+	views : ['base.BaseToolbar','Viewport'],
 	refs : [{
 		selector : 'viewport #toolbarviewitemid',
 		ref : 'toolbar'
@@ -11,6 +12,10 @@ Ext.define('AOC.controller.MenuController', {
 		{
 			selector : 'viewport',
 			ref : 'viewport'
+		},
+		{
+			selector : 'viewport canwas maincontainer',
+			ref : 'mainCard'
 		},
 		{
 		   	selector : 'viewport #AOCContainer',
@@ -32,19 +37,25 @@ Ext.define('AOC.controller.MenuController', {
 		   	selector : 'viewport #archiveManageGriditemId',
 	 	 	ref : 'archiveManagegrid'
 	    }
-	 	],
+	 ],
 	 menuInstructions : AOC.config.MenuInstructions,
 	 runTime : AOC.config.Runtime,
 	 init : function(){
-	
 		this.control({
 			 '#toolbarviewitemid[data]':{
 	            click : this.onClickToolbarButton
 			 },
 			 '#headeruserbutton > menuitem[action=openPopupForHeader]':{
 	                click : this.openPopupForHeader
-	         }
-		});           
+	         },
+	         'viewport canwas mainmenu' : {
+	                clickmenu : this.onClickMainMenu
+	            },
+	         'viewport aocheader' : {
+	                clickprofilemenu : this.onClickProfileMenu
+	            }
+		}); 
+		this.profileMenuTpl = this.buildMenuTpl();
 	},
 	openPopupForHeader : function(btn) {
 		 var data = btn.data,
@@ -176,5 +187,51 @@ Ext.define('AOC.controller.MenuController', {
 		  //this.getArchiveManagegrid().down('#pagingtoolbar').bindStore(ArchiveStore);
 		 // ArchiveStore.load();
 		  this.getMainContainer().getLayout().setActiveItem(4);
-	  }
-})   
+	  },
+	  onClickMainMenu:function(cmp, rec){
+	      var me=this,
+	      xtype = rec.get('xtype'),
+	      cardLayout =me.getMainCard().getLayout(),
+	      section= Ext.ComponentQuery.query(xtype)[0],
+	      activeItem=cardLayout.getActiveItem();
+	      if(activeItem && activeItem.xtype==xtype){
+		  return;
+	      }else{
+		  if (Ext.isEmpty(section)){
+		            section = Ext.widget(xtype);
+		    }
+		  if (!Ext.isEmpty(section)){
+		    cardLayout.setActiveItem(section) ; 
+		  }
+	      }
+	  },
+	  onClickProfileMenu:function(el){
+	      var me=this;
+	      var callout = Ext.widget('callout', {
+  	          cls                  : 'white more-menu-item-callout extra',
+  	          html                 : me.buildMenuTpl.apply("{}"),
+  	          target               : el,
+  	          calloutArrowLocation : 'top-right',
+  	          relativePosition     : 't-b',
+  	          relativeOffsets      : [-57,23],
+  	          dismissDelay         : 0 
+  	          });
+	      callout.show();   
+	  },
+	  buildMenuTpl : function(){
+	    	  var me=this;
+	    	 return Ext.create('Ext.XTemplate',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="profileinfo"">Profile Information</div>',
+	              '<tpl if="this.isAdmin(values)">',
+	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="profileinfo"">Manage Users</div>',
+	              '</tpl>',
+	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="logout"">Logout</div>',
+	    	     '</tpl>',
+	               {
+	              	isAdmin : function(v){
+	              	        return  true;
+	              	}
+	              }
+	          );
+	      }
+});  
