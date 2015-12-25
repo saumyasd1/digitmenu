@@ -6,81 +6,43 @@
 Ext.define('AOC.view.Viewport', {
 	extend : 'Ext.container.Viewport',
 	itemId : 'viewportitemid',
-	requires : ['AOC.view.AOCHome','AOC.view.AOCLogin','AOC.view.AOCHeader','AOC.view.ToolbarView','AOC.view.orderqueue.OrderQueueView','AOC.view.partner.PartnerManagement','AOC.view.address.AddressManage','AOC.view.webform.WebOrderView','AOC.view.archive.ArchiveManage'],
+	requires : [
+	            'AOC.view.Canwas',
+	            'AOC.view.AOCLogin',
+	            'AOC.view.AOCHeader'
+	            ],
 	stores:[ 'PartnerManagementStore','AddressManageStore'],
 	initComponent : function(){
 		Ext.apply(this, {
 			layout : {
 				type : 'card',
-			     deferredRender : true
+				activeItem:1,
+			        deferredRender : true
 			    },
-			items : [
+			    items : [
 			         {
-			             xtype : 'aocLogin'
+			             xtype : 'aocLogin',
+			             style  : AOC.config.Settings.getBaseBackgroundColor()
 			         },
 			         {
 			            xtype     : 'container',
 			         	layout : {
 							type : 'border'
 						},
-			             items     : [
+			               items     : [
 					{
 						region : 'north',
 						xtype : 'aocheader'
 					},
 					{
-						region : 'north',
-						xtype : 'toolbarview',
-						height:30,
-					    itemId:'toolbarviewitemid'
-					},
-					{
-					 	region : 'center',
-					 	xtype:'container',
-					 	layout : {
-					 		type : 'card',
-					 		deferredRender : true
-					  	},
-						activeItem : 5,
-						itemId:'AOCContainer',
-						items:[
-						        {
-						    	   xtype : 'orderqueueview' ,
-						    	   cls : 'adeptia-home-entity',
-						    	   margins : '12 12 12 12'
-						       },
-							   {
-							       xtype : 'partnermanagement',
-							    	cls : 'adeptia-home-entity',
-							    	 margins : '12 12 12 12'
-							   },
-							   {
-							       xtype : 'addressmanage',
-							    	cls : 'adeptia-home-entity',
-							    	 margins : '12 12 12 12'
-							   },
-							   {
-							       xtype : 'weborderview',
-							    	cls : 'adeptia-home-entity',
-							    	 margins : '12 12 12 12'
-							   },
-							   {
-							       xtype : 'archivemanage',
-							    	cls : 'adeptia-home-entity',
-							    	 margins : '12 12 12 12'
-							   },
-							   {
-						    	   xtype : 'aochome',
-						    	   cls : 'adeptia-home-entity',
-						    	   margins : '12 12 12 12'
-						       }
-						       ]
+						region : 'center',
+						xtype : 'canwas'
 					}
-								                     ]
-								                 }
-								             ]
-								         })
-								     	this.callParent(arguments);
+					]
+					}
+				]
+			})
+		this.callParent(arguments);
 	}
 		});
 	
