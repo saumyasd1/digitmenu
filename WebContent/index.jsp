@@ -1,17 +1,39 @@
-<!DOCTYPE html>
 <%
 String applicationContext = request.getContextPath();
 int pageSize=25;
 %>
-
+<!doctype html>
 <html lang="en">
 <head>
-<style type="text/css">
+  <meta charset="UTF-8">
+  <style type="text/css">
 ::-ms-clear {
    display: none;
 }
-</style>
-  <meta charset="UTF-8">
+		#loading{
+			position:absolute;
+			top:0;
+			left:0;
+			height:100%;
+			width:100%;
+			background-color:#f6f6f6;
+		}
+	    #loading #loading-text{
+			color:#666;
+			background-color:#fff;
+	        padding:5px 20px 15px 20px;
+	        border:1px solid #ccc;
+			position:absolute;
+	        top:50%;
+	        left:50%;
+			margin-left:-110px;
+			margin-top:-60px;
+			border-radius:7px;
+			font-size:15px!important;
+			text-align:center;
+			font-family: "Lucida Grande","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif"!important;
+		}
+	</style>
   <title>Avery Dennison Web App</title>    
   <script>
   var applicationContext = "<%=applicationContext%>";
@@ -20,4 +42,12 @@ int pageSize=25;
 	<!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" type="text/javascript" src="avery/bootstrap.js"></script>
 </head>
+<body>
+<div id="loading">
+		<div id="loading-text">
+		<div><img style="width:60px;height:60px" src="avery/resources/images/logo_avery.gif"></div>
+			Loading...
+		</div>
+	</div>
+</body>
 </html>
