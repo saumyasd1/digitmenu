@@ -27,7 +27,7 @@ Ext.define('AOC.view.address.AddressManage', {
 			    title:'Address-Manage',
 			    items: [{
 			    		  xtype : 'tbtext',
-			    		  text : '<div style="color:"><b>Address-Manage</b></div>',
+			    		  text : '<div style="color:"><b></b></div>',
 			    		  itemId:'addresstitleItemid'
 			    		}]
 			}]
