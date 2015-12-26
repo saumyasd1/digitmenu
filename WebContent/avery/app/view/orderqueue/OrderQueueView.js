@@ -12,7 +12,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 		        align: 'stretch'
 		    },
 			items : [{
-		 				xtype:'panel',
+		 				xtype:'container',
 		 				flex:1,
 		 				layout:'fit',
 		 				layout:'card',
@@ -30,7 +30,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 			    items: [{
 			    	xtype : 'tbtext',
 			    	itemId : 'bulkUpdateItemId',
-			    	text : '<div style="color:"><b>Order Queue</b></div>'
+			    	text : '<div style="color:"><b></b></div>'
 					}]
 			}]
 	 	});
