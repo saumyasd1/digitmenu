@@ -7,7 +7,17 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 			border : false,
 			buttonAlign : 'right',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [
+			items : [     
+						{
+							xtype:'displayfield',
+							itemId:'tittleItemId',
+							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							margin:'5 0 0 80'
+						},
+						{
+							xtype:'tbspacer',
+							height:2
+						},  
 				           {
 								xtype:'displayfield',
 								itemId:'messageFieldItemId',
@@ -22,12 +32,13 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						{
 							xtype : 'radiogroup',
 							itemId: 'archivedatecriteriavalue',
-							fieldLabel : 'Date Criteria',
+							fieldLabel : '',
 							name: 'datecriteriavalue',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
+							margin:'5 0 0 10',
 							items:[
 						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
 						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
@@ -35,19 +46,20 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'datefield',
 							itemId: 'archivefromdatecriteriavalue',
 							fieldLabel : 'From Date ',
 							name:'fromDate',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
+							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
@@ -57,31 +69,28 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'datefield',
 							itemId: 'archivetodatecriteriavalue',
 							fieldLabel : 'To Date ',
 							name:'toDate',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
+							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
 							                },
 							                'focus': 'notifyByMessage'
 							        }
-						},
-						{
-							xtype:'tbspacer',
-							height:5
 						}
-			],
+									],
 
 			buttons : [ {
 						text : 'Search',
