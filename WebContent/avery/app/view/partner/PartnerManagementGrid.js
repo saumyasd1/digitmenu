@@ -10,7 +10,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	var me=this;
     Ext.apply(this,{
         columns : this.buildColumns(),
-		columnLines:true,
+		columnLines:false,
         tbar: { height: 40,
     		    items : me.buildtbar()
               },
@@ -25,7 +25,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
   buildColumns : function(){
     	var me=this;
 		        return [       {
-		            header:"<img src="+menuIcon+">",
+		           // header:"<img src="+menuIcon+">",
 		            xtype:'actioncolumn',
 		            width:25,
 		            baseCls:'custom-action',
@@ -36,7 +36,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		  	      }]
 		        },
 				          {
-		        	        header:"<img src="+editIcon+">",
+		        	       // header:"<img src="+editIcon+">",
 				            xtype:'actioncolumn',
 				            width:25,
 				            baseCls:'custom-action',
@@ -80,6 +80,15 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	 buildtbar:function(){
 		var me=this;
 			return [
+			        {
+						xtype : 'tbtext',
+						itemId : 'PartnertextItemId',
+						text : '<div style="color:"><b>Partners</b></div>'
+		               },
+		               {
+		                	xtype :'tbspacer',
+		                	width :10
+		        		},
 				  {
 		              icon: addImage,
 		              text:'New',
@@ -93,17 +102,36 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Quick Search:Partner Name "
+		    			emptyText: "Search Partner Name "
 					 },
-				       {
-							xtype:'button',
-							itemId:'advancesearchbutton',
-							text:advSearchText,
-							icon: advSearchIcon,
-							iconAlign: "right",
-					    	handler:'openAdvancedSearchWindow'
-					       
-						 },
+					 {
+		                	xtype :'tbspacer',
+		                	width :10
+		        		},
+		        		{
+		        		    xtype: 'component',
+		        		    itemId:'advancesearchbutton',
+		        		    autoEl: {
+		        		        tag: 'a',
+		        		        href: '#',
+		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		    },
+		        		    listeners: {
+		        		    	 el : {
+		        		    		    click    : 'openAdvancedSearchWindow'
+		        		    		    
+		        		    	 }
+		        	            }
+		        		},
+//				       {
+//							xtype:'button',
+//							itemId:'advancesearchbutton',
+//							text:advSearchText,
+//							icon: advSearchIcon,
+//							iconAlign: "right",
+//					    	handler:'openAdvancedSearchWindow'
+//					       
+//						 },
 					{
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
