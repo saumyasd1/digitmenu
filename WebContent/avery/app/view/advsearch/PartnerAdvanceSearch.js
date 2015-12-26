@@ -7,7 +7,16 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 			border : false,
 			buttonAlign : 'right',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [   
+			items : [   {
+							xtype:'displayfield',
+							itemId:'tittleItemId',
+							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							margin:'5 0 0 80'
+			            },
+						{
+							xtype:'tbspacer',
+							height:2
+						},  
                       {
 						xtype:'displayfield',
 						itemId:'messageFieldItemId',
@@ -17,18 +26,19 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
                        },
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'textfield',
 							itemId: 'partnernamevalue',
 							fieldLabel : 'Partner Name',
 							name:'partnerName',
-							width:355,
+							width:250,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
+							margin:'5 0 0 10',
 							listeners:{
 								focus: function () {
 									var val=this.getValue().replace(/^\s+|\s+$/g,"");
@@ -39,17 +49,18 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'radiogroup',
 							itemId: 'partnerdatecriteriavalue',
-							fieldLabel : 'Date Criteria',
+							fieldLabel : '',
 							name: 'datecriteriavalue',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
+							margin:'5 0 0 10',
 							items:[
 						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
 						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
@@ -57,19 +68,20 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'datefield',
 							itemId: 'partnerfromdatecriteriavalue',
 							fieldLabel : 'From Date ',
 							name:'fromDate',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
+							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        /// code to convert GMT String to date object
@@ -80,20 +92,21 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:5
+							height:2
 						},
 						{
 							xtype : 'datefield',
 							itemId: 'partnertodatecriteriavalue',
 							fieldLabel : 'To Date ',
 							name:'toDate',
-							width:355,
+							width:250,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'right',
+							labelAlign : 'top',
 							allowBlank : true,
 							//value: Ext.util.Format.date(currentDateTime),
 							selectOnTab : true,
+							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        /// code to convert GMT String to date object
@@ -101,10 +114,6 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 							                },
 						 'focus': 'notifyByMessage'
 							        }
-						},
-						{
-							xtype:'tbspacer',
-							height:5
 						}
 			],
 
