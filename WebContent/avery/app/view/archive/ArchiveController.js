@@ -59,30 +59,30 @@ Ext.define('AOC.view.archive.ArchiveController', {
 			archiveStore.load();
 		},
 		
-		openAdvancedSearchWindow:function(cmp,event)
+		openAdvancedSearchWindow:function(e,t,eOpts)
 		{
 				 var temp=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:220,
-							width:420,
-							title:advancedSearchWindowTitle,
+						 	height:300,
+							width:300,
+							//title:advancedSearchWindowTitle,
 							itemId:'archivesearchItemIdwin',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
 							closeAction:'hide',
 						 	listeners:{ 
-					             beforedestroy: function(btn) {
-						 		 cmp.enable();
-						 	}
+//					             beforedestroy: function(btn) {
+//						 		 cmp.enable();
+//						 	}
 				        },
 						 	items : [{  xtype : 'archiveadvancesearch' }]
 					 });
 		         }
 				 if (Ext.isIE || Ext.isGecko) {
 			         browser = "IE";
-			         var d = Ext.get(event.getTarget());
+			         var d = Ext.get(e.getTarget());
 			         var width = temp.width; //width of advanced search panel
 			        // box = this.getBox();
 			         width = width - 25; //remove margin
@@ -92,7 +92,7 @@ Ext.define('AOC.view.archive.ArchiveController', {
 			     } 
 					else if (Ext.isChrome || Ext.isSafari) {
 						 browser = "Chrome";
-						 var d = Ext.get(event.getTarget());
+						 var d = Ext.get(e.getTarget());
 						 var width = temp.width;
 						 width=width-24;
 						 x=d.getX();

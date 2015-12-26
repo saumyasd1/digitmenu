@@ -10,7 +10,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 		var me = this;
 		Ext.apply(this, {
 			columns : this.buildColumns(),
-			columnLines : true,
+			columnLines : false,
 			tbar: { height: 40,
 			items : me.buildtbar()
 			},

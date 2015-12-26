@@ -10,7 +10,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 		var me = this;
 		Ext.apply(this, {
 			columns : this.buildColumns(),
-			columnLines : true,
+			columnLines : false,
 			tbar: { height: 40,
 			items : me.buildtbar()
 			},
@@ -84,14 +84,30 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 	 buildtbar:function(){
 			var me=this;
 			 	return [
-					    '->' ,{
-							xtype:'button',
-							itemId:'advancesearchbutton',
-							text:advSearchText,
-							icon: advSearchIcon,
-							iconAlign: "right",
-					    	handler:'openAdvancedSearchWindow'
-						 },
+					    '->' ,
+					    {
+		        		    xtype: 'component',
+		        		    itemId:'advancesearchbutton',
+		        		    autoEl: {
+		        		        tag: 'a',
+		        		        href: '#',
+		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		    },
+		        		    listeners: {
+		        		    	 el : {
+		        		    		    click    : 'openAdvancedSearchWindow'
+		        		    		    
+		        		    	 }
+		        	            }
+		        		},
+//					    {
+//							xtype:'button',
+//							itemId:'advancesearchbutton',
+//							text:advSearchText,
+//							icon: advSearchIcon,
+//							iconAlign: "right",
+//					    	handler:'openAdvancedSearchWindow'
+//						 },
 						{
 							itemId: 'clearadvanedsearch',
 							hidden:true, 
