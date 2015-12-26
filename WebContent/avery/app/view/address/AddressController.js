@@ -82,29 +82,29 @@ Ext.define('AOC.view.address.AddressController', {
 				cmp.setValue('');
 				cmp.orderedTriggers[0].hide();
 		   },
-	openAdvancedSearchWindow:function(cmp,event){
+	openAdvancedSearchWindow:function(e, t, eOpts){
 		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:270,
-							width:420,
-							title:advancedSearchWindowTitle,
+						 	height:400,
+							width:300,
+							//title:advancedSearchWindowTitle,
 							itemId:'addressAdvancedSerachwindow',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
 							closeAction:'hide',
 						 	listeners:{ 
-					             beforedestroy: function(btn) {
-						 		 cmp.enable();
-						 	}
+//					             beforedestroy: function(btn) {
+//						 		 cmp.enable();
+//						 	}
 				        },
 						 	items : [{  xtype : 'addressadvancesearch' }]
 					 });
 		         }
 					if (Ext.isIE || Ext.isGecko) {
 						browser = "IE";
-						 var d = Ext.get(event.getTarget());
+						 var d = Ext.get(e.getTarget());
 						 var width = temp.width;
 						 width=width-25; 
 						 x=d.getX();
@@ -114,7 +114,7 @@ Ext.define('AOC.view.address.AddressController', {
 					}
 					else if (Ext.isChrome || Ext.isSafari) {
 						 browser = "Chrome";
-						 var d = Ext.get(event.getTarget());
+						 var d = Ext.get(e.getTarget());
 						 var width = temp.width;
 						 width=width-24;
 						 x=d.getX();
