@@ -10,6 +10,9 @@ advSearchIcon='avery/resources/images/search.png',advSearchText='Adv. Search',
 centerStyleDiv='<div align="center"><b><font color=#006FDD>',
 clearSearchIcon='avery/resources/images/invalid_field.png',
 errorIcon='avery/resources/images/invalid_field.jpg',
+tickIcon='avery/resources/images/tick.png',
+errorStatusIcon='avery/resources/images/error.png',
+cancelIcon='avery/resources/images/cancel.png',
 cancelOrderText='<b>Are you sure you want to cancel the Order? If yes, please enter the reason for futher reference:</b> ',
 advancedSearchWindowTitle='Advanced Search',
 createSalesOrderBtnText='<b>Create Sales Order</b>',
@@ -22,7 +25,7 @@ dateFormat='Y-m-d',
 bulkUpdateButtonText='<b>Bulk Update</b>',
 attacheImageSrc='avery/resources/images/attachmentImage.png',
 deleteImageSrc='avery/resources/images/delete.png',
-warningImageSrc='avery/resources/images/warning.jpg',
+warningImageSrc='avery/resources/images/warning.png',
 successImageSrc='avery/resources/images/success.jpg',
 cellColor='background-color:#FFC7B0;',
 editPartnerMsg='<b>This partner is Active. To edit a partner , it must be InActive.</b>',
@@ -39,10 +42,8 @@ cancelStatus='8',
 fiberLevel='FIBRE',
 mandatoryValidationCellColor='background-color:yellow',
 undoChangesText='Undo',
-averyItemNotFoundText='NOT FOUND',
-loginUserName='aoc_devuser',
-loginPassword='p@ssw0rd',
-qtyVariableLabel='QTY'
+averyItemNotFoundText='NOT FOUND'
+
 
 ;
 
