@@ -108,7 +108,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	createproductline:function(){
 			win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
 				modal:true,
-				title:'Add Partner Product Line',
+				title:'<center>Add Partner Product Line</center>',
 				partnerName:this.getView().partnerName
 			});
 			  win.show();
@@ -176,14 +176,14 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 			}
 	 }
   },
-	openAdvancedSearchWindow:function(cmp,event)
+	openAdvancedSearchWindow:function(e, t, eOpts)
 	{
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 if(!temp){
 		 temp = Ext.create('Ext.window.Window',{
-				 	height:250,
-					width:420,
-					title:advancedSearchWindowTitle,
+				 	height:350,
+					width:300,
+					//title:advancedSearchWindowTitle,
 					itemId:'productlinesearchWindowItemId',
 					layout: 'fit',
 					draggable: false,
@@ -199,7 +199,7 @@ if(!temp){
         }
 			if (Ext.isIE || Ext.isGecko) {
 			    browser = "IE";
-			    var d = Ext.get(event.getTarget());
+			    var d = Ext.get(e.getTarget());
 			    var width = temp.width; //width of advanced search panel
 			   // box = this.getBox();
 			    width = width - 25; //remove margin
@@ -209,7 +209,7 @@ if(!temp){
 			}
 			else if (Ext.isChrome || Ext.isSafari) {
 				 browser = "Chrome";
-				 var d = Ext.get(event.getTarget());
+				 var d = Ext.get(e.getTarget());
 				 var width = temp.width;
 				 width=width-24;
 				 x=d.getX();
@@ -316,6 +316,7 @@ if(!temp){
 	   },
 	   notifyByMessage:function()
 	    {
+		  
 		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
 	    }
