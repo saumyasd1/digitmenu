@@ -30,10 +30,10 @@ Ext.define('AOC.view.partner.PartnerManagement', {
 			dockedItems: [{
 			    xtype: 'basetoolbar',
 			    dock: 'top',
-			    title:'Partner Mangement',
+			    title:'',
 			    items: [{
 			    		  xtype : 'tbtext',
-			    		  text : '<div style="color:"><b>Partner Mangement</b></div>',
+			    		  text : '<div style="color:"><b></b></div>',
 			    		  itemId:'partnertitleItemid'
 			    		},
 			    	    {
