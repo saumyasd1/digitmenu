@@ -84,7 +84,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             Ext.getBody().unmask();
         }
     },
-    openAdvancedSearchWindow: function(cmp, event) {
+    openAdvancedSearchWindow: function( e, t, eOpts) {
         var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
         if (!temp) {
             store = Ext.create('AOC.store.PartnerProductLineStore', {
@@ -143,7 +143,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         }
         if (Ext.isIE || Ext.isGecko) {
             browser = "IE";
-            var d = Ext.get(event.getTarget());
+            var d = Ext.get(e.getTarget());
             var width = temp.width; //width of advanced search panel
            // box = this.getBox();
             width = width - 25; //remove margin
@@ -152,7 +152,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             temp.showAt(x - width, y + 26);
         } else if (Ext.isChrome || Ext.isSafari) {
             browser = "Chrome";
-            var d = Ext.get(event.getTarget());
+            var d = Ext.get(e.getTarget());
             var width = temp.width;
             width = width - 24;
             x = d.getX();
