@@ -119,9 +119,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             });
 
             temp = Ext.create('Ext.window.Window', {
-                height: 320,
-                width: 600,
-                title: advancedSearchWindowTitle,
+                height: 500,
+                width: 560,
+                //title: advancedSearchWindowTitle,
                 itemId: 'orderqueueadvancesearchIDWindow',
                 layout: 'fit',
                 draggable: false,
