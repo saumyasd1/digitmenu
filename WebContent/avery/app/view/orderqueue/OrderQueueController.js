@@ -129,12 +129,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 store: store,
                 closeAction:'hide',
                 listeners: {
-                    afterrender: function(obj) {
-                        store.load();
-                    },
-                    beforedestroy: function(btn) {
-                        cmp.enable();
-                    }
+//                    afterrender: function(obj) {
+//                        store.load();
+//                    },
+//                    beforedestroy: function(btn) {
+//                        cmp.enable();
+//                    }
                 },
                 items: [{
                     xtype: 'orderqueueadvancesearch'
