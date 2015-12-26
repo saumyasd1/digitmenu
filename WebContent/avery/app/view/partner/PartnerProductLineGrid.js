@@ -11,7 +11,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	var me=this;
     Ext.apply(this,{
         columns : this.buildColumns(),
-		columnLines:true,
+		columnLines:false,
         tbar: { 
         		height: 40,
     		    items : me.buildtbar()
@@ -28,10 +28,9 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     	var me=this;
         return [          
                         {
-				            text : 'Action',
-				            width:150,
+				            text : '',
+				            width:20,
 				            xtype:'actioncolumn',
-				            flex:0.5,
 				  	        items:[{
 						  	    	  icon:menuIcon,
 						  	    	  handler: 'showmenu'
@@ -86,14 +85,27 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     },
 	 buildtbar:function(){
 		var me=this;
-			return [
-			          {
-						  
-			              icon: BackIcon,
-			              itemId : 'backButton',
-						  text:backText,
-						  handler:'backButton'
-	                 },
+			return [  	{
+			    		    xtype: 'component',
+			    		    autoEl: {
+			    		    	tag: 'img',
+						        src: BackIcon
+			    		    },
+				    		    listeners: {
+				    		    	 el : {
+				    		    		    click    : 'backButton'
+				    		    	 }
+    	                      }
+    		         },
+	                 {
+	     				xtype : 'tbtext',
+	     				itemId : 'ProductlinetextItemId',
+	     				text : '<div style="color:"><b>Partner Product Line-Manage</b></div>'
+	                    },
+	                    {
+	                     	xtype :'tbspacer',
+	                     	width :10
+	             		},
 				     {
 			              icon: addImage,
 			              text:'New',
@@ -107,17 +119,36 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Quick Search:Product Line "
+		    			emptyText: "Search Product Line "
 					 },
-				     {
-						 xtype:'button',
-						 itemId:'advancesearchbutton',
-						 text:advSearchText,
-						 icon: advSearchIcon,
-						 iconAlign: "right",
-						 handler:'openAdvancedSearchWindow'
-							 
-					},
+					 {
+		                	xtype :'tbspacer',
+		                	width :10
+		        		},
+		        		{
+		        		    xtype: 'component',
+		        		    itemId:'advancesearchbutton',
+		        		    autoEl: {
+		        		        tag: 'a',
+		        		        href: '#',
+		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		    },
+		        		    listeners: {
+		        		    	 el : {
+		        		    		    click    : 'openAdvancedSearchWindow'
+		        		    		    
+		        		    	 }
+		        	            }
+		        		},
+//				     {
+//						 xtype:'button',
+//						 itemId:'advancesearchbutton',
+//						 text:advSearchText,
+//						 icon: advSearchIcon,
+//						 iconAlign: "right",
+//						 handler:'openAdvancedSearchWindow'
+//							 
+//					},
 					{
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
