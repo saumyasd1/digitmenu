@@ -12,7 +12,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	this.fieldArray = [];
         Ext.apply(this,{
             columns : this.buildColumns(),
-			columnLines:true,
+			columnLines:false,
 			layout:'fit',
 			selModel: {
 			       type: 'spreadsheet'
@@ -34,6 +34,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     	var me=this;
     	helper = AOC.util.Helper;
         return [
+                {
+                	xtype: 'rownumberer',
+                    width: 46,
+                    editRenderer:  '&#160;',
+                    tdCls: me.rowNumbererTdCls +' aoc-grid-cell-special',
+                    cls: me.rowNumbererHeaderCls,
+                    locked: me.hasLockedHeader,
+                    text:'#'
+                },
                 {
             text: 'Status',
             dataIndex: 'status',
@@ -700,20 +709,37 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         }
 		];
     },
-    tbar: { 
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top', 
 		height: 50,
 	    items : 
 	    	[
 			 {
-	              xtype:'button',
-				  text:'Save',
-				  handler:'saveOrderLine'
-	         },
-	         {
-	              xtype:'button',
-				  text:undoChangesText,
-				  handler:'cancelChanges'
+	              xtype:'displayfield',
+	              margin:'10 10 10 10',
+				  value:'<font size=5px>Bulk Update</font>'
 	         }
 			 ]
-}
+},{
+        xtype: 'toolbar',
+        dock: 'bottom', 
+		height: 60,
+		style: 'background-color: #FBFBFB;',
+	    items : 
+	    	['->',
+	    	 {
+	              xtype:'button',
+				  text:undoChangesText,
+				  handler:'cancelChanges',
+				  cls:'bulkupdate-cancel-button-cls'
+	         },
+			 {
+	              xtype:'button',
+				  text:'Save',
+				  handler:'saveOrderLine',
+				  cls:'bulkupdate-save-button-cls'
+	         }
+			 ]
+}]
 });
