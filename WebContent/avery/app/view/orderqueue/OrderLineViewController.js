@@ -63,23 +63,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   });
 		   win.show();
     },
-    backButton:function(){
-    	var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-   	    bulkUpdate.setText('<b>Order Queue</b>');
-    	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
-        panel.getLayout().setActiveItem(0);
-        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
-        ordeQueueGrid.store.load();
-        var record=ordeQueueGrid.store.find('id',this.runTime.getOrderQueueId());
-        var row = ordeQueueGrid.getView().getRow(record);
-        var el = Ext.fly(row);
-        el.highlight("#c1ddf1", {
-            attr: "backgroundColor",
-            duration: 5000
-        });
-        
-        this.getView().destroy();
-    },
     radioButtonClick:function(obj,newValue,oldValue){
     	var comboField=this.lookupReference('variableFieldCombo');
     	if(newValue.rb=='2'){
@@ -113,163 +96,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}else{
     		comboField.setVisible(false);
     	}
-    },
-    validateOrderLine:function(){
-    	Ext.getBody().mask('Validating....');
-    	var id=this.runTime.getOrderQueueId(),me=this;
-    	Ext.Ajax.request({
-    		method:'GET',
-    		   url : applicationContext+'/rest/router/orderqueue/'+id,
-		        success : function(response, opts) {
-		        	var jsonValue=Ext.decode(response.responseText);
-		        	var status=jsonValue.status;
-		        	if(status=='success')
-		        		Ext.Msg.alert('','Order was successfully validated');
-		        	else
-		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-			  		Ext.getBody().unmask();
-			  		me.getView().store.load();
-		        },
-		        failure: function(response, opts) {
-		        	Ext.getBody().unmask();
-	          }
-    		  }); 
-    },
-    viewSalesOrder:function(){
-    	Ext.getBody().mask('Loading....');
-    	var id=this.runTime.getOrderQueueId(),me=this,
-    	salesOrderCount=this.runTime.getSalesOrderCount();
-    	var proceed=true;
-    	if(proceed){
-    		var currentRecord=this.runTime.getOrderQueueActiveRecord();
-    	var owner=me.getView().ownerCt;
-		   var store=Ext.create('AOC.store.SalesOrderStore', {
-				proxy : {
-					type : 'rest',
-					 url : applicationContext+'/rest/salesorders/order/'+id,
-					reader:{
-				        type:'json', 
-				        rootProperty: 'ArrayList'
-				    }
-			}
-			});
-		   owner.insert({
-			   	xtype:'salesrrderexpandablegrid',
-			    flex:1,
-			    store:store
-		   });
-		   var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-		   bulkUpdate.setText('<b>Sales Order</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
- 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
- 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
-		   owner.getLayout().setActiveItem(2); 
-    	}
-    	Ext.getBody().unmask();
-    },
-    submitSalesOrder:function(){
-    	Ext.getBody().mask('Loading...');
-    	var grid=this.getView(),store=grid.store,me=this;
-    	if(grid.mandatoryFieldMissing){
-			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
-			Ext.getBody().unmask();
-			return false;
-		}
-    	if(grid.mandatoryValidationFieldMissing){
-    		store.load();
-			Ext.Msg.alert('',orderLineMandatoryValidationFieldMissingAlt);
-			grid.showMandatoryValidationField=true;
-			Ext.getBody().unmask();
-			return false;
-    	}
-    	if(grid.validationFieldMissing){
-    		Ext.Msg.confirm('',validateFieldFailedConfirmatonMsg,function(btn){
-    			if (btn === 'yes') {
-    				var id=me.runTime.getOrderQueueId();
-    		    	Ext.Ajax.request({
-    		    		method:'GET',
-    		    		async:false,
-    		 		    url : applicationContext+'/rest/router/salesorder/'+id,
-    		 		    success : function(response, opts) {
-    		 		    	var jsonValue=Ext.decode(response.responseText);
-    				        	var status=jsonValue.status;
-    				        	if(status=='success'){
-    				        		proceed=false;
-    				        		me.getView().store.load();
-    				        		var orderlineexpandablegrid = me.getView(),
-    				                validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
-    				                bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
-    				                salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
-    				                salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
-    				                cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
-    				                form=orderlineexpandablegrid.lookupReference('form');
-    			                	validateButton.disable();
-    			                	bulkUpdateButton.disable();
-    			                	salesViewOrderbutton.enable();
-    			                	salesOrderbutton.disable();
-    			                	cancelOrderButton.disable();
-    			                	form.disable();
-    			                	me.runTime.setAllowOrderLineEdit(false);
-    				        		Ext.Msg.alert('',salesOrderCreationMsg);
-    				        		Ext.getBody().unmask();
-    				        	}
-    				        	else{
-    				        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-    				        		proceed=false;
-    				        		Ext.getBody().unmask();
-    				        	}
-    			        },
-    			        failure: function(response, opts) {
-    			        	proceed=false;
-    			        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-    			        	Ext.getBody().unmask();
-    		          }
-    				});
-    			}else
-    				Ext.getBody().unmask();
-    		});
-    	}else{
-    		var id=me.runTime.getOrderQueueId();
-	    	Ext.Ajax.request({
-	    		method:'GET',
-	    		async:false,
-	 		    url : applicationContext+'/rest/router/salesorder/'+id,
-	 		    success : function(response, opts) {
-	 		    	var jsonValue=Ext.decode(response.responseText);
-			        	var status=jsonValue.status;
-			        	if(status=='success'){
-			        		proceed=false;
-			        		me.getView().store.load();
-			        		var orderlineexpandablegrid = me.getView(),
-			                validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
-			                bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
-			                salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
-			                salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
-			                cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
-			                form=orderlineexpandablegrid.lookupReference('form');
-		                	validateButton.disable();
-		                	bulkUpdateButton.disable();
-		                	salesViewOrderbutton.enable();
-		                	salesOrderbutton.disable();
-		                	cancelOrderButton.disable();
-		                	form.disable();
-		                	me.runTime.setAllowOrderLineEdit(false);
-			        		Ext.Msg.alert('',salesOrderCreationMsg);
-			        		Ext.getBody().unmask();
-			        	}
-			        	else{
-			        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-			        		proceed=false;
-			        		Ext.getBody().unmask();
-			        	}
-		        },
-		        failure: function(response, opts) {
-		        	proceed=false;
-		        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-		        	Ext.getBody().unmask();
-	          }
-			});
-    	}
-    	
     },
     updateOrderLine:function(editor, context, eOpts){
     	var ctx = context,me=this,
@@ -323,10 +149,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	Ext.getBody().unmask();
 	          }
     		  });
-    },
-    cancelOrder:function(){
-    	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
-        win.show();
     },
     outerGridBulkUpdate:function(editorPlugin,editor,context){
     	editorPlugin.suspendEvent('edit');
