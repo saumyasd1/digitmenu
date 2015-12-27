@@ -35,15 +35,25 @@ orderError='2',
 orderPreProcessedStatus='3',
 waitingForCSRStatus='4',
 salesOrderCreatedStatus='5',
-submitToOracleStatus='6',
-
+submitToOracleStatus=salesOrderGeneratedStatus='6',
+salesOrderSubmittedStatus='7',
 cancelStatus='8',
-	
+noAdditionDataStatus='10',
+submissionProcessRunningStatus='11',
+exportingProcessRunningStatus='12',
+errorInPreProcessing='13',
+processingOrder='14',
+AveryItemNumMis='15',
+orderRead='16',
+booked='99',
+oracleError='98',
 fiberLevel='FIBRE',
 mandatoryValidationCellColor='background-color:yellow',
 undoChangesText='Undo',
-averyItemNotFoundText='NOT FOUND'
-
+averyItemNotFoundText='NOT FOUND',
+loginUserName='aoc_user',
+loginPassword='indigo1',
+qtyVariableLabel='QTY'
 
 ;
 
