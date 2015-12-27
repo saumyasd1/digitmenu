@@ -18,6 +18,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
       			return false;
       		}
       		innerGridType='bulkUpdateVariableHeaderrGrid';
+      		height=height-180;
+      		width=width-240;
       		store=Ext.create('AOC.store.OrderLineStore', {
       			model:'AOC.model.VariableHeaderModel',
     			proxy : {
@@ -45,7 +47,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   var win=Ext.create('Ext.window.Window',{
 			 	height:height,
 				width:width,
-				title:"Bulk Update",
 				layout: 'fit',
 				draggable: false,
 				modal:true,
