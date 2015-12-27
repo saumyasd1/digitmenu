@@ -796,7 +796,6 @@ Ext.override(Ext.grid.RowEditor, {
             // Change the visibilityMode to offsets so that we get accurate measurements
             // when the roweditor is hidden for laying out things like a TriggerField.
             wrapEl.setVisibilityMode(3);
-
             wrapEl.addCls(me._wrapCls);
             me.getFloatingButtons().render(wrapEl);
             // On first show we need to ensure that we have the scroll positions cached
@@ -1163,19 +1162,43 @@ Ext.define('AOC.view.RowEditorButtons', {
     
     constructor: function(config) {
         var me = this,
+        rowEditor = config.rowEditor,
+        cssPrefix = Ext.baseCSSPrefix,
+        plugin = rowEditor.editingPlugin;
+
+    config = Ext.apply({
+       baseCls: cssPrefix + 'grid-row-editor-buttons',
+        defaults: {
+            xtype: 'button',
+            ui: rowEditor.buttonUI,
+            scope: plugin,
+            flex: 1,
+            minWidth: Ext.panel.Panel.prototype.minButtonWidth
+        },
+        items: [{
+            cls: cssPrefix + 'row-editor-update-button',
+            itemId: 'update',
+            handler: plugin.completeEdit,
+            text: rowEditor.saveBtnText,
+            disabled: rowEditor.updateButtonDisabled
+        }, {
+            cls: Ext.baseCSSPrefix + 'row-editor-update-button',
+            itemId: 'next',
+            handler: plugin.bulKUpdate,
+            text: 'Update All',
+            disabled: rowEditor.updateButtonDisabled
+        },{
+            cls: 'roweditor-cancel-button-cls',
+            itemId: 'cancel',
+            handler: plugin.cancelEdit,
+            text: rowEditor.cancelBtnText
+        }]
+    }, config);
+        var me = this,
             rowEditor = config.rowEditor,
             editPlugin = rowEditor.editingPlugin;
         me.callParent(arguments);
 
-        if(editPlugin.saveAndNextBtn){
-            me.insert(1,{
-                cls: Ext.baseCSSPrefix + 'row-editor-update-button',
-                itemId: 'next',
-                handler: editPlugin.bulKUpdate,
-                text: 'Update All',
-                disabled: rowEditor.updateButtonDisabled
-            });
-        }        
     }
 });
 
