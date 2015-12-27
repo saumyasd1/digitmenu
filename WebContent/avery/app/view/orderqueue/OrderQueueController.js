@@ -1,7 +1,9 @@
 Ext.define('AOC.view.orderqueue.OrderQueueController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.orderqueue',
-    requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 'AOC.view.advsearch.OrderQueueAdvanceSearch', 'AOC.view.orderqueue.OrderLineExpandableGrid'],
+    requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 
+               'AOC.view.advsearch.OrderQueueAdvanceSearch', 
+               'AOC.view.orderqueue.OrderLineContainer'],
     runTime: AOC.config.Runtime,
     getOrdersBasedOnSearchParameters: function() {
         var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {});
@@ -32,9 +34,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 flex: 1,
                 store: store
             });
-            bulkUpdate.setText('<b>Sales Order</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
- 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
- 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
             owner.getLayout().setActiveItem(1);
 
         } else if (item.action == 'cancelOrder') {
@@ -55,17 +54,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 }
             });
             owner.insert({
-                xtype: 'orderlineexpandablegrid',
+                xtype: 'orderlinecontainer',
                 flex: 1,
                 store: store
             });
-            orderlineexpandablegrid = owner.child('#orderlineexpandablegrid');
-            var validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
-            bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
-            salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
-            salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
-            cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
-            form=orderlineexpandablegrid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
+            
+            var orderlinecontainer = owner.down('orderlinecontainer'),
+    		grid=orderlinecontainer.down('grid');
+            validateButton = orderlinecontainer.lookupReference('validateButton'),
+            bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
+            salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
+            salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
+            cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
+            form=grid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
             if(status != waitingForCSRStatus) {
             	validateButton.disable();
             	bulkUpdateButton.disable();
@@ -77,9 +78,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             if(salesOrderCount!=0){
             	salesViewOrderbutton.enable();
             }
-            bulkUpdate.setText('<b> Order Line</b> ( <b>Partner Name</b> : '+currentRecord.get('PartnerName')+' <b>RBO</b> : '+currentRecord.get('RBOName')+
- 				   ' <b>Product Line</b> : '+currentRecord.get('productLineType')+' <b>Subject</b> : '+currentRecord.get('Subject')
- 				   +' <b>Date Received</b> : '+currentRecord.get('receivedDate')+')');
             owner.getLayout().setActiveItem(1);
             Ext.getBody().unmask();
         }
