@@ -2,27 +2,23 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'salesrrderexpandablegrid',
     itemId: 'salesrrderexpandablegrid',
-    requires: ['Ext.grid.Panel', 'AOC.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper'],
+    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper'],
     controller: 'salesorder',
     emptyText: '<div align=center>No data to display</div>',
     autoHeight: true,
     columnLines: true,
     nestedGridRefrence: 'salesOrderDetail',
+    columnLines: false,
+    viewConfig    : {
+        stripeRows    : true
+    },
     columns: [
                {
         text: 'Status',
         dataIndex: 'status',
         width: 150,
         renderer:function(v){
-        	var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-			var statusRecord=store.findRecord( 'code', v);
-			if(statusRecord.get('value')!='')
-				{
-				var va=statusRecord.get('value');
-			    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
-				}
-			else
-				return '';
+    			return AOC.util.Helper.getSatus(v);
 		}
     },
     {
@@ -280,8 +276,11 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		          modal: 'AOC.model.VariableHeaderModel',
 		          cls: 'nestedGrid',
 		          store:store,
+		          columnLines: false,
 		          columns: [{
-		              xtype: 'rownumberer'
+		              xtype: 'rownumberer',
+	            	  text:'#',
+		              tdCls:'aoc-grid-cell-special'
 		          }, {
 		              text: 'Level',
 		              dataIndex: 'level',
@@ -307,11 +306,11 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		              dataIndex: 'fiberPercent',
 		              xtype:'gridcolumn',
 		              width: 155
+		          },{
+		        	  text:'',
+		        	  flex:1
 		          }],
-		          columnLines: false,
 		          border: true,
-		         // plugins: me.getInnerGridPlugin(),
-		          width: 793,
 		          autoHeight: true,
 		          frame: false,
 		          header: false
@@ -358,71 +357,25 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     tbar: {
         height: 50,
         items: [{
-            icon: BackIcon, //back button functionality added
-            text: backText,
-            handler: 'backButton'
-        }, {
-            xtype: 'tbspacer',
-            width: 30,
-            hidden: true
-        }, {
-            xtype: 'radiogroup',
-            reference: 'radioGroup',
-            hidden:true,
-            items: [{
-                boxLabel: 'Sales Order Update',
-                name: 'rb',
-                inputValue: '1',
-                checked: true
-            }, {
-                xtype: 'tbspacer',
-                width: 15
-            }, {
-                boxLabel: 'Variable Order Update',
-                name: 'rb',
-                inputValue: '2'
-            }],
-            listeners: {
-                change: 'radioButtonClick'
-            }
-        }, {
-            xtype: 'tbspacer',
-            width: 30,
-            hidden: true
-        }, {
-            xtype: 'combo',
-            hidden: true,
-            displayField: 'variableFieldName',
-            valueField: 'variableFieldName',
-            reference: 'variableFieldCombo'
-        }, {
-            xtype: 'tbspacer',
-            width: 30,
-            hidden: true
-        }, {
-            xtype: 'button',
-            hidden:true,
-            text: '<b>Submit</b>',
-            handler: 'getUpdateScreen'
-        }, {
-            xtype: 'tbspacer',
-            width: 30
-        },'->', {
-            xtype: 'button',
-            text: cancelSalesOrderText,
-            hidden: true,
-            handler: 'cancelSalesOrderLine'
-        }, {
-            xtype: 'tbspacer',
-            width: 15,
-            hidden:true,
-            reference:'lastTab'
-        }, {
-            xtype: 'button',
-            reference:'submitOrder',
-            hidden:true,
-            text: salesOrdersumbitText,
-            handler: 'submitOrder'
-        }]
+				xtype:'image',
+				width:40,
+				src:AOC.config.Settings.buttonIcons.backIcon,
+				autoEl: 'div',
+				cls:'orderline-back-button',
+				listeners:{
+					el:{
+						'click':'backButton'
+					}
+				}
+			},
+			{
+		    	xtype : 'displayfield',
+		    	style :{
+		    		font:'10px'
+		    	},
+		    	encodeHtml:true,
+		    	value : 'Sales Order'
+			}
+			]
     }
 });
