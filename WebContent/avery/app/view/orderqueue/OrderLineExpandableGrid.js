@@ -2,7 +2,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
     itemId: 'orderlineexpandablegrid',
-    requires: ['Ext.grid.Panel', 'AOC.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper','Ext.grid.RowEditor'],
+    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper','Ext.grid.RowEditor'],
     controller: 'orderline',
     emptyText: '<div align=center>No data to display</div>',
     dataPresent:false,
@@ -14,6 +14,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     mandatoryValidationFieldMissing:false,
     showMandatoryValidationField:false,
     validationFieldMissing:false,
+    columnLines: false,
+    viewConfig    : {
+        stripeRows    : true
+    },
     columns: [{
         text: 'ATO Mandatory',
         dataIndex: 'mandatoryVariableDataFieldFlag',
@@ -22,12 +26,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var mandatoryVariableDataFieldFlag=rec.data.mandatoryVariableDataFieldFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 				if(rec.get('status')==waitingForCSRStatus)
 					this.mandatoryValidationFieldMissing=true;
-				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     }, {
@@ -38,12 +42,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 				if(rec.get('status')==waitingForCSRStatus)
 					this.mandatoryValidationFieldMissing=true;
-				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     }, {
@@ -54,11 +58,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var customerPOFlag=rec.data.customerPOFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 					this.validationFieldMissing=true;
-				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     }, {
@@ -69,11 +73,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var duplicatePOFlag=rec.data.duplicatePOFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 					this.validationFieldMissing=true;
-				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     }, {
@@ -84,11 +88,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var htlSizePageValidationFlag=rec.data.htlSizePageValidationFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 					this.validationFieldMissing=true;
-				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     }, {
@@ -100,12 +104,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		var moqValidationFlag=rec.data.moqValidationFlag;
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
-				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + successImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
 				if(rec.get('status')==waitingForCSRStatus && rec.get('waiveMOQ')=='false')
 					this.mandatoryValidationFieldMissing=true;
-				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + warningImageSrc + '" /></div>';
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
     },
@@ -121,15 +125,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	store:Ext.data.StoreManager.lookup('orderfilequeueid')
         },
 		renderer:function(v){
-			var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-			var statusRecord=store.findRecord( 'code', v);
-			if(statusRecord.get('value')!='')
-				{
-				var va=statusRecord.get('value');
-			    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
-	         	}
-			else
-				return '';
+			return AOC.util.Helper.getSatus(v);
 		}
     },{
         text: 'PO #<font color=red>*</font>',
@@ -787,7 +783,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         this.fieldArray = [];
         Ext.apply(this, {
             tbar: {
-                height: 70,
+                height: 50,
+                margin:'0 0 10 0',
                 items: me.buildtbar()
             },
             plugins: me.getOuterGridPlugin(),
@@ -808,21 +805,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     buildtbar: function() {
         var me = this;
-        return [{
-            icon: BackIcon, //back button functionality added
-            text: backText,
-            handler: 'backButton'
-        }, {
-            xtype: 'tbspacer',
-            width: 30
-        },
+        return [
         {
-        	 xtype:'fieldset',
-             columnWidth: 1,
-             title: '',
-             collapsible: false,
-             defaultType: 'textfield',
-             items :[{
 	            xtype: 'form',
 	            reference: 'form',
 	            margin:'10 10 10 10',
@@ -832,21 +816,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	                reference: 'radioGroup',
 	                layout:'hbox',
 	                items: [{
-	                    boxLabel: 'Order Line Update',
+	                    boxLabel: '<b>Order Line Update</b>',
 	                    labelWidth:100,
 	                    name: 'rb',
 	                    inputValue: '1',
-	                    checked: true
+	                    checked: true,
+	                    width:180
                         }, 
                         {
 		                    xtype: 'tbspacer',
 		                    width: 15
 		                },
 		                {
-		                    boxLabel: 'Variable Order Update',
+		                    boxLabel: '<b>Variable Order Update</b>',
 		                    labelWidth:120,
 		                    name: 'rb',
-		                    inputValue: '2'
+		                    inputValue: '2',
+		                    width:160
                          }],
 			                listeners: {
 			                    change: 'radioButtonClick'
@@ -862,40 +848,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			                displayField: 'variableFieldName',
 			                valueField: 'variableFieldName',
 			                reference: 'variableFieldCombo'
+                       }, {
+			                xtype: 'tbspacer',
+			                width: 20
                        },{
 				            xtype: 'button',
 				            text: bulkUpdateButtonText,
+				            cls:'bulkupdate-button-cls',
 				            reference:'bulkUpdateButton',
 				            handler: 'getUpdateScreen'
-                       }
-                       ]
 			              }]
         },'->',
-	        {
-            xtype: 'button',
-            reference:'validateButton',
-            text: '<b>Validate</b>',
-            handler: 'validateOrderLine'
-        },{
-            xtype: 'button',
-            reference:'cancelOrderButton',
-            text: '<b>Cancel Order</b>',
-            handler: 'cancelOrder'
-        },{
-            xtype: 'button',
-            reference: 'salesOrderbutton',
-            text: salesOrdersumbitText,
-            handler: 'submitSalesOrder'
-        },{
-            xtype: 'button',
-            reference: 'salesViewOrderbutton',
-            text: viewSalesOrderBtnText,
-            handler: 'viewSalesOrder',
-            disabled:true
-        }];
+	        ];
     },
     getRowExpander:function(){
-    	var me=this,rowExpander=new AOC.ux.RowExpanderGrid({
+    	var me=this,rowExpander=new AOC.view.ux.RowExpanderGrid({
     		 createComponent: function(view,record,htmlnode,index) {
     			 var data=record.get('orderLineDetail');
     			 var store = Ext.create('AOC.store.VariableHeaderStore', {
@@ -912,10 +879,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		          cls: 'nestedGrid',
     		          store:store,
     		          columns: [{
-    		              xtype: 'rownumberer'
+    		              xtype: 'rownumberer',
+    		              text:'#',
+    		              tdCls:'aoc-grid-cell-special'
     		          }, {
     		              text: 'Level',
     		              dataIndex: 'level',
+    		              menuDisabled:true,
     		              width: 100
     		          }, {
     		              text: "SKU #",
@@ -956,11 +926,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		            	  xtype:'textfield',
     		            	  disabled:true
     		              }
+    		          },{
+    		        	  text:'',
+    		        	  flex:1
     		          }],
     		          columnLines: false,
-    		          border: true,
+    		          //border: true,
     		          plugins: me.getInnerGridPlugin(),
-    		          width: 793,
     		          autoHeight: true,
     		          frame: false,
     		          header: false
