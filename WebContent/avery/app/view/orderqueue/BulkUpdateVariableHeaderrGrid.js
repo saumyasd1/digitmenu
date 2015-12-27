@@ -12,7 +12,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	this.fieldArray = [];
         Ext.apply(this,{
             columns : this.buildColumns(),
-			columnLines:true,
+			columnLines:false,
 			layout:'fit',
 			selModel: {
 			       type: 'spreadsheet'
@@ -35,33 +35,58 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 		    var showFiberPercentage=reader.createAccessor('showFiberPercentage')(reader.rawData);   
 		   // me.columns[2].editor.readOnly=showFiberPercentage;
 		    if(showFiberPercentage)
-			    me.columns[3].show();
+			    me.columns[4].show();
 		    else
-		    	me.columns[3].hide();
+		    	me.columns[4].hide();
 	    });
     },
     buildColumns : function(){
     	var me=this;
-        return [{ text: "Customer PO Number", dataIndex: 'customerPONumber' ,flex:1},
+        return [{
+        	xtype: 'rownumberer',
+            width: 46,
+            editRenderer:  '&#160;',
+            tdCls: me.rowNumbererTdCls +' aoc-grid-cell-special',
+            cls: me.rowNumbererHeaderCls,
+            locked: me.hasLockedHeader,
+            text:'#'
+        },{ text: "Customer PO Number", dataIndex: 'customerPONumber' ,flex:1},
                 { text: "Customer Item Number", dataIndex: 'customerItemNumber' ,flex:1},
                 { text: me.variableColumnName, dataIndex: 'variabledatavalue' ,flex:1,editor:{xtype:'textfield'}},
                 { text: 'Fiber Content Percentage', dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
 		];
     },
-    tbar: { 
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top', 
 		height: 50,
 	    items : 
 	    	[
 			 {
-	              xtype:'button',
-				  text:'Save',
-				  handler:'saveOrderLineDetails'
-	         },
-	         {
-	              xtype:'button',
-				  text:undoChangesText,
-				  handler:'cancelChanges'
+	              xtype:'displayfield',
+	              margin:'10 10 10 10',
+				  value:'<font size=5px>Bulk Update</font>'
 	         }
 			 ]
-}
+},{
+        xtype: 'toolbar',
+        dock: 'bottom', 
+		height: 60,
+		style: 'background-color: #FBFBFB;',
+	    items : 
+	    	['->',
+	    	 {
+	              xtype:'button',
+				  text:undoChangesText,
+				  handler:'cancelChanges',
+				  cls:'variable-bulkupdate-cancel-button-cls'
+	         },
+			 {
+	              xtype:'button',
+				  text:'Save',
+				  handler:'saveOrderLineDetails',
+				  cls:'variable-bulkupdate-save-button-cls'
+	         }
+			 ]
+}]
 });
