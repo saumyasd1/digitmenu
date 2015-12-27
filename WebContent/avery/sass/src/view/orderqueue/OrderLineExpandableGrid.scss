@@ -1,0 +1,70 @@
+.nestedGrid .x-grid-header-ct { border: 0px; background-color: #F6F6F6 !important }
+.nestedGrid .x-grid-header-ct .x-box-inner { border-bottom: 1px; background-color:#F6F6F6 !important}
+.nestedGrid .x-grid-header-ct .x-box-inner .x-column-header-inner { border-right: 0px; background-color: #F6F6F6 !important}
+.nestedGrid .x-column-header{
+border-right: 0px solid #cecece; 
+    color: #666666;
+    font: 300 12px/15px helvetica, arial, verdana, sans-serif !important;
+    outline: 0;
+    background-color: #FFFFFF;
+}
+.nestedGrid .x-grid-item {
+    color: black;
+    font: 300 13px/15px helvetica, arial, verdana, sans-serif;
+    background-color: #F6F6F6 !important;
+}
+.bulkupdate-button-cls {
+	top:0;
+	cursor: pointer !important;
+	border-color: $bulkupdate-button-border-color !important;
+	height : 27px;
+	padding-top: 5px;
+	width : 90px !important;
+	text-align: center; 
+	font-size:15px !important;
+	font-weight: bold !important;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.bulkupdate-button-cls:hover {
+	border-color: $bulkupdate-button-border-color;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	border-width:1px;
+	background: transparent;
+	background-image:none;
+}
+.bulkupdate-button-cls:active {
+	border-color: $bulkupdate-button-border-color;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.bulkupdate-button-cls:focus {
+	border-color: $bulkupdate-button-border-color;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.bulkupdate-button-cls .x-btn-inner-default-small {
+    font: 300 12px/16px helvetica, arial, verdana, sans-serif;
+    color: $bulkupdate-button-text-color;
+    padding: 0 5px;
+    max-width: 100%;
+}
+.bulkupdate-button-cls.x-btn.x-btn-pressed  {
+    border-color: #bulkupdate-button-border-color;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
