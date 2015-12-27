@@ -1,17 +1,146 @@
 .x-grid-row-editor-buttons-default-bottom {
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-radius-topright: 0;
-  -webkit-border-top-right-radius: 0;
-  border-top-right-radius: 0;
-  -moz-border-radius-bottomright: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  -moz-border-radius-bottomleft: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  padding: 10px 10px 10px 10px;
-  border-width: 0px 1px 1px 1px;
-  border-style: solid;
-  background-color:  white }
+	  -moz-border-radius-topleft: 0;
+	  -webkit-border-top-left-radius: 0;
+	  border-top-left-radius: 0;
+	  -moz-border-radius-topright: 0;
+	  -webkit-border-top-right-radius: 0;
+	  border-top-right-radius: 0;
+	  -moz-border-radius-bottomright: 5px;
+	  -webkit-border-bottom-right-radius: 5px;
+	  border-bottom-right-radius: 5px;
+	  -moz-border-radius-bottomleft: 5px;
+	  -webkit-border-bottom-left-radius: 5px;
+	  border-bottom-left-radius: 5px;
+	  padding: 10px 10px 10px 10px;
+	  border-width: 0px 1px 1px 1px;
+	  border-style: solid;
+	  background-color:  white; 
+}
+.x-grid-row-editor .x-panel-body {
+    border-top: 1px solid #e1e1e1 !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+    padding: 5px 0 5px 0;
+    background-color: #FFFCD9 !important;
+}
+.x-grid-row-editor-buttons:after,
+.x-grid-row-editor-buttons:before {
+  bottom: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.x-grid-row-editor-button {
+  -webkit-border-top-right-radius: 1;
+  -moz-border-radius-topright: 1;
+  border-top-right-radius: 1;
+}
+.x-grid-row-editor-button:after {
+  border-bottom-color: white;
+  border-width: 12px;
+  left: 100%;
+  margin-left: -32px;
+}
+.x-grid-row-editor-button:before {
+border-bottom-color: #d4d4d4;
+border-width: 14px;
+left: 100%;
+top: -28px;
+margin-left: -34px;
+}
+.x-grid-row-editor-buttons:after,
+.x-grid-row-editor-buttons:before {
+  bottom: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.x-grid-row-editor-buttons {
+  -webkit-border-top-right-radius: 1;
+  -moz-border-radius-topright: 1;
+  border-top-right-radius: 1;
+}
+.x-grid-row-editor-buttons:after {
+	border-bottom-color: white;
+	border-width: 14px;
+	left: 50%;
+	margin-left: 2px;
+}
+.x-grid-row-editor-buttons:before {
+	border-bottom-color: white;
+	border-width: 14px;
+	left: 50%;
+	top: -28px;
+	margin-left: -0px;
+}
+.roweditor-cancel-button-cls {
+	color:#FFA500 !important;
+	top:0;
+	cursor: pointer !important;
+	border-color: #FFA500 !important;
+	height : 25px;
+	line-height: 17px;
+	padding-top: 5px;
+	width : 50px !important;
+	text-align: center; 
+	font-size:15px !important;
+	font-weight: bold !important;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.roweditor-cancel-button-cls:hover {
+	border-color: #FFA500;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	border-width:1px;
+	background: transparent;
+	background-image:none;
+}
+.roweditor-cancel-button-cls:active {
+	border-color: #FFA500;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.roweditor-cancel-button-cls:focus {
+	border-color: #FFA500;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.roweditor-cancel-button-cls .x-btn-inner-default-small {
+    font: 300 12px/16px helvetica, arial, verdana, sans-serif;
+    color: #FFA500;
+    padding: 0 5px;
+    max-width: 100%;
+}
+.roweditor-cancel-button-cls .x-btn .x-btn-pressed .x-btn-default-small {
+  border-color: #FFA500;
+  background-image: none;
+  background-color: transparent;
+  background-image: none; }
+  
+.roweditor-cancel-button-cls.x-btn.x-btn-pressed  {
+    	border-color: #FFA500;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background: transparent;
+	background-image:none;
+}
+.roweditor-cancel-button-cls span{
+    color:$roweditor-cancel-button-text-color;
+}  
