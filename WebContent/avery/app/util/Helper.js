@@ -124,5 +124,25 @@ Ext.define('AOC.util.Helper',{
             html   : lit,
             anchor : (anchor) ? anchor : 'top'
         });
+    },
+    getSatus:function(v){
+    	var me=this,
+    	store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ?me.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
+    	statusRecord=store.findRecord( 'code', v),
+		va=statusRecord.get('value');
+    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==noAdditionDataStatus || v==orderRead || v==booked)
+	   {
+    		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
+	   }
+		else if(v==waitingForCSRStatus || v==submissionProcessRunningStatus || v==exportingProcessRunningStatus || v==processingOrder)
+		{
+			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.warning + '" /><font color=#FF9933>&nbsp&nbsp&nbsp'+va+'</font></div>';
+		}
+		else if( v==cancelStatus)
+		{
+		 return '<div><img  src="' + AOC.config.Settings.buttonIcons.cancel + '" /><font color=silver>&nbsp&nbsp&nbsp'+va+'</font></div>';
+		}
+		else
+			return '<div><img  src="' + AOC.config.Settings.buttonIcons.error + '" /><font color=red>&nbsp&nbsp&nbsp'+va+'</font</div>';
     }
 });
