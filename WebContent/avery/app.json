@@ -112,6 +112,9 @@
             "path": "properties_en.js"
         },
         {
+            "path": "alert_message.js"
+        },
+        {
             "path": "app.js",
             "bundle": true
         }
