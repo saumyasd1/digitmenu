@@ -53,10 +53,7 @@ Ext.define('AOC.view.partner.PartnerController', {
       	});
 		}
 		else{
-			if(createpartner.editMode)
-				createpartner.setTitle('Edit Partner Configuration<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
-			else
-				createpartner.setTitle('Add Partner Configuration<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
+			createpartner.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>').setVisible(true);
 		}
 			
 		this.runTime.setWindowInEditMode(false);
@@ -77,7 +74,7 @@ Ext.define('AOC.view.partner.PartnerController', {
 			modal:true,
 			//title:'<center>Add Partner</center>'
 		});
-		win.down('#titleItemId').setValue('<font size=3>Add Partner</font>').setVisible(true);
+		win.down('#titleItemId').setValue('<font size=3><b>Add Partner</b></font>').setVisible(true);
 		win.show();
 		  
     }
@@ -149,12 +146,12 @@ showmenu:function(view,rowIndex,colIndex,item,e){
  		            var  partnerproduct=Ext.ComponentQuery.query('#partnerproductlinegriditemId')[0];
  		            partnerproduct.bindStore(store);
  		        	panel.getLayout().setActiveItem(1);
- 		        	var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
+ 		        	//var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
  		        	partnerproduct.partnerid=id;
  		        	partnerproduct.partnerName=partnerName;
  		        	partnerproduct.down('#pagingtoolbar').bindStore(store);
  		        	runtime.setActiveGrid(partnerproduct);
- 		        	partnergrid.setText('<b></b>');
+ 		        	//partnergrid.setText('<b></b>');
  		        }
  		    }]
  		});
@@ -169,7 +166,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	 if(!temp){
 	
 			 temp = Ext.create('Ext.window.Window',{
-					 	height:350,
+					 	height:390,
 						width:300,
 						//title:advancedSearchWindowTitle,
 						itemId:'partneradvancesearchWindowItemId',
@@ -308,7 +305,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     			    partnerId:id,
 		     			    partnerName:partnerName
 		     			});
-		     	      win.down('#titleItemId').setValue('<font size=3>Edit Partner</font>').setVisible(true);
+		     	      win.down('#titleItemId').setValue('<font size=3><b>Edit Partner</b></font>').setVisible(true);
 	     			  win.show();
 	     			}
 		   },
