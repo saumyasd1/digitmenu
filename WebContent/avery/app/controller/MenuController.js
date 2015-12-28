@@ -2,7 +2,7 @@ Ext.define('AOC.controller.MenuController', {
 	extend :'Ext.app.Controller',
 	alias: 'controller.menuController',
 	requires:['AOC.view.ux.Callout'],
-	stores:['Sections','MenuStore','PartnerManagementStore','AddressStore','OrderQueueStore','HomePageOders'],
+	stores:['Sections','PartnerManagementStore','AddressStore','OrderQueueStore','OrderCharts','HomePageOders','Roles'],
 	models:['MenuModel'],
 	views : ['base.BaseToolbar','Viewport'],
 	refs : [{
@@ -41,156 +41,92 @@ Ext.define('AOC.controller.MenuController', {
 	 menuInstructions : AOC.config.MenuInstructions,
 	 runTime : AOC.config.Runtime,
 	 init : function(){
-		this.control({
-			 '#toolbarviewitemid[data]':{
-	            click : this.onClickToolbarButton
-			 },
-			 '#headeruserbutton > menuitem[action=openPopupForHeader]':{
-	                click : this.openPopupForHeader
-	         },
+	     var me=this;
+		me.control({
 	         'viewport canwas mainmenu' : {
-	                clickmenu : this.onClickMainMenu
+	                clickmenu : me.onClickMainMenu
 	            },
 	         'viewport aocheader' : {
-	                clickprofilemenu : this.onClickProfileMenu
-	            }
+	                clickprofilemenu : me.onClickProfileMenu
+	            },
+	            'viewport aoclogin' : {
+	        	login : me. onClickLogIn
+	            },
+	        'viewport canwas profileinfowrapper #toptoolbar' : {
+	                edit : me.onClickEditProfile,
+	                changepassword:me.onClickChangePassword
+	         },
+	         'viewport canwas profileinfowrapper #bottomtoolbar' : {
+	                save : me.onClickSaveProfile,
+	                cancel:me.onClickCancelProfile
+	         }
 		}); 
 		this.profileMenuTpl = this.buildMenuTpl();
+		me.on({
+	            scope           : me,
+	            myprofile  : me.onMyProfile,
+	            manageusers  : me.onManageUsers,
+	            logout : me.onLogout
+	        });
+		  me.settings = AOC.config.Settings;
+		  me.runtime = AOC.config.Runtime;
+		  me.helper = AOC.util.Helper;
 	},
-	openPopupForHeader : function(btn) {
-		 var data = btn.data,
-        btntext = btn.text;
-    if (data == 'Logout') {
-    	Ext.util.Cookies.clear("lastService");
-    	Ext.util.Cookies.clear("classicMenu");
-    	
-        Ext.Ajax.request({
-            url:'/adeptia/logout.jsp',
-            success:function (response, opts) {
-                location.reload();
-            }
-        });
-    }
+	onClickLogIn:function(cmp){
+	    var me=this,
+	    form= cmp.down('form'),
+	      valueObj=form.getValues();
+		var UserName=valueObj.userName;
+		var password=valueObj.password;
+		if(form.isValid()){
+			Ext.getBody().mask(pleaseWait);
+			form.submit({ 
+	                        method:'POST', 
+	                        url:applicationContext+'/rest/login/user', 
+	                        success:function(form, action){
+	                        var obj = Ext.decode(action.response.responseText);
+	                        var tokenExpires = obj.tokenExpiresDays;
+	                           me.helper.setCookie("authorization",obj["token"],tokenExpires);
+	                           var userInfo =obj["userinfo"];
+	                           me.runtime.setUser(userInfo);
+	                           me.updateHeaderUserName();
+	                           me.helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
+				   Ext.getBody().unmask();
+				   me.changeViewportCard(1);
+	                        },
+	                        failure:function(form, action){
+		                         var myField = form.down('#loginpasswordfield');
+		                         myField.allowBlank = true;
+		                         myField.setValue('');
+		                        Ext.getBody().unmask();
+		                        if(action.failureType == 'server'){}else{
+		                        Ext.Msg.alert(ConnectLit.failure,ConnectLit.authenticationFailuremsg,function() {
+		                                	myField.allowBlank = false;
+		                                },me,null);
+		                        }
+	                        } 
+	                    }); 
+			
+		}
 	},
-	onClickToolbarButton : function(btn){
-		var instructions = this.getInstructions(btn.service);
-	    	this.runTime.setActiveButton(btn.service);
-	        // call the buttons function
-	    	if(btn.service!='AuditReport')
-	         this.callButtonFunction(btn,instructions);
+	changeViewportCard:function(index){
+	    var activeCard=Ext.ComponentQuery.query("viewport")[0];
+	    activeCard.getLayout().setActiveItem(index);   
 	},
-	getInstructions : function(service){
-	    var buttonInsMethod = 'get' + service.charAt(0).toUpperCase() + service.slice(1);
-	    var   instructions="";
-	    if(this.menuInstructions[buttonInsMethod]!=undefined)
-	     instructions = this.menuInstructions[buttonInsMethod]();
-	    else
-	    	instructions=this.menuInstructions['home']();
-	    return instructions;
+	updateHeaderUserName:function(){
+	    var me =this,
+	    userInfo =me.runtime.getUser(),
+	    name = userInfo.firstName;
+	    name = (!Ext.isEmpty(userInfo.lastName))?name+' '+userInfo.lastName:name;
+            Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);   
 	},
-	callButtonFunction : function(btn, instructions){ 
-	    // call the needed controller / function for this button
-	    if (instructions.controller && instructions.fnc){
-	        this.getController(instructions.controller)[instructions.fnc](btn,instructions);
-	    }
-	},
-	onLoadMenuBar : function(store, records, success, operation, eopts)
-	{
-		var menuController=myAppGlobal.getController('MenuController');
-		var menuView=menuController.getToolbar();
-		   if(menuView){
-		    menuView.getEl().dom.style.webkitBoxShadow = '0 0 2px 2px #888';
-		    menuView.getEl().dom.style.boxShadow = '0 0 2px 2px #888';
-		   }
-		   var menubar = "",
-	       adminAddFlag,
-	       service,
-	       parentService,
-	       parentServiceNameArr = [],
-	       data,
-	       button,
-	       align,
-	       leftButton = [],
-	       rightButton = [];
-	   store.each(function (record, index, length) {
-	               adminAddFlag = true;
-	               service = record.data.name;
-	               align = record.data.align;
-	               parentService = record.data.parentservice;
-	               parentServiceNameArr = parentService.split("/");
-	               if (parentServiceNameArr[0] == 'AOC App' || parentServiceNameArr[0] == 'AOC APP')
-	            	   menubar = menuController.getToolbar();
-	               	 if (parentService != null && parentService != "") {
-	               		// add directly to the toolbar
-	               		data = service + "::" + record.data.displayname;
-	               		if (adminAddFlag){
-	               			if(align == 'Left' || align == 'left' || align == 'LEFT'){
-	               				leftButton.push(menuController.createButton(menubar, record, data, service));
-	               			}
-	               			if(align == 'Right' || align == 'right' || align == 'RIGHT'){
-	               				rightButton.push(menuController.createButton(menubar, record, data, service));
-	               			}
-	               		}
-	               	}
-	   },this);
-	   menubar.add(leftButton);
-	   menubar.add('->');
-	   menubar.add(rightButton);
-	   menuController.getMainContainer().getLayout().setActiveItem(5);
-	  },
-	  createButton : function(addTo, record, data, service){
-	      // add the button
-		  var me=this;
-	      var btn = {
-	          text : record.data.displayname,
-	          service : service,
-	          data : data,
-	          handler:function(obj){
-	    	  me.onClickToolbarButton(obj);
-	      }
-	      };
-	      return btn;
-	  },
-	  loadHomePage : function(){
-		  this.getMainContainer().getLayout().setActiveItem(5);
-	  },
-	  loadPartnerManagement: function(){
-		  var PartnerManagementStore=this.getPartnerManagementStoreStore();
-		  this.getPartnerMangementgrid().bindStore(PartnerManagementStore);
-		  this.runTime.setActiveGrid(this.getPartnerMangementgrid());
-		  this.getPartnerMangementgrid().down('#pagingtoolbar').bindStore(PartnerManagementStore);
-		  this.getMainContainer().getLayout().setActiveItem(1);
-	  },
-	  loadOrderQueueScreen: function(){
-		  var OrderQueueStore=this.getOrderQueueStoreStore();
-		  this.getOrderQueueGrid().reconfigure(OrderQueueStore);
-		  this.runTime.setActiveGrid(this.getOrderQueueGrid());
-		  this.getOrderQueueGrid().down('#pagingtoolbar').bindStore(OrderQueueStore);
-		  this.getMainContainer().getLayout().setActiveItem(0);
-	  },
-	  loadWebFormScreen: function(){
-		  this.getMainContainer().getLayout().setActiveItem(3);
-	  },
-	  loadAddressManage: function(){
-		  var AddressStore=this.getAddressStoreStore();
-		  this.getAddressManagegrid().bindStore(AddressStore);
-		  this.runTime.setActiveGrid(this.getAddressManagegrid());
-		  this.getAddressManagegrid().down('#pagingtoolbar').bindStore(AddressStore);
-		  AddressStore.load();
-		  this.getMainContainer().getLayout().setActiveItem(2);
-	  },
-	  loadArchiveManage: function(){
-		  //var ArchiveStore=this.getArchiveStoreStore();
-		  //this.getArchiveManagegrid().bindStore(ArchiveStore);
-		  //this.runTime.setActiveGrid(this.getArchiveManagegrid());
-		  //debugger;
-		  //this.getArchiveManagegrid().down('#pagingtoolbar').bindStore(ArchiveStore);
-		 // ArchiveStore.load();
-		  this.getMainContainer().getLayout().setActiveItem(4);
-	  },
 	  onClickMainMenu:function(cmp, rec){
 	      var me=this,
-	      xtype = rec.get('xtype'),
+	      xtype = rec.get('xtype');
+	      me.selectCard(xtype);
+	  },
+	  selectCard:function(xtype){
+	      var me=this,
 	      cardLayout =me.getMainCard().getLayout(),
 	      section= Ext.ComponentQuery.query(xtype)[0],
 	      activeItem=cardLayout.getActiveItem();
@@ -213,17 +149,35 @@ Ext.define('AOC.controller.MenuController', {
   	          target               : el,
   	          calloutArrowLocation : 'top-right',
   	          relativePosition     : 't-b',
-  	          relativeOffsets      : [-57,23],
-  	          dismissDelay         : 0 
+  	          relativeOffsets      : [-52,23],
+  	          dismissDelay         : 0,
+  	          listeners            : {
+                    scope       : me,
+                    afterrender : me.onAfterRenderEditCallout
+                }
   	          });
 	      callout.show();   
 	  },
+	  onAfterRenderEditCallout : function(cmp){
+	        var me = this;
+	        cmp.el.on({
+	            delegate: 'div.user-profile-menu-item',
+	            click    : function(e,element){
+	                var el    = Ext.get(element),
+	                    event = el.getAttribute('event');
+	                if (event && !el.hasCls('edit-menu-disabled')){
+	                    cmp.destroy();
+	                    me.fireEvent(event);
+	                }
+	            }
+	        });
+	    },
 	  buildMenuTpl : function(){
 	    	  var me=this;
 	    	 return Ext.create('Ext.XTemplate',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="profileinfo"">Profile Information</div>',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="myprofile"">Profile Information</div>',
 	              '<tpl if="this.isAdmin(values)">',
-	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="profileinfo"">Manage Users</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="manageusers"">Manage Users</div>',
 	              '</tpl>',
 	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="logout"">Logout</div>',
 	    	     '</tpl>',
@@ -233,5 +187,79 @@ Ext.define('AOC.controller.MenuController', {
 	              	}
 	              }
 	          );
-	      }
+	       },
+	    onMyProfile:function(){
+		 var me=this,
+		 topToolbar=Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
+		 me.selectCard('profileinfowrapper');
+		 me.selectProrfileCard(0);
+		 me.updateTopToolBar(true,profileInfo);
+		 me.updateBottomToolBar(false);
+		 me.updateProfileInfo();
+		 Ext.ComponentQuery.query('viewport canwas mainmenu')[0].getSelectionModel().select(null);
+	    },
+	    updateProfileInfo:function(){
+		var me=this,
+		user =me.runtime.getUser();
+		mainprofilewrapper=Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
+		userinfo=mainprofilewrapper.down('userinfo');
+		var name = user.firstName;
+		name = (!Ext.isEmpty(user.lastName))?name+' '+user.lastName:name;
+		userinfo.down('#name').setValue(name);
+		userinfo.down('#gender').setValue(user.gender);
+		userinfo.down('#email').setValue(user.email);
+		userinfo.down('#jobTitle').setValue(user.jobTitle);
+		userinfo.down('#role').setValue(user.role);
+	    },
+	    onManageUsers:function(){
+		 var me=this;
+		 me.selectCard('manageuserswrapper');
+	    },
+	    onLogout:function(){
+	      var me=this;
+	      me.helper.deleteCookie("authorization");
+	      me.helper.deleteCookie("userinfo");
+	      me.changeViewportCard(0);
+	    },
+	    onClickEditProfile:function(){
+		var me=this,
+		mainprofilewrapper=Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
+		userinfo=mainprofilewrapper.down('useredit');
+		userinfo.getForm().setValues(me.runtime.getUser());
+		me.selectProrfileCard(1);
+		me.updateTopToolBar(false);
+		me.updateBottomToolBar(true);
+	    },
+	    onClickChangePassword:function(){
+		var me=this;
+		me.selectProrfileCard(2);
+		me.updateTopToolBar(false,changedPassword);
+		me.updateBottomToolBar(true);
+	    },
+	    selectProrfileCard:function(index){
+		var mainprofilewrapper=Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0];
+		mainprofilewrapper.getLayout().setActiveItem(index);
+	    },
+	    updateTopToolBar:function(flag,title){
+		var topToolbar=Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
+		 topToolbar.down('#changepasswordbtn').setVisible(flag);
+		 topToolbar.down('#editbutton').setVisible(flag);
+		 if(!Ext.isEmpty(title))
+		 topToolbar.updateTitle(title);
+	    },
+	    updateBottomToolBar:function(flag){
+		var bottomToolbar=Ext.ComponentQuery.query('profileinfowrapper #bottomtoolbar')[0];
+		bottomToolbar.down('#cancel').setVisible(flag);
+		bottomToolbar.down('#save').setVisible(flag);
+	    },
+	    onClickSaveProfile:function(cmp){
+		
+	    },
+	    onClickCancelProfile:function(cmp){
+		var me=this;
+		me.selectProrfileCard(0);
+		 me.updateTopToolBar(true,profileInfo);
+		 me.updateBottomToolBar(false);
+	    }
+	    
 });  
