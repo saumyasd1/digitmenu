@@ -13,7 +13,8 @@ Ext.define('AOC.view.MainMenu',{
         me.navigationModel.focusCls='section-focus';
         me.callParent(arguments);
         me.on({
-            itemclick      : me.onItemClickMenu
+            itemclick      : me.onItemClickMenu,
+            afterrender    :me.selectFirst
         });
     },
 
@@ -35,6 +36,9 @@ Ext.define('AOC.view.MainMenu',{
     onItemClickMenu : function(cmp,rec){
         var me        = this;
         me.fireEvent('clickmenu',cmp, rec);
+    },
+    selectFirst:function(cmp){
+	cmp.getSelectionModel().select(cmp.getStore().getAt(0));
     }
 
 });
