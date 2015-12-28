@@ -7,10 +7,9 @@
 .x-grid-row-collapsed .custom-row-expander {
     background-image: url(images/expand.png); 
 }
-.aoc-grid-cell-special {
-    border-color: #cecece;
-    border-style: solid;
-    border-right-width: 0px; 
-    background: transparent;
-	background-image:none;
+.hiderowexpander .x-grid-cell-inner-row-expander {
+     padding: 0px 0px 0px 0px; 
+}
+.invalid .x-grid-row-expander{
+	background-color: yellow !important;
 }
