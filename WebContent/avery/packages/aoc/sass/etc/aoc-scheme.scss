@@ -1,0 +1,28 @@
+$connect-background-color:#FFFFFF!default;
+$connect-base-color:#555!default;
+$connect-light-blue:#36B6E9!default;
+$connect-blue:#416279!default;
+$connect-border-color:#D4D4D4!default;
+$connect-font-family:'Raleway', sans-serif!default;
+$connect-neutral-color: #f4f4f4 !default;
+$connect-neutral-light-color: mix(#fff, $connect-neutral-color, 68%) !default;
+
+$connect-green:#75ce5f!default;
+
+$connect-lighter-dark-text:#bcbcbc!default;
+/*$connect-orange:#EF7E3A!default;*/
+$connect-orange:#FF9B37!default;
+/*$connect-text-color:#9B9B9B!default;*/
+$connect-text-color:#636363!default;
+$connect-footer-bg-color:#E9F5FB;
+$connect-text-color-dark : #212121;
+$connect-menu-font-color:#777!default;
+$connect-error-color:#fa6432!default;
+$connect-success-color:#64c864!default;
+$connect-info-icon-color:#ddd !default;
+$connect-info-icon-color-hover:#fac832 !default;
+/* AC-2982:Change the font-weight,font-size*/
+$connect-grid-font-text : normal 10pt "Raleway", sans-serif;
+$connect-link-hover-color:$connect-orange;
+/* AC-3103 Change the view of Fly out menu of More option on manage page */
+$connect-menu-selected-color: #E6E6E6;
