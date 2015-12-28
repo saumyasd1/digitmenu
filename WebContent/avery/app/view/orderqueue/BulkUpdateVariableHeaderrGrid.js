@@ -46,7 +46,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
         	xtype: 'rownumberer',
             width: 46,
             editRenderer:  '&#160;',
-            tdCls: me.rowNumbererTdCls +' aoc-grid-cell-special',
+            tdCls: me.rowNumbererTdCls,
             cls: me.rowNumbererHeaderCls,
             locked: me.hasLockedHeader,
             text:'#'
@@ -79,13 +79,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	              xtype:'button',
 				  text:undoChangesText,
 				  handler:'cancelChanges',
-				  cls:'variable-bulkupdate-cancel-button-cls'
+				  width:65,
+				  ui:'grey-plain'
 	         },
 			 {
 	              xtype:'button',
 				  text:'Save',
 				  handler:'saveOrderLineDetails',
-				  cls:'variable-bulkupdate-save-button-cls'
+				  width:65,
+				  ui:'blue'
 	         }
 			 ]
 }]
