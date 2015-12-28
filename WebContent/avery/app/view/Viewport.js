@@ -16,12 +16,11 @@ Ext.define('AOC.view.Viewport', {
 		Ext.apply(this, {
 			layout : {
 				type : 'card',
-				activeItem:0,
 			        deferredRender : true
 			    },
 			    items : [
 			         {
-			             xtype : 'aocLogin',
+			             xtype : 'aoclogin',
 			             style  : AOC.config.Settings.getBaseBackgroundColor()
 			         },
 			         {
