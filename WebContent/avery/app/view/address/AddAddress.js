@@ -4,7 +4,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	itemId:'addAddressItemId',
     controller:'addressMain',
 	bodyPadding: 5,
-	width: 1000,
+	width: 900,
 	border:false,
     modal:true,
     draggable:false,
@@ -26,10 +26,32 @@ Ext.define('AOC.view.address.AddAddress',{
             });
             this.callParent(arguments);
         },
+        buildButtons : function(){
+            return [{
+            	text : 'Save',
+                handler : 'saveAddressDetails'
+            },
+            {
+            	text : 'Cancel',
+                handler : 'closeWindow'
+            }];
+        },
    
         buildItem:function(){
         	var me=this;
-        	return [{
+        	return [
+				{
+					xtype:'displayfield',
+					itemId:'titleItemId',
+					vale:'',
+					hidden:false,
+					margin : '5 0 0 400'
+				   },
+				   {
+				   	xtype :'tbspacer',
+				   	height:1,
+					},  
+        	   {
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		hidden:true
@@ -38,15 +60,16 @@ Ext.define('AOC.view.address.AddAddress',{
         		itemId:'listPanel',
         		border:false,
         		layout:'hbox',
+        		height:400,
+        		scrollable : true,
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'vbox',
                     margin : '5 0 0 5',
                     defaults:{
-            			labelAlign:'right',
+            			labelAlign:'top',
             			labelWidth : 150,
       		            width : 420,
-      		            labelAlign:'right',
       		            labelSeparator : ''
             		},
                     items:[{
@@ -134,10 +157,9 @@ Ext.define('AOC.view.address.AddAddress',{
                     layout: 'vbox',
                     margin : '5 0 0 10',
                     defaults:{
-            			labelAlign:'right',
+            			labelAlign:'top',
             			labelWidth : 150,
       		            width : 420,
-      		            labelAlign:'right',
       		            labelSeparator : ''
       		           
             		},
@@ -207,28 +229,35 @@ Ext.define('AOC.view.address.AddAddress',{
         		}
                ]
         		
-        	},{
-        		xtype:'container',
-        		layout: {
-        	        type: 'hbox',
-        	        pack: 'center'
-        	    },
-        		items:[{   xtype :'button',
-                	text : 'Save',
-                    handler:'saveAddressDetails',
-                    width : 70
-                },
-                {
-                	xtype:'tbspacer',
-                	width:20
-                },{  
-        			xtype :'button',
-                	text : 'Cancel',
-                    handler : 'closeWindow',
-                    width : 70
-                }
-        		       ]
-        	}]
+        	},
+//        	{
+//        		xtype:'container',
+//        		layout: {
+//        	        type: 'hbox',
+//        	        pack: 'center'
+//        	    },
+//        		items:[{   xtype :'button',
+//                	text : 'Save',
+//                    handler:'saveAddressDetails',
+//                    width : 70
+//                },
+//                {
+//                	xtype:'tbspacer',
+//                	width:20
+//                },{  
+//        			xtype :'button',
+//                	text : 'Cancel',
+//                    handler : 'closeWindow',
+//                    width : 70
+//                }
+//        		       ]
+//        	}
+            {
+            	xtype :'tbspacer',
+            	width :100
+    		},
+    	{ buttons:this.buildButtons()}
+        	]
         },
         notifyByMessage : function(config){
 			   var me = this;
