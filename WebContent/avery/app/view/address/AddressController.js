@@ -86,7 +86,7 @@ Ext.define('AOC.view.address.AddressController', {
 		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:400,
+						 	height:460,
 							width:300,
 							//title:advancedSearchWindowTitle,
 							itemId:'addressAdvancedSerachwindow',
@@ -131,11 +131,12 @@ Ext.define('AOC.view.address.AddressController', {
 		    var data={"id":""};
 		    win=Ext.create('AOC.view.address.AddAddress',{
 			modal:true,
-			title:title,
+			//title:title,
 			rec:currentRecord,
 			editMode:mode,
 			ID:id
 		});
+	    win.down('#titleItemId').setValue('<font size=3><b>'+title+'</b></font>').setVisible(true);
 		win.show();
 		}
 	},
@@ -210,10 +211,7 @@ Ext.define('AOC.view.address.AddressController', {
               }
       	});
 		}else{
-			if(createaddress.editMode)
-				createaddress.setTitle('Edit Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
-			else
-				createaddress.setTitle('Add Address<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
+			createaddress.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>').setVisible(true);
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
