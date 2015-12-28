@@ -23,7 +23,6 @@ Ext.define('AOC.Application', {
          });
 	var runtime=AOC.config.Runtime;
 	var helper = AOC.util.Helper;
-	debugger;
 	 var auth = helper.getCookie("authorization");
 	 var userInfo = helper.getCookie("userinfo");
 	 var index= 0;
