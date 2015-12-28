@@ -59,7 +59,14 @@ Ext.define('AOC.view.AOCLogin',{
         		                    margin:'-1 0 0 0',
         		                    itemId:'loginpasswordfield',
         		                    blankText : 'Password Field is required',
-        		                    emptyText:'Password'
+        		                    emptyText:'Password',
+        		                    listeners: {
+        			               	specialkey:function(fld,event,eop){
+        			               		 if (event.keyCode == Ext.EventObject.ENTER && !Ext.isEmpty(fld.getValue())){
+        			               		 me.fireEvent('login',me);	
+        			               		 }
+        			               	}
+        		                    }
         		                },
         		                {
         		                    xtype:'fieldcontainer',
