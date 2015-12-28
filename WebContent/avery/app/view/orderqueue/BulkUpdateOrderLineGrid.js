@@ -38,7 +38,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 	xtype: 'rownumberer',
                     width: 46,
                     editRenderer:  '&#160;',
-                    tdCls: me.rowNumbererTdCls +' aoc-grid-cell-special',
+                    tdCls: me.rowNumbererTdCls,
                     cls: me.rowNumbererHeaderCls,
                     locked: me.hasLockedHeader,
                     text:'#'
@@ -732,13 +732,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	              xtype:'button',
 				  text:undoChangesText,
 				  handler:'cancelChanges',
-				  cls:'bulkupdate-cancel-button-cls'
+				  width:65,
+				  ui:'grey-plain'
 	         },
 			 {
 	              xtype:'button',
 				  text:'Save',
 				  handler:'saveOrderLine',
-				  cls:'bulkupdate-save-button-cls'
+				  width:65,
+				  ui:'blue'
 	         }
 			 ]
 }]
