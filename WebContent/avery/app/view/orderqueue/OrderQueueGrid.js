@@ -106,7 +106,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width:40,
 			dataIndex:'OrderSource',
 			menuDisabled  :true,
-			baseCls:'custom-action',
 			renderer:function(v,cell,record){
 				if(v=='Email')
 					return '<div><img data-qtip="<font color=blue>Email</font>" src="' + mailIcon + '" /></div>';
@@ -117,20 +116,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         {
             text : 'Order track#',
             width:45,
-			dataIndex:'id',
-			baseCls:'custom-action'
+			dataIndex:'id'
         },
         {
             text : 'PO#',
             width:120,
-			dataIndex:'ponumber',
-			baseCls:'custom-action'
+			dataIndex:'ponumber'
         },
         {
             text : 'Order File',
             width:45,
 			dataIndex:'OrderFile',
-			baseCls:'custom-action',
 			renderer:function(v){
 				if(v.length!=0){
 					var fileName=v[0].fileName
@@ -144,7 +140,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width:75,
             hideable: true,
             dataIndex:'attachmentPresent',
-            baseCls:'custom-action',
 			renderer:function(v,cell,record){
 				if(v)
 					return '<div><img class="viewattachment" src="' + attacheImageSrc + '" /></div>';
@@ -154,24 +149,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },{
             text : 'Partner Name',
             width:80,
-            dataIndex:'PartnerName',
-            baseCls:'custom-action'
+            dataIndex:'PartnerName'
         },
 		{
             text : 'RBO',
             width:80,
-            dataIndex:'RBOName',
-            baseCls:'custom-action'
+            dataIndex:'RBOName'
         },{
             text : 'Product Line', 
             width:80,
-            dataIndex:'productLineType',
-            baseCls:'custom-action'
+            dataIndex:'productLineType'
         },{
             text : 'Order Status',
             width:200,
 			dataIndex:'Status',
-			baseCls:'custom-action',
 			editor:{
 				xtype:'combo',
 				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
@@ -198,14 +189,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Processed Date',
             width:98,
-			dataIndex:'receivedDate',
-			baseCls:'custom-action'
+			dataIndex:'receivedDate'
         },
         {
             text : 'Sender Email ID',
             width:128,
 			dataIndex:'SenderEmailID',
-			baseCls:'custom-action',
 			renderer:function(v){
 				if(v){
 					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
@@ -217,7 +206,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Subject',
             width:150,
 			dataIndex:'Subject',
-			baseCls:'custom-action',
 			renderer:function(v){
 				if(v){
 					return '<div><span data-qtip="<font color=blue>'+v+'</font>" />'+v+'</span></div>';
@@ -229,7 +217,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Email Body',
             width:150,
 			dataIndex:'EmailBody',
-			baseCls:'custom-action',
 			renderer:function(v){
 				if(v){
 					return '<div><span data-qtip="<font color=blue>'+v+'<font>" />'+v+'</span></div>';
@@ -240,14 +227,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Submitted By',
             width:82,
-			dataIndex:'SubmittedBy',
-			baseCls:'custom-action'
+			dataIndex:'SubmittedBy'
         },
 		{
             text : 'Submitted Date',
             width:95,
-			dataIndex:'submittedDate',
-			baseCls:'custom-action'
+			dataIndex:'submittedDate'
         }
 		];
     },
