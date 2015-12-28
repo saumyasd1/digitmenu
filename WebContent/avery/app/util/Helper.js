@@ -166,5 +166,93 @@ Ext.define('AOC.util.Helper',{
     deleteCookie:function(cname){
     	 var name = cname + "=";
     	document.cookie = name+"; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-    }
+    },
+    sendAjaxRequest : function(url, method,async, bodyData,callerObject,failureFunction,successFnc,failureContent){
+    	var data;
+        Ext.Ajax.request({
+        method: method,
+         url: url,
+         jsonData : bodyData,
+         async : async,
+         headers : {
+            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ==",
+            "Content-Type"  : "application/json"
+          },
+         success : function(res){
+        	var responseText = res.responseText;
+        	if(!Ext.isEmpty(successFnc))
+        		successFnc(res,callerObject);	
+        	if(!Ext.isEmpty(responseText)){
+        		data = Ext.decode(responseText);
+        	}
+        },
+        failure : function(res){
+        	if(!Ext.isEmpty(failureFunction))
+        		callerObject[failureFunction](res,failureContent);
+        }
+      });
+        return data;
+     },
+     fadeoutMessage : function(parm1,parm2,parm3,param4){        
+	    	var el,
+	        title,
+	        msg,
+	        ms,
+	        nextStepMsg,
+	        zindex,
+	        m,
+	        slideFrom;
+	    	 nextStepMsg = !Ext.isEmpty(param4)?'<br><br>'+param4:'';
+	    if (typeof arguments[0] !== "object"){
+	        el = document.body;
+	        title = parm1;
+	        msg = parm2 || '';
+	        //AC:3967 - Update fade out duration
+	        ms = (!parm3) ? 30000 : parm3;
+	        slideFrom = 't';
+	    } else {
+	        el = parm1.el || document.body;
+	        title = parm1.title || '';
+	        msg = parm1.msg || '';
+	        ms = parm1.ms || 2000;
+	        slideFrom = parm1.slideFrom || 't';
+	    }
+	    var style="";
+	    if(!el.msgCt){
+	    	 var w = 480,
+	    	 h = 60,
+	    	 left = Ext.getBody().getViewSize().width,
+	    	 l = (left-w)/2;
+    		zindex='width:'+w+'px;min-height:'+h+'px;left:'+l+'px;'; 
+    		style='style="min-height:'+h+'px;"';
+	        el.msgCt = Ext.core.DomHelper.insertFirst(el, {
+	            id:'aoc-msg-div',
+	            style:zindex
+	        }, true);
+	        el.msgCt.on({click:function(event,el){
+	        	 var event=el.getAttribute('event');
+	        	 if(event){
+	        		 m.hide();
+	        		 m.destroy();
+	                 el.msgCt=null;
+	        	 }
+	        }});
+	    } else {
+	    	el.msgCt.update('<div '+style+' class="aoc-msg"><div style="width:23px;height:60px;top:5px;float:left;"><img src="avery/resources/images/tick.png" /></div><div style="float:left;word-wrap: break-word;width:91%;">' + msg +nextStepMsg+'</div><div style="float:left;"><img style="cursor:pointer;" event="close" src="avery/resources/images/close-round-alt.png" /></div></div>');
+	    	return;
+	    }
+	    m = Ext.core.DomHelper.append(el.msgCt, '<div '+style+' class="aoc-msg"><div style="width:23px;height:60px;top:5px;float:left;"><img src="avery/resources/images/tick.png" /></div><div style="float:left;word-wrap: break-word;width:91%;">' + msg +nextStepMsg+'</div><div  style="float:left;"><img style="cursor:pointer;" event="close" src="avery/resources/images/close-round-alt.png" /></div></div>', true);
+	    m.hide();
+	    m.slideIn(slideFrom, {
+			easing: 'easeOut',
+			duration: 500}).ghost(slideFrom, {
+	    	duration: 10,
+	        delay: ms,
+	        remove: true,
+	        callback:function(){
+	            el.msgCt.remove();
+	            el.msgCt=null;
+	        }
+	    });
+	    }
 });
