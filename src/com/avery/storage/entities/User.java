@@ -1,5 +1,8 @@
 package com.avery.storage.entities;
 
+import static com.avery.utils.ApplicationConstants.ID;
+import static com.avery.utils.ApplicationConstants.PASSWORD;
+
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -8,8 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -46,7 +54,7 @@ public class User extends MainAbstractEntity {
 	@Size(min = 1, max = 255, message = "Email not valid, min:1 and max:255")
 	private String email;
 
-	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD", length = 255)
 	private String password;
 	
 	@Column(name = "JOBTITLE", length = 64)
@@ -59,7 +67,7 @@ public class User extends MainAbstractEntity {
 	@Column(name = "GENDER",length = 6)
 	private String gender;
 	
-	@Column(name = "ROLE", length = 10)
+	@Column(name = "ROLE", length = 20)
 	private String role;
 
 	
@@ -194,7 +202,6 @@ public class User extends MainAbstractEntity {
 			UserService userService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
 			User user = userService.read(Long.parseLong(id));
-			String password =user.getPassword();
 			if (user == null) {
 				throw new WebApplicationException(Response
 						.status(Status.BAD_REQUEST)
@@ -202,14 +209,15 @@ public class User extends MainAbstractEntity {
 								+ "\" doesn't exist")
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
+			String password =user.getPassword();
+			ObjectReader updater = mapper.readerForUpdating(user);
+			user = updater.readValue(data);
 			if (user.getPassword() != null && !user.getPassword().equals("")
 					&& !user.getPassword().equals(password))
 				user.setPassword(HashPassword.simpleHash(user.getPassword()));
 			else{
 				user.setPassword(password);
 			}
-			ObjectReader updater = mapper.readerForUpdating(user);
-			user = updater.readValue(data);
 			userService.update(user);
 			mapper.writeValue(writer, user);
 			rb = Response.ok(writer.toString());
@@ -288,6 +296,39 @@ public class User extends MainAbstractEntity {
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
 					"Error in deleting User entity with id " + id, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+	
+	@GET
+	@Path("/checkcurrentpassword/{id: [0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response CheckUserPassword(@Context UriInfo ui,
+			@Context HttpHeaders hh, @QueryParam(PASSWORD) String password,
+			@PathParam(ID) String id) {
+		try {
+			Long _id = Long.parseLong(id);
+			password = (password == null) ? "" : password;
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			User user = userService.read(_id);
+			if (user != null
+					&& (HashPassword.simpleHash(password).equals(user
+							.getPassword()))){
+				return Response.ok("{\"success\":true,\"passwordmatch\":true}")
+						.build();
+			}
+			else{
+				return Response
+						.ok("{\"success\":true,\"passwordmatch\":false}")
+						.build();
+			}
+		} catch (WebApplicationException aep) {
+			throw aep;
+		} catch (Exception e) {
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
