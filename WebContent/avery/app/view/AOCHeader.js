@@ -6,8 +6,14 @@ Ext.define('AOC.view.AOCHeader',{
     cls : 'intake-header',
     requires : ['AOC.config.Settings'],
     initComponent : function(){
-	var settings = AOC.config.Settings;
-	var userName="aoc_user";
+	var settings = AOC.config.Settings,
+	 runtime = AOC.config.Runtime,
+	 userName ="",
+	 userInfo =runtime.getUser();
+	if(!Ext.isEmpty(userInfo)){
+	    userName = userInfo.firstName;
+	    userName = (!Ext.isEmpty(userInfo.lastName))?userName+' '+userInfo.lastName:name;
+	    }
         Ext.apply(this,{
         	layout: {
             	type: 'hbox'
@@ -22,11 +28,11 @@ Ext.define('AOC.view.AOCHeader',{
         		 xtype:'component',
 		         height:60,
 		         width:30,
-		         html:'<div style="width:100%;text-align:center;color:#d4d4d4;font-size:30px;font-weight:500;line-height: 60px;">|</div>' 
+		         html:'<div class="header-pipe-icon">|</div>' 
         	     },{
 		         xtype:'component',
 		         height:60,
-		         html:'<div style="width:100%;text-align:center;font-size:18px;font-weight:500;line-height: 60px;">Accelerated Order Capture</div>'
+		         html:'<div class="header-right-text">Accelerated Order Capture</div>'
 		              
         	     },{
         		 xtype:'component',
@@ -45,7 +51,7 @@ Ext.define('AOC.view.AOCHeader',{
     		         height:15
             	     },{
                          xtype: 'image',
-                         src: settings.buttonIcons.logoImage,
+                         src: settings.buttonIcons.defaultUserImg,
                          border:true,
                          style:{"border-radius":"50%","border": "1px solid #d4d4d4;"},
                          margin:'10 0 10 0',
@@ -58,13 +64,13 @@ Ext.define('AOC.view.AOCHeader',{
 		         margin:'0 5 0 5',
 		         itemId:'userName',
 		         event:'clickprofilemenu',
-		         html:'<div style="width:100%;text-align:center;font-size:12px;font-weight:500;line-height: 60px;">'+userName+'</div>'
+		         html:'<div class="header-user-name-text">'+userName+'</div>'
         	     },{
                          xtype: 'image',
                          src: settings.buttonIcons.arrowDown,
                          event:'clickprofilemenu',
                          margin:'22 20 22 0',
-                         cls:'heading-actions-icon',
+                         cls:'header-profile-menu-icon',
                          width:15,
     		         height:15
         	     }
@@ -77,7 +83,7 @@ Ext.define('AOC.view.AOCHeader',{
         me.callParent(arguments);
         me.el.on({
             scope    : me,
-            delegate : '.heading-actions-icon',
+            delegate : '.header-profile-menu-icon',
             click    : me.onClickActionIcon
         });
     },
@@ -89,5 +95,10 @@ Ext.define('AOC.view.AOCHeader',{
         if (cmp && !Ext.isEmpty(cmp.event)){
             me.fireEvent(cmp.event,element);
         }
+    },
+    updateUserName:function(userName){
+    var me=this,
+    cmp = me.down('#userName');
+    cmp.update('<div class="header-user-name-text">'+userName+'</div>')
     }
 });
