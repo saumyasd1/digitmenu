@@ -854,7 +854,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                        },{
 				            xtype: 'button',
 				            text: bulkUpdateButtonText,
-				            cls:'bulkupdate-button-cls',
+				            ui:'blue-plain',
 				            reference:'bulkUpdateButton',
 				            handler: 'getUpdateScreen'
 			              }]
@@ -880,8 +880,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		          store:store,
     		          columns: [{
     		              xtype: 'rownumberer',
-    		              text:'#',
-    		              tdCls:'aoc-grid-cell-special'
+    		              text:'#'
     		          }, {
     		              text: 'Level',
     		              dataIndex: 'level',
