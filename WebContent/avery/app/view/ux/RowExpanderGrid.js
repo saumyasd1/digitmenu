@@ -134,7 +134,7 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	             draggable: false,
 	             hideable: false,
 	             menuDisabled: true,
-	             tdCls: 'aoc-grid-cell-special',
+	             tdCls: Ext.baseCSSPrefix+'grid-cell-special',
 	             innerCls: Ext.baseCSSPrefix + 'grid-cell-inner-row-expander',
 	             renderer: function(type, config, cell, rowIndex, cellIndex, e, view) {
 	             	var me=this;
