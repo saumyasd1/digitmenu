@@ -23,16 +23,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 							xtype:'orderqueuegrid',
 						    flex:1
 						}]
-					}],
-			dockedItems: [{
-			    xtype: 'basetoolbar',
-			    dock: 'top',
-			    items: [{
-			    	xtype : 'tbtext',
-			    	itemId : 'bulkUpdateItemId',
-			    	text : '<div style="color:"><b></b></div>'
 					}]
-			}]
 	 	});
 	 	this.callParent(arguments);
 	}
