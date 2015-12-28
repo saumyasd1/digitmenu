@@ -20,17 +20,7 @@ Ext.define('AOC.view.address.AddressManage', {
 					CartId:1
     			}
     			]
-    		}],
-			dockedItems: [{
-			    xtype: 'basetoolbar',
-			    dock: 'top',
-			    title:'Address-Manage',
-			    items: [{
-			    		  xtype : 'tbtext',
-			    		  text : '<div style="color:"><b></b></div>',
-			    		  itemId:'addresstitleItemid'
-			    		}]
-			}]
+    		}]
 	 	});
 	 	this.callParent(arguments);
 	}
