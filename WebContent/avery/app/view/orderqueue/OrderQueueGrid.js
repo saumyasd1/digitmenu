@@ -18,8 +18,35 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     		    items : me.buildtbar()
               },
               listeners:{
-            	  cellclick:'onCellClickToView'
-              }
+            	  cellclick:'onCellClickToView',
+            	  activate:function(obj){
+             		 var store= Ext.data.StoreManager.lookup('OrderQueueId');
+             		 if(store==null){
+             			 store=Ext.create('AOC.store.OrderQueueStore', {
+             					extend : 'Ext.data.Store',
+             					model:'AOC.model.OrderQueueModel',
+             					autoLoad : true,
+             					pageSize:pageSize,
+             					storeId:'OrderQueueId',
+             					proxy : {
+             						type : 'rest',
+             						url : applicationContext+'/rest/orders',
+             						reader:{
+             					        type:'json', 
+             					        rootProperty: 'orders',
+             					        totalProperty: 'totalCount'
+             					    }
+             				}
+             				});
+             			 obj.bindStore(store);
+             		 }
+             		 store.load();
+             	  }
+              },
+              viewConfig : {
+  	            stripeRows : true,
+  	            enableTextSelection : true
+          }
         });
         this.callParent(arguments);
     },
