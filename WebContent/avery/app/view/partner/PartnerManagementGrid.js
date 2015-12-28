@@ -42,7 +42,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
               },
         dockedItems : this.buildDockedItems(),
         viewConfig : {
-	            stripeRows : false,
+	            stripeRows : true,
 	            enableTextSelection : true
         }
     });

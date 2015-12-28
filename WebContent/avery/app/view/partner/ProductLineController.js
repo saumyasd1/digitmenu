@@ -90,10 +90,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
       	});
 		}
 		else{
-			if(createproductline.editMode)
-				createproductline.setTitle('Edit Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
-			else
-				createproductline.setTitle('Add Partner Product Line<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>');
+				createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>').setVisible(true);
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
@@ -108,10 +105,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	createproductline:function(){
 			win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
 				modal:true,
-				title:'<center>Add Partner Product Line</center>',
+				//title:'<center>Add Partner Product Line</center>',
 				partnerName:this.getView().partnerName
 			});
-			  win.show();
+			win.down('#titleItemId').setValue('<font size=3><b>Add Partner Product Line</b></font>').setVisible(true);
+			win.show();
        
 	},
 showmenu:function(view,rowIndex,colIndex,item,e){
@@ -132,12 +130,13 @@ showmenu:function(view,rowIndex,colIndex,item,e){
      	      				 var id=data.id;
      	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
      	      				modal:true,
-     	      				title:'Edit Partner product Line',
+     	      				//title:'Edit Partner product Line',
      	      				partnerName:me.getView().partnerName,
      	      			    editMode:true,
      	      			    rec:data,
      	      			    productlineId:id
      	      			});
+     	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
      	      			  win.show();
      	              }
      		        }
@@ -181,7 +180,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 if(!temp){
 		 temp = Ext.create('Ext.window.Window',{
-				 	height:350,
+				 	height:400,
 					width:300,
 					//title:advancedSearchWindowTitle,
 					itemId:'productlinesearchWindowItemId',
@@ -221,8 +220,8 @@ if(!temp){
   backButton:function()
   {
 		   var panel=Ext.ComponentQuery.query('#partnerPanel')[0];
-	       var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
-		   partnergrid.setText('<b>Partner Management</b>');
+	       //var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
+		  // partnergrid.setText('<b>Partner Management</b>');
 	       var partnerMangement=panel.down('#PartnerMangementitemId');
 	       panel.getLayout().setActiveItem(partnerMangement);
 	       partnerMangement.getView().refresh();

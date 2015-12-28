@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 5,
-	width: 650,
+	width: 670,
 	border:false,
     modal:true,
     draggable:false,
@@ -42,7 +42,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         },
         buildItem:function(){
         	var me=this;
-        	return [{
+        	return [
+			{
+				xtype:'displayfield',
+				itemId:'titleItemId',
+				vale:'',
+				hidden:false,
+				margin : '5 0 0 220'
+			   },
+			   {
+			   	xtype :'tbspacer',
+			   	height:1,
+				},
+        	    {
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		hidden:true
@@ -50,6 +62,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		xtype:'form',
         		itemId:'listPanel',
         		border:false,
+        		height:300,
+        		scrollable : true,
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'hbox',
@@ -151,7 +165,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			vtype: 'email' ,
                     labelWidth : 200,
   		            width : 300,
-  		            height:50,
+  		            height:60,
   		            maxLength : '100',
   		            enforceMaxLength: true,
   		            blankText : 'CSR is required',
@@ -174,7 +188,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
-  		            height:50,
+  		            height:60,
   		            maxLength : '300',
   		            enforceMaxLength: true,
   		            blankText : 'Shipping Only Notes is required',
@@ -202,7 +216,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
-  		            height:50,
+  		            height:60,
    		            maxLength : '300',
   		            enforceMaxLength: true,
   		            blankText : 'Packing Instuction is required',
@@ -225,7 +239,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
-  		            height:50,
+  		            height:60,
    		            maxLength : '300',
   		            blankText : 'Invoice Line Instruction  is required',
   		            enforceMaxLength: true,
@@ -253,7 +267,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			labelSeparator:'',
                         labelWidth : 200,
       		            width : 300,
-      		            height:50,
+      		            height:60,
       		            maxLength : '300',
       		            blankText : 'Manufacturing Notes  is required',
       		            enforceMaxLength: true,
@@ -278,7 +292,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
-  		            height:50,
+  		            height:60,
   		            labelSeparator : '',
   		            blankText : 'Variable Breakdown  is required',
   		            maxLength : '300',
