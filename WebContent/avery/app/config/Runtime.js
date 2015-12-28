@@ -9,7 +9,8 @@ Ext.define('AOC.config.Runtime',{
         salesOrderCount:0,
         hideSubmitToSystemButton:false,
         orderQueueStatus:null,
-        allowOrderLineEdit:true
+        allowOrderLineEdit:true,
+        user: {}
     },
     constructor : function(config){
         this.initConfig(config);
