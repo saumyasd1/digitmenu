@@ -116,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 }
             });
 
-            temp = Ext.create('Ext.window.Window', {
+            temp = Ext.create('AOC.view.base.BaseWindow', {
                 height: 500,
                 width: 560,
                 //title: advancedSearchWindowTitle,
@@ -147,7 +147,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             width = width - 25; //remove margin
             x = d.getX();
             y = d.getY();
-            temp.showAt(x - width, y + 26);
+            temp.showAt();
         } else if (Ext.isChrome || Ext.isSafari) {
             browser = "Chrome";
             var d = Ext.get(e.getTarget());
@@ -155,7 +155,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             width = width - 24;
             x = d.getX();
             y = d.getY();
-            temp.showAt(x - width, y + 20);
+            temp.show();
         }
         return false;
     },
