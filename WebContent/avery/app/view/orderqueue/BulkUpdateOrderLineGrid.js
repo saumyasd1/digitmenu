@@ -354,7 +354,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 115,
             editor: 'textfield'
         }, {
-            text: 'Item Description',
+            text: 'ITEM Desc\Size Page',
             dataIndex: 'itemDescription',
             width: 102,
             editor: 'textfield'
