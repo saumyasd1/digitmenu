@@ -12,6 +12,7 @@ Ext.define('AOC.view.home.HomeChart',{
         'Ext.form.field.ComboBox',
         'AOC.view.home.HomePageOrderList'
     ],
+    controller:'homechartcontroller',
     alias         : 'widget.odersoverviewchart',
     cls           : 'container-border',
     layout        : {
@@ -119,10 +120,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 allowBlank     : false,
                 value          : 30,
                 listeners      : {
-                    scope  : me,
-                    select : function(cmp, recs){
-                        me.fireEvent('daterangechanged', me, recs[0], cmp);
-                }
+                    select : 'changeDateRange'
             }
         },{
             xtype       : 'image',
@@ -160,32 +158,12 @@ Ext.define('AOC.view.home.HomeChart',{
             style        : {
                 "background-color" : "#f9f9f9"
             },
-            store        : me.buildStore(),
+            store        : 'OrderCharts',
             series       : me.buildSeries(),
             axes         : me.buildAxes()
         },{
             xtype:'homepageorderlist'
         }];
-    },
-
-    buildStore : function(){
-        var me  = this,
-            str = Ext.create('Ext.data.Store',{
-                fields : ['received','waitingCR','waitingSR','success','failed','day'],
-//                proxy : {
-//                    type   : 'memory',
-//                    reader : {
-//                        type : 'json'
-//                    }
-//                }
-                data: [{"received":4,"waitingCR":6,"waitingSR":1,"success":1,"failed":0,"day":'1 DEC'},
-                       {"received":5,"waitingCR":10,"waitingSR":6,"success":3,"failed":3,"day":'2 DEC'},
-                       {"received":6,"waitingCR":8,"waitingSR":4,"success":5,"failed":5,"day":'3 DEC'},
-                       {"received":3,"waitingCR":5,"waitingSR":7,"success":4,"failed":2,"day":'4 DEC'},
-                       {"received":2,"waitingCR":2,"waitingSR":3,"success":2,"failed":2,"day":'5 DEC'},
-                       {"received":1,"waitingCR":4,"waitingSR":12,"success":7,"failed":8,"day":'6 DEC'}]
-            });
-        return str;
     },
 
     buildAxes : function(){
@@ -198,7 +176,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 text: 'NO. OF ODERS',
                 fontSize: 15
             },
-            fields   : ['received','waitingCR','waitingSR','succes','failed']
+            fields   : ['received','waitingCR','waitingSR','success','failed']
         }, {
             type: 'category',
             position: 'bottom',
@@ -263,7 +241,6 @@ Ext.define('AOC.view.home.HomeChart',{
             smooth : true,
             highlight: false,
             axis: 'left',
-            seriesIsHidden : true,
             shadowAttributes : false,
             xField: 'day',
             yField: 'success',
@@ -280,7 +257,6 @@ Ext.define('AOC.view.home.HomeChart',{
             smooth : true,
             highlight: false,
             axis: 'left',
-            seriesIsHidden : true,
             shadowAttributes : false,
             xField: 'day',
             yField: 'failed',
