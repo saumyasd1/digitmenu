@@ -211,7 +211,6 @@ Ext.define('AOC.controller.MenuController', {
 	    },
 	    onManageUsers:function(){
 		 var me=this;
-		 me.selectCard('manageuserswrapper');
 	    },
 	    onLogout:function(){
 	      var me=this;
@@ -251,7 +250,40 @@ Ext.define('AOC.controller.MenuController', {
 		bottomToolbar.down('#save').setVisible(flag);
 	    },
 	    onClickSaveProfile:function(cmp){
-		
+		var me =this,
+		user = me.runtime.getUser(),
+		id = user.id,
+		activeForm = mainprofilewrapper=Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0].getLayout().getActiveItem();
+		Ext.getBody().mask(pleaseWait);
+		if(activeForm.xtype=='useredit' || activeForm.xtype=='changepassword'){
+		    Ext.Ajax.request({
+		          method: 'PUT',
+		          type : 'rest',
+		          jsonData : activeForm.getValues(),
+		          url: me.settings.getBaseUserUrl()+'/'+id,
+		          headers     :{"Authorization" : "Basic YWRtaW46aW5kaWdvMQ==" },
+		          scope: me,
+		          success: function (res) {
+		              Ext.getBody().unmask();
+		              var userInfo=Ext.decode(res.responseText);
+		              me.runtime.setUser(userInfo);
+	                      me.updateHeaderUserName();
+	                      me.helper.setCookie("userinfo",JSON.stringify(userInfo),30);
+	                      me.selectProrfileCard(0);
+	     		      me.updateTopToolBar(true,profileInfo);
+	     		      me.updateBottomToolBar(false);
+	     		      me.updateProfileInfo();
+	     		      var message =(activeForm.xtype=='useredit')?personalInformation:password;
+	     		      message=message+savedSuccessfully;
+	     		     me.helper.fadeoutMessage('Success',message);
+		          },
+		          failure: function (rsp) {
+		              Ext.getBody().unmask();
+		    		 Ext.Msg.alert(weFacedError+"save information",rsp.responseText,null,me,null);
+		              	 return;
+		          }
+		      });    
+		}
 	    },
 	    onClickCancelProfile:function(cmp){
 		var me=this;
