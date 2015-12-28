@@ -120,8 +120,8 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         store: 'Roles',
                         name : 'role',
                         queryMode : 'local',
-                        displayField: 'entityName',
-                        valueField: 'id',
+                        displayField: 'displayName',
+                        valueField: 'value',
                         fieldLabel: role
                     },{
                 	xtype:'hidden',
