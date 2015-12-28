@@ -31,6 +31,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 					xtype : 'basetoolbar',
 					dock : 'top',
 					title : 'Archive-Manage',
+					height:50,
 					items : [{
 							xtype : 'tbtext',
 							text : '<div style="color:"><b>Archive-Manage</b></div>',
