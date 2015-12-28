@@ -26,27 +26,7 @@ Ext.define('AOC.view.partner.PartnerManagement', {
 					
     			}
     			]
-    		}],
-			dockedItems: [{
-			    xtype: 'basetoolbar',
-			    dock: 'top',
-			    title:'',
-			    items: [{
-			    		  xtype : 'tbtext',
-			    		  text : '<div style="color:"><b></b></div>',
-			    		  itemId:'partnertitleItemid'
-			    		},
-			    	    {
-				        	  xtype:'displayfield',
-				        	  itemId:'advanceSearchField',
-				        	  flex:1,
-				        	  style:
-				        	         'text-align: center;'
-				        	        ,
-				        	        labelStyle: "font-size:8px;"
-				        	  
-				          }]
-			}]
+    		}]
 	 	});
 	 	this.callParent(arguments);
 	}
