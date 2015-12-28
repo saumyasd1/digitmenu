@@ -1,7 +1,8 @@
 Ext.define('AOC.config.Settings',{
     singleton : true,
     config : {
-        baseBackgroundColor : 'background-color:#F6F6F6'
+        baseBackgroundColor : 'background-color:#F6F6F6',
+        nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$'
     },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',
@@ -13,7 +14,8 @@ Ext.define('AOC.config.Settings',{
          tick:'avery/resources/images/tick.svg',
          warning:'avery/resources/images/warning.svg',
          error:'avery/resources/images/error.png',
-         cancel:'avery/resources/images/cancel.png'
+         cancel:'avery/resources/images/cancel.png',
+         defaultUserImg:'avery/resources/images/defaultUser.png'
     },
     constructor : function(config){
             this.initConfig(config);
