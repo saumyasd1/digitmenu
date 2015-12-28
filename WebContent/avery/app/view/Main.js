@@ -7,7 +7,8 @@ Ext.define('AOC.view.Main',{
 	            'AOC.view.partner.PartnerManagement',
 	            'AOC.view.address.AddressManage',
 	            'AOC.view.webform.WebOrderView',
-	            'AOC.view.archive.ArchiveManage'],
+	            'AOC.view.archive.ArchiveManage',
+	            'AOC.view.users.myprofile.Wrapper'],
 	initComponent : function(){
     	var me=this;
     	this.fieldArray = [],
@@ -36,6 +37,8 @@ Ext.define('AOC.view.Main',{
 			       xtype : 'weborderview'
 			   },{
 			       xtype : 'archivemanage'
+			   },{
+			       xtype:'profileinfowrapper'
 			   }
 			   ]
                  }
