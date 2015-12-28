@@ -94,16 +94,14 @@ Ext.define('AOC.controller.MenuController', {
 				   Ext.getBody().unmask();
 				   me.changeViewportCard(1);
 	                        },
-	                        failure:function(form, action){
+	                        failure:function(formss, action){
 		                         var myField = form.down('#loginpasswordfield');
 		                         myField.allowBlank = true;
 		                         myField.setValue('');
 		                        Ext.getBody().unmask();
-		                        if(action.failureType == 'server'){}else{
-		                        Ext.Msg.alert(ConnectLit.failure,ConnectLit.authenticationFailuremsg,function() {
+		                        Ext.Msg.alert('Incorrect credential','Username or password is incorrect.',function() {
 		                                	myField.allowBlank = false;
 		                                },me,null);
-		                        }
 	                        } 
 	                    }); 
 			
