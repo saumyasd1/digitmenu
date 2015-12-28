@@ -29,19 +29,29 @@ Ext.define('AOC.view.partner.CreatePartner',{
             this.callParent(arguments);
 
         },
+        buildButtons : function(){
+            return [{
+            	text : 'Save',
+                handler : 'SaveDetails'
+            },
+            {
+            	text : 'Cancel',
+                handler : 'CancelDetails'
+            }];
+        },
         buildItem:function(){
         	var me=this;
         	return [{
         		xtype:'displayfield',
         		itemId:'titleItemId',
-        		vale:'',
+        		value:'',
         		hidden:false,
         		margin : '5 0 0 120'
         	   },
         	  {
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
-        		vale:'',
+        		value:'',
         		hidden:false
         	},{
         		xtype:'form',
@@ -138,34 +148,35 @@ Ext.define('AOC.view.partner.CreatePartner',{
   	     	                    }
   		         
         		},
-        		{
+//        		  { xtype: 'fieldcontainer',
+//                    layout: 'hbox',
+//                    margin : '5 0 0 10',
+//                    items:[
+//                           {
+//                	xtype :'tbspacer',
+//                	width :80
+//        		          },{
+//                    xtype :'button',
+//                	text : 'Save',
+//                    handler : 'SaveDetails',
+//                    width : 70
+//                    
+//                },{
+//                	xtype :'tbspacer',
+//                	width :30
+//        		},
+//                {   xtype :'button',
+//                	text : 'Cancel',
+//                    handler : 'CancelDetails',
+//                    width : 70
+//                   
+//                }]
+//        		  }
+        		  {
                 	xtype :'tbspacer',
-                	width :10
+                	width :100
         		},
-        		  { xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 10',
-                    items:[
-                           {
-                	xtype :'tbspacer',
-                	width :80
-        		          },{
-                    xtype :'button',
-                	text : 'Save',
-                    handler : 'SaveDetails',
-                    width : 70
-                    
-                },{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-                {   xtype :'button',
-                	text : 'Cancel',
-                    handler : 'CancelDetails',
-                    width : 70
-                   
-                }]
-        		  }
+        	{ buttons:this.buildButtons()}
                ]
         	}]
         },
