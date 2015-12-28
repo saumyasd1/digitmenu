@@ -1,6 +1,6 @@
 Ext.define('AOC.config.Runtime',{
     singleton : true,
-    config : {
+    config :{
         activeButton : null,
         activeGrid:null,
         windowInEditMode:false,
