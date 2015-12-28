@@ -58,4 +58,9 @@
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
+	<bean id="averyUser" class="com.avery.storage.entities.User"
+		p:id="1" p:firstName="Admin" p:email="admin@averydennison.com"
+		p:password="a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95"
+		p:status="100" p:gender="Male" p:role="admin">
+	</bean>
 </beans> 
