@@ -1,6 +1,6 @@
 Ext.define('AOC.view.AOCLogin',{
 	extend:'Ext.Container',
-	alias:'widget.aocLogin',
+	alias:'widget.aoclogin',
 	itemId:'aocLoginItemId',
 	initComponent : function(){
     	var me=this;
@@ -48,7 +48,7 @@ Ext.define('AOC.view.AOCLogin',{
 				         html:'<div style="width:100%;text-align:center;font-size:18px;font-weight:500;">Accelerated Order Capture</div>'
 				        },
         		                {
-        		                    name: 'userName',
+        		                    name: 'username',
         		                    margin:'30 0 0 0',
         		                    blankText : 'UserName Field is required',
         		                    emptyText:'Username'
@@ -57,6 +57,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                    name: 'password',
         		                    inputType: 'password',
         		                    margin:'-1 0 0 0',
+        		                    itemId:'loginpasswordfield',
         		                    blankText : 'Password Field is required',
         		                    emptyText:'Password'
         		                },
@@ -76,9 +77,9 @@ Ext.define('AOC.view.AOCLogin',{
         		                    	}
         		                    
         		                    },{
-        		                	xtype:'displayfield',
+        		                	xtype:'component',
         		                	flex:1,
-        		                	value:'<div >Forgot Password?</div>'
+        		                	html:'<div >Forgot Password?</div>'
         		                    }]
         		                },
         		                {
@@ -89,36 +90,12 @@ Ext.define('AOC.view.AOCLogin',{
              			                height:40,
         		                	handler: function() 
         		                	{
-        		                		var valueObj=me.down('form').getValues();
-        		                		var UserName=valueObj.userName;
-        		                		var password=valueObj.password;
-        		                		if(UserName=="aoc_user" && password=="indigo1")
-        		                		{
-        		                			var activeCard=Ext.ComponentQuery.query("#viewportitemid")[0];
-        		                			activeCard.getLayout().setActiveItem(1);
-        		                			var menuStore=Ext.create('AOC.store.MenuStore');
-        		                        	var menuController=myAppGlobal.getController('MenuController');
-        		                        	menuStore.on({
-        		                        		load : menuController.onLoadMenuBar
-        		                        	});
-        		                		}else{
-        		                			var Msg=me.down('#messageFieldItemId');
-        		                			Msg.setValue('Either UserName or Password is not correct');
-        		                		}
+        		                	    me.fireEvent('login',me);
         		                	}
         		                }
         		            ]
         		        }
         		    ]
-        },
-        notifyByMessage : function(config){
-			   var me = this;
-			   if(config.up('#listPanel').ownerCt){
-				   if(config.up('#listPanel').ownerCt.editMode)
-					       config.up('#listPanel').ownerCt.setTitle('Edit Partner');
-				   else
-					       config.up('#listPanel').ownerCt.setTitle('Add Partner');
-			   }
-		   }
+        }
 		 
                  });
