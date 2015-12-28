@@ -8,11 +8,11 @@ Ext.define('AOC.view.AOCHeader',{
     initComponent : function(){
 	var settings = AOC.config.Settings,
 	 runtime = AOC.config.Runtime,
-	 userName ="",
+	 username ="",
 	 userInfo =runtime.getUser();
 	if(!Ext.isEmpty(userInfo)){
-	    userName = userInfo.firstName;
-	    userName = (!Ext.isEmpty(userInfo.lastName))?userName+' '+userInfo.lastName:name;
+	    username = userInfo.firstName;
+	    username = (!Ext.isEmpty(userInfo.lastName))?username+' '+userInfo.lastName:username;
 	    }
         Ext.apply(this,{
         	layout: {
@@ -64,7 +64,7 @@ Ext.define('AOC.view.AOCHeader',{
 		         margin:'0 5 0 5',
 		         itemId:'userName',
 		         event:'clickprofilemenu',
-		         html:'<div class="header-user-name-text">'+userName+'</div>'
+		         html:'<div class="header-user-name-text">'+username+'</div>'
         	     },{
                          xtype: 'image',
                          src: settings.buttonIcons.arrowDown,
