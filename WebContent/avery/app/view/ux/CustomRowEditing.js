@@ -1188,7 +1188,7 @@ Ext.define('AOC.view.RowEditorButtons', {
             text: 'Update All',
             disabled: rowEditor.updateButtonDisabled
         },{
-            cls: 'roweditor-cancel-button-cls',
+            ui:'white',
             itemId: 'cancel',
             handler: plugin.cancelEdit,
             text: rowEditor.cancelBtnText
