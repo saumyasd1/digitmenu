@@ -14,6 +14,32 @@ Ext.define('AOC.view.address.AddressManageGrid', {
         tbar: { height: 40,
     		    items : me.buildtbar()
               },
+              listeners:{
+            	  activate:function(obj){
+             		 var store= Ext.data.StoreManager.lookup('AddressStoreId');
+             		 if(store==null){
+             			 store=Ext.create('AOC.store.AddressStore', {
+             					extend : 'Ext.data.Store',
+             					model:'AOC.model.AddressModel',
+             					autoLoad : true,
+             					pageSize:pageSize,
+             					storeId:'AddressStoreId',
+             					proxy : {
+             						type : 'rest',
+             						url : applicationContext+'/rest/address',
+//             						url:'avery/app/data/orderheader.json',
+             						reader:{
+             					        type:'json', 
+             					        rootProperty: 'address',
+             					        totalProperty: 'totalCount'
+             					    }
+             				}
+             				});
+             			 obj.bindStore(store);
+             		 }
+             		 store.load();
+             	  }
+              },
         dockedItems : this.buildDockedItems(),
         viewConfig : {
 	            stripeRows : false,
