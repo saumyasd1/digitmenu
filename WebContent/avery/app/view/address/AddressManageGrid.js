@@ -42,7 +42,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
               },
         dockedItems : this.buildDockedItems(),
         viewConfig : {
-	            stripeRows : false,
+	            stripeRows : true,
 	            enableTextSelection : true
         }
     });
