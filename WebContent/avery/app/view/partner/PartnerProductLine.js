@@ -9,16 +9,7 @@ Ext.define('AOC.view.partner.PartnerProductLine', {
 			border:'4 4 4 4',	
 			items : [{ 
 			        	xtype : 'partnerproductlinegrid'
-					}],
-			dockedItems: [{
-			    xtype: 'basetoolbar',
-			    dock: 'top',
-			    title:'Partner Product Line-Manage',
-			    items: [{
-			    		  xtype : 'tbtext',
-			    		  text : '<div style="color:"><b>Partner Product Line-Manage</b></div>'
-			    		}]
-			}]
+					}]
 	 	});
 	 	this.callParent(arguments);
 	}
