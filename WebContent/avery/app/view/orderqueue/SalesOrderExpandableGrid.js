@@ -279,8 +279,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		          columnLines: false,
 		          columns: [{
 		              xtype: 'rownumberer',
-	            	  text:'#',
-		              tdCls:'aoc-grid-cell-special'
+	            	  text:'#'
 		          }, {
 		              text: 'Level',
 		              dataIndex: 'level',
