@@ -21,9 +21,19 @@ Ext.define('AOC.Application', {
                  Ext.fly('loading').destroy();
              }
          });
+	var runtime=AOC.config.Runtime;
+	var helper = AOC.util.Helper;
+	debugger;
+	 var auth = helper.getCookie("authorization");
+	 var userInfo = helper.getCookie("userinfo");
+	 var index= 0;
+	 if(!Ext.isEmpty(auth) && !Ext.isEmpty(userInfo)){
+	     index=1;
+	     runtime.setUser(JSON.parse(userInfo));
+	 }
     	myAppGlobal=this;
     	Ext.create('AOC.view.Viewport', {
-    		activeItem:0
+    		activeItem:index
         });
     	
     }
