@@ -61,7 +61,7 @@
         	 xtype: 'textfield',
                  inputType: 'password',
                  itemId: 'newPassword',
-                 name: 'newPassword',
+                 name: 'password',
                  labelSeparator: ' ',
                  margin:'0 0 25 0',
                  fieldLabel: newPassword,
@@ -104,7 +104,7 @@
     if(!Ext.isEmpty(value)){ 
      	// #AC-3564: Handling of special characters in in password during password change operation
      var user = AOC.config.Runtime.getUser(),
-     url = applicationContext+'/rest/users/checkcurrentpassword/' + user.id + '?password=' + encodeURIComponent(value)+"&companyID="+user.company.id,
+     url = applicationContext+'/rest/users/checkcurrentpassword/' + user.id + '?password=' + encodeURIComponent(value),
      data = AOC.util.Helper.sendAjaxRequest(url, 'GET', false);
      if(data.passwordmatch)
 	 return true;
