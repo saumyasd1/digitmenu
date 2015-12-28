@@ -1,9 +1,5 @@
-.x-grid-header-ct { background-color: #EDEDED }
-.x-grid-header-ct .x-box-inner { background-color: #EDEDED}
-.x-grid-header-ct .x-box-inner .x-column-header-inner { background-color: #EDEDED }
-.x-grid-item-alt {
-  background-color: #EBF6FF !important; 
-  }
+// ensure all grid cell content is middle aligned....no sass variable for this...
+//
 .custom-action { 
 border-right:none !important;
 }
@@ -23,23 +19,6 @@ border-right:none !important;
 {
     background-color: yellow !important; 
 }
-.hiderowexpander .x-grid-cell-inner-row-expander {
-     padding: 0px 0px 0px 0px; 
-}
-.x-grid-item-selected {
-    color: black;
-    font: 300 13px/15px helvetica, arial, verdana, sans-serif;
-    background-color: #FFFCD9 !important;
-}
-.x-grid-item:hover {
-    color: black;
-    font: 300 13px/15px helvetica, arial, verdana, sans-serif;
-    background-color: #FFFCD9 !important;
-}
-
-.invalid .x-grid-row-expander{
-	background-color: yellow !important;
-}
 .x-mask {
   background-image: none;
   background-color: rgba(204, 204, 204, 0.5) !important;
@@ -48,33 +27,3 @@ border-right:none !important;
   border-width: 1px;
   border-color: transparent; 
   }
-.x-grid-row .x-grid-cell-selected {
-    color: black;
-    background-color: #FFFCD9 !important; 
-}
-#aoc-msg-div{
-  position: absolute;
-  top: 10px;
-  z-index: 21002;
-  width: 100%;
-  min-height: 60px;
-}
-#aoc-msg-div .aoc-msg{
-  background: none repeat scroll 0 0 #ebffeb;
-  border: 1px solid #afafaf;
-  vertical-align: middle;
-  padding: 12px 12px 12px 12px;
-  margin: 0px 20px 0px 20px;
-  font-size: 10pt;
-  width:100%;
-  min-height: 60px;
-}
-#aoc-msg-div .aoc-msg-close{
-display: block;
-top: 5px;
-right:-1px !important;
-left: auto !important;
-width:20px;
-height:60px;
-position: absolute;
-}
