@@ -2,7 +2,8 @@ Ext.define('AOC.config.Settings',{
     singleton : true,
     config : {
         baseBackgroundColor : 'background-color:#F6F6F6',
-        nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$'
+        nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$',
+        baseUserUrl :applicationContext+'/rest/users'
     },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',
