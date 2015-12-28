@@ -33,6 +33,13 @@ Ext.define('AOC.view.partner.CreatePartner',{
         	var me=this;
         	return [{
         		xtype:'displayfield',
+        		itemId:'titleItemId',
+        		vale:'',
+        		hidden:false,
+        		margin : '5 0 0 120'
+        	   },
+        	  {
+        		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		vale:'',
         		hidden:false
