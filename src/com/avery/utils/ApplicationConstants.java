@@ -10,4 +10,8 @@ public interface ApplicationConstants {
 			
 		String INVALID_USER_PORPASSWORD = "Invalid user name or password.";
 		
+		String ID = "id";
+		
+		String PASSWORD = "password";
+		
 }
