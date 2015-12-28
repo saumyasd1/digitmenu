@@ -99,13 +99,15 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					},{
 			            xtype: 'button',
 			            reference:'validateButton',
-			            cls:'orderline-control-button-cls',
+			            ui:'white',
+			            width:150,
 			            text: '<b>Validate</b>',
 			            margin:'0 10 0 10',
 			            handler: 'validateOrderLine'
 			        },{
 			            xtype: 'button',
-			            cls:'orderline-control-button-cls',
+			            ui:'white',
+			            width:150,
 			            reference:'cancelOrderButton',
 			            margin:'0 10 0 0',
 			            text: '<b>Cancel Order</b>',
@@ -114,14 +116,16 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			        },{
 			            xtype: 'button',
 			            reference: 'salesOrderbutton',
-			            cls:'orderline-control-button-cls',
+			            ui:'white',
+			            width:150,
 			            text: salesOrdersumbitText,
 			            margin:'0 10 0 0',
 			            handler: 'submitSalesOrder'
 			        },{
 			            xtype: 'button',
 			            reference: 'salesViewOrderbutton',
-			            cls:'orderline-control-button-cls',
+			            ui:'white',
+			            width:150,
 			            text: viewSalesOrderBtnText,
 			            margin:'0 10 0 0',
 			            handler: 'viewSalesOrder',
