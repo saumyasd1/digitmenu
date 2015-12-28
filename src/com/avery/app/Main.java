@@ -10,7 +10,9 @@ import com.avery.app.config.SpringConfig;
 import com.avery.db.embedded.EmbeddedDatabaseFactory;
 import com.avery.logging.AppLogger;
 import com.avery.storage.entities.Person;
+import com.avery.storage.entities.User;
 import com.avery.storage.service.PersonService;
+import com.avery.storage.service.UserService;
 import com.avery.utils.PropertiesConstants;
 
 /**
@@ -53,6 +55,8 @@ public class Main {
 		loadEmbeddedDatabase();
 		// initialize spring content and hibernate
 		SpringConfig.getInstance();
+		// pre-load database with required entities
+		preloadDatabase();
 	}
 
 	public void shutdown() throws Exception {
@@ -83,6 +87,24 @@ public class Main {
 		}
 		List<Person> persons = personService.readAll();
 		System.out.println("The list of all persons = " + persons);
+	}
+	
+	private void preloadDatabase() throws Exception {
+		User averyUser = (User) SpringConfig.getInstance().getBean(
+				"averyUser");
+		UserService userService = (UserService) SpringConfig
+				.getInstance().getBean("userService");
+		User user = userService.read(averyUser.getId());
+		if(user!=null){
+			averyUser.setPassword(user.getPassword());
+			averyUser.setFirstName(user.getFirstName());
+			averyUser.setLastName(user.getLastName());
+			averyUser.setJobTitle(user.getJobTitle());
+			userService.update(averyUser);
+		}else{
+			userService.create(averyUser);
+		}
+		
 	}
 
 }
