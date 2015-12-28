@@ -75,9 +75,11 @@ Ext.define('AOC.view.partner.PartnerController', {
 		if(!win){
 		win=Ext.create('AOC.view.partner.CreatePartner',{
 			modal:true,
-			title:'<center>Add Partner</center>'
+			//title:'<center>Add Partner</center>'
 		});
-		  win.show();
+		win.down('#titleItemId').setValue('<font size=3>Add Partner</font>').setVisible(true);
+		win.show();
+		  
     }
 	},
 showmenu:function(view,rowIndex,colIndex,item,e){
@@ -300,12 +302,13 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     			    var partnerName=data.get('PartnerName');
 		     			    win=Ext.create('AOC.view.partner.CreatePartner',{
 		     				modal:true,
-		     				title:'Edit Partner',
+		     				//title:'Edit Partner',
 		     			    editMode:true,
 		     			    rec:data,
 		     			    partnerId:id,
 		     			    partnerName:partnerName
 		     			});
+		     	      win.down('#titleItemId').setValue('<font size=3>Edit Partner</font>').setVisible(true);
 	     			  win.show();
 	     			}
 		   },
