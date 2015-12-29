@@ -30,7 +30,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		value:'',
-        		hidden:false
+        		hidden:true
         	},{
         			xtype:'fieldcontainer',
         			layout:'hbox',
@@ -196,9 +196,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelAlign:'right',
         			name: 'attachment1',
         			reference: 'attachment1',
-        			fieldLabel:'Attachments<font color=red>*</font>',
+        			fieldLabel:'Attachments',
         			labelSeparator:'',
-                    allowBlank: false,
+                    allowBlank: true,
                     labelWidth : 100,
                     disabled:true,
   		            width : 500,
