@@ -117,7 +117,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             });
 
             temp = Ext.create('AOC.view.base.BaseWindow', {
-                height: 500,
+                height: 600,
                 width: 560,
                 //title: advancedSearchWindowTitle,
                 itemId: 'orderqueueadvancesearchIDWindow',
@@ -126,14 +126,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 modal: true,
                 store: store,
                 closeAction:'hide',
-                listeners: {
-//                    afterrender: function(obj) {
-//                        store.load();
-//                    },
-//                    beforedestroy: function(btn) {
-//                        cmp.enable();
-//                    }
-                },
                 items: [{
                     xtype: 'orderqueueadvancesearch'
                 }]
