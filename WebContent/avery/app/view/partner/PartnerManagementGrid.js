@@ -149,15 +149,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		        		    	 }
 		        	            }
 		        		},
-//				       {
-//							xtype:'button',
-//							itemId:'advancesearchbutton',
-//							text:advSearchText,
-//							icon: advSearchIcon,
-//							iconAlign: "right",
-//					    	handler:'openAdvancedSearchWindow'
-//					       
-//						 },
 					{
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
