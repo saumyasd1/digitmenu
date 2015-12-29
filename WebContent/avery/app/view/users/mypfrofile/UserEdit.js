@@ -1,12 +1,24 @@
 Ext.define('AOC.view.users.myprofile.UserEdit', {
     extend: 'Ext.form.Panel',
     alias: 'widget.useredit',
+    itemId:'useredititemid',
+    controller:'userMain',
     updateUserLogoId: Ext.id(),  
     initComponent: function () {
         Ext.apply(this, {
             items: this.buildItems()
         });
         this.callParent(arguments);
+    },
+    buildButtons : function(){
+        return [{
+        	text : 'Save',
+            handler : 'SaveDetails'
+        },
+        {
+        	text : 'Cancel',
+            handler : 'CancelDetails'
+        }];
     },
     rec: null,
     isAdmin : false,
@@ -59,7 +71,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
 				height:185,
 				itemId: 'updateUserImage',
 				region:'center',
-				margin:'0 0 0 200',
+				margin:'0 0 0 40',
 				data: AOC.config.Runtime.getUser(),
 				tpl: me.buildUserInfoTpl()
 				}
@@ -106,13 +118,14 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                     },{
                         name: 'email',
                         fieldLabel: emailAddress,
-                        readOnly: true
+                        regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
                     }, {
                         name: 'jobTitle',
                         fieldLabel: jobTitle,
                         maxLength : 64,
                         maxLengthText : maxCharText.replace("$$$$", 64)
-                    }, {
+                    },
+                    {
                         xtype: 'combobox',
                         itemId: 'role',
                         editable : false,
@@ -120,15 +133,70 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         store: 'Roles',
                         name : 'role',
                         queryMode : 'local',
-                        displayField: 'displayName',
-                        valueField: 'value',
+                        displayField: 'entityName',
+                        valueField: 'id',
                         fieldLabel: role
-                    },{
+                    },
+                    {
+                   	 xtype: 'textfield',
+                            inputType: 'password',
+                            itemId: 'newPassword',
+                            name: 'password',
+                            fieldLabel: password,
+                            allowBlank: false,
+                            validateOnChange:false,
+                            vtype:'newpassword',
+                            initialPassField: 'currentPassword',
+                            listeners: {
+                                scope: me
+                            }
+                        },
+                        {
+                   	        xtype: 'textfield',
+                            inputType: 'password',
+                            itemId: 'confirmPassword',
+                            name: 'confirmPassword',
+                            allowBlank: false,
+                            fieldLabel: confirmPassword,
+                            vtype: 'password',
+                            initialPassField: 'password',
+                        }
+                    ,{
                 	xtype:'hidden',
                 	name:'id'
                     }]
                 }]
-            }]
+            },
+            {
+            	xtype :'tbspacer',
+            	width :100
+    		},
+            { buttons:this.buildButtons()}]
+   
         }];
     }
+});
+Ext.apply(Ext.form.VTypes, {
+	 newpassword: function(val,field) {
+		    if(val && val.length<8)
+		    	{
+		    	field.vtypeText =minimum8Char;
+		    	return false;
+		    	}
+		    if (field.initialPassField) {
+     		 var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
+     		  if(val && val == pwd.getValue()){
+     		  field.vtypeText =newPasswordFailureMsg;
+     		    	return false;
+     		   }}
+     		 return true;
+		    },
+		    password : function(val, field) {
+		    if (field.initialPassField) {
+		     var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
+		    	return (val == pwd.getValue());
+		    }
+		        return true;
+		    },
+		    passwordText :passwordsNotMatch
 });
