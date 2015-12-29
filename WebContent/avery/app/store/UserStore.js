@@ -5,6 +5,6 @@ Ext.define('AOC.store.UserStore', {
 	remoteSort: true,
 	totalCount:'total',
 	pageSize:pageSize,
-	storeId:'UserStoreId',
+	storeId:'UserStoreId'
 });
 
