@@ -75,6 +75,8 @@ profileInfo="My Profile",
 changedPassword="Change Password",
 male='Male',
 female='Female',
-pleaseWait= "Please wait...";
+pleaseWait= "Please wait...",
+password='Password',
+confirmPassword='Confirm Password'
 ;
 
