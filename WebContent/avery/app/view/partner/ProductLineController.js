@@ -75,17 +75,18 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    jsonData : parameters,	
 				    url : url,
 				    success : function(response, opts) {
+				    	Ext.getBody().unmask();
+				    	createproductline.destroy();
 			  			Ext.Msg.alert('Alert Message',Msg);
-			  			Ext.getBody().unmask();
-				  		me.runTime.getActiveGrid().store.load();
-				  		me.getView().destroy();
+			  			productline.store.load();
+				  		
 		        },
 		        failure: function(response, opts) {
 		        	Msg=response.responseText;
 		        	Msg=Msg.replace("Exception:"," ");
 		        	Ext.Msg.alert('Alert Message',Msg);
 		        	Ext.getBody().unmask();
-		        	me.getView().destroy();
+		        	createproductline.destroy();
               }
       	});
 		}
