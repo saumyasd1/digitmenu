@@ -23,6 +23,8 @@ Ext.define('AOC.view.webform.WebOrderPage',{
         	return [{
  				xtype:'panel',
  				layout:'vbox',
+ 				height:400,
+ 				scrollable : true,
  				items:[
 				{
 					 xtype:'weborderform',
