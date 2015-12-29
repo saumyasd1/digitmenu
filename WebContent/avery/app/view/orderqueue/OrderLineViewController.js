@@ -44,7 +44,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		});
       		innerGridType='bulkupdateorderlinegrid';
       	 }
-		   var win=Ext.create('Ext.window.Window',{
+		   var win=Ext.create('AOC.view.base.BaseWindow',{
 			 	height:height,
 				width:width,
 				layout: 'fit',
