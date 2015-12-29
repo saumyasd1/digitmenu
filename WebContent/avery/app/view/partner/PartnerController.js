@@ -8,6 +8,7 @@ Ext.define('AOC.view.partner.PartnerController', {
 		var me=this;
 		var Msg='';
 		var createpartner=Ext.ComponentQuery.query("#createpartnerItemId")[0];
+		var grid=Ext.ComponentQuery.query("#PartnerMangementitemId")[0];
 		var panel=createpartner.down('#listPanel');
 		var valueObj='',form=this.getView().down('form');
 		var methodMode='';
@@ -38,17 +39,17 @@ Ext.define('AOC.view.partner.PartnerController', {
 				    jsonData : parameters,	
 				    url : url,
 		        success : function(response, opts) {
+		        	    Ext.getBody().unmask();
+		        	    createpartner.destroy();
 			  			Ext.Msg.alert('Alert Message',Msg);
-			  			Ext.getBody().unmask();
-				  		me.runTime.getActiveGrid().store.load();
-				  		me.getView().destroy();
+			  			grid.store.load();
 		        },
 		        failure: function(response, opts) {
 		        	Msg=response.responseText;
 		        	Msg=Msg.replace("Exception:"," ");
 		        	Ext.Msg.alert('Alert Message',Msg);
 		        	Ext.getBody().unmask();
-		        	me.getView().destroy();
+		        	createpartner.destroy();
               }
       	});
 		}
