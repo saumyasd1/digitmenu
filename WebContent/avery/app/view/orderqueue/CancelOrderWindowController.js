@@ -21,14 +21,13 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
             success: function(response, opts) {
                 var orderQueueView= Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
                 var activeItem=orderQueueView.getLayout().getActiveItem();
-                activeItem.getStore().load();
-                if(activeItem.itemId.indexOf('orderline')!=-1){
-                	var orderlineexpandablegrid = activeItem,
-	                validateButton = orderlineexpandablegrid.lookupReference('validateButton'),
+                if(activeItem.xtype.indexOf('orderline')!=-1){
+                	var orderlineexpandablegrid = activeItem.down('grid'),
+	                validateButton = activeItem.lookupReference('validateButton'),
 	                bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
-	                salesViewOrderbutton= orderlineexpandablegrid.lookupReference('salesViewOrderbutton'),
-	                salesOrderbutton=orderlineexpandablegrid.lookupReference('salesOrderbutton'),
-	                cancelOrderButton=orderlineexpandablegrid.lookupReference('cancelOrderButton'),
+	                salesViewOrderbutton= activeItem.lookupReference('salesViewOrderbutton'),
+	                salesOrderbutton=activeItem.lookupReference('salesOrderbutton'),
+	                cancelOrderButton=activeItem.lookupReference('cancelOrderButton'),
 	                form=orderlineexpandablegrid.lookupReference('form');
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
@@ -37,7 +36,10 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
                 	cancelOrderButton.disable();
                 	form.disable();
                 	me.runTime.setAllowOrderLineEdit(false);
+                	orderlineexpandablegrid.store.load();
                 	Ext.Msg.alert('',orderCancelSuccessAlert);
+                }else{
+                	activeItem.getStore().load();
                 }
                 Ext.getBody().unmask();
                 me.getView().destroy();
