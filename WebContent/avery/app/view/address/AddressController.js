@@ -140,6 +140,7 @@ Ext.define('AOC.view.address.AddressController', {
 		var me=this;
 		var Msg='';
 		var createaddress=this.getView();
+		var grid=Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
 		var panel=createaddress.down('#listPanel');
 		var valueObj='',form=this.getView().down('form');
 		var editMode=this.getView().editMode,url='';
@@ -195,14 +196,15 @@ Ext.define('AOC.view.address.AddressController', {
 				    jsonData : parameters,	
 				    url : url,
 		        success : function(response, opts) {
+		        	    Ext.getBody().unmask();
+		        	    createaddress.destroy();
 			  			Ext.Msg.alert('Alert Message',Msg);
-			  			Ext.getBody().unmask();
-				  		me.runTime.getActiveGrid().store.load();
-				  		me.getView().destroy();
+			  			grid.store.load();
+				  		
 		        },
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();
-		        	me.getView().destroy();
+		        	createaddress.destroy();
               }
       	});
 		}else{
@@ -238,7 +240,8 @@ Ext.define('AOC.view.address.AddressController', {
 		Ext.getBody().unmask();
 		this.getView().destroy();
 		this.runTime.setWindowInEditMode(false);
-		this.runTime.getActiveGrid().store.load();
+		var grid=Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
+		grid.store.load();
 	},
 	deleteResource:function(record){
 		var ID=record.get('id');
