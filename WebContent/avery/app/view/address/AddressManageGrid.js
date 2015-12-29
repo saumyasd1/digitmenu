@@ -36,6 +36,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
              				}
              				});
              			 obj.bindStore(store);
+             			me.down('pagingtoolbar').bindStore(store);
              		 }
              		 store.load();
              	  }
