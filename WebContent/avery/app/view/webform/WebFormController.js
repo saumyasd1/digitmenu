@@ -254,9 +254,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 this.getView().lookupReference('orderFileType').orderSchemaType=orderSchemaType;
 			 if(!attachmentRequired){
 				 this.getView().lookupReference('attachment1').hide();
-				 this.getView().lookupReference('attachment1').allowBlank=true;
 			 }else{
-				 this.getView().lookupReference('attachment1').allowBlank=false;
 				 this.getView().lookupReference('attachment1').show();
 			 }
 			 this.getView().lookupReference('emailBody').enable();
@@ -312,6 +310,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 notifyByMessage : function(config){
      	var messageField=this.getView().down('#messageFieldItemId');
 		var message=messageField.setValue('');
-		    message.setVisible(true);
-			   }
+		    message.setVisible(false);
+}
 });
