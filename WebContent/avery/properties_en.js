@@ -77,6 +77,9 @@ male='Male',
 female='Female',
 pleaseWait= "Please wait...",
 password='Password',
-confirmPassword='Confirm Password'
+confirmPassword='Confirm Password',
+qtyVariableLabel='qty',
+sizeVariableLabel='size',
+duplicateMappingLabel='DUPLICATE MAPPING'
 ;
 
