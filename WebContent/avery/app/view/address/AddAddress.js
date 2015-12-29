@@ -49,7 +49,7 @@ Ext.define('AOC.view.address.AddAddress',{
 				   },
 				   {
 				   	xtype :'tbspacer',
-				   	height:1,
+				   	height:1
 					},  
         	   {
         		xtype:'displayfield',
@@ -230,28 +230,6 @@ Ext.define('AOC.view.address.AddAddress',{
                ]
         		
         	},
-//        	{
-//        		xtype:'container',
-//        		layout: {
-//        	        type: 'hbox',
-//        	        pack: 'center'
-//        	    },
-//        		items:[{   xtype :'button',
-//                	text : 'Save',
-//                    handler:'saveAddressDetails',
-//                    width : 70
-//                },
-//                {
-//                	xtype:'tbspacer',
-//                	width:20
-//                },{  
-//        			xtype :'button',
-//                	text : 'Cancel',
-//                    handler : 'closeWindow',
-//                    width : 70
-//                }
-//        		       ]
-//        	}
             {
             	xtype :'tbspacer',
             	width :100
