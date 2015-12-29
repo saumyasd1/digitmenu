@@ -89,6 +89,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 	if(record.get('status')==waitingForCSRStatus)
                 		meta.style = cellColor;
                 } else {
+                	if(value==averyItemNotFoundText || value==duplicateMappingLabel)
+                		meta.style = cellColor;
                 	 return value;
                 }
             }
@@ -110,15 +112,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Bulk',
             dataIndex: 'bulk',
             width: 50,
-            editor: 'textfield',
-            renderer:function(value){
-    			if(value==true){
-    				return 'Y';
-    			}
-    			else{
-    				return 'N';
-    			}
-        }
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            }
         }, {
             text: 'Ship To Customer',
             dataIndex: 'shipToCustomer',
@@ -374,7 +372,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 72,
             editor: 'textfield'
         }, {
-            text: 'Contract #',
+            text: 'Contract #<font color="red">*</font>',
             dataIndex: 'contractNumber',
             width: 130,
             editor: 'textfield',
@@ -402,7 +400,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 106,
             editor: 'textfield',
             renderer : function(value, meta,record) {
-                if(parseInt(value) > 0) {
+                if(parseInt(value) > -1) {
                    return value;
                 } else {
                 	if(record.get('status')==waitingForCSRStatus)
