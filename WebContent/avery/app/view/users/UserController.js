@@ -20,7 +20,6 @@ Ext.define('AOC.view.users.UserController', {
 		win.show();
     },
     SaveDetails:function(){
-    	debugger;
 		Ext.getBody().mask('Saving....');
 		var me=this;
 		var Msg='';
@@ -40,7 +39,6 @@ Ext.define('AOC.view.users.UserController', {
 				    jsonData : parameters,	
 				    url : url,
 		        success : function(response, opts) {
-		        	debugger;
 		        	    Ext.getBody().unmask();
 		        	    win.destroy();
 			  			Ext.Msg.alert('Alert Message',Msg);
