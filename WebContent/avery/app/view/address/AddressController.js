@@ -86,19 +86,14 @@ Ext.define('AOC.view.address.AddressController', {
 		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
 		 if(!temp){
 				 temp = Ext.create('Ext.window.Window',{
-						 	height:460,
-							width:300,
+						 	height:350,
+							width:560,
 							//title:advancedSearchWindowTitle,
 							itemId:'addressAdvancedSerachwindow',
 							layout: 'fit',
 							draggable: false,
 							modal:true,
 							closeAction:'hide',
-						 	listeners:{ 
-//					             beforedestroy: function(btn) {
-//						 		 cmp.enable();
-//						 	}
-				        },
 						 	items : [{  xtype : 'addressadvancesearch' }]
 					 });
 		         }
@@ -119,7 +114,7 @@ Ext.define('AOC.view.address.AddressController', {
 						 width=width-24;
 						 x=d.getX();
 						 y=d.getY();
-	   	        		 temp.showAt(x-width,y+20);
+	   	        		 temp.show();
 					}
 					return false;	
 	},
@@ -263,6 +258,10 @@ Ext.define('AOC.view.address.AddressController', {
 			  }
 		});
 	},
+	 HideMandatoryMessage:function(){
+		   var createaddress=this.getView();
+		   createaddress.down('#messageFieldItemId').setValue('').setVisible(true);
+	   },
 	  notifyByMessage:function()
 	    {
 		  var addresssearch=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
