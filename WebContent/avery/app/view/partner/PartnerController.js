@@ -299,7 +299,6 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     			    var partnerName=data.get('PartnerName');
 		     			    win=Ext.create('AOC.view.partner.CreatePartner',{
 		     				modal:true,
-		     				//title:'Edit Partner',
 		     			    editMode:true,
 		     			    rec:data,
 		     			    partnerId:id,
