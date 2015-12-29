@@ -6,7 +6,7 @@ Ext.define('AOC.view.base.BaseWindow', {
     closeAction:'destroy',
     draggable: true,
     maximizable:false,
-    autoScroll:true,
+    //autoScroll:true,
     shadow:false,
     margin: '0 10 0 10' ,
     ghost:false,
