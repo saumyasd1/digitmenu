@@ -135,6 +135,7 @@ Ext.define('AOC.controller.MenuController', {
 		            section = Ext.widget(xtype);
 		    }
 		  if (!Ext.isEmpty(section)){
+			  me.runtime.setActiveGrid(section.down('grid'));
 		    cardLayout.setActiveItem(section) ; 
 		  }
 	      }
