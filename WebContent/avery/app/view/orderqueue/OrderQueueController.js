@@ -15,6 +15,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         this.runTime.setOrderQueueId(id);
         this.runTime.setOrderQueueActiveRecord(currentRecord);
         this.runTime.setOrderQueueStatus(currentRecord.get('Status'));
+        this.runTime.setAllowOrderLineEdit(true);
         var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
         if(item)
         if (item.action == 'viewSales') {
