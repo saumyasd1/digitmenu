@@ -211,6 +211,7 @@ Ext.define('AOC.controller.MenuController', {
 	    },
 	    onManageUsers:function(){
 		 var me=this;
+		 me.selectCard('users');
 	    },
 	    onLogout:function(){
 	      var me=this;
