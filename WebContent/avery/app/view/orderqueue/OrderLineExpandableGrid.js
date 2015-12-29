@@ -85,13 +85,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'htlSizePageValidationFlag',
         width: 40,
     	renderer:function(value, metadata,rec){
-    		var htlSizePageValidationFlag=rec.data.htlSizePageValidationFlag;
+    		var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag');
     		var checkvalue=value.trim();
 			if(checkvalue.substr(0,1)=='S'){
 				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
-					this.validationFieldMissing=true;
+				if(rec.get('status')==waitingForCSRStatus)
+					this.mandatoryValidationFieldMissing=true;
 				return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
@@ -99,7 +100,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'MOQ',
         dataIndex: 'moqValidationFlag',
         width: 50,
-        editor: 'textfield',
     	renderer:function(value, metadata,rec){
     		var moqValidationFlag=rec.data.moqValidationFlag;
     		var checkvalue=value.trim();
@@ -122,7 +122,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	editable:false,
         	displayField:'value',
 			valueField:'code',
-        	store:Ext.data.StoreManager.lookup('orderfilequeueid')
+        	store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid')
         },
 		renderer:function(v){
 			return AOC.util.Helper.getSatus(v);
@@ -154,7 +154,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             		meta.style = cellColor;
             	}
             } else {
-            	if(value==averyItemNotFoundText)
+            	if(value==averyItemNotFoundText || value==duplicateMappingLabel)
             		meta.style = cellColor;
             	return value;
             }
@@ -408,10 +408,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 115,
         editor: 'textfield'
     }, {
-        text: 'ITEM Desc\Size Page',
+        text: 'ITEM Desc/Size Page',
         dataIndex: 'itemDescription',
         width: 102,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer:function(value, metadata,rec){
+    		var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag').trim();
+			if(htlSizePageValidationFlag.substr(0,1)=='S'){
+				return '<div>'+value+'</div>';
+			}
+			else{
+					if(this.showMandatoryValidationField)
+						metadata.style = mandatoryValidationCellColor;
+					return '<div>'+value+'</div>';
+			}
+    }
     }, {
         text: 'Customer Color Code',
         dataIndex: 'customerColorCode',
@@ -426,9 +437,20 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Customer Size',
         dataIndex: 'customerSize',
         width: 72,
-        editor: 'textfield'
+        editor: 'textfield',
+        renderer:function(value, metadata,rec){
+    		var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag').trim();
+			if(htlSizePageValidationFlag.substr(0,1)=='S'){
+				return '<div>'+value+'</div>';
+			}
+			else{
+					if(this.showMandatoryValidationField)
+						metadata.style = mandatoryValidationCellColor;
+					return '<div>'+value+'</div>';
+			}
+    }
     }, {
-        text: 'Contract #',
+        text: 'Contract #<font color="red">*</font>',
         dataIndex: 'contractNumber',
         width: 130,
         editor: 'textfield',
@@ -456,9 +478,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Customer Ordered Qty.<font color=red>*</font>',
         dataIndex: 'customerOrderedQty',
         width: 106,
-        editor: 'textfield',
+        editor: 'numberfield',
         renderer : function(value, meta,record) {
-            if(parseInt(value) > 0) {
+            if(parseInt(value) > -1) {
             	if(this.showMandatoryValidationField){
 	            	if(record.get('status')==waitingForCSRStatus && record.get('waiveMOQ')=='false'){
 		            	var moqValidationFlag=record.data.moqValidationFlag;
@@ -799,6 +821,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
+        	me.showMandatoryValidationField=false;
         	me.validationFieldMissing=false;
         });
         this.callParent(arguments);
@@ -925,11 +948,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		            	  xtype:'textfield',
     		            	  disabled:true
     		              }
-    		          },{
-    		        	  text:'',
-    		        	  flex:1
     		          }],
     		          columnLines: false,
+    		          width: 793,
     		          //border: true,
     		          plugins: me.getInnerGridPlugin(),
     		          autoHeight: true,
