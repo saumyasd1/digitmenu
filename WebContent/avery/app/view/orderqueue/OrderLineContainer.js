@@ -3,7 +3,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	requires : [],
 	alias : 'widget.orderlinecontainer',
 	controller:'orderlinecontainer',
-	requires:['Ext.draw.sprite.Line'],
 	initComponent : function() {
 		var me=this;
 		Ext.apply(this, {
@@ -20,7 +19,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	},
 	buildItems:function(){
 		var me=this;
-		debugger;
 		 var record=AOC.config.Runtime.getOrderQueueActiveRecord();
 		return  [{
 				xtype:'container',
@@ -134,11 +132,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			        }]
 					}
 				]
-			},{
-				xtype: 'draw',
-		        sprites: [{
-		            type: 'line'
-		        }]
 			},{
 				xtype:'orderlineexpandablegrid',
 				store:me.store,
