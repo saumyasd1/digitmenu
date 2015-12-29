@@ -89,7 +89,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 			    		    xtype: 'component',
 			    		    autoEl: {
 			    		    	tag: 'img',
-						        src: BackIcon
+						        src: AOC.config.Settings.buttonIcons.backIcon
 			    		    },
 				    		    listeners: {
 				    		    	 el : {

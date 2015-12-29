@@ -72,7 +72,6 @@ Ext.define('AOC.view.partner.PartnerController', {
 		if(!win){
 		win=Ext.create('AOC.view.partner.CreatePartner',{
 			modal:true,
-			//title:'<center>Add Partner</center>'
 		});
 		win.down('#titleItemId').setValue('<font size=3><b>Add Partner</b></font>').setVisible(true);
 		win.show();
@@ -165,20 +164,14 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	 var temp=Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
 	 if(!temp){
 	
-			 temp = Ext.create('Ext.window.Window',{
+			 temp = Ext.create('AOC.view.base.BaseWindow',{
 					 	height:390,
 						width:300,
-						//title:advancedSearchWindowTitle,
 						itemId:'partneradvancesearchWindowItemId',
 						layout: 'fit',
 						draggable: false,
 						modal:true,
 						closeAction:'hide',
-					 	listeners:{ 
-//				             beforedestroy: function(btn) {
-//					 		 cmp.enable();
-//					 	}
-			        },
 					 	items : [{  xtype : 'partneradvancesearch' }]
 				 });
 	         }
@@ -199,7 +192,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 					 width=width-24;
 					 x=d.getX();
 					 y=d.getY();
-  	        		 temp.showAt(x-width,y+20);
+  	        		 temp.show();
 				}
 				return false;
 		},
@@ -307,6 +300,10 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		     	      win.down('#titleItemId').setValue('<font size=3><b>Edit Partner</b></font>').setVisible(true);
 	     			  win.show();
 	     			}
+		   },
+		   HideMandatoryMessage:function(){
+			   var createpartner=Ext.ComponentQuery.query("#createpartnerItemId")[0];
+			   createpartner.down('#messageFieldItemId').setValue('').setVisible(true);
 		   },
 		   notifyByMessage:function()
 		    {

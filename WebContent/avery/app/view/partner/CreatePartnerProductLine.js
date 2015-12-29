@@ -1,5 +1,5 @@
 Ext.define('AOC.view.partner.CreatePartnerProductLine',{
-	extend:'Ext.window.Window',
+	extend:'AOC.view.base.BaseWindow',
 	alias:'widget.createpartnerproductline',
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
@@ -120,7 +120,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            blankText : 'Product Line is required',
       		            listeners : {
       		            	 blur : this.notifyByImage,
-     	                	focus : this.notifyByMessage
+      		            	'focus' : 'HideMandatoryMessage'
      	                    }
             		},
             		{
@@ -142,7 +142,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            blankText : 'CSR is required',
       		            listeners : {
       		            	 blur : this.notifyByImage,
-     	                	focus : this.notifyByMessage
+      		            	'focus' : 'HideMandatoryMessage'
      	                    }
             		}]
         		},
@@ -171,7 +171,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            blankText : 'CSR is required',
   		            listeners : {
   		            	 blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		},
         		{
@@ -194,7 +194,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            blankText : 'Shipping Only Notes is required',
   		            listeners : {
   		            	blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		}
         		]
@@ -222,7 +222,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            blankText : 'Packing Instuction is required',
   		            listeners : {
   		            	 blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		},
         		{
@@ -245,7 +245,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            enforceMaxLength: true,
   		            listeners : {
   		            	 blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		}
         		]
@@ -274,7 +274,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            allowBlank: false,
       		            listeners : {
       		            	 blur : this.notifyByImage,
-     	                	focus : this.notifyByMessage
+      		            	'focus' : 'HideMandatoryMessage'
      	                    }
         		},
         		{
@@ -299,7 +299,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            enforceMaxLength: true,
   		            listeners : {
   		            	 blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
     		}]
         		},
@@ -325,7 +325,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            enforceMaxLength: true,
   		            listeners : {
   		            	 blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+  		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		},
         		{
@@ -436,15 +436,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         	]
        
         },
-        notifyByMessage : function(config){
-			   var me = this;
-			   if(config.up('#listPanel').ownerCt){
-				   if(config.up('#listPanel').ownerCt.editMode)
-					       config.up('#listPanel').ownerCt.setTitle('Edit Partner Product Line');
-				   else
-					       config.up('#listPanel').ownerCt.setTitle('Add Partner Product Line');
-			   }
-		   },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
 		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');

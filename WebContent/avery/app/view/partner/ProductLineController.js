@@ -179,7 +179,7 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	{
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 if(!temp){
-		 temp = Ext.create('Ext.window.Window',{
+		 temp = Ext.create('AOC.view.base.BaseWindow',{
 				 	height:400,
 					width:300,
 					//title:advancedSearchWindowTitle,
@@ -213,7 +213,7 @@ if(!temp){
 				 width=width-24;
 				 x=d.getX();
 				 y=d.getY();
-	        		 temp.showAt(x-width,y+20);
+	        		 temp.show();
 			}
 			return false;
 		},
@@ -313,9 +313,12 @@ if(!temp){
 			cmp.setValue('');
 			cmp.orderedTriggers[0].hide();
 	   },
+	   HideMandatoryMessage:function(){
+		   var createproductline=this.getView();
+		   createproductline.down('#messageFieldItemId').setValue('').setVisible(true);
+	   },
 	   notifyByMessage:function()
 	    {
-		  
 		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
 	    }

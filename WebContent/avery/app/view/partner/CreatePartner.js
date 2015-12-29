@@ -1,5 +1,5 @@
 Ext.define('AOC.view.partner.CreatePartner',{
-	extend:'Ext.window.Window',
+	extend:'AOC.view.base.BaseWindow',
 	alias:'widget.createpartner',
 	itemId:'createpartnerItemId',
 	controller:'partnerMain',
@@ -75,7 +75,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
 		            enforceMaxLength: true,
 		            listeners : {
 		            	blur : this.notifyByImage,
-   	                	focus : this.notifyByMessage
+	                	'focus' : 'HideMandatoryMessage'
    	          }
         		},
         		{
@@ -99,7 +99,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
   		            enforceMaxLength: true,
   		            listeners : {
   		            	        blur : this.notifyByImage,
-         	                	focus : this.notifyByMessage
+  		            	      'focus' : 'HideMandatoryMessage'
          	                     }
         		},
         		{
@@ -122,7 +122,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
   		            enforceMaxLength: true,
    		            listeners : {
    		            	    blur : this.notifyByImage,
-     	                	focus : this.notifyByMessage
+   		            	 'focus' : 'HideMandatoryMessage'
      	              
      	                        }
         		},
@@ -144,34 +144,10 @@ Ext.define('AOC.view.partner.CreatePartner',{
   		            enforceMaxLength: true,
   		            listeners : {
   		            	        blur : this.notifyByImage,
-  	     	                	focus : this.notifyByMessage
+  		            	      'focus' : 'HideMandatoryMessage'
   	     	                    }
   		         
         		},
-//        		  { xtype: 'fieldcontainer',
-//                    layout: 'hbox',
-//                    margin : '5 0 0 10',
-//                    items:[
-//                           {
-//                	xtype :'tbspacer',
-//                	width :80
-//        		          },{
-//                    xtype :'button',
-//                	text : 'Save',
-//                    handler : 'SaveDetails',
-//                    width : 70
-//                    
-//                },{
-//                	xtype :'tbspacer',
-//                	width :30
-//        		},
-//                {   xtype :'button',
-//                	text : 'Cancel',
-//                    handler : 'CancelDetails',
-//                    width : 70
-//                   
-//                }]
-//        		  }
         		  {
                 	xtype :'tbspacer',
                 	width :100
@@ -180,15 +156,6 @@ Ext.define('AOC.view.partner.CreatePartner',{
                ]
         	}]
         },
-        notifyByMessage : function(config){
-			   var me = this;
-			   if(config.up('#listPanel').ownerCt){
-				   if(config.up('#listPanel').ownerCt.editMode)
-					       config.up('#listPanel').ownerCt.setTitle('Edit Partner');
-				   else
-					       config.up('#listPanel').ownerCt.setTitle('Add Partner');
-			   }
-		   },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
 		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');
