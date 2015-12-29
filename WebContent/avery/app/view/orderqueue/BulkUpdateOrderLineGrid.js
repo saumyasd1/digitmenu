@@ -53,7 +53,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	displayField:'value',
             	editable:false,
 				valueField:'code',
-            	store:Ext.data.StoreManager.lookup('orderfilequeueid')
+				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid')
             },
 			renderer:function(v){
 				var store=Ext.data.StoreManager.lookup('orderfilequeueid');
@@ -116,7 +116,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	xtype:'combo',
             	editable:false,
             	store:[[true,'Y'],[false,'N']]
-            }
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'Ship To Customer',
             dataIndex: 'shipToCustomer',
