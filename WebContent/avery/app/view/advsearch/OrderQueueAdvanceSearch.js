@@ -6,7 +6,6 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 			requires : ['Ext.window.MessageBox'],
 			border : false,
 			buttonAlign : 'right',
-			controller:'orderqueue',
 			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
 			items : [  
 			           {
@@ -168,7 +167,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							xtype : 'radiogroup',
 							name: 'datecriteriavalue',
 							fieldLabel : '',
-							width:700,
+							width:600,
 							hidden:false,
 							labelSeparator : '',
 							labelAlign : 'top',

@@ -11,11 +11,12 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								xtype:'displayfield',
 								itemId:'tittleItemId',
 								value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
-								margin:'5 0 0 80'
+								margin:'5 0 0 200'
 				            },
 							{
 								xtype:'tbspacer',
-								height:2
+								height:2,
+								width:10
 							},
 					      {
 							xtype:'displayfield',
@@ -26,9 +27,14 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
                          },
 						{
 							xtype:'tbspacer',
-							height:2
+							height:5,
+							width:30
 						},
-						{
+						 {
+				            xtype: 'fieldcontainer',
+		                    layout: 'hbox',
+		                    margin : '5 0 0 10',
+		                    items:[{
 							xtype : 'textfield',
 							fieldLabel : 'Address',
 							name:'address',
@@ -37,7 +43,11 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
-							margin:'5 0 0 10'
+						},
+						{
+							xtype : 'tbspacer',
+							height:5,
+							width:30
 						},
 						{
 							xtype : 'textfield',
@@ -46,27 +56,33 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							width:250,
 							labelSeparator : '',
 							labelAlign : 'top',
-							margin:'5 0 0 10'
-						},
+						}]
+						 },
 						{
 							xtype : 'tbspacer',
-							height:2
+							height:5,
+							width:30
 						},
 						{
 							xtype : 'radiogroup',
 							name: 'datecriteriavalue',
 							fieldLabel : '',
-							width:250,
+							width:600,
 							hidden:false,
 							labelSeparator : '',
-							labelAlign : 'top',
 							margin:'5 0 0 10',
+							labelAlign : 'top',
 							items:[
 						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
 						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
 						            ]
 						},
 						{
+
+							xtype: 'fieldcontainer',
+	                        layout: 'hbox',
+	                        margin : '5 0 0 10',
+	                        items:[{
 							xtype : 'datefield',
 							name:'fromDate',
 							fieldLabel : 'From Date ',
@@ -76,7 +92,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
-							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
@@ -85,7 +100,8 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						},
 						{
 							xtype:'tbspacer',
-							height:2
+							height:5,
+							width:30
 						},
 						{
 							xtype : 'datefield',
@@ -97,13 +113,13 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							labelAlign : 'top',
 							allowBlank : true,
 							selectOnTab : true,
-							margin:'5 0 0 10',
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
 							                },
 							                'focus': 'notifyByMessage'
 							        }
+						}]
 						}
 			],
 			buttons : [ {
