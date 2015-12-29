@@ -63,8 +63,8 @@ Ext.define('AOC.view.archive.ArchiveController', {
 		{
 				 var temp=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
 		 if(!temp){
-				 temp = Ext.create('Ext.window.Window',{
-						 	height:300,
+				 temp = Ext.create('AOC.view.base.BaseWindow',{
+						 	height:350,
 							width:300,
 							//title:advancedSearchWindowTitle,
 							itemId:'archivesearchItemIdwin',
@@ -72,11 +72,6 @@ Ext.define('AOC.view.archive.ArchiveController', {
 							draggable: false,
 							modal:true,
 							closeAction:'hide',
-						 	listeners:{ 
-//					             beforedestroy: function(btn) {
-//						 		 cmp.enable();
-//						 	}
-				        },
 						 	items : [{  xtype : 'archiveadvancesearch' }]
 					 });
 		         }
@@ -97,7 +92,7 @@ Ext.define('AOC.view.archive.ArchiveController', {
 						 width=width-24;
 						 x=d.getX();
 						 y=d.getY();
-	  	        		 temp.showAt(x-width,y+20);
+	  	        		 temp.show();
 					}
 					return false;
 			},
