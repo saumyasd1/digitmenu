@@ -39,6 +39,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
              				}
              				});
              			 obj.bindStore(store);
+             			 me.down('pagingtoolbar').bindStore(store);
              		 }
              		 store.load();
              	  }
