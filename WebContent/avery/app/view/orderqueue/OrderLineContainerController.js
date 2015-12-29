@@ -69,7 +69,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     submitSalesOrder:function(){
     	Ext.getBody().mask('Loading...');
-    	var grid=this.getView(),store=grid.store,me=this;
+    	var grid=this.getView().down('grid'),store=grid.store,me=this;
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
