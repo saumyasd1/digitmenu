@@ -1,5 +1,5 @@
 Ext.define('AOC.view.address.AddAddress',{
-	extend:'Ext.window.Window',
+	extend:'AOC.view.base.BaseWindow',
 	alias:'widget.addaddress',
 	itemId:'addAddressItemId',
     controller:'addressMain',
