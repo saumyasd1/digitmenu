@@ -54,9 +54,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     buildColumns : function(){
     	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [
-//                {
-//        	xtype:'rownumberer'
-//             },
              {
 //        	header: '<img src="' + menuIcon + '" />',
             text:'',
@@ -96,7 +93,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			renderer:function(value, metadata,rec){
 				if(value){
 					var error=Ext.String.htmlEncode(rec.data.error);
-					return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' + errorIcon + '" /></div>';
+					return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' +  AOC.config.Settings.buttonIcons.error + '" /></div>';
 				}
 				else
 					return '';
@@ -169,22 +166,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 			},
 			renderer:function(v){
-				var statusRecord=store.findRecord( 'code', v);
-				var va=statusRecord.get('value');
-				if(statusRecord.get('value')=="SO Generated" || statusRecord.get('value')=="SO Submitted" || statusRecord.get('value')=="Booked" || statusRecord.get('value')=="Pre-Processed" || statusRecord.get('value')=="Received")
-				   {
-				    return '<div><img  src="' + tickIcon + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
-				   }
-				else if(statusRecord.get('value')=="Waiting CS Verification")
-					{
-					 return '<div><img  src="' + warningImageSrc + '" /><font color=#FF9933>&nbsp&nbsp&nbsp'+va+'</font></div>';
-					}
-				else if(statusRecord.get('value')=="Cancelled")
-				{
-				 return '<div><img  src="' + cancelIcon + '" /><font color=silver>&nbsp&nbsp&nbsp'+va+'</font></div>';
-				}
-				else
-					return '<div><img  src="' + errorStatusIcon + '" /><font color=red>&nbsp&nbsp&nbsp'+va+'</font</div>';
+				return AOC.util.Helper.getSatus(v);
 			}
         },
 		{
