@@ -33,7 +33,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            xtype:'actioncolumn',
 				  	        items:[{
 						  	    	  icon:menuIcon,
-						  	    	  handler: 'showmenu'
+						  	    	  handler: 'onClickMenu'
   	                              }]
                         },
         			    {  
@@ -140,15 +140,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		        		    	 }
 		        	            }
 		        		},
-//				     {
-//						 xtype:'button',
-//						 itemId:'advancesearchbutton',
-//						 text:advSearchText,
-//						 icon: advSearchIcon,
-//						 iconAlign: "right",
-//						 handler:'openAdvancedSearchWindow'
-//							 
-//					},
 					{
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
