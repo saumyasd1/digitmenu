@@ -14,6 +14,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     mandatoryValidationFieldMissing:false,
     showMandatoryValidationField:false,
     validationFieldMissing:false,
+    invalidComboValid:false,
+    showInvalidCombo:false,
     columnLines: false,
     viewConfig    : {
         stripeRows    : true
@@ -61,6 +63,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
+				if(rec.get('status')==waitingForCSRStatus)
 					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
@@ -76,6 +79,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
+				if(rec.get('status')==waitingForCSRStatus)
 					this.validationFieldMissing=true;
 				return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
@@ -401,6 +405,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Retailer PO/Customer Job',
@@ -542,6 +564,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
+            },
+            renderer:function(v,h,l,k){
+            	if(v!=''){
+            		var store=h.column.config.editor.store;
+                	if(store){
+                		var index=store.find("variableFieldName",v);
+                    	if(index==-1){
+                    		this.invalidComboValid=true;
+                    		if(this.showInvalidCombo)
+                    			h.style = cellColor;
+                    	}
+                	}else{
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}
+            	return '<div>'+v+'</div>';
             }
     }, {
         text: 'CSR',
@@ -553,6 +593,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Packing Instruction',
@@ -642,6 +700,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Order By',
@@ -658,6 +734,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Shipping Only Notes',
@@ -740,6 +834,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Agreement',
@@ -786,6 +898,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             valueField: 'variableFieldName',
             editable:false,
             store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
+        },
+        renderer:function(v,h,l,k){
+        	if(v!=''){
+        		var store=h.column.config.editor.store;
+            	if(store){
+            		var index=store.find("variableFieldName",v);
+                	if(index==-1){
+                		this.invalidComboValid=true;
+                		if(this.showInvalidCombo)
+                			h.style = cellColor;
+                	}
+            	}else{
+            		this.invalidComboValid=true;
+            		if(this.showInvalidCombo)
+            			h.style = cellColor;
+            	}
+        	}
+        	return '<div>'+v+'</div>';
         }
     }, {
         text: 'Sent To Oracle Date',
@@ -823,6 +953,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	me.mandatoryValidationFieldMissing=false;
         	me.showMandatoryValidationField=false;
         	me.validationFieldMissing=false;
+        	me.invalidComboValid=false;
         });
         this.callParent(arguments);
     },
