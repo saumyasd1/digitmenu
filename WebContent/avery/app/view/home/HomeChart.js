@@ -10,6 +10,7 @@ Ext.define('AOC.view.home.HomeChart',{
         'Ext.chart.series.Line',
         'Ext.form.field.Checkbox',
         'Ext.form.field.ComboBox',
+        'AOC.view.home.HomeChartController',
         'AOC.view.home.HomePageOrderList'
     ],
     controller:'homechartcontroller',
@@ -76,7 +77,7 @@ Ext.define('AOC.view.home.HomeChart',{
                     scope  : me,
                     change : me.onChangeCheckboxSeries
                 }
-            },,{
+            },{
                 xtype        : 'checkbox',
                 boxLabel     : 'Failed',
                 checked      : true,
@@ -91,7 +92,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 itemId         : 'dashboardDateRange',
                 width          : 150,
                 margin         : '0 20 0 15',
-                forceSelection: true,
+                forceSelection : true,
                 onFocus: function() {
                     var me = this;
                     me.getPicker().focus();
@@ -99,8 +100,8 @@ Ext.define('AOC.view.home.HomeChart',{
                 store          : new Ext.data.Store({
                     fields : ['val','desc'],
                     data   : [{
-                        val  : 30,
-                        desc : 'Last Month'
+                        val  : 1,
+                        desc : 'Last 1 Day'
                     },{
                         val  : 7,
                         desc : 'Last Week'
@@ -108,8 +109,8 @@ Ext.define('AOC.view.home.HomeChart',{
                         val  : 14,
                         desc : 'Last Two Week'
                     },{
-                        val  : 7,
-                        desc : 'Last 1 Day'
+                        val  : 30,
+                        desc : 'Last Month'
                     }]
                 }),
                 editable       : false,
@@ -118,7 +119,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 triggerAction  : 'all',
                 queryMode      : 'local',
                 allowBlank     : false,
-                value          : 30,
+                value          : 1,
                 listeners      : {
                     select : 'changeDateRange'
             }
@@ -140,7 +141,7 @@ Ext.define('AOC.view.home.HomeChart',{
                         click : function(){
                         	var tempCombo = me.down("#dashboardDateRange");
                         	var tempRec = tempCombo.findRecordByValue(tempCombo.getValue());
-                        	me.fireEvent('daterangechanged', me, tempRec, tempCombo);
+                        	tempCombo.fireEvent('select', cmp, tempRec,true);
                         }
                     });
                 },
@@ -154,7 +155,7 @@ Ext.define('AOC.view.home.HomeChart',{
             xtype        : 'chart',
             itemId       : 'dashboardchart',
             flex         :1,
-            insetPadding : 25, 
+            insetPadding : 25,
             style        : {
                 "background-color" : "#f9f9f9"
             },
@@ -162,7 +163,8 @@ Ext.define('AOC.view.home.HomeChart',{
             series       : me.buildSeries(),
             axes         : me.buildAxes()
         },{
-            xtype:'homepageorderlist'
+            xtype:'homepageorderlist',
+            minHeight:150
         }];
     },
 
