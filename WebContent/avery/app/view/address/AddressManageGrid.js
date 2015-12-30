@@ -58,7 +58,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				            xtype:'actioncolumn',
 				  	        items:[{
 				  	        		icon:menuIcon,
-				  	    			handler: 'showMenu'
+				  	    			handler: 'onClickMenu'
 	  	                          }]
 	                    },
         			    {  
