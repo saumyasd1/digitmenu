@@ -151,6 +151,7 @@ public class OrderTrend {
 			}
 			list.add(datamap);
 			endDate = startDate;
+			
 			startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 					: DateUtils.getPreviousDate(endDate, day / part);
 		}
@@ -168,7 +169,7 @@ public class OrderTrend {
 		list.add(waitinCRMap);
 		Map<String, Object> waitinSRMap = buildMap("Waiting System Response");
 		list.add(waitinSRMap);
-		Map<String, Object> successMap = buildMap("Success");
+		Map<String, Object> successMap = buildMap("Successful");
 		list.add(successMap);
 		Map<String, Object> failedMap = buildMap("Failed");
 		list.add(failedMap);
