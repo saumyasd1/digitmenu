@@ -159,8 +159,9 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             allowBlank: false,
                             fieldLabel: confirmPassword,
                             vtype: 'password',
-                            initialPassField: 'password'
-                        },{
+                            initialPassField: 'password',
+                        }
+                    ,{
                 	xtype:'hidden',
                 	name:'id'
                     }]
