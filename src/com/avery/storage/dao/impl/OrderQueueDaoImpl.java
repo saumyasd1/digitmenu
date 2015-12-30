@@ -1,9 +1,12 @@
 package com.avery.storage.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -17,7 +20,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -26,6 +32,7 @@ import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.DateUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -223,5 +230,24 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.add(Restrictions.eq(propertyName, OrderId));
 		count=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		return count;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<OrderQueue> getList(int lastDays) throws Exception {
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrderQueue.class);
+		ProjectionList projectionList = Projections.projectionList();
+		projectionList
+				.add(Projections.property("receivedDate"), "receivedDate");
+		projectionList.add(Projections.property("id"), "id");
+		projectionList.add(Projections.property("status"), "status");
+		Date endDate = new Date(System.currentTimeMillis());
+		Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
+		criteria.add(Restrictions.between("receivedDate", startDate, endDate));
+		criteria.setProjection(projectionList);
+		criteria.setResultTransformer(Transformers
+				.aliasToBean(OrderQueue.class));
+		return new HashSet<OrderQueue>(criteria.list());
 	}
 }
