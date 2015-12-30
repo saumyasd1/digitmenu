@@ -89,7 +89,7 @@ public class Code extends MainAbstractEntity {
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			CodeService CodeService = (CodeService) SpringConfig
 					.getInstance().getBean("codeService");
 			Code = CodeService.readAll();
