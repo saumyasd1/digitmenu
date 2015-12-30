@@ -1,5 +1,5 @@
 Ext.define('AOC.view.partner.PartnerProductLine', {
-	extend : 'Ext.panel.Panel',
+	extend : 'Ext.Container',
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.partner.PartnerProductLineGrid'],
 	alias : 'widget.partnerproductline',
 	itemId : 'partnerproductlineitemId',

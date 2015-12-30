@@ -1,5 +1,5 @@
 Ext.define('AOC.view.partner.PartnerManagement', {
-	extend : 'Ext.panel.Panel',
+	extend : 'Ext.Container',
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.partner.PartnerManagementGrid'],
 	alias : 'widget.partnermanagement',
 	itemId : 'partnermanagementitemId',
@@ -8,7 +8,7 @@ Ext.define('AOC.view.partner.PartnerManagement', {
 			layout :'fit', 
 			border:'4 4 4 4',	
 			items : [ {
-    			xtype : 'panel',
+    			xtype : 'container',
     			flex : 1.8,
     			layout:'card',
 				itemId:'partnerPanel',

@@ -150,7 +150,8 @@ Ext.define('AOC.view.partner.CreatePartner',{
         		},
         		  {
                 	xtype :'tbspacer',
-                	width :100
+                	width :100,
+                	height:20
         		},
         	{ buttons:this.buildButtons()}
                ]

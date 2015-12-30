@@ -36,7 +36,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
              				}
              				});
              			 obj.bindStore(store);
-             			me.down('pagingtoolbar').bindStore(store);
              		 }
              		 store.load();
              	  }
@@ -58,7 +57,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		  	        items:[
 		  	      {
 				  	    	  icon:menuIcon,
-				  	    	  handler: 'onClickMenu'
+				  	    	  handler: 'onClickMenu',
 				  	    	
 		  	      }]
 		        },
