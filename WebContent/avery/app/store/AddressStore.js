@@ -1,5 +1,6 @@
 Ext.define('AOC.store.AddressStore', {
 	extend : 'Ext.data.Store',
+	requires:['AOC.model.AddressModel'],
 	model:'AOC.model.AddressModel',
 	remoteFilter: true,
 	remoteSort: true,
