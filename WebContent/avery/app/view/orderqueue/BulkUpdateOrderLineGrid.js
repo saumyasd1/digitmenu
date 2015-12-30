@@ -490,50 +490,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Artwork Hold',
             dataIndex: 'artworkhold',
             width: 84,
-            editor: {
-            	xtype:'checkbox',
-            	listeners:{
-            		'change':function(obj,newValue,oldValue){
-            			var record=obj.ownerCt.context.record;
-            		  	if(newValue==true)
-            		  		record.set('artworkhold',true);
-            		  	else
-            		  		record.set('artworkhold',false);
-            		}
-            	}
-            },
-            renderer: function(value,row) {
-            	var record=row.record;
-            	var value=record.get('artworkhold');
-            	if(value==true)
-            		return "<input type='checkbox' checked disabled>";
-            	else
-            		return "<input type='checkbox' disabled>";
-            }
+            xtype : 'checkcolumn'
         }, {
             text: 'Artwork Work Attachment',
             dataIndex: 'artworkworkattachment',
             width: 110,
-            editor: {
-            	xtype:'checkbox',
-            	listeners:{
-            		'change':function(obj,newValue,oldValue){
-            			var record=obj.ownerCt.context.record;
-            		  	if(newValue==true)
-            		  		record.set('artworkworkattachment',true);
-            		  	else
-            		  		record.set('artworkworkattachment',false);
-            		}
-            	}
-            },
-            renderer: function(value,row) {
-            	var record=row.record;
-            	var value=record.get('artworkworkattachment');
-            	if(value=='true')
-            		return "<input type='checkbox' checked disabled>";
-            	else
-            		return "<input type='checkbox' disabled>";
-            }
+            xtype : 'checkcolumn'
         }, {
             text: 'Variable Data Breakdown',
             dataIndex: 'variableDataBreakdown',
@@ -598,50 +560,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Shipping Hold',
             dataIndex: 'shippinghold',
             width: 83,
-            editor: {
-            	xtype:'checkbox',
-            	listeners:{
-            		'change':function(obj,newValue,oldValue){
-            			var record=obj.ownerCt.context.record;
-            		  	if(newValue==true)
-            		  		record.set('shippinghold',true);
-            		  	else
-            		  		record.set('shippinghold',false);
-            		}
-            	}
-            },
-            renderer: function(value,row) {
-            	var record=row.record;
-            	var value=record.get('shippinghold');
-            	if(value==true)
-            		return "<input type='checkbox' checked disabled>";
-            	else
-            		return "<input type='checkbox' disabled>";
-            }
+            xtype : 'checkcolumn'
         }, {
             text: 'Production Hold',
             dataIndex: 'productionhold',
             width: 77,
-            editor: {
-            	xtype:'checkbox',
-            	listeners:{
-            		'change':function(obj,newValue,oldValue){
-            			var record=obj.ownerCt.context.record;
-            		  	if(newValue==true)
-            		  		record.set('productionhold',true);
-            		  	else
-            		  		record.set('productionhold',false);
-            		}
-            	}
-            },
-            renderer: function(value,row) {
-            	var record=row.record;
-            	var value=record.get('productionhold');
-            	if(value==true)
-            		return "<input type='checkbox' checked disabled>";
-            	else
-            		return "<input type='checkbox' disabled>";
-            }
+            xtype : 'checkcolumn'
         }, {
             text: 'Split Shipset',
             dataIndex: 'splitshipset',
@@ -667,26 +591,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Waive MOQ',
             dataIndex: 'waiveMOQ',
             width: 59,
-            editor: {
-            	xtype:'checkbox',
-            	listeners:{
-            		'change':function(obj,newValue,oldValue){
-            			var record=obj.ownerCt.context.record;
-            		  	if(newValue==true)
-            		  		record.set('waiveMOQ','Y');
-            		  	else
-            		  		record.set('waiveMOQ','N');
-            		}
-            	}
-            },
-            renderer: function(value,row) {
-            	var record=row.record;
-            	var value=record.get('waiveMOQ');
-            	if(value=='true')
-            		return "<input type='checkbox' checked disabled>";
-            	else
-            		return "<input type='checkbox' disabled>";
-            }
+            xtype : 'checkcolumn'
         }, {
             text: 'APO Type',
             dataIndex: 'apoType',
