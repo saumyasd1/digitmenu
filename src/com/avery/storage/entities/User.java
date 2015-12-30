@@ -4,6 +4,7 @@ import static com.avery.utils.ApplicationConstants.ID;
 import static com.avery.utils.ApplicationConstants.PASSWORD;
 
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -175,6 +176,8 @@ public class User extends MainAbstractEntity {
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			User user = mapper.readValue(data, User.class);
 			user.setPassword(com.avery.utils.HashPassword.simpleHash(user.getPassword()));
+			user.setCreatedDate(new Date());
+			user.setLastModifiedDate(new Date());
 			UserService addressService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
 			id = addressService.create(user);
@@ -210,6 +213,7 @@ public class User extends MainAbstractEntity {
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			String password =user.getPassword();
+			Date createdDate = user.getCreatedDate();
 			ObjectReader updater = mapper.readerForUpdating(user);
 			user = updater.readValue(data);
 			if (user.getPassword() != null && !user.getPassword().equals("")
@@ -218,6 +222,8 @@ public class User extends MainAbstractEntity {
 			else{
 				user.setPassword(password);
 			}
+			user.setLastModifiedDate(new Date());
+			user.setCreatedDate(createdDate);
 			userService.update(user);
 			mapper.writeValue(writer, user);
 			rb = Response.ok(writer.toString());
