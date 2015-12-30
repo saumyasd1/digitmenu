@@ -1,5 +1,5 @@
 Ext.define('AOC.view.address.AddressManage', {
-	extend : 'Ext.panel.Panel',
+	extend : 'Ext.Container',
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.address.AddressManageGrid'],
 	alias : 'widget.addressmanage',
 	itemId : 'addressmanageitemId',
@@ -8,7 +8,7 @@ Ext.define('AOC.view.address.AddressManage', {
 			layout :'fit', 
 			border:'4 4 4 4',	
 			items : [ {
-    			xtype : 'panel',
+    			xtype : 'container',
     			flex : 1.8,
     			layout:'card',
 				itemId:'addressPanel',
