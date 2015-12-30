@@ -24,7 +24,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							itemId:'messageFieldItemId',
 							value:'',
 							hidden:true,
-							margin:'5 0 0 10'
+							margin:'5 0 0 20'
                      },
 						{
 							xtype:'tbspacer',
@@ -34,7 +34,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 			          {
 			            xtype: 'fieldcontainer',
 	                    layout: 'hbox',
-	                    margin : '5 0 0 10',
+	                    margin : '5 0 0 20',
 	                    items:[{
 						
 							xtype : 'textfield',
@@ -63,7 +63,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						{
 				           xtype: 'fieldcontainer',
                            layout: 'hbox',
-                           margin : '5 0 0 10',
+                           margin : '5 0 0 20',
                            items:[{
 							xtype : 'textfield',
 							fieldLabel : 'Subject',
@@ -89,7 +89,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						{ 
 							xtype: 'fieldcontainer',
 	                        layout: 'hbox',
-	                        margin : '5 0 0 10',
+	                        margin : '5 0 0 20',
 	                        items:[{
 							xtype : 'combo',
 							fieldLabel : ' Order Status',
@@ -121,7 +121,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						{ 
 							xtype: 'fieldcontainer',
 	                        layout: 'hbox',
-	                        margin : '5 0 0 10',
+	                        margin : '5 0 0 20',
 	                        items:[{
 							xtype : 'textfield',
 							fieldLabel : 'Sender EmailID',
@@ -147,7 +147,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						{ 
 							xtype: 'fieldcontainer',
 	                        layout: 'hbox',
-	                        margin : '5 0 0 10',
+	                        margin : '5 0 0 20',
 	                        items:[
 						   {
 							xtype : 'textfield',
@@ -180,7 +180,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 
 							xtype: 'fieldcontainer',
 	                        layout: 'hbox',
-	                        margin : '5 0 0 10',
+	                        margin : '5 0 0 20',
 	                        items:[{
 							xtype : 'datefield',
 							name:'fromDate',
