@@ -126,7 +126,6 @@ Ext.define('AOC.view.address.AddressController', {
 		    var data={"id":""};
 		    win=Ext.create('AOC.view.address.AddAddress',{
 			modal:true,
-			//title:title,
 			rec:currentRecord,
 			editMode:mode,
 			ID:id
@@ -213,29 +212,108 @@ Ext.define('AOC.view.address.AddressController', {
 		this.runTime.setWindowInEditMode(false);
 	}
 	},
-	showMenu : function(view,rowIndex,colIndex,item,e) {
-		var me=this,currentRecord=e.record;;
-			var menu=Ext.create('Ext.menu.Menu', {
-    		    width: 100,
-    		    margin: '0 0 10 0',
-    		    items: [{
-		    		        text: 'Edit',
-		    		        handler:function()
-		    		        { 
-		    		        	var id=currentRecord.get('id');
-		    		        	me.runTime.setWindowInEditMode(true);
-		    		        	me.openAddAddressWindow(currentRecord,id);
-		    		        }
-	    		        },
-    		            {
-	    		        	text: 'Delete',
-	    		        	handler:function(){
-	    		        		me.deleteResource(currentRecord);
-	    		        	}
-    		           }]
-    		});
-    	menu.showAt(e.getXY());
-	},
+	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
+	      var me=this;
+	      var callout = Ext.widget('callout', {
+	          cls                  : 'white more-menu-item-callout extra',
+	          html                 : me.buildMenuTpl.apply("{}"),
+	          target               : e.target,
+	          calloutArrowLocation : 'top-left',
+	          relativePosition     : 't-b',
+	          relativeOffsets      : [52,23],
+	          dismissDelay         : 0,
+	          listeners            : {
+                  afterrender : me.onAfterRenderEditCallout,
+                  edit: function(cmp){
+                	  currentRecord=e.record;
+                	  var id=currentRecord.get('id');
+                	  me.runTime.setWindowInEditMode(true);
+  		        	  var mode=me.runTime.getWindowInEditMode();
+  		  		      var win=Ext.ComponentQuery.query('#createaddressmanageItemId')[0];
+  		  		      var title=mode ?'Edit Address':'Add Address';
+  		  		if(!win){
+  		  		    var data={"id":""};
+  		  		    win=Ext.create('AOC.view.address.AddAddress',{
+  		  			modal:true,
+  		  			rec:currentRecord,
+  		  			editMode:mode,
+  		  			ID:id
+  		  		});
+  		  	    win.down('#titleItemId').setValue('<font size=3><b>'+title+'</b></font>').setVisible(true);
+  		  		win.show();
+  		  		}
+                  	callout.destroy();
+                  },
+                  deleteaddress: function(cmp){
+                	  currentRecord=e.record;
+                		var ID=record.get('id');
+                		var me=this;
+                		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the Address?</b>',function(btn){
+                			  if(btn=='yes'){
+                					Ext.Ajax.request({
+                							method:'DELETE',
+                							url:applicationContext+'/rest/address/'+ID,
+                				        success : function(response, opts) {
+                							Ext.Msg.alert('Alert Message','<b>Address Deleted Succesfully</b>');
+                							me.runTime.getActiveGrid().store.load();
+                				        },
+                				        failure: function(response, opts) {
+                		                }
+                		        	});
+                			  }
+                		});
+                  	callout.destroy();
+                  }
+              }
+	          });
+	      callout.show();   
+	  },
+	  onAfterRenderEditCallout : function(cmp){
+	        var me = this;
+	        cmp.el.on({
+	            delegate: 'div.user-profile-menu-item',
+	            click    : function(e,element){
+	                var el    = Ext.get(element),
+	                    event = el.getAttribute('event');
+	                if (event && !el.hasCls('edit-menu-disabled')){
+//	                    cmp.destroy();
+	                    me.fireEvent(event);
+	                }
+	            }
+	        });
+	    },
+	  buildMenuTpl : function(){
+	    	  var me=this;
+	    	 return Ext.create('Ext.XTemplate',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+	              '</tpl>',
+	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deleteaddress"">Delete</div>',
+	              '</tpl>'
+	          );
+	       },
+//	showMenu : function(view,rowIndex,colIndex,item,e) {
+//		var me=this,currentRecord=e.record;
+//			var menu=Ext.create('Ext.menu.Menu', {
+//    		    width: 100,
+//    		    margin: '0 0 10 0',
+//    		    items: [{
+//		    		        text: 'Edit',
+//		    		        handler:function()
+//		    		        { 
+//		    		        	var id=currentRecord.get('id');
+//		    		        	me.runTime.setWindowInEditMode(true);
+//		    		        	me.openAddAddressWindow(currentRecord,id);
+//		    		        }
+//	    		        },
+//    		            {
+//	    		        	text: 'Delete',
+//	    		        	handler:function(){
+//	    		        		me.deleteResource(currentRecord);
+//	    		        	}
+//    		           }]
+//    		});
+//    	menu.showAt(e.getXY());
+//	},
 	closeWindow: function(){
 		Ext.getBody().unmask();
 		this.getView().destroy();
@@ -264,6 +342,7 @@ Ext.define('AOC.view.address.AddressController', {
 	 HideMandatoryMessage:function(){
 		   var createaddress=this.getView();
 		   createaddress.down('#messageFieldItemId').setValue('').setVisible(true);
+		   createaddress.down('#messageFieldItemId').setHidden('true');
 	   },
 	  notifyByMessage:function()
 	    {
