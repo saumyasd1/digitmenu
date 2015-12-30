@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -126,13 +127,13 @@ public class OrderTrend {
 		Date startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 				: DateUtils.getPreviousDate(endDate, day / part);
 		Date recieveDate = null;
-		for (int i = 0; i < part; i++) {
+		for (int i = 0; i <=part; i++) {
 			datamap = new HashMap<String, Object>();
 			for (Integer status : statusMap.keySet()) {
 				datamap.put(statusMap.get(status), 0);
 			}
 			for (OrderQueue orderQueue : set) {
-				datamap.put("day", formatter.format(startDate));
+				datamap.put("day", formatter.format(endDate));
 				recieveDate = orderQueue.getReceivedDate();
 				if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
 					for (Integer status : statusMap.keySet()) {
@@ -151,7 +152,6 @@ public class OrderTrend {
 			}
 			list.add(datamap);
 			endDate = startDate;
-			
 			startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 					: DateUtils.getPreviousDate(endDate, day / part);
 		}
