@@ -52,13 +52,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			   },
 			   {
 			   	xtype :'tbspacer',
-			   	height:1,
-				}
-        	    {
+			   	height:1
+			},{
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		hidden:true
-        	},{
+        	    	},{
         		xtype:'form',
         		itemId:'listPanel',
         		border:false,
