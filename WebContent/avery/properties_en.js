@@ -76,10 +76,12 @@ changedPassword="Change Password",
 male='Male',
 female='Female',
 pleaseWait= "Please wait...",
-password='Password',
+password = "Password",
 confirmPassword='Confirm Password',
 qtyVariableLabel='qty',
 sizeVariableLabel='size',
-duplicateMappingLabel='DUPLICATE MAPPING'
-;
+duplicateMappingLabel='DUPLICATE MAPPING',
+weFacedError="We faced an error while trying to ",
+savedSuccessfully=' saved successfully.',
+weFacedError="We faced an error while trying to ";
 
