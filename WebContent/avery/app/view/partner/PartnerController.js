@@ -76,28 +76,40 @@ Ext.define('AOC.view.partner.PartnerController', {
 		});
 		win.down('#titleItemId').setValue('<font size=3><b>Add Partner</b></font>').setVisible(true);
 		win.show();
-		  
     }
 	},
-showmenu:function(view,rowIndex,colIndex,item,e){
-	var runtime=this.runTime;
-	var me=this;
-	 {
-			var menu=Ext.create('Ext.menu.Menu', {
- 		    width: 180,
- 		    margin: '0 0 5 0',
- 		    items: [{
- 		        text: 'Edit',
- 		        handler:function()
-		        {
-		        	me.editpartnermanagement(view,rowIndex,colIndex,item,e);
-		        }
- 		    },{
- 		        text: 'Delete',
- 		        action:'deletepartner',
- 				handler:function()
- 				{  
-	 					var data=e.record;
+	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
+	      var me=this;
+	      var callout = Ext.widget('callout', {
+  	          cls                  : 'white more-menu-item-callout extra',
+  	          html                 : me.buildMenuTpl.apply("{}"),
+  	          target               : e.target,
+  	          calloutArrowLocation : 'top-left',
+  	          relativePosition     : 't-b',
+  	          relativeOffsets      : [52,23],
+  	          dismissDelay         : 0,
+  	          listeners            : {
+                    afterrender : me.onAfterRenderEditCallout,
+                    edit: function(cmp){
+                    	var data=e.record;
+ 	     		    	var win=Ext.ComponentQuery.query('#createpartnerItemId')[0];
+ 		     			if(!win){
+ 		     			    var id=data.id;
+ 		     			    var partnerName=data.get('PartnerName');
+ 		     			    win=Ext.create('AOC.view.partner.CreatePartner',{
+ 		     				modal:true,
+ 		     			    editMode:true,
+ 		     			    rec:data,
+ 		     			    partnerId:id,
+ 		     			    partnerName:partnerName
+ 		     			});
+ 		     	      win.down('#titleItemId').setValue('<font size=3><b>Edit Partner</b></font>').setVisible(true);
+ 	     			  win.show();
+ 	     			}
+                    	callout.destroy();
+                    },
+                    deletepartner: function(cmp){
+                    	var data=e.record;
 		     			var id=data.id;
 	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this partner</b>', function(response) {
 	     				  if (response == 'yes') {
@@ -115,50 +127,150 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 	     				  return true;
 	     				  }
 	     				  });
- 		        	this.destroy();
- 				}
- 		    }
- 		    ,{
- 		        text: 'View ProductLine',
- 		        action:'viewproductline',
- 		        handler:function()
- 		        { 
- 		        	
- 		        	var me=this;
- 		        	var data=e.record;
- 		        	var id=data.id;
- 		        	var partnerName=data.get('partnerName');
- 		        	store = Ext.create('AOC.store.PartnerProductLineStore',{
- 						storeId:'PartnerProductLineStoreStoreId',
- 						totalCount:'total',
- 						
- 						proxy: {
- 							type: 'rest',
- 					         url        : applicationContext+'/rest/productLines/partner/'+id+'?partnerId='+id,
- 					        reader      : {
- 					            type          : 'json',
- 					            rootProperty          : 'productlines',
- 					            totalProperty : 'totalCount'
- 					        }
- 					    }
- 					});
- 		        	panel=Ext.ComponentQuery.query('#partnerPanel')[0];
- 		            var  partnerproduct=Ext.ComponentQuery.query('#partnerproductlinegriditemId')[0];
- 		            partnerproduct.bindStore(store);
- 		        	panel.getLayout().setActiveItem(1);
- 		        	//var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
- 		        	partnerproduct.partnerid=id;
- 		        	partnerproduct.partnerName=partnerName;
- 		        	partnerproduct.down('#pagingtoolbar').bindStore(store);
- 		        	runtime.setActiveGrid(partnerproduct);
- 		        	//partnergrid.setText('<b></b>');
- 		        }
- 		    }]
- 		});
- 		
- 	menu.showAt(e.getXY());
-		}
-},
+ 		        	    this.destroy();
+                    	callout.destroy();
+                    },
+                    productLine:function(cmp){
+     		        	var me=this;
+     		        	var data=e.record;
+     		        	var id=data.id;
+     		        	var partnerName=data.get('partnerName');
+     		        	store = Ext.create('AOC.store.PartnerProductLineStore',{
+     						storeId:'PartnerProductLineStoreStoreId',
+     						totalCount:'total',
+     						
+     						proxy: {
+     							type: 'rest',
+     					         url        : applicationContext+'/rest/productLines/partner/'+id+'?partnerId='+id,
+     					        reader      : {
+     					            type          : 'json',
+     					            rootProperty          : 'productlines',
+     					            totalProperty : 'totalCount'
+     					        }
+     					    }
+     					});
+     		        	panel=Ext.ComponentQuery.query('#partnerPanel')[0];
+     		            var  partnerproduct=Ext.ComponentQuery.query('#partnerproductlinegriditemId')[0];
+     		            partnerproduct.bindStore(store);
+     		        	panel.getLayout().setActiveItem(1);
+     		        	//var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
+     		        	partnerproduct.partnerid=id;
+     		        	partnerproduct.partnerName=partnerName;
+     		        	partnerproduct.down('#pagingtoolbar').bindStore(store);
+     		        	runtime.setActiveGrid(partnerproduct);
+     		        	//partnergrid.setText('<b></b>');
+                    	callout.destroy();
+                    }
+                    
+                }
+  	          });
+	      callout.show();   
+	  },
+	  onAfterRenderEditCallout : function(cmp){
+	        var me = this;
+	        cmp.el.on({
+	            delegate: 'div.user-profile-menu-item',
+	            click    : function(e,element){
+	                var el    = Ext.get(element),
+	                    event = el.getAttribute('event');
+	                if (event && !el.hasCls('edit-menu-disabled')){
+//	                    cmp.destroy();
+	                    me.fireEvent(event);
+	                }
+	            }
+	        });
+	    },
+	  buildMenuTpl : function(){
+	    	  var me=this;
+	    	 return Ext.create('Ext.XTemplate',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+	              '</tpl>',
+	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
+	              '</tpl>',
+	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">View ProductLine</div>',
+	    	     '</tpl>'
+	          );
+	       },
+//showmenu:function(view,rowIndex,colIndex,item,e){
+//	var runtime=this.runTime;
+//	var me=this;
+//	 {
+//			var menu=Ext.create('Ext.menu.Menu', {
+// 		    width: 180,
+// 		    margin: '0 0 5 0',
+// 		    items: [{
+// 		        text: 'Edit',
+// 		        handler:function()
+//		        {
+//		        	me.editpartnermanagement(view,rowIndex,colIndex,item,e);
+//		        }
+// 		    },{
+// 		        text: 'Delete',
+// 		        action:'deletepartner',
+// 				handler:function()
+// 				{  
+//	 					var data=e.record;
+//		     			var id=data.id;
+//	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this partner</b>', function(response) {
+//	     				  if (response == 'yes') {
+//	     						Ext.Ajax.request({
+//	     							method:'DELETE',
+//	     							url:applicationContext+'/rest/partners/'+id,
+//         				        success : function(response, opts) {
+//         							Ext.Msg.alert('Alert Message','<b>Partner Deleted Succesfully</b>');
+//         							me.runTime.getActiveGrid().store.load();
+//         				        },
+//         				        failure: function(response, opts) {
+//         		                }
+//         		        	});
+//	     				  }else if(response == 'no'){
+//	     				  return true;
+//	     				  }
+//	     				  });
+// 		        	this.destroy();
+// 				}
+// 		    }
+// 		    ,{
+// 		        text: 'View ProductLine',
+// 		        action:'viewproductline',
+// 		        handler:function()
+// 		        { 
+// 		        	
+// 		        	var me=this;
+// 		        	var data=e.record;
+// 		        	var id=data.id;
+// 		        	var partnerName=data.get('partnerName');
+// 		        	store = Ext.create('AOC.store.PartnerProductLineStore',{
+// 						storeId:'PartnerProductLineStoreStoreId',
+// 						totalCount:'total',
+// 						
+// 						proxy: {
+// 							type: 'rest',
+// 					         url        : applicationContext+'/rest/productLines/partner/'+id+'?partnerId='+id,
+// 					        reader      : {
+// 					            type          : 'json',
+// 					            rootProperty          : 'productlines',
+// 					            totalProperty : 'totalCount'
+// 					        }
+// 					    }
+// 					});
+// 		        	panel=Ext.ComponentQuery.query('#partnerPanel')[0];
+// 		            var  partnerproduct=Ext.ComponentQuery.query('#partnerproductlinegriditemId')[0];
+// 		            partnerproduct.bindStore(store);
+// 		        	panel.getLayout().setActiveItem(1);
+// 		        	//var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
+// 		        	partnerproduct.partnerid=id;
+// 		        	partnerproduct.partnerName=partnerName;
+// 		        	partnerproduct.down('#pagingtoolbar').bindStore(store);
+// 		        	runtime.setActiveGrid(partnerproduct);
+// 		        	//partnergrid.setText('<b></b>');
+// 		        }
+// 		    }]
+// 		});
+// 		
+// 	menu.showAt(e.getXY());
+//		}
+//},
 	openAdvancedSearchWindow:function(e, t, eOpts)
 	{
 		
@@ -305,6 +417,8 @@ showmenu:function(view,rowIndex,colIndex,item,e){
 		   HideMandatoryMessage:function(){
 			   var createpartner=Ext.ComponentQuery.query("#createpartnerItemId")[0];
 			   createpartner.down('#messageFieldItemId').setValue('').setVisible(true);
+			   createpartner.down('#messageFieldItemId').setHidden('true');
+			   
 		   },
 		   notifyByMessage:function()
 		    {
