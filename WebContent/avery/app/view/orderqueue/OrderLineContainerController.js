@@ -197,5 +197,5 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     cancelOrder:function(){
     	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
-    },
+    }
 })
