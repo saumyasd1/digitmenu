@@ -1,6 +1,6 @@
 package com.avery.storage.service;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.OrderQueueDao;
 import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.SalesOrder;
 
 @Component
 public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
@@ -32,5 +31,10 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	@Transactional
 	public void cancelOrder(String data,Long entityId){
 		getOrderQueueDao().cancelOrder(data,entityId);
+	}
+	
+	@Transactional
+	public Set<OrderQueue> getList(int lastDays)throws Exception{
+		return getOrderQueueDao().getList(lastDays);
 	}
 }
