@@ -881,7 +881,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				            reference:'bulkUpdateButton',
 				            handler: 'getUpdateScreen'
 			              }]
-        },'->',
+        },'->'
 	        ];
     },
     getRowExpander:function(){
