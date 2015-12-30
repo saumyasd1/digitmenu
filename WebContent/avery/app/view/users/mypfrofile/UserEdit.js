@@ -133,8 +133,8 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         store: 'Roles',
                         name : 'role',
                         queryMode : 'local',
-                        displayField: 'entityName',
-                        valueField: 'id',
+                        displayField: 'displayname',
+                        valueField: 'value',
                         fieldLabel: role
                     },
                     {
@@ -159,9 +159,8 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             allowBlank: false,
                             fieldLabel: confirmPassword,
                             vtype: 'password',
-                            initialPassField: 'password',
-                        }
-                    ,{
+                            initialPassField: 'password'
+                        },{
                 	xtype:'hidden',
                 	name:'id'
                     }]
