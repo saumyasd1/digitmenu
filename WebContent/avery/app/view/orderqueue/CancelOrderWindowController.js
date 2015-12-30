@@ -31,7 +31,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
 	                form=orderlineexpandablegrid.lookupReference('form');
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
-                	salesViewOrderbutton.enable();
+                	salesViewOrderbutton.disable();
                 	salesOrderbutton.disable();
                 	cancelOrderButton.disable();
                 	form.disable();
