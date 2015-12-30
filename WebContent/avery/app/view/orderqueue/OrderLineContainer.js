@@ -109,8 +109,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            reference:'cancelOrderButton',
 			            margin:'0 10 0 0',
 			            text: '<b>Cancel Order</b>',
-			            handler: 'cancelOrder',
-			            
+			            handler: 'cancelOrder'
 			        },{
 			            xtype: 'button',
 			            reference: 'salesOrderbutton',
