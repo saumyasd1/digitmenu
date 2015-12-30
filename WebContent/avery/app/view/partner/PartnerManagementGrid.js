@@ -52,19 +52,17 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
   buildColumns : function(){
     	var me=this;
 		        return [       {
-		           // header:"<img src="+menuIcon+">",
 		            xtype:'actioncolumn',
 		            width:25,
 		            baseCls:'custom-action',
 		  	        items:[
 		  	      {
 				  	    	  icon:menuIcon,
-				  	    	  handler: 'showmenu',
+				  	    	  handler: 'onClickMenu',
 				  	    	
 		  	      }]
 		        },
 				          {
-		        	       // header:"<img src="+editIcon+">",
 				            xtype:'actioncolumn',
 				            width:25,
 				            baseCls:'custom-action',
