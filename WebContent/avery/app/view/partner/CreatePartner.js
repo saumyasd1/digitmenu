@@ -52,7 +52,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		value:'',
-        		hidden:false
+        		hidden:true
         	},{
         		xtype:'form',
         		itemId:'listPanel',
