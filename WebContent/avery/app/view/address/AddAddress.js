@@ -79,7 +79,7 @@ Ext.define('AOC.view.address.AddAddress',{
         			allowBlank: false,
     		        listeners : {
 	                    blur : this.notifyByImage,
- 	                	focus : this.notifyByMessage
+	                    'focus' : 'HideMandatoryMessage'
  	                     }
 	        		},
 	        		{
@@ -92,7 +92,7 @@ Ext.define('AOC.view.address.AddAddress',{
 					    allowBlank: false,
       		            listeners : {
 	                        blur : this.notifyByImage,
-   	                	focus : this.notifyByMessage
+	                        'focus' : 'HideMandatoryMessage'
    	                     }
 	        		},
 	        		{
@@ -102,7 +102,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        			allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
+		                    'focus' : 'HideMandatoryMessage'
 	   	                     }
 	        		},
 	        		{
@@ -112,7 +112,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		    allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
-	   	                	focus : this.notifyByMessage
+		                    'focus' : 'HideMandatoryMessage'
 	   	                     }
 	        		},
 	        		{
@@ -192,7 +192,7 @@ Ext.define('AOC.view.address.AddAddress',{
 					    allowBlank: false,
       		            listeners : {
 	                        blur : this.notifyByImage,
-   	                	    focus : this.notifyByMessage
+	                        'focus' : 'HideMandatoryMessage'
    	                     }
 	        		},
 	        		{
@@ -237,15 +237,6 @@ Ext.define('AOC.view.address.AddAddress',{
     	{ buttons:this.buildButtons()}
         	]
         },
-        notifyByMessage : function(config){
-			   var me = this;
-			   if(config.up('#listPanel').ownerCt){
-				   if(config.up('#listPanel').ownerCt.editMode)
-					       config.up('#listPanel').ownerCt.setTitle('Edit Address');
-				   else
-					       config.up('#listPanel').ownerCt.setTitle('Add Address');
-			   }
-		   },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
 		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');
