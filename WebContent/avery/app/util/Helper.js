@@ -80,11 +80,13 @@ Ext.define('AOC.util.Helper',{
                   }
   	},
     getCodeStore:function(type){
-  	  var store=null;
-  	    var store=null;
+  	    var store=null,appendUrl='';
+  	    if(type!='code'){
+  	    	appendUrl='/type/'+type;
+  	    }
         var response = Ext.Ajax.request({
             async: false,
-            url: applicationContext+'/rest/code/type/'+type
+            url: applicationContext+'/rest/code'+appendUrl
         });
         var items = Ext.decode(response.responseText);
       	var jsonValue=Ext.decode(response.responseText);
@@ -127,10 +129,10 @@ Ext.define('AOC.util.Helper',{
     },
     getSatus:function(v){
     	var me=this,
-    	store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ?me.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
+    	store= Ext.data.StoreManager.lookup('codeid') == null ?me.getCodeStore('code') : Ext.data.StoreManager.lookup('codeid'),
     	statusRecord=store.findRecord( 'code', v),
 		va=statusRecord.get('value');
-    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==noAdditionDataStatus || v==orderRead || v==booked)
+    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==orderRead || v==booked)
 	   {
     		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
 	   }
