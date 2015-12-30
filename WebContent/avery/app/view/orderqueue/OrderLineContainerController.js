@@ -3,6 +3,15 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     alias: 'controller.orderlinecontainer',
     requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel'],
     runTime : AOC.config.Runtime,
+    config: {
+        listen: {
+        	store: {
+        		'#OrderLineStoreId': {
+        			load: 'onOrderLineStoreLoad'
+        		}
+    		}
+        }
+    },
     backButton:function(){
     	var panel=this.getView().ownerCt;
         panel.getLayout().setActiveItem(0);
@@ -69,7 +78,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     submitSalesOrder:function(){
     	Ext.getBody().mask('Loading...');
-    	var grid=this.getView().down('grid'),store=grid.store,me=this;
+    	var grid=this.getView().down('grid'),store=grid.store,me=this,status;
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
@@ -82,6 +91,23 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			Ext.getBody().unmask();
 			return false;
     	}
+    		var records=store.queryBy(function(rec){
+    			status=rec.get('status');
+    			if(status!=waitingForCSRStatus && status!=cancelStatus)
+    				return true;
+    		});
+    		if(records.length>0){
+    			Ext.Msg.alert('',changeOrderLineStatusAlert);
+    			Ext.getBody().unmask();
+    			return false;
+    		}
+    		if(grid.invalidComboValid){
+    			store.load();
+    			Ext.Msg.alert('',InvalidComboValueAlert);
+    			grid.showInvalidCombo=true;
+    			Ext.getBody().unmask();
+    			return false;
+    		}
     	if(grid.validationFieldMissing){
     		Ext.Msg.confirm('',validateFieldFailedConfirmatonMsg,function(btn){
     			if (btn === 'yes') {
@@ -197,5 +223,22 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     cancelOrder:function(){
     	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
+    },
+    onOrderLineStoreLoad:function(obj){
+    	var records=obj.queryBy(function(rec){
+			status=rec.get('status');
+			if(status==cancelStatus)
+				return true;
+		});
+    	var view=this.getView(),
+		salesOrderbutton=view.lookupReference('salesOrderbutton'),
+		validateButton=view.lookupReference('validateButton');
+    	if(obj.getTotalCount( )==records.length){
+    		salesOrderbutton.disable();
+    		validateButton.disable();
+    	}else{
+    		salesOrderbutton.enable();
+    		validateButton.enable();
+    	}
     }
 })
