@@ -106,76 +106,156 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	createproductline:function(){
 			win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
 				modal:true,
-				//title:'<center>Add Partner Product Line</center>',
 				partnerName:this.getView().partnerName
 			});
 			win.down('#titleItemId').setValue('<font size=3><b>Add Partner Product Line</b></font>').setVisible(true);
 			win.show();
        
 	},
-showmenu:function(view,rowIndex,colIndex,item,e){
-	var runtime=this.runTime;
-	var me=this;
-	 {
-		 {
-				var menu=Ext.create('Ext.menu.Menu', {
-     		    width: 100,
-     		    margin: '0 0 10 0',
-     		    items: [{
-     		        text: 'Edit',
-     		        handler:function()
-     		        {    
-     		    	    var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
-     	      			if(!win){
-     	      				var data=e.record;
-     	      				 var id=data.id;
-     	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-     	      				modal:true,
-     	      				//title:'Edit Partner product Line',
-     	      				partnerName:me.getView().partnerName,
-     	      			    editMode:true,
-     	      			    rec:data,
-     	      			    productlineId:id
-     	      			});
-     	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
-     	      			  win.show();
-     	              }
-     		        }
-     		    },{
-     		        text: 'Delete',
-     		    	handler:function()
-     				{   
-     		    		
-     					var data=e.record;
- 	     			    var id=data.id;
- 	     			    var partner='';
- 	     			    partner={id:id};
- 	     			    Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this product line</b>', function(response) {
-     	     				  if (response == 'yes') {
-     	     					Ext.Ajax.request({
-	     							method:'DELETE',
-	     							url:applicationContext+'/rest/productLines/'+id,
-         				        success : function(response, opts) {
-         							Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
-         							me.runTime.getActiveGrid().store.load();
-         				        },
-         				        failure: function(response, opts) {
-         		                }
-         		        	});
-     	     				  }else if(response == 'no'){
-     	     				  return true;
-     	     				  }
-     	     				  });
-     		        	this.destroy();
-     				}
-     		    }
-     		  ]
-     		});
-     		
-     	menu.showAt(e.getXY());
-			}
-	 }
-  },
+	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
+	      var me=this;
+	      var callout = Ext.widget('callout', {
+	          cls                  : 'white more-menu-item-callout extra',
+	          html                 : me.buildMenuTpl.apply("{}"),
+	          target               : e.target,
+	          calloutArrowLocation : 'top-left',
+	          relativePosition     : 't-b',
+	          relativeOffsets      : [52,23],
+	          dismissDelay         : 0,
+	          listeners            : {
+                afterrender : me.onAfterRenderEditCallout,
+                edit: function(cmp){
+                	var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
+ 	      			if(!win){
+ 	      				var data=e.record;
+ 	      				 var id=data.id;
+ 	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+ 	      				modal:true,
+ 	      				//title:'Edit Partner product Line',
+ 	      				partnerName:me.getView().partnerName,
+ 	      			    editMode:true,
+ 	      			    rec:data,
+ 	      			    productlineId:id
+ 	      			});
+ 	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
+ 	      			  win.show();
+ 	              }
+                	callout.destroy();
+                },
+                deleteproductline: function(cmp){
+                	var data=e.record;
+	     			    var id=data.id;
+	     			    var partner='';
+	     			    partner={id:id};
+	     			    Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this product line</b>', function(response) {
+ 	     				  if (response == 'yes') {
+ 	     					Ext.Ajax.request({
+     							method:'DELETE',
+     							url:applicationContext+'/rest/productLines/'+id,
+     				        success : function(response, opts) {
+     							Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
+     							me.runTime.getActiveGrid().store.load();
+     				        },
+     				        failure: function(response, opts) {
+     		                }
+     		        	});
+ 	     				  }else if(response == 'no'){
+ 	     				  return true;
+ 	     				  }
+ 	     				  });
+ 		        	 this.destroy();
+                	callout.destroy();
+                }
+            }
+	          });
+	      callout.show();   
+	  },
+	  onAfterRenderEditCallout : function(cmp){
+	        var me = this;
+	        cmp.el.on({
+	            delegate: 'div.user-profile-menu-item',
+	            click    : function(e,element){
+	                var el    = Ext.get(element),
+	                    event = el.getAttribute('event');
+	                if (event && !el.hasCls('edit-menu-disabled')){
+//	                    cmp.destroy();
+	                    me.fireEvent(event);
+	                }
+	            }
+	        });
+	    },
+	  buildMenuTpl : function(){
+	    	  var me=this;
+	    	 return Ext.create('Ext.XTemplate',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+	              '</tpl>',
+	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deleteproductline"">Delete</div>',
+	              '</tpl>'
+	          );
+	       },
+//showmenu:function(view,rowIndex,colIndex,item,e){
+//	var runtime=this.runTime;
+//	var me=this;
+//	 {
+//		 {
+//				var menu=Ext.create('Ext.menu.Menu', {
+//     		    width: 100,
+//     		    margin: '0 0 10 0',
+//     		    items: [{
+//     		        text: 'Edit',
+//     		        handler:function()
+//     		        {    
+//     		    	    var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
+//     	      			if(!win){
+//     	      				var data=e.record;
+//     	      				 var id=data.id;
+//     	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+//     	      				modal:true,
+//     	      				//title:'Edit Partner product Line',
+//     	      				partnerName:me.getView().partnerName,
+//     	      			    editMode:true,
+//     	      			    rec:data,
+//     	      			    productlineId:id
+//     	      			});
+//     	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
+//     	      			  win.show();
+//     	              }
+//     		        }
+//     		    },{
+//     		        text: 'Delete',
+//     		    	handler:function()
+//     				{   
+//     		    		
+//     					var data=e.record;
+// 	     			    var id=data.id;
+// 	     			    var partner='';
+// 	     			    partner={id:id};
+// 	     			    Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this product line</b>', function(response) {
+//     	     				  if (response == 'yes') {
+//     	     					Ext.Ajax.request({
+//	     							method:'DELETE',
+//	     							url:applicationContext+'/rest/productLines/'+id,
+//         				        success : function(response, opts) {
+//         							Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
+//         							me.runTime.getActiveGrid().store.load();
+//         				        },
+//         				        failure: function(response, opts) {
+//         		                }
+//         		        	});
+//     	     				  }else if(response == 'no'){
+//     	     				  return true;
+//     	     				  }
+//     	     				  });
+//     		        	this.destroy();
+//     				}
+//     		    }
+//     		  ]
+//     		});
+//     		
+//     	menu.showAt(e.getXY());
+//			}
+//	 }
+//  },
 	openAdvancedSearchWindow:function(e, t, eOpts)
 	{
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
@@ -317,6 +397,7 @@ if(!temp){
 	   HideMandatoryMessage:function(){
 		   var createproductline=this.getView();
 		   createproductline.down('#messageFieldItemId').setValue('').setVisible(true);
+		   createproductline.down('#messageFieldItemId').setHidden('true');
 	   },
 	   notifyByMessage:function()
 	    {
