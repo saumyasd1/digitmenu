@@ -1,5 +1,5 @@
 Ext.define('AOC.view.archive.ArchiveManage', {
-	extend : 'Ext.panel.Panel',
+	extend : 'Ext.Container',
 	requires : ['AOC.view.base.BaseToolbar', 'AOC.view.archive.OrderFileQueueArchiveGrid', 'AOC.view.archive.OrderLineArchiveGrid', 
 		'AOC.view.archive.OrderLineDetailArchiveGrid', 'AOC.view.archive.PartnerArchiveGrid', 
 		'AOC.view.archive.ProductLineArchiveGrid','AOC.view.archive.SalesOrderArchiveGrid','AOC.view.archive.SalesOrderDetailArchiveGrid'],
@@ -11,7 +11,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 			layout : 'fit',
 			border : '4 4 4 4',
 			items : [{
-					xtype : 'panel',
+					xtype : 'container',
 					flex : 1.8,
 					layout : 'card',
 					itemId : 'archivePanel',
