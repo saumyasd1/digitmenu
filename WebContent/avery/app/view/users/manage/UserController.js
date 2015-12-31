@@ -13,6 +13,7 @@ Ext.define('AOC.view.users.manage.UserController', {
     						itemId:'userWindowItemId',
     						layout: 'fit',
     						draggable: false,
+    						showPasswordField:true,
     						modal:true,
     					 	items : [{  xtype : 'useredit' }]
     				 });
