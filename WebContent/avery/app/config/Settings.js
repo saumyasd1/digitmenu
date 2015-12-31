@@ -4,7 +4,8 @@ Ext.define('AOC.config.Settings',{
         baseBackgroundColor : 'background-color:#F6F6F6',
         nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$',
         baseUserUrl :applicationContext+'/rest/users',
-        baseOrderTrendUrl:applicationContext+'/rest/ordertrend'
+        baseOrderTrendUrl:applicationContext+'/rest/ordertrend',
+        requestTimeOut       : 300000
     },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',
