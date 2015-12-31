@@ -119,7 +119,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 
             temp = Ext.create('AOC.view.base.BaseWindow', {
                 height: 600,
-                width: 560,
+                width: 580,
                 //title: advancedSearchWindowTitle,
                 itemId: 'orderqueueadvancesearchIDWindow',
                 layout: 'fit',
@@ -238,6 +238,163 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
     },
+//    onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
+//	      var me=this;
+//	      var callout = Ext.widget('callout', {
+//	          cls                  : 'white more-menu-item-callout extra',
+//	          html                 : me.buildMenuTpl.apply("{}"),
+//	          target               : e.target,
+//	          calloutArrowLocation : 'top-left',
+//	          relativePosition     : 't-b',
+//	          relativeOffsets      : [52,23],
+//	          dismissDelay         : 0,
+//	          listeners            : {
+//                afterrender : me.onAfterRenderEditCallout,
+//                viewOrders: function(cmp){
+//                   currentRecord = e.record;
+//            	   var id = currentRecord.get('id');
+//                   me.runTime.setOrderQueueId(id);
+//                   me.runTime.setOrderQueueActiveRecord(currentRecord);
+//                   me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
+//                   me.runTime.setAllowOrderLineEdit(true);
+//                   var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+//            	   Ext.getBody().mask('Loading...');
+//                    var owner = me.getView().ownerCt;
+//                    var status=currentRecord.get('Status');
+//                    var store = Ext.create('AOC.store.OrderLineStore', {
+//                        storeId: 'OrderLineStoreId',
+//                        proxy: {
+//                            type: 'rest',
+//                            url: applicationContext + '/rest/orderLines/order/' + id,
+//                            reader: {
+//                                type: 'json',
+//                                rootProperty: 'orderLine'
+//                            }
+//                        }
+//                    });
+//                    owner.insert({
+//                        xtype: 'orderlinecontainer',
+//                        flex: 1,
+//                        store: store
+//                    });
+//                    
+//                    var orderlinecontainer = owner.down('orderlinecontainer'),
+//            		grid=orderlinecontainer.down('grid');
+//                    validateButton = orderlinecontainer.lookupReference('validateButton'),
+//                    bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
+//                    salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
+//                    salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
+//                    cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
+//                    form=grid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
+//                    if(status != waitingForCSRStatus) {
+//                    	validateButton.disable();
+//                    	bulkUpdateButton.disable();
+//                    	salesViewOrderbutton.disable();
+//                    	salesOrderbutton.disable();
+//                    	cancelOrderButton.disable();
+//                    	form.disable();
+//                    }
+//                    if(salesOrderCount!=0){
+//                    	salesViewOrderbutton.enable();
+//                    }
+//                    owner.getLayout().setActiveItem(1);
+//                    Ext.getBody().unmask();
+//                	callout.destroy();
+//                },
+//                viewSales: function(cmp){
+//                	  currentRecord = e.record;
+//                	  var id = currentRecord.get('id');
+//                	  me.runTime.setOrderQueueId(id);
+//                	  me.runTime.setOrderQueueActiveRecord(currentRecord);
+//                	  me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
+//                	  me.runTime.setAllowOrderLineEdit(true);
+//                      var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+//                          var owner = me.getView().ownerCt;
+//                          var store = Ext.create('AOC.store.SalesOrderStore', {
+//                              proxy: {
+//                                  type: 'rest',
+//                                  url: applicationContext + '/rest/salesorders/order/' + id,
+//                                  reader: {
+//                                      type: 'json',
+//                                      rootProperty: 'ArrayList'
+//                                  }
+//                              }
+//                          });
+//                          owner.insert({
+//                              xtype: 'salesrrderexpandablegrid',
+//                              flex: 1,
+//                              store: store
+//                          });
+//                          owner.getLayout().setActiveItem(1);
+//                	callout.destroy();
+//                },
+//                cancelOrder: function(cmp){
+//                   currentRecord = e.record;
+//            	   var id = currentRecord.get('id');
+//            	   me.runTime.setOrderQueueId(id);
+//            	   me.runTime.setOrderQueueActiveRecord(currentRecord);
+//            	   me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
+//            	   me.runTime.setAllowOrderLineEdit(true);
+//                   var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+//                	me.getCancelOrderWindow(id);
+//                	callout.destroy();
+//                }
+//            }
+//	          });
+//	      callout.show();   
+//	  },
+//	  onAfterRenderEditCallout : function(cmp){
+//	        var me = this;
+//	        cmp.el.on({
+//	            delegate: 'div.user-profile-menu-item',
+//	            click    : function(e,element){
+//	                var el    = Ext.get(element),
+//	                    event = el.getAttribute('event');
+//	                if (event && !el.hasCls('edit-menu-disabled')){
+////	                    cmp.destroy();
+//	                    me.fireEvent(event);
+//	                }
+//	            }
+//	        });
+//	    },
+//	  buildMenuTpl : function(){
+//		  debugger;
+//	    	  var me=this;
+//	    	 return Ext.create('Ext.XTemplate',
+//	    		  '<tpl>',
+//	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrders" disabled=true">View Order Line</div>',
+//	              '</tpl>',
+//	              '<tpl if="this.isMenuDisabled(v) == false">',
+//	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewSales"">View Sales Order</div>',
+//	              '</tpl>',
+//	              '<tpl if="this.isMenuDisabled(v) == false">',
+//	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="reSubmitOrder"">ReSubmit Order</div>',
+//	              '</tpl>',
+//	              '<tpl if="this.isMenuDisabled(v) == false">',
+//	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="cancelOrder"">Cancel Order</div>',
+//	              '</tpl>',
+//	              {
+//	    		 isMenuDisabled : function(){
+//	    			 debugger;
+//	    		     currentRecord = v,
+//	    	        disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
+//	    	        var status = currentRecord.get('Status'),orderLineCount=currentRecord.get('orderLineCount'),salesOrderCount=currentRecord.get('salesOrderCount');
+//	    	        var error = currentRecord.get('error');
+//	    	        if (status == orderError) {
+//	    	        	disableCancelOption = false;
+//	    	        	disableResubmitOrder=false;
+//	    	        }
+//	    	        if(salesOrderCount==0){
+//	    	        	disableSalesOrderOption=true;
+//	    	        }
+//	    	        if(orderLineCount==0){
+//	    	        	disableOrderLineOption=true;
+//	    	        }
+//	    			return disabled=disableOrderLineOption;
+//		              	}
+//		              }
+//	          );
+//	       },
     showMenu: function(view, rowIndex, colIndex, item, e) {
         var me = this,
             currentRecord = e.record,
@@ -256,7 +413,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         }
         var menu = Ext.create('Ext.menu.Menu', {
             width: 150,
-            //layout:'fit',
             margin: '0 0 10 0',
             items: [{
                 text: 'View Order Line',
@@ -291,5 +447,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     {
     	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
 	 	ordersearch.down('#messageFieldItemId').setValue('').setVisible(true);
+	 	ordersearch.down('#messageFieldItemId').setHidden('true');
     }
 })
