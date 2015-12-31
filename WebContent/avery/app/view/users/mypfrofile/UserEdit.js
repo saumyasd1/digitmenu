@@ -3,6 +3,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     alias: 'widget.useredit',
     itemId:'useredititemid',
     controller:'userMain',
+    showPasswordField:false,
     updateUserLogoId: Ext.id(),  
     initComponent: function () {
         Ext.apply(this, {
@@ -133,8 +134,8 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         store: 'Roles',
                         name : 'role',
                         queryMode : 'local',
-                        displayField: 'displayname',
-                        valueField: 'value',
+                        displayField: 'entityName',
+                        valueField: 'id',
                         fieldLabel: role
                     },
                     {
@@ -146,6 +147,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             allowBlank: false,
                             validateOnChange:false,
                             vtype:'newpassword',
+                            hidden:me.showPasswordField,
                             initialPassField: 'currentPassword',
                             listeners: {
                                 scope: me
@@ -158,9 +160,11 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             name: 'confirmPassword',
                             allowBlank: false,
                             fieldLabel: confirmPassword,
+                            hidden:me.showPasswordField,
                             vtype: 'password',
-                            initialPassField: 'password'
-                        },{
+                            initialPassField: 'password',
+                        }
+                    ,{
                 	xtype:'hidden',
                 	name:'id'
                     }]
