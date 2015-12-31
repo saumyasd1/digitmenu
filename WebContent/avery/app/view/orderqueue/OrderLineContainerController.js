@@ -225,20 +225,23 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         win.show();
     },
     onOrderLineStoreLoad:function(obj){
-    	var records=obj.queryBy(function(rec){
-			status=rec.get('status');
-			if(status==cancelStatus)
-				return true;
-		});
-    	var view=this.getView(),
-		salesOrderbutton=view.lookupReference('salesOrderbutton'),
-		validateButton=view.lookupReference('validateButton');
-    	if(obj.getTotalCount( )==records.length){
-    		salesOrderbutton.disable();
-    		validateButton.disable();
-    	}else{
-    		salesOrderbutton.enable();
-    		validateButton.enable();
-    	}
+    	 var status=this.runTime.getOrderQueueActiveRecord().get('Status');
+    	 if(status==waitingForCSRStatus){
+    		 var records=obj.queryBy(function(rec){
+    				status=rec.get('status');
+    				if(status==cancelStatus)
+    					return true;
+    			});
+    	    	var view=this.getView(),
+    			salesOrderbutton=view.lookupReference('salesOrderbutton'),
+    			validateButton=view.lookupReference('validateButton');
+    	    	if(obj.getTotalCount( )==records.length){
+    	    		salesOrderbutton.disable();
+    	    		validateButton.disable();
+    	    	}else{
+    	    		salesOrderbutton.enable();
+    	    		validateButton.enable();
+    	    	}
+    	 }
     }
 })

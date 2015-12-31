@@ -111,7 +111,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 			}
 			else{
-				if(rec.get('status')==waitingForCSRStatus && rec.get('waiveMOQ')=='false')
+				if(rec.get('status')==waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false))
 					this.mandatoryValidationFieldMissing=true;
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
@@ -504,7 +504,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         renderer : function(value, meta,record) {
             if(parseInt(value) > -1) {
             	if(this.showMandatoryValidationField){
-	            	if(record.get('status')==waitingForCSRStatus && record.get('waiveMOQ')=='false'){
+	            	if(record.get('status')==waitingForCSRStatus && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
 		            	var moqValidationFlag=record.data.moqValidationFlag;
 		        		var moqValidationFlag=moqValidationFlag.trim();
 		    			if(moqValidationFlag.substr(0,1)=='F'){
@@ -882,7 +882,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         renderer: function(value,row) {
         	var record=row.record;
         	var value=record.get('waiveMOQ');
-        	if(value=='true')
+        	if(value=='true' || value==true)
         		return "<input type='checkbox' checked disabled>";
         	else{
         		return "<input type='checkbox' disabled>";	
@@ -951,7 +951,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
-        	me.showMandatoryValidationField=false;
         	me.validationFieldMissing=false;
         	me.invalidComboValid=false;
         });
