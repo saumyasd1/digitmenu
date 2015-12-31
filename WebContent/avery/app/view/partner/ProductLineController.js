@@ -40,6 +40,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					csrName:valueObj.csrName,
 					packingInstruction:valueObj.packingInstruction,
 					splitShipSetBy:valueObj.splitShipSetBy,
+					orderEmailDomain:valueObj.orderEmailDomain,
 					invoiceLineInstruction:valueObj.invoiceLineInstruction,
 					manufacturingNotes:valueObj.manufacturingNotes,
 					attachmentMappingName2:valueObj.attachmentMappingName2,
