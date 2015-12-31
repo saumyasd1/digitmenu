@@ -131,7 +131,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                     	callout.destroy();
                     },
                     productLine:function(cmp){
-     		        	var me=this;
+                    	
      		        	var data=e.record;
      		        	var id=data.id;
      		        	var partnerName=data.get('partnerName');
@@ -157,7 +157,7 @@ Ext.define('AOC.view.partner.PartnerController', {
      		        	partnerproduct.partnerid=id;
      		        	partnerproduct.partnerName=partnerName;
      		        	partnerproduct.down('#pagingtoolbar').bindStore(store);
-     		        	runtime.setActiveGrid(partnerproduct);
+     		        	me.runTime.setActiveGrid(partnerproduct);
      		        	//partnergrid.setText('<b></b>');
                     	callout.destroy();
                     }
