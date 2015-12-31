@@ -4,10 +4,12 @@ import io.jsonwebtoken.Claims;
 
 import java.io.IOException;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
 import com.avery.exception.SystemException;
@@ -19,7 +21,7 @@ import com.avery.web.jwt.JWTUtils;
 @PreMatching
 public class AuthFilter implements ContainerRequestFilter {
 
-	private static final String AUTH_HEADER = "token";
+	private static final String AUTH_HEADER = "Authorization";
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)
@@ -31,6 +33,10 @@ public class AuthFilter implements ContainerRequestFilter {
 			method = (method == null) ? "" : method;
 			String requestURI = requestContext.getUriInfo().getAbsolutePath()
 					.toString();
+			if (requestContext.getMediaType().toString()
+					.indexOf("multipart/form-data") != -1) {
+				return;
+			}
 			if (method.equals("POST")
 					&& (requestURI.indexOf("login/user") != -1)) {
 				return;
@@ -42,7 +48,6 @@ public class AuthFilter implements ContainerRequestFilter {
 			if (authToken != null) {
 				try {
 					Claims claims = JWTUtils.parseJWT(authToken);
-					// TODO::further verification of claim body parameters
 					authenticated = true;
 				} catch (Exception e) {
 					throw SystemException
@@ -50,12 +55,13 @@ public class AuthFilter implements ContainerRequestFilter {
 							.set("Request URI", requestURI)
 							.set("Operation", method).set("Headers", headers);
 				}
-			} else {
-				// throw SystemException
-				// .wrap(new Exception("No token found"),
-				// RestErrorCode.AUTH_FAILED_NO_TOKEN)
-				// .set("Request URI", requestURI)
-				// .set("Operation", method).set("Headers", headers);
+			}else{
+//				throw SystemException
+//				.wrap(null, RestErrorCode.AUTH_FAILED_INVALID_TOKEN)
+//				.set("Request URI", requestURI)
+//				.set("Operation", method).set("Headers", headers);
+				AppLogger.getSystemLogger().error(
+						"Token is not found request.");
 			}
 		} catch (SystemException se) {
 			authenticated = false;
@@ -63,8 +69,8 @@ public class AuthFilter implements ContainerRequestFilter {
 			AppLogger.getSystemLogger().error(
 					"Error in authenticating request", se);
 		}
-		// if (!authenticated) {
-		// throw new WebApplicationException(Status.UNAUTHORIZED);
-		// }
+		 if (!authenticated) {
+		 throw new WebApplicationException(Status.UNAUTHORIZED);
+		 }
 	}
 }
