@@ -58,5 +58,88 @@ Ext.define('AOC.view.users.manage.UserController', {
 CancelDetails:function(){
 	var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
 	win.destroy();
-}
+},
+onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
+    var me=this;
+    var callout = Ext.widget('callout', {
+        cls                  : 'white more-menu-item-callout extra',
+        html                 : me.buildMenuTpl.apply("{}"),
+        target               : e.target,
+        calloutArrowLocation : 'top-left',
+        relativePosition     : 't-b',
+        relativeOffsets      : [52,23],
+        dismissDelay         : 0,
+        listeners            : {
+            afterrender : me.onAfterRenderEditCallout,
+            edit: function(cmp){
+//          	  currentRecord=e.record;
+//          	  var id=currentRecord.get('id');
+//          	  me.runTime.setWindowInEditMode(true);
+//	          var mode=me.runTime.getWindowInEditMode();
+//	  		  var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
+//	  		  var title=mode ?'Edit User':'Add User';
+//	  		if(!win){
+//	  		    //var data={"id":""};
+//	  		    win=Ext.create('Ext.window.Window',{
+//  		    	height:550,
+//				width:1000,
+//	  			modal:true,
+//	  			itemId:'userWindowItemId',
+//	  			title:'<b>'+title+'</b>',
+//	  			//rec:currentRecord,
+//	  			editMode:mode,
+//	  			ID:id,
+//	  			items : [{  xtype : 'useredit' }]
+//	  		});
+//	  		win.down('#useredititemid').getForm().setValues(currentRecord);
+//	  		win.show();
+//	  		}
+            	callout.destroy();
+            },
+            deleteuser: function(cmp){
+          	  currentRecord=e.record;
+          		var ID=record.get('id');
+          		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the User?</b>',function(btn){
+          			  if(btn=='yes'){
+          					Ext.Ajax.request({
+          							method:'DELETE',
+          							url:applicationContext+'/rest/users/'+ID,
+          				        success : function(response, opts) {
+          							Ext.Msg.alert('Alert Message','<b>User Deleted Succesfully</b>');
+          							me.runTime.getActiveGrid().store.load();
+          				        },
+          				        failure: function(response, opts) {
+          		                }
+          		        	});
+          			  }
+          		});
+            	callout.destroy();
+            }
+        }
+        });
+    callout.show();   
+},
+onAfterRenderEditCallout : function(cmp){
+      var me = this;
+      cmp.el.on({
+          delegate: 'div.user-profile-menu-item',
+          click    : function(e,element){
+              var el    = Ext.get(element),
+                  event = el.getAttribute('event');
+              if (event && !el.hasCls('edit-menu-disabled')){
+//                  cmp.destroy();
+                  me.fireEvent(event);
+              }
+          }
+      });
+  },
+buildMenuTpl : function(){
+  	  var me=this;
+  	 return Ext.create('Ext.XTemplate',
+  	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+            '</tpl>',
+            '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deleteuser"">Delete</div>',
+            '</tpl>'
+        );
+     },
 });
