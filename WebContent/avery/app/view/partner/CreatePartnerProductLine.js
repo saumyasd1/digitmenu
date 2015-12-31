@@ -307,7 +307,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 	xtype :'tbspacer',
                 	width :30
         		},
-        		{ 
+        		{   xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[{
         			xtype:'textfield',
         			itemId:'SSSBItemId',
         			labelAlign:'top',
@@ -320,13 +323,35 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            width : 300,
   		            labelSeparator : '',
   		            blankText : 'Split Ship Set By  is required',
-  		            margin : '5 0 0 5',
   		            maxLength : '5',
   		            enforceMaxLength: true,
   		            listeners : {
   		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
+        		},{
+                	xtype :'tbspacer',
+                	width :30
+        		},{
+        			xtype:'textfield',
+        			itemId:'EmailDomainItemId',
+        			labelAlign:'top',
+        			name: 'orderEmailDomain',
+        			fieldLabel:'Order Email Domain',
+        			//allowBlank: false,
+        			value:'',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            blankText : 'Order Email Domain  is required',
+  		            maxLength : '5',
+  		            enforceMaxLength: true,
+  		            listeners : {
+  		            	 blur : this.notifyByImage,
+  		            	'focus' : 'HideMandatoryMessage'
+ 	                    }
+        			}]
         		},
         		{
                 	xtype :'tbspacer',
