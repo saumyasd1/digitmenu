@@ -9,6 +9,7 @@ Ext.define('AOC.Application', {
     appFolder 	: 'avery/app',
     requires    : [
 		'AOC.config.MenuInstructions',
+		'AOC.util.ProxyExceptionHandler',
 		'AOC.config.Runtime'
     ],
     controllers : [
