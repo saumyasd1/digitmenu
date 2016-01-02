@@ -150,6 +150,15 @@ Ext.define('AOC.view.home.HomeChart',{
 //                    	AdeptiaConnect.util.Helper.createToolTip(ct.getEl(),ct.tooltipText);
                 }
             }
+        },{
+            xtype       : 'button',
+            reference      : 'report',
+            margin      :'0 15 0 0',
+            text:'Report',
+            ui:'blue',
+            listeners:{
+            	'click':'getReportView'
+            }
         }]
         },{
             xtype        : 'chart',
