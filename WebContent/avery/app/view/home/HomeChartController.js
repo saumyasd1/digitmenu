@@ -1,6 +1,7 @@
 Ext.define('AOC.view.home.HomeChartController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.homechartcontroller',
+    requires:['AOC.view.home.ReportForm'],
     //stores:['OrderCharts','HomePageOders'],
     runTime: AOC.config.Runtime,
     changeDateRange:function(cmp,rec){
@@ -23,5 +24,13 @@ Ext.define('AOC.view.home.HomeChartController', {
 	    liststore.getProxy().url=AOC.config.Settings.getBaseOrderTrendUrl()+'/homelist';
 	    liststore.load();
 	}
+    },
+    getReportView:function(obj){
+    	var win=Ext.create('AOC.view.base.BaseWindow',{
+    						items:[{
+    							xtype:'reportform'
+    						}]
+    	});
+    win.show();
     }
 })
