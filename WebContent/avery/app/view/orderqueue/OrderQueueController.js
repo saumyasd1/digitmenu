@@ -154,8 +154,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     getOrderBasedOnSearchParameters: function(store) {
         var valueObj = this.getView().getForm().getValues(false, true);
-        var FromDate=valueObj.fromDate;
-	 	var ToDate=valueObj.toDate;
+        
+        var FromDate=this.lookupReference('fromDate').getValue();
+	 	var ToDate=this.lookupReference('toDate').getValue();
 	 	if(FromDate<=ToDate)
 	 		{
         if (!valueObj.hasOwnProperty('datecriteriavalue'))
