@@ -5,8 +5,8 @@ Ext.define('AOC.view.address.AddressController', {
     runTime : AOC.config.Runtime,
     getAddressBasedOnSearchParameters: function() {
 		 	var valueObj=this.getView().getForm().getValues(false,true);
-		 	var FromDate=valueObj.fromDate;
-		 	var ToDate=valueObj.toDate;
+		 	var FromDate=this.lookupReference('fromDate').getValue();
+		 	var ToDate=this.lookupReference('toDate').getValue();
 		 	if(FromDate<=ToDate)
 		 		{
 	    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
