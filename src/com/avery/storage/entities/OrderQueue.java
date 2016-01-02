@@ -1,10 +1,14 @@
 package com.avery.storage.entities;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Blob;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,10 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -34,6 +40,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.Fetch;
@@ -45,6 +55,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
+import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationUtils;
@@ -60,6 +71,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Table(name = "OrderFileQueue")
 @Path("orders")
 public class OrderQueue extends MainAbstractEntity{
+	
+	private static Map<String,String> codeMap;
+	static{
+			
+			try {
+				codeMap=getOrderQueueSatusMap();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
 	
 	private static final long serialVersionUID = -8487156716364715576L;
 	
@@ -581,5 +603,182 @@ public class OrderQueue extends MainAbstractEntity{
 		orderQueue.setStatus("1");
 		orderQueueService.update(orderQueue);
 		return "{\"success\":true}";
+	}
+	
+	@GET
+	@Path("/download/dailyreport")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getDailyReport(@Context UriInfo ui,
+	@Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<OrderQueue> orderQueue = null;
+		try {
+			StringWriter writer = new StringWriter();
+			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderQueue = orderQueueService.getAllEntitiesListForDailyReport();
+			if (orderQueue == null)
+				throw new Exception("Unable to find Orders");
+			ByteArrayOutputStream outputStream=createExcelFile(orderQueue);
+			byte[] bytes = outputStream.toByteArray();
+			String fileName = "Daily_Report.xls";
+			return Response
+					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
+		            .header("content-disposition","attachment; filename = "+fileName)
+		            .build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
+	private ByteArrayOutputStream createExcelFile(List<OrderQueue> OrderQueueList) throws IOException{
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Sheet 1");
+        getReportHeader(sheet);
+        getReportDate(sheet,OrderQueueList);
+        try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
+            workbook.write(outputStream);
+		return outputStream;
+        }
+	}
+	private void getReportDate(XSSFSheet sheet,List<OrderQueue> OrderQueueList){
+		int rowIndex=1,columncellCount=0;
+		Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
+		while (CrunchifyIterator.hasNext()) {
+			OrderQueue obj=CrunchifyIterator.next();
+			Row row = sheet.createRow(rowIndex);
+			Cell cell1 = row.createCell(columncellCount);
+			cell1.setCellValue(obj.getId());
+			Cell cell2 = row.createCell(++columncellCount);
+			cell2.setCellValue(obj.getPONumber());
+			Cell cell3 = row.createCell(++columncellCount);
+			cell3.setCellValue("Order File");
+			Cell cell4 = row.createCell(++columncellCount);
+			cell4.setCellValue("Additional data");
+			Cell cell5 = row.createCell(++columncellCount);
+			cell5.setCellValue(obj.getPartner().getPartnerName());
+			Cell cell6 = row.createCell(++columncellCount);
+			cell6.setCellValue(obj.getRboName());
+			Cell cell7 = row.createCell(++columncellCount);
+			cell7.setCellValue(obj.getProductLine().getProductLineType());
+			Cell cell8 = row.createCell(++columncellCount);
+			cell8.setCellValue(codeMap.get(obj.getStatus()));
+			Cell cell9 = row.createCell(++columncellCount);
+			if(obj.getReceivedDate()!=null)
+				cell9.setCellValue(obj.getReceivedDate().toString());
+			Cell cell10 = row.createCell(++columncellCount);
+			cell10.setCellValue(obj.getSenderEmailID());
+			Cell cell11 = row.createCell(++columncellCount);
+			cell11.setCellValue(obj.getSubject());
+			Cell cell12 = row.createCell(++columncellCount);
+			cell12.setCellValue(obj.getEmailBody());
+			Cell cell13 = row.createCell(++columncellCount);
+			cell13.setCellValue(obj.getSubmittedBy());
+			Cell cell14 = row.createCell(++columncellCount);
+			if(obj.getSubmittedDate()!=null)
+				cell14.setCellValue(obj.getSubmittedDate().toString());
+			columncellCount=0;
+			rowIndex++;
+		}
+		sheet.autoSizeColumn(0);
+		sheet.autoSizeColumn(1);
+		sheet.autoSizeColumn(2);
+		sheet.autoSizeColumn(3);
+		sheet.autoSizeColumn(4);
+		sheet.autoSizeColumn(5);
+		sheet.autoSizeColumn(6);
+		sheet.autoSizeColumn(7);
+		sheet.autoSizeColumn(8);
+		sheet.autoSizeColumn(9);
+		sheet.autoSizeColumn(10);
+		sheet.autoSizeColumn(11);
+		sheet.autoSizeColumn(12);
+		sheet.autoSizeColumn(13);
+	}
+	private void getReportHeader(XSSFSheet sheet){
+		int columnHeaderCount=0;
+		Row row = sheet.createRow(0);
+		Cell header1 = row.createCell(columnHeaderCount);
+//		header1.setCellStyle(headercellstyle);
+		header1.setCellValue("Order track #");
+		Cell header2 = row.createCell(++columnHeaderCount);
+		header2.setCellValue("PO #");
+		Cell header3 = row.createCell(++columnHeaderCount);
+		header3.setCellValue("Order File");
+		Cell header4 = row.createCell(++columnHeaderCount);
+		header4.setCellValue("Additional data");
+		Cell header5 = row.createCell(++columnHeaderCount);
+		header5.setCellValue("Partner Name");
+		Cell header6 = row.createCell(++columnHeaderCount);
+		header6.setCellValue("RBO");
+		Cell header7 = row.createCell(++columnHeaderCount);
+		header7.setCellValue("Product Line");
+		Cell header8 = row.createCell(++columnHeaderCount);
+		header8.setCellValue("Order Status");
+		Cell header9 = row.createCell(++columnHeaderCount);
+		header9.setCellValue("Processed Date");
+		Cell header10 = row.createCell(++columnHeaderCount);
+		header10.setCellValue("Sender Email ID");
+		Cell header11 = row.createCell(++columnHeaderCount);
+		header11.setCellValue("Subject");
+		Cell header12 = row.createCell(++columnHeaderCount);
+		header12.setCellValue("Email Body");
+		Cell header13 = row.createCell(++columnHeaderCount);
+		header13.setCellValue("Submitted By");
+		Cell header14 = row.createCell(++columnHeaderCount);
+		header14.setCellValue("Submitted Date");
+	}
+	
+	private static Map<String,String> getOrderQueueSatusMap() throws Exception{
+		Map<String,String> codeMap=new HashMap<String,String>();
+		CodeService CodeService = (CodeService) SpringConfig
+				.getInstance().getBean("codeService");
+		List<Code> list=CodeService.readByType("orderfilequeue");
+		String code="",value="";
+		Iterator<Code> codeIterator = list.iterator();
+		while (codeIterator.hasNext()) {
+			Code obj=codeIterator.next();
+			code=obj.getCode();
+			value=obj.getValue();
+			codeMap.put(code,value);
+		}
+		return codeMap;
+	}
+	@GET
+	@Path("/download/openreport")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getOpenReport(@Context UriInfo ui,
+	@Context HttpHeaders hh) {
+		List<OrderQueue> orderQueue = null;
+		try {
+			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderQueue = orderQueueService.getAllEntitiesListWithCriteria(queryParamMap);
+			if (orderQueue == null)
+				throw new Exception("Unable to find Orders");
+			ByteArrayOutputStream outputStream=createExcelFile(orderQueue);
+			byte[] bytes = outputStream.toByteArray();
+			String fileName = "Open_Report.xls";
+			return Response
+					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
+		            .header("content-disposition","attachment; filename = "+fileName)
+		            .build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
 	}
 }
