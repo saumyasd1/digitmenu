@@ -1,6 +1,9 @@
 package com.avery.storage.service;
 
+import java.util.List;
 import java.util.Set;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,5 +39,15 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	@Transactional
 	public Set<OrderQueue> getList(int lastDays)throws Exception{
 		return getOrderQueueDao().getList(lastDays);
+	}
+	
+	@Transactional
+	public List<OrderQueue> getAllEntitiesListWithCriteria(MultivaluedMap queryMap) throws Exception{
+		return getOrderQueueDao().getAllEntitiesListWithCriteria(queryMap);
+	}
+	
+	@Transactional
+	public List getAllEntitiesListForDailyReport() throws Exception{
+		return getOrderQueueDao().getAllEntitiesListForDailyReport();
 	}
 }
