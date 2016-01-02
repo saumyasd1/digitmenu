@@ -33,7 +33,7 @@ public class AuthFilter implements ContainerRequestFilter {
 			method = (method == null) ? "" : method;
 			String requestURI = requestContext.getUriInfo().getAbsolutePath()
 					.toString();
-			if (requestContext.getMediaType().toString()
+			if (requestContext.getMediaType()!=null && requestContext.getMediaType().toString()
 					.indexOf("multipart/form-data") != -1) {
 				return;
 			}
