@@ -184,6 +184,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        items:[{
 							xtype : 'datefield',
 							name:'fromDate',
+							reference:'fromDate',
 							fieldLabel : 'From Date ',
 							width:250,
 							hidden:false,
@@ -206,6 +207,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							xtype : 'datefield',
 							fieldLabel : 'To Date ',
 							name:'toDate',
+							reference:'toDate',
 							width:250,
 							hidden:false,
 							labelSeparator : '',
