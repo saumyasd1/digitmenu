@@ -14,4 +14,8 @@ public interface ApplicationConstants {
 		
 		String PASSWORD = "password";
 		
+		String CANCEL_STATUS_CODE="8";
+		
+		String BOOKED_STATUS_CODE="99";
+		
 }
