@@ -101,8 +101,8 @@ Ext.define('AOC.view.archive.ArchiveController', {
 				archiveView=currentView.down('#archivePanel');
 				var grid=archiveView.getLayout().getActiveItem();
 				var valueObj=this.getView().getForm().getValues(false,true);
-				var FromDate=valueObj.fromDate;
-				var ToDate=valueObj.toDate;
+				var FromDate=this.lookupReference('fromDate').getValue();
+			 	var ToDate=this.lookupReference('toDate').getValue();
 				 if(FromDate<=ToDate)
 				 		{
 		    	 if(!valueObj.hasOwnProperty('datecriteriavalue'))
