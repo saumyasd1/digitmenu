@@ -119,6 +119,8 @@ public class OrderTrend {
 	private static List<Map<String, Object>> buildDataList(Set<OrderQueue> set,
 			int day, int part) {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		if(set.size()==0)
+			return list;
 		Map<String, Object> datamap = null;
 		Format formatter = (part == 24) ? new SimpleDateFormat("hh: a")
 				: new SimpleDateFormat("dd MMM");
