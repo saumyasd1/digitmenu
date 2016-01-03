@@ -650,18 +650,36 @@ public class OrderQueue extends MainAbstractEntity{
 	}
 	private void getReportDate(XSSFSheet sheet,List<OrderQueue> OrderQueueList){
 		int rowIndex=1,columncellCount=0;
+		String orderFile="",additionalData="";
+		Set<OrderFileAttachment> fileList=null;
 		Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
 		while (CrunchifyIterator.hasNext()) {
 			OrderQueue obj=CrunchifyIterator.next();
+			fileList=obj.getOrderFileAttachment();
+			orderFile="";
+			additionalData="";
+			for(OrderFileAttachment fileObj:fileList){
+				if(fileObj.getFileContentType().equals("AdditionalData")){
+					additionalData=additionalData+","+fileObj.getFileName();
+				}else{
+					orderFile=orderFile+","+fileObj.getFileName();
+				}
+			}
+			if(!orderFile.equals("") && orderFile.length()>1){
+				orderFile=orderFile.substring(1, orderFile.length()-1);
+			}
+			if(!additionalData.equals("") && additionalData.length()>1){
+				additionalData=additionalData.substring(1, additionalData.length()-1);
+			}
 			Row row = sheet.createRow(rowIndex);
 			Cell cell1 = row.createCell(columncellCount);
 			cell1.setCellValue(obj.getId());
 			Cell cell2 = row.createCell(++columncellCount);
 			cell2.setCellValue(obj.getPONumber());
 			Cell cell3 = row.createCell(++columncellCount);
-			cell3.setCellValue("Order File");
+			cell3.setCellValue(orderFile);
 			Cell cell4 = row.createCell(++columncellCount);
-			cell4.setCellValue("Additional data");
+			cell4.setCellValue(additionalData);
 			Cell cell5 = row.createCell(++columncellCount);
 			cell5.setCellValue(obj.getPartner().getPartnerName());
 			Cell cell6 = row.createCell(++columncellCount);
