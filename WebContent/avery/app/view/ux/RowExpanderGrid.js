@@ -80,31 +80,31 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	        // Do Garbage collection
 	        // Method 1 ( http://skirtlesden.com/static/ux/download/component-column/1.1/Component.js )
 	        var keysToDelete = [] ;
-	        Ext.Object.each( this.obj_recordId_componentId, function( recordId, testCmpId ) {
-	            comp = Ext.getCmp(testCmpId);
-	            el = comp && comp.getEl();
-
-	            if (!el || (true && (!el.dom || Ext.getDom(Ext.id(el)) !== el.dom))) {
-	                // The component is no longer in the DOM
-	                if (comp && !comp.isDestroyed) {
-	                    comp.destroy();
-	                    keysToDelete.push(recordId) ;
-	                }
-	            }
-	        }) ;
+//	        Ext.Object.each( this.obj_recordId_componentId, function( recordId, testCmpId ) {
+//	            comp = Ext.getCmp(testCmpId);
+//	            el = comp && comp.getEl();
+//
+//	            if (!el || (true && (!el.dom || Ext.getDom(Ext.id(el)) !== el.dom))) {
+//	                // The component is no longer in the DOM
+//	                if (comp && !comp.isDestroyed) {
+//	                    comp.destroy();
+//	                    keysToDelete.push(recordId) ;
+//	                }
+//	            }
+//	        }) ;
 	        
 	        // Method 2
-	        /*
+	        
 	        Ext.Object.each( this.obj_recordId_componentId, function( recordId, testCmpId ) {
-	            if( !Ext.Array.contains( reusedCmpIds, testCmpId ) ) {
+	            if( Ext.Array.contains( reusedCmpIds, testCmpId ) ) {
 	                comp = Ext.getCmp(testCmpId);
 	                comp.destroy();
 	                keysToDelete.push(recordId) ;
 	            }
 	        }) ;
-	        */
 	        
-	        // Clean map
+	        
+//	         Clean map
 	        Ext.Array.each( keysToDelete, function(mkey) {
 	            delete this.obj_recordId_componentId[mkey] ;
 	        },this);
