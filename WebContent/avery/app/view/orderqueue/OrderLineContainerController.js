@@ -121,7 +121,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				        	var status=jsonValue.status;
     				        	if(status=='success'){
     				        		proceed=false;
-    				        		me.getView().store.load();
+    				        		
     				        		var orderlinecontainer = me.getView(),
     				        		grid=orderlinecontainer.down('grid');
     				                validateButton = orderlinecontainer.lookupReference('validateButton'),
@@ -136,6 +136,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			                	cancelOrderButton.disable();
     			                	form.disable();
     			                	me.runTime.setAllowOrderLineEdit(false);
+    			                	me.getView().store.load();
     				        		Ext.Msg.alert('',salesOrderCreationMsg);
     				        		Ext.getBody().unmask();
     				        	}
@@ -165,7 +166,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			        	var status=jsonValue.status;
 			        	if(status=='success'){
 			        		proceed=false;
-			        		me.getView().store.load();
+			        		
 			        		var orderlinecontainer = me.getView(),
 			        		grid=orderlinecontainer.down('grid');
 			                validateButton = orderlinecontainer.lookupReference('validateButton'),
@@ -180,6 +181,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		                	cancelOrderButton.disable();
 		                	form.disable();
 		                	me.runTime.setAllowOrderLineEdit(false);
+		                	me.getView().store.load();
 			        		Ext.Msg.alert('',salesOrderCreationMsg);
 			        		Ext.getBody().unmask();
 			        	}
@@ -226,7 +228,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     onOrderLineStoreLoad:function(obj){
     	 var status=this.runTime.getOrderQueueActiveRecord().get('Status');
-    	 if(status==waitingForCSRStatus){
+    	 if(status==waitingForCSRStatus && this.runTime.getAllowOrderLineEdit()){
     		 var records=obj.queryBy(function(rec){
     				status=rec.get('status');
     				if(status==cancelStatus)
