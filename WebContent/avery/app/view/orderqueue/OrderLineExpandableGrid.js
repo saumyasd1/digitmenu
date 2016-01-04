@@ -675,7 +675,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         renderer: function(value,row) {
         	var record=row.record;
         	var value=record.get('artworkworkattachment');
-        	if(value=='true')
+        	if(value==true)
         		return "<input type='checkbox' checked disabled>";
         	else
         		return "<input type='checkbox' disabled>";
