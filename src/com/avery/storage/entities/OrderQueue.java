@@ -681,11 +681,13 @@ public class OrderQueue extends MainAbstractEntity{
 			Cell cell4 = row.createCell(++columncellCount);
 			cell4.setCellValue(additionalData);
 			Cell cell5 = row.createCell(++columncellCount);
-			cell5.setCellValue(obj.getPartner().getPartnerName());
+			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
+				cell5.setCellValue(obj.getPartner().getPartnerName());
 			Cell cell6 = row.createCell(++columncellCount);
 			cell6.setCellValue(obj.getRboName());
 			Cell cell7 = row.createCell(++columncellCount);
-			cell7.setCellValue(obj.getProductLine().getProductLineType());
+			if(obj.getProductLine()!=null && !obj.getProductLine().equals(""))
+				cell7.setCellValue(obj.getProductLine().getProductLineType());
 			Cell cell8 = row.createCell(++columncellCount);
 			cell8.setCellValue(codeMap.get(obj.getStatus()));
 			Cell cell9 = row.createCell(++columncellCount);
