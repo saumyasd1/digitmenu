@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.SalesOrder;
+import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.HibernateUtils;
@@ -47,68 +49,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
 		Map entitiesMap =new HashMap();
-		Session session=null;
-		Criteria criteria=null;
 		int totalCount=0;
-		String queryString=(String) queryMap.getFirst("query");
-		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(OrderQueue.class);
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
-		if(queryString!=null){
-			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType=searchMap.get("datecriteriavalue");
-			if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
-				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
-			}
-			String PartnerName=searchMap.get("PartnerName");
-			if(PartnerName!=null && !"".equals(PartnerName)){
-				criteria.createAlias("partner", "partner");
-				criteria.add(Restrictions.ilike("partner"+".partnerName",PartnerName,MatchMode.ANYWHERE));
-			}
-			String RBOName=searchMap.get("RBOName");
-			if(RBOName!=null && !"".equals(RBOName)){
-				criteria.add(Restrictions.ilike("rboName",RBOName,MatchMode.ANYWHERE));
-			}
-			String Subject=searchMap.get("Subject");
-			if(Subject!=null && !"".equals(Subject)){
-				criteria.add(Restrictions.ilike("subject",Subject,MatchMode.ANYWHERE));
-			}
-			String Status=searchMap.get("Status");
-			if(Status!=null && !"".equals(Status)){
-				criteria.add(Restrictions.eq("status",Status));
-			}
-			String EmailBody=searchMap.get("EmailBody");
-			if(EmailBody!=null && !"".equals(EmailBody)){
-				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
-			}
-			String OrderSource=searchMap.get("OrderSource");
-			if(OrderSource!=null && !"".equals(OrderSource)){
-				criteria.add(Restrictions.eq("orderSource",OrderSource));
-			}
-			String ProductLineType=searchMap.get("ProductLineType");
-			if(ProductLineType!=null && !"".equals(ProductLineType)){
-				criteria.createAlias("productLine", "productLine");
-				criteria.add(Restrictions.ilike("productLine"+".productLineType",ProductLineType,MatchMode.ANYWHERE));
-			}
-			String SenderEmailID=searchMap.get("SenderEmailID");
-			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
-				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
-			}
-			String OrderTrackingID=searchMap.get("id");
-			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
-				Long Id=Long.parseLong(OrderTrackingID);
-				criteria.add(Restrictions.eq("id",Id));
-			}
-			String PONumber=searchMap.get("ponumber");
-			if(PONumber!=null && !"".equals(PONumber)){
-				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
-			}
-		}
-			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
-			criteria.addOrder(Order.desc("lastModifiedDate"));
+		Criteria criteria= getCriteria(queryMap);
+		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
@@ -250,5 +196,90 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.setResultTransformer(Transformers
 				.aliasToBean(OrderQueue.class));
 		return new HashSet<OrderQueue>(criteria.list());
+	}
+	
+	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException, Exception{
+		Session session=null;
+		Criteria criteria=null;
+		String queryString=(String) queryMap.getFirst("query");
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(OrderQueue.class);
+		if(queryString!=null){
+			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+			String dateType=searchMap.get("datecriteriavalue");
+			if(dateType!=null && !dateType.equals("")){
+				String sDate=searchMap.get("fromDate");
+				String eDate=searchMap.get("toDate");
+				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
+			}
+			String PartnerName=searchMap.get("PartnerName");
+			if(PartnerName!=null && !"".equals(PartnerName)){
+				criteria.createAlias("partner", "partner");
+				criteria.add(Restrictions.ilike("partner"+".partnerName",PartnerName,MatchMode.ANYWHERE));
+			}
+			String RBOName=searchMap.get("RBOName");
+			if(RBOName!=null && !"".equals(RBOName)){
+				criteria.add(Restrictions.ilike("rboName",RBOName,MatchMode.ANYWHERE));
+			}
+			String Subject=searchMap.get("Subject");
+			if(Subject!=null && !"".equals(Subject)){
+				criteria.add(Restrictions.ilike("subject",Subject,MatchMode.ANYWHERE));
+			}
+			String Status=searchMap.get("Status");
+			if(Status!=null && !"".equals(Status)){
+				criteria.add(Restrictions.eq("status",Status));
+			}
+			String EmailBody=searchMap.get("EmailBody");
+			if(EmailBody!=null && !"".equals(EmailBody)){
+				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
+			}
+			String OrderSource=searchMap.get("OrderSource");
+			if(OrderSource!=null && !"".equals(OrderSource)){
+				criteria.add(Restrictions.eq("orderSource",OrderSource));
+			}
+			String ProductLineType=searchMap.get("ProductLineType");
+			if(ProductLineType!=null && !"".equals(ProductLineType)){
+				criteria.createAlias("productLine", "productLine");
+				criteria.add(Restrictions.ilike("productLine"+".productLineType",ProductLineType,MatchMode.ANYWHERE));
+			}
+			String SenderEmailID=searchMap.get("SenderEmailID");
+			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
+				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
+			}
+			String OrderTrackingID=searchMap.get("id");
+			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
+				Long Id=Long.parseLong(OrderTrackingID);
+				criteria.add(Restrictions.eq("id",Id));
+			}
+			String PONumber=searchMap.get("ponumber");
+			if(PONumber!=null && !"".equals(PONumber)){
+				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
+			}
+		}
+		return criteria;
+	}
+	
+	@Override
+	public List getAllEntitiesListWithCriteria(MultivaluedMap queryMap)
+			throws Exception {
+		Criteria criteria= getCriteria(queryMap);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		List list = criteria.list();
+		return list;
+	}
+	
+	public List getAllEntitiesListForDailyReport() throws Exception{
+		Criteria criteria= getDailyReportCriteria();
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		List list = criteria.list();
+		return list;
+	}
+	
+	public Criteria getDailyReportCriteria(){
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria=session.createCriteria(OrderQueue.class);
+		criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
+		criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
+		return criteria;
 	}
 }
