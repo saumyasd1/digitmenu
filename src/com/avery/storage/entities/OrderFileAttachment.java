@@ -375,7 +375,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			
 			InputStream is = orderFileAttachment.getFileData().getBinaryStream();
 			byte[] bytes = IOUtils.toByteArray(is);
-			String fileName = orderFileAttachment.getFileName();
+			String fileName = "\""+orderFileAttachment.getFileName()+"\"";
 			//FormDataBodyPart bodyPart = new FormDataBodyPart("file", is, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 
 			//bodyPart.setContentDisposition(FormDataContentDisposition.name("file")
