@@ -24,6 +24,7 @@ public class HibernateUtils {
 	 * @param cmpId
 	 * @return
 	 */
+	public static SimpleDateFormat sdfDate = new SimpleDateFormat("MM/dd/yyyy");
 	public static int getAllRecordsCountWithCriteria(Criteria criteria)
 			throws Exception {
 		criteria.setProjection(Projections.rowCount());
@@ -35,9 +36,17 @@ public class HibernateUtils {
 	}
 	
 	public static Criteria getCriteriaBasedOnDate(Criteria criteria,String dateType,String sDate,String eDate) throws ParseException{
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date startDate = formatter.parse(sDate);
-		Date endDate = formatter.parse(eDate);
+		Date startDate = sdfDate.parse(sDate);
+		Date endDate = sdfDate.parse(eDate);
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(endDate); 
+		c.add(Calendar.DATE, 1);
+		endDate = c.getTime();
+		criteria.add(Restrictions.ge(dateType, startDate)); 
+		criteria.add(Restrictions.lt(dateType, endDate));
+		return criteria;
+	}
+	public static Criteria getCriteriaBasedOnDate(Criteria criteria,String dateType,Date startDate,Date endDate) throws ParseException{
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(endDate); 
 		c.add(Calendar.DATE, 1);
