@@ -247,7 +247,6 @@ Ext.define('AOC.view.address.AddressController', {
                   deleteaddress: function(cmp){
                 	  currentRecord=e.record;
                 		var ID=record.get('id');
-                		var me=this;
                 		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the Address?</b>',function(btn){
                 			  if(btn=='yes'){
                 					Ext.Ajax.request({
