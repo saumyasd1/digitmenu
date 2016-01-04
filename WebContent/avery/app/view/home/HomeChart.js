@@ -216,6 +216,17 @@ Ext.define('AOC.view.home.HomeChart',{
                 'stroke-opacity':1,
                 "stroke-width" :5,
                 stroke : map.get('Received')//pink
+            },
+            tips: {
+                trackMouse: true,
+                style: 'background: #d4d4d4',
+                height: 20,
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 0,
+                renderer: function(storeItem, item) {
+                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('received'));
+                }
             }
         },{
             type: 'line',
@@ -231,6 +242,17 @@ Ext.define('AOC.view.home.HomeChart',{
                 'stroke-opacity':1,
                 "stroke-width" :5,
                 stroke : map.get('Waiting CS Review')//yellow
+            },
+            tips: {
+                trackMouse: true,
+                style: 'background: #d4d4d4',
+                height: 20,
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 0,
+                renderer: function(storeItem, item) {
+                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('waitingCR'));
+                }
             }
         },{
             type: 'line',
@@ -246,6 +268,17 @@ Ext.define('AOC.view.home.HomeChart',{
                 'stroke-opacity':1,
                 "stroke-width" :5,
                 stroke  : map.get('Waiting System Response')//blue
+            },
+            tips: {
+                trackMouse: true,
+                style: 'background: #d4d4d4',
+                height: 20,
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 0,
+                renderer: function(storeItem, item) {
+                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('waitingSR'));
+                }
             }
         },{
             type: 'line',
@@ -261,9 +294,19 @@ Ext.define('AOC.view.home.HomeChart',{
                 'stroke-opacity':1,
                 "stroke-width" :5,
                 stroke  : map.get('Successful')//green
+            },
+            tips: {
+                trackMouse: true,
+                style: 'background: #d4d4d4',
+                height: 20,
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 0,
+                renderer: function(storeItem, item) {
+                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('success'));
+                }
             }
         },{
-
             type: 'line',
             smooth : true,
             highlight: false,
@@ -277,6 +320,17 @@ Ext.define('AOC.view.home.HomeChart',{
                 'stroke-opacity':1,
                 "stroke-width" :5,
                 stroke  : map.get('Failed')//red
+            },
+            tips: {
+                trackMouse: true,
+                style: 'background: #d4d4d4',
+                height: 20,
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 0,
+                renderer: function(storeItem, item) {
+                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('failed'));
+                }
             }
         
         }];
