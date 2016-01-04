@@ -72,40 +72,51 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						cls:'orderline-displayfield-label-cls',
 						labelAlign :'top',
 						value : record.get('PartnerName'),
-						width:120
+						autoWidth: true
+					},{xtype:'tbspacer',
+						height:2,
+						width:5
 					},
 					{
 						xtype:'displayfield',
 						fieldLabel : '<b>RBO</b>',
 						labelAlign :'top',
 						value:record.get('RBOName'),
-						width:120
+						autoWidth: true
+					},
+					{xtype:'tbspacer',
+						height:2,
+						width:5
 					},
 					{
 						xtype:'displayfield',
 						fieldLabel : '<b>Product Line</b>',
-						width:120,
+						autoWidth: true, 
 						labelAlign:'top',
 						value:record.get('productLineType')
+					},
+					{xtype:'tbspacer',
+						height:2,
+						width:5
 					},
 					{
 						xtype:'displayfield',
 						fieldLabel : '<b>Subject</b>',
 						labelAlign :'top',
 						value:record.get('Subject'),
-						width:250
-					},{
+						autoWidth: true
+					},'->',{
 			            xtype: 'button',
 			            reference:'validateButton',
 			            ui:'white',
-			            width:150,
+			            autoWidth: true, 
 			            text: '<b>Validate</b>',
 			            margin:'0 10 0 10',
 			            handler: 'validateOrderLine'
 			        },{
 			            xtype: 'button',
 			            ui:'white',
-			            width:150,
+			            autoWidth: true, 
 			            reference:'cancelOrderButton',
 			            margin:'0 10 0 0',
 			            text: '<b>Cancel Order</b>',
@@ -114,7 +125,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            xtype: 'button',
 			            reference: 'salesOrderbutton',
 			            ui:'white',
-			            width:150,
+			            autoWidth: true, 
 			            text: salesOrdersumbitText,
 			            margin:'0 10 0 0',
 			            handler: 'submitSalesOrder'
@@ -122,7 +133,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            xtype: 'button',
 			            reference: 'salesViewOrderbutton',
 			            ui:'white',
-			            width:150,
+			            autoWidth: true, 
 			            text: viewSalesOrderBtnText,
 			            margin:'0 10 0 0',
 			            handler: 'viewSalesOrder',
