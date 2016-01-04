@@ -193,11 +193,6 @@ Ext.define('AOC.view.home.HomeChart',{
                 text: 'NO. OF ODERS',
                 fontSize: 15
             },
-            minimum: 0, 
-            minorTickSteps: 1,
-            label: {
-		renderer: Ext.util.Format.numberRenderer('0')
-	    },
             fields   : ['received','waitingCR','waitingSR','success','failed']
         }, {
             type: 'category',
