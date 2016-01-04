@@ -345,7 +345,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            width : 300,
   		            height:60,
   		            blankText : 'Order Email Domain  is required',
-  		            maxLength : '5',
   		            enforceMaxLength: true,
   		            listeners : {
   		            	 blur : this.notifyByImage,
