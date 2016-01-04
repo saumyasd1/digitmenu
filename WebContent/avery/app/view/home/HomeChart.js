@@ -30,6 +30,7 @@ Ext.define('AOC.view.home.HomeChart',{
     },
 
     buildItems : function(){
+	var map =AOC.util.Helper.orderColorMap;
         var me = this;
         return [{
             xtype   : 'toolbar',
@@ -43,6 +44,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 checked      : true,
                 boxLabel     : 'Received',
                 seriesItemId : 'received',
+                beforeBoxLabelTextTpl :'<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Received')+'"></div>&nbsp',
                 listeners    : {
                     scope  : me,
                     change : me.onChangeCheckboxSeries
@@ -53,6 +55,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 boxLabel     : 'Waiting CS Review',
                 margin       : '0 0 0 15',
                 seriesItemId : 'waitingCR',
+                beforeBoxLabelTextTpl :'<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting CS Review')+'"></div>&nbsp',
                 listeners    : {
                     scope  : me,
                     change : me.onChangeCheckboxSeries
@@ -63,6 +66,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 boxLabel     : 'Waiting System Response',
                 margin       : '0 0 0 15',
                 seriesItemId : 'waitingSR',
+                beforeBoxLabelTextTpl :'<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting System Response')+'"></div>&nbsp',
                 listeners    : {
                     scope  : me,
                     change : me.onChangeCheckboxSeries
@@ -72,6 +76,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 boxLabel     : 'Successful',
                 checked      : true,
                 margin       :  '0 0 0 15',
+                beforeBoxLabelTextTpl :'<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Successful')+'"></div>&nbsp',
                 seriesItemId : 'success',
                 listeners    : {
                     scope  : me,
@@ -83,6 +88,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 checked      : true,
                 margin       :  '0 0 0 15',
                 seriesItemId : 'failed',
+                beforeBoxLabelTextTpl :'<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Failed')+'"></div>&nbsp',
                 listeners    : {
                     scope  : me,
                     change : me.onChangeCheckboxSeries
@@ -187,6 +193,11 @@ Ext.define('AOC.view.home.HomeChart',{
                 text: 'NO. OF ODERS',
                 fontSize: 15
             },
+            minimum: 0, 
+            minorTickSteps: 1,
+            label: {
+		renderer: Ext.util.Format.numberRenderer('0')
+	    },
             fields   : ['received','waitingCR','waitingSR','success','failed']
         }, {
             type: 'category',
