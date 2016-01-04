@@ -219,13 +219,13 @@ Ext.define('AOC.view.home.HomeChart',{
             },
             tips: {
                 trackMouse: true,
-                style: 'background: #d4d4d4',
-                height: 20,
+                style: 'background: #404040',
+                height: 25,
                 showDelay: 0,
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('received'));
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Received')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('received'))+'</div>';
                 }
             }
         },{
@@ -245,13 +245,13 @@ Ext.define('AOC.view.home.HomeChart',{
             },
             tips: {
                 trackMouse: true,
-                style: 'background: #d4d4d4',
-                height: 20,
+                style: 'background: #404040',
+                height: 25,
                 showDelay: 0,
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('waitingCR'));
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting CS Review')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('waitingCR'))+'</div>';
                 }
             }
         },{
@@ -269,15 +269,15 @@ Ext.define('AOC.view.home.HomeChart',{
                 "stroke-width" :5,
                 stroke  : map.get('Waiting System Response')//blue
             },
-            tips: {
+            tooltip: {
                 trackMouse: true,
-                style: 'background: #d4d4d4',
-                height: 20,
+                style: 'background: #404040',
+                height: 25,
                 showDelay: 0,
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('waitingSR'));
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting System Response')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('waitingSR'))+'</div>';
                 }
             }
         },{
@@ -297,13 +297,13 @@ Ext.define('AOC.view.home.HomeChart',{
             },
             tips: {
                 trackMouse: true,
-                style: 'background: #d4d4d4',
-                height: 20,
+                style: 'background: #404040',
+                height: 25,
                 showDelay: 0,
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('success'));
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Successful')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('success'))+'</div>';
                 }
             }
         },{
@@ -323,13 +323,14 @@ Ext.define('AOC.view.home.HomeChart',{
             },
             tips: {
                 trackMouse: true,
-                style: 'background: #d4d4d4',
-                height: 20,
+                style: 'background: #404040',
+                height: 25,
                 showDelay: 0,
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('day') + ': ' + storeItem.get('failed'));
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Failed')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('failed'))+'</div>';
+
                 }
             }
         
