@@ -41,14 +41,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("ordertrend")
 public class OrderTrend {
 
-	private static Map<Integer, String> statusMap = new HashMap<Integer, String>();
+	private static Map<String, String> statusMap = new HashMap<String, String>();
 	static {
-		statusMap.put(1, "received");
-		statusMap.put(4, "waitingCR");
-		statusMap.put(7, "waitingSR");
-		statusMap.put(99, "success");
-		statusMap.put(98, "failed");
-		statusMap.put(2, "failed");
+		statusMap.put("1", "received");
+		statusMap.put("4", "waitingCR");
+		statusMap.put("7", "waitingSR");
+		statusMap.put("99", "success");
+		statusMap.put("98", "failed");
+		statusMap.put("2", "failed");
 	}
 
 	@GET
@@ -87,6 +87,7 @@ public class OrderTrend {
 		} catch (WebApplicationException aep) {
 			throw aep;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
@@ -98,7 +99,8 @@ public class OrderTrend {
 			throws Exception {
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 				.getInstance().getBean("orderQueueService");
-		Set<OrderQueue> set = orderQueueService.getList(day);
+		Set<OrderQueue> set = orderQueueService
+				.getList(day, statusMap.keySet());
 		switch (day) {
 		case 1: {
 			return buildDataList(set, day, 24);
@@ -112,14 +114,17 @@ public class OrderTrend {
 		case 30: {
 			return buildDataList(set, day, 4);
 		}
+		default: {
+			int part = (day > 14) ? day / 7 : day;
+			return buildDataList(set, day, part);
 		}
-		return null;
+		}
 	}
 
 	private static List<Map<String, Object>> buildDataList(Set<OrderQueue> set,
 			int day, int part) {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-		if(set.size()==0)
+		if (day <= 0 || set.size() == 0)
 			return list;
 		Map<String, Object> datamap = null;
 		Format formatter = (part == 24) ? new SimpleDateFormat("hh: a")
@@ -128,17 +133,17 @@ public class OrderTrend {
 		Date startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 				: DateUtils.getPreviousDate(endDate, day / part);
 		Date recieveDate = null;
-		for (int i = 0; i <=part; i++) {
+		for (int i = 0; i <= part; i++) {
 			datamap = new HashMap<String, Object>();
-			for (Integer status : statusMap.keySet()) {
+			for (String status : statusMap.keySet()) {
 				datamap.put(statusMap.get(status), 0);
 			}
 			for (OrderQueue orderQueue : set) {
 				datamap.put("day", formatter.format(endDate));
 				recieveDate = orderQueue.getReceivedDate();
 				if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
-					for (Integer status : statusMap.keySet()) {
-						if (Integer.parseInt(orderQueue.getStatus()) == status) {
+					for (String status : statusMap.keySet()) {
+						if (orderQueue.getStatus().equals(status)) {
 							if (datamap.containsKey(statusMap.get(status))) {
 								datamap.put(
 										statusMap.get(status),
@@ -162,7 +167,7 @@ public class OrderTrend {
 	public static List<Map<String, Object>> buildGridData() throws Exception {
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 				.getInstance().getBean("orderQueueService");
-		Set<OrderQueue> set = orderQueueService.getList(30);
+		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet());
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		Map<String, Object> recievedMap = buildMap("Received");
 		list.add(recievedMap);
@@ -174,12 +179,12 @@ public class OrderTrend {
 		list.add(successMap);
 		Map<String, Object> failedMap = buildMap("Failed");
 		list.add(failedMap);
-		Map<Integer, Map<String, Object>> myMap = new HashMap<Integer, Map<String, Object>>();
-		myMap.put(1, recievedMap);
-		myMap.put(4, waitinCRMap);
-		myMap.put(7, waitinSRMap);
-		myMap.put(99, successMap);
-		myMap.put(98, failedMap);
+		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
+		myMap.put("1", recievedMap);
+		myMap.put("4", waitinCRMap);
+		myMap.put("7", waitinSRMap);
+		myMap.put("99", successMap);
+		myMap.put("98", failedMap);
 		buildMapData(set, 1, myMap);
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
@@ -188,11 +193,11 @@ public class OrderTrend {
 	}
 
 	static void buildMapData(Set<OrderQueue> set, int days,
-			Map<Integer, Map<String, Object>> myMap) {
+			Map<String, Map<String, Object>> myMap) {
 		Date endDate = new Date();
 		Date startDate = DateUtils.getPreviousDate(endDate, days);
 		Date recieveDate = null;
-		int status;
+		String status;
 		String key = "";
 		switch (days) {
 		case 1: {
@@ -216,31 +221,37 @@ public class OrderTrend {
 		for (OrderQueue orderQueue : set) {
 			recieveDate = orderQueue.getReceivedDate();
 			if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
-				status = Integer.parseInt(orderQueue.getStatus());
+				status = orderQueue.getStatus();
 				switch (status) {
-				case 1: {
+				case "1": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
-				case 4: {
+				case "4": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
-				case 7: {
+				case "7": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
-				case 98: {
+				case "98": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
-				case 99: {
+				case "99": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
-				case 2: {
-					m = myMap.get(98);
+				case "2": {
+					m = myMap.get("98");
 					m.put(key, (int) m.get(key) + 1);
+					break;
 				}
 				}
 			}
