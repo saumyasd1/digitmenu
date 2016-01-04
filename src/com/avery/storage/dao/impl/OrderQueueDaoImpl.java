@@ -1,6 +1,8 @@
 package com.avery.storage.dao.impl;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -255,6 +257,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(PONumber!=null && !"".equals(PONumber)){
 				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
 			}
+		}else{
+			Date now = new Date();
+		    String strDate = HibernateUtils.sdfDate.format(now);
+		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
 		}
 		return criteria;
 	}
@@ -268,18 +274,36 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		return list;
 	}
 	
-	public List getAllEntitiesListForDailyReport() throws Exception{
+	@Override
+	public List<OrderQueue> getAllEntitiesListForDailyReport() throws Exception{
 		Criteria criteria= getDailyReportCriteria();
 		criteria.addOrder(Order.desc("lastModifiedDate"));
-		List list = criteria.list();
+		List<OrderQueue> list = criteria.list();
 		return list;
 	}
 	
-	public Criteria getDailyReportCriteria(){
+	public Criteria getDailyReportCriteria() throws ParseException{
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria=session.createCriteria(OrderQueue.class);
+	    Date now = new Date();
+	    String strDate = HibernateUtils.sdfDate.format(now);
+	    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
+		return criteria;
+	}
+	
+	public Criteria getOpenReportCriteria(MultivaluedMap queryMap) throws Exception{
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria=getCriteria(queryMap);
 		criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
 		criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
 		return criteria;
+	}
+	
+	@Override
+	public List<OrderQueue> getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception{
+		Criteria criteria= getOpenReportCriteria(queryMap);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		List<OrderQueue> list = criteria.list();
+		return list;
 	}
 }
