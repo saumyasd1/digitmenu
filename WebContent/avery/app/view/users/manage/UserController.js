@@ -38,14 +38,16 @@ Ext.define('AOC.view.users.manage.UserController', {
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='PUT';
 			Msg='<b>User Updated Successfully</b>';
+		   var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
 			url=applicationContext+'/rest/users';
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
+			valueObj.status=100;
 			Msg='<b>User Added Successfully</b>';
+			var parameters=Ext.JSON.encode(valueObj);
 		   }
-		   var parameters=Ext.JSON.encode(valueObj);
 				Ext.Ajax.request( {
 					method: methodMode,
 				    jsonData : parameters,	
