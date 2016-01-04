@@ -25,15 +25,26 @@ Ext.define('AOC.view.users.manage.UserController', {
 		var me=this;
 		var Msg='';
 	    var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
-		var createuser=Ext.ComponentQuery.query("#useredititemid")[0];
+		var createuser=Ext.ComponentQuery.query("#useredititemid")[1];
 		var grid=Ext.ComponentQuery.query('#usersgriditemId')[0];
 		var valueObj='',form=this.getView().down('form');
 		var methodMode='';
 		url='';
+		valueObj=form.getValues(false,true,false,true);
+		var ID=valueObj.id;
+		if(ID !=null){
+			url=applicationContext+'/rest/users/'+ID;
+			//form.updateRecord();
+			valueObj=form.getValues(false,true,false,true);
+			methodMode='PUT';
+			Msg='<b>User Updated Successfully</b>';
+		}
+		else{
 			url=applicationContext+'/rest/users';
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			Msg='<b>User Added Successfully</b>';
+		   }
 		   var parameters=Ext.JSON.encode(valueObj);
 				Ext.Ajax.request( {
 					method: methodMode,
@@ -56,6 +67,7 @@ Ext.define('AOC.view.users.manage.UserController', {
 		
     },
 CancelDetails:function(){
+	Ext.getBody().unmask();
 	var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
 	win.destroy();
 },
@@ -72,28 +84,27 @@ onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
         listeners            : {
             afterrender : me.onAfterRenderEditCallout,
             edit: function(cmp){
-//          	  currentRecord=e.record;
-//          	  var id=currentRecord.get('id');
-//          	  me.runTime.setWindowInEditMode(true);
-//	          var mode=me.runTime.getWindowInEditMode();
-//	  		  var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
-//	  		  var title=mode ?'Edit User':'Add User';
-//	  		if(!win){
-//	  		    //var data={"id":""};
-//	  		    win=Ext.create('Ext.window.Window',{
-//  		    	height:550,
-//				width:1000,
-//	  			modal:true,
-//	  			itemId:'userWindowItemId',
-//	  			title:'<b>'+title+'</b>',
-//	  			//rec:currentRecord,
-//	  			editMode:mode,
-//	  			ID:id,
-//	  			items : [{  xtype : 'useredit' }]
-//	  		});
-//	  		win.down('#useredititemid').getForm().setValues(currentRecord);
-//	  		win.show();
-//	  		}
+          	  currentRecord=e.record;
+          	  var id=currentRecord.get('id');
+          	  me.runTime.setWindowInEditMode(true);
+	          var mode=me.runTime.getWindowInEditMode();
+	  		  var win=Ext.ComponentQuery.query('#userWindowItemId')[0];
+	  		  var title=mode ?'Edit User':'Add User';
+	  		if(!win){
+	  		    var data={"id":""};
+	  		    win=Ext.create('Ext.window.Window',{
+  		    	height:550,
+				width:1000,
+	  			modal:true,
+	  			itemId:'userWindowItemId',
+	  			title:'<b>'+title+'</b>',
+	  			editMode:true,
+	  			ID:id,
+	  			items : [{  xtype : 'useredit' }]
+	  		});
+	  		win.down('#useredititemid').getForm().setValues(currentRecord.data);
+	  		win.show();
+	  		}
             	callout.destroy();
             },
             deleteuser: function(cmp){

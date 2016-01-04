@@ -4,10 +4,13 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     itemId:'useredititemid',
     controller:'userMain',
     showPasswordField:false,
+    editMode:false,
+    rec: null,
+    ID:null,
     updateUserLogoId: Ext.id(),  
     initComponent: function () {
         Ext.apply(this, {
-            items: this.buildItems()
+            items: this.buildItems(),
         });
         this.callParent(arguments);
     },
@@ -21,7 +24,6 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
             handler : 'CancelDetails'
         }];
     },
-    rec: null,
     isAdmin : false,
     buildUserInfoTpl:function(){
     	var me = this,
@@ -60,6 +62,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
             xtype: 'form',
             itemId: 'editform',
             padding: '30 0 0 20',
+            mode:me.editMode,
             items: [{
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
@@ -145,6 +148,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             name: 'password',
                             fieldLabel: password,
                             allowBlank: false,
+                            blankText : 'Password is required(should be atleast of length 8)',
                             validateOnChange:false,
                             vtype:'newpassword',
                             hidden:me.showPasswordField,
@@ -159,10 +163,11 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             itemId: 'confirmPassword',
                             name: 'confirmPassword',
                             allowBlank: false,
+                            blankText : 'Confirm Password is required',
                             fieldLabel: confirmPassword,
                             hidden:me.showPasswordField,
                             vtype: 'password',
-                            initialPassField: 'password',
+                            initialPassField: 'password'
                         }
                     ,{
                 	xtype:'hidden',

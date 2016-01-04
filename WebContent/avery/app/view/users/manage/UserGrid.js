@@ -49,8 +49,18 @@ Ext.define('AOC.view.users.manage.UserGrid', {
   },
   buildColumns : function(){
     	var me=this;
-		        return [   
-        			    {  
+		        return [     {
+		            xtype:'actioncolumn',
+		            width:25,
+		            baseCls:'custom-action',
+			  	        items:[
+			  	      {
+					  	    	  icon:menuIcon,
+					  	    	  handler: 'onClickMenu',
+					  	    	
+			  	      }]
+			        },  
+	        			{  
             	            text : 'First Name',
             	          	width:120,
             	            sortable : true,
