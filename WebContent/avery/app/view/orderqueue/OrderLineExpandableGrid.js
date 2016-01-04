@@ -1101,6 +1101,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 saveAndNextBtn: true,
                 listeners:{
                 edit:function(editor, context, eOpts){
+                	Ext.getBody().mask('Saving....');
                 	var ctx = context,me=this,
                     idx = ctx.rowIdx,
                     currentRecord = ctx.store.getAt(idx);
@@ -1128,6 +1129,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             		return flag;
             	},
                 bulKUpdate: function(editor, context) {
+                	Ext.getBody().mask('Saving....');
                     this.suspendEvent('edit');
                     this.completeEdit();
                     this.resumeEvent('edit');
