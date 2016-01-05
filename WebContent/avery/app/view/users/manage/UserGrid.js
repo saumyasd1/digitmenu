@@ -36,6 +36,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
        				}
        				});
        			 obj.bindStore(store);
+       			 me.down('pagingtoolbar').bindStore(store);
        		 }
        		 store.load();
        	  }
