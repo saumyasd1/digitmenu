@@ -31,7 +31,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
             defaults : {
                 draggable : false,
                 sortable : false,
-                hideable:false,
+                hideable :false,
                 flex:1,
                 resizable:false
                },
