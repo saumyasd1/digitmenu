@@ -184,6 +184,7 @@ Ext.define('AOC.view.home.HomeChart',{
     },
 
     buildAxes : function(){
+	var me =this;
         return [{
             type     : 'numeric',
             minimum  : 0,
@@ -202,12 +203,19 @@ Ext.define('AOC.view.home.HomeChart',{
             title: {
                 text: 'DAYS',
                 fontSize: 15
+            },
+            renderer:function(label){
+        	return me.getLabel(label)
             }
         }];
     },
-
+    
+    getLabel:function(label){
+	return (label.indexOf("::")!=-1)?label.substring(4):label;
+    },
     buildSeries : function(){
 	var map =AOC.util.Helper.orderColorMap;
+	var me=this;
         return [{
             type: 'line',
             smooth : true,
@@ -231,7 +239,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Received')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('received'))+'</div>';
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Received')+'"></div><div class="home-oder-grid-text">'+me.getLabel(storeItem.get('day')) + ': ' + storeItem.get('received'))+'</div>';
                 }
             }
         },{
@@ -257,7 +265,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting CS Review')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('waitingCR'))+'</div>';
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting CS Review')+'"></div><div class="home-oder-grid-text">'+me.getLabel(storeItem.get('day')) + ': ' + storeItem.get('waitingCR'))+'</div>';
                 }
             }
         },{
@@ -283,7 +291,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting System Response')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('waitingSR'))+'</div>';
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Waiting System Response')+'"></div><div class="home-oder-grid-text">'+me.getLabel(storeItem.get('day'))+ ': ' + storeItem.get('waitingSR'))+'</div>';
                 }
             }
         },{
@@ -309,7 +317,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Successful')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('success'))+'</div>';
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Successful')+'"></div><div class="home-oder-grid-text">'+me.getLabel(storeItem.get('day'))+ ': ' + storeItem.get('success'))+'</div>';
                 }
             }
         },{
@@ -335,7 +343,7 @@ Ext.define('AOC.view.home.HomeChart',{
                 dismissDelay: 0,
                 hideDelay: 0,
                 renderer: function(storeItem, item) {
-                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Failed')+'"></div><div class="home-oder-grid-text">'+storeItem.get('day') + ': ' + storeItem.get('failed'))+'</div>';
+                    this.setHtml('<div class="home-oder-grid-circle" style="border:5px solid '+ map.get('Failed')+'"></div><div class="home-oder-grid-text">'+me.getLabel(storeItem.get('day'))+ ': ' + storeItem.get('failed'))+'</div>';
 
                 }
             }
