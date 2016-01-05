@@ -16,6 +16,7 @@ Ext.define('AOC.config.Settings',{
          backIcon:'avery/resources/images/arrow-lef.svg',
          tick:'avery/resources/images/tick.svg',
          warning:'avery/resources/images/warning.svg',
+         watch:'avery/resources/images/watch1.png',
          error:'avery/resources/images/error.png',
          cancel:'avery/resources/images/cancel.png',
          defaultUserImg:'avery/resources/images/defaultUser.png'
