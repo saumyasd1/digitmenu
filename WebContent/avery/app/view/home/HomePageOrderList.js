@@ -10,9 +10,9 @@ Ext.define('AOC.view.home.HomePageOrderList', {
         columnLines   : false,
         store:'HomePageOders',
         columnLines:false,
+        rowLines: false,
         viewConfig : {
 	            stripeRows : false,
-	            enableTextSelection : true,
 	            getRowClass: function(record,num) {
 	        	if(num==0){
 	        	    return 'light-black';
@@ -27,11 +27,17 @@ Ext.define('AOC.view.home.HomePageOrderList', {
   },
   buildColumns : function(){
     	var me=this;
-        return [         
-        	{  
+        return {
+            defaults : {
+                draggable : false,
+                sortable : false,
+                hideable:false,
+                flex:1,
+                resizable:false
+               },
+               items:[{  
             	 text : 'Oders',
             	 width:200,
-            	 sortable : false,
             	 dataIndex:'orderType',
             	 cls:'home-order-grid',
             	 renderer  : function(v,meta,rec){
@@ -39,8 +45,6 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                  }
                	},{  
             	 text : 'Last 1 Day',
-            	 sortable : false,
-            	 flex:1,
                  align:'center',
             	 dataIndex:'lastOneDay',
             	 cls:'home-order-grid',
@@ -49,8 +53,6 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                  }
                	},{  
             	 text : 'Last Weak',
-            	 sortable : false,
-            	 flex:1,
             	 align:'center',
             	 dataIndex:'lastWeak',
             	 cls:'home-order-grid',
@@ -59,8 +61,6 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                  }
                	},{ 
             	 text : 'Last Two Week',
-            	 sortable : false,
-            	 flex:1,
             	 align:'center',
             	 dataIndex:'lastTwoWeak',
            	 cls:'home-order-grid',
@@ -70,8 +70,6 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                	},{ 
             	 text : 'Last Month',
             	 border:false,
-            	 sortable : false,
-            	 flex:1,
             	 align:'center',
             	 dataIndex:'lastMonth',
             	 cls:'home-order-grid',
@@ -79,7 +77,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                     return '<div class="home-oder-grid-column-text">'+v+'</div>';
                  }
                	}
-        ];
+        ]};
     },
     buildColTpl : function(){
         return Ext.create('Ext.XTemplate',
