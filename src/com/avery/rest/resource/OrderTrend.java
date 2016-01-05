@@ -156,7 +156,7 @@ public class OrderTrend {
 
 				}
 			}
-			list.add(datamap);
+			((LinkedList)list).addFirst(datamap);
 			endDate = startDate;
 			startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 					: DateUtils.getPreviousDate(endDate, day / part);
