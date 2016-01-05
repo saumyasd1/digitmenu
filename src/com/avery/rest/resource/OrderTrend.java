@@ -127,7 +127,7 @@ public class OrderTrend {
 		if (day <= 0 || set.size() == 0)
 			return list;
 		Map<String, Object> datamap = null;
-		Format formatter = (part == 24) ? new SimpleDateFormat("hh a")
+		Format formatter = (part == 24) ? new SimpleDateFormat("dd::HH a")
 				: new SimpleDateFormat("dd MMM");
 		Date endDate = new Date();
 		Date startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
