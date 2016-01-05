@@ -5,11 +5,11 @@ Ext.define('AOC.util.Helper',{
     },
     constructor : function(config){
 	 var ordderColorMap =new Ext.util.HashMap();
-	 ordderColorMap.add('Received','#ff1a8c');
-	 ordderColorMap.add('Waiting CS Review','#ffff1a');
-	 ordderColorMap.add('Waiting System Response','#1a74ff');
-	 ordderColorMap.add('Successful','#48d148');
-	 ordderColorMap.add('Failed','#ff1a1a');
+	 ordderColorMap.add('Received','#ED2691');
+	 ordderColorMap.add('Waiting CS Review','#FFC500');
+	 ordderColorMap.add('Waiting System Response','#25B3EE');
+	 ordderColorMap.add('Successful','#09CF86');
+	 ordderColorMap.add('Failed','#FF0000');
 	 this.orderColorMap=ordderColorMap;
     },
   getSwitchButtonHtml: function(event, status, cssClass){
