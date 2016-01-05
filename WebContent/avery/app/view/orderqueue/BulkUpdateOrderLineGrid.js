@@ -490,12 +490,32 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Artwork Hold',
             dataIndex: 'artworkhold',
             width: 84,
-            xtype : 'checkcolumn'
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'Artwork Work Attachment',
             dataIndex: 'artworkworkattachment',
             width: 110,
-            xtype : 'checkcolumn'
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'Variable Data Breakdown',
             dataIndex: 'variableDataBreakdown',
@@ -560,12 +580,32 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Shipping Hold',
             dataIndex: 'shippinghold',
             width: 83,
-            xtype : 'checkcolumn'
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'Production Hold',
             dataIndex: 'productionhold',
             width: 77,
-            xtype : 'checkcolumn'
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'Split Shipset',
             dataIndex: 'splitshipset',
@@ -591,7 +631,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Waive MOQ',
             dataIndex: 'waiveMOQ',
             width: 59,
-            xtype : 'checkcolumn'
+            editor:{
+            	xtype:'combo',
+            	editable:false,
+            	store:[[true,'Y'],[false,'N']]
+            },
+            renderer:function(value, metadata,rec){
+            	var v='N';
+            	if(value)
+            		v='Y';
+    				return '<div>'+v+'</div>';
+        }
         }, {
             text: 'APO Type',
             dataIndex: 'apoType',
