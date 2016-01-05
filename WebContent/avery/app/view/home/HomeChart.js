@@ -38,7 +38,7 @@ Ext.define('AOC.view.home.HomeChart',{
             items   : [{
                 xtype  : 'component',
                 margin:'0 0 0 50',
-                html   : '<div  style="font-weight:600;font-size:20px">Orders Summary</div>'
+                html   : '<div  style="font-family: San Serif, Helvetica, Arial; font-size: 25px; color: #2F3338; line-height: 29px;">Order Summary</div>'
             },'->',{
                 xtype        : 'checkbox',
                 checked      : true,
@@ -110,13 +110,13 @@ Ext.define('AOC.view.home.HomeChart',{
                         desc : 'Last 1 Day'
                     },{
                         val  : 7,
-                        desc : 'Last Week'
+                        desc : 'Last 7 Days'
                     },{
                         val  : 14,
-                        desc : 'Last Two Week'
+                        desc : 'Last 14 Days'
                     },{
                         val  : 30,
-                        desc : 'Last Month'
+                        desc : 'Last 30 Days'
                     }]
                 }),
                 editable       : false,
@@ -191,7 +191,7 @@ Ext.define('AOC.view.home.HomeChart',{
             grid           : true,
             position : 'left',
             title: {
-                text: 'NO. OF ODERS',
+                text: '#Orders',
                 fontSize: 15
             },
             fields   : ['received','waitingCR','waitingSR','success','failed']
@@ -226,8 +226,8 @@ Ext.define('AOC.view.home.HomeChart',{
             yField: 'received',
             seriesItemId : 'received',
             style: {
-                opacity : 1,
-                'stroke-opacity':1,
+        	opacity :  0.6,
+                'stroke-opacity':0.6,
                 "stroke-width" :5,
                 stroke : map.get('Received')//pink
             },
@@ -252,9 +252,9 @@ Ext.define('AOC.view.home.HomeChart',{
             yField: 'waitingCR',
             seriesItemId : 'waitingCR',
             style: {
-        	 opacity : 1,
-                'stroke-opacity':1,
-                "stroke-width" :5,
+        	opacity :  0.6,
+                'stroke-opacity':0.6,
+                "stroke-width" :6,                
                 stroke : map.get('Waiting CS Review')//yellow
             },
             tips: {
@@ -278,8 +278,8 @@ Ext.define('AOC.view.home.HomeChart',{
             yField: 'waitingSR',
             seriesItemId : 'waitingSR',
             style: {
-        	 opacity : 1,
-                'stroke-opacity':1,
+        	 opacity :  0.6,
+                'stroke-opacity':0.6,
                 "stroke-width" :5,
                 stroke  : map.get('Waiting System Response')//blue
             },
@@ -304,8 +304,8 @@ Ext.define('AOC.view.home.HomeChart',{
             yField: 'success',
             seriesItemId : 'success',
             style: {
-        	 opacity : 1,
-                'stroke-opacity':1,
+        	opacity :  0.6,
+                'stroke-opacity':0.6,
                 "stroke-width" :5,
                 stroke  : map.get('Successful')//green
             },
@@ -330,9 +330,9 @@ Ext.define('AOC.view.home.HomeChart',{
             yField: 'failed',
             seriesItemId : 'failed',
             style: {
-        	 opacity : 1,
-                'stroke-opacity':1,
-                "stroke-width" :5,
+        	opacity :  0.6,
+                'stroke-opacity':0.6,
+                "stroke-width" :4,
                 stroke  : map.get('Failed')//red
             },
             tips: {
