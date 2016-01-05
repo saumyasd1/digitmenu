@@ -636,50 +636,32 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Artwork Hold',
         dataIndex: 'artworkhold',
         width: 84,
-        editor: {
-        	xtype:'checkbox',
-        	listeners:{
-        		'change':function(obj,newValue,oldValue){
-        			var record=obj.ownerCt.context.record;
-        		  	if(newValue==true)
-        		  		record.set('artworkhold',true);
-        		  	else
-        		  		record.set('artworkhold',false);
-        		}
-        	}
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
         },
-        renderer: function(value,row) {
-        	var record=row.record;
-        	var value=record.get('artworkhold');
-        	if(value==true)
-        		return "<input type='checkbox' checked disabled>";
-        	else
-        		return "<input type='checkbox' disabled>";
-        }
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     }, {
         text: 'Artwork Work Attachment',
         dataIndex: 'artworkworkattachment',
         width: 110,
-        editor: {
-        	xtype:'checkbox',
-        	listeners:{
-        		'change':function(obj,newValue,oldValue){
-        			var record=obj.ownerCt.context.record;
-        		  	if(newValue==true)
-        		  		record.set('artworkworkattachment',true);
-        		  	else
-        		  		record.set('artworkworkattachment',false);
-        		}
-        	}
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
         },
-        renderer: function(value,row) {
-        	var record=row.record;
-        	var value=record.get('artworkworkattachment');
-        	if(value==true)
-        		return "<input type='checkbox' checked disabled>";
-        	else
-        		return "<input type='checkbox' disabled>";
-        }
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     }, {
         text: 'Variable Data Breakdown',
         dataIndex: 'variableDataBreakdown',
@@ -780,50 +762,32 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Shipping Hold',
         dataIndex: 'shippinghold',
         width: 83,
-        editor: {
-        	xtype:'checkbox',
-        	listeners:{
-        		'change':function(obj,newValue,oldValue){
-        			var record=obj.ownerCt.context.record;
-        		  	if(newValue==true)
-        		  		record.set('shippinghold',true);
-        		  	else
-        		  		record.set('shippinghold',false);
-        		}
-        	}
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
         },
-        renderer: function(value,row) {
-        	var record=row.record;
-        	var value=record.get('shippinghold');
-        	if(value==true)
-        		return "<input type='checkbox' checked disabled>";
-        	else
-        		return "<input type='checkbox' disabled>";
-        }
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     }, {
         text: 'Production Hold',
         dataIndex: 'productionhold',
         width: 77,
-        editor: {
-        	xtype:'checkbox',
-        	listeners:{
-        		'change':function(obj,newValue,oldValue){
-        			var record=obj.ownerCt.context.record;
-        		  	if(newValue==true)
-        		  		record.set('productionhold',true);
-        		  	else
-        		  		record.set('productionhold',false);
-        		}
-        	}
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
         },
-        renderer: function(value,row) {
-        	var record=row.record;
-        	var value=record.get('productionhold');
-        	if(value==true)
-        		return "<input type='checkbox' checked disabled>";
-        	else
-        		return "<input type='checkbox' disabled>";
-        }
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     }, {
         text: 'Split Shipset',
         dataIndex: 'splitshipset',
@@ -867,27 +831,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         text: 'Waive MOQ',
         dataIndex: 'waiveMOQ',
         width: 59,
-        editor: {
-        	xtype:'checkbox',
-        	listeners:{
-        		'change':function(obj,newValue,oldValue){
-        			var record=obj.ownerCt.context.record;
-        		  	if(newValue==true)
-        		  		record.set('waiveMOQ',true);
-        		  	else
-        		  		record.set('waiveMOQ',false);
-        		}
-        	}
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
         },
-        renderer: function(value,row) {
-        	var record=row.record;
-        	var value=record.get('waiveMOQ');
-        	if(value=='true' || value==true)
-        		return "<input type='checkbox' checked disabled>";
-        	else{
-        		return "<input type='checkbox' disabled>";	
-        	}
-        }
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     }, {
         text: 'APO Type',
         dataIndex: 'apoType',
