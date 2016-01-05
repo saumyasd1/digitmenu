@@ -138,7 +138,7 @@ Ext.define('AOC.util.Helper',{
 	   }
 		else if(v==waitingForCSRStatus || v==submissionProcessRunningStatus || v==exportingProcessRunningStatus || v==processingOrder)
 		{
-			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.warning + '" /><font color=#FF9933>&nbsp&nbsp&nbsp'+va+'</font></div>';
+			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.watch + '" /><font color=#EF4300>&nbsp&nbsp&nbsp'+va+'</font></div>';
 		}
 		else if( v==cancelStatus)
 		{
