@@ -648,7 +648,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div>'+v+'</div>';
     }
     }, {
-        text: 'Artwork Work Attachment',
+        text: 'Artwork For Reference',//'Artwork Work Attachment',
         dataIndex: 'artworkworkattachment',
         width: 110,
         editor:{
