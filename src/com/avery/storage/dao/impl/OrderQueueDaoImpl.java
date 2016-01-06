@@ -257,11 +257,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(PONumber!=null && !"".equals(PONumber)){
 				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
 			}
-		}else{
-			Date now = new Date();
-		    String strDate = HibernateUtils.sdfDate.format(now);
-		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
 		}
+//		else{
+//			Date now = new Date();
+//		    String strDate = HibernateUtils.sdfDate.format(now);
+//		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
+//		}
 		return criteria;
 	}
 	
