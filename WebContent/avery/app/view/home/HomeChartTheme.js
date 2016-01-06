@@ -3,7 +3,6 @@ Ext.define('AOC.view.home.HomeChartTheme', {
     singleton: true,
     alias: 'chart.theme.homecharttheme',
     config: {
-	baseColor: 'red',
 	chart: {
             defaults: {
                 background: '#ffffff'
