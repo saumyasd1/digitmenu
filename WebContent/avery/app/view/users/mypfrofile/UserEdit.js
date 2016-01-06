@@ -10,7 +10,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     updateUserLogoId: Ext.id(),  
     initComponent: function () {
         Ext.apply(this, {
-            items: this.buildItems(),
+            items: this.buildItems()
         });
         this.callParent(arguments);
     },
