@@ -205,11 +205,11 @@ public class OrderTrend {
 			break;
 		}
 		case 7: {
-			key = "lastWeak";
+			key = "lastWeek";
 			break;
 		}
 		case 14: {
-			key = "lastTwoWeak";
+			key = "lastTwoWeek";
 			break;
 		}
 		case 30: {
@@ -262,8 +262,8 @@ public class OrderTrend {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderType", type);
 		map.put("lastOneDay", 0);
-		map.put("lastWeak", 0);
-		map.put("lastTwoWeak", 0);
+		map.put("lastWeek", 0);
+		map.put("lastTwoWeek", 0);
 		map.put("lastMonth", 0);
 		return map;
 	}
