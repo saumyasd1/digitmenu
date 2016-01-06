@@ -502,7 +502,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     				return '<div>'+v+'</div>';
         }
         }, {
-            text: 'Artwork Work Attachment',
+            text: 'Artwork For Reference',
             dataIndex: 'artworkworkattachment',
             width: 110,
             editor:{
