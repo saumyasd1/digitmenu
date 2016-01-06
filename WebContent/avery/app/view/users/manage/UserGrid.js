@@ -57,7 +57,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 			  	        items:[
 			  	      {
 					  	    	  icon:menuIcon,
-					  	    	  handler: 'onClickMenu',
+					  	    	  handler: 'onClickMenu'
 					  	    	
 			  	      }]
 			        },  
