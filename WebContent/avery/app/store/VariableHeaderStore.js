@@ -4,11 +4,7 @@ Ext.define('AOC.store.VariableHeaderStore', {
 	autoLoad : true,
 	storeId:'OrderHeaderId',
 	proxy : {
-	//	timeout:parseInt(requestTimeoutforStore, 10),
-		// load using HTTP
-		
 		type : 'ajax',
-		//url : 'powerpay/MenuItems/GET',
 		url : 'avery/app/data/variableheader.json',
 		reader:{
 	        type:'json', 
