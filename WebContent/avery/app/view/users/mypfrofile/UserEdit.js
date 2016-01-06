@@ -3,7 +3,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     alias: 'widget.useredit',
     itemId:'useredititemid',
     controller:'userMain',
-    showPasswordField:false,
+   showPasswordField:false,
     editMode:false,
     rec: null,
     ID:null,
@@ -151,7 +151,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             blankText : 'Password is required(should be atleast of length 8)',
                             validateOnChange:false,
                             vtype:'newpassword',
-                            hidden:me.showPasswordField,
+                            hidden:!me.showPasswordField,
                             initialPassField: 'currentPassword',
                             listeners: {
                                 scope: me
@@ -165,7 +165,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                             allowBlank: false,
                             blankText : 'Confirm Password is required',
                             fieldLabel: confirmPassword,
-                            hidden:me.showPasswordField,
+                            hidden:!me.showPasswordField,
                             vtype: 'password',
                             initialPassField: 'password'
                         }
