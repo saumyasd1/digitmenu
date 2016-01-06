@@ -3,6 +3,7 @@ package com.avery.storage.dao.impl;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -258,11 +259,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.ilike("ponumber",PONumber,MatchMode.ANYWHERE));
 			}
 		}
-//		else{
-//			Date now = new Date();
-//		    String strDate = HibernateUtils.sdfDate.format(now);
-//		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
-//		}
+		else{
+			 Date date = new Date();
+		        String todate = HibernateUtils.sdfDate.format(date);
+		        Calendar cal = Calendar.getInstance();
+		        cal.add(Calendar.DATE, -7);
+		        Date todate1 = cal.getTime();    
+		        String strDate = HibernateUtils.sdfDate.format(todate1);
+		    String endDate = HibernateUtils.sdfDate.format(date);
+		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, endDate);
+		}
 		return criteria;
 	}
 	
