@@ -159,11 +159,11 @@ Ext.define('AOC.view.home.HomeChart',{
         },{
             xtype       : 'button',
             icon : AOC.config.Settings.buttonIcons.report,
-			iconAlign : "right",
+			iconAlign : "left",
             reference      : 'report',
             margin      :'0 15 0 0',
             text:'Report',
-            ui:'blue',
+           // ui:'blue',
             listeners:{
             	'click':'getReportView'
             }
