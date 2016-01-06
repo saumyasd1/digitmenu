@@ -190,7 +190,9 @@ Ext.define('AOC.view.home.HomeChart',{
         return [{
             type     : 'numeric',
             minimum  : 0,
-            grid           : true,
+            grid     : {
+        	stroke:"#BDD9F2"
+            },
             position : 'left',
             title: {
                 text: '#Orders',
@@ -200,7 +202,9 @@ Ext.define('AOC.view.home.HomeChart',{
         }, {
             type: 'category',
             position: 'bottom',
-            grid           : true,
+            grid     : {
+        	stroke:"#BDD9F2"
+            },
             fields: ['day'],
             title: {
                 text: 'DAYS',
