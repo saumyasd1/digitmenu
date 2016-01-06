@@ -58,7 +58,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		  	        items:[
 		  	      {
 				  	    	  icon:menuIcon,
-				  	    	  handler: 'onClickMenu',
+				  	    	  handler: 'onClickMenu'
 				  	    	
 		  	      }]
 		        },
