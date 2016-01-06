@@ -1,9 +1,8 @@
 Ext.define('AOC.view.AOCHeader',{
-    extend : 'Ext.form.Panel',
+    extend : 'Ext.Container',
     alias : 'widget.aocheader',
     height : 60,
-    layout: 'fit',
-    cls : 'intake-header',
+    cls : 'aoc-header',
     requires : ['AOC.config.Settings'],
     initComponent : function(){
 	var settings = AOC.config.Settings,
