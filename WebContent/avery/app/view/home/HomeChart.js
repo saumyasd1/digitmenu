@@ -2,7 +2,7 @@ Ext.define('AOC.view.home.HomeChart',{
     extend        : 'Ext.container.Container',
     requires      : [
         'Ext.chart.*',
-        'Ext.chart.Chart',             
+        'Ext.chart.Chart',
         'Ext.chart.series.Line',
         'Ext.toolbar.Toolbar',
         'Ext.chart.axis.Numeric',
@@ -11,7 +11,8 @@ Ext.define('AOC.view.home.HomeChart',{
         'Ext.form.field.Checkbox',
         'Ext.form.field.ComboBox',
         'AOC.view.home.HomeChartController',
-        'AOC.view.home.HomePageOrderList'
+        'AOC.view.home.HomePageOrderList',
+        'AOC.view.home.HomeChartTheme'
     ],
     controller:'homechartcontroller',
     alias         : 'widget.odersoverviewchart',
@@ -173,11 +174,9 @@ Ext.define('AOC.view.home.HomeChart',{
             itemId       : 'dashboardchart',
             flex         :1,
             insetPadding : 25,
-            style        : {
-                "background-color" : "#f9f9f9"
-            },
             store        : 'OrderCharts',
             series       : me.buildSeries(),
+            theme        : 'homecharttheme',
             axes         : me.buildAxes()
         },{
             xtype:'homepageorderlist',
@@ -190,9 +189,7 @@ Ext.define('AOC.view.home.HomeChart',{
         return [{
             type     : 'numeric',
             minimum  : 0,
-            grid     : {
-        	stroke:"#BDD9F2"
-            },
+            grid     : true,
             position : 'left',
             title: {
                 text: '#Orders',
@@ -202,9 +199,7 @@ Ext.define('AOC.view.home.HomeChart',{
         }, {
             type: 'category',
             position: 'bottom',
-            grid     : {
-        	stroke:"#BDD9F2"
-            },
+            grid     : true,
             fields: ['day'],
             title: {
                 text: 'DAYS',
