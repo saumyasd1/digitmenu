@@ -25,7 +25,7 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			    dock: 'top',
 			    items: [{
 			    	xtype : 'tbtext',
-			    	text : '<div style="color:"><b>New Web Orders / Fix & Re-submit</b></div>'
+			    	text : '<div style="color:"><b>New Web Orders</b></div>'
 					}]
 			}]
 	 	});
