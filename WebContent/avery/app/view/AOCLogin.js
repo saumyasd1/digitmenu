@@ -45,7 +45,7 @@ Ext.define('AOC.view.AOCLogin',{
 				        },
 				        {
 				         xtype:'component',
-				         html:'<div style="width:100%;text-align:center;font-size:18px;font-weight:500;">Accelerated Order Capture</div>'
+				         html:'<div class="heading-text">Accelerated Order Capture</div>'
 				        },
         		                {
         		                    name: 'username',
@@ -75,7 +75,7 @@ Ext.define('AOC.view.AOCLogin',{
         		                    items:[{
         		                    	xtype : 'checkbox',
         		                    	width:245,
-        		                    	boxLabel : '<div style="padding:0px 0px 0px 0px !important;" >Remember me</div>',
+        		                    	boxLabel : '<div class="forget-pws-text" >Remember me</div>',
         		                    	oldValue : false,
         		                    	listeners : {
         		                    		scope : this,
@@ -86,7 +86,8 @@ Ext.define('AOC.view.AOCLogin',{
         		                    },{
         		                	xtype:'component',
         		                	flex:1,
-        		                	html:'<div >Forgot Password?</div>'
+        		                	margin:'7 0 0 0',
+        		                	html:'<div class="forget-pws-text">Forgot Password?</div>'
         		                    }]
         		                },
         		                {
