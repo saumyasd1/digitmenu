@@ -36,7 +36,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                 resizable:false
                },
                items:[{  
-            	 text : 'Oders',
+            	 text : 'Orders',
             	 width:200,
             	 dataIndex:'orderType',
             	 cls:'home-order-grid',
@@ -68,7 +68,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                    return '<div class="home-oder-grid-column-text">'+v+'</div>';
                 }
                	},{ 
-            	 text : 'Last 7 Days',
+            	 text : 'Last 30 Days',
             	 border:false,
             	 align:'center',
             	 dataIndex:'lastMonth',
