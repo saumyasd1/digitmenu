@@ -155,5 +155,5 @@ buildMenuTpl : function(){
             '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deleteuser"">Delete</div>',
             '</tpl>'
         );
-     },
+     }
 });
