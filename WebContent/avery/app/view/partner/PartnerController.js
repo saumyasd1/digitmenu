@@ -72,7 +72,7 @@ Ext.define('AOC.view.partner.PartnerController', {
 		var win=Ext.ComponentQuery.query("#createpartnerItemId")[0];
 		if(!win){
 		win=Ext.create('AOC.view.partner.CreatePartner',{
-			modal:true,
+			modal:true
 		});
 		win.down('#titleItemId').setValue('<font size=3><b>Add Partner</b></font>').setVisible(true);
 		win.show();
@@ -183,11 +183,11 @@ Ext.define('AOC.view.partner.PartnerController', {
 	  buildMenuTpl : function(){
 	    	  var me=this;
 	    	 return Ext.create('Ext.XTemplate',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
 	              '</tpl>',
-	              '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
 	              '</tpl>',
-	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">View ProductLine</div>',
+	              '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">View ProductLine</div>',
 	    	     '</tpl>'
 	          );
 	       },
