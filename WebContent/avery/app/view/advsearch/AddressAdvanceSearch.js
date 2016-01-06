@@ -42,7 +42,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							labelSeparator : '',
 							labelAlign : 'top',
 							allowBlank : true,
-							selectOnTab : true,
+							selectOnTab : true
 						},
 						{
 							xtype : 'tbspacer',
@@ -55,7 +55,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							name:'partnerName',
 							width:250,
 							labelSeparator : '',
-							labelAlign : 'top',
+							labelAlign : 'top'
 						}]
 						 },
 						{
