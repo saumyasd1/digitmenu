@@ -184,6 +184,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        items:[{
 							xtype : 'datefield',
 							name:'fromDate',
+							value : Ext.Date.subtract (new Date(),Ext.Date.DAY,7),
 							reference:'fromDate',
 							fieldLabel : 'From Date ',
 							width:250,
@@ -194,7 +195,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							selectOnTab : true,
 							listeners : {
 							    render : function(datefield) {
-							        datefield.setValue(new Date());
+							        //datefield.setValue(Ext.Date.add( new Date(), Ext.Date.Day, -7));
 							    }
 							}
 						},
