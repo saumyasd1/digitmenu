@@ -3,7 +3,6 @@ Ext.define('AOC.controller.MenuController', {
 	alias: 'controller.menuController',
 	requires:['AOC.view.ux.Callout'],
 	stores:['Sections','PartnerManagementStore','AddressStore','OrderQueueStore','OrderCharts','HomePageOders','Roles'],
-	models:['MenuModel'],
 	views : ['base.BaseToolbar','Viewport','users.manage.User'],
 	refs : [{
 		selector : 'viewport #toolbarviewitemid',
