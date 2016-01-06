@@ -49,7 +49,7 @@ Ext.define('AOC.view.address.AddAddress',{
 				   },
 				   {
 				   	xtype :'tbspacer',
-				   	height:1,
+				   	height:1
 					},  
         	   {
         		xtype:'displayfield',
