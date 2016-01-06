@@ -1,4 +1,4 @@
 Ext.define('AOC.model.HomePageOder',{
     extend   : 'Ext.data.Model',
-    fields : ['orderType','lastOneDay','lastWeak','lastTwoWeak','lastMonth']
+    fields : ['orderType','lastOneDay','lastWeek','lastTwoWeek','lastMonth']
 });
