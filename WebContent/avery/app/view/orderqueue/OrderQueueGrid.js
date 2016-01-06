@@ -55,8 +55,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [
              {
-//        	header: '<img src="' + menuIcon + '" />',
-            text:'',
+        	header: '<img src="' + menuIcon + '" />',
+            //text:'',
             width:25,
 			xtype:'actioncolumn',
 			menuDisabled  :true,
@@ -67,8 +67,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		  }]
         },
         {
-//        	header: '<img src="' + commentIcon + '" />',
-        	text:'',
+     	header: '<img src="' + commentIcon + '" />',
+        	//text:'',
             width:40,
 			dataIndex:'Comments',
 			menuDisabled  :true,
@@ -84,8 +84,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		   	},
 			
         {
-//		    header: '<img src="' + errorIcon + '" />',
-		   	text:'',
+		    header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
+		   //	text:'',
             width:40,
 			dataIndex:'error',
 			menuDisabled  :true,
