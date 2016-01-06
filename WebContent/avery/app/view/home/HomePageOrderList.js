@@ -52,23 +52,23 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                     return '<div class="home-oder-grid-column-text">'+v+'</div>';
                  }
                	},{  
-            	 text : 'Last Weak',
+            	 text : 'Last 7 Days',
             	 align:'center',
-            	 dataIndex:'lastWeak',
+            	 dataIndex:'lastWeek',
             	 cls:'home-order-grid',
             	 renderer  : function(v,meta,rec){
                     return '<div class="home-oder-grid-column-text">'+v+'</div>';
                  }
                	},{ 
-            	 text : 'Last Two Week',
+            	 text : 'Last 14 Days',
             	 align:'center',
-            	 dataIndex:'lastTwoWeak',
+            	 dataIndex:'lastTwoWeek',
            	 cls:'home-order-grid',
            	 renderer  : function(v,meta,rec){
                    return '<div class="home-oder-grid-column-text">'+v+'</div>';
                 }
                	},{ 
-            	 text : 'Last Month',
+            	 text : 'Last 7 Days',
             	 border:false,
             	 align:'center',
             	 dataIndex:'lastMonth',
