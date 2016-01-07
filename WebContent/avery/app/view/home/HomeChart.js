@@ -212,7 +212,7 @@ Ext.define('AOC.view.home.HomeChart',{
     },
     
     getLabel:function(label){
-	return (label.indexOf("::")!=-1)?label.substring(4):label;
+	return (label.indexOf("::")!=-1)?label.substring(4)+' Hours':label;
     },
     buildSeries : function(){
 	var map =AOC.util.Helper.orderColorMap;
