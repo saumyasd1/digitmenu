@@ -179,6 +179,8 @@ public class OrderTrend {
 		list.add(successMap);
 		Map<String, Object> failedMap = buildMap("Failed");
 		list.add(failedMap);
+		Map<String, Object> toatalCount = buildMap("Total Count");
+		list.add(toatalCount);
 		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
 		myMap.put("1", recievedMap);
 		myMap.put("4", waitinCRMap);
@@ -189,6 +191,15 @@ public class OrderTrend {
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
 		buildMapData(set, 30, myMap);
+		Map<String, Object> m = null;
+		for(String key:myMap.keySet()){
+			m=myMap.get(key);
+		  for(String type:m.keySet()){
+			  if(!type.equals("orderType")){
+				  toatalCount.put(type, (int) toatalCount.get(type) + (int) m.get(type));  
+			  }
+		  }
+		}
 		return list;
 	}
 
