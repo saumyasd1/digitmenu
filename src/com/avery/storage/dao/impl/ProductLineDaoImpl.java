@@ -63,8 +63,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				criteria.add(Restrictions.ilike("productLineType", productLineType,MatchMode.ANYWHERE));
 			}
 		}
-	     	criteria.addOrder(Order.desc("lastModifiedDate"));
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+			criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
