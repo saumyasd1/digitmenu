@@ -30,6 +30,8 @@ Ext.define('AOC.Application', {
 	 if(!Ext.isEmpty(auth) && !Ext.isEmpty(userInfo)){
 	     index=1;
 	     runtime.setUser(JSON.parse(userInfo));
+	     Ext.getStore('OrderCharts').load();
+	     Ext.getStore('HomePageOders').load();
 	 }
     	myAppGlobal=this;
     	Ext.create('AOC.view.Viewport', {
