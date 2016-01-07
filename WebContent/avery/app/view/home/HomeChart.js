@@ -202,7 +202,7 @@ Ext.define('AOC.view.home.HomeChart',{
             grid     : true,
             fields: ['day'],
             title: {
-                text: 'DAYS',
+                text: 'DURATION',
                 fontSize: 15
             },
             renderer:function(label){
