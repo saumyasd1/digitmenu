@@ -10,7 +10,12 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'RBOName',
 		mapping : 'rboName',
 		type: 'string'
-	}, {
+	},
+	{
+		name : 'prvOrderQueueID',
+		mapping : 'prvOrderQueueID',
+		type: 'string'
+	},{
 		name : 'ProductLineType',
 		mapping : 'productLine.id',
 		type: 'string'
@@ -49,6 +54,11 @@ Ext.define('AOC.model.OrderQueueModel',{
 	{
 		name : 'submittedDate',
 		mapping : 'submittedDate',
+		type: 'string'
+	},
+	{
+		name : 'acknowledgementDate',
+		mapping : 'acknowledgementDate',
 		type: 'string'
 	},
 	{
