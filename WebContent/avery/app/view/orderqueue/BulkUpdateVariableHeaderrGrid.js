@@ -4,7 +4,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
     itemId:'BulkUpdateVariableHeaderrGrid',
 	variableColumnName:null,
 	controller:'orderlinebulkupdate',
-	requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel','AOC.view.orderqueue.BulkUpdateController'],
+	requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel','AOC.view.orderqueue.BulkUpdateController','Ext.grid.plugin.Clipboard'],
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	runTime : AOC.config.Runtime,
     initComponent : function(){
@@ -17,11 +17,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 			selModel: {
 			       type: 'spreadsheet'
 			    },
-			    plugins: {
+			    plugins: [{
 			        ptype: 'cellediting',
 			        clicksToEdit: 1
-			        
-			    },
+			    },{
+			    	ptype: 'clipboard'
+			    }],
 			    listeners:{
 			    	 'selectionchange':function( grid, selection, eOpts ){
 			    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
