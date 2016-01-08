@@ -108,6 +108,9 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "EmailBody")
 	private String emailBody;
 	
+	@Column(name = "PrvOrderQueueID")
+	private String prvOrderQueueID;
+	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
 	@Column(name = "ReceivedDate")
 	private Date receivedDate;
@@ -121,6 +124,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
 	@Column(name = "SubmittedDate")
 	private Date submittedDate;
+	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
+	@Column(name = "AcknowledgementDate")
+	private Date acknowledgementDate;
 	
 	public String getComment() {
 		return comment;
@@ -243,6 +250,13 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setEmailBody(String emailBody) {
 		this.emailBody = emailBody;
 	}
+	public String getPrvOrderQueueID() {
+		return prvOrderQueueID;
+	}
+
+	public void setPrvOrderQueueID(String prvOrderQueueID) {
+		this.prvOrderQueueID = prvOrderQueueID;
+	}
 
 	public Date getReceivedDate() {
 		return receivedDate;
@@ -274,6 +288,13 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public void setSubmittedDate(Date submittedDate) {
 		this.submittedDate = submittedDate;
+	}
+	public Date getAcknowledgementDate() {
+		return acknowledgementDate;
+	}
+
+	public void setAcknowledgementDate(Date acknowledgementDate) {
+		this.acknowledgementDate = acknowledgementDate;
 	}
 
 	public String getStatus() {
