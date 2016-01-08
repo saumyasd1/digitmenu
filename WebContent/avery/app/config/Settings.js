@@ -20,7 +20,8 @@ Ext.define('AOC.config.Settings',{
          report:'avery/resources/images/report.png',
          error:'avery/resources/images/error.png',
          cancel:'avery/resources/images/cancel.png',
-         defaultUserImg:'avery/resources/images/defaultUser.png'
+         defaultUserImg:'avery/resources/images/defaultUser.png',
+         clip:'avery/resources/images/clip.png'
     },
     constructor : function(config){
             this.initConfig(config);
