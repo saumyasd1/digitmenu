@@ -2,7 +2,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
     itemId: 'orderlineexpandablegrid',
-    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper','Ext.grid.RowEditor'],
+    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper','Ext.grid.RowEditor','Ext.grid.plugin.Clipboard'],
     controller: 'orderline',
     emptyText: '<div align=center>No data to display</div>',
     dataPresent:false,
@@ -116,6 +116,31 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 			}
     }
+    },
+    {
+        text: 'RoundQty',
+        dataIndex: 'roundQty',
+        width: 100,
+        editor: 'numberfield'
+    },
+    {
+        text: 'MOQDiffQty',
+        dataIndex: 'moqDiffQty',
+        width: 100,
+        editor: 'numberfield'
+    },
+    {
+        text: 'UpdateMOQ',
+        dataIndex: 'updateMOQ',
+        width: 100,
+        renderer:function(value, metadata,rec){
+        	var checkMOQ=rec.data.moqValidationFlag.trim();
+       	 if(checkMOQ.substr(0,1)=='F')
+       		return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
+       	 else
+       		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
+       }
+
     },
     {
         text: 'Status',
@@ -883,7 +908,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         dataIndex: 'comment',
         width: 100,
         editor: 'textfield'
-    }],
+    }
+  ],
     initComponent: function() {
         var me = this;
         this.fieldArray = [];
@@ -895,6 +921,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             },
             plugins: me.getOuterGridPlugin(),
             listeners:{
+            	scope:this,
+            	cellclick:'onCellClickToView',
             	'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
             	if(cellIndex==0){
             		return false;
@@ -1137,5 +1165,34 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 }
     		});
     		return rowEditor;
-    	}
+    	},
+    	  onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+    	    	 if(e.target.className=='EnableUpdateMoq'){
+    	    		 var Id=record.get('id');
+    	    		 var runTime = AOC.config.Runtime;
+    	    		 var MoqDiffQty=record.get('moqDiffQty');
+    	    		 var customerOrderedQty=record.get('customerOrderedQty');
+    	    		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(customerOrderedQty);
+    	    		 var value={"customerOrderedQty":customerOrderedQty,"id":Id};
+    	    	     var insertBillAddress=false,insertShipAddress=false;
+    	    		 var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+ 	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to update the MOQ Customer Qty</b>', function(response) {
+ 	     				  if (response == 'yes') {
+ 	     						Ext.Ajax.request({
+ 	     							method:'PUT',
+ 	     							jsonData:obj,
+ 	     			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
+          				        success : function(response, opts) {
+          							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+          							me.runTime.getActiveGrid().store.load();
+          				        },
+          				        failure: function(response, opts) {
+          		                }
+          		        	});
+ 	     				  }else if(response == 'no'){
+ 	     				  return true;
+ 	     				  }
+ 	     				  });
+    		}
+    	    }
 });
