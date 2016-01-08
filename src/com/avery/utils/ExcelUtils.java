@@ -19,11 +19,11 @@ public class ExcelUtils {
 	public static ByteArrayOutputStream createOrderQueueExcelFile(List<OrderQueue> OrderQueueList) throws IOException{
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
-        String[] headerNames = { "Order track #", "PO #", "Order File",
+        String[] headerNames = { "Order track #","Order Source", "PO #", "Order File",
 				"Additional data", "Partner Name", "RBO", "Product Line",
-				"Order Status", "Processed Date", "Sender Email ID", "Subject","Email Body","Submitted By","Submitted Date" };
+				"Order Status", "Processed Date", "Sender Email ID", "Subject","Email Body","Submitted By","Submitted Date","Comment","Error" };
         addHeader(sheet, headerNames);
-        getReportDate(sheet,OrderQueueList,headerNames.length);
+        getReportData(sheet,OrderQueueList,headerNames.length);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
             workbook.write(outputStream);
 		return outputStream;
@@ -40,7 +40,7 @@ public class ExcelUtils {
 			columnHeaderCount++;
 		}
 	}
-	private static void getReportDate(XSSFSheet sheet,List<OrderQueue> OrderQueueList,int headerLength){
+	private static void getReportData(XSSFSheet sheet,List<OrderQueue> OrderQueueList,int headerLength){
 		int rowIndex=1,columncellCount=0;
 		String orderFile="",additionalData="";
 		Set<OrderFileAttachment> fileList=null;
@@ -67,35 +67,41 @@ public class ExcelUtils {
 			Cell cell1 = row.createCell(columncellCount);
 			cell1.setCellValue(obj.getId());
 			Cell cell2 = row.createCell(++columncellCount);
-			cell2.setCellValue(obj.getPONumber());
+			cell2.setCellValue(obj.getOrderSource());
 			Cell cell3 = row.createCell(++columncellCount);
-			cell3.setCellValue(orderFile);
+			cell3.setCellValue(obj.getPONumber());
 			Cell cell4 = row.createCell(++columncellCount);
-			cell4.setCellValue(additionalData);
+			cell4.setCellValue(orderFile);
 			Cell cell5 = row.createCell(++columncellCount);
-			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
-				cell5.setCellValue(obj.getPartner().getPartnerName());
+			cell5.setCellValue(additionalData);
 			Cell cell6 = row.createCell(++columncellCount);
-			cell6.setCellValue(obj.getRboName());
+			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
+				cell6.setCellValue(obj.getPartner().getPartnerName());
 			Cell cell7 = row.createCell(++columncellCount);
-			if(obj.getProductLine()!=null && !obj.getProductLine().equals(""))
-				cell7.setCellValue(obj.getProductLine().getProductLineType());
+			cell7.setCellValue(obj.getRboName());
 			Cell cell8 = row.createCell(++columncellCount);
-			cell8.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
+			if(obj.getProductLine()!=null && !obj.getProductLine().equals(""))
+				cell8.setCellValue(obj.getProductLine().getProductLineType());
 			Cell cell9 = row.createCell(++columncellCount);
-			if(obj.getReceivedDate()!=null)
-				cell9.setCellValue(obj.getReceivedDate().toString());
+			cell9.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 			Cell cell10 = row.createCell(++columncellCount);
-			cell10.setCellValue(obj.getSenderEmailID());
+			if(obj.getReceivedDate()!=null)
+				cell10.setCellValue(obj.getReceivedDate().toString());
 			Cell cell11 = row.createCell(++columncellCount);
-			cell11.setCellValue(obj.getSubject());
+			cell11.setCellValue(obj.getSenderEmailID());
 			Cell cell12 = row.createCell(++columncellCount);
-			cell12.setCellValue(obj.getEmailBody());
+			cell12.setCellValue(obj.getSubject());
 			Cell cell13 = row.createCell(++columncellCount);
-			cell13.setCellValue(obj.getSubmittedBy());
+			cell13.setCellValue(obj.getEmailBody());
 			Cell cell14 = row.createCell(++columncellCount);
+			cell14.setCellValue(obj.getSubmittedBy());
+			Cell cell15 = row.createCell(++columncellCount);
 			if(obj.getSubmittedDate()!=null)
-				cell14.setCellValue(obj.getSubmittedDate().toString());
+				cell15.setCellValue(obj.getSubmittedDate().toString());
+			Cell cell16 = row.createCell(++columncellCount);
+			cell16.setCellValue(obj.getComment());
+			Cell cell17 = row.createCell(++columncellCount);
+			cell17.setCellValue(obj.getError());
 			columncellCount=0;
 			rowIndex++;
 		}
