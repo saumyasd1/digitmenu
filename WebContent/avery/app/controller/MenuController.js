@@ -121,7 +121,7 @@ Ext.define('AOC.controller.MenuController', {
 	      var me=this,
 	      xtype = rec.get('xtype');
 	      me.selectCard(xtype);
-	      if(xtype="homewrapper"){
+	      if(xtype=="homewrapper"){
 		  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }
