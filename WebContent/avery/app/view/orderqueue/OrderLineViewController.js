@@ -191,7 +191,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var store=grid.store;
 		var i=store.find('id',record.id);
     	if(i==0){
-    			grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').enable();
+//    			grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').enable();
     			grid.editingPlugin.editor.form.findField('billToContact').enable();
     			grid.editingPlugin.editor.form.findField('billToAddress1').enable();
     			grid.editingPlugin.editor.form.findField('billToAddress2').enable();
@@ -203,7 +203,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			grid.editingPlugin.editor.form.findField('billToEmail').enable();
     			grid.editingPlugin.editor.form.findField('billToFax').enable();
     			grid.editingPlugin.editor.form.findField('billToTelephone').enable();
-    			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').enable();
+//    			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').enable();
     			grid.editingPlugin.editor.form.findField('shipToContact').enable();
     			grid.editingPlugin.editor.form.findField('shipToAddress1').enable();
     			grid.editingPlugin.editor.form.findField('shipToAddress2').enable();
@@ -216,7 +216,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			grid.editingPlugin.editor.form.findField('shipToFax').enable();
     			grid.editingPlugin.editor.form.findField('shipToTelephone').enable();
     	}else{
-    		grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').disable();
+//    		grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').disable();
 			grid.editingPlugin.editor.form.findField('billToContact').disable();
 			grid.editingPlugin.editor.form.findField('billToAddress1').disable();
 			grid.editingPlugin.editor.form.findField('billToAddress2').disable();
@@ -228,7 +228,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			grid.editingPlugin.editor.form.findField('billToEmail').disable();
 			grid.editingPlugin.editor.form.findField('billToFax').disable();
 			grid.editingPlugin.editor.form.findField('billToTelephone').disable();
-			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').disable();
+//			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').disable();
 			grid.editingPlugin.editor.form.findField('shipToContact').disable();
 			grid.editingPlugin.editor.form.findField('shipToAddress1').disable();
 			grid.editingPlugin.editor.form.findField('shipToAddress2').disable();
