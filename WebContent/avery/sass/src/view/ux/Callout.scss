@@ -522,8 +522,16 @@ margin-left: -34px;
   font-size: 11pt !important;
   height: 35px;
 }
+.more-menu-item-callout.x-ux-callout .order-profile-menu-item{
+  padding: 5px 1px 5px 10px !important;
+  font-size: 11pt !important;
+  height: 35px;
+}
 .more-menu-item-callout.x-ux-callout .user-profile-menu-item:hover {
  color : blue !important;
+}
+.more-menu-item-callout.x-ux-callout .order-profile-menu-item:hover {
+ color : silver !important;
 }
 .more-menu-item-callout.x-ux-callout.white.top-right:after {
   border-bottom-color:#FFFFFF !important;	
@@ -576,6 +584,9 @@ margin-left: -34px;
 /*#AC-3822 : Updated to change fly out menu.*/
 .user-profile-menu-item.uploadfile-btn-menu .x-btn-wrap-default-small {
   margin-left : -45px;
+}
+.order-profile-menu-item.uploadfile-btn-menu .x-btn-wrap-default-small {
+  margin-left : -45px ;
 }
 .more-menu-item-callout.x-ux-callout.white.top:after, .x-ux-callout.white.top:before, .more-menu-item-callout.x-ux-callout.white.top-left:after, .x-ux-callout.white.top-left:before, .more-menu-item-callout.x-ux-callout.white.top-right:after, .x-ux-callout.white.top-right:before {
   bottom: 99% !important;
