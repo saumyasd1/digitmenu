@@ -340,6 +340,12 @@ public class OrderLine extends MainAbstractEntity{
 	
 	@Column(name = "PONumber")
     private String poNumber;
+
+	@Column(name = "RoundQty")
+    private String roundQty; 
+	
+	@Column(name = "MOQDiffQty")
+    private String moqDiffQty;
 	
 	public String getComment() {
 		return comment;
@@ -1123,6 +1129,20 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setHtlSizePageValidationFlag(String htlSizePageValidationFlag) {
 		this.htlSizePageValidationFlag = htlSizePageValidationFlag;
+	}
+	public String getRoundQty() {
+		return roundQty;
+	}
+
+	public void setRoundQty(String roundQty) {
+		this.roundQty = roundQty;
+	}
+	public String getMoqDiffQty() {
+		return moqDiffQty;
+	}
+
+	public void setMoqDiffQty(String moqDiffQty) {
+		this.moqDiffQty = moqDiffQty;
 	}
 
 	@Override
