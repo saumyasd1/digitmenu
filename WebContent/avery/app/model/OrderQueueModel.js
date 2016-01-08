@@ -33,10 +33,15 @@ Ext.define('AOC.model.OrderQueueModel',{
 		mapping : 'subject',
 		type: 'string'
 	}, {
-		name : 'EmailBody',
+		name : 'subEmailBody',
+		mapping : 'subEmailBody',
+		type: 'string'
+	},
+	{
+		name : 'emailBody',
 		mapping : 'emailBody',
 		type: 'string'
-	}, {
+	},{
 		name : 'receivedDate',
 		mapping : 'receivedDate',
 		type: 'string'
