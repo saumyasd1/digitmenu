@@ -101,7 +101,9 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'htlSizePageValidationFlag', mapping:'htlSizePageValidationFlag',type: 'string'},
 	 		{name: 'orderLineDetail', mapping:'orderLineDetail'},
 	 		{name: 'bulk', mapping:'bulk',type: 'boolean'},
-	 		{name: 'mandatory', mapping:'mandatory',type: 'string'}
-	 		
+	 		{name: 'mandatory', mapping:'mandatory',type: 'string'},
+	 		{name: 'roundQty', mapping:'roundQty',type: 'string'},
+	 		{name: 'moqDiffQty', mapping:'moqDiffQty',type: 'string'},
+	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'}
 	     ]
 });
