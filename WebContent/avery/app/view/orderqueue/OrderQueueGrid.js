@@ -61,7 +61,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			baseCls:'custom-action',
 			items:[{
 			  icon:menuIcon,
-			  handler:'showMenu'
+			  handler:'onClickMenu'//'showMenu'
 		  }]
         },
         {
@@ -103,10 +103,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'OrderSource',
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
+				var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
+				var filename=record.get('id');
 				if(v=='Email')
-					return '<div><img data-qtip="<font color=blue>Email</font>" src="' + mailIcon + '" /></div>';
+					return '<div><a href='+href+' id="link" download="'+filename+'.html"><img src="' + mailIcon + '" /></a></div>';
 				else
-					return '<div><img data-qtip="<font color=blue>Web</font>" src="' + browseIcon + '" /></div>';
+					return '<div><a href='+href+' id="link" download="'+filename+'.html"><img src="' + browseIcon + '" /></a></div>';
         }
         },
         {
@@ -138,7 +140,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             dataIndex:'attachmentPresent',
 			renderer:function(v,cell,record){
 				if(v)
-					return '<div><img class="viewattachment" src="' + attacheImageSrc + '" /></div>';
+					return '<div><img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" /></div>';
 				else
 					return ''
         }
@@ -197,7 +199,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		{
             text : 'Email Body',
             width:150,
-			dataIndex:'EmailBody',
+			dataIndex:'subEmailBody',
 			renderer:function(v){
 				if(v){
 					return '<div><span data-qtip="<font color=blue>'+v+'<font>" />'+v+'</span></div>';
