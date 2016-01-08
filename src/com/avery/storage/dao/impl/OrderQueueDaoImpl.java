@@ -67,11 +67,21 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		}
 		List list = criteria.list();
 		OrderQueue orderQueue = null;
+		String subEmailBody="";
 		for (Object obj : list) {
 			orderQueue = (OrderQueue) obj;
 			long id = orderQueue.getId();
+			subEmailBody=orderQueue.getEmailBody();
 			orderQueue.setOrderLineCount(getCountBasedOnOrderId(OrderLine.class,id,"orderQueueForOrderLine.id"));
 			orderQueue.setSalesOrderCount(getCountBasedOnOrderId(SalesOrder.class,id,"orderQueueID"));
+			if(subEmailBody!=null){
+				if(subEmailBody.length()<100){
+					subEmailBody=subEmailBody.substring(0, subEmailBody.length());
+				}else{
+					subEmailBody=subEmailBody.substring(0, 100);
+				}
+			}
+			orderQueue.setSubEmailBody(subEmailBody);
 		}
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("orders", new LinkedHashSet(list));
