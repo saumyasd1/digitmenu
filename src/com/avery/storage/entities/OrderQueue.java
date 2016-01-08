@@ -44,6 +44,7 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -154,8 +155,18 @@ public class OrderQueue extends MainAbstractEntity{
 	
 	private transient int salesOrderCount;
 	
+	private transient String subEmailBody;
+	
 	public int getOrderLineCount() {
 		return orderLineCount;
+	}
+
+	public String getSubEmailBody() {
+		return subEmailBody;
+	}
+
+	public void setSubEmailBody(String subEmailBody) {
+		this.subEmailBody = subEmailBody;
 	}
 
 	public void setOrderLineCount(int orderLineCount) {
@@ -223,7 +234,8 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
+	
+	
 	public String getEmailBody() {
 		return emailBody;
 	}
