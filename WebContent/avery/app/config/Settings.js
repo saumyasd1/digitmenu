@@ -21,7 +21,9 @@ Ext.define('AOC.config.Settings',{
          error:'avery/resources/images/error.png',
          cancel:'avery/resources/images/cancel.png',
          defaultUserImg:'avery/resources/images/defaultUser.png',
-         clip:'avery/resources/images/clip.png'
+         clip:'avery/resources/images/clip.png',
+         EnableUpdateMoqFlag:'avery/resources/images/enable.png',
+         DisableUpdateMoqFlag:'avery/resources/images/disable.png'
     },
     constructor : function(config){
             this.initConfig(config);
