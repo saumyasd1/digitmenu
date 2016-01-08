@@ -117,6 +117,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'id'
         },
         {
+            text : 'PrvOrderQueueID',
+            width:120,
+			dataIndex:'prvOrderQueueID'
+        },
+        {
             text : 'PO#',
             width:120,
 			dataIndex:'ponumber'
@@ -216,6 +221,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Submitted Date',
             width:95,
 			dataIndex:'submittedDate'
+        },
+        {
+            text : 'Acknowledgement Date',
+            width:105,
+			dataIndex:'acknowledgementDate'
         }
 		];
     },
