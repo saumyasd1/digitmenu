@@ -118,21 +118,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     }
     },
     {
-        text: 'RoundQty',
+        text: 'Round Qty',
         dataIndex: 'roundQty',
-        width: 100,
+        width: 50,
         editor: 'numberfield'
     },
     {
-        text: 'MOQDiffQty',
+        text: 'MOQDiff Qty',
         dataIndex: 'moqDiffQty',
-        width: 100,
+        width: 55,
         editor: 'numberfield'
     },
     {
-        text: 'UpdateMOQ',
+        text: 'Update MOQ',
         dataIndex: 'updateMOQ',
-        width: 100,
+        width: 50,
         renderer:function(value, metadata,rec){
         	var checkMOQ=rec.data.moqValidationFlag.trim();
        	 if(checkMOQ.substr(0,1)=='F')
@@ -1167,6 +1167,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		return rowEditor;
     	},
     	  onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+    	  var grid=obj;
     	    	 if(e.target.className=='EnableUpdateMoq'){
     	    		 var Id=record.get('id');
     	    		 var runTime = AOC.config.Runtime;
@@ -1184,7 +1185,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
  	     			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
           				        success : function(response, opts) {
           							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
-          							me.runTime.getActiveGrid().store.load();
+          						    grid.store.load();
           				        },
           				        failure: function(response, opts) {
           		                }
