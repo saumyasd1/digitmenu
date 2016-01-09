@@ -1,6 +1,12 @@
 package com.avery.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Date Utility class to keep various basic methods for providing basic
@@ -10,6 +16,8 @@ import java.util.Date;
  */
 public class DateUtils {
 
+	public static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 	/**
 	 * Private constructor to make this class as utility class so that no one
 	 * can instantiate the instance of it.
@@ -40,5 +48,12 @@ public class DateUtils {
 
 	public static Date getNextHours(Date date, long hours) {
 		return new Date(date.getTime() + ((long) hours * 60 * 60 * 1000));
+	}
+	
+	public static Date getDefaultCurrentDate() throws Exception{
+		DateTime currentDateTime=new DateTime();
+		String date=currentDateTime.toString(dtf);
+		Date currentDate=df.parse(date);
+		return currentDate;
 	}
 }
