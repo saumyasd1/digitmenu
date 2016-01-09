@@ -21,7 +21,7 @@ public class ExcelUtils {
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
         String[] headerNames = { "Order track #","Order Source", "PO #", "Order File",
 				"Additional data", "Partner Name", "RBO", "Product Line",
-				"Order Status", "Processed Date", "Sender Email ID", "Subject","Email Body","Submitted By","Submitted Date","Acknowledgement Date","Comment","Error" };
+				"Order Status", "Processed Date", "Sender Email ID", "Subject","Submitted By","Submitted Date","Acknowledgement Date","Comment","Error" };
         addHeader(sheet, headerNames);
         getReportData(sheet,OrderQueueList,headerNames.length);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
@@ -91,8 +91,8 @@ public class ExcelUtils {
 			cell11.setCellValue(obj.getSenderEmailID());
 			Cell cell12 = row.createCell(++columncellCount);
 			cell12.setCellValue(obj.getSubject());
-			Cell cell13 = row.createCell(++columncellCount);
-			cell13.setCellValue(obj.getEmailBody());
+//			Cell cell13 = row.createCell(++columncellCount);
+//			cell13.setCellValue(obj.getEmailBody());
 			Cell cell14 = row.createCell(++columncellCount);
 			cell14.setCellValue(obj.getSubmittedBy());
 			Cell cell15 = row.createCell(++columncellCount);
