@@ -56,6 +56,7 @@ import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.DateUtils;
 import com.avery.utils.ExcelUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -111,7 +112,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "PrvOrderQueueID")
 	private String prvOrderQueueID;
 	
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "ReceivedDate")
 	private Date receivedDate;
 	
@@ -121,11 +122,11 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "SubmittedBy")
 	private String submittedBy;
 	
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "SubmittedDate")
 	private Date submittedDate;
 	
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss", timezone="GMT")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "AcknowledgementDate")
 	private Date acknowledgementDate;
 	
@@ -540,7 +541,7 @@ public class OrderQueue extends MainAbstractEntity{
 		String subjectline = formParams.getField("subject").getValue();
 		String productLineType = formParams.getField("productLineType").getValue();
 		String rboName = formParams.getField("rboName").getValue();
-		Date date = new Date();
+		Date date = DateUtils.getDefaultCurrentDate();
 		
 		
 		Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
