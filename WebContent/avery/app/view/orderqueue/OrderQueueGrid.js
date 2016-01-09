@@ -113,12 +113,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },
         {
             text : 'Order track#',
-            width:45,
+            width:50,
 			dataIndex:'id'
         },
         {
-            text : 'PrvOrderQueueID',
-            width:120,
+            text : 'Prv Order track#',
+            width:80,
 			dataIndex:'prvOrderQueueID'
         },
         {
