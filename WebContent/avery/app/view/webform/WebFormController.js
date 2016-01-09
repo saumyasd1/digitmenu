@@ -34,7 +34,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 	         data : serviceStoreData1
         });
     	     productLineCombo.bindStore(store);
+    	     productLineCombo.reset();
     	     rboCombo.bindStore(serviceStore);
+    	     rboCombo.reset();
     	     rboCombo.enable();
     	  }
     	}
@@ -296,9 +298,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 				 return true;
        });
 		 productLineCombo.bindStore(serviceStore);
+		 productLineCombo.reset();
 		 productLineCombo.enable();
-		 Ext.getBody().unmask();
+		 
 		 }
+   	Ext.getBody().unmask();
 		 }
 	 },
 	 CancelDetails:function()
