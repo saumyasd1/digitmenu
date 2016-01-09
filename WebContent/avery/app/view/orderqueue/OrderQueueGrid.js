@@ -130,10 +130,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Order File',
             width:45,
 			dataIndex:'OrderFile',
-			renderer:function(v){
+			renderer:function(v,cell,record){
 				if(v.length!=0){
 					var fileName=v[0].fileName
-					return '<div><img data-qtip="'+fileName+'" accessKey="orderFile" class="viewattachment" src="' + attacheImageSrc + '" /></div>';
+					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
 				}else 
 					return '';
         }
@@ -295,22 +295,31 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }];
     },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-    	if(e.target.accessKey=='orderFile'){
-    		var id=record.get('OrderFile')[0].id;
-	        var form = Ext.create('Ext.form.Panel', { 
-	            standardSubmit: true,   
-	            url : applicationContext+'/rest/orderattachements/download/'+id
-	        });
-	        form.submit({
-	        	method : 'GET'
-	        });
-	}else if(e.target.className=='viewattachment'){
+//    	if(e.target.accessKey=='orderFile'){
+//    		var id=record.get('OrderFile')[0].id;
+//	        var form = Ext.create('Ext.form.Panel', { 
+//	            standardSubmit: true,   
+//	            url : applicationContext+'/rest/orderattachements/download/'+id
+//	        });
+//	        form.submit({
+//	        	method : 'GET'
+//	        });
+//	}
+    	 if(e.target.className=='vieworderattachment'){
+    		var list=record.get('orderFileAttachment'),htmlString='';
+    		for(var i=0;i<list.length;i++){
+    			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
+    		}
+    		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
+    	}
+    	else if(e.target.className=='viewattachment'){
 		var list=record.get('attachmentFileList'),htmlString='';
 		for(var i=0;i<list.length;i++){
 			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
 		}
 		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
 	}else if(e.target.className=='attachment'){
+		
 		var id=e.target.accessKey;
 		var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
