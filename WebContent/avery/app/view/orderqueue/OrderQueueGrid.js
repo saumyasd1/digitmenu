@@ -4,7 +4,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     itemId:'OrderQueueGridItemId',
 	emptyText:'<div align=center> No content type(s) to display.</div>',
 	controller: 'orderqueue',
-	requires:['Ext.form.action.StandardSubmit'],
+	requires:['Ext.form.action.StandardSubmit','Ext.grid.plugin.Clipboard'],
+	reserveScrollbar:true,
     initComponent : function(){
 	var me=this;
 	this.fieldArray = [];
@@ -13,16 +14,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			columnLines:false,
 			dockedItems : this.buildDockedItems(),
 			layout:'fit',
-			selModel: {
-			       type: 'spreadsheet'
-			    },
-			    plugins: [{
-			    	ptype: 'clipboard'
-			    }],
 			tbar: { 
 				height: 50,
     		    items : me.buildtbar()
               },
+              selModel: {
+			       type: 'spreadsheet',
+			       rowNumbererHeaderWidth:0
+			    },
+			    plugins: [{
+			    	ptype: 'clipboard'
+			    }],
               listeners:{
             	  cellclick:'onCellClickToView',
             	  activate:function(obj){
@@ -49,8 +51,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
              	  }
               },
               viewConfig : {
-  	            stripeRows : true,
-  	            enableTextSelection : true
+  	            stripeRows : true
           }
         });
         this.callParent(arguments);
@@ -189,9 +190,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Sender Email ID',
             width:128,
 			dataIndex:'SenderEmailID',
-			renderer:function(v){
+			renderer:function(v,metadata){
 				if(v){
-					return '<div><span data-qtip="'+v+'" />'+v+'</span></div>';
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+					return '<div>'+v+'</div>';
 				}else 
 					return '';
         }
@@ -200,9 +202,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Subject',
             width:150,
 			dataIndex:'Subject',
-			renderer:function(v){
+			renderer:function(v,metadata){
 				if(v){
-					return '<div><span data-qtip="<font color=blue>'+v+'</font>" />'+v+'</span></div>';
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+					return '<div>'+v+'</span></div>';
 				}else 
 					return '';
         }
@@ -211,9 +214,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Email Body',
             width:150,
 			dataIndex:'subEmailBody',
-			renderer:function(v){
+			renderer:function(v,metadata){
 				if(v){
-					return '<div><span data-qtip="<font color=blue>'+v+'<font>" />'+v+'</span></div>';
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+					return '<div>'+v+'</div>';
 				}else 
 					return '';
         }
@@ -301,18 +305,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }];
     },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-//    	if(e.target.accessKey=='orderFile'){
-//    		var id=record.get('OrderFile')[0].id;
-//	        var form = Ext.create('Ext.form.Panel', { 
-//	            standardSubmit: true,   
-//	            url : applicationContext+'/rest/orderattachements/download/'+id
-//	        });
-//	        form.submit({
-//	        	method : 'GET'
-//	        });
-//	}
     	 if(e.target.className=='vieworderattachment'){
-    		var list=record.get('orderFileAttachment'),htmlString='';
+    		var list=record.get('OrderFile'),htmlString='';
     		for(var i=0;i<list.length;i++){
     			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
     		}
@@ -325,7 +319,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		}
 		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
 	}else if(e.target.className=='attachment'){
-		debugger;
+		
 		var id=e.target.accessKey;
 		var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
