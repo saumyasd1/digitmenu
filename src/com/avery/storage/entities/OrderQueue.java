@@ -541,7 +541,7 @@ public class OrderQueue extends MainAbstractEntity{
 		String subjectline = formParams.getField("subject").getValue();
 		String productLineType = formParams.getField("productLineType").getValue();
 		String rboName = formParams.getField("rboName").getValue();
-		Date date = DateUtils.getDefaultCurrentDate();
+		Date date = DateUtils.getDefaultCurrentDateTime();
 		
 		
 		Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
