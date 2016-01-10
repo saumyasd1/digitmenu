@@ -299,17 +299,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		return list;
 	}
 	
-	public Criteria getDailyReportCriteria() throws ParseException{
+	public Criteria getDailyReportCriteria() throws Exception{
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria=session.createCriteria(OrderQueue.class);
-	    Date now = new Date();
+	    Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy");
 	    String strDate = HibernateUtils.sdfDate.format(now);
 	    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
 		return criteria;
 	}
 	
 	public Criteria getOpenReportCriteria(MultivaluedMap queryMap) throws Exception{
-		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria=getCriteria(queryMap);
 		criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
 		criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
