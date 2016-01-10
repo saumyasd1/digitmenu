@@ -16,8 +16,9 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DateUtils {
 
-	public static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	public static DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+	public static DateFormat dTf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static DateTimeFormatter dTtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+	
 	/**
 	 * Private constructor to make this class as utility class so that no one
 	 * can instantiate the instance of it.
@@ -50,10 +51,27 @@ public class DateUtils {
 		return new Date(date.getTime() + ((long) hours * 60 * 60 * 1000));
 	}
 	
-	public static Date getDefaultCurrentDate() throws Exception{
+	public static Date getDefaultCurrentDateTime() throws Exception{
 		DateTime currentDateTime=new DateTime();
-		String date=currentDateTime.toString(dtf);
-		Date currentDate=df.parse(date);
+		String date=currentDateTime.toString(dTtf);
+		Date currentDate=dTf.parse(date);
+		return currentDate;
+	}
+	
+	public static DateFormat getSimpleDateFormat(String dateFormat){
+		DateFormat df = new SimpleDateFormat(dateFormat);
+		return df;
+	}
+	
+	public static DateTimeFormatter getSimpleDateTimeFormat(String dateFormat){
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormat);
+		return dtf;
+	}
+	
+	public static Date getDefaultCurrentDate(String format) throws Exception{
+		DateTime currentDateTime=new DateTime();
+		String date=currentDateTime.toString(getSimpleDateTimeFormat(format));
+		Date currentDate=getSimpleDateFormat(format).parse(date);
 		return currentDate;
 	}
 }
