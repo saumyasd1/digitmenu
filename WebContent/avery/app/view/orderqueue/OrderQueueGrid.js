@@ -13,6 +13,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			columnLines:false,
 			dockedItems : this.buildDockedItems(),
 			layout:'fit',
+			selModel: {
+			       type: 'spreadsheet'
+			    },
+			    plugins: [{
+			    	ptype: 'clipboard'
+			    }],
 			tbar: { 
 				height: 50,
     		    items : me.buildtbar()
@@ -319,7 +325,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		}
 		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
 	}else if(e.target.className=='attachment'){
-		
+		debugger;
 		var id=e.target.accessKey;
 		var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
