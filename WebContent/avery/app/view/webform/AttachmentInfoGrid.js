@@ -15,7 +15,14 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
         this.callParent(arguments);
     },
     buildColumns : function(){
-        return [{
+        return {
+       defaults : {
+                draggable : false,
+                sortable : false,
+                hideable :false,
+                resizable:false
+               },
+               items:[{
         	xtype:'rownumberer'
         },{
             text : 'File Name',
@@ -26,15 +33,15 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             text : 'File Type',
             flex :1,
             data : '',
-			dataIndex:'fileType'
+	    dataIndex:'fileType'
         },
         {
             text : 'Delete',
-            width :45,
+            width :60,
             data : '',
             renderer:function(v,cell,record){
-					return '<div><img class="deleteClass" src="' + deleteImageSrc + '" /></div>';
+		return '<div><img class="deleteClass" src="' + deleteImageSrc + '" /></div>';
         }
-        }];
+        }]};
     }
 });
