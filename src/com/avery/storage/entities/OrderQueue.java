@@ -109,9 +109,6 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "EmailBody")
 	private String emailBody;
 	
-	@Column(name = "PrvOrderQueueID")
-	private String prvOrderQueueID;
-	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "ReceivedDate")
 	private Date receivedDate;
@@ -125,6 +122,9 @@ public class OrderQueue extends MainAbstractEntity{
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "SubmittedDate")
 	private Date submittedDate;
+	
+	@Column(name = "PrvOrderQueueID")
+	private Long prvOrderQueueID;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "AcknowledgementDate")
@@ -140,6 +140,15 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public void setProductLine(ProductLine productLine) {
 		this.productLine = productLine;
+	}
+    
+
+	public Long getPrvOrderQueueID() {
+		return prvOrderQueueID;
+	}
+
+	public void setPrvOrderQueueID(Long prvOrderQueueID) {
+		this.prvOrderQueueID = prvOrderQueueID;
 	}
 
 
@@ -250,13 +259,6 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public void setEmailBody(String emailBody) {
 		this.emailBody = emailBody;
-	}
-	public String getPrvOrderQueueID() {
-		return prvOrderQueueID;
-	}
-
-	public void setPrvOrderQueueID(String prvOrderQueueID) {
-		this.prvOrderQueueID = prvOrderQueueID;
 	}
 
 	public Date getReceivedDate() {
@@ -541,6 +543,8 @@ public class OrderQueue extends MainAbstractEntity{
 		String subjectline = formParams.getField("subject").getValue();
 		String productLineType = formParams.getField("productLineType").getValue();
 		String rboName = formParams.getField("rboName").getValue();
+		String oldFileIds = formParams.getField("oldFileIds").getValue();
+		String oldOrderId= formParams.getField("oldOrderId").getValue();
 		Date date = DateUtils.getDefaultCurrentDateTime();
 		
 		
@@ -561,8 +565,9 @@ public class OrderQueue extends MainAbstractEntity{
 		orderQueue.setStatus("16");
 		orderQueue.setEmailBody(emailBody);
 		orderQueue.setReceivedDate(date);
-		
-		
+		if(oldOrderId!=null && !"".equals(oldOrderId)){
+		orderQueue.setPrvOrderQueueID(Long.parseLong(oldOrderId));
+		}
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 				.getInstance().getBean("orderQueueService");
 		
@@ -580,15 +585,18 @@ public class OrderQueue extends MainAbstractEntity{
 		String type = null;
 		String fileExtension = null;
 		String fileContentType = null;
-		
+		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+				.getInstance().getBean("orderFileAttachmentService");
+		OrderFileAttachment orderFileAttachment=null;
+		Blob blob =null;InputStream stream=null;String value=null;
 		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
 		    String field = entry.getKey();
 		    FormDataBodyPart formdata = entry.getValue().get(0);
 		    try {
-				if (formdata != null) {
-					InputStream stream = ((FormDataBodyPart) formParams
+				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
+					 stream = ((FormDataBodyPart) formParams
 							.getField(field)).getEntityAs(InputStream.class);
-					String value = ((FormDataBodyPart) formParams
+					 value = ((FormDataBodyPart) formParams
 							.getField(field)).getValueAs(String.class);
 					fileName = ((FormDataBodyPart) formParams.getField(field))
 							.getContentDisposition().getFileName();
@@ -605,8 +613,8 @@ public class OrderQueue extends MainAbstractEntity{
 					} else {
 						fileContentType = "AdditionalData";
 					}
-					OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
-					Blob blob = new SerialBlob(IOUtils.toByteArray(stream));
+					orderFileAttachment= new OrderFileAttachment();
+					blob = new SerialBlob(IOUtils.toByteArray(stream));
 					orderFileAttachment.setFileData(blob);
 					orderFileAttachment.setOrderQueue(orderQueue);
 					orderFileAttachment.setPartnerObj(partner);
@@ -615,8 +623,6 @@ public class OrderQueue extends MainAbstractEntity{
 					orderFileAttachment.setFileExtension(fileExtension);
 					orderFileAttachment.setFileContentType(fileContentType);
 					orderFileAttachment.setCreatedDate(new Date());
-					OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
-							.getInstance().getBean("orderFileAttachmentService");
 					orderFileAttachmentService.create(orderFileAttachment);
 					}
 				}
@@ -629,6 +635,16 @@ public class OrderQueue extends MainAbstractEntity{
 				if(outstream != null)
 					outstream.close();
 			}
+		}
+		if(oldFileIds!=null && !"".equals(oldFileIds)){
+		String []ids = oldFileIds.split(",");
+		for(String fileId:ids){
+			orderFileAttachment=orderFileAttachmentService.read(Long.parseLong(fileId));
+			orderFileAttachment.setId(0);
+			orderFileAttachment.setOrderQueue(orderQueue);
+			orderFileAttachment.setPartnerObj(partner);
+			orderFileAttachmentService.create(orderFileAttachment);
+		}
 		}
 		orderQueue = orderQueueService.read(orderqueueid);
 		orderQueue.setStatus("1");
