@@ -118,6 +118,31 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 					return '<div><a href='+href+' id="link" download="'+filename+'.html"><img src="' + browseIcon + '" /></a></div>';
         }
         },
+        {   header: '<img src="' + attacheImageSrc + '" />',
+            //text : 'Order File',
+            width:40,
+			dataIndex:'OrderFile',
+			renderer:function(v,cell,record){
+				if(v.length!=0){
+					var fileName=v[0].fileName
+					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
+				}else 
+					return '';
+        }
+        },
+        {
+            header: '<img src="' + AOC.config.Settings.buttonIcons.clip + '" />',
+           // text : 'Additional data',
+            width:40,
+            hideable: true,
+            dataIndex:'attachmentPresent',
+			renderer:function(v,cell,record){
+				if(v)
+					return '<div><img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" /></div>';
+				else
+					return ''
+        }
+        },
         {
             text : 'Order track#',
             width:50,
@@ -133,30 +158,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width:120,
 			dataIndex:'ponumber'
         },
-        {
-            text : 'Order File',
-            width:45,
-			dataIndex:'OrderFile',
-			renderer:function(v,cell,record){
-				if(v.length!=0){
-					var fileName=v[0].fileName
-					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
-				}else 
-					return '';
-        }
-        },
-        {
-            text : 'Additional data',
-            width:75,
-            hideable: true,
-            dataIndex:'attachmentPresent',
-			renderer:function(v,cell,record){
-				if(v)
-					return '<div><img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" /></div>';
-				else
-					return ''
-        }
-        },{
+       {
             text : 'Partner Name',
             width:80,
             dataIndex:'PartnerName'
