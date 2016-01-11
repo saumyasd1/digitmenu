@@ -43,9 +43,24 @@ Ext.define('AOC.view.webform.WebFormController', {
     	}
     },
     SaveDetails:function(obj){
+	var me=this;
     	Ext.getBody().mask('Saving....');
     	   var form = this.getView().down('form').getForm(),me=this;
+    	   var store =Ext.ComponentQuery.query('weborderview attachmentinfoGrid')[0].getStore();
+    	   var oldFileIds=[],odFileId=0;
+    	  for(var i=0;i<store.getCount();i++){
+    	  odFileId= store.getAt(i).get('fileId');
+    	  if(odFileId!=0)
+    	  oldFileIds.push(odFileId);
+    	  }
+    	  if(oldFileIds.length>0){
+    	   me.getView().down('form').lookupReference('orderFileType').allowBlank=true;
+    	  var fileField= me.getView().down('form').lookupReference('attachment1');
+    	  if(fileField)
+    	      fileField.allowBlank=true
+    	  }
     	   var messageField=this.getView().down('#messageFieldItemId');
+    	   form.setValues({"oldFileIds":oldFileIds});
     	    if(form.isValid()){
     	    	
     			form.submit({
@@ -164,12 +179,12 @@ Ext.define('AOC.view.webform.WebFormController', {
        			reference: 'attachment'+i,
        			fieldLabel:'Attachments',
        			labelSeparator:'',
-                   allowBlank: true,
-                   labelWidth : 100,
- 		            width : 500,
- 		            labelSeparator : '',
- 		            labelAlign:'right',
- 		            listeners:{
+       			allowBlank: true,
+       			anchor:'100%',
+       			labelWidth : 200,
+ 		        labelSeparator : '',
+ 		        labelAlign:'right',
+ 		        listeners:{
     				 'change':'onAttachemnetChange'
     			 }
 		   });
@@ -178,19 +193,20 @@ Ext.define('AOC.view.webform.WebFormController', {
 		   Ext.getBody().unmask();
     	}
 	 },
-	 insertFileInGrid:function(fileName,fileType,multiAllowed,i){
+	 insertFileInGrid:function(fileName,fileType,multiAllowed,i,id){
 		 var AttachmentInfoGriditemId=this.getView().nextSibling('#AttachmentInfoGriditemId');
+		 id = (Ext.isEmpty(id))?0:id;
 			var store=AttachmentInfoGriditemId.store;
 			if(store.storeId!='WebformStoreId'){
 				var store = Ext.create('AOC.store.WebformStore',{
 					storeId:'WebformStoreId',
-					fields : [ 'fileName', 'fileType' ],
+					fields : [ 'fileName', 'fileType','fileId'],
 					 data : [{
-						
 						 fileName : fileName,
 						 fileType : fileType,
 						 type:'new',
-						 internalId:i
+						 internalId:i,
+						 fileId:id
 					 } ]
 				});
 				AttachmentInfoGriditemId.bindStore(store);
@@ -205,10 +221,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 						 fileName : fileName,
 						 fileType : fileType,
 						 type:'new',
-						 internalId:i
+						 internalId:i,
+						 fileId:id
 					 });
 			}
-			store.load();
 	 },
 	 onOrderFileChange:function(obj,value){
 		 var value=value.substring(value.lastIndexOf("\\"));
@@ -233,13 +249,15 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    		var fileType=record.get('fileType');
 	    		var fileField;
 	    		var AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId');
-    	    	var store=AttachmentInfoGriditemId.store;
+    	    	       var store=AttachmentInfoGriditemId.store;
 	    		if(fileType=='Attachment'){
 	    			fileField=form.lookupReference('attachment'+internalId);
+	    			if(fileField)
 	    			fileField.destroy();
 	    		}
 	    		else{
 	    			fileField=form.lookupReference('orderFileType');
+	    			if(fileField)
 	    			fileField.reset( );
 	    		}
 	    		store.remove(record);
