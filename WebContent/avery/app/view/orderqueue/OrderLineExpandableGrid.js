@@ -130,7 +130,33 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         editor: 'numberfield'
     },
     {
-        text: 'Update MOQ',
+        text: 'Customer Ordered Qty.<font color=red>*</font>',
+        dataIndex: 'customerOrderedQty',
+        width: 106,
+        editor: 'numberfield',
+        renderer : function(value, meta,record) {
+            if(parseInt(value) > -1) {
+            	if(this.showMandatoryValidationField){
+	            	if(record.get('status')==waitingForCSRStatus && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
+		            	var moqValidationFlag=record.data.moqValidationFlag;
+		        		var moqValidationFlag=moqValidationFlag.trim();
+		    			if(moqValidationFlag.substr(0,1)=='F'){
+		                    meta.style = mandatoryValidationCellColor;
+		            	}
+	            	}
+            	}
+               return value;
+            } else {	
+            	if(record.get('status')==waitingForCSRStatus){
+	            	this.mandatoryFieldMissing=true;
+	                   meta.style = cellColor;
+            }
+	                    return value;
+            }
+        } 
+    },
+    {
+        text: 'Update Qty',
         dataIndex: 'updateMOQ',
         width: 50,
         renderer:function(value, metadata,rec){
@@ -141,6 +167,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
        		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
        }
 
+    },
+    {
+        text: 'Waive MOQ',
+        dataIndex: 'waiveMOQ',
+        width: 59,
+        editor:{
+        	xtype:'combo',
+        	editable:false,
+        	store:[[true,'Y'],[false,'N']]
+        },
+        renderer:function(value, metadata,rec){
+        	var v='N';
+        	if(value)
+        		v='Y';
+				return '<div>'+v+'</div>';
+    }
     },
     {
         text: 'Status',
@@ -522,31 +564,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 93,
         editor: 'textfield'
     }, {
-        text: 'Customer Ordered Qty.<font color=red>*</font>',
-        dataIndex: 'customerOrderedQty',
-        width: 106,
-        editor: 'numberfield',
-        renderer : function(value, meta,record) {
-            if(parseInt(value) > -1) {
-            	if(this.showMandatoryValidationField){
-	            	if(record.get('status')==waitingForCSRStatus && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
-		            	var moqValidationFlag=record.data.moqValidationFlag;
-		        		var moqValidationFlag=moqValidationFlag.trim();
-		    			if(moqValidationFlag.substr(0,1)=='F'){
-		                    meta.style = mandatoryValidationCellColor;
-		            	}
-	            	}
-            	}
-               return value;
-            } else {	
-            	if(record.get('status')==waitingForCSRStatus){
-	            	this.mandatoryFieldMissing=true;
-	                   meta.style = cellColor;
-            }
-	                    return value;
-            }
-        } 
-    }, {
         text: 'Ordered Date<font color=red>*</font>',
         dataIndex: 'orderedDate',
         width: 90,
@@ -853,21 +870,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 180,
         editor: 'textfield'
     }, {
-        text: 'Waive MOQ',
-        dataIndex: 'waiveMOQ',
-        width: 59,
-        editor:{
-        	xtype:'combo',
-        	editable:false,
-        	store:[[true,'Y'],[false,'N']]
-        },
-        renderer:function(value, metadata,rec){
-        	var v='N';
-        	if(value)
-        		v='Y';
-				return '<div>'+v+'</div>';
-    }
-    }, {
         text: 'APO Type',
         dataIndex: 'apoType',
         width: 47,
@@ -1172,8 +1174,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	    		 var Id=record.get('id');
     	    		 var runTime = AOC.config.Runtime;
     	    		 var MoqDiffQty=record.get('moqDiffQty');
+    	    		 var roundQty=record.get('roundQty');
     	    		 var customerOrderedQty=record.get('customerOrderedQty');
-    	    		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(customerOrderedQty);
+    	    		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(roundQty,10)+parseInt(customerOrderedQty);
     	    		 var value={"customerOrderedQty":customerOrderedQty,"id":Id};
     	    	     var insertBillAddress=false,insertShipAddress=false;
     	    		 var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
