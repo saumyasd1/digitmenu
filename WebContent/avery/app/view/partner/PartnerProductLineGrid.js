@@ -18,7 +18,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
         },
         dockedItems : this.buildDockedItems(),
         viewConfig : {
-	            stripeRows : false,
+	            stripeRows : true,
 	            enableTextSelection : true
         }
     });
