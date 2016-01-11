@@ -31,8 +31,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
              		 var store= Ext.data.StoreManager.lookup('OrderQueueId');
              		 if(store==null){
              			 store=Ext.create('AOC.store.OrderQueueStore', {
-             					autoLoad : true,
-             					pageSize:pageSize,
              					storeId:'OrderQueueId',
              					proxy : {
              						type : 'rest',
