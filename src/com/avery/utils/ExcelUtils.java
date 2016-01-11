@@ -67,6 +67,7 @@ public class ExcelUtils {
 			Cell cell1 = row.createCell(columncellCount);
 			cell1.setCellValue(obj.getId());
 			Cell cell2 = row.createCell(++columncellCount);
+			if(obj.getPrvOrderQueueID()!= null)
 			cell2.setCellValue(obj.getPrvOrderQueueID());
 			Cell cell3 = row.createCell(++columncellCount);
 			cell3.setCellValue(obj.getOrderSource());
