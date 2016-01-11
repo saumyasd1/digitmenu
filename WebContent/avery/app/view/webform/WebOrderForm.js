@@ -10,11 +10,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	alias:'widget.weborderform',
 	itemId:'weborderformItemId',
 	controller:'webFormMain',
-	bodyPadding: 5,
-	width: 700,
+	bodyPadding: '0 200 0 200',
 	border:false,
-	 layout: {
-        type: 'vbox'
+	layout: {
+        type: 'anchor'
     },
     initComponent : function(){
     	var me=this;
@@ -30,10 +29,14 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         		xtype:'displayfield',
         		itemId:'messageFieldItemId',
         		value:'',
+        		anchor:'100%',
         		hidden:true
-        	},{
+        	       },{
         			xtype:'fieldcontainer',
         			layout:'hbox',
+        			anchor:'100%',
+        			labelWidth : 200,
+        			fieldLabel:' ',
         			items:[{
         				xtype:'combo',
         				emptyText:'Partner Name',
@@ -41,7 +44,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				valueField:'id',
         				name:'partnerName',
         				editable:false,
-        				allowBlank : false, 
+        				allowBlank : false,
+        				margin:'0 20 0 0',
+        				flex:1,
         				displayField:'partnerName',
         				listeners:{
         					'change':'onPartnerChange',
@@ -49,16 +54,14 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				}
         			},
         			{
-                    	xtype :'tbspacer',
-                    	width :20
-            		},
-        			{
         				xtype:'combo',
         				emptyText:'RBO',
         				reference:'rboCombo',
         				editable:false,
         				displayField:'rboName',
         				name:'rboName',
+        				flex:1,
+        				margin:'0 20 0 0',
         				valueField:'rboName',
         				allowBlank : false, 
         				disabled:true,
@@ -68,15 +71,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				}
         			},
         			{
-                    	xtype :'tbspacer',
-                    	width :15
-            		},
-        			{
         				xtype:'combo',
         				reference:'productLineCombo',
         				displayField:'productLineType',
         				valueField:'id',
         				editable:true,
+        				flex:1,
         				name:'productLineType',
         				emptyText:'Product Line',
         				allowBlank : false, 
@@ -87,23 +87,20 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				}
         			}]
         		},{
-                	xtype :'tbspacer',
-                	width :20
-        		},{
         	
         			xtype:'textfield',
         			itemId:'PNItemId',
         			labelAlign:'right',
         			name: 'email',
         			reference:'email',
+        			anchor:'100%',
         			vtype:'email',
         			fieldLabel:'Sender Email<font color=red>*</font>',
         			value:'',
         		    labelSeparator:'',
         		    disabled:true,
-                    allowBlank: false,
-                    labelWidth : 100,
-		            width : 500,
+                            allowBlank: false,
+                            labelWidth : 200,
 		            blankText : 'Sender Email is required',
 		            listeners:{
 	      				  blur : this.notifyByImage,
@@ -112,30 +109,26 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 		        
         		},
         		{
-                	xtype :'tbspacer',
-                	width :20
-        		},
-        		{
         			xtype:'textfield',
         			itemId:'RNtemId',
         			labelAlign:'right',
         			name: 'subject',
+        			anchor:'100%',
         			reference:'subject',
         			fieldLabel:'Email Subject<font color=red>*</font>',
         			value:'',
         			labelSeparator:'',
-                    allowBlank: false,
-                    disabled:true,
-                    labelWidth : 100,
-  		            width : 500,
-  		            labelSeparator : '',
-  		            labelAlign:'right',
-  		            maxLength : '50',
-  		            blankText : 'Email Subject is required',
-  		            listeners:{
+        			allowBlank: false,
+        			disabled:true,
+        			labelWidth : 200,
+        			labelSeparator : '',
+        			labelAlign:'right',
+        			maxLength : '50',
+        			blankText : 'Email Subject is required',
+        			listeners:{
       				  blur : this.notifyByImage,
       				'focus': 'notifyByMessage'
-      			 }
+        			}
         		},
         		{
         			
@@ -148,25 +141,17 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			value:'',
         			labelSeparator:'',
         			disabled:true,
-                    allowBlank: false,
-                    labelWidth : 100,
-  		            width : 500,
-  		            labelSeparator : '',
-  		            labelAlign:'right',
-  		            maxLength : '50',
-  		            blankText :'Email Body is required',
-  		            listeners:{
+        			allowBlank: false,
+        			anchor:'100%',
+        			labelWidth : 200,
+        			labelSeparator : '',
+        			labelAlign:'right',
+        			maxLength : '50',
+        			blankText :'Email Body is required',
+        			listeners:{
       				  blur : this.notifyByImage,
       				'focus': 'notifyByMessage'
       			 }
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :10
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :10
         		},
         		{ 
         			xtype : 'fileuploadfield', 
@@ -174,12 +159,13 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			reference:'orderFileType',
         			fieldLabel : 'Order File Type<font color=red>*</font>', 
         			labelSeparator:'',
-        			labelWidth : 100,
-        			width : 500,
+        			labelWidth : 200,
+        			anchor:'100%',
+        			labelAlign:'right',
         			allowBlank : false, 
         			disabled:true,
         			forceSelection : true,
-        			 enforceMaxLength: true,
+        			enforceMaxLength: true,
         			blankText :'Order File Type is required',
         			 listeners:{
          				 'change':'onOrderFileChange',
@@ -187,29 +173,32 @@ Ext.define('AOC.view.webform.WebOrderForm',{
          				 'focus': 'notifyByMessage'
          			 }
         			},
-        		{
-                	xtype :'tbspacer',
-                	width :10
-        		},
         		{   
         			xtype:'fileuploadfield',
         			labelAlign:'right',
         			name: 'attachment1',
+        			anchor:'100%',
         			reference: 'attachment1',
         			fieldLabel:'Attachments',
         			labelSeparator:'',
-                    allowBlank: true,
-                    labelWidth : 100,
-                    disabled:true,
-  		            width : 500,
-  		            labelSeparator : '',
-  		            labelAlign:'right',
-  		            listeners:{
+        			allowBlank: true,
+        			labelWidth : 200,
+                    		disabled:true,
+                    		labelSeparator : '',
+                    		labelAlign:'right',
+                    		listeners:{
      				 'change':'onAttachemnetChange',
      				  blur : this.notifyByImage,
      				  'focus': 'notifyByMessage'
      			 }
-        		}
+        		},{
+     			     xtype:'hidden',
+     			     name:'oldOrderId'
+     			 },
+     			 {
+     			     xtype:'hidden',
+     			     name:'oldFileIds'
+     			 }
                ]
         },
        
