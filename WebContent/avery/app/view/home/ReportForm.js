@@ -36,7 +36,7 @@ Ext.define('AOC.view.home.ReportForm',{
 				labelAlign : 'top',
 				items:[
 			            { boxLabel: 'Daily Report', name: 'rb', inputValue: 'dailyReport', checked: true },
-			            { boxLabel: 'Open Report', name: 'rb', inputValue: 'openReport' }
+			            { boxLabel: 'Detail Status Report', name: 'rb', inputValue: 'openReport' }
 			          ],
 			    listeners:{
 			    	'change':'onRadioButtonChange'
