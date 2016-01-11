@@ -64,13 +64,13 @@ Ext.define('AOC.view.webform.WebOrderView', {
     	 	                       margin  : '0 0 0 10',
     	 	                       itemId  : 'cancel',
     	 	                       text    :'Cancel',
-    	 	                       handler : 'CancelDetails',
+    	 	                       handler : 'CancelDetails'
     	 	                   },{
     	 	                       xtype   : 'whitebutton',
     	 	                       margin  : '0 0 0 10',
     	 	                       text    :'Save',
     	 	                       itemId  : 'save',
-    	 	                       handler:'SaveDetails',
+    	 	                       handler:'SaveDetails'
     	 	                   }
     	 	                   ]
     	 	                    }]
