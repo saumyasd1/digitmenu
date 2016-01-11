@@ -60,7 +60,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     editor: 'numberfield'
                 },
                 {
-                    text: 'Update MOQ',
+                    text: 'Customer Ordered Qty.<font color=red>*</font>',
+                    dataIndex: 'customerOrderedQty',
+                    width: 106,
+                    editor: 'numberfield',
+                    renderer : function(value, meta,record) {
+                        if(parseInt(value) > -1) {
+                           return value;
+                        } else {
+                        	if(record.get('status')==waitingForCSRStatus)
+                        		meta.style = cellColor;
+                        }
+                    } 
+                },
+                {
+                    text: 'Update Qty',
                     dataIndex: 'updateMOQ',
                     width: 50,
                     renderer:function(value, metadata,rec){
@@ -71,6 +85,22 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                    		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
                    }
 
+                },
+                {
+                    text: 'Waive MOQ',
+                    dataIndex: 'waiveMOQ',
+                    width: 59,
+                    editor:{
+                    	xtype:'combo',
+                    	editable:false,
+                    	store:[[true,'Y'],[false,'N']]
+                    },
+                    renderer:function(value, metadata,rec){
+                    	var v='N';
+                    	if(value)
+                    		v='Y';
+            				return '<div>'+v+'</div>';
+                }
                 },
                 {
             text: 'Status',
@@ -432,19 +462,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             editor: 'textfield'
         }, {
-            text: 'Customer Ordered Qty.<font color=red>*</font>',
-            dataIndex: 'customerOrderedQty',
-            width: 106,
-            editor: 'textfield',
-            renderer : function(value, meta,record) {
-                if(parseInt(value) > -1) {
-                   return value;
-                } else {
-                	if(record.get('status')==waitingForCSRStatus)
-                		meta.style = cellColor;
-                }
-            } 
-        }, {
             text: 'Ordered Date<font color=red>*</font>',
             dataIndex: 'orderedDate',
             width: 90,
@@ -659,21 +676,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 180,
             editor: 'textfield'
         }, {
-            text: 'Waive MOQ',
-            dataIndex: 'waiveMOQ',
-            width: 59,
-            editor:{
-            	xtype:'combo',
-            	editable:false,
-            	store:[[true,'Y'],[false,'N']]
-            },
-            renderer:function(value, metadata,rec){
-            	var v='N';
-            	if(value)
-            		v='Y';
-    				return '<div>'+v+'</div>';
-        }
-        }, {
             text: 'APO Type',
             dataIndex: 'apoType',
             width: 47,
@@ -740,8 +742,9 @@ onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts )
 		 var Id=record.get('id');
 		 var runTime = AOC.config.Runtime;
 		 var MoqDiffQty=record.get('moqDiffQty');
+		 var roundQty=record.get('roundQty');
 		 var customerOrderedQty=record.get('customerOrderedQty');
-		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(customerOrderedQty);
+		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(roundQty,10)+parseInt(customerOrderedQty);
 		 var value={"customerOrderedQty":customerOrderedQty,"id":Id};
 	     var insertBillAddress=false,insertShipAddress=false;
 		 var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
