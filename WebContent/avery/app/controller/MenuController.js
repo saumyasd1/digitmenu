@@ -91,6 +91,8 @@ Ext.define('AOC.controller.MenuController', {
 	                           me.updateHeaderUserName();
 	                           me.helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
 				   Ext.getBody().unmask();
+				   Ext.getStore('OrderCharts').load();
+				   Ext.getStore('HomePageOders').load();
 				   me.changeViewportCard(1);
 	                        },
 	                        failure:function(formss, action){
