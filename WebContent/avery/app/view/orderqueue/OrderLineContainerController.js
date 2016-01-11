@@ -17,14 +17,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         panel.getLayout().setActiveItem(0);
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
         ordeQueueGrid.store.load();
-        var record=ordeQueueGrid.store.find('id',this.runTime.getOrderQueueId());
-        var row = ordeQueueGrid.getView().getRow(record);
-        var el = Ext.fly(row);
-        if(el)
-	        el.highlight("#c1ddf1", {
-	            attr: "backgroundColor",
-	            duration: 5000
-	        });
         this.getView().destroy();
     },
     validateOrderLine:function(){
