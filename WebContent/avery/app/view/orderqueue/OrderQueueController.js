@@ -343,6 +343,30 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
             	me.getCancelOrderWindow(id);
             	callout.destroy();
+            },
+            reSubmitOrder:function(cmp){
+                var rec =e.record;
+                AOC.app.getController('MenuController').selectCard('weborderview');
+                var weborderform= Ext.ComponentQuery.query('weborderview weborderform')[0];
+                var partnerId =(Ext.isEmpty(rec.get('partner')))?"":rec.get('partner').id,
+                productLineId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').id,
+                rboId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').rboId,
+                oderFileName = (Ext.isEmpty(rec.get('OrderFile')[0]))?"":rec.get('OrderFile')[0].fileName;
+                weborderform.getForm().setValues({"partnerName":partnerId,
+            	"rboName":rec.get('RBOName'),"productLineType":productLineId,
+            	"email":rec.get('SenderEmailID'),"subject":rec.get('Subject'),
+            	"emailBody":rec.get('EmailBody'),"orderFileType":oderFileName,
+            	"oldOrderId":rec.get('id')
+                });
+                var controller=  weborderform.getController();
+                if(!Ext.isEmpty(oderFileName)){
+                controller.insertFileInGrid(oderFileName,'Order File Type',false,null,rec.get('OrderFile')[0].id);
+                }
+                var attachFile=(Ext.isEmpty(rec.get('orderFileAttachment')))?[]:rec.get('orderFileAttachment');
+            	 for(var i=0;i<attachFile.length;i++){
+            	     if(attachFile[i].fileContentType!="Order")
+            	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
+            	 }
             }
         }
 	          });
@@ -391,50 +415,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	              '</tpl>',
 	              {
 	    		 isViewOrderDisabled:function(v){
-	    			    currentRecord = v,
-		    	        disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
-		    	        var orderLineCount=currentRecord.orderLineCount;
-		    	        if(orderLineCount==0){
-		    	        	disableOrderLineOption=true;
-		    	        }
-		    	        disabled=disableOrderLineOption;
-		    			return disabled;
+		    	   return (v.orderLineCount==0);
 	    		 },
 	    		 isViewSalesDisabled:function(v){
-	    			    currentRecord = v,
-		    	        disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
-		    	        var salesOrderCount=currentRecord.salesOrderCount;
-		    	        if(salesOrderCount==0){
-		    	        	disableSalesOrderOption=true;
-		    	        }
-		    	        disabled=disableSalesOrderOption;
-		    			return disabled;
+		    	  return (v.salesOrderCount==0);
 	    		 },
 	    		 isReSubmitOrderDisabled:function(v){
-	    			    currentRecord = v,
-		    	        disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
-		    	        var status = currentRecord.Status;
-		    	        var orderError = currentRecord.error;
-		    	        if (status == orderError) {
-		    	        	disableCancelOption = false;
-		    	        	disableResubmitOrder=false;
-		    	        }
-		    	        disabled=disableResubmitOrder;
-		    			return disabled;
-		    		 },
+	    		 return (v.Status!=cancelStatus);
+	    		 },
 		         isCancelOrderDisabled : function(v){
-	    		     currentRecord = v,
-	    	        disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
-	    	        var status = currentRecord.Status;
-	    	        var orderError = currentRecord.error;
-	    	        if (status == orderError) {
-	    	        	disableCancelOption = false;
-	    	        	disableResubmitOrder=false;
-	    	        }
-	    	        disabled=disableCancelOption;
-	    			return disabled;
-		              	}
-		              }
+	    		 return (v.Status!=v.error);
+		         }
+	              }
 	          );
 	       },
     showMenu: function(view, rowIndex, colIndex, item, e) {
