@@ -19,7 +19,7 @@ public class ExcelUtils {
 	public static ByteArrayOutputStream createOrderQueueExcelFile(List<OrderQueue> OrderQueueList) throws IOException{
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
-        String[] headerNames = { "Order track #","Order Source", "PO #", "Order File",
+        String[] headerNames = { "Order track #","Prv Order track#","Order Source", "PO #", "Order File",
 				"Additional data", "Partner Name", "RBO", "Product Line",
 				"Order Status", "Processed Date", "Sender Email ID", "Subject","Submitted By","Submitted Date","Acknowledgement Date","Comment","Error" };
         addHeader(sheet, headerNames);
@@ -67,30 +67,32 @@ public class ExcelUtils {
 			Cell cell1 = row.createCell(columncellCount);
 			cell1.setCellValue(obj.getId());
 			Cell cell2 = row.createCell(++columncellCount);
-			cell2.setCellValue(obj.getOrderSource());
+			cell2.setCellValue(obj.getPrvOrderQueueID());
 			Cell cell3 = row.createCell(++columncellCount);
-			cell3.setCellValue(obj.getPONumber());
+			cell3.setCellValue(obj.getOrderSource());
 			Cell cell4 = row.createCell(++columncellCount);
-			cell4.setCellValue(orderFile);
+			cell4.setCellValue(obj.getPONumber());
 			Cell cell5 = row.createCell(++columncellCount);
-			cell5.setCellValue(additionalData);
+			cell5.setCellValue(orderFile);
 			Cell cell6 = row.createCell(++columncellCount);
-			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
-				cell6.setCellValue(obj.getPartner().getPartnerName());
+			cell6.setCellValue(additionalData);
 			Cell cell7 = row.createCell(++columncellCount);
-			cell7.setCellValue(obj.getRboName());
+			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
+				cell7.setCellValue(obj.getPartner().getPartnerName());
 			Cell cell8 = row.createCell(++columncellCount);
-			if(obj.getProductLine()!=null && !obj.getProductLine().equals(""))
-				cell8.setCellValue(obj.getProductLine().getProductLineType());
+			cell8.setCellValue(obj.getRboName());
 			Cell cell9 = row.createCell(++columncellCount);
-			cell9.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
+			if(obj.getProductLine()!=null && !obj.getProductLine().equals(""))
+				cell9.setCellValue(obj.getProductLine().getProductLineType());
 			Cell cell10 = row.createCell(++columncellCount);
-			if(obj.getReceivedDate()!=null)
-				cell10.setCellValue(obj.getReceivedDate().toString());
+			cell10.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 			Cell cell11 = row.createCell(++columncellCount);
-			cell11.setCellValue(obj.getSenderEmailID());
+			if(obj.getReceivedDate()!=null)
+				cell11.setCellValue(obj.getReceivedDate().toString());
 			Cell cell12 = row.createCell(++columncellCount);
-			cell12.setCellValue(obj.getSubject());
+			cell12.setCellValue(obj.getSenderEmailID());
+			Cell cell13 = row.createCell(++columncellCount);
+			cell13.setCellValue(obj.getSubject());
 //			Cell cell13 = row.createCell(++columncellCount);
 //			cell13.setCellValue(obj.getEmailBody());
 			Cell cell14 = row.createCell(++columncellCount);
