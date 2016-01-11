@@ -310,8 +310,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	
 	public Criteria getOpenReportCriteria(MultivaluedMap queryMap) throws Exception{
 		Criteria criteria=getCriteria(queryMap);
-		criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
-		criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
+		//criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
+		//criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
 		return criteria;
 	}
 	
