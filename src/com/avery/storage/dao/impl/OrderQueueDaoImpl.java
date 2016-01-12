@@ -22,6 +22,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -262,7 +263,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String OrderTrackingID=searchMap.get("id");
 			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
 				Long Id=Long.parseLong(OrderTrackingID);
-				criteria.add(Restrictions.eq("id",Id));
+				Disjunction disCriteria = Restrictions.disjunction();
+				disCriteria.add(Restrictions.eq("id",Id));
+				disCriteria.add(Restrictions.eq("prvOrderQueueID",Id));
+				criteria.add(disCriteria);
 			}
 			String PONumber=searchMap.get("ponumber");
 			if(PONumber!=null && !"".equals(PONumber)){
