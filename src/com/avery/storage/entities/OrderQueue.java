@@ -543,8 +543,8 @@ public class OrderQueue extends MainAbstractEntity{
 		String subjectline = formParams.getField("subject").getValue();
 		String productLineType = formParams.getField("productLineType").getValue();
 		String rboName = formParams.getField("rboName").getValue();
-		String oldFileIds = formParams.getField("oldFileIds").getValue();
-		String oldOrderId= formParams.getField("oldOrderId").getValue();
+		String oldFileIds = (formParams.getField("oldFileIds")!=null)?formParams.getField("oldFileIds").getValue():null;
+		String oldOrderId= (formParams.getField("oldOrderId")!=null)?formParams.getField("oldOrderId").getValue():null;
 		Date date = DateUtils.getDefaultCurrentDateTime();
 		
 		
