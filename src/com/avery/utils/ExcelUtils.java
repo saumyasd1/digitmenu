@@ -58,10 +58,10 @@ public class ExcelUtils {
 				}
 			}
 			if(!orderFile.equals("") && orderFile.length()>1){
-				orderFile=orderFile.substring(1, orderFile.length()-1);
+				orderFile=orderFile.substring(1, orderFile.length());
 			}
 			if(!additionalData.equals("") && additionalData.length()>1){
-				additionalData=additionalData.substring(1, additionalData.length()-1);
+				additionalData=additionalData.substring(1, additionalData.length());
 			}
 			Row row = sheet.createRow(rowIndex);
 			Cell cell1 = row.createCell(columncellCount);
