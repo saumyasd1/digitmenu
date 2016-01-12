@@ -342,7 +342,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         	   me.runTime.setAllowOrderLineEdit(true);
                var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
             	me.getCancelOrderWindow(id);
-            	callout.destroy();
+            	
             },
             reSubmitOrder:function(cmp){
                 var rec =e.record;
@@ -380,8 +380,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	                var el    = Ext.get(element),
 	                    event = el.getAttribute('event');
 	                if (event && !el.hasCls('edit-menu-disabled')){
-//	                    cmp.destroy();
 	                    me.fireEvent(event);
+	                    if(cmp)
+	                    	cmp.destroy();
 	                }
 	            }
 	        });
@@ -424,7 +425,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	    		 return (v.Status!=cancelStatus);
 	    		 },
 		         isCancelOrderDisabled : function(v){
-	    		 return (v.Status!=v.error);
+	    		 return (v.Status!=orderError);
 		         }
 	              }
 	          );
