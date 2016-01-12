@@ -161,7 +161,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         width: 50,
         renderer:function(value, metadata,rec){
         	var checkMOQ=rec.data.moqValidationFlag.trim();
-       	 if(checkMOQ.substr(0,1)=='F')
+        	var orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
+        	var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
+       	 if(orderQueueStatus==waitingForCSRStatus && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F')
        		return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
        	 else
        		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
