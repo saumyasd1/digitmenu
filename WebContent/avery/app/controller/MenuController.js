@@ -126,6 +126,8 @@ Ext.define('AOC.controller.MenuController', {
 	      if(xtype=="homewrapper"){
 		  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
+	      }else if(xtype=="weborderview"){
+		  Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(newWebOrder);
 	      }
 	  },
 	  selectCard:function(xtype){
