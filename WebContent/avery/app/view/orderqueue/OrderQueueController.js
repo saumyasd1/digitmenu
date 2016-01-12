@@ -346,7 +346,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             },
             reSubmitOrder:function(cmp){
                 var rec =e.record;
-                AOC.app.getController('MenuController').selectCard('weborderview');
+                var con=AOC.app.getController('MenuController');
+                con.selectCard('weborderview');
+                con.selectMenuItem('weborderview');
                 var weborderform= Ext.ComponentQuery.query('weborderview weborderform')[0];
                 var partnerId =(Ext.isEmpty(rec.get('partner')))?"":rec.get('partner').id,
                 productLineId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').id,
