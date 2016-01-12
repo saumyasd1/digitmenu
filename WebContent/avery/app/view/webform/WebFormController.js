@@ -333,5 +333,12 @@ Ext.define('AOC.view.webform.WebFormController', {
      	var messageField=this.getView().down('#messageFieldItemId');
 		var message=messageField.setValue('');
 		    message.setVisible(false);
-}
+},
+    backButton:function(){
+    	var panel=this.getView().ownerCt;
+        panel.getLayout().setActiveItem(1);
+        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
+        ordeQueueGrid.store.load();
+        this.getView().destroy();
+     }
 });
