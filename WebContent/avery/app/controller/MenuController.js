@@ -203,7 +203,7 @@ Ext.define('AOC.controller.MenuController', {
 		 me.updateTopToolBar(true,profileInfo);
 		 me.updateBottomToolBar(false);
 		 me.updateProfileInfo();
-		 Ext.ComponentQuery.query('viewport canwas mainmenu')[0].getSelectionModel().select(null);
+		 me.selectMenuItem(null);
 	    },
 	    updateProfileInfo:function(){
 		var me=this,
@@ -300,6 +300,12 @@ Ext.define('AOC.controller.MenuController', {
 		me.selectProrfileCard(0);
 		 me.updateTopToolBar(true,profileInfo);
 		 me.updateBottomToolBar(false);
+	    },
+	    selectMenuItem:function(xtype){
+		var cmp=Ext.ComponentQuery.query('viewport canwas mainmenu')[0],
+		store= cmp.getStore(),
+		rec= store.findRecord('xtype',xtype);
+		cmp.getSelectionModel().select(rec);
 	    }
 	    
 });  
