@@ -84,6 +84,6 @@ duplicateMappingLabel='DUPLICATE MAPPING',
 weFacedError="We faced an error while trying to ",
 savedSuccessfully=' saved successfully.',
 weFacedError="We faced an error while trying to ",
-fixAndResubmitWebOredr="Fix & Resubmit Web Order",
+fixAndResubmitWebOredr ="Fix & Resubmit Web Order",
 newWebOrder="New Web Order";
 
