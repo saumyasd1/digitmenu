@@ -369,6 +369,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	     if(attachFile[i].fileContentType!="Order")
             	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
             	 }
+            	 Ext.ComponentQuery.query('weborderview')[0].down('#backButtonimage').setVisible(true);
             	 Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(fixAndResubmitWebOredr);
             }
         }
@@ -394,25 +395,25 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	    	  var me=this;
 	    	 return Ext.create('Ext.XTemplate',
 	    		  '<tpl if="this.isViewOrderDisabled(values)==false">',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrders"">View Order Line</div>',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrders">View Order Line</div>',
 	              '</tpl>',
 	              '<tpl if="this.isViewOrderDisabled(values)">',
-	    	      '<div style="width: 140px  !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item"">View Order Line</div>',
+	    	      '<div style="width: 140px  !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">View Order Line</div>',
 	              '</tpl>',
 	              '<tpl if="this.isViewSalesDisabled(values)==false">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewSales"">View Sales Order</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewSales">View Sales Order</div>',
 	              '</tpl>',
 	              '<tpl if="this.isViewSalesDisabled(values)">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item"">View Sales Order</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">View Sales Order</div>',
 	              '</tpl>',
 	              '<tpl if="this.isReSubmitOrderDisabled(values)==false">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="reSubmitOrder"">ReSubmit Order</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="reSubmitOrder">ReSubmit Order</div>',
 	              '</tpl>',
 	              '<tpl if="this.isReSubmitOrderDisabled(values)">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item"">ReSubmit Order</div>',
+	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">ReSubmit Order</div>',
 	              '</tpl>',
 	              '<tpl if="this.isCancelOrderDisabled(values)==false">',
-	              '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelOrder"">Cancel Order</div>',
+	              '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelOrder">Cancel Order</div>',
 	              '</tpl>',
 	              '<tpl if="this.isCancelOrderDisabled(values)">',
 	              '<div style="width: 140px !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item"">Cancel Order</div>',
