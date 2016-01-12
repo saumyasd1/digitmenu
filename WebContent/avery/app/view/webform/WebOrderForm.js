@@ -157,7 +157,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			xtype : 'fileuploadfield', 
         			name : 'orderFileType',
         			reference:'orderFileType',
-        			fieldLabel : 'Order File Type<font color=red>*</font>', 
+        			fieldLabel : 'Order File<font color=red>*</font>', 
         			labelSeparator:'',
         			labelWidth : 200,
         			anchor:'100%',
