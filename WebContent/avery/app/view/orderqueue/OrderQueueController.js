@@ -367,6 +367,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	     if(attachFile[i].fileContentType!="Order")
             	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
             	 }
+            	 Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(fixAndResubmitWebOredr);
             }
         }
 	          });
