@@ -128,6 +128,10 @@ Ext.define('AOC.controller.MenuController', {
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }else if(xtype=="weborderview"){
 	      Ext.ComponentQuery.query('weborderview')[0].down('form').reset();	  
+	      var AttachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
+	    	AttachmentInfoGriditemId.store.removeAll();
+	    	AttachmentInfoGriditemId.getView().refresh();
+	      Ext.ComponentQuery.query('weborderview')[0].down('#backButtonimage').setVisible(false);
 		  Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(newWebOrder);
 	      }
 	  },
