@@ -19,6 +19,7 @@ Ext.define('AOC.view.webform.WebOrderView', {
  	                    height  : 40,
  	                    items   : [{
  	                        xtype  : 'component',
+ 	                        itemId:'weborderlabel',
  	                        html   : '<div  style="color: #333f49;font: 300 13px/16px helvetica, arial, verdana, sans-serif;"><b>New Web Orders</b></div>'
  	                      }]
  	        	      },
@@ -79,5 +80,9 @@ Ext.define('AOC.view.webform.WebOrderView', {
 
 	 	});
 	 	this.callParent(arguments);
+	},
+	updateHeaderLabel:function(label){
+	    var cmp = this.down('#weborderlabel');
+	    cmp.update('<div  style="color: #333f49;font: 300 13px/16px helvetica, arial, verdana, sans-serif;"><b>'+label+'</b></div>')
 	}
 });
