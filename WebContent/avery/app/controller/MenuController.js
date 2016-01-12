@@ -127,6 +127,7 @@ Ext.define('AOC.controller.MenuController', {
 		  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }else if(xtype=="weborderview"){
+	      Ext.ComponentQuery.query('weborderview')[0].down('form').reset();	  
 		  Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(newWebOrder);
 	      }
 	  },
