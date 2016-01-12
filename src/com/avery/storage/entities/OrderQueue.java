@@ -717,7 +717,7 @@ public class OrderQueue extends MainAbstractEntity{
 				throw new Exception("Unable to find Orders");
 			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue);
 			byte[] bytes = outputStream.toByteArray();
-			String fileName = "Open_Report.xls";
+			String fileName = "Detail_Status_Report.xls";
 			return Response
 					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
 		            .header("content-disposition","attachment; filename = "+fileName)
