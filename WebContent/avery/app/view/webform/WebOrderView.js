@@ -17,8 +17,24 @@ Ext.define('AOC.view.webform.WebOrderView', {
 	 	                	"padding"          : "10px 20px 10px 20px"
 	 	                    },
  	                    height  : 40,
+ 	                    layout:'hbox',
  	                    items   : [{
+							xtype:'image',
+							width:40,
+							hidden:true,
+							itemId:'backButtonimage',
+							src:AOC.config.Settings.buttonIcons.backIcon,
+							autoEl: 'div',
+							cls:'orderline-back-button',
+							listeners:{
+								el:{
+									'click':'backButton'
+								}
+							}
+						},
+ 	                               {
  	                        xtype  : 'component',
+ 	                         padding:'5 0 0 10',
  	                        itemId:'weborderlabel',
  	                        html   : '<div  style="color: #333f49;font: 300 13px/16px helvetica, arial, verdana, sans-serif;"><b>New Web Orders</b></div>'
  	                      }]
