@@ -79,7 +79,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     width: 50,
                     renderer:function(value, metadata,rec){
                     	var checkMOQ=rec.data.moqValidationFlag.trim();
-                   	 if(checkMOQ.substr(0,1)=='F')
+                   	 if(rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F')
                    		return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
                    	 else
                    		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
