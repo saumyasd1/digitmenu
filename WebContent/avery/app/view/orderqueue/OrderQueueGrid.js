@@ -18,6 +18,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				height: 50,
     		    items : me.buildtbar()
               },
+              store:'OrderQueueStore',
               selModel: {
 			       type: 'spreadsheet',
 			       rowNumbererHeaderWidth:0
@@ -28,24 +29,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
               listeners:{
             	  cellclick:'onCellClickToView',
             	  activate:function(obj){
-             		 var store= Ext.data.StoreManager.lookup('OrderQueueId');
-             		 if(store==null){
-             			 store=Ext.create('AOC.store.OrderQueueStore', {
-             					storeId:'OrderQueueId',
-             					proxy : {
-             						type : 'rest',
-             						url : applicationContext+'/rest/orders',
-             						reader:{
-             					        type:'json', 
-             					        rootProperty: 'orders',
-             					        totalProperty: 'totalCount'
-             					    }
-             				}
-             				});
-             			 obj.bindStore(store);
-             			 me.down('pagingtoolbar').bindStore(store);
-             		 }
-             		 store.load();
+             		 me.down('pagingtoolbar').bindStore(obj.getStore());
              	  }
               },
               viewConfig : {
