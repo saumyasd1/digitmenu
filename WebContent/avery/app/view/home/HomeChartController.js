@@ -2,7 +2,6 @@ Ext.define('AOC.view.home.HomeChartController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.homechartcontroller',
     requires:['AOC.view.home.ReportForm'],
-    //stores:['OrderCharts','HomePageOders'],
     runTime: AOC.config.Runtime,
     changeDateRange:function(cmp,rec){
     var me=this;
@@ -32,5 +31,82 @@ Ext.define('AOC.view.home.HomeChartController', {
     						}]
     	});
     win.show();
+    },
+    homeGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+	var endDate=new Date();
+	var status=0;
+	var fieldName="";
+	if(cellIndex==0)
+	    return;
+	switch(rowIndex){
+	case 0:{
+	    status="1";
+	    break;
+	}
+	case 1:{
+	    status="4";
+	    break;
+	}
+	case 2:{
+	    status="7";
+	    break;
+	}
+	case 3:{
+	    status="99";
+	    break;
+	}
+	case 4:{
+	    status="2,98";
+	    break;
+	}
+	case 5:{
+	    status="1,4,7,99,2,98";
+	    break;
+	}
+	}
+	var days=0
+	switch(cellIndex){
+	case 1:{
+	    days=1;
+	    fieldName='lastOneDay';
+	    break;
+	}
+	case 2:{
+	    days=7;
+	    fieldName='lastWeek';
+	    break;
+	}
+	case 3:{
+	    days=14;
+	    fieldName='lastTwoWeek';
+	    break;
+	}
+	case 4:{
+	    days=30;
+	    fieldName='lastMonth';
+	    break;
+	}
+	}
+	if (record.get(fieldName)==0)
+	return;
+	var store= Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
+	store.proxy.setFilterParam('query');
+        var parameters = '{"days":"' +days + '","Status":"' + status +'"}';
+       store.setRemoteFilter(true);
+        if (!store.proxy.hasOwnProperty('filterParam')) {
+            store.proxy.setFilterParam('query');
+        }
+        store.proxy.encodeFilters = function(filters) {
+            return filters[0].getValue();
+        };
+        var con=AOC.app.getController('MenuController');
+        con.selectCard('orderqueueview');
+        con.selectMenuItem('orderqueueview');
+	Ext.ComponentQuery.query('maincontainer orderqueuegrid #clearadvanedsearch')[0].setVisible(true);
+        store.filter({
+            id: 'query',
+            property: 'query',
+            value: parameters
+        });
     }
 })
