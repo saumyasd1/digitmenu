@@ -12,6 +12,10 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     viewConfig    : {
         stripeRows    : true
     },
+    selModel: {
+	       type: 'spreadsheet',
+	       rowNumbererHeaderWidth:0
+	    },
     columns: [
                {
         text: 'Status',
@@ -315,6 +319,9 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		          header: false
 		      }) ;
 		    }
+    },
+    {
+    	ptype: 'clipboard'
     }
 //    , {
 //        ptype: 'rowediting',
