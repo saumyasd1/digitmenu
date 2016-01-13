@@ -2,6 +2,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
 	extend : 'Ext.grid.Panel',
 	alias : 'widget.homepageorderlist',
 	emptyText:'<div align=center> No data to display.</div>',
+	 controller:'homechartcontroller',
 	initComponent : function(){
 	var me=this;
 	Ext.apply(this,{
@@ -21,6 +22,9 @@ Ext.define('AOC.view.home.HomePageOrderList', {
 	                return (num%2==0)?'light-black':'black';
 	        	}
                     }
+        },
+        listeners:{
+            cellclick:'homeGridCellClick'
         }
 	});
        this.callParent(arguments);
@@ -48,36 +52,32 @@ Ext.define('AOC.view.home.HomePageOrderList', {
                  align:'center',
             	 dataIndex:'lastOneDay',
             	 cls:'home-order-grid',
-            	 renderer  : function(v,meta,rec){
-                    return '<div class="home-oder-grid-column-text">'+v+'</div>';
-                 }
+            	 renderer  : me.renderValue
                	},{  
             	 text : 'Last 7 Days',
             	 align:'center',
             	 dataIndex:'lastWeek',
             	 cls:'home-order-grid',
-            	 renderer  : function(v,meta,rec){
-                    return '<div class="home-oder-grid-column-text">'+v+'</div>';
-                 }
+            	 renderer  : me.renderValue
                	},{ 
             	 text : 'Last 14 Days',
             	 align:'center',
             	 dataIndex:'lastTwoWeek',
            	 cls:'home-order-grid',
-           	 renderer  : function(v,meta,rec){
-                   return '<div class="home-oder-grid-column-text">'+v+'</div>';
-                }
+           	 renderer  : me.renderValue
                	},{ 
             	 text : 'Last 30 Days',
             	 border:false,
             	 align:'center',
             	 dataIndex:'lastMonth',
             	 cls:'home-order-grid',
-            	 renderer  : function(v,meta,rec){
-                    return '<div class="home-oder-grid-column-text">'+v+'</div>';
-                 }
+            	 renderer  : me.renderValue
                	}
         ]};
+    },
+    renderValue:function(v,meta,rec){
+	var style=(v>0)?'"cursor:pointer;"':'""';
+        return '<div style='+style+' class="home-oder-grid-column-text">'+v+'</div>';
     },
     buildColTpl : function(){
         return Ext.create('Ext.XTemplate',
