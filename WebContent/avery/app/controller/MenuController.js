@@ -127,12 +127,17 @@ Ext.define('AOC.controller.MenuController', {
 		  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }else if(xtype=="weborderview"){
-	      Ext.ComponentQuery.query('weborderview')[0].down('form').reset();	  
-	      var AttachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
-	    	AttachmentInfoGriditemId.store.removeAll();
-	    	AttachmentInfoGriditemId.getView().refresh();
-	      Ext.ComponentQuery.query('weborderview')[0].down('#backButtonimage').setVisible(false);
-		  Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(newWebOrder);
+		var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
+		weborderview.down('form').reset();	  
+	      var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
+	    	attachmentInfoGriditemId.store.removeAll();
+	    	attachmentInfoGriditemId.getView().refresh();
+	    	weborderview.down('#backButtonimage').setVisible(false);
+	    	weborderview.updateHeaderLabel(newWebOrder);
+	      }else if(xtype=="orderqueueview"){
+		  var store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
+		  store.clearFilter(true);
+		  store.load();	  
 	      }
 	  },
 	  selectCard:function(xtype){
