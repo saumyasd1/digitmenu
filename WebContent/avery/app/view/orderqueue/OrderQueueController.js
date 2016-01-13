@@ -297,8 +297,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	     if(attachFile[i].fileContentType!="Order")
             	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
             	 }
-            	 Ext.ComponentQuery.query('weborderview')[0].down('#backButtonimage').setVisible(true);
-            	 Ext.ComponentQuery.query('weborderview')[0].updateHeaderLabel(fixAndResubmitWebOredr);
+            	var weborderview =Ext.ComponentQuery.query('weborderview')[0];
+            	weborderview.down('#backButtonimage').setVisible(true);
+            	weborderview.updateHeaderLabel(fixAndResubmitWebOredr);
             }
         }
 	          });
@@ -362,50 +363,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	              }
 	          );
 	       },
-    showMenu: function(view, rowIndex, colIndex, item, e) {
-        var me = this,
-            currentRecord = e.record,
-            disableCancelOption = true,disableOrderLineOption=false,disableSalesOrderOption=false,disableResubmitOrder=true;
-        var status = currentRecord.get('Status'),orderLineCount=currentRecord.get('orderLineCount'),salesOrderCount=currentRecord.get('salesOrderCount');
-        var error = currentRecord.get('error');
-        if (status == orderError) {
-        	disableCancelOption = false;
-        	disableResubmitOrder=false;
-        }
-        if(salesOrderCount==0){
-        	disableSalesOrderOption=true;
-        }
-        if(orderLineCount==0){
-        	disableOrderLineOption=true;
-        }
-        var menu = Ext.create('Ext.menu.Menu', {
-            width: 150,
-            margin: '0 0 10 0',
-            items: [{
-                text: 'View Order Line',
-                action: 'viewOrders',
-                disabled:disableOrderLineOption
-            }, {
-                text: 'View Sales Order',
-                action: 'viewSales',
-                disabled: disableSalesOrderOption
-            }, {
-                text: 'ReSubmit Order',
-                action: 'reSubmitOrder',
-                disabled: disableResubmitOrder
-            }, {
-                text: 'Cancel Order',
-                action: 'cancelOrder',
-                disabled: disableCancelOption
-            }],
-            listeners: {
-                click: function(menu, item, e) {
-                    me.menuAction(menu, item, e, currentRecord);
-                }
-            }
-        });
-        menu.showAt(e.getX() - 140, e.getY() + 10);
-    },
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
