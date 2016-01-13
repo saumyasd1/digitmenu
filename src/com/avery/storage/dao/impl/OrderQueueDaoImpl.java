@@ -240,8 +240,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.ilike("subject",Subject,MatchMode.ANYWHERE));
 			}
 			String Status=searchMap.get("Status");
-			if(Status!=null && !"".equals(Status)){
-				criteria.add(Restrictions.eq("status",Status));
+			if (Status != null && !"".equals(Status)) {
+			String[] status = Status.split(",");
+			criteria.add(Restrictions.in("status", status));
+			}
+			String days=searchMap.get("days");
+			if(days!=null && !"".equals(days)){
+			long lastDays= Long.parseLong(days);
+			Date endDate = new Date(System.currentTimeMillis());
+			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
+			criteria.add(Restrictions.between("receivedDate", startDate, endDate));
 			}
 			String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
