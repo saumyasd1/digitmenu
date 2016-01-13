@@ -49,7 +49,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			    		font:'10px'
 			    	},
 			    	encodeHtml:true,
-			    	value : 'Order Line'
+			    	value : 'Order Line   (Order Track#:'+record.get('id')+')'//Added Order track#
 				}]
 				},
 				{
@@ -104,7 +104,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						fieldLabel : '<b>Subject</b>',
 						labelAlign :'top',
 						value:record.get('Subject'),
-						autoWidth: true
+						maxWidth: 220
 					},'->',{
 			            xtype: 'button',
 			            reference:'validateButton',
