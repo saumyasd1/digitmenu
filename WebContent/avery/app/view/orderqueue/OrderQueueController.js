@@ -6,7 +6,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                'AOC.view.orderqueue.OrderLineContainer'],
     runTime: AOC.config.Runtime,
     getOrdersBasedOnSearchParameters: function() {
-        var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {});
+        var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {storeId:'OrderQueueId'});
         var bulkupdategrid = this.getView();
         bulkupdategrid.bindStore(OrderQueueStore);
     },
@@ -14,79 +14,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	     var me=this;
 	 me.menuTpl=me.buildMenuTpl();    
   },
-    menuAction: function(menu, item, e, currentRecord) {
-        var id = currentRecord.get('id');
-        this.runTime.setOrderQueueId(id);
-        this.runTime.setOrderQueueActiveRecord(currentRecord);
-        this.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-        this.runTime.setAllowOrderLineEdit(true);
-        var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-        if(item)
-        if (item.action == 'viewSales') {
-            var owner = this.getView().ownerCt;
-            var store = Ext.create('AOC.store.SalesOrderStore', {
-                proxy: {
-                    type: 'rest',
-                    url: applicationContext + '/rest/salesorders/order/' + id,
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'ArrayList'
-                    }
-                }
-            });
-            owner.insert({
-                xtype: 'salesrrderexpandablegrid',
-                flex: 1,
-                store: store
-            });
-            owner.getLayout().setActiveItem(1);
-
-        } else if (item.action == 'cancelOrder') {
-            this.getCancelOrderWindow(id);
-        } else if (item.action == 'viewOrders') {
-        	Ext.getBody().mask('Loading...');
-            var owner = this.getView().ownerCt;
-            var status=currentRecord.get('Status');
-            var store = Ext.create('AOC.store.OrderLineStore', {
-                storeId: 'OrderLineStoreId',
-                proxy: {
-                    type: 'rest',
-                    url: applicationContext + '/rest/orderLines/order/' + id,
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'orderLine'
-                    }
-                }
-            });
-            owner.insert({
-                xtype: 'orderlinecontainer',
-                flex: 1,
-                store: store
-            });
-            
-            var orderlinecontainer = owner.down('orderlinecontainer'),
-    		grid=orderlinecontainer.down('grid');
-            validateButton = orderlinecontainer.lookupReference('validateButton'),
-            bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
-            salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
-            salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
-            cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-            form=grid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-            if(status != waitingForCSRStatus) {
-            	validateButton.disable();
-            	bulkUpdateButton.disable();
-            	salesViewOrderbutton.disable();
-            	salesOrderbutton.disable();
-            	cancelOrderButton.disable();
-            	form.disable();
-            }
-            if(salesOrderCount!=0){
-            	salesViewOrderbutton.enable();
-            }
-            owner.getLayout().setActiveItem(1);
-            Ext.getBody().unmask();
-        }
-    },
     openAdvancedSearchWindow: function( e, t, eOpts) {
         var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
         if (!temp) {
@@ -199,11 +126,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     clearAdvancedSerach: function(widget) {
     	var temp=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+    	if(temp){
     	temp.destroy();
+    	}
         var grid = this.getView();
         var store = grid.store;
         store.clearFilter();
-        store.loadPage(1);
         widget.setVisible(false);
         var temp = grid.down('#advancesearchbutton');
         temp.enable();
