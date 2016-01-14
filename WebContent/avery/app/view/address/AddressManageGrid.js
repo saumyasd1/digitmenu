@@ -19,7 +19,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 			}),
               listeners:{
             	  activate:function(obj){
-             			 obj.down('pagingtoolbar').bindStore(store);
+             			 obj.down('pagingtoolbar').bindStore(obj.getStore());
              		 }
               },
         dockedItems : this.buildDockedItems(),
