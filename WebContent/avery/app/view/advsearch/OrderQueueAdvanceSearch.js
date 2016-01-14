@@ -99,6 +99,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							labelAlign : 'top',
 							displayField:'value',
 							valueField:'code',
+							queryMode :'local',
 							store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 						    },
 						{
