@@ -21,7 +21,6 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             	  activate:function(obj){
              			 obj.down('pagingtoolbar').bindStore(store);
              		 }
-             	  }
               },
         dockedItems : this.buildDockedItems(),
         viewConfig : {
