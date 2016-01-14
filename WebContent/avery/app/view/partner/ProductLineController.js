@@ -2,7 +2,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.productlineMain',
     runTime : AOC.config.Runtime,
-    requires:['AOC.view.advsearch.ProductLineAdvanceSearch'],
+    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
     SaveDetails:function(){
 		Ext.getBody().mask('Saving....');
 		var me=this;
@@ -24,7 +24,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			var parameters=Ext.JSON.encode(valueObj);
 			var parameters=Ext.JSON.encode(valueObj2);
 			length=Object.keys(valueObj).length;
-			Msg='<b>Product Line Updated Successfully</b>';
+			Msg='Product Line Updated Successfully';
 		}
 		else{
 			Id=productline.partnerid;
@@ -67,7 +67,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    	};
 			methodMode='POST';
 			length=1;
-			Msg='<b>Product Line Added Successfully</b>';
+			Msg='Product Line Added Successfully';
 		}
 		if(length>0){
 			if(panel.getForm().isValid()){
@@ -78,7 +78,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    success : function(response, opts) {
 				    	Ext.getBody().unmask();
 				    	createproductline.destroy();
-			  			Ext.Msg.alert('Alert Message',Msg);
+				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
+			  			//Ext.Msg.alert('Alert Message',Msg);
 			  			productline.store.load();
 				  		
 		        },
@@ -154,7 +155,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
      							method:'DELETE',
      							url:applicationContext+'/rest/productLines/'+id,
      				        success : function(response, opts) {
-     							Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
+     				        	AOC.util.Helper.fadeoutMessage('Success','Product Line Deleted Succesfully');
+     							//Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
      							me.runTime.getActiveGrid().store.load();
      				        },
      				        failure: function(response, opts) {
@@ -194,69 +196,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	              '</tpl>'
 	          );
 	       },
-//showmenu:function(view,rowIndex,colIndex,item,e){
-//	var runtime=this.runTime;
-//	var me=this;
-//	 {
-//		 {
-//				var menu=Ext.create('Ext.menu.Menu', {
-//     		    width: 100,
-//     		    margin: '0 0 10 0',
-//     		    items: [{
-//     		        text: 'Edit',
-//     		        handler:function()
-//     		        {    
-//     		    	    var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
-//     	      			if(!win){
-//     	      				var data=e.record;
-//     	      				 var id=data.id;
-//     	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-//     	      				modal:true,
-//     	      				//title:'Edit Partner product Line',
-//     	      				partnerName:me.getView().partnerName,
-//     	      			    editMode:true,
-//     	      			    rec:data,
-//     	      			    productlineId:id
-//     	      			});
-//     	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
-//     	      			  win.show();
-//     	              }
-//     		        }
-//     		    },{
-//     		        text: 'Delete',
-//     		    	handler:function()
-//     				{   
-//     		    		
-//     					var data=e.record;
-// 	     			    var id=data.id;
-// 	     			    var partner='';
-// 	     			    partner={id:id};
-// 	     			    Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this product line</b>', function(response) {
-//     	     				  if (response == 'yes') {
-//     	     					Ext.Ajax.request({
-//	     							method:'DELETE',
-//	     							url:applicationContext+'/rest/productLines/'+id,
-//         				        success : function(response, opts) {
-//         							Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
-//         							me.runTime.getActiveGrid().store.load();
-//         				        },
-//         				        failure: function(response, opts) {
-//         		                }
-//         		        	});
-//     	     				  }else if(response == 'no'){
-//     	     				  return true;
-//     	     				  }
-//     	     				  });
-//     		        	this.destroy();
-//     				}
-//     		    }
-//     		  ]
-//     		});
-//     		
-//     	menu.showAt(e.getXY());
-//			}
-//	 }
-//  },
 	openAdvancedSearchWindow:function(e, t, eOpts)
 	{
 		 var temp=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
@@ -264,17 +203,11 @@ if(!temp){
 		 temp = Ext.create('AOC.view.base.BaseWindow',{
 				 	height:400,
 					width:300,
-					//title:advancedSearchWindowTitle,
 					itemId:'productlinesearchWindowItemId',
 					layout: 'fit',
 					draggable: false,
 					modal:true,
 					closeAction:'hide',
-				 	listeners:{ 
-//			             beforedestroy: function(btn) {
-//				 		 cmp.enable();
-//				 	}
-		        },
 				 	items : [{  xtype : 'productlineadvancesearch' }]
 			 });
         }
