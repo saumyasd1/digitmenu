@@ -39,7 +39,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         this.callParent(arguments);
     },
     buildColumns : function(){
-    	var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+    	//var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [
              {
         	header: '<img src="' + menuIcon + '" />',
@@ -159,6 +159,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'Status',
 			editor:{
 				xtype:'combo',
+				queryMode :'local',
 				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 			},
 			renderer:function(v){
