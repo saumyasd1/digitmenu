@@ -1,7 +1,7 @@
 Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderlinebulkupdate',
-    requires : ['AOC.model.VariableHeaderModel'],
+    requires : ['AOC.model.VariableHeaderModel','AOC.util.Helper'],
     runTime: AOC.config.Runtime,
     saveOrderLine:function(){ // this function is called when the orline line is updated by bulk update
     	var mask = Ext.getBody().mask('Loading');
@@ -46,7 +46,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     			        jsonData:obj,
     		    		   url : applicationContext+'/rest/orderLines/bulkupdate',
     				        success : function(response, opts) {
-    					  		Ext.Msg.alert('','Order line successfully updated');
+    				        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+    					  		//Ext.Msg.alert('','Order line successfully updated');
     					  		Ext.getBody().unmask();
     					  		me.getView().store.load();
     				        },
@@ -99,7 +100,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('','Order line successfully updated');
+		        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+			  		//Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
