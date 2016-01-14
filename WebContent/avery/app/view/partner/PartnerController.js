@@ -278,7 +278,6 @@ Ext.define('AOC.view.partner.PartnerController', {
 			 var grid=this.getView();
 			   	var store = grid.store;
 				store.clearFilter();
-				store.loadPage(1);
 				widget.setVisible(false);
 				var temp=grid.down('#advancesearchbutton');
 			    temp.enable();
