@@ -167,6 +167,7 @@ Ext.define('AOC.view.address.AddAddress',{
         			xtype:'combo',
         			name: 'shippingMethod',
         			fieldLabel:'Shipping Method',
+        			queryMode :'local',
                     displayField: 'variableFieldName',
                     valueField: 'variableFieldName',
                     store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
@@ -175,6 +176,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        			xtype:'combo',
 	        			name: 'freightTerms',
 	        			fieldLabel:'Freight Terms',
+	        			queryMode :'local',
 	                    displayField: 'variableFieldName',
 	                    valueField: 'variableFieldName',
 	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
