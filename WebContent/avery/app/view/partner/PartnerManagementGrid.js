@@ -14,8 +14,8 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		store:Ext.create('AOC.store.PartnerManagementStore', {
 				storeId:'PartnerManagementStoreId'}),
 		listeners:{
-			    activate:function(obj){
-			             		 me.down('pagingtoolbar').bindStore(obj.getStore());
+	        activate:function(obj){
+			             	 me.down('pagingtoolbar').bindStore(obj.getStore());
 			             	  }
 			 },		
         tbar: { height: 40,
