@@ -334,7 +334,9 @@ Ext.define('AOC.controller.MenuController', {
 		helper.loadVariableComboStore('APOType');
 		helper.loadVariableComboStore('EndCustomer');
 		helper.loadVariableComboStore('SplitShipset');
-		//Ext.getStore('PartnerManagementStore').load();
+		helper.loadCodeStore('code');
+		helper.loadCodeStore('orderfilequeue');
+		helper.loadCodeStore('orderline');
 	    }
 	    
 });  
