@@ -235,8 +235,6 @@ if(!temp){
   backButton:function()
   {
 		   var panel=Ext.ComponentQuery.query('#partnerPanel')[0];
-	       //var partnergrid=Ext.ComponentQuery.query('#partnertitleItemid')[0];
-		  // partnergrid.setText('<b>Partner Management</b>');
 	       var partnerMangement=panel.down('#PartnerMangementitemId');
 	       panel.getLayout().setActiveItem(partnerMangement);
 	       partnerMangement.getView().refresh();
@@ -288,7 +286,6 @@ if(!temp){
 		 var grid=this.getView();
 		   	var store = grid.store;
 			store.clearFilter();
-			store.loadPage(1);
 			widget.setVisible(false);
 			var temp=grid.down('#advancesearchbutton');
 		    temp.enable();
