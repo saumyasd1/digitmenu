@@ -757,7 +757,8 @@ onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts )
 			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
 				        success : function(response, opts) {
 				        	Ext.getBody().unmask();
-							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+				        	AOC.util.Helper.fadeoutMessage('Success','Customer Qty. Updated Succesfully');
+							//Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
 							grid.store.load();
 				        },
 				        failure: function(response, opts) {
