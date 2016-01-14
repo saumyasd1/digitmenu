@@ -123,7 +123,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelWidth : 200,
         			labelSeparator : '',
         			labelAlign:'right',
-        			maxLength : '50',
+        			maxLength : '100',
         			blankText : 'Email Subject is required',
         			listeners:{
       				  blur : this.notifyByImage,
@@ -146,7 +146,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelWidth : 200,
         			labelSeparator : '',
         			labelAlign:'right',
-        			maxLength : '50',
         			blankText :'Email Body is required',
         			listeners:{
       				  blur : this.notifyByImage,
