@@ -195,6 +195,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	editable:false,
         	displayField:'value',
 			valueField:'code',
+			queryMode :'local',
         	store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid')
         },
 		renderer:function(v){
