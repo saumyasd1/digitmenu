@@ -1100,7 +1100,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             	        jsonData:obj,
                 		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
             		        success : function(response, opts) {
-            			  		Ext.Msg.alert('','Order line Detail successfully updated');
+            		        	AOC.util.Helper.fadeoutMessage('Success','Order line Detail successfully updated');
+            			  		//Ext.Msg.alert('','Order line Detail successfully updated');
             			  		Ext.getBody().unmask();
             			  		grid.store.load();
             		        },
@@ -1131,7 +1132,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                         jsonData: obj,
                         url: applicationContext + '/rest/orderlinedetails/variablebulkupdate/'+currentRecord.get('variablefieldname'),
                         success: function(response, opts) {
-                            Ext.Msg.alert('', 'Order line Detail successfully updated');
+                        	AOC.util.Helper.fadeoutMessage('Success','Order line Detail successfully updated');
+                            //Ext.Msg.alert('', 'Order line Detail successfully updated');
                             Ext.getBody().unmask();
                             grid.store.load();
                         },
@@ -1191,7 +1193,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
  	     			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
           				        success : function(response, opts) {
           				        	Ext.getBody().unmask();
-          							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+          				        	AOC.util.Helper.fadeoutMessage('Success','Customer Qty. Updated Succesfully');
+          							//Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
           						    grid.store.load();
           				        },
           				        failure: function(response, opts) {
