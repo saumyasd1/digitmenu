@@ -1,7 +1,7 @@
 Ext.define('AOC.view.address.AddressController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.addressMain',
-    requires : ['AOC.view.orderqueue.SalesOrderExpandableGrid','AOC.view.advsearch.AddressAdvanceSearch'],
+    requires : ['AOC.view.orderqueue.SalesOrderExpandableGrid','AOC.view.advsearch.AddressAdvanceSearch','AOC.util.Helper'],
     runTime : AOC.config.Runtime,
     getAddressBasedOnSearchParameters: function() {
 		 	var valueObj=this.getView().getForm().getValues(false,true);
@@ -152,7 +152,7 @@ Ext.define('AOC.view.address.AddressController', {
 			methodMode='PUT';
 			valueObj=form.getRecord().getChanges() ;
 			length=Object.keys(valueObj).length;
-			Msg='<b>Address Updated Successfully</b>';
+			Msg='Address Updated Successfully';
 			var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
@@ -160,7 +160,7 @@ Ext.define('AOC.view.address.AddressController', {
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			length=1;
-			Msg='<b>Address Added Successfully</b>';
+			Msg='Address Added Successfully';
 			var parameters={
 					orgCode:valueObj.orgCode,
 					partnerName:valueObj.partnerName,
@@ -197,7 +197,7 @@ Ext.define('AOC.view.address.AddressController', {
 		        success : function(response, opts) {
 		        	    Ext.getBody().unmask();
 		        	    createaddress.destroy();
-			  			Ext.Msg.alert('Alert Message',Msg);
+		        	    AOC.util.Helper.fadeoutMessage('Success',Msg);
 			  			grid.store.load();
 				  		
 		        },
@@ -253,7 +253,7 @@ Ext.define('AOC.view.address.AddressController', {
                 							method:'DELETE',
                 							url:applicationContext+'/rest/address/'+ID,
                 				        success : function(response, opts) {
-                							Ext.Msg.alert('Alert Message','<b>Address Deleted Succesfully</b>');
+                				            AOC.util.Helper.fadeoutMessage('Success','Address Deleted Succesfully');
                 							me.runTime.getActiveGrid().store.load();
                 				        },
                 				        failure: function(response, opts) {
@@ -290,29 +290,6 @@ Ext.define('AOC.view.address.AddressController', {
 	              '</tpl>'
 	          );
 	       },
-//	showMenu : function(view,rowIndex,colIndex,item,e) {
-//		var me=this,currentRecord=e.record;
-//			var menu=Ext.create('Ext.menu.Menu', {
-//    		    width: 100,
-//    		    margin: '0 0 10 0',
-//    		    items: [{
-//		    		        text: 'Edit',
-//		    		        handler:function()
-//		    		        { 
-//		    		        	var id=currentRecord.get('id');
-//		    		        	me.runTime.setWindowInEditMode(true);
-//		    		        	me.openAddAddressWindow(currentRecord,id);
-//		    		        }
-//	    		        },
-//    		            {
-//	    		        	text: 'Delete',
-//	    		        	handler:function(){
-//	    		        		me.deleteResource(currentRecord);
-//	    		        	}
-//    		           }]
-//    		});
-//    	menu.showAt(e.getXY());
-//	},
 	closeWindow: function(){
 		Ext.getBody().unmask();
 		this.getView().destroy();
