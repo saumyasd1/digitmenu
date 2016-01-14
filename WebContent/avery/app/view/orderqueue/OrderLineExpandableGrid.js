@@ -473,6 +473,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
         },
         renderer:function(v,h,l,k){
@@ -607,6 +608,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 displayField: 'variableFieldName',
                 valueField: 'variableFieldName',
                 editable:false,
+                queryMode :'local',
                 store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
             },
             renderer:function(v,h,l,k){
@@ -636,6 +638,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
         },
         renderer:function(v,h,l,k){
@@ -725,6 +728,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
         },
         renderer:function(v,h,l,k){
@@ -759,6 +763,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
         },
         renderer:function(v,h,l,k){
@@ -841,6 +846,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
         },
         renderer:function(v,h,l,k){
@@ -880,6 +886,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             displayField: 'variableFieldName',
             valueField: 'variableFieldName',
             editable:false,
+            queryMode :'local',
             store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
         },
         renderer:function(v,h,l,k){
