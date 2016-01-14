@@ -246,6 +246,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	        		},
 	        		{
 	        		    xtype: 'component',
+			        	itemId:'advancesearchbutton',
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
@@ -258,14 +259,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	        		    	 }
 	        	            }
 	        		},
-//	            {
-//					xtype:'button',
-//					itemId:'advancesearchbutton',
-//					text:advSearchText,
-//					icon   : advSearchIcon,
-//					iconAlign: "right",
-//					handler:'openAdvancedSearchWindow'
-//				 },
 			{
 				hidden:true, 
 				icon   : clearSearchIcon,
