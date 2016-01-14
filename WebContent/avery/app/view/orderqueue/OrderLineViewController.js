@@ -1,7 +1,7 @@
 Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderline',
-    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel'],
+    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel','AOC.util.Helper'],
     runTime : AOC.config.Runtime,
     getUpdateScreen:function(){
     	var me=this;
@@ -99,6 +99,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}
     },
     updateOrderLine:function(editor, context, eOpts){
+    	Ext.getBody().mask('Saving...');
     	var ctx = context,me=this,
         idx = ctx.rowIdx,
         currentRecord = ctx.store.getAt(idx),parms='';
@@ -120,7 +121,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderLines/bulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('','Order line successfully updated');
+		        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+			  		//Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -130,6 +132,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		  });
     },
     updateOrderLinedetail:function(editor, context, eOpts){
+    	Ext.getBody().mask('Saving...');
     	var ctx = context,me=this,
         idx = ctx.rowIdx,
         currentRecord = ctx.store.getAt(idx),parms='';
@@ -142,7 +145,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('','Order line Detail successfully updated');
+		        	AOC.util.Helper.fadeoutMessage('Success','Order line Detail successfully updated');
+			  		//Ext.Msg.alert('','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -152,6 +156,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		  });
     },
     outerGridBulkUpdate:function(editorPlugin,editor,context){
+    	Ext.getBody().mask('Saving...');
     	editorPlugin.suspendEvent('edit');
     	editorPlugin.completeEdit();
       editorPlugin.resumeEvent('edit');
@@ -175,7 +180,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
           jsonData: obj,
           url: applicationContext + '/rest/orderLines/bulkupdate',
           success: function(response, opts) {
-              Ext.Msg.alert('', 'Order line successfully updated');
+        	  AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+             // Ext.Msg.alert('', 'Order line successfully updated');
               Ext.getBody().unmask();
               ctx.store.load();
           },
