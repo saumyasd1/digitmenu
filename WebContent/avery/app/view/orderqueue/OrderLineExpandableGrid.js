@@ -1184,15 +1184,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	    		 var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
  	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to update the MOQ Customer Qty</b>', function(response) {
  	     				  if (response == 'yes') {
+ 	     				 	Ext.getBody().mask('Updating....');
  	     						Ext.Ajax.request({
  	     							method:'PUT',
  	     							jsonData:obj,
  	     			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
           				        success : function(response, opts) {
+          				        	Ext.getBody().unmask();
           							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
           						    grid.store.load();
           				        },
           				        failure: function(response, opts) {
+          				        	 Ext.getBody().unmask();
           		                }
           		        	});
  	     				  }else if(response == 'no'){
