@@ -50,16 +50,7 @@ Ext.define('AOC.util.Helper',{
             return store;
   },
   loadVariableComboStore:function(variableName){
-	var store=Ext.data.StoreManager.lookup(variableName+'Id');
-	if(Ext.isEmpty(store)){
-  		store =  Ext.create('Ext.data.ArrayStore',{
-  		storeId:variableName+'Id',
- 	   	fields : ['variableFieldName'],
- 	   	proxy:{
- 	   	type : 'memory'
- 	   	}
-         });
-	}
+	var store=this.getVariableComboStore(variableName);
 	if(store.getCount()==0){
 	        var response = Ext.Ajax.request({
 	            async: false,
@@ -97,32 +88,39 @@ Ext.define('AOC.util.Helper',{
                   }
   	},
     getCodeStore:function(type){
-  	    var store=null,appendUrl='';
-  	    if(type!='code'){
-  	    	appendUrl='/type/'+type;
-  	    }
-        var response = Ext.Ajax.request({
-            async: false,
-            url: applicationContext+'/rest/code'+appendUrl
-        });
-        var items = Ext.decode(response.responseText);
-      	var jsonValue=Ext.decode(response.responseText);
-    	var serviceStoreData = [];
-    	if(jsonValue.ArrayList.length>0){
-    		Ext.Array.forEach(jsonValue.ArrayList,function(item){
-  		var service = item;
-  		serviceStoreData.push(service);
-  	});
-    	store =  Ext.create('Ext.data.Store',{
-    		storeId:type+'id',
-    		fields : ['code','value'],	
-	            data : serviceStoreData
-      });
-    	return store;
-}else
-  return null;
-          	return store;
+	 var store=Ext.data.StoreManager.lookup(type+'id');
+		if(Ext.isEmpty(store)){
+			store =  Ext.create('Ext.data.ArrayStore',{
+			storeId:type+'id',
+			fields : ['code','value'],	
+		   	proxy:{
+		   	type : 'memory'
+		   	}
+	     });
+		}
+    return store
     },
+loadCodeStore:function(type){
+    var store=this.getCodeStore(type);
+	if(store.getCount()==0){
+	    var appendUrl='';
+	    if(type!='code'){
+	    	appendUrl='/type/'+type;
+	    }
+    var response = Ext.Ajax.request({
+        async: false,
+        url: applicationContext+'/rest/code'+appendUrl
+    });
+    var items = Ext.decode(response.responseText);
+  	var jsonValue=Ext.decode(response.responseText);
+	if(jsonValue.ArrayList.length>0){
+		Ext.Array.forEach(jsonValue.ArrayList,function(item){
+		store.add(item);
+	});
+		
+	}
+}
+},
     getOrderLineEditor:function(record,value){
     	var store=record.store;
     	var i=store.find('id',record.id);
