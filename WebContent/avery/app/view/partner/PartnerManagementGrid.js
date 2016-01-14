@@ -11,35 +11,10 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:false,
+		store:Ext.create('AOC.store.PartnerManagementStore', {
+				storeId:'PartnerManagementStoreId'}),
         tbar: { height: 40,
     		    items : me.buildtbar()
-              },
-              listeners:{
-            	  activate:function(obj){
-             		 var store= Ext.data.StoreManager.lookup('PartnerManagementStoreId');
-             		 if(store==null){
-             			 store=Ext.create('AOC.store.PartnerManagementStore', {
-             					extend : 'Ext.data.Store',
-             					model:'AOC.model.PartnerManagementModel',
-             					autoLoad : true,
-             					pageSize:pageSize,
-             					storeId:'PartnerManagementStoreId',
-             					proxy : {
-             						type : 'rest',
-             						url : applicationContext+'/rest/partners',
-//             						url:'avery/app/data/orderheader.json',
-             						reader:{
-             					        type:'json', 
-             					        rootProperty: 'partners',
-             					        totalProperty: 'totalCount'
-             					    }
-             				}
-             				});
-             			 obj.bindStore(store);
-             			obj.down('pagingtoolbar').bindStore(store);
-             		 }
-             		 store.load();
-             	  }
               },
         dockedItems : this.buildDockedItems(),
         viewConfig : {

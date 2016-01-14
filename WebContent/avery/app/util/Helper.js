@@ -37,29 +37,46 @@ Ext.define('AOC.util.Helper',{
    return html;
   },
   getVariableComboStore:function(variableName){
-	  var store=null;
+	  var store=Ext.data.StoreManager.lookup(variableName+'Id');
+	    if(Ext.isEmpty(store)) {
+        	store =  Ext.create('Ext.data.ArrayStore',{
+        		storeId:variableName+'Id',
+       	   		fields : ['variableFieldName'],
+       	   		proxy:{
+       	   		    type : 'memory'
+       	   		}
+             });
+	    }
+            return store;
+  },
+  loadVariableComboStore:function(variableName){
+	var store=Ext.data.StoreManager.lookup(variableName+'Id');
+	if(Ext.isEmpty(store)){
+  		store =  Ext.create('Ext.data.ArrayStore',{
+  		storeId:variableName+'Id',
+ 	   	fields : ['variableFieldName'],
+ 	   	proxy:{
+ 	   	type : 'memory'
+ 	   	}
+         });
+	}
+	if(store.getCount()==0){
 	        var response = Ext.Ajax.request({
 	            async: false,
 	            url: applicationContext+'/rest/orderconfigurations/variable/'+variableName
 	        });
 	        var items = Ext.decode(response.responseText);
 	      	var jsonValue=Ext.decode(response.responseText);
-        	var serviceStoreData = [];
-        	if(jsonValue.length>0){
-        		Ext.Array.forEach(jsonValue,function(item){
-      		var service = [item];
-      		serviceStoreData.push(service);
-      	});
-        	store =  Ext.create('Ext.data.ArrayStore',{
-        		storeId:variableName+'id',
-       	   		fields : ['variableFieldName'],	
-  	            data : serviceStoreData
-          });
-        	return store;
-  }else
-	  return null;
-	  
-  },
+      	var serviceStoreData = [];
+      	if(jsonValue.length>0){
+      		Ext.Array.forEach(jsonValue,function(item){
+    		var service = [item];
+    		serviceStoreData.push(service);
+    	});
+      	    store.loadRawData(serviceStoreData);
+      	}
+	}
+},
   BulkUpdate:function(grid, selection, eOpts){
           if(selection.startCell)
 				var store=grid.store;

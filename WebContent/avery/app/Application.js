@@ -17,6 +17,7 @@ Ext.define('AOC.Application', {
     ],
     views : ['Viewport'],
     launch : function(){
+	var me =this;
 	 Ext.fly('loading').fadeOut({
              callback : function(){
                  Ext.fly('loading').destroy();
@@ -30,8 +31,7 @@ Ext.define('AOC.Application', {
 	 if(!Ext.isEmpty(auth) && !Ext.isEmpty(userInfo)){
 	     index=1;
 	     runtime.setUser(JSON.parse(userInfo));
-	     Ext.getStore('OrderCharts').load();
-	     Ext.getStore('HomePageOders').load();
+	     this.getController('MenuController').loadStores()
 	 }
     	myAppGlobal=this;
     	Ext.create('AOC.view.Viewport', {
