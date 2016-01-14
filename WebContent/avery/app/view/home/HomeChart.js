@@ -192,7 +192,7 @@ Ext.define('AOC.view.home.HomeChart',{
             grid     : true,
             position : 'left',
             title: {
-                text: '#Orders',
+                text: '#ORDERS',
                 fontSize: 15
             },
             fields   : ['received','waitingCR','waitingSR','success','failed']
