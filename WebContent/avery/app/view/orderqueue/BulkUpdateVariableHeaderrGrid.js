@@ -19,7 +19,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 			    },
 			    plugins: [{
 			        ptype: 'cellediting',
-			        clicksToEdit: 1
+			        clicksToEdit: 2
 			    },{
 			    	ptype: 'clipboard'
 			    }],
