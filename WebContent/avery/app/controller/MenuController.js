@@ -91,8 +91,7 @@ Ext.define('AOC.controller.MenuController', {
 	                           me.updateHeaderUserName();
 	                           me.helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
 				   Ext.getBody().unmask();
-				   Ext.getStore('OrderCharts').load();
-				   Ext.getStore('HomePageOders').load();
+				   me.loadStores();
 				   me.changeViewportCard(1);
 	                        },
 	                        failure:function(formss, action){
@@ -315,6 +314,19 @@ Ext.define('AOC.controller.MenuController', {
 		store= cmp.getStore(),
 		rec= store.findRecord('xtype',xtype);
 		cmp.getSelectionModel().select(rec);
+	    },
+	    loadStores:function(){
+		Ext.getStore('OrderCharts').load();
+		Ext.getStore('HomePageOders').load();
+		var helper=AOC.util.Helper;
+		helper.loadVariableComboStore('FreightTerms');
+		helper.loadVariableComboStore('ShippingMethod');
+		helper.loadVariableComboStore('CSR');
+		helper.loadVariableComboStore('OrderType');
+		helper.loadVariableComboStore('APOType');
+		helper.loadVariableComboStore('EndCustomer');
+		helper.loadVariableComboStore('SplitShipset');
+		Ext.getStore('PartnerManagementStore').load();
 	    }
 	    
 });  
