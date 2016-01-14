@@ -137,6 +137,14 @@ Ext.define('AOC.controller.MenuController', {
 		  var store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
 		  store.clearFilter(true);
 		  store.load();	  
+	      }else if(xtype=="partnermanagement"){
+		  var store=Ext.ComponentQuery.query('maincontainer partnermanagementgrid')[0].getStore();
+		  store.clearFilter(true);
+		  store.load();	  
+	      }else if (xtype=="addressmanage"){
+		  var store=Ext.ComponentQuery.query('maincontainer addressmanagegrid')[0].getStore();
+		  store.clearFilter(true);
+		  store.load();	  
 	      }
 	  },
 	  selectCard:function(xtype){
@@ -326,7 +334,7 @@ Ext.define('AOC.controller.MenuController', {
 		helper.loadVariableComboStore('APOType');
 		helper.loadVariableComboStore('EndCustomer');
 		helper.loadVariableComboStore('SplitShipset');
-		Ext.getStore('PartnerManagementStore').load();
+		//Ext.getStore('PartnerManagementStore').load();
 	    }
 	    
 });  
