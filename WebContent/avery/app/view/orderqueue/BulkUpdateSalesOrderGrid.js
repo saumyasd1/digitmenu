@@ -44,6 +44,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 displayField :'variableFieldName',
      valueField :'variableFieldName',
+         queryMode :'local',
 	 store:Ext.data.StoreManager.lookup('ShippingMethodId')==null?helper.getVariableComboStore('ShippingMethod'):Ext.data.StoreManager.lookup('ShippingMethodId')
 }
 },
@@ -61,6 +62,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
+    queryMode :'local',
     store:Ext.data.StoreManager.lookup('CSRId')==null?helper.getVariableComboStore('CSR'):Ext.data.StoreManager.lookup('CSRId')	
 	} },
 { text: 'Packing Instruction', dataIndex: 'packinginstruction',editor:'textfield' },
@@ -82,6 +84,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
+    queryMode :'local',
     store:Ext.data.StoreManager.lookup('OrderTypeId')==null?helper.getVariableComboStore('OrderType'):Ext.data.StoreManager.lookup('OrderTypeId')	
 	}  
 },
@@ -90,6 +93,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
+    queryMode :'local',
     store:Ext.data.StoreManager.lookup('EndCustomerId')==null?helper.getVariableComboStore('EndCustomer'):Ext.data.StoreManager.lookup('EndCustomerId')	
 	}},
 { text: 'Shipping Only Note', dataIndex: 'shippingonlynotes',editor:'textfield' },
@@ -106,6 +110,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
+    queryMode :'local',
     store:Ext.data.StoreManager.lookup('SplitShipsetId')==null?helper.getVariableComboStore('SplitShipset'):Ext.data.StoreManager.lookup('SplitShipsetId')	
 	} },
 { text: 'Agreement', dataIndex: 'agreement',editor:'textfield' },
@@ -115,6 +120,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
+    queryMode :'local',
     store:Ext.data.StoreManager.lookup('APOTypeId')==null?helper.getVariableComboStore('APOType'):Ext.data.StoreManager.lookup('APOTypeId')	
 	}}
     ];
