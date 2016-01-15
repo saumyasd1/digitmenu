@@ -2,7 +2,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'salesrrderexpandablegrid',
     itemId: 'salesrrderexpandablegrid',
-    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.view.ux.CustomRowEditing', 'AOC.util.Helper'],
+    requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.util.Helper','Ext.grid.plugin.Clipboard'],
     controller: 'salesorder',
     emptyText: '<div align=center>No data to display</div>',
     autoHeight: true,
@@ -270,7 +270,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         }
     }
    ],
-    plugins: [{
+    plugins: [
+    {
         ptype: 'cmprowexpander',
 		 createComponent: function(view,record,htmlnode,index) {
 			 var data=record.get('salesOrderDetail');
@@ -288,6 +289,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		          cls: 'nestedGrid',
 		          store:store,
 		          columnLines: false,
+		          selModel: {
+		   	       type: 'spreadsheet',
+		   	    },
+		   	  plugins: [{
+		   	        	ptype: 'clipboard'
+		   	        }],
 		          columns: [{
 		              xtype: 'rownumberer',
 	            	  text:'#'
