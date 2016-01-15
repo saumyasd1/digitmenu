@@ -127,7 +127,8 @@ Ext.define('AOC.controller.MenuController', {
 		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }else if(xtype=="weborderview"){
 		var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
-		weborderview.down('form').reset();	  
+		weborderview.down('form').reset();
+		weborderview.down('form').lookupReference('partnerCombo').store.load();
 	      var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
 	    	attachmentInfoGriditemId.store.removeAll();
 	    	attachmentInfoGriditemId.getView().refresh();
