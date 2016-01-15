@@ -40,6 +40,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			items:[{
         				xtype:'combo',
         				emptyText:'Partner Name',
+        				reference:'partnerCombo',
         				store:'PartnerManagementStore',
         				valueField:'id',
         				name:'partnerName',
