@@ -180,7 +180,7 @@ Ext.define('AOC.view.home.HomeChart',{
             axes         : me.buildAxes(),
             listeners   : {
             	activate : function(cmp){
-            	cmp.redraw(); 
+            	 cmp.redraw(); 
             	}}
         },{
             xtype:'homepageorderlist',
