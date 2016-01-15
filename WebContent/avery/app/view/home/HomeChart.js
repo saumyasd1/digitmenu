@@ -177,7 +177,11 @@ Ext.define('AOC.view.home.HomeChart',{
             store        : 'OrderCharts',
             series       : me.buildSeries(),
             theme        : 'homecharttheme',
-            axes         : me.buildAxes()
+            axes         : me.buildAxes(),
+            listeners   : {
+            	activate : function(cmp){
+            	cmp.redraw(); 
+            	}}
         },{
             xtype:'homepageorderlist',
             minHeight:150
