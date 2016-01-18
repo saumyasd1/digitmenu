@@ -290,7 +290,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		          store:store,
 		          columnLines: false,
 		          selModel: {
-		   	       type: 'spreadsheet',
+		   	       type: 'spreadsheet'
 		   	    },
 		   	  plugins: [{
 		   	        	ptype: 'clipboard'
