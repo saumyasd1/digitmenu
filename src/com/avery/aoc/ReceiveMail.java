@@ -294,7 +294,6 @@ public class ReceiveMail
 		String port  = System.getProperty("abpm.notification.mailNotification.port");
 		String env = System.getProperty("Home.Environment.DisplayName");
 		String defaultEmailID = (String)DatabaseUtils.getPropertiesMap().get("aoc.environment.emailid");
-		context.put("defaultEmailID",defaultEmailID);
 		Properties properties = new Properties();
 		properties.put("mail.smtps.auth", "true");
 		properties.put("mail.smtps.host", mailServer);
@@ -303,6 +302,7 @@ public class ReceiveMail
 		Session session = Session.getDefaultInstance(properties);
 		Message message = null;
 		String csrEmail = context.get("CSREmail") == null || "".equals(context.get("CSREmail")) ? defaultEmailID : (String)context.get("CSREmail");
+		context.put("defaultEmailID",csrEmail);
 		for (int i = 0; i < msgs.size(); i++) {
 			UniqueID = getUniqueId(msgs.get(i));
 			System.out.println("loop::" + count++);
