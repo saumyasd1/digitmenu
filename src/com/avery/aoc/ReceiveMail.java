@@ -194,7 +194,7 @@ public class ReceiveMail
     String UniqueID = null;
 
     if (subject != null) {
-      subject = subject.replace(' ', ' ');
+      subject = subject.replace('Â ', ' ');
     }
 
     if ((subject == null) || (subject.trim().equals(""))) {
@@ -209,7 +209,7 @@ public class ReceiveMail
         if (subject1 == null)
           subject1 = "";
         else {
-          subject1 = subject1.replace(' ', ' ');
+          subject1 = subject1.replace('Â ', ' ');
         }
         if (!caseSensitive) {
           if (!this.pm.isMatch(subject1.toLowerCase().trim(), 
@@ -294,6 +294,7 @@ public class ReceiveMail
 		String port  = System.getProperty("abpm.notification.mailNotification.port");
 		String env = System.getProperty("Home.Environment.DisplayName");
 		String defaultEmailID = (String)DatabaseUtils.getPropertiesMap().get("aoc.environment.emailid");
+		context.put("defaultEmailID",defaultEmailID);
 		Properties properties = new Properties();
 		properties.put("mail.smtps.auth", "true");
 		properties.put("mail.smtps.host", mailServer);
