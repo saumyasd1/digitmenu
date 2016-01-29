@@ -139,13 +139,37 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            handler: 'viewSalesOrder',
 			            disabled:true,
 			            align:'right'
+			        },{
+			            xtype:'checkboxfield',
+			            boxLabel  : 'Edit Grid',
+		                    checked: true,
+		                    handler:function(cmp,checked){
+		                	var activeitme=(checked)?1:0;
+		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
+		                    }
 			        }]
 					}
 				]
 			},{
+			xtype:'container',
+			layout:'card',
+			flex:1,
+			itemId:'orderlineexpandablegridcard',
+			activeItem:1,
+			items:[{
 				xtype:'orderlineexpandablegrid',
-				store:me.store,
-				flex:1
-			}];
+				store:me.store
+			},{
+			    xtype:'orderlineexpandablegrid',
+			    itemId: 'orderlineexpandablegridvv',
+			    store:me.store,
+			    selModel: {
+		        	      type: 'rowmodel'
+		        	    },
+		            editGrid:true
+			}
+			]
+			}
+			];
 	}
 });
