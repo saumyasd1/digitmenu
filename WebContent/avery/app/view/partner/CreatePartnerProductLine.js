@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 5,
-	width: 670,
+	width: 690,
 	border:false,
     modal:true,
     draggable:false,
@@ -13,11 +13,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
     productlineId:null,
     partnerid:null,
     partnerName:null,
+	scrollable : true,
     initComponent : function(){
     	var me=this;
     	this.fieldArray = [],
             Ext.apply(this,{
-                items:this.buildItem(),
+                items:this.buildContainerItem(),
+                
                 listeners:{
             	'afterrender':function(obj){
             	if(me.rec!=null){
@@ -40,30 +42,56 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 handler : 'CancelDetails'
             }];
         },
+        buildContainerItem:function(){
+        	return [
+					{
+						xtype:'displayfield',
+						itemId:'titleItemId',
+						vale:'',
+						hidden:false,
+						margin : '5 0 0 220'
+					   },
+					   {
+					   	xtype :'tbspacer',
+					   	height:1
+						},
+					    {
+						xtype:'displayfield',
+						itemId:'messageFieldItemId',
+						hidden:true
+					},
+        			{
+        				xtype:'container',
+        				height:400,
+        				scrollable:true,
+        				items:this.buildItem()
+        			},
+        			{buttons:this.buildButtons()}]
+        },
         buildItem:function(){
         	var me=this;
         	return [
-			{
-				xtype:'displayfield',
-				itemId:'titleItemId',
-				vale:'',
-				hidden:false,
-				margin : '5 0 0 220'
-			   },
-			   {
-			   	xtype :'tbspacer',
-			   	height:1
-				},
-        	    {
-        		xtype:'displayfield',
-        		itemId:'messageFieldItemId',
-        		hidden:true
-        	},{
+//			{
+//				xtype:'displayfield',
+//				itemId:'titleItemId',
+//				vale:'',
+//				hidden:false,
+//				margin : '5 0 0 220'
+//			   },
+//			   {
+//			   	xtype :'tbspacer',
+//			   	height:1
+//				},
+//        	    {
+//        		xtype:'displayfield',
+//        		itemId:'messageFieldItemId',
+//        		hidden:true
+//        	},
+        	{
         		xtype:'form',
         		itemId:'listPanel',
         		border:false,
-        		height:300,
-        		scrollable : true,
+        		height:400,
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'hbox',
@@ -162,7 +190,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			fieldLabel:'CSR Email',
         			allowBlank: false,
         			labelSeparator:'',
-        			vtype: 'email' ,
+        			//vtype: 'email' ,
+        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
@@ -211,7 +240,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'PIItemId',
         			labelAlign:'top',
         			name: 'packingInstruction',
-        			fieldLabel:'Packing Instuction',
+        			fieldLabel:'Packing Instruction',
         		//	allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
@@ -361,7 +390,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         	{
         		xtype: 'form',
         		itemId:'AdvancedPropertiesForm',
-                width:1100,
+                width:660,
                 collapseDirection: 'top',
                 animCollapse: false,
                 collapsible: true,
@@ -449,14 +478,35 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            maxLength : '50',
       		            enforceMaxLength: true
             		}]
-              		}
+              		},
+               	   {
+                      	xtype :'tbspacer',
+                      	width :30
+              		  },
+              		 {
+                			xtype: 'fieldcontainer',
+                            layout: 'hbox',
+                            margin : '5 0 0 5',
+                            items:[{
+                    	    xtype:'checkbox',
+                  			itemId:'additonaldataItemId',
+                  			labelAlign:'top',
+                  			name: 'attachmentRequired',
+                  			fieldLabel:'Additional Data Required',
+                  			value:'',
+                  			labelSeparator:'',
+                            labelWidth : 200,
+            		        width : 300,
+            		        enforceMaxLength: true
+                  		    }]
+                		}
 ]
                 },
                 {
                 	xtype :'tbspacer',
                 	width :100
-        		},
-        	{ buttons:this.buildButtons()}
+        		}
+
         	]
        
         },
