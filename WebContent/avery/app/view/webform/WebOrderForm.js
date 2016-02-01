@@ -12,8 +12,20 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	controller:'webFormMain',
 	bodyPadding: '0 200 0 200',
 	border:false,
+	attachmentCount:1,
 	layout: {
         type: 'anchor'
+    },
+    reset: function() {
+    	var i=this.attachmentCount,currentAttachment,form=this;
+    	for(var j=2;j<=i;j++){
+    		currentAttachment=form.lookupReference('attachment'+j);
+    		if(currentAttachment){
+    			currentAttachment.destroy();
+    		}
+    	}
+    	this.attachmentCount=1;
+        this.form.reset();
     },
     initComponent : function(){
     	var me=this;
@@ -184,6 +196,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			allowBlank: true,
         			labelWidth : 200,
                     		disabled:true,
+                    		hidden:true,
                     		labelSeparator : '',
                     		labelAlign:'right',
                     		listeners:{
