@@ -210,6 +210,9 @@ Ext.define('AOC.view.address.AddressController', {
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
+		else{
+			createaddress.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>').setVisible(true);
+		}
 	},
 	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
 	      var me=this;
@@ -236,7 +239,13 @@ Ext.define('AOC.view.address.AddressController', {
   		  			modal:true,
   		  			rec:currentRecord,
   		  			editMode:mode,
-  		  			ID:id
+  		  			ID:id,
+  		  		    listeners: {
+	     	        	'close':function( panel, eOpts ) {
+	     	        		 Ext.getBody().unmask();
+	     	        		 win.destroy();
+	     	            }
+  		  		    }
   		  		});
   		  	    win.down('#titleItemId').setValue('<font size=3><b>'+title+'</b></font>').setVisible(true);
   		  		win.show();
