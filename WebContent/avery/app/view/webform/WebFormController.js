@@ -3,6 +3,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     alias: 'controller.webFormMain',
     runTime : AOC.config.Runtime,
     onPartnerChange:function(obj,newValue){
+    	var messageField=this.getView().down('#messageFieldItemId');
     	if(newValue!=null){
     	var productLineCombo=this.lookupReference('productLineCombo'),rboCombo=this.lookupReference('rboCombo');
     	var store=null;
@@ -38,8 +39,12 @@ Ext.define('AOC.view.webform.WebFormController', {
     	     rboCombo.bindStore(serviceStore);
     	     rboCombo.reset();
     	     rboCombo.enable();
+    	     messageField.hide();
     	  }
-    	}
+    	}else{
+  		  messageField.setValue('No RBO configured for the selected Parter. Please select a differet partner to proceed further')
+		  messageField.show();
+	  }
     	}
     },
     SaveDetails:function(obj){
@@ -188,6 +193,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     				 'change':'onAttachemnetChange'
     			 }
 		   });
+		   form.attachmentCount++;
 		   this.insertFileInGrid(value,'Attachment',true,count);
 		   obj.hide();
 		   Ext.getBody().unmask();
@@ -252,13 +258,15 @@ Ext.define('AOC.view.webform.WebFormController', {
     	    	       var store=AttachmentInfoGriditemId.store;
 	    		if(fileType=='Attachment'){
 	    			fileField=form.lookupReference('attachment'+internalId);
-	    			if(fileField)
-	    			fileField.destroy();
+	    			if(fileField){
+	    				fileField.destroy();
+	    				form.attachmentCount--;
+	    			}
 	    		}
 	    		else{
 	    			fileField=form.lookupReference('orderFileType');
 	    			if(fileField)
-	    			fileField.reset( );
+	    				fileField.reset( );
 	    		}
 	    		store.remove(record);
 	    		AttachmentInfoGriditemId.getView().refresh();
@@ -296,6 +304,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 var productLineCombo=this.getView().lookupReference('productLineCombo');
 		 productLineCombo.setValue('');
 		 var store=productLineCombo.store;
+		 store.clearFilter();
 		 var uniqueValueArray1=store.collect('productLineType');
 		 var serviceStoreData1= [];
    	  if(uniqueValueArray1.length>0){
@@ -308,7 +317,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	   	 fields : ['productLineType'],	
 	         data : serviceStoreData1
        });
-   	  serviceStore.clearFilter();
+   	  //serviceStore.clearFilter();
    	  serviceStore.load();
 		 productLineCombo.bindStore();
 		 serviceStore.filterBy(function(record){
@@ -326,8 +335,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 CancelDetails:function()
 	 {
 		 this.getView().down('form').reset();
+		 var AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId');
+	    	AttachmentInfoGriditemId.store.removeAll();
+	    	AttachmentInfoGriditemId.getView().refresh();
 		 var messageField=this.getView().down('#messageFieldItemId');
-		 var message=messageField.setValue('');
+		 messageField.setValue('');
 	 },
 	 notifyByMessage : function(config){
      	var messageField=this.getView().down('#messageFieldItemId');
@@ -340,5 +352,5 @@ Ext.define('AOC.view.webform.WebFormController', {
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
         ordeQueueGrid.store.load();
         this.getView().destroy();
-     }
+     },
 });
