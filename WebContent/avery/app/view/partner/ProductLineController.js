@@ -97,6 +97,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
+		else{
+			createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>').setVisible(true);
+			Ext.getBody().unmask();
+	}
     },
 	CancelDetails:function()
 	{       
@@ -133,11 +137,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
  	      				 var id=data.id;
  	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
  	      				modal:true,
- 	      				//title:'Edit Partner product Line',
  	      				partnerName:me.getView().partnerName,
  	      			    editMode:true,
  	      			    rec:data,
- 	      			    productlineId:id
+ 	      			    productlineId:id,
+ 	      			    listeners: {
+		     	        	'close':function( panel, eOpts ) {
+		     	        		 Ext.getBody().unmask();
+		     	        		 win.destroy();
+		     	            }
+ 	      			    }
  	      			});
  	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
  	      			  win.show();
