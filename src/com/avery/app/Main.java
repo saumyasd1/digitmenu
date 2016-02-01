@@ -9,9 +9,7 @@ import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.db.embedded.EmbeddedDatabaseFactory;
 import com.avery.logging.AppLogger;
-import com.avery.storage.entities.Person;
 import com.avery.storage.entities.User;
-import com.avery.storage.service.PersonService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.PropertiesConstants;
 
@@ -73,20 +71,20 @@ public class Main {
 				.boot();
 		System.out.println("*** Booted Successfully ***");
 		System.out.println(PathConfig.getLogbackConfigPath());
-		PersonService personService = (PersonService) SpringConfig
-				.getInstance().getBean("personService");
+		//PersonService personService = (PersonService) SpringConfig
+				//.getInstance().getBean("personService");
 
-		Person person = new Person();
-		person.setName("Test1");
-		person.setEmail("t1@test1.com");
+	//	Person person = new Person();
+	//	person.setName("Test1");
+	//	person.setEmail("t1@test1.com");
 		try {
-			personService.create(person);
-			System.out.println("Person : " + person + " added successfully");
+			//personService.create(person);
+			//System.out.println("Person : " + person + " added successfully");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List<Person> persons = personService.readAll();
-		System.out.println("The list of all persons = " + persons);
+	//	List<Person> persons = personService.readAll();
+	//	System.out.println("The list of all persons = " + persons);
 	}
 	
 	private void preloadDatabase() throws Exception {
