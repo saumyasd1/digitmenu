@@ -141,10 +141,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            align:'right'
 			        },{
 			            xtype:'checkboxfield',
-			            boxLabel  : 'Edit Grid',
+			            boxLabel  : 'Copy Data',
 		                    checked: true,
 		                    handler:function(cmp,checked){
-		                	var activeitme=(checked)?1:0;
+		                	var activeitme=(checked)?0:1;
 		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
 		                    }
 			        }]
@@ -155,18 +155,23 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			layout:'card',
 			flex:1,
 			itemId:'orderlineexpandablegridcard',
-			activeItem:1,
+			activeItem:0,
 			items:[{
-				xtype:'orderlineexpandablegrid',
-				store:me.store
-			},{
 			    xtype:'orderlineexpandablegrid',
 			    itemId: 'orderlineexpandablegridvv',
 			    store:me.store,
-			    selModel: {
-		        	      type: 'rowmodel'
+		            selModel: {
+		        	      type:'spreadsheet',
+		        	      rowNumbererHeaderWidth:0
 		        	    },
-		            editGrid:true
+			},
+			{
+				xtype:'orderlineexpandablegrid',
+				store:me.store,
+				editGrid:true,
+				selModel: {
+	        	      type: 'rowmodel'
+	        	    },
 			}
 			]
 			}
