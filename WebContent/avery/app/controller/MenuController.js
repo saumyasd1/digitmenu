@@ -128,7 +128,10 @@ Ext.define('AOC.controller.MenuController', {
 	      }else if(xtype=="weborderview"){
 		var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
 		weborderview.down('form').reset();
+		weborderview.down('form').lookupReference('rboCombo').disable();
+		weborderview.down('form').lookupReference('productLineCombo').disable();
 		weborderview.down('form').lookupReference('partnerCombo').getStore().load();
+		weborderview.down('form').lookupReference('attachment1').hide();
 	      var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
 	    	attachmentInfoGriditemId.store.removeAll();
 	    	attachmentInfoGriditemId.getView().refresh();
