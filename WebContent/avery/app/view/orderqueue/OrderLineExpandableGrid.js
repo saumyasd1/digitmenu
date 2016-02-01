@@ -1172,9 +1172,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	if(orderQueueStatus==waitingForCSRStatus){
     		return [me.getRowExpander(),me.getOuterGridRowEditor()];
     	}else
-    		return [me.getRowExpander()];
+    		return [me.getRowExpander(),{ptype: 'clipboard'}];
     	}else{
-        		return [me.getRowExpander()];
+        		return [me.getRowExpander(),{ptype: 'clipboard'}];
     	}
     },
     getOuterGridRowEditor:function(){
