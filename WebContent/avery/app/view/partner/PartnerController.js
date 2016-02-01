@@ -42,7 +42,6 @@ Ext.define('AOC.view.partner.PartnerController', {
 		        	    Ext.getBody().unmask();
 		        	    createpartner.destroy();
 		        	    AOC.util.Helper.fadeoutMessage('Success',Msg);
-			  			//Ext.Msg.alert('Alert Message',Msg);
 			  			grid.store.load();
 		        },
 		        failure: function(response, opts) {
@@ -61,6 +60,9 @@ Ext.define('AOC.view.partner.PartnerController', {
 			
 		this.runTime.setWindowInEditMode(false);
 	}
+		else{
+			createpartner.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>').setVisible(true);
+		}
     }
 ,
 	CancelDetails:function()
@@ -103,7 +105,13 @@ Ext.define('AOC.view.partner.PartnerController', {
  		     			    editMode:true,
  		     			    rec:data,
  		     			    partnerId:id,
- 		     			    partnerName:partnerName
+ 		     			    partnerName:partnerName,
+ 		     			    listeners: {
+ 		     	        	'close':function( panel, eOpts ) {
+ 		     	        		 Ext.getBody().unmask();
+ 		     	        		 win.destroy();
+ 		     	            }
+ 		     	        }
  		     			});
  		     	      win.down('#titleItemId').setValue('<font size=3><b>Edit Partner</b></font>').setVisible(true);
  	     			  win.show();
@@ -113,6 +121,13 @@ Ext.define('AOC.view.partner.PartnerController', {
                     deletepartner: function(cmp){
                     	var data=e.record;
 		     			var id=data.id;
+		     			var productLineCount=data.get('productLineCount');
+		     			var addressCount=data.get('addressCount');
+		     			var orderQueueCount=data.get('orderQueueCount');
+		     			if(productLineCount!=0 || addressCount!=0 || orderQueueCount!=0)
+		     		   Ext.MessageBox.alert('',deletePartner);
+		     			else
+		     				{
 	     			   Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this partner</b>', function(response) {
 	     				  if (response == 'yes') {
 	     						Ext.Ajax.request({
@@ -120,7 +135,6 @@ Ext.define('AOC.view.partner.PartnerController', {
 	     							url:applicationContext+'/rest/partners/'+id,
          				        success : function(response, opts) {
          				        	  AOC.util.Helper.fadeoutMessage('Success','Partner Deleted Succesfully');
-         							//Ext.Msg.alert('Alert Message','<b>Partner Deleted Succesfully</b>');
          							me.runTime.getActiveGrid().store.load();
          				        },
          				        failure: function(response, opts) {
@@ -131,7 +145,8 @@ Ext.define('AOC.view.partner.PartnerController', {
 	     				  }
 	     				  });
  		        	    this.destroy();
-                    	callout.destroy();
+		     				}
+		     			callout.destroy();
                     },
                     productLine:function(cmp){
                     	
