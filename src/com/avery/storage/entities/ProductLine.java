@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,88 +48,88 @@ public class ProductLine extends MainAbstractEntity{
 	@JoinColumn(name = "PartnerID", nullable = true)
 	private Partner partner;
 	
-	@Column(name = "RBOName")
+	@Column(name = "RBOName",length = 50)
 	private String rboName;
 	
-	@Column(name = "RBOID")
+	@Column(name = "RBOID",length = 50)
 	private String rboId;
 	
-	@Column(name = "ProductLineType")
+	@Column(name = "ProductLineType",length = 50)
 	private String productLineType;
 	
-	@Column(name = "CSRName")
+	@Column(name = "CSRName",length = 100)
 	private String csrName;
 	
-	@Column(name = "CSREmail")
+	@Column(name = "CSREmail",length = 250)
 	private String csrEmail;
 	
-	@Column(name = "OrderEmailDomain")
+	@Column(name = "OrderEmailDomain",length = 100)
 	private String orderEmailDomain;
 	
-	@Column(name = "PackingInstruction")
+	@Column(name = "PackingInstruction",length = 500)
 	private String packingInstruction;
 	
-	@Column(name = "InvoiceLineInstruction")
+	@Column(name = "InvoiceLineInstruction",length = 500)
 	private String invoiceLineInstruction;
 	
-	@Column(name = "VariableDataBreakdown")
+	@Column(name = "VariableDataBreakdown",length = 500)
 	private String variableDataBreakdown;
 	
-	@Column(name = "ManufacturingNotes")
+	@Column(name = "ManufacturingNotes",length = 500)
 	private String manufacturingNotes;
 	
-	@Column(name = "ShippingOnlyNotes")
+	@Column(name = "ShippingOnlyNotes",length = 500)
 	private String shippingOnlyNotes;
 
-	@Column(name = "SplitShipSetBy")
+	@Column(name = "SplitShipSetBy",length = 5)
 	private String splitShipSetBy;
 
-	@Column(name = "OrderSchemaID")
+	@Column(name = "OrderSchemaID",length = 50)
 	private String orderSchemaID;
 	
-	@Column(name = "OrderSchemaType")
+	@Column(name = "OrderSchemaType",length = 50)
 	private String orderSchemaType;
 	
-	@Column(name = "OrderMappingID")
+	@Column(name = "OrderMappingID",length = 50)
 	private String orderMappingID;
 	
 	@Column(name = "AttachmentRequired")
 	private Boolean attachmentRequired;
 	
-	@Column(name = "AttachmentIdentifier_1")
+	@Column(name = "AttachmentIdentifier_1",length = 50)
 	private String attachmentIdentifier_1;
 	
-	@Column(name = "AttachmentSchemaType_1")
+	@Column(name = "AttachmentSchemaType_1",length = 50)
 	private String attachmentSchemaType_1;
 	
-	@Column(name = "AttachmentMappingID_1")
+	@Column(name = "AttachmentMappingID_1",length = 50)
 	private String attachmentMappingID_1;
 	
-	@Column(name = "AttachmentIdentifier_2")
+	@Column(name = "AttachmentIdentifier_2",length = 50)
 	private String attachmentIdentifier_2;
 	
-	@Column(name = "AttachmentSchemaID_2")
+	@Column(name = "AttachmentSchemaID_2",length = 50)
 	private String attachmentSchemaID_2;
 
-	@Column(name = "AttachmentSchemaType_2")
+	@Column(name = "AttachmentSchemaType_2",length = 50)
 	private String attachmentSchemaType_2;
 
-	@Column(name = "AttachmentMappingID_2")
+	@Column(name = "AttachmentMappingID_2",length = 50)
 	private String attachmentMappingID_2;
 
-	@Column(name = "AttachmentIdentifier_3")
+	@Column(name = "AttachmentIdentifier_3",length = 50)
 	private String attachmentIdentifier_3;
 
-	@Column(name = "AttachmentSchemaID_3")
+	@Column(name = "AttachmentSchemaID_3",length = 50)
 	private String attachmentSchemaID_3;
 
-	@Column(name = "AttachmentSchemaType_3")
+	@Column(name = "AttachmentSchemaType_3",length = 50)
 	private String attachmentSchemaType_3;
 
-	@Column(name = "AttachmentMappingID_3")
+	@Column(name = "AttachmentMappingID_3",length = 50)
 	private String attachmentMappingID_3;
 
-	@Column(name = "PreProcessPID")
+	@Column(name = "PreProcessPID",length = 50)
 	private String preProcessPID;
 
 
@@ -369,6 +372,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			//mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
@@ -400,6 +404,7 @@ public class ProductLine extends MainAbstractEntity{
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			ProductLine productline = mapper.readValue(data, ProductLine.class);
+			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
 			valueExist = productLineService.checkDuplicateValues(productline);
@@ -424,6 +429,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
@@ -510,6 +516,7 @@ public class ProductLine extends MainAbstractEntity{
 			Long entityId = Long.parseLong(partnerId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
