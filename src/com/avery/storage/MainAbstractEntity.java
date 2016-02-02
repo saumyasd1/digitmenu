@@ -36,7 +36,7 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 	@Column(name = "CreatedDate")
     private Date createdDate;
 	
-	@Column(name = "CreatedBy")
+	@Column(name = "CreatedBy",length = 50)
     private String createdBy;
 	
 	@Column(name = "LastModifiedDate")
@@ -46,7 +46,7 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 		return createdDate;
 	}
 	
-	@Column(name = "LastModifiedBy")
+	@Column(name = "LastModifiedBy",length = 50)
     private String lastModifiedBy;
 
 	public void setCreatedDate(Date createdDate) {
