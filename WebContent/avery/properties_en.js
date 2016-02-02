@@ -85,5 +85,6 @@ weFacedError="We faced an error while trying to ",
 savedSuccessfully=' saved successfully.',
 weFacedError="We faced an error while trying to ",
 fixAndResubmitWebOredr ="Fix & Resubmit Web Order",
-newWebOrder="New Web Order";
+newWebOrder="New Web Order",
+deletePartner="This Partner has a reference in productline or orderqueue or address so it can not be deleted";
 
