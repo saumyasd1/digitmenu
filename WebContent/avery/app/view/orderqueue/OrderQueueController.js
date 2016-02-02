@@ -278,7 +278,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 var con=AOC.app.getController('MenuController');
                 con.selectCard('weborderview');
                 con.selectMenuItem('weborderview');
-                var weborderform= Ext.ComponentQuery.query('weborderview weborderform')[0];
+                var weborderview=Ext.ComponentQuery.query('weborderview')[0];
+                var weborderform=weborderview.down('#weborderformItemId'),
+                attachmentinfoGrid=weborderview.down('#AttachmentInfoGriditemId');
+                weborderform.reset();
+                attachmentinfoGrid.store.removeAll();
+                attachmentinfoGrid.getView().refresh();
                 var partnerId =(Ext.isEmpty(rec.get('partner')))?"":rec.get('partner').id,
                 productLineId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').id,
                 rboId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').rboId,
@@ -298,7 +303,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	     if(attachFile[i].fileContentType!="Order")
             	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
             	 }
-            	var weborderview =Ext.ComponentQuery.query('weborderview')[0];
             	weborderview.down('#backButtonimage').setVisible(true);
             	weborderview.updateHeaderLabel(fixAndResubmitWebOredr);
             }
