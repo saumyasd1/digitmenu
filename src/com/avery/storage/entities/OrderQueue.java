@@ -52,6 +52,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
+import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
@@ -84,7 +85,7 @@ public class OrderQueue extends MainAbstractEntity{
 	
 	private static final long serialVersionUID = -8487156716364715576L;
 	
-	@Column(name = "PID")
+	@Column(name = "PID",length = 50)
 	private String pid;
 	
 	@NotFound(action=NotFoundAction.IGNORE)
@@ -92,7 +93,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@JoinColumn(name = "PartnerID")
 	private Partner partner;
 	
-	@Column(name = "RBOName")
+	@Column(name = "RBOName",length = 50)
 	private String rboName;
 	
 	@NotFound(action=NotFoundAction.IGNORE)
@@ -100,10 +101,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@JoinColumn(name = "ProductLineId")
 	private ProductLine productLine;
 	
-	@Column(name = "SenderEmailID")
+	@Column(name = "SenderEmailID",length = 50)
 	private String senderEmailID;
 	
-	@Column(name = "Subject")
+	@Column(name = "Subject",length = 200)
 	private String subject;
 	
 	@Column(name = "EmailBody")
@@ -113,10 +114,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "ReceivedDate")
 	private Date receivedDate;
 	
-	@Column(name = "OrderSource")
+	@Column(name = "OrderSource",length = 50)
 	private String orderSource;
 	
-	@Column(name = "SubmittedBy")
+	@Column(name = "SubmittedBy",length = 50)
 	private String submittedBy;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
@@ -152,16 +153,16 @@ public class OrderQueue extends MainAbstractEntity{
 	}
 
 
-	@Column(name = "Status")
+	@Column(name = "Status",length = 50)
 	private String status;
 	
-	@Column(name = "Error")
+	@Column(name = "Error",length = 1000)
 	private String error;
 	
 	@Column(name = "Comment")
 	private String comment;
 	
-	@Column(name = "PONumber")
+	@Column(name = "PONumber",length = 50)
 	private String ponumber;
 	
 	@Fetch(FetchMode.SELECT)
@@ -333,6 +334,9 @@ public class OrderQueue extends MainAbstractEntity{
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixInAnnotations(OrderQueue.class, OrderQueueMixIn.class);
 			mapper.addMixInAnnotations(OrderFileAttachment.class, OrderQueueMixIn.class);
+			mapper.addMixInAnnotations(Partner.class, OrderQueueMixIn.class);//added mixIn
+			mapper.addMixInAnnotations(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);//added
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
