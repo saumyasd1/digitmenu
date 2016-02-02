@@ -15,7 +15,8 @@ Ext.define('AOC.view.users.manage.UserController', {
     						draggable: false,
     						modal:true,
     					 	items : [{  xtype : 'useredit',
-    					 		        showPasswordField:true}]
+    					 		        showPasswordField:true,
+    					 		        hidefield:false}]
     				 });
     	         }
     	 
@@ -38,7 +39,7 @@ Ext.define('AOC.view.users.manage.UserController', {
 			//form.updateRecord();
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='PUT';
-			Msg='<b>User Updated Successfully</b>';
+			Msg='User Updated Successfully';
 		   var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
@@ -46,7 +47,7 @@ Ext.define('AOC.view.users.manage.UserController', {
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			valueObj.status=100;
-			Msg='<b>User Added Successfully</b>';
+			Msg='User Added Successfully';
 			var parameters=Ext.JSON.encode(valueObj);
 		   }
 				Ext.Ajax.request( {
@@ -56,7 +57,8 @@ Ext.define('AOC.view.users.manage.UserController', {
 		        success : function(response, opts) {
 		        	    Ext.getBody().unmask();
 		        	    win.destroy();
-			  			Ext.Msg.alert('Alert Message',Msg);
+		        	    AOC.util.Helper.fadeoutMessage('Success',Msg);
+			  			//Ext.Msg.alert('Alert Message',Msg);
 			  			grid.store.load();
 		        },
 		        failure: function(response, opts) {
@@ -113,13 +115,14 @@ onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
             deleteuser: function(cmp){
           	  currentRecord=e.record;
           		var ID=record.get('id');
+          		var Msg='User Deleted Succesfully';
           		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the User?</b>',function(btn){
           			  if(btn=='yes'){
           					Ext.Ajax.request({
           							method:'DELETE',
           							url:applicationContext+'/rest/users/'+ID,
           				        success : function(response, opts) {
-          							Ext.Msg.alert('Alert Message','<b>User Deleted Succesfully</b>');
+          				            AOC.util.Helper.fadeoutMessage('Success',Msg);
           							me.runTime.getActiveGrid().store.load();
           				        },
           				        failure: function(response, opts) {
