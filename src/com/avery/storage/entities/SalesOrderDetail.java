@@ -50,44 +50,44 @@ public class SalesOrderDetail extends MainAbstractEntity{
 	@JoinColumn(name = "SalesOrderID", nullable = true)
 	private SalesOrder salesOrderForVariableData;
 	
-	@Column(name = "ProcessQueueID")
+	@Column(name = "ProcessQueueID",length = 50)
     private int processQueueID; 
 	
-	@Column(name = "SOnumber")
+	@Column(name = "SOnumber",length = 50)
     private String sonumber;
 	
-	@Column(name = "Divison")
+	@Column(name = "Divison",length = 50)
     private String divison;
 	
-	@Column(name = "SODetails")
+	@Column(name = "SODetails",length = 250)
     private String soDetails;
 	
 	
-	@Column(name = "Oracleitemnumber")
+	@Column(name = "Oracleitemnumber",length = 50)
     private String oracleitemnumber;
 	
-	@Column(name = "Level")
+	@Column(name = "Level",length = 50)
     private String level;
 	
-	@Column(name = "SKUno")
+	@Column(name = "SKUno",length = 50)
     private String skuno;
 	
-	@Column(name = "typesetter")
+	@Column(name = "typesetter",length = 50)
     private String typesetter;
 	
-	@Column(name = "Variablefieldname")
+	@Column(name = "Variablefieldname",length = 100)
     private String variablefieldname;
 	
-	@Column(name = "variabledatavalue")
+	@Column(name = "variabledatavalue",length = 250)
     private String variabledatavalue;
 	
-	@Column(name = "FiberPercent")
+	@Column(name = "FiberPercent",length = 500)
     private String fiberPercent;
 	
 	@Column(name = "SentToOracleDate")
     private Date sentToOracleDate;
 	
-	@Column(name = "DivisionforInterfaceERPORG")
+	@Column(name = "DivisionforInterfaceERPORG",length = 50)
     private String divisionforInterfaceERPORG;
 	
 	public SalesOrder getSalesOrderForVariableData() {
