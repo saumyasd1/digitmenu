@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.AddressMixIn;
+import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.AddressService;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -38,80 +41,80 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class Address extends MainAbstractEntity {
 
 	
-	@Column(name = "OrgCode")
+	@Column(name = "OrgCode",length = 50)
     private String orgCode; 
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PartnerID", nullable = true)
 	private Partner partner;
 	
-	@Column(name = "BillToSiteNumber")
+	@Column(name = "BillToSiteNumber",length = 50)
     private String billToSiteNumber; 
 	
-	@Column(name = "ShipToSiteNumber")
+	@Column(name = "ShipToSiteNumber",length = 50)
     private String shipToSiteNumber; 
 	
-	@Column(name = "Description")
+	@Column(name = "Description",length = 500)
     private String description;  
 	
-	@Column(name = "Address1")
+	@Column(name = "Address1",length = 500)
     private String address1;  
 	
-	@Column(name = "Address2")
+	@Column(name = "Address2",length = 500)
     private String address2;  
 	
-	@Column(name = "Address3")
+	@Column(name = "Address3",length = 500)
     private String address3;  
 	
-	@Column(name = "Address4")
+	@Column(name = "Address4",length = 500)
     private String address4;  
 	
-	@Column(name = "City")
+	@Column(name = "City",length = 250)
     private String city;  
 
-	@Column(name = "State")
+	@Column(name = "State",length = 250)
     private String state;  
 	
-	@Column(name = "Country")
+	@Column(name = "Country",length = 250)
     private String country;  
 	
-	@Column(name = "Zip")
+	@Column(name = "Zip",length = 250)
     private String zip;  
 	
-	@Column(name = "BillToContact")
+	@Column(name = "BillToContact",length = 250)
     private String billToContact;  
 	
-	@Column(name = "BillToPhone1")
+	@Column(name = "BillToPhone1",length = 250)
     private String billToPhone1;  
 	
-	@Column(name = "BillToPhone2")
+	@Column(name = "BillToPhone2",length = 250)
     private String billToPhone2;  
 	
-	@Column(name = "BillToFax")
+	@Column(name = "BillToFax",length = 250)
     private String billToFax;  
 	
-	@Column(name = "BillToEmail")
+	@Column(name = "BillToEmail",length = 250)
     private String billToEmail;  
 	
-	@Column(name = "ShipToContact")
+	@Column(name = "ShipToContact",length = 250)
     private String shipToContact;  
 	
-	@Column(name = "ShipToPhone1")
+	@Column(name = "ShipToPhone1",length = 250)
     private String shipToPhone1;  
 	
-	@Column(name = "ShipToPhone2")
+	@Column(name = "ShipToPhone2",length = 250)
     private String shipToPhone2;  
 	
-	@Column(name = "ShippingMethod")
+	@Column(name = "ShippingMethod",length = 100)
     private String shippingMethod;  
 	
-	@Column(name = "FreightTerms")
+	@Column(name = "FreightTerms",length = 50)
     private String freightTerms;  
 	
-	@Column(name = "ShippingInstructions")
+	@Column(name = "ShippingInstructions",length = 500)
     private String shippingInstructions;  
 	
-	@Column(name = "SiteNumber")
+	@Column(name = "SiteNumber",length = 255)
     private String siteNumber; 
 	
 	public String getSiteNumber() {
@@ -121,22 +124,22 @@ public class Address extends MainAbstractEntity {
 	public void setSiteNumber(String siteNumber) {
 		this.siteNumber = siteNumber;
 	}
-	@Column(name = "Contact")
+	@Column(name = "Contact",length = 255)
     private String contact;  
 	
-	@Column(name = "Phone1")
+	@Column(name = "Phone1",length = 255)
     private String phone1;  
 	
-	@Column(name = "Phone2")
+	@Column(name = "Phone2",length = 255)
     private String phone2;  
 	
-	@Column(name = "Fax")
+	@Column(name = "Fax",length = 255)
     private String fax;  
 	
-	@Column(name = "Email")
+	@Column(name = "Email",length = 255)
     private String email; 
 	
-	@Column(name = "SiteType")
+	@Column(name = "SiteType",length = 255)
     private String siteType; 
 
 	public String getContact() {
@@ -388,6 +391,7 @@ public class Address extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
@@ -418,9 +422,9 @@ public class Address extends MainAbstractEntity {
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			Address address = mapper.readValue(data, Address.class);
+			address.setCreatedDate(new Date());
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
-			
 			id = addressService.create(address);
 			return Response.ok(id).build();
 		} catch (Exception e) {
@@ -439,6 +443,7 @@ public class Address extends MainAbstractEntity {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
