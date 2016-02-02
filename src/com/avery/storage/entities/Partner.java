@@ -2,11 +2,17 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -22,13 +28,20 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.AddressMixIn;
+import com.avery.storage.MixIn.OrderQueueMixIn;
+import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-
+/**
+ * 20-Nov-2015
+ * 
+ * @author Shaifali
+ */
 
 
 @Entity
@@ -39,22 +52,84 @@ public class Partner extends MainAbstractEntity {
 	private static final long serialVersionUID = -8487156716364715527L;
 	
 	
-	@Column(name = "PartnerName")
+	@Column(name = "PartnerName",length = 250)
     private String partnerName; 
 	
-	@Column(name = "Address")
+	@Column(name = "Address",length = 500)
     private String address;   
 	
-	@Column(name = "ContactPerson")
+	@Column(name = "ContactPerson",length = 100)
     private String contactPerson; 
 	
-	@Column(name = "Phone")
+	@Column(name = "Phone",length = 100)
     private String phone; 
 	
 	@Column(name = "Active")
     private Boolean active;  
 	
+	private transient int productLineCount;
+	
+	private transient int orderQueueCount;
+	
+	private transient int addressCount;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "partner")
+	private Set<ProductLine> productLine;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "partner")
+	private Set<Address> adressObj;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "partner")
+	private Set<OrderQueue> orderQueue;
+	
+	public Set<OrderQueue> getOrderQueue() {
+		return orderQueue;
+	}
 
+	public void setOrderQueue(Set<OrderQueue> orderQueue) {
+		this.orderQueue = orderQueue;
+	}
+	
+	public Set<Address> getAdressObj() {
+		return adressObj;
+	}
+
+	public void setAdressObj(Set<Address> adressObj) {
+		this.adressObj = adressObj;
+	}
+	
+	public Set<ProductLine> getProductLine() {
+		return productLine;
+	}
+
+	public void setProductLine(Set<ProductLine> productLine) {
+		this.productLine = productLine;
+	}
+	
+	public int getProductLineCount() {
+		return productLineCount;
+	}
+	
+	public void setProductLineCount(int productLineCount) {
+		this.productLineCount = productLineCount;
+	}
+
+	public int getAddressCount() {
+		return addressCount;
+	}
+	
+	public void setAddressCount(int addressCount) {
+		this.addressCount = addressCount;
+	}
+	
+	public int getOrderQueueCount() {
+		return orderQueueCount;
+	}
+	
+	public void setOrderQueueCount(int orderQueueCount) {
+		this.orderQueueCount = orderQueueCount;
+	}
+	
 	public String getPartnerName() {
 		return partnerName;
 	}
@@ -107,6 +182,7 @@ public class Partner extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
@@ -169,6 +245,7 @@ public class Partner extends MainAbstractEntity {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
