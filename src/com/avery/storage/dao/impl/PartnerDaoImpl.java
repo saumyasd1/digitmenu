@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -15,7 +16,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.Address;
+import com.avery.storage.entities.OrderLine;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.ProductLine;
+import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 
@@ -56,10 +62,27 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
-		
+		List list = criteria.list();
+		Partner partner = null;
+		for (Object obj : list) {
+			partner = (Partner) obj;
+			long id = partner.getId();
+			partner.setProductLineCount(getCountBasedOnPartnerId(ProductLine.class,id,"partner.id"));
+			partner.setAddressCount(getCountBasedOnPartnerId(Address.class,id,"partner.id"));
+			partner.setOrderQueueCount(getCountBasedOnPartnerId(OrderQueue.class,id,"partner.id"));
+		}
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("partners", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
+	}
+	
+	private int getCountBasedOnPartnerId(Class clazz,Long PartnerId,String propertyName) throws Exception{
+		int count=0;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(clazz);
+		criteria.add(Restrictions.eq(propertyName, PartnerId));
+		count=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		return count;
 	}
 	
 	
@@ -81,8 +104,4 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		}
 		return partnerExist;
 	}
-	
-	
-
-	
 }
