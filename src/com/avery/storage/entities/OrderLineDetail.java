@@ -52,35 +52,35 @@ public class OrderLineDetail extends MainAbstractEntity{
 	@Column(name = "OrderQueueID")
     private int orderQueueID; 
 	
-	@Column(name = "Oracleitemnumber")
+	@Column(name = "Oracleitemnumber",length = 50)
     private String Oracleitemnumber;
 	
-	@Column(name = "Level")
+	@Column(name = "Level",length = 50)
     private String level;
 	
-	@Column(name = "SKUno")
+	@Column(name = "SKUno",length = 50)
     private String skuno;
 	
 	
-	@Column(name = "typesetter")
+	@Column(name = "typesetter",length = 50)
     private String typesetter;
 	
-	@Column(name = "Variablefieldname")
+	@Column(name = "Variablefieldname",length = 100)
     private String variablefieldname;
 	
-	@Column(name = "variabledatavalue")
+	@Column(name = "variabledatavalue",length = 250)
     private String variabledatavalue;
 	
-	@Column(name = "FiberPercent")
+	@Column(name = "FiberPercent",length = 250)
     private String fiberPercent;
 	
 	@Column(name = "SentToOracleDate")
     private String sentToOracleDate;
 	
-	@Column(name = "Mandatory")
+	@Column(name = "Mandatory",length = 50)
     private String mandatory; 
 	
-	@Column(name = "DivisionforInterfaceERPORG")
+	@Column(name = "DivisionforInterfaceERPORG",length = 50)
     private String divisionforInterfaceERPORG; 
 	
 	public OrderLine getOrderLineForVariableData() {
