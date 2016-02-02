@@ -25,6 +25,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     		}
     	}
     	this.attachmentCount=1;
+    	currentAttachment=form.lookupReference('attachment1');
+    	if(currentAttachment)
+    		currentAttachment.hide();
         this.form.reset();
     },
     initComponent : function(){
