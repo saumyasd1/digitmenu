@@ -10,7 +10,8 @@ Ext.define('AOC.Application', {
     requires    : [
 		'AOC.config.MenuInstructions',
 		'AOC.util.ProxyExceptionHandler',
-		'AOC.config.Runtime'
+		'AOC.config.Runtime',
+		'AOC.config.Overrides'
     ],
     controllers : [
                    'MenuController' 
