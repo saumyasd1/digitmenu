@@ -3,11 +3,12 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     alias: 'widget.useredit',
     itemId:'useredititemid',
     controller:'userMain',
-   showPasswordField:false,
+    showPasswordField:false,
+    hidefield:true,
     editMode:false,
     rec: null,
     ID:null,
-    updateUserLogoId: Ext.id(),  
+    updateUserLogoId: Ext.id(), 
     initComponent: function () {
         Ext.apply(this, {
             items: this.buildItems()
@@ -17,11 +18,13 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     buildButtons : function(){
         return [{
         	text : 'Save',
-            handler : 'SaveDetails'
+            handler : 'SaveDetails',
+            hidden:this.hidefield
         },
         {
         	text : 'Cancel',
-            handler : 'CancelDetails'
+            handler : 'CancelDetails',
+            hidden:this.hidefield
         }];
     },
     isAdmin : false,
