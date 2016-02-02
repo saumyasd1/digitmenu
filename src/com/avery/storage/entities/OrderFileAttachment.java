@@ -56,16 +56,16 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@JoinColumn(name = "PartnerID", nullable = true)
 	private Partner partnerObj;
 	
-	@Column(name = "RBOID")
+	@Column(name = "RBOID",length = 50)
     private String rboID; 
 	
 	@Column(name = "ReceivedDate")
     private Date receivedDate;
 	
-	@Column(name = "FileName")
+	@Column(name = "FileName",length = 250)
     private String fileName;
 	
-	@Column(name = "FileExtension")
+	@Column(name = "FileExtension",length = 50)
     private String fileExtension;
 	
 	@Column(name = "FileData")
@@ -73,16 +73,16 @@ public class OrderFileAttachment extends MainAbstractEntity {
     private Blob fileData;
 	
 	
-	@Column(name = "FileContentType")
+	@Column(name = "FileContentType",length = 50)
     private String fileContentType;
 	
-	@Column(name = "StyleNo")
+	@Column(name = "StyleNo",length = 50)
     private String styleNo;
 	
-	@Column(name = "Status")
+	@Column(name = "Status",length = 50)
     private String status;
 	
-	@Column(name = "Error")
+	@Column(name = "Error",length = 50)
     private String error;
 	
 /*	@OneToMany(mappedBy = "orderFileAttchment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
