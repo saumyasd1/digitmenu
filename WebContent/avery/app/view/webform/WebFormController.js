@@ -42,7 +42,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	     messageField.hide();
     	  }
     	}else{
-  		  messageField.setValue('No RBO configured for the selected Parter. Please select a differet partner to proceed further')
+  		  messageField.setValue('No RBO configured for the selected Parter. Please select a differet partner to proceed further');
 		  messageField.show();
 	  }
     	}
@@ -62,7 +62,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	   me.getView().down('form').lookupReference('orderFileType').allowBlank=true;
     	  var fileField= me.getView().down('form').lookupReference('attachment1');
     	  if(fileField)
-    	      fileField.allowBlank=true
+    	      fileField.allowBlank=true;
     	  }
     	   var messageField=this.getView().down('#messageFieldItemId');
     	   form.setValues({"oldFileIds":oldFileIds});
@@ -305,32 +305,14 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 productLineCombo.setValue('');
 		 var store=productLineCombo.store;
 		 store.clearFilter();
-		 var uniqueValueArray1=store.collect('productLineType');
-		 var serviceStoreData1= [];
-   	  if(uniqueValueArray1.length>0){
-   		 uniqueValueArray1.forEach(function(item){
-   			 var index=store.find('productLineType',item);
-   			 var currentRecord=store.getAt(index);
-       	     serviceStoreData1.push(currentRecord);
-          });
-   	     var serviceStore =  Ext.create('Ext.data.Store',{
-    	   	 fields : ['productLineType'],	
-	         data : serviceStoreData1
-       });
-   	  //serviceStore.clearFilter();
-   	  serviceStore.load();
-		 productLineCombo.bindStore();
-		 serviceStore.filterBy(function(record){
+		 store.filterBy(function(record){
 			 if(record.get('rboName')==newValue)
 				 return true;
        });
-		 productLineCombo.bindStore(serviceStore);
 		 productLineCombo.reset();
 		 productLineCombo.enable();
-		 
 		 }
-   	Ext.getBody().unmask();
-		 }
+		 Ext.getBody().unmask();
 	 },
 	 CancelDetails:function()
 	 {
