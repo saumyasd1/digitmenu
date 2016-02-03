@@ -76,6 +76,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    jsonData : parameters,	
 				    url : url,
 				    success : function(response, opts) {
+				    		var jsonString=Ext.JSON.decode(response.responseText);
+				    		var valueExist=jsonString.valueExist;
+				    		if(valueExist){
+				    			Ext.getBody().unmask();
+				    			createproductline.lookupReference('rboName').focus();
+				    			createproductline.down('#messageFieldItemId').show();
+				    			createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red> An entry already exists for given Product Line and RBO Name.</font>');
+				    			return false;
+				    		}
 				    	Ext.getBody().unmask();
 				    	createproductline.destroy();
 				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
