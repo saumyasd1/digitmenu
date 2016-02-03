@@ -86,6 +86,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Boolean valueExist=false;
 		Partner partnerobj=null;
 		String partnerName="",rboName="",productLineType="";
+		Long id=productLine.getId();
 		List<ProductLine> productLineList = null;
 		partnerobj=productLine.getPartner();
 		partnerName=partnerobj.getPartnerName();
@@ -93,16 +94,19 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		productLineType=productLine.getProductLineType();
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
-		 Conjunction disCriteria = Restrictions.conjunction();
-			criteria.createAlias("partner", "partner");
-			disCriteria.add(Restrictions.eq("partner"+".partnerName",partnerName));
-			disCriteria.add(Restrictions.eq("rboName", rboName));
-			disCriteria.add(Restrictions.eq("productLineType", productLineType));
-			criteria.add(disCriteria);
-			productLineList= criteria.list();
-			totalCount=productLineList.size();
-			if(totalCount>0)
-				valueExist=true;
+		Conjunction disCriteria = Restrictions.conjunction();
+		criteria.createAlias("partner", "partner");
+		disCriteria.add(Restrictions.eq("partner"+".partnerName",partnerName));
+		disCriteria.add(Restrictions.eq("rboName", rboName));
+		disCriteria.add(Restrictions.eq("productLineType", productLineType));
+		if(id!=0){
+			disCriteria.add(Restrictions.ne("id", id));
+		}
+		criteria.add(disCriteria);
+		productLineList= criteria.list();
+		totalCount=productLineList.size();
+		if(totalCount>0)
+			valueExist=true;
 		return valueExist;
 	}
 
