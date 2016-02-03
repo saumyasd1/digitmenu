@@ -71,22 +71,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         buildItem:function(){
         	var me=this;
         	return [
-//			{
-//				xtype:'displayfield',
-//				itemId:'titleItemId',
-//				vale:'',
-//				hidden:false,
-//				margin : '5 0 0 220'
-//			   },
-//			   {
-//			   	xtype :'tbspacer',
-//			   	height:1
-//				},
-//        	    {
-//        		xtype:'displayfield',
-//        		itemId:'messageFieldItemId',
-//        		hidden:true
-//        	},
         	{
         		xtype:'form',
         		itemId:'listPanel',
@@ -119,6 +103,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'RItemId',
         			labelAlign:'top',
         			name: 'rboName',
+        			reference:'rboName',
         			fieldLabel:'RBO Name',
         			allowBlank: false,
         			value:'',
@@ -367,7 +352,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'orderEmailDomain',
         			fieldLabel:'Order Email Domain',
-        			//allowBlank: false,
+        			allowBlank: false,
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
