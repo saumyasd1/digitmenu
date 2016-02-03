@@ -63,6 +63,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
         			itemId:'PNItemId',
         			labelAlign:'top',
         			name: 'partnerName',
+        			reference:'partnerName',
         			fieldLabel:'Partner Name',
         			value:'',
         		    labelSeparator:'',
@@ -70,7 +71,7 @@ Ext.define('AOC.view.partner.CreatePartner',{
                     labelWidth : 100,
 		            width : 300,
 		            maxLength : '250',
-		            margin : '5 0 0 15',
+		            margin : '0 0 0 15',
 		            blankText : 'Partner Name is required',
 		            enforceMaxLength: true,
 		            listeners : {
