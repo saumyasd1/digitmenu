@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -209,8 +210,10 @@ public class Partner extends MainAbstractEntity {
 		Long id;
 		String partnerName="";
 		Boolean partnerExist=false;
+		Map responseMap=new HashMap();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
@@ -219,13 +222,23 @@ public class Partner extends MainAbstractEntity {
 			partner.setCreatedDate(new Date());
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
-			partnerExist = partnerService.checkDuplicatePartnerName(partnerName);
-			if (partnerExist == true) {
-				throw new Exception("Partner already exist with Partner Name:"
-						+partnerName);
+			partnerExist = partnerService.checkDuplicatePartnerName(partner);
+//			if (partnerExist == true) {
+//				throw new Exception("Partner already exist with Partner Name:"
+//						+partnerName);
+//			}
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (partnerExist) {
+				responseMap.put("valueExist",true);
+				mapper.writeValue(writer, responseMap);
+			}else{
+				id = partnerService.create(partner);
+				responseMap.put("valueExist",false);
+				responseMap.put("id",id);
+				mapper.writeValue(writer, responseMap);
 			}
-			id = partnerService.create(partner);
-			return Response.ok(id).build();
+			
+			return Response.ok(writer.toString()).build();
 		}catch (WebApplicationException ex) {
 			throw ex;
 		}
@@ -242,17 +255,16 @@ public class Partner extends MainAbstractEntity {
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
+		Map responseMap=new HashMap();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
-			// toggle this property value based on your input JSON data
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
-			// read existing entity from database
 			Partner partner = partnerService.read(Long.parseLong(id));
 			if (partner == null) {
 				throw new WebApplicationException(Response
@@ -262,12 +274,17 @@ public class Partner extends MainAbstractEntity {
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			ObjectReader updater = mapper.readerForUpdating(partner);
-			// build updated entity object from input data
 			partner = updater.readValue(data);
-			// update entity in database
-			partnerService.update(partner);
-			// prepare response
-			mapper.writeValue(writer, partner);
+			boolean valueExist = partnerService.checkDuplicatePartnerName(partner);
+			if (valueExist) {
+				responseMap.put("valueExist",true);
+				mapper.writeValue(writer, responseMap);
+			}else{
+				partnerService.update(partner);
+				responseMap.put("valueExist",false);
+				responseMap.put("productline",partner);
+				mapper.writeValue(writer, responseMap);
+			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
@@ -323,6 +340,8 @@ public class Partner extends MainAbstractEntity {
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
 		Response.ResponseBuilder rb = null;
+		boolean IsPartnerReferenced =false;
+		Long PartnerId;
 		try {
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
