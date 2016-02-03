@@ -95,9 +95,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
 				var filename=record.get('id');
 				if(v=='Email')
-					return '<div><a href='+href+' id="link" download="'+filename+'.html"><img src="' + mailIcon + '" /></a></div>';
+					return '<div><img class="viewemail" src="' + mailIcon + '" /></div>';
 				else
-					return '<div><a href='+href+' id="link" download="'+filename+'.html"><img src="' + browseIcon + '" /></a></div>';
+					return '<div><img class="viewemail" src="' + browseIcon + '" /></div>';
         }
         },
         {   header: '<img src="' + attacheImageSrc + '" />',
@@ -283,25 +283,32 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }];
     },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-    	 if(e.target.className=='vieworderattachment'){
-    		var list=record.get('OrderFile'),htmlString='';
-    		for(var i=0;i<list.length;i++){
-    			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
-    		}
-    		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
-    	}
-    	else if(e.target.className=='viewattachment'){
+	 if(e.target.className=='vieworderattachment'){
+		var list=record.get('OrderFile'),htmlString='';
+		for(var i=0;i<list.length;i++){
+			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
+		}
+		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
+	}
+	else if(e.target.className=='viewattachment'){
 		var list=record.get('attachmentFileList'),htmlString='';
 		for(var i=0;i<list.length;i++){
 			htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
 		}
 		td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
 	}else if(e.target.className=='attachment'){
-		
 		var id=e.target.accessKey;
 		var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
             url : applicationContext+'/rest/orderattachements/download/'+id
+        });
+        form.submit({
+        	method : 'GET'
+        });
+	}else if(e.target.className=='viewemail'){
+		var form = Ext.create('Ext.form.Panel', { 
+            standardSubmit: true,   
+            url : applicationContext+'/rest/orders/download/emailbody/'+record.get('id')
         });
         form.submit({
         	method : 'GET'
