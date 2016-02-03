@@ -10,6 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -85,18 +86,25 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		return count;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean checkDuplicatePartnerName(String partnerName) throws Exception{
+	public Boolean checkDuplicatePartnerName(Partner partnerObj) throws Exception{
 		Session session=null;
 		Criteria criteria=null;
 		int totalCount=0;
+		String partnerName=partnerObj.getPartnerName();
+		Long id=partnerObj.getId();
 		Boolean partnerExist=false;
 		List<Partner> partner = null;
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(Partner.class);
 		if(partnerName!=null && !"".equals(partnerName)){
-			criteria.add(Restrictions.eq("partnerName", partnerName));
+			Conjunction disCriteria = Restrictions.conjunction();
+			disCriteria.add(Restrictions.eq("partnerName", partnerName));
+			if(id!=0){
+				disCriteria.add(Restrictions.ne("id", id));
+			}
+			criteria.add(disCriteria);
 			partner= criteria.list();
 			totalCount=partner.size();
 			if(totalCount>0)
