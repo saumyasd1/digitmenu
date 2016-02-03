@@ -142,7 +142,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			        },{
 			            xtype:'checkboxfield',
 			            boxLabel  : 'Copy Data',
-		                    checked: true,
+		                    checked: false,
 		                    handler:function(cmp,checked){
 		                	var activeitme=(checked)?0:1;
 		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
@@ -155,7 +155,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			layout:'card',
 			flex:1,
 			itemId:'orderlineexpandablegridcard',
-			activeItem:0,
+			activeItem:1,
 			items:[{
 			    xtype:'orderlineexpandablegrid',
 			    itemId: 'orderlineexpandablegridvv',
