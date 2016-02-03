@@ -31,8 +31,9 @@ public class PartnerService extends GenericEntityService<Partner, Long>{
 	}
 	
 	@Transactional
-	public Boolean checkDuplicatePartnerName(String partnerName) throws Exception {
+	public Boolean checkDuplicatePartnerName(Partner partnerName) throws Exception {
 		return partnerDao.checkDuplicatePartnerName(partnerName);
 	}
+
 
 }
