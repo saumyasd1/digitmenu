@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -398,8 +399,11 @@ public class ProductLine extends MainAbstractEntity{
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;
 		Boolean valueExist=false;
+		Map responseMap=new HashMap();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper responseMapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
@@ -408,11 +412,17 @@ public class ProductLine extends MainAbstractEntity{
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
 			valueExist = productLineService.checkDuplicateValues(productline);
-			if (valueExist == true) {
-				throw new Exception("Product Line already exist with these values");
+			responseMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (valueExist) {
+				responseMap.put("valueExist",true);
+				responseMapper.writeValue(writer, responseMap);
+			}else{
+				id = productLineService.create(productline);
+				responseMap.put("valueExist",false);
+				responseMap.put("id",id);
+				responseMapper.writeValue(writer, responseMap);
 			}
-			id = productLineService.create(productline);
-			return Response.ok(id).build();
+			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Response
@@ -426,6 +436,7 @@ public class ProductLine extends MainAbstractEntity{
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
+		Map responseMap=new HashMap();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -448,10 +459,16 @@ public class ProductLine extends MainAbstractEntity{
 			ObjectReader updater = mapper.readerForUpdating(productline);
 			// build updated entity object from input data
 			productline = updater.readValue(data);
-			// update entity in database
-			productLineService.update(productline);
-			// prepare response
-			mapper.writeValue(writer, productline);
+			boolean valueExist = productLineService.checkDuplicateValues(productline);
+			if (valueExist) {
+				responseMap.put("valueExist",true);
+				mapper.writeValue(writer, responseMap);
+			}else{
+				productLineService.update(productline);
+				responseMap.put("valueExist",false);
+				responseMap.put("productline",productline);
+				mapper.writeValue(writer, responseMap);
+			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
