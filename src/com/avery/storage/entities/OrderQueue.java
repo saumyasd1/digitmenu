@@ -1,5 +1,6 @@
 package com.avery.storage.entities;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -739,5 +740,36 @@ public class OrderQueue extends MainAbstractEntity{
 	
 	public static Map<String,String> getCodeMap(){
 		return codeMap;
+	}
+	
+	@GET
+	@Path("/download/emailbody/{orderid}")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getEmailBody(@Context UriInfo ui,
+	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
+		Long orderQueueEntityId = Long.parseLong(orderid);
+		OrderQueue orderQueue=null;
+		try {
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderQueue = orderQueueService.read(orderQueueEntityId);
+			if (orderQueue == null)
+				throw new Exception("Unable to find Order with the given id");
+			InputStream is = new ByteArrayInputStream(orderQueue.getEmailBody().getBytes("UTF-8"));;
+			byte[] bytes = IOUtils.toByteArray(is);
+			String fileName = "\""+orderid+".html\"";
+			return Response
+					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
+		            .header("content-disposition","attachment; filename = "+fileName)
+		            .build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
 	}
 }
