@@ -38,12 +38,21 @@ Ext.define('AOC.view.partner.PartnerController', {
 					method: methodMode,
 				    jsonData : parameters,	
 				    url : url,
-		        success : function(response, opts) {
+				    success : function(response, opts) {
+			        	var jsonString=Ext.JSON.decode(response.responseText);
+			    		var valueExist=jsonString.valueExist;
+			    		if(valueExist){
+			    			Ext.getBody().unmask();
+			    			createpartner.lookupReference('partnerName').focus();
+			    			createpartner.down('#messageFieldItemId').show();
+			    			createpartner.down('#messageFieldItemId').setValue('<font size=2 color=red> An entry already exists for given Partner Name.</font>');
+			    			return false;
+			    		}
 		        	    Ext.getBody().unmask();
 		        	    createpartner.destroy();
 		        	    AOC.util.Helper.fadeoutMessage('Success',Msg);
 			  			grid.store.load();
-		        },
+				    },
 		        failure: function(response, opts) {
 		        	Msg=response.responseText;
 		        	Msg=Msg.replace("Exception:"," ");
@@ -66,7 +75,7 @@ Ext.define('AOC.view.partner.PartnerController', {
     }
 ,
 	CancelDetails:function()
-	{   
+	{  
 	Ext.getBody().unmask();
 	this.getView().destroy();
 	this.runTime.setWindowInEditMode(false);
