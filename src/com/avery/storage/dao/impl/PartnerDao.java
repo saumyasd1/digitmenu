@@ -11,7 +11,7 @@ import com.avery.storage.entities.ProductLine;
 
 public interface PartnerDao extends GenericDao<Partner, Long>{
 	
-	public Boolean checkDuplicatePartnerName(String partnerName) throws Exception;
+	public Boolean checkDuplicatePartnerName(Partner partnerName) throws Exception;
 
 
 }
