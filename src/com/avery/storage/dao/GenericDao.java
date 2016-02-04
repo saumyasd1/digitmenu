@@ -29,5 +29,5 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	
 	void updateEntities(List<T> entities);
 	
-	Map readWithCriteria(MultivaluedMap queryMap) throws Exception;
+	Map<?, ?> readWithCriteria(MultivaluedMap<?, ?> queryMap) throws Exception;
 }
