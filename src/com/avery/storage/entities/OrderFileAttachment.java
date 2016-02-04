@@ -27,9 +27,6 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -46,7 +43,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Table(name = "OrderFileAttachment")
 @Path("orderattachements")
 public class OrderFileAttachment extends MainAbstractEntity {
-	
+
+	private static final long serialVersionUID = -5438437762230204443L;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "OrderQueueID", nullable = true)
 	private OrderQueue orderQueue;
@@ -84,19 +83,6 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	
 	@Column(name = "Error",length = 50)
     private String error;
-	
-/*	@OneToMany(mappedBy = "orderFileAttchment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<OrderLine> orderLine;
-
-	public Set<OrderLine> getOrderLine() {
-		return orderLine;
-	}
-
-	public void setOrderLine(Set<OrderLine> orderLine) {
-		this.orderLine = orderLine;
-	}
-	*/
-
 
 	public OrderQueue getOrderQueue() {
 		return orderQueue;
@@ -105,7 +91,6 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	public void setOrderQueue(OrderQueue orderQueue) {
 		this.orderQueue = orderQueue;
 	}
-
 
 	public Partner getPartnerObj() {
 		return partnerObj;
@@ -357,32 +342,21 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getFileByID(@Context UriInfo ui,
 			@Context HttpHeaders hh, @PathParam("id") String fileId) {
-		Response.ResponseBuilder rb = null;
 		OrderFileAttachment orderFileAttachment = null;
 		try{
 			Long entityId = Long.parseLong(fileId);
-			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
 			
 			orderFileAttachment = orderFileAttachmentService.read(entityId);
-			//orderFileAttachment = orderFileAttachmentService.readFileByID(entityId);
 			if (orderFileAttachment == null)
 				throw new Exception("Unable to find order attachments");
-			//FormDataMultiPart form = new FormDataMultiPart();
 			
 			InputStream is = orderFileAttachment.getFileData().getBinaryStream();
 			byte[] bytes = IOUtils.toByteArray(is);
 			String fileName = "\""+orderFileAttachment.getFileName()+"\"";
-			//FormDataBodyPart bodyPart = new FormDataBodyPart("file", is, MediaType.APPLICATION_OCTET_STREAM_TYPE);
-
-			//bodyPart.setContentDisposition(FormDataContentDisposition.name("file")
-              //                                             .fileName(orderFileAttachment.getFileName()).build());
-			//form.bodyPart(bodyPart);
-			//mapper.writeValue(writer, orderFileAttachment);
-			//rb = Response.ok(form,MediaType.MULTIPART_FORM_DATA);
 			return Response
 		            .ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
 		            .header("content-disposition","attachment; filename = "+fileName)
@@ -396,8 +370,5 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		//return rb.build();
 	}
-
-
 }
