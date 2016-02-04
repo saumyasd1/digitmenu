@@ -1,7 +1,10 @@
 package com.avery.storage.MixIn;
 
 
+import java.util.Date;
 import java.util.Set;
+
+
 
 
 
@@ -22,6 +25,20 @@ public abstract class PartnerMixIn {
 	@JsonIgnore
 	public abstract Set<OrderQueue> getOrderQueue();
 	
+	@JsonIgnore
+	public abstract String getCreatedBy(); //ignore CreatedBy from partner belongs to main abstract entity class
+	
+	@JsonIgnore
+	public abstract Date getCreatedDate(); //ignore CreatedDate from partner belongs to main abstract entity class
+	
+	@JsonIgnore
+	public abstract Date getLastModifiedDate(); //ignore LastModified Date from partner belongs to main abstract entity class
+	
+	@JsonIgnore
+	public abstract String getLastModifiedBy();
+	
+	@JsonIgnore
+	public abstract Boolean isActive() ;
 	
 	
 }
