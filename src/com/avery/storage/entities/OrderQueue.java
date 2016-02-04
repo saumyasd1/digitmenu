@@ -3,7 +3,6 @@ package com.avery.storage.entities;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Blob;
@@ -45,7 +44,6 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -54,6 +52,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
@@ -82,7 +81,6 @@ public class OrderQueue extends MainAbstractEntity{
 				e.printStackTrace();
 			}
 		}
-	
 	
 	private static final long serialVersionUID = -8487156716364715576L;
 	
@@ -325,6 +323,7 @@ public class OrderQueue extends MainAbstractEntity{
 		this.ponumber = ponumber;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -333,11 +332,12 @@ public class OrderQueue extends MainAbstractEntity{
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			mapper.addMixInAnnotations(OrderQueue.class, OrderQueueMixIn.class);
-			mapper.addMixInAnnotations(OrderFileAttachment.class, OrderQueueMixIn.class);
-			mapper.addMixInAnnotations(Partner.class, OrderQueueMixIn.class);//added mixIn
-			mapper.addMixInAnnotations(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);//added
+			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderFileAttachment.class, OrderQueueMixIn.class);
+			mapper.addMixIn(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);//added
+			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);//added
+			mapper.addMixIn(ProductLine.class,OrderQueueMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
@@ -392,8 +392,8 @@ public class OrderQueue extends MainAbstractEntity{
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
-			mapper.addMixInAnnotations(OrderQueue.class, OrderQueueMixIn.class);
-			mapper.addMixInAnnotations(OrderFileAttachment.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderFileAttachment.class, OrderQueueMixIn.class);
 			// toggle this property value based on your input JSON data
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
@@ -438,8 +438,8 @@ public class OrderQueue extends MainAbstractEntity{
 			Long entityId = Long.parseLong(id);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(OrderQueue.class, OrderQueueMixIn.class);
-			mapper.addMixInAnnotations(OrderFileAttachment.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderFileAttachment.class, OrderQueueMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
@@ -539,9 +539,6 @@ public class OrderQueue extends MainAbstractEntity{
 			MultivaluedMap<String, String> pathParamMap,
 			FormDataMultiPart formParams, HttpHeaders headers) throws Exception {
 
-		// fetch transaction id which we will execute and a custom
-		// transactionPID will be used
-		String transactionId = pathParamMap.getFirst("orderid");
 		Long partnerid = Long.parseLong(formParams.getField("partnerName").getValue());
 		String emailid = formParams.getField("email").getValue();
 		String emailBody = formParams.getField("emailBody").getValue();
@@ -584,7 +581,6 @@ public class OrderQueue extends MainAbstractEntity{
 	    // Usually each value in fieldsByName will be a list of length 1.
 	    // Assuming each field in the form is a file, just loop through them.
 
-		String baseLocation = null;
 		FileOutputStream outstream = null;
 		String fileName = null;
 		String type = null;
@@ -593,7 +589,7 @@ public class OrderQueue extends MainAbstractEntity{
 		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 				.getInstance().getBean("orderFileAttachmentService");
 		OrderFileAttachment orderFileAttachment=null;
-		Blob blob =null;InputStream stream=null;String value=null;
+		Blob blob =null;InputStream stream=null;
 		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
 		    String field = entry.getKey();
 		    FormDataBodyPart formdata = entry.getValue().get(0);
@@ -601,9 +597,7 @@ public class OrderQueue extends MainAbstractEntity{
 				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
 					 stream = ((FormDataBodyPart) formParams
 							.getField(field)).getEntityAs(InputStream.class);
-					 value = ((FormDataBodyPart) formParams
-							.getField(field)).getValueAs(String.class);
-					fileName = ((FormDataBodyPart) formParams.getField(field))
+					 fileName = ((FormDataBodyPart) formParams.getField(field))
 							.getContentDisposition().getFileName();
 					type = ((FormDataBodyPart) formParams.getField(field))
 							.getMediaType().toString();
@@ -657,16 +651,14 @@ public class OrderQueue extends MainAbstractEntity{
 		return "{\"success\":true}";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/download/dailyreport")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getDailyReport(@Context UriInfo ui,
 	@Context HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
 		List<OrderQueue> orderQueue = null;
 		try {
-			StringWriter writer = new StringWriter();
-			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService.getAllEntitiesListForDailyReport();
@@ -707,6 +699,7 @@ public class OrderQueue extends MainAbstractEntity{
 		}
 		return codeMap;
 	}
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/download/openreport")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
