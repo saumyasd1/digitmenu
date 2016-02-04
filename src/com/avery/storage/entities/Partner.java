@@ -3,8 +3,6 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
@@ -29,8 +26,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.AddressMixIn;
-import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -170,20 +165,16 @@ public class Partner extends MainAbstractEntity {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-
-
-
 	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<Partner> partner = null;
-		Map entitiesMap=null;
+		Map<?, ?> entitiesMap=null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
@@ -208,9 +199,8 @@ public class Partner extends MainAbstractEntity {
 	@Override
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;
-		String partnerName="";
 		Boolean partnerExist=false;
-		Map responseMap=new HashMap();
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -218,15 +208,10 @@ public class Partner extends MainAbstractEntity {
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			Partner partner = mapper.readValue(data, Partner.class);
-			partnerName=partner.getPartnerName();
 			partner.setCreatedDate(new Date());
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
 			partnerExist = partnerService.checkDuplicatePartnerName(partner);
-//			if (partnerExist == true) {
-//				throw new Exception("Partner already exist with Partner Name:"
-//						+partnerName);
-//			}
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			if (partnerExist) {
 				responseMap.put("valueExist",true);
@@ -237,7 +222,6 @@ public class Partner extends MainAbstractEntity {
 				responseMap.put("id",id);
 				mapper.writeValue(writer, responseMap);
 			}
-			
 			return Response.ok(writer.toString()).build();
 		}catch (WebApplicationException ex) {
 			throw ex;
@@ -255,11 +239,11 @@ public class Partner extends MainAbstractEntity {
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
-		Map responseMap=new HashMap();
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
@@ -339,9 +323,6 @@ public class Partner extends MainAbstractEntity {
 	
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
-		boolean IsPartnerReferenced =false;
-		Long PartnerId;
 		try {
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
