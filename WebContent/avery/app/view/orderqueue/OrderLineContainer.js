@@ -163,7 +163,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		            selModel: {
 		        	      type:'spreadsheet',
 		        	      rowNumbererHeaderWidth:0
-		        	    },
+		        	    }
 			},
 			{
 				xtype:'orderlineexpandablegrid',
@@ -171,7 +171,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				editGrid:true,
 				selModel: {
 	        	      type: 'rowmodel'
-	        	    },
+	        	    }
 			}
 			]
 			}
