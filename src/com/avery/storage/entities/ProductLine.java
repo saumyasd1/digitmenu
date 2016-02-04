@@ -31,7 +31,6 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.PartnerMixIn;
-import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -373,7 +372,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			//mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
@@ -399,7 +398,7 @@ public class ProductLine extends MainAbstractEntity{
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;
 		Boolean valueExist=false;
-		Map responseMap=new HashMap();
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectMapper responseMapper = new ObjectMapper();
@@ -436,11 +435,11 @@ public class ProductLine extends MainAbstractEntity{
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
-		Map responseMap=new HashMap();
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
@@ -528,12 +527,11 @@ public class ProductLine extends MainAbstractEntity{
 	public Response getByPartnerID(@Context UriInfo ui,
 			@Context HttpHeaders hh, @PathParam("id") String partnerId) {
 		Response.ResponseBuilder rb = null;
-		Map productline = null;
+		Map<?,?> productline = null;
 		try{
-			Long entityId = Long.parseLong(partnerId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
@@ -556,7 +554,6 @@ public class ProductLine extends MainAbstractEntity{
 	}
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
 		try {
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
