@@ -334,5 +334,5 @@ Ext.define('AOC.view.webform.WebFormController', {
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
         ordeQueueGrid.store.load();
         this.getView().destroy();
-     },
+     }
 });
