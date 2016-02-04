@@ -2,7 +2,6 @@ package com.avery.app;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import com.avery.app.config.PathConfig;
 import com.avery.app.config.PropertiesConfig;
