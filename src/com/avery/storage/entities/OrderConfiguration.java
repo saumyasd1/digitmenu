@@ -206,6 +206,7 @@ public class OrderConfiguration extends MainAbstractEntity {
 	
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		Response.ResponseBuilder rb = null;
 		try {
 			OrderConfigurationService orderConfigurationService = (OrderConfigurationService) SpringConfig
 					.getInstance().getBean("orderConfigurationService");
