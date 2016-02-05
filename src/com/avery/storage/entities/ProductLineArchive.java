@@ -35,162 +35,161 @@ public class ProductLineArchive extends MainAbstractEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1862175576385940708L;
-
+	private static final long serialVersionUID = -4050619395141494036L;
 
 	@Column(name = "Partner_RBOProductLineID")  
-	private String partner_rboproductlineid; 
+	private int partner_rboproductlineid; 
 
 
 	@Column(name = "PartnerID")  
-	private String partnerid; 
+	private int partnerid; 
 
 
-	@Column(name = "RBOID")  
+	@Column(name = "RBOID",length = 50)  
 	private String rboid; 
 
 
-	@Column(name = "RBOName")  
+	@Column(name = "RBOName",length = 50)  
 	private String rboname; 
 
 
-	@Column(name = "ProductLineType")  
+	@Column(name = "ProductLineType",length = 50)  
 	private String productlinetype; 
 
 
-	@Column(name = "CSRName")  
+	@Column(name = "CSRName",length = 100)  
 	private String csrname; 
 
 
-	@Column(name = "CSREmail")  
+	@Column(name = "CSREmail",length = 250)  
 	private String csremail; 
 
 
-	@Column(name = "OrderEmailDomain")  
+	@Column(name = "OrderEmailDomain",length = 100)  
 	private String orderemaildomain; 
 
 
-	@Column(name = "PackingInstruction")  
+	@Column(name = "PackingInstruction",columnDefinition = "varchar(500)")  
 	private String packinginstruction; 
 
 
-	@Column(name = "InvoiceLineInstruction")  
+	@Column(name = "InvoiceLineInstruction",columnDefinition = "varchar(500)")  
 	private String invoicelineinstruction; 
 
 
-	@Column(name = "VariableDataBreakdown")  
+	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")  
 	private String variabledatabreakdown; 
 
 
-	@Column(name = "ManufacturingNotes")  
+	@Column(name = "ManufacturingNotes",columnDefinition = "varchar(500)")  
 	private String manufacturingnotes; 
 
 
-	@Column(name = "ShippingOnlyNotes")  
+	@Column(name = "ShippingOnlyNotes",columnDefinition = "varchar(500)")  
 	private String shippingonlynotes; 
 
 
-	@Column(name = "SplitShipSetBy")  
+	@Column(name = "SplitShipSetBy",length = 5)  
 	private String splitshipsetby; 
 
 
-	@Column(name = "OrderSchemaID")  
+	@Column(name = "OrderSchemaID",length = 50)  
 	private String orderschemaid; 
 
 
-	@Column(name = "OrderSchemaType")  
+	@Column(name = "OrderSchemaType",length = 50)  
 	private String orderschematype; 
 
 
-	@Column(name = "OrderMappingID")  
+	@Column(name = "OrderMappingID",length = 50)  
 	private String ordermappingid; 
 
 
-	@Column(name = "IsAttachmentRequired")  
-	private String isattachmentrequired; 
+	@Column(name = "AttachmentRequired")  
+	private Boolean isattachmentrequired; 
 
 
-	@Column(name = "AttachmentIdentifier_1")  
+	@Column(name = "AttachmentIdentifier_1",length = 50)  
 	private String attachmentidentifier_1; 
 
 
-	@Column(name = "AttachmentSchemaType_1")  
+	@Column(name = "AttachmentSchemaType_1",length = 50)  
 	private String attachmentschematype_1; 
 
 
-	@Column(name = "AttachmentMappingID_1")  
+	@Column(name = "AttachmentMappingID_1",length = 50)  
 	private String attachmentmappingid_1; 
 
 
-	@Column(name = "AttachmentIdentifier_2")  
+	@Column(name = "AttachmentIdentifier_2",length = 50)  
 	private String attachmentidentifier_2; 
 
 
-	@Column(name = "AttachmentSchemaID_2")  
+	@Column(name = "AttachmentSchemaID_2",length = 50)  
 	private String attachmentschemaid_2; 
 
 
-	@Column(name = "AttachmentSchemaType_2")  
+	@Column(name = "AttachmentSchemaType_2",length = 50)  
 	private String attachmentschematype_2; 
 
 
-	@Column(name = "AttachmentMappingID_2")  
+	@Column(name = "AttachmentMappingID_2",length = 50)  
 	private String attachmentmappingid_2; 
 
 
-	@Column(name = "AttachmentIdentifier_3")  
+	@Column(name = "AttachmentIdentifier_3",length = 50)  
 	private String attachmentidentifier_3; 
 
 
-	@Column(name = "AttachmentSchemaID_3")  
+	@Column(name = "AttachmentSchemaID_3",length = 50)  
 	private String attachmentschemaid_3; 
 
 
-	@Column(name = "AttachmentSchemaType_3")  
+	@Column(name = "AttachmentSchemaType_3",length = 50)  
 	private String attachmentschematype_3; 
 
 
-	@Column(name = "AttachmentMappingID_3")  
+	@Column(name = "AttachmentMappingID_3",length = 50)  
 	private String attachmentmappingid_3; 
 
 
-	@Column(name = "OrderToProcessSchemaID")  
+	@Column(name = "OrderToProcessSchemaID",length = 50)  
 	private String ordertoprocessschemaid; 
 
 
-	@Column(name = "OrderToProcessMappingID")  
+	@Column(name = "OrderToProcessMappingID",length = 50)  
 	private String ordertoprocessmappingid; 
 
 
-	@Column(name = "PreProcessPID")  
+	@Column(name = "PreProcessPID",length = 50)  
 	private String preprocesspid; 
 
 
 	/**
 	 * @return the partner_rboproductlineid
 	 */
-	public String getPartner_rboproductlineid() {
+	public int getPartner_rboproductlineid() {
 		return partner_rboproductlineid;
 	}
 
 	/**
 	 * @param partner_rboproductlineid the partner_rboproductlineid to set
 	 */
-	public void setPartner_rboproductlineid(String partner_rboproductlineid) {
+	public void setPartner_rboproductlineid(int partner_rboproductlineid) {
 		this.partner_rboproductlineid = partner_rboproductlineid;
 	}
 
 	/**
 	 * @return the partnerid
 	 */
-	public String getPartnerid() {
+	public int getPartnerid() {
 		return partnerid;
 	}
 
 	/**
 	 * @param partnerid the partnerid to set
 	 */
-	public void setPartnerid(String partnerid) {
+	public void setPartnerid(int partnerid) {
 		this.partnerid = partnerid;
 	}
 
@@ -407,14 +406,14 @@ public class ProductLineArchive extends MainAbstractEntity {
 	/**
 	 * @return the isattachmentrequired
 	 */
-	public String getIsattachmentrequired() {
+	public Boolean getIsattachmentrequired() {
 		return isattachmentrequired;
 	}
 
 	/**
 	 * @param isattachmentrequired the isattachmentrequired to set
 	 */
-	public void setIsattachmentrequired(String isattachmentrequired) {
+	public void setIsattachmentrequired(Boolean isattachmentrequired) {
 		this.isattachmentrequired = isattachmentrequired;
 	}
 
@@ -614,6 +613,7 @@ public class ProductLineArchive extends MainAbstractEntity {
 		this.preprocesspid = preprocesspid;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
