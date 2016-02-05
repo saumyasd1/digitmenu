@@ -33,186 +33,186 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("ar_orderline")
 public class OrderLineArchive extends MainAbstractEntity {
 
-	private static final long serialVersionUID = -2934178911703118640L;
+	private static final long serialVersionUID = -8487156716364715527L;
 
 	@Column(name = "OrderLineID")
-	private String orderlineid;
+	private int orderlineid;
 
 	@Column(name = "OrderFileAttchmentID")
-	private String orderfileattchmentid;
+	private int orderfileattchmentid;
 
 	@Column(name = "OrderQueueID")
-	private String orderqueueid;
+	private int orderqueueid;
 
-	@Column(name = "PartnerID")
+	@Column(name = "PartnerID",length=50)
 	private String partnerid;
 
-	@Column(name = "RBOID")
+	@Column(name = "RBOID",length=50)
 	private String rboid;
 
-	@Column(name = "ProductLineType")
+	@Column(name = "ProductLineType",length=50)
 	private String productlinetype;
 
-	@Column(name = "CustomerPONumber")
+	@Column(name = "CustomerPONumber",length=50)
 	private String customerponumber;
 
 	@Column(name = "OrderedDate")
 	private String ordereddate;
 
-	@Column(name = "PartnerCustomerName")
+	@Column(name = "PartnerCustomerName",length=250)
 	private String partnercustomername;
 
-	@Column(name = "IsBulk")
-	private String isbulk;
+	@Column(name = "Bulk")
+	private Boolean isbulk;
 
-	@Column(name = "PartnerVendorName")
+	@Column(name = "PartnerVendorName",length=250)
 	private String partnervendorname;
 
-	@Column(name = "ShipToCustomer")
+	@Column(name = "ShipToCustomer",length=250)
 	private String shiptocustomer;
 
-	@Column(name = "ShipToContact")
+	@Column(name = "ShipToContact",length=250)
 	private String shiptocontact;
 
-	@Column(name = "ShipToAddress1")
+	@Column(name = "ShipToAddress1",length=250)
 	private String shiptoaddress1;
 
-	@Column(name = "ShipToAddress2")
+	@Column(name = "ShipToAddress2",length=250)
 	private String shiptoaddress2;
 
-	@Column(name = "ShipToAddress3")
+	@Column(name = "ShipToAddress3",length=250)
 	private String shiptoaddress3;
 
-	@Column(name = "ShipToCity")
+	@Column(name = "ShipToCity",length=100)
 	private String shiptocity;
 
-	@Column(name = "ShipToState")
+	@Column(name = "ShipToState",length=100)
 	private String shiptostate;
 
-	@Column(name = "ShipToZip")
+	@Column(name = "ShipToZip",length=50)
 	private String shiptozip;
 
-	@Column(name = "ShipToCountry")
+	@Column(name = "ShipToCountry",length=100)
 	private String shiptocountry;
 
-	@Column(name = "ShipToTelephone")
+	@Column(name = "ShipToTelephone",length=50)
 	private String shiptotelephone;
 
-	@Column(name = "ShipToFax")
+	@Column(name = "ShipToFax",length=100)
 	private String shiptofax;
 
-	@Column(name = "ShipToEmail")
+	@Column(name = "ShipToEmail",length=100)
 	private String shiptoemail;
 
-	@Column(name = "BillToCustomer")
+	@Column(name = "BillToCustomer",length=250)
 	private String billtocustomer;
 
-	@Column(name = "BillToContact")
+	@Column(name = "BillToContact",length=250)
 	private String billtocontact;
 
-	@Column(name = "BillToAddress1")
+	@Column(name = "BillToAddress1",length=250)
 	private String billtoaddress1;
 
-	@Column(name = "BillToAddress2")
+	@Column(name = "BillToAddress2",length=250)
 	private String billtoaddress2;
 
-	@Column(name = "BillToAddress3")
+	@Column(name = "BillToAddress3",length=250)
 	private String billtoaddress3;
 
-	@Column(name = "BillToCity")
+	@Column(name = "BillToCity",length=100)
 	private String billtocity;
 
-	@Column(name = "BillToState")
+	@Column(name = "BillToState",length=100)
 	private String billtostate;
 
-	@Column(name = "BillToZip")
+	@Column(name = "BillToZip",length=50)
 	private String billtozip;
 
-	@Column(name = "BillToCountry")
+	@Column(name = "BillToCountry",length=100)
 	private String billtocountry;
 
-	@Column(name = "BillToTelephone")
+	@Column(name = "BillToTelephone",length=50)
 	private String billtotelephone;
 
-	@Column(name = "BillToFax")
+	@Column(name = "BillToFax",length=100)
 	private String billtofax;
 
-	@Column(name = "BillToEmail")
+	@Column(name = "BillToEmail",length=100)
 	private String billtoemail;
 
 	@Column(name = "RequestedDevliveryDate")
 	private String requesteddevliverydate;
 
-	@Column(name = "ShippingMethod")
+	@Column(name = "ShippingMethod",length=100)
 	private String shippingmethod;
 
-	@Column(name = "SpecialInstruction")
+	@Column(name = "SpecialInstruction",columnDefinition = "varchar(500)")
 	private String specialinstruction;
 
 	@Column(name = "OrderReceivedDate")
 	private String orderreceiveddate;
 
-	@Column(name = "SOLDTORBONumber")
+	@Column(name = "SOLDTORBONumber",length=50)
 	private String soldtorbonumber;
 
-	@Column(name = "OracleBilltoSiteNumber")
+	@Column(name = "OracleBilltoSiteNumber",length=50)
 	private String oraclebilltositenumber;
 
-	@Column(name = "OracleShiptoSiteNumber")
+	@Column(name = "OracleShiptoSiteNumber",length=50)
 	private String oracleshiptositenumber;
 
-	@Column(name = "RetailerPO_CustomerJob")
+	@Column(name = "RetailerPO_CustomerJob",length=100)
 	private String retailerpo_customerjob;
 
-	@Column(name = "AveryItemNumber")
+	@Column(name = "AveryItemNumber",length=50)
 	private String averyitemnumber;
 
-	@Column(name = "OracleItemNumber")
+	@Column(name = "OracleItemNumber",length=50)
 	private String oracleitemnumber;
 
-	@Column(name = "CustomerItemNumber")
+	@Column(name = "CustomerItemNumber",length=50)
 	private String customeritemnumber;
 
-	@Column(name = "ItemDescription")
+	@Column(name = "ItemDescription",length=200)
 	private String itemdescription;
 
-	@Column(name = "CustomerColorCode")
+	@Column(name = "CustomerColorCode",length=50)
 	private String customercolorcode;
 
-	@Column(name = "CustomerColorDescription")
+	@Column(name = "CustomerColorDescription",length=200)
 	private String customercolordescription;
 
-	@Column(name = "CustomerSize")
+	@Column(name = "CustomerSize",length=50)
 	private String customersize;
 
-	@Column(name = "CustomerUnitPrice")
+	@Column(name = "CustomerUnitPrice",length=50)
 	private String customerunitprice;
 
-	@Column(name = "CustomerCost")
+	@Column(name = "CustomerCost",length=50)
 	private String customercost;
 
-	@Column(name = "ContractNumber")
+	@Column(name = "ContractNumber",length=50)
 	private String contractnumber;
 
-	@Column(name = "StyleNo")
+	@Column(name = "StyleNo",length=50)
 	private String styleno;
 
-	@Column(name = "CustomerItemNumber1")
+	@Column(name = "CustomerItemNumber1",length=50)
 	private String customeritemnumber1;
 
-	@Column(name = "CustomerItemNumber2")
+	@Column(name = "CustomerItemNumber2",length=50)
 	private String customeritemnumber2;
 
-	@Column(name = "CustomerSeason")
+	@Column(name = "CustomerSeason",length=50)
 	private String customerseason;
 
-	@Column(name = "CustomerUOM")
+	@Column(name = "CustomerUOM",length=50)
 	private String customeruom;
 
-	@Column(name = "CustomerOrderedQty")
+	@Column(name = "CustomerOrderedQty",length=50)
 	private String customerorderedqty;
 
-	@Column(name = "CalculatedOrderdedQty")
+	@Column(name = "CalculatedOrderdedQty",length=10)
 	private String calculatedorderdedqty;
 
 	@Column(name = "OrderDate")
@@ -224,100 +224,100 @@ public class OrderLineArchive extends MainAbstractEntity {
 	@Column(name = "PromiseDate")
 	private String promisedate;
 
-	@Column(name = "FreightTerms")
+	@Column(name = "FreightTerms",length=50)
 	private String freightterms;
 
-	@Column(name = "CSR")
+	@Column(name = "CSR",length=50)
 	private String csr;
 
-	@Column(name = "PackingInstruction")
+	@Column(name = "PackingInstruction",columnDefinition = "varchar(500)")
 	private String packinginstruction;
 
-	@Column(name = "ShippingInstructions")
+	@Column(name = "ShippingInstructions",columnDefinition = "varchar(500)")
 	private String shippinginstructions;
 
-	@Column(name = "InvoicelineInstruction")
+	@Column(name = "InvoicelineInstruction",columnDefinition = "varchar(500)")
 	private String invoicelineinstruction;
 
-	@Column(name = "DivisionforInterfaceERPORG")
+	@Column(name = "DivisionforInterfaceERPORG",length=10)
 	private String divisionforinterfaceerporg;
 
-	@Column(name = "Artworkhold")
+	@Column(name = "Artworkhold",length=5)
 	private String artworkhold;
 
-	@Column(name = "Artworkworkattachment")
+	@Column(name = "Artworkworkattachment",length=5)
 	private String artworkworkattachment;
 
-	@Column(name = "VariableDataBreakdown")
+	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
 	private String variabledatabreakdown;
 
-	@Column(name = "Manufacturingnotes")
+	@Column(name = "Manufacturingnotes",columnDefinition = "varchar(500)")
 	private String manufacturingnotes;
 
-	@Column(name = "Ordertype")
+	@Column(name = "Ordertype",length=50)
 	private String ordertype;
 
-	@Column(name = "Orderby")
+	@Column(name = "Orderby",length=50)
 	private String orderby;
 
-	@Column(name = "Endcustomer")
+	@Column(name = "Endcustomer",length=50)
 	private String endcustomer;
 
-	@Column(name = "Shippingonlynotes")
+	@Column(name = "Shippingonlynotes",columnDefinition = "varchar(500)")
 	private String shippingonlynotes;
 
-	@Column(name = "BankCharge")
+	@Column(name = "BankCharge",length=10)
 	private String bankcharge;
 
-	@Column(name = "FreightCharge")
+	@Column(name = "FreightCharge",length=10)
 	private String freightcharge;
 
-	@Column(name = "Shippinghold")
+	@Column(name = "Shippinghold",length=5)
 	private String shippinghold;
 
-	@Column(name = "Productionhold")
+	@Column(name = "Productionhold",length=5)
 	private String productionhold;
 
-	@Column(name = "Splitshipset")
+	@Column(name = "Splitshipset",length=5)
 	private String splitshipset;
 
-	@Column(name = "Agreement")
+	@Column(name = "Agreement",length=50)
 	private String agreement;
 
-	@Column(name = "ModelSerialNumber")
+	@Column(name = "ModelSerialNumber",length=50)
 	private String modelserialnumber;
 
-	@Column(name = "WaiveMOQ")
+	@Column(name = "WaiveMOQ",length=5)
 	private String waivemoq;
 
-	@Column(name = "APOType")
+	@Column(name = "APOType",length=5)
 	private String apotype;
 
 	@Column(name = "SentToOracleDate")
 	private String senttooracledate;
 
-	@Column(name = "Status")
+	@Column(name = "Status",length=50)
 	private String status;
 
-	@Column(name = "DuplicatePOFlag")
+	@Column(name = "DuplicatePOFlag",length=250)
 	private String duplicatepoflag;
 
-	@Column(name = "CustomerPOFlag")
+	@Column(name = "CustomerPOFlag",length=250)
 	private String customerpoflag;
 
-	@Column(name = "BulkSampleValidationFlag")
+	@Column(name = "BulkSampleValidationFlag",length=250)
 	private String bulksamplevalidationflag;
 
-	@Column(name = "MOQValidationFlag")
+	@Column(name = "MOQValidationFlag",length=250)
 	private String moqvalidationflag;
 
-	@Column(name = "ATOValidationFlag")
+	@Column(name = "ATOValidationFlag",length=250)
 	private String atovalidationflag;
 
-	@Column(name = "MandatoryVariableDataFieldFlag")
+	@Column(name = "MandatoryVariableDataFieldFlag",length=250)
 	private String mandatoryvariabledatafieldflag;
 
-	@Column(name = "HTLSizePageValidationFlag")
+	@Column(name = "HTLSizePageValidationFlag",length=250)
 	private String htlsizepagevalidationflag;
 
 
@@ -325,7 +325,7 @@ public class OrderLineArchive extends MainAbstractEntity {
 	/**
 	 * @return the orderlineid
 	 */
-	public String getOrderlineid() {
+	public int getOrderlineid() {
 		return orderlineid;
 	}
 
@@ -333,14 +333,14 @@ public class OrderLineArchive extends MainAbstractEntity {
 	 * @param orderlineid
 	 *            the orderlineid to set
 	 */
-	public void setOrderlineid(String orderlineid) {
+	public void setOrderlineid(int orderlineid) {
 		this.orderlineid = orderlineid;
 	}
 
 	/**
 	 * @return the orderfileattchmentid
 	 */
-	public String getOrderfileattchmentid() {
+	public int getOrderfileattchmentid() {
 		return orderfileattchmentid;
 	}
 
@@ -348,14 +348,14 @@ public class OrderLineArchive extends MainAbstractEntity {
 	 * @param orderfileattchmentid
 	 *            the orderfileattchmentid to set
 	 */
-	public void setOrderfileattchmentid(String orderfileattchmentid) {
+	public void setOrderfileattchmentid(int orderfileattchmentid) {
 		this.orderfileattchmentid = orderfileattchmentid;
 	}
 
 	/**
 	 * @return the orderqueueid
 	 */
-	public String getOrderqueueid() {
+	public int getOrderqueueid() {
 		return orderqueueid;
 	}
 
@@ -363,7 +363,7 @@ public class OrderLineArchive extends MainAbstractEntity {
 	 * @param orderqueueid
 	 *            the orderqueueid to set
 	 */
-	public void setOrderqueueid(String orderqueueid) {
+	public void setOrderqueueid(int orderqueueid) {
 		this.orderqueueid = orderqueueid;
 	}
 
@@ -460,7 +460,7 @@ public class OrderLineArchive extends MainAbstractEntity {
 	/**
 	 * @return the isbulk
 	 */
-	public String getIsbulk() {
+	public Boolean getIsbulk() {
 		return isbulk;
 	}
 
@@ -468,7 +468,7 @@ public class OrderLineArchive extends MainAbstractEntity {
 	 * @param isbulk
 	 *            the isbulk to set
 	 */
-	public void setIsbulk(String isbulk) {
+	public void setIsbulk(Boolean isbulk) {
 		this.isbulk = isbulk;
 	}
 
@@ -1749,6 +1749,7 @@ public class OrderLineArchive extends MainAbstractEntity {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
