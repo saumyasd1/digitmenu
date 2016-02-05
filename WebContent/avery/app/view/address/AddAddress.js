@@ -75,7 +75,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[{
         			xtype:'textfield',
         			name: 'orgCode',
-        			fieldLabel:'ORG Code<font color=red>*</font>',
+        			fieldLabel:'ORG Code',
         			allowBlank: false,
     		        listeners : {
 	                    blur : this.notifyByImage,
@@ -85,7 +85,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'combobox',
 	        			name: 'partner_id',
-	        			fieldLabel:'Partner Name<font color=red>*</font>',
+	        			fieldLabel:'Partner Name',
 	        			displayField:'partnerName',
 						valueField:'id',
 					    store :'PartnerManagementStore',
@@ -98,8 +98,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'description',
-	        			fieldLabel:'Description<font color=red>*</font>',
-	        			allowBlank: false,
+	        			fieldLabel:'Description',
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 		                    'focus' : 'HideMandatoryMessage'
@@ -108,7 +107,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'siteNumber',
-	        			fieldLabel:'Site Number<font color=red>*</font>',
+	        			fieldLabel:'Site Number',
 	        		    allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -189,7 +188,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'combobox',
 	        			name: 'siteType',
-	        			fieldLabel:'Site Type<font color=red>*</font>',
+	        			fieldLabel:'Site Type',
 					    store :[['B','billToSiteNumber'],['S','shipToSiteNumber']],
 					    allowBlank: false,
       		            listeners : {
