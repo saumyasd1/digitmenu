@@ -6,9 +6,6 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -20,8 +17,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -37,6 +32,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Table(name = "AR_Partner")
 @Path("ar_partner")
 public class PartnerArchive extends MainAbstractEntity {
+
+	private static final long serialVersionUID = -4945094210937311786L;
 
 	@Column(name = "Partner_ARID")  
 	private String partner_arid; 
@@ -161,7 +158,6 @@ public class PartnerArchive extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<Partner> partner = null;
 		Map entitiesMap = null;
 		try {
 			StringWriter writer = new StringWriter();
