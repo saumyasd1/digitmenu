@@ -1,7 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,19 +31,18 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineDetailMixIn;
 import com.avery.storage.service.OrderLineDetailService;
-import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
 @Table(name = "OrderLineDetail")
 @Path("orderlinedetails")
 public class OrderLineDetail extends MainAbstractEntity{
-	
+
+	private static final long serialVersionUID = 8615509397523320616L;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "OrderLineID", nullable = true)
 	private OrderLine orderLineForVariableData;
@@ -225,7 +223,7 @@ public class OrderLineDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(OrderLine.class, OrderLineDetailMixIn.class);
+			mapper.addMixIn(OrderLine.class, OrderLineDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
 					.getInstance().getBean("orderLineDetailService");
