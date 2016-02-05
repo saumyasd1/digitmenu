@@ -36,13 +36,14 @@ public class SalesOrderDetailArchive extends MainAbstractEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4182888736911157591L;
+	private static final long serialVersionUID = 6395226492552779413L;
+
 
 	@Column(name = "SalesOrderDetailID")
-	private String salesorderdetailid;
+	private int salesorderdetailid;
 
 	@Column(name = "SalesOrderID")
-	private String salesorderid;
+	private int salesorderid;
 
 	@Column(name = "ProcessQueueID")
 	private String processqueueid;
@@ -83,28 +84,28 @@ public class SalesOrderDetailArchive extends MainAbstractEntity {
 	/**
 	 * @return the salesorderdetailid
 	 */
-	public String getSalesorderdetailid() {
+	public int getSalesorderdetailid() {
 		return salesorderdetailid;
 	}
 
 	/**
 	 * @param salesorderdetailid the salesorderdetailid to set
 	 */
-	public void setSalesorderdetailid(String salesorderdetailid) {
+	public void setSalesorderdetailid(int salesorderdetailid) {
 		this.salesorderdetailid = salesorderdetailid;
 	}
 
 	/**
 	 * @return the salesorderid
 	 */
-	public String getSalesorderid() {
+	public int getSalesorderid() {
 		return salesorderid;
 	}
 
 	/**
 	 * @param salesorderid the salesorderid to set
 	 */
-	public void setSalesorderid(String salesorderid) {
+	public void setSalesorderid(int salesorderid) {
 		this.salesorderid = salesorderid;
 	}
 
@@ -276,6 +277,7 @@ public class SalesOrderDetailArchive extends MainAbstractEntity {
 		this.senttooracledate = senttooracledate;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
