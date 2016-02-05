@@ -36,7 +36,7 @@ public class PartnerArchive extends MainAbstractEntity {
 	private static final long serialVersionUID = -4945094210937311786L;
 
 	@Column(name = "Partner_ARID")  
-	private String partner_arid; 
+	private int partner_arid; 
 
 	@Column(name = "PartnerID")  
 	private String partnerid; 
@@ -53,21 +53,21 @@ public class PartnerArchive extends MainAbstractEntity {
 	@Column(name = "Phone")  
 	private String phone; 
 
-	@Column(name = "isActive")  
-	private String isactive; 
+	@Column(name = "Active")  
+	private Boolean isactive; 
 
 
 	/**
 	 * @return the partner_arid
 	 */
-	public String getPartner_arid() {
+	public int getPartner_arid() {
 		return partner_arid;
 	}
 
 	/**
 	 * @param partner_arid the partner_arid to set
 	 */
-	public void setPartner_arid(String partner_arid) {
+	public void setPartner_arid(int partner_arid) {
 		this.partner_arid = partner_arid;
 	}
 
@@ -144,17 +144,18 @@ public class PartnerArchive extends MainAbstractEntity {
 	/**
 	 * @return the isactive
 	 */
-	public String getIsactive() {
+	public Boolean getIsactive() {
 		return isactive;
 	}
 
 	/**
 	 * @param isactive the isactive to set
 	 */
-	public void setIsactive(String isactive) {
+	public void setIsactive(Boolean isactive) {
 		this.isactive = isactive;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;

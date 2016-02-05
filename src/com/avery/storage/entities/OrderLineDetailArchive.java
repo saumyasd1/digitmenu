@@ -32,16 +32,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("ar_orderlinedetail")
 public class OrderLineDetailArchive extends MainAbstractEntity {
 
-	private static final long serialVersionUID = 1540709779068393475L;
+	private static final long serialVersionUID = 2516359942135680236L;
 
 	@Column(name = "OrderLineDetailID")
-	private String orderlinedetailid;
+	private int orderlinedetailid;
 
 	@Column(name = "OrderLineID")
-	private String orderlineid;
+	private int orderlineid;
 
 	@Column(name = "OrderQueueID")
-	private String orderqueueid;
+	private int orderqueueid;
 
 	@Column(name = "Oracleitemnumber")
 	private String oracleitemnumber;
@@ -71,42 +71,42 @@ public class OrderLineDetailArchive extends MainAbstractEntity {
 	/**
 	 * @return the orderlinedetailid
 	 */
-	public String getOrderlinedetailid() {
+	public int getOrderlinedetailid() {
 		return orderlinedetailid;
 	}
 
 	/**
 	 * @param orderlinedetailid the orderlinedetailid to set
 	 */
-	public void setOrderlinedetailid(String orderlinedetailid) {
+	public void setOrderlinedetailid(int orderlinedetailid) {
 		this.orderlinedetailid = orderlinedetailid;
 	}
 
 	/**
 	 * @return the orderlineid
 	 */
-	public String getOrderlineid() {
+	public int getOrderlineid() {
 		return orderlineid;
 	}
 
 	/**
 	 * @param orderlineid the orderlineid to set
 	 */
-	public void setOrderlineid(String orderlineid) {
+	public void setOrderlineid(int orderlineid) {
 		this.orderlineid = orderlineid;
 	}
 
 	/**
 	 * @return the orderqueueid
 	 */
-	public String getOrderqueueid() {
+	public int getOrderqueueid() {
 		return orderqueueid;
 	}
 
 	/**
 	 * @param orderqueueid the orderqueueid to set
 	 */
-	public void setOrderqueueid(String orderqueueid) {
+	public void setOrderqueueid(int orderqueueid) {
 		this.orderqueueid = orderqueueid;
 	}
 
@@ -222,6 +222,7 @@ public class OrderLineDetailArchive extends MainAbstractEntity {
 		this.senttooracledate = senttooracledate;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;

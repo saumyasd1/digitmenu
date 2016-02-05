@@ -50,6 +50,17 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@JoinColumn(name = "OrderQueueID", nullable = true)
 	private OrderQueue orderQueue;
 	
+	@Column(name = "OrderQueuePID",length=50)
+    private String orderQueuePId; 
+	
+	public String getOrderQueuePId() {
+		return orderQueuePId;
+	}
+
+	public void setOrderQueuePId(String orderQueuePId) {
+		this.orderQueuePId = orderQueuePId;
+	}
+
 	@NotFound(action=NotFoundAction.IGNORE)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PartnerID", nullable = true)

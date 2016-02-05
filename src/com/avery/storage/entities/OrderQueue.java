@@ -3,6 +3,7 @@ package com.avery.storage.entities;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Blob;
@@ -44,8 +45,10 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Type;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -106,7 +109,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "Subject",length = 200)
 	private String subject;
 	
-	@Column(name = "EmailBody")
+	@Column(name = "EmailBody",length = 500)
 	private String emailBody;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
@@ -155,10 +158,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name = "Status",length = 50)
 	private String status;
 	
-	@Column(name = "Error",length = 1000)
+	@Column(name = "Error",columnDefinition = "varchar(1000)")
 	private String error;
 	
-	@Column(name = "Comment")
+	@Column(name = "Comment",columnDefinition = "text")
 	private String comment;
 	
 	@Column(name = "PONumber",length = 50)

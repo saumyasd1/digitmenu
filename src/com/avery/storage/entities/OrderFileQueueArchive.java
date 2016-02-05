@@ -41,7 +41,7 @@ public class OrderFileQueueArchive extends MainAbstractEntity {
 	private static final long serialVersionUID = 3184476383059789361L;
 
 	@Column(name = "OrderFileQueueID")
-    private String orderFileQueueID; 
+    private int orderFileQueueID; 
 	
 	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -91,14 +91,14 @@ public class OrderFileQueueArchive extends MainAbstractEntity {
 	/**
 	 * @return the orderFileQueueID
 	 */
-	public String getOrderFileQueueID() {
+	public int getOrderFileQueueID() {
 		return orderFileQueueID;
 	}
 
 	/**
 	 * @param orderFileQueueID the orderFileQueueID to set
 	 */
-	public void setOrderFileQueueID(String orderFileQueueID) {
+	public void setOrderFileQueueID(int orderFileQueueID) {
 		this.orderFileQueueID = orderFileQueueID;
 	}
 

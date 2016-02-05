@@ -30,7 +30,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrderLineDetailMixIn;
 import com.avery.storage.MixIn.SalesOrderDetailMixIn;
+import com.avery.storage.service.OrderLineDetailService;
 import com.avery.storage.service.SalesOrderDetailService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +81,7 @@ public class SalesOrderDetail extends MainAbstractEntity{
 	@Column(name = "variabledatavalue",length = 250)
     private String variabledatavalue;
 	
-	@Column(name = "FiberPercent",length = 500)
+	@Column(name = "FiberPercent",columnDefinition = "varchar(500)")
     private String fiberPercent;
 	
 	@Column(name = "SentToOracleDate")

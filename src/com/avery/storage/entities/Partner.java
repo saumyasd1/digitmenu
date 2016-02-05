@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
@@ -26,6 +27,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.AddressMixIn;
+import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -51,7 +54,7 @@ public class Partner extends MainAbstractEntity {
 	@Column(name = "PartnerName",length = 250)
     private String partnerName; 
 	
-	@Column(name = "Address",length = 500)
+	@Column(name = "Address",columnDefinition = "varchar(500)")
     private String address;   
 	
 	@Column(name = "ContactPerson",length = 100)
