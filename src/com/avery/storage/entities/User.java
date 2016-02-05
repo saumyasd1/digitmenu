@@ -5,6 +5,7 @@ import static com.avery.utils.ApplicationConstants.PASSWORD;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -173,20 +174,32 @@ public class User extends MainAbstractEntity {
 	
 	@Override
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
-		Long id;
+		Long id=0L;
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			User user = mapper.readValue(data, User.class);
-			user.setPassword(com.avery.utils.HashPassword.simpleHash(user.getPassword()));
-			user.setCreatedDate(new Date());
-			user.setLastModifiedDate(new Date());
-			UserService addressService = (UserService) SpringConfig
+			UserService userService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
-			id = addressService.create(user);
-			return Response.ok(id).build();
+			boolean userExist = userService.checkDuplicateUser(user);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (userExist) {
+				responseMap.put("valueExist",true);
+				mapper.writeValue(writer, responseMap);
+			}else{
+				user.setPassword(com.avery.utils.HashPassword.simpleHash(user.getPassword()));
+				user.setCreatedDate(new Date());
+				user.setLastModifiedDate(new Date());
+				id = userService.create(user);
+				responseMap.put("valueExist",false);
+				responseMap.put("id",id);
+				mapper.writeValue(writer, responseMap);
+			}
+			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Response
@@ -200,6 +213,7 @@ public class User extends MainAbstractEntity {
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
+		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -209,6 +223,10 @@ public class User extends MainAbstractEntity {
 			UserService userService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
 			User user = userService.read(Long.parseLong(id));
+			String password =user.getPassword();
+			Date createdDate = user.getCreatedDate();
+			ObjectReader updater = mapper.readerForUpdating(user);
+			user = updater.readValue(data);
 			if (user == null) {
 				throw new WebApplicationException(Response
 						.status(Status.BAD_REQUEST)
@@ -216,10 +234,12 @@ public class User extends MainAbstractEntity {
 								+ "\" doesn't exist")
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
-			String password =user.getPassword();
-			Date createdDate = user.getCreatedDate();
-			ObjectReader updater = mapper.readerForUpdating(user);
-			user = updater.readValue(data);
+			boolean userExist = userService.checkDuplicateUser(user);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (userExist) {
+				responseMap.put("valueExist",true);
+				mapper.writeValue(writer, responseMap);
+			}else{
 			if (user.getPassword() != null && !user.getPassword().equals("")
 					&& !user.getPassword().equals(password))
 				user.setPassword(HashPassword.simpleHash(user.getPassword()));
@@ -229,7 +249,10 @@ public class User extends MainAbstractEntity {
 			user.setLastModifiedDate(new Date());
 			user.setCreatedDate(createdDate);
 			userService.update(user);
-			mapper.writeValue(writer, user);
+			responseMap.put("valueExist",false);
+			responseMap.put("user",user);
+			mapper.writeValue(writer, responseMap);
+			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
