@@ -37,7 +37,6 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineMixIn;
-import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.service.OrderLineService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
@@ -56,6 +55,11 @@ public class OrderLine extends MainAbstractEntity{
 	@JoinColumn(name = "OrderFileAttchmentID", nullable = true)
 	private OrderFileAttachment orderFileAttchment;*/
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6740793676369214590L;
+
 	@Column(name = "OrderFileAttchmentID")
     private int orderFileAttchmentID; 
 	
@@ -1153,9 +1157,9 @@ public class OrderLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(OrderLine.class, OrderLineMixIn.class);
-			mapper.addMixInAnnotations(OrderLineDetail.class, OrderLineMixIn.class);
-			mapper.addMixInAnnotations(MainAbstractEntity.class, OrderLineMixIn.class);//added mixIn
+			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
+			mapper.addMixIn(MainAbstractEntity.class, OrderLineMixIn.class);//added mixIn
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
@@ -1208,8 +1212,8 @@ public class OrderLine extends MainAbstractEntity{
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.addMixInAnnotations(OrderLine.class, OrderLineMixIn.class);
-			mapper.addMixInAnnotations(OrderLineDetail.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
@@ -1256,8 +1260,8 @@ public class OrderLine extends MainAbstractEntity{
 			Long entityId = Long.parseLong(id);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(OrderLine.class, OrderLineMixIn.class);
-			mapper.addMixInAnnotations(OrderLineDetail.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
@@ -1294,14 +1298,14 @@ public class OrderLine extends MainAbstractEntity{
 			@Context HttpHeaders hh, @PathParam("id") String orderId) {
 		Response.ResponseBuilder rb = null;
 		List<OrderLine> orderLine = null;
-		Map orderLineMap=new HashMap();
+		Map<String,Object> orderLineMap=new HashMap<String,Object>();
 		int salesOrderCount=0;
 		try{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(OrderLine.class, OrderLineMixIn.class);
-			mapper.addMixInAnnotations(OrderLineDetail.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
+			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
