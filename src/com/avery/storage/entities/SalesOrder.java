@@ -204,10 +204,10 @@ public class SalesOrder extends MainAbstractEntity{
 	@Column(name = "Artworkworkattachment",length = 5)
     private String artworkworkattachment;
 	
-	@Column(name = "VariableDataBreakdown",length = 500)
+	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
     private String variableDataBreakdown;
 	
-	@Column(name = "Manufacturingnotes",length = 500)
+	@Column(name = "Manufacturingnotes",columnDefinition = "varchar(500)")
     private String manufacturingnotes;
 	
 	
