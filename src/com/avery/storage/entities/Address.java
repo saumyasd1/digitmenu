@@ -2,7 +2,6 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -25,10 +24,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.AddressMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.service.AddressService;
-import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -40,7 +37,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("address")
 public class Address extends MainAbstractEntity {
 
-	
+	private static final long serialVersionUID = 3208431286041487210L;
+
 	@Column(name = "OrgCode",length = 50)
     private String orgCode; 
 	
@@ -386,12 +384,12 @@ public class Address extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map entitiesMap=null;
+		Map<?,?> entitiesMap=null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
@@ -443,7 +441,7 @@ public class Address extends MainAbstractEntity {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data
@@ -519,7 +517,6 @@ public class Address extends MainAbstractEntity {
 	}
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
 		try {
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
