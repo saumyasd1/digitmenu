@@ -117,7 +117,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Search Partner Name "
+		    			emptyText: AOCLit.userGridSearchEmptyText
 					 }
 		          ];
 	},
