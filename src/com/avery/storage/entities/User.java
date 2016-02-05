@@ -42,6 +42,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("users")
 public class User extends MainAbstractEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1833552362987121156L;
+
 	@Column(name = "FIRST_NAME", length = 64)
 	@Size(min = 0, max = 64, message = "First Name not valid, min:0 and max:64")
 	private String firstName;
@@ -140,7 +145,7 @@ public class User extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map entitiesMap=null;
+		Map<?,?> entitiesMap=null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -191,7 +196,6 @@ public class User extends MainAbstractEntity {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
@@ -279,7 +283,6 @@ public class User extends MainAbstractEntity {
 	}
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
 		try {
 			UserService userService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
