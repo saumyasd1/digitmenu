@@ -31,6 +31,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,19 +67,19 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "OrderEmailDomain",length = 100)
 	private String orderEmailDomain;
 	
-	@Column(name = "PackingInstruction",length = 500)
+	@Column(name = "PackingInstruction",columnDefinition = "varchar(500)")
 	private String packingInstruction;
 	
-	@Column(name = "InvoiceLineInstruction",length = 500)
+	@Column(name = "InvoiceLineInstruction",columnDefinition = "varchar(500)")
 	private String invoiceLineInstruction;
 	
-	@Column(name = "VariableDataBreakdown",length = 500)
+	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
 	private String variableDataBreakdown;
 	
-	@Column(name = "ManufacturingNotes",length = 500)
+	@Column(name = "ManufacturingNotes",columnDefinition = "varchar(500)")
 	private String manufacturingNotes;
 	
-	@Column(name = "ShippingOnlyNotes",length = 500)
+	@Column(name = "ShippingOnlyNotes",columnDefinition = "varchar(500)")
 	private String shippingOnlyNotes;
 
 	@Column(name = "SplitShipSetBy",length = 5)
@@ -372,7 +373,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			//mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
+			mapper.addMixInAnnotations(Partner.class,PartnerMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
