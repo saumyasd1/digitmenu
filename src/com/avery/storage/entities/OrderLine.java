@@ -253,13 +253,13 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "CSR",length = 50)
     private String csr; 
 	
-	@Column(name = "PackingInstruction",length = 500)
+	@Column(name = "PackingInstruction",columnDefinition = "varchar(500)")
     private String packingInstruction; 
 	
-	@Column(name = "ShippingInstructions",length = 500)
+	@Column(name = "ShippingInstructions",columnDefinition = "varchar(500)")
     private String shippingInstructions; 
 	
-	@Column(name = "InvoicelineInstruction",length = 500)
+	@Column(name = "InvoicelineInstruction",columnDefinition = "varchar(500)")
     private String invoicelineInstruction; 
 
 	@Column(name = "DivisionforInterfaceERPORG",length = 10)
@@ -271,10 +271,10 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "Artworkworkattachment",length = 5)
     private String artworkworkattachment; 
 	
-	@Column(name = "VariableDataBreakdown",length = 500)
+	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
     private String variableDataBreakdown; 
 	
-	@Column(name = "Manufacturingnotes",length = 500)
+	@Column(name = "Manufacturingnotes",columnDefinition = "varchar(500)")
     private String manufacturingnotes; 
 	
 	@Column(name = "Ordertype",length = 50)
@@ -286,7 +286,7 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "Endcustomer",length = 50)
     private String endcustomer; 
 	
-	@Column(name = "Shippingonlynotes",length = 500)
+	@Column(name = "Shippingonlynotes",columnDefinition = "varchar(500)")
     private String shippingonlynotes; 
 	
 	@Column(name = "BankCharge",length = 10)
