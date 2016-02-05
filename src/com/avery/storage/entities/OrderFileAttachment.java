@@ -351,12 +351,21 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					.getInstance().getBean("orderFileAttachmentService");
 			
 			orderFileAttachment = orderFileAttachmentService.read(entityId);
+			//orderFileAttachment = orderFileAttachmentService.readFileByID(entityId);
 			if (orderFileAttachment == null)
 				throw new Exception("Unable to find order attachments");
+			//FormDataMultiPart form = new FormDataMultiPart();
 			
 			InputStream is = orderFileAttachment.getFileData().getBinaryStream();
 			byte[] bytes = IOUtils.toByteArray(is);
 			String fileName = "\""+orderFileAttachment.getFileName()+"\"";
+			//FormDataBodyPart bodyPart = new FormDataBodyPart("file", is, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+
+			//bodyPart.setContentDisposition(FormDataContentDisposition.name("file")
+              //                                             .fileName(orderFileAttachment.getFileName()).build());
+			//form.bodyPart(bodyPart);
+			//mapper.writeValue(writer, orderFileAttachment);
+			//rb = Response.ok(form,MediaType.MULTIPART_FORM_DATA);
 			return Response
 		            .ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
 		            .header("content-disposition","attachment; filename = "+fileName)
@@ -370,5 +379,8 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+		//return rb.build();
 	}
+
+
 }
