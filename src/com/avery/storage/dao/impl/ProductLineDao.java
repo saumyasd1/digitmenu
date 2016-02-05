@@ -1,6 +1,5 @@
 package com.avery.storage.dao.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
