@@ -36,19 +36,19 @@ public class SalesOrderArchive extends MainAbstractEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8568595856415807260L;
+	private static final long serialVersionUID = -8741238695326692875L;
 
 
 	@Column(name = "SalesOrderID")  
-	private String salesorderid; 
+	private int salesorderid; 
 
 
 	@Column(name = "OrderQueueID")  
-	private String orderqueueid; 
+	private int orderqueueid; 
 
 
 	@Column(name = "OrderFileAttchmentID")  
-	private String orderfileattchmentid; 
+	private int orderfileattchmentid; 
 
 
 	@Column(name = "PartnerID")  
@@ -348,42 +348,42 @@ public class SalesOrderArchive extends MainAbstractEntity {
 	/**
 	 * @return the salesorderid
 	 */
-	public String getSalesorderid() {
+	public int getSalesorderid() {
 		return salesorderid;
 	}
 
 	/**
 	 * @param salesorderid the salesorderid to set
 	 */
-	public void setSalesorderid(String salesorderid) {
+	public void setSalesorderid(int salesorderid) {
 		this.salesorderid = salesorderid;
 	}
 
 	/**
 	 * @return the orderqueueid
 	 */
-	public String getOrderqueueid() {
+	public int getOrderqueueid() {
 		return orderqueueid;
 	}
 
 	/**
 	 * @param orderqueueid the orderqueueid to set
 	 */
-	public void setOrderqueueid(String orderqueueid) {
+	public void setOrderqueueid(int orderqueueid) {
 		this.orderqueueid = orderqueueid;
 	}
 
 	/**
 	 * @return the orderfileattchmentid
 	 */
-	public String getOrderfileattchmentid() {
+	public int getOrderfileattchmentid() {
 		return orderfileattchmentid;
 	}
 
 	/**
 	 * @param orderfileattchmentid the orderfileattchmentid to set
 	 */
-	public void setOrderfileattchmentid(String orderfileattchmentid) {
+	public void setOrderfileattchmentid(int orderfileattchmentid) {
 		this.orderfileattchmentid = orderfileattchmentid;
 	}
 
@@ -1410,6 +1410,7 @@ public class SalesOrderArchive extends MainAbstractEntity {
 		this.htlsizepagevalidationflag = htlsizepagevalidationflag;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
