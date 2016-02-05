@@ -1,6 +1,5 @@
 package com.avery.storage.dao.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,9 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.Address;
-import com.avery.storage.entities.OrderLine;
-import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
