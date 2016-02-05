@@ -31,8 +31,6 @@ public class Router {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response validate(@Context UriInfo ui,@Context HttpHeaders hh,@PathParam("id") String id) {
 		Response.ResponseBuilder rb = null;
-		Integer retryCount = null;
-		Integer retryInterval = null;
 		try {
 			Long orderId = Long.parseLong(id);
 			Response response=validateOrder(orderId);
@@ -53,7 +51,6 @@ public class Router {
 
 	}
 	public Response validateOrder(Long orderId) throws Exception{
-		StringWriter writer = new StringWriter();
 		String adeptiaServerURL=PropertiesConfig
 				.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
 		String userName=PropertiesConfig
@@ -72,11 +69,8 @@ public class Router {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response salesOrder(@Context UriInfo ui,@Context HttpHeaders hh,@PathParam("id") String id) {
 		Response.ResponseBuilder rb = null;
-		Integer retryCount = null;
-		Integer retryInterval = null;
 		try {
 			Long orderId = Long.parseLong(id);
-			StringWriter writer = new StringWriter();
 			String adeptiaServerURL=PropertiesConfig
 					.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
 			String userName=PropertiesConfig
@@ -120,11 +114,8 @@ public class Router {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response cancelSalesOrder(@Context UriInfo ui,@Context HttpHeaders hh,@PathParam("id") String id) {
 		Response.ResponseBuilder rb = null;
-		Integer retryCount = null;
-		Integer retryInterval = null;
 		try {
 			Long orderId = Long.parseLong(id);
-			StringWriter writer = new StringWriter();
 			String adeptiaServerURL=PropertiesConfig
 					.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
 			String userName=PropertiesConfig
