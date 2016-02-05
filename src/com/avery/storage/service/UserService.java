@@ -32,6 +32,10 @@ public class UserService extends GenericEntityService<User, Long>{
 	@Transactional
 	public User findUserByEmail(String email)throws Exception{
 		return getUserDao().findUserByEmail(email);
-		
+	}
+	
+	@Transactional
+	public boolean checkDuplicateUser(User userObj) throws Exception{
+		return getUserDao().checkDuplicateUser(userObj);
 	}
 }
