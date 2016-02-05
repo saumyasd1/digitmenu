@@ -60,7 +60,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -115,39 +114,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		}
 
 	}
-	
-	private void insertIntoAddress(OrderLine orderLine){
-		Session session = getSessionFactory().getCurrentSession();
-		Address adrObj=new Address();
-		adrObj.setBillToSiteNumber(orderLine.getOracleBilltoSiteNumber());
-		adrObj.setShipToSiteNumber(orderLine.getOracleShiptoSiteNumber());
-		adrObj.setAddress1(orderLine.getBillToAddress1());
-		adrObj.setAddress2(orderLine.getBillToAddress2());
-		adrObj.setAddress3(orderLine.getBillToAddress3());
-		adrObj.setCity(orderLine.getBillToCity());
-		adrObj.setCountry(orderLine.getBillToCountry());
-		adrObj.setState(orderLine.getBillToState());
-		adrObj.setBillToContact(orderLine.getBillToContact());
-		adrObj.setBillToFax(orderLine.getBillToFax());
-		adrObj.setBillToPhone1(orderLine.getBillToTelephone());
-		adrObj.setBillToEmail(orderLine.getBillToEmail());
-		adrObj.setShipToContact(orderLine.getShipToContact());
-		adrObj.setShipToPhone1(orderLine.getShipToTelephone());
-		adrObj.setShippingMethod(orderLine.getShippingMethod());
-		adrObj.setFreightTerms(orderLine.getFreightTerms());
-		adrObj.setShippingInstructions(orderLine.getShippingInstructions());
-		adrObj.setDescription("Inserted By Adeptia");
-		adrObj.setCreatedBy("Adeptia");
-		adrObj.setCreatedDate(new Date());
-		adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
-		Partner partnerObj=new Partner();
-		Long partnerId=0L;
-		if(orderLine.getPartnerID()!=null)
-			partnerId=Long.parseLong(orderLine.getPartnerID());
-		partnerObj.setId(partnerId);
-		adrObj.setPartner(partnerObj);
-		session.save(adrObj);
-	}
+
 	private void insertShipAddress(OrderLine orderLine){
 		String shipToAddress1=orderLine.getShipToAddress1();
 		String shipToAddress2=orderLine.getShipToAddress2();
@@ -225,7 +192,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		Session session = null;
 		boolean insertBillAddress=false,insertShipAddress=false,insertAddress=true;
 		try{
-			OrderLine tempObj=mapper.readValue(jsonData,OrderLine.class);;
 			if(insertAddress){ 
 				insertBillAddress=flagMap.get("insertBillAddress");
 			}
