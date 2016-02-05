@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -52,19 +53,19 @@ public class Address extends MainAbstractEntity {
 	@Column(name = "ShipToSiteNumber",length = 50)
     private String shipToSiteNumber; 
 	
-	@Column(name = "Description",length = 500)
+	@Column(name = "Description",columnDefinition = "varchar(500)")
     private String description;  
 	
-	@Column(name = "Address1",length = 500)
+	@Column(name = "Address1",columnDefinition = "varchar(500)")
     private String address1;  
 	
-	@Column(name = "Address2",length = 500)
+	@Column(name = "Address2",columnDefinition = "varchar(500)")
     private String address2;  
 	
-	@Column(name = "Address3",length = 500)
+	@Column(name = "Address3",columnDefinition = "varchar(500)")
     private String address3;  
 	
-	@Column(name = "Address4",length = 500)
+	@Column(name = "Address4",columnDefinition = "varchar(500)")
     private String address4;  
 	
 	@Column(name = "City",length = 250)
@@ -109,7 +110,7 @@ public class Address extends MainAbstractEntity {
 	@Column(name = "FreightTerms",length = 50)
     private String freightTerms;  
 	
-	@Column(name = "ShippingInstructions",length = 500)
+	@Column(name = "ShippingInstructions",columnDefinition = "varchar(500)")
     private String shippingInstructions;  
 	
 	@Column(name = "SiteNumber",length = 255)
@@ -517,6 +518,7 @@ public class Address extends MainAbstractEntity {
 	}
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		Response.ResponseBuilder rb = null;
 		try {
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
