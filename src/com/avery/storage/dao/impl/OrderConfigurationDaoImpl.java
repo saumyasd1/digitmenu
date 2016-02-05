@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderConfiguration;
-import com.avery.storage.entities.SalesOrderDetail;
 
 @Repository
 public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration, Long> implements
