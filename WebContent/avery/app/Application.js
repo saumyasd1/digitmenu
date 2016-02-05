@@ -11,7 +11,8 @@ Ext.define('AOC.Application', {
 		'AOC.config.MenuInstructions',
 		'AOC.util.ProxyExceptionHandler',
 		'AOC.config.Runtime',
-		'AOC.config.Overrides'
+		'AOC.config.Overrides',
+		'AOC.lang.lit'
     ],
     controllers : [
                    'MenuController' 
