@@ -33,7 +33,6 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.SalesOrderMixIn;
-import com.avery.storage.service.OrderLineService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -914,8 +913,8 @@ public class SalesOrder extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(SalesOrderDetail.class, SalesOrderMixIn.class);
-			mapper.addMixInAnnotations(MainAbstractEntity.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrderDetail.class, SalesOrderMixIn.class);
+			mapper.addMixIn(MainAbstractEntity.class, SalesOrderMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
@@ -1013,7 +1012,7 @@ public class SalesOrder extends MainAbstractEntity{
 			Long entityId = Long.parseLong(id);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(SalesOrderDetail.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrderDetail.class, SalesOrderMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
@@ -1054,7 +1053,7 @@ public class SalesOrder extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(SalesOrderDetail.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrderDetail.class, SalesOrderMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
