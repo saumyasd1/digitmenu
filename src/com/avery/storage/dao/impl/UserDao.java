@@ -12,6 +12,8 @@ public interface UserDao extends GenericDao<User, Long>{
 	public Boolean checkDuplicate(String email) throws Exception;
 	
 	public User findUserByEmail(String email) throws Exception;
+	
+	public boolean checkDuplicateUser(User userObj) throws Exception;
 
 }
 
