@@ -1,13 +1,18 @@
 package com.avery.storage.dao.impl;
 
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -22,36 +27,21 @@ import com.avery.utils.HibernateUtils;
 * 
 * @author Amit Trivedi
 */
+@SuppressWarnings("unchecked")
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap =new HashMap();
-		Session session=null;
 		Criteria criteria=null;
 		int totalCount=0;
-		String queryString=(String) queryMap.getFirst("query");
-		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(User.class);
+		criteria =getCriteria(queryMap);
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
-		if(queryString!=null){
-			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType=searchMap.get("datecriteriavalue");
-			if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
-				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
-			}
-			String partnerName=searchMap.get("firstName");
-			if(partnerName!=null && !"".equals(partnerName)){
-				criteria.add(Restrictions.ilike("firstName", partnerName,MatchMode.ANYWHERE));
-			}
-		}
-			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
-			 criteria.addOrder(Order.desc("lastModifiedDate"));
+		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
@@ -92,5 +82,52 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 					.uniqueResult();
 		}
 		return user;
+	}
+	@Override
+	public boolean checkDuplicateUser(User userObj) throws Exception{
+		Session session=null;
+		Criteria criteria=null;
+		int totalCount=0;
+		String Email=userObj.getEmail();
+		Long id=userObj.getId();
+		Boolean partnerExist=false;
+		List<User> user = null;
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(User.class);
+		if(Email!=null && !"".equals(Email)){
+			Conjunction disCriteria = Restrictions.conjunction();
+			disCriteria.add(Restrictions.eq("email", Email));
+			if(id!=0){
+				disCriteria.add(Restrictions.ne("id", id));
+			}
+			criteria.add(disCriteria);
+			user= criteria.list();
+			totalCount=user.size();
+			if(totalCount>0)
+				partnerExist=true;
+		}
+		return partnerExist;
+	}
+	@SuppressWarnings({ "rawtypes" })
+	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException, Exception{
+		Session session=null;
+		Criteria criteria=null;
+		String queryString=(String) queryMap.getFirst("query");
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(User.class);
+		if(queryString!=null){
+			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+			String dateType=searchMap.get("datecriteriavalue");
+			if(dateType!=null && !dateType.equals("")){
+				String sDate=searchMap.get("fromDate");
+				String eDate=searchMap.get("toDate");
+				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
+			}
+			String email=searchMap.get("email");
+			if(email!=null && !"".equals(email)){
+				criteria.add(Restrictions.ilike("email",email,MatchMode.ANYWHERE));
+			}
+		}
+		return criteria;
 	}
 }
