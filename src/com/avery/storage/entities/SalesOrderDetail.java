@@ -30,9 +30,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.OrderLineDetailMixIn;
 import com.avery.storage.MixIn.SalesOrderDetailMixIn;
-import com.avery.storage.service.OrderLineDetailService;
 import com.avery.storage.service.SalesOrderDetailService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -248,7 +246,7 @@ public class SalesOrderDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(SalesOrder.class, SalesOrderDetailMixIn.class);
+			mapper.addMixIn(SalesOrder.class, SalesOrderDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE,false);
 			SalesOrderDetailService salesOrderDetailService = (SalesOrderDetailService) SpringConfig
 					.getInstance().getBean("salesOrderDetailService");
