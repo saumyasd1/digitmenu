@@ -271,5 +271,11 @@ loadCodeStore:function(type){
 	            el.msgCt=null;
 	        }
 	    });
-	    }
+	    },
+	    notifyByImage : function(config){
+	    	 if(config.isValid())
+	    		   config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.success+');background-repeat:no-repeat;background-position:right;');
+				else
+				   config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.invalid_field+');background-repeat:no-repeat;background-position:right;');
+	     }
 });
