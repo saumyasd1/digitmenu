@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,13 +41,13 @@ public class Code extends MainAbstractEntity {
 	@Column(name = "Type", length = 50)
     private String type; 
 	
-	@Column(name = "Code", length = 1000)
+	@Column(name = "Code",columnDefinition = "varchar(1000)")
     private String code;  
 	
-	@Column(name = "Value", length = 1000)
+	@Column(name = "Value",columnDefinition = "varchar(1000)")
     private String value;  
 	
-	@Column(name = "Description", length = 1000)
+	@Column(name = "Description",columnDefinition = "varchar(1000)")
     private String description;  
 
 	public String getType() {
@@ -224,6 +225,7 @@ public class Code extends MainAbstractEntity {
 	
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		Response.ResponseBuilder rb = null;
 		try {
 			CodeService CodeService = (CodeService) SpringConfig
 					.getInstance().getBean("codeService");
