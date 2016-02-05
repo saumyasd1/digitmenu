@@ -1,7 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -39,7 +38,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Path("ar_orderfilequeue")
 public class OrderFileQueueArchive extends MainAbstractEntity {
 
-	
+	private static final long serialVersionUID = 3184476383059789361L;
+
 	@Column(name = "OrderFileQueueID")
     private String orderFileQueueID; 
 	
@@ -301,7 +301,7 @@ public class OrderFileQueueArchive extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<Partner> partner = null;
+		@SuppressWarnings("rawtypes")
 		Map entitiesMap=null;
 		try {
 			StringWriter writer = new StringWriter();
