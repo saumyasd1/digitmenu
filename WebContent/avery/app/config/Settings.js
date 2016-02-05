@@ -23,7 +23,9 @@ Ext.define('AOC.config.Settings',{
          defaultUserImg:'avery/resources/images/defaultUser.png',
          clip:'avery/resources/images/clip.png',
          EnableUpdateMoqFlag:'avery/resources/images/enable.png',
-         DisableUpdateMoqFlag:'avery/resources/images/disable.png'
+         DisableUpdateMoqFlag:'avery/resources/images/disable.png',
+         success:'avery/resources/images/success.jpg',
+         invalid_field:'avery/resources/images/invalid_field.jpg'
     },
     constructor : function(config){
             this.initConfig(config);
