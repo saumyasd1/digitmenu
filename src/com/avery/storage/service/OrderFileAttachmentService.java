@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.OrderFileAttachmentDao;
-import com.avery.storage.dao.impl.ProductLineDao;
 import com.avery.storage.entities.OrderFileAttachment;
-import com.avery.storage.entities.ProductLine;
 
 @Component
 public class OrderFileAttachmentService extends GenericEntityService<OrderFileAttachment, Long>{
