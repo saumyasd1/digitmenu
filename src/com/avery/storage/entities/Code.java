@@ -1,7 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -225,7 +224,6 @@ public class Code extends MainAbstractEntity {
 	
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
 		try {
 			CodeService CodeService = (CodeService) SpringConfig
 					.getInstance().getBean("codeService");
