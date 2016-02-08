@@ -352,6 +352,27 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "MOQDiffQty",length = 50)
     private String moqDiffQty;
 	
+	@Column(name = "Region",length = 50)
+    private String region;
+	
+	public String getUpdateMoq() {
+		return updateMoq;
+	}
+
+	public void setUpdateMoq(String updateMoq) {
+		this.updateMoq = updateMoq;
+	}
+	@Column(name = "UpdateMOQ",length = 50)
+    private String updateMoq;
+	
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
 	public String getComment() {
 		return comment;
 	}
