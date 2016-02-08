@@ -71,18 +71,16 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                 layout: 'hbox',
                 items: [{
                 	layout : 'vbox',
-                	items : [
-				{
-				xtype:"component",
-				width: 140,
-				height:185,
-				itemId: 'updateUserImage',
-				region:'center',
-				margin:'0 0 0 40',
-				data: AOC.config.Runtime.getUser(),
-				tpl: me.buildUserInfoTpl()
-				}
-                	]
+                	items : [{
+								xtype:"component",
+								width: 140,
+								height:185,
+								itemId: 'updateUserImage',
+								region:'center',
+								margin:'0 0 0 40',
+								data: AOC.config.Runtime.getUser(),
+								tpl: me.buildUserInfoTpl()
+							}]
                 }, {
                     xtype: 'fieldcontainer',
                     margin : '0 0 0 100',
@@ -95,13 +93,22 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         labelSeparator: ' ',
                         labelWidth : 165,
                         width: 615,
-                        margin:'0 0 20 0'
+                        margin:'0 0 20 0',
+                        listeners: {
+                            'blur': 'notifyByImage',
+                            'focus': 'hideMandatoryMessage'
+                        }
                         
                     },
                     items: [{
                         xtype: 'label',
                         text: personalInformation,
                         cls : 'userDetail-title'
+                    },{
+                        xtype: 'displayfield',
+                        itemId: 'messageFieldItemId',
+                        value: '',
+                        hidden: true
                     }, {
                         name: 'firstName',
                         fieldLabel: firstName,
@@ -125,6 +132,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                     },{
                         name: 'email',
                         fieldLabel: emailAddress,
+                        allowBlank: false,
                         regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
                     }, {
                         name: 'jobTitle',
@@ -145,36 +153,33 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         fieldLabel: role
                     },
                     {
-                   	 xtype: 'textfield',
-                            inputType: 'password',
-                            itemId: 'newPassword',
-                            name: 'password',
-                            fieldLabel: password,
-                            allowBlank: false,
-                            blankText : 'Password is required(should be atleast of length 8)',
-                            validateOnChange:false,
-                            vtype:'newpassword',
-                            hidden:!me.showPasswordField,
-                            initialPassField: 'currentPassword',
-                            listeners: {
-                                scope: me
-                            }
-                        },
-                        {
-                   	        xtype: 'textfield',
-                            inputType: 'password',
-                            itemId: 'confirmPassword',
-                            name: 'confirmPassword',
-                            allowBlank: false,
-                            blankText : 'Confirm Password is required',
-                            fieldLabel: confirmPassword,
-                            hidden:!me.showPasswordField,
-                            vtype: 'password',
-                            initialPassField: 'password'
+                   	    xtype: 'textfield',
+                        inputType: 'password',
+                        itemId: 'newPassword',
+                        name: 'password',
+                        fieldLabel: password,
+                        allowBlank: !me.showPasswordField,
+                        blankText : 'Password is required(should be atleast of length 8)',
+                        validateOnChange:false,
+                        vtype:'newpassword',
+                        hidden:!me.showPasswordField,
+                        listeners: {
+                            scope: me
                         }
-                    ,{
-                	xtype:'hidden',
-                	name:'id'
+                    },{
+               	        xtype: 'textfield',
+                        inputType: 'password',
+                        itemId: 'confirmPassword',
+                        name: 'confirmPassword',
+                        allowBlank: !me.showPasswordField,
+                        blankText : 'Confirm Password is required',
+                        fieldLabel: confirmPassword,
+                        hidden:!me.showPasswordField,
+                        vtype: 'password',
+                        initialPassField: 'newPassword'
+                    },{
+	                	xtype:'hidden',
+	                	name:'id'
                     }]
                 }]
             },
@@ -186,28 +191,4 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
    
         }];
     }
-});
-Ext.apply(Ext.form.VTypes, {
-	 newpassword: function(val,field) {
-		    if(val && val.length<8)
-		    	{
-		    	field.vtypeText =minimum8Char;
-		    	return false;
-		    	}
-		    if (field.initialPassField) {
-     		 var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
-     		  if(val && val == pwd.getValue()){
-     		  field.vtypeText =newPasswordFailureMsg;
-     		    	return false;
-     		   }}
-     		 return true;
-		    },
-		    password : function(val, field) {
-		    if (field.initialPassField) {
-		     var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
-		    	return (val == pwd.getValue());
-		    }
-		        return true;
-		    },
-		    passwordText :passwordsNotMatch
 });

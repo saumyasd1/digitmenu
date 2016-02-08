@@ -1,18 +1,11 @@
 package com.avery.storage.service;
 
-import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.avery.storage.dao.impl.ProductLineDao;
 import com.avery.storage.dao.impl.PartnerDao;
 import com.avery.storage.entities.Partner;
-import com.avery.storage.entities.ProductLine;
 
 
 

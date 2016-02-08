@@ -11,7 +11,8 @@
         		    	return false;
         		    	}
         		    if (field.initialPassField) {
-              		 var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
+        		     var win=field.up('window');
+              		 var pwd = win.down('#'+field.initialPassField);
               		  if(val && val == pwd.getValue()){
               		  field.vtypeText =newPasswordFailureMsg;
               		    	return false;
@@ -20,7 +21,8 @@
         		    },
         		    password : function(val, field) {
         		    if (field.initialPassField) {
-        		     var pwd = Ext.ComponentQuery.query('#'+field.initialPassField)[0];
+        		    	var win=field.up('window');
+                 		 var pwd = win.down('#'+field.initialPassField);
         		    	return (val == pwd.getValue());
         		    }
         		        return true;

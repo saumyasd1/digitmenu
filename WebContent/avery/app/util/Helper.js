@@ -277,5 +277,13 @@ loadCodeStore:function(type){
 	    		   config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.success+');background-repeat:no-repeat;background-position:right;');
 				else
 				   config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.invalid_field+');background-repeat:no-repeat;background-position:right;');
+	     },
+	     hideMandatoryMessage:function(obj){
+	    	 obj.down('#messageFieldItemId').setValue('').setVisible(true);
+	    	 obj.down('#messageFieldItemId').setHidden('true');
+	     },
+	     notifyByMessage: function(obj) {
+	    	 obj.down('#messageFieldItemId').setValue('').setVisible(true);
+	    	 obj.down('#messageFieldItemId').setHidden('true');
 	     }
 });
