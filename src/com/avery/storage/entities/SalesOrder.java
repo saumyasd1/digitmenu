@@ -280,10 +280,20 @@ public class SalesOrder extends MainAbstractEntity{
 	@Column(name = "System_Status",length = 2000)
     private String systemstatus; 
 	
+	@Column(name = "GrpedOLID",columnDefinition = "varchar(1000)")
+    private String grpedOLID;
+	
 	
 	/*@OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<SalesOrderDetail> salesOrderDetail;*/
 	
+	public String getGrpedOLID() {
+		return grpedOLID;
+	}
+
+	public void setGrpedOLID(String grpedOLID) {
+		this.grpedOLID = grpedOLID;
+	}
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(mappedBy = "salesOrderForVariableData", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<SalesOrderDetail> salesOrderDetail;
