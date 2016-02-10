@@ -112,7 +112,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            width : 300,
   		            maxLength : '50',
   		            enforceMaxLength: true,
-  		            blankText : 'RBO Name is required'
+  		            blankText : 'RBO Name is required',
+  		            listeners : {
+		            	 blur : this.notifyByImage,
+		            	'focus' : 'HideMandatoryMessage'
+	                    }
         		}]
         		},
         		{   xtype: 'fieldcontainer',
@@ -175,7 +179,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			fieldLabel:'CSR Email',
         			allowBlank: false,
         			labelSeparator:'',
-        			//vtype: 'email' ,
         			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
                     labelWidth : 200,
   		            width : 300,
@@ -198,16 +201,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'shippingOnlyNotes',
         			fieldLabel:'Shipping Only Notes',
-        			//allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
   		            maxLength : '300',
   		            enforceMaxLength: true,
-  		           // blankText : 'Shipping Only Notes is required',
   		            listeners : {
-  		            	blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		}
@@ -226,16 +226,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'packingInstruction',
         			fieldLabel:'Packing Instruction',
-        		//	allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
    		            maxLength : '300',
   		            enforceMaxLength: true,
-  		         //   blankText : 'Packing Instuction is required',
   		            listeners : {
-  		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		},
@@ -249,16 +246,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'invoiceLineInstruction',
         			fieldLabel:'Invoice Line Instruction',
-        		//	allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
    		            maxLength : '300',
-  		          //  blankText : 'Invoice Line Instruction  is required',
   		            enforceMaxLength: true,
   		            listeners : {
-  		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		}
@@ -283,11 +277,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            width : 300,
       		            height:60,
       		            maxLength : '300',
-      		          //  blankText : 'Manufacturing Notes  is required',
       		            enforceMaxLength: true,
-      		          //  allowBlank: false,
       		            listeners : {
-      		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
      	                    }
         		},
@@ -301,18 +292,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'variableDataBreakdown',
         			fieldLabel:'Variable Breakdown',
-        			//allowBlank: false,
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
   		            labelSeparator : '',
-  		           // blankText : 'Variable Breakdown  is required',
   		            maxLength : '300',
   		            enforceMaxLength: true,
   		            listeners : {
-  		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
     		}]
@@ -330,17 +318,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'splitShipSetBy',
         			fieldLabel:'Split Ship Set By',
-        			//allowBlank: false,
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            labelSeparator : '',
-  		           //blankText : 'Split Ship Set By  is required',
   		            maxLength : '5',
   		            enforceMaxLength: true,
   		            listeners : {
-  		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
  	                    }
         		},{
@@ -352,12 +337,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'orderEmailDomain',
         			fieldLabel:'Order Email Domain',
-        			allowBlank: false,
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
+  		            allowBlank: false,
   		            blankText : 'Order Email Domain  is required',
   		            enforceMaxLength: true,
   		            listeners : {
