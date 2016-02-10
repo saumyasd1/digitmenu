@@ -52,7 +52,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				modal:true,
 				listeners:{ 
 			 	      close:function(obj,eOpts){
-			 	    	 var orderline=Ext.ComponentQuery.query('#orderlineexpandablegrid')[0];
+			 	    	 var orderline=Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
 			 	    	     orderline.store.load();
 			 	}
 				},
