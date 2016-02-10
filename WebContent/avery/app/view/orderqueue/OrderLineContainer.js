@@ -167,6 +167,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			},
 			{
 				xtype:'orderlineexpandablegrid',
+				itemId: 'orderlineexpandablegridrowmodel',
 				store:me.store,
 				editGrid:true,
 				selModel: {
