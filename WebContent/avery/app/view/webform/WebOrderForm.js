@@ -11,6 +11,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	itemId:'weborderformItemId',
 	controller:'webFormMain',
 	bodyPadding: '0 200 0 200',
+	requires: ['AOC.lang.lit'],
 	border:false,
 	attachmentCount:1,
 	layout: {
@@ -21,14 +22,18 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	for(var j=2;j<=i;j++){
     		currentAttachment=form.lookupReference('attachment'+j);
     		if(currentAttachment){
-    			currentAttachment.destroy();
+    		currentAttachment.destroy();
     		}
     	}
     	this.attachmentCount=1;
     	currentAttachment=form.lookupReference('attachment1');
     	if(currentAttachment)
-    		currentAttachment.hide();
+    	currentAttachment.hide();
         this.form.reset();
+        this.lookupReference('email').setFieldStyle(AOC.lang.lit.hideImage);
+        this.lookupReference('subject').setFieldStyle(AOC.lang.lit.hideImage);
+        this.lookupReference('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
+        this.lookupReference('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
     },
     initComponent : function(){
     	var me=this;
@@ -119,7 +124,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
                             labelWidth : 200,
 		            blankText : 'Sender Email is required',
 		            listeners:{
-	      				  blur : this.notifyByImage,
+	      				 blur : this.notifyByImage,
 	      				'focus': 'notifyByMessage'
 	      			 }
 		        
@@ -137,7 +142,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			allowBlank: false,
         			disabled:true,
         			labelWidth : 200,
-        			labelSeparator : '',
         			labelAlign:'right',
         			maxLength : '100',
         			blankText : 'Email Subject is required',
@@ -160,7 +164,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			allowBlank: false,
         			anchor:'100%',
         			labelWidth : 200,
-        			labelSeparator : '',
         			labelAlign:'right',
         			blankText :'Email Body is required',
         			listeners:{
@@ -204,7 +207,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
                     		labelAlign:'right',
                     		listeners:{
      				 'change':'onAttachemnetChange',
-     				  blur : this.notifyByImage,
+     				  //blur : this.notifyByImage,
      				  'focus': 'notifyByMessage'
      			 }
         		},{
@@ -217,11 +220,11 @@ Ext.define('AOC.view.webform.WebOrderForm',{
      			 }
                ]
         },
-       
         notifyByImage : function(config){
 	    	 if(config.isValid())
 	    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
-				else
+		     else
 				   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
+	    	
 	     }
 });
