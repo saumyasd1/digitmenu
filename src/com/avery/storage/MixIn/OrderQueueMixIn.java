@@ -152,7 +152,6 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract String getFileExtension();
 		
-		@JsonIgnore
-		public abstract String getError();
+		
 		
 }
