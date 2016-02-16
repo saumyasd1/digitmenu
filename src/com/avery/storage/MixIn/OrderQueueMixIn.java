@@ -65,8 +65,6 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract int getOrderQueueCount();
 		
-		@JsonIgnore
-		public abstract String getRboName();
 		
 		@JsonIgnore
 		public abstract String getRboId();
