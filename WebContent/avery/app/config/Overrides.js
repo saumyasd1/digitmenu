@@ -17,5 +17,53 @@ Ext.define('AOC.config.Overrides',{
     	                this.callParent(arguments);
     	            }
     	        });
+    		 Ext.override(Ext.grid.plugin.Clipboard,{
+    			 getCellData: function (format, erase) {
+    			        var cmp = this.getCmp(),
+    			            selModel = cmp.getSelectionModel(),
+    			            ret = [],
+    			            isRaw = format === 'raw',
+    			            isText = format === 'text',
+    			            viewNode,
+    			            cell, data, dataIndex, lastRecord, record, row, view;
+
+    			        selModel.getSelected().eachCell(function (cellContext) {
+    			            view = cellContext.column.getView();
+    			            record = cellContext.record;
+
+    			            if (lastRecord !== record) {
+    			                lastRecord = record;
+    			                ret.push(row = []);
+    			            }
+    			            
+    			            dataIndex = cellContext.column.dataIndex;
+
+    			            if (isRaw) {
+    			                data = record.data[dataIndex];
+    			            } else {
+    			                // Try to access the view node.
+    			                viewNode = view.all.item(cellContext.rowIdx);
+    			                // If we could not, it's because it's outside of the rendered block - recreate it.
+    			                if (!viewNode) {
+    			                    viewNode = Ext.fly(view.createRowElement(record, cellContext.rowIdx));
+    			                }
+    			                cell = viewNode.down(cellContext.column.getCellInnerSelector());
+    			                data = cell.dom.innerHTML;
+    			                data=data.replace(/&nbsp;/g,' ');
+    			                if (isText) {
+    			                    data = Ext.util.Format.stripTags(data);
+    			                }
+    			            }
+
+    			            row.push(data);
+
+    			            if (erase && dataIndex) {
+    			                record.set(dataIndex, null);
+    			            }
+    			        });
+
+    			        return Ext.util.TSV.encode(ret);
+    			    }
+ 	        });
     }
 });
