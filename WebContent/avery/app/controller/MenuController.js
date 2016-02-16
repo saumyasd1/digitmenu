@@ -123,32 +123,31 @@ Ext.define('AOC.controller.MenuController', {
 	      xtype = rec.get('xtype');
 	      me.selectCard(xtype);
 	      if(xtype=="homewrapper"){
-		  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
-		  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
+				  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
+				  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 	      }else if(xtype=="weborderview"){
-		var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
-		weborderview.down('form').reset();
-		weborderview.down('form').lookupReference('rboCombo').disable();
-		weborderview.down('form').lookupReference('productLineCombo').disable();
-		weborderview.down('form').lookupReference('partnerCombo').getStore().load();
-		weborderview.down('form').lookupReference('attachment1').hide();
-	      var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
-	    	attachmentInfoGriditemId.store.removeAll();
-	    	attachmentInfoGriditemId.getView().refresh();
-	    	weborderview.down('#backButtonimage').setVisible(false);
-	    	weborderview.updateHeaderLabel(newWebOrder);
+				var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
+				weborderview.down('form').reset();
+				weborderview.down('form').lookupReference('rboCombo').disable();
+				weborderview.down('form').lookupReference('productLineCombo').disable();
+				weborderview.down('form').lookupReference('partnerCombo').getStore().load();
+				var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
+		    	attachmentInfoGriditemId.store.removeAll();
+		    	attachmentInfoGriditemId.getView().refresh();
+		    	weborderview.down('#backButtonimage').setVisible(false);
+		    	weborderview.updateHeaderLabel(newWebOrder);
 	      }else if(xtype=="orderqueueview"){
-		  var store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
-		  store.clearFilter(true);
-		  store.load();	  
+				  var store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
+				  store.clearFilter(true);
+				  store.load();	  
 	      }else if(xtype=="partnermanagement"){
-		  var store=Ext.ComponentQuery.query('maincontainer partnermanagementgrid')[0].getStore();
-		  store.clearFilter(true);
-		  store.load();	  
+			  var store=Ext.ComponentQuery.query('maincontainer partnermanagementgrid')[0].getStore();
+			  store.clearFilter(true);
+			  store.load();	  
 	      }else if (xtype=="addressmanage"){
-		  var store=Ext.ComponentQuery.query('maincontainer addressmanagegrid')[0].getStore();
-		  store.clearFilter(true);
-		  store.load();	  
+			  var store=Ext.ComponentQuery.query('maincontainer addressmanagegrid')[0].getStore();
+			  store.clearFilter(true);
+			  store.load();	  
 	      }
 	  },
 	  selectCard:function(xtype){
