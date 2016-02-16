@@ -260,7 +260,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    			fileField=form.lookupReference('attachment'+internalId);
 	    			if(fileField){
 	    				fileField.destroy();
-	    				form.attachmentCount--;
 	    			}
 	    		}
 	    		else{
@@ -276,19 +275,23 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 onProductLineSelection:function(obj,newValue){
 		 if(newValue !=null && newValue!=''){
 			 var store=obj.store;
-			 var record=store.getById(newValue);
+			 var record=store.getById(newValue),form=this.getView();
+			 var attachmentCount=form.attachmentCount;
 			 var orderSchemaType=record.get('orderSchemaType'),attachmentRequired=record.get('attachmentRequired');
 			 this.getView().lookupReference('subject').enable();
 			 this.getView().lookupReference('orderFileType').orderSchemaType=orderSchemaType;
+			 var currentAttachmentField=form.lookupReference('attachment'+attachmentCount);
 			 if(!attachmentRequired){
-				 this.getView().lookupReference('attachment1').hide();
+				 if(currentAttachmentField)
+					 currentAttachmentField.hide();
 			 }else{
-				 this.getView().lookupReference('attachment1').show();
+				 if(currentAttachmentField)
+					 currentAttachmentField.show();
 			 }
 			 this.getView().lookupReference('emailBody').enable();
 			 this.getView().lookupReference('email').enable();
-			 this.getView().lookupReference('attachment1').enable();
 			 this.getView().lookupReference('orderFileType').enable();
+			 currentAttachmentField.enable();
 		 }else{
 			 this.getView().lookupReference('subject').disable();
 			 this.getView().lookupReference('emailBody').disable();
