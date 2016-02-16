@@ -22,13 +22,32 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	for(var j=2;j<=i;j++){
     		currentAttachment=form.lookupReference('attachment'+j);
     		if(currentAttachment){
-    		currentAttachment.destroy();
+    			currentAttachment.destroy();
     		}
     	}
     	this.attachmentCount=1;
     	currentAttachment=form.lookupReference('attachment1');
     	if(currentAttachment)
-    	currentAttachment.hide();
+    		currentAttachment.hide();
+    	else{
+    		form.add({
+       			xtype:'fileuploadfield',
+       			labelAlign:'right',
+       			name: 'attachment1',
+       			reference: 'attachment1',
+       			fieldLabel:'Attachments',
+       			labelSeparator:'',
+       			allowBlank: true,
+       			anchor:'100%',
+       			labelWidth : 200,
+ 		        labelSeparator : '',
+ 		        hidden:true,
+ 		        labelAlign:'right',
+ 		        listeners:{
+    				 'change':'onAttachemnetChange'
+    			 }
+		   });
+    	}
         this.form.reset();
         this.lookupReference('email').setFieldStyle(AOC.lang.lit.hideImage);
         this.lookupReference('subject').setFieldStyle(AOC.lang.lit.hideImage);
