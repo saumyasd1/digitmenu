@@ -931,11 +931,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         var me = this;
         this.fieldArray = [];
         Ext.apply(this, {
-            tbar: {
-                height: 50,
-                margin:'0 0 10 0',
-                items: me.buildtbar()
-            },
+//            tbar: {
+//                height: 50,
+//                margin:'0 0 10 0',
+//                items: me.buildtbar()
+//            },
 	    plugins: me.getOuterGridPlugin(),
             listeners:{
             	scope:this,
@@ -954,64 +954,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	me.invalidComboValid=false;
         });
         this.callParent(arguments);
-    },
-    buildtbar: function() {
-        var me = this;
-        return [
-        {
-	            xtype: 'form',
-	            reference: 'form',
-	            margin:'10 10 10 10',
-	            layout: 'hbox',
-	            items: [{
-	                xtype: 'radiogroup',
-	                reference: 'radioGroup',
-	                layout:'hbox',
-	                items: [{
-	                    boxLabel: '<b>Order Line Update</b>',
-	                    labelWidth:100,
-	                    name: 'rb',
-	                    inputValue: '1',
-	                    checked: true,
-	                    width:180
-                        }, 
-                        {
-		                    xtype: 'tbspacer',
-		                    width: 15
-		                },
-		                {
-		                    boxLabel: '<b>Variable Order Update</b>',
-		                    labelWidth:120,
-		                    name: 'rb',
-		                    inputValue: '2',
-		                    width:160
-                         }],
-			                listeners: {
-			                    change: 'radioButtonClick'
-			                }
-                        },
-                            {
-				                xtype: 'tbspacer',
-				                width: 20
-                           },{
-			                xtype: 'combo',
-			                hidden: true,
-			                editable:false,
-			                displayField: 'variableFieldName',
-			                valueField: 'variableFieldName',
-			                reference: 'variableFieldCombo'
-                       }, {
-			                xtype: 'tbspacer',
-			                width: 20
-                       },{
-				            xtype: 'button',
-				            text: bulkUpdateButtonText,
-				            ui:'blue-plain',
-				            reference:'bulkUpdateButton',
-				            handler: 'getUpdateScreen'
-			              }]
-        },'->'
-	        ];
     },
     getRowExpander:function(){
     	var me=this,rowExpander=new AOC.view.ux.RowExpanderGrid({
