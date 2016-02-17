@@ -24,11 +24,11 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
                 if(activeItem.xtype.indexOf('orderline')!=-1){
                 	var orderlineexpandablegrid = activeItem.down('grid'),
 	                validateButton = activeItem.lookupReference('validateButton'),
-	                bulkUpdateButton=orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
+	                bulkUpdateButton=activeItem.lookupReference('bulkUpdateButton'),
 	                salesViewOrderbutton= activeItem.lookupReference('salesViewOrderbutton'),
 	                salesOrderbutton=activeItem.lookupReference('salesOrderbutton'),
 	                cancelOrderButton=activeItem.lookupReference('cancelOrderButton'),
-	                form=orderlineexpandablegrid.lookupReference('form');
+	                form=activeItem.lookupReference('form');
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
                 	salesViewOrderbutton.disable();
