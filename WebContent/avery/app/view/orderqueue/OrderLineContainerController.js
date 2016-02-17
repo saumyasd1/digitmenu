@@ -117,11 +117,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				        		var orderlinecontainer = me.getView(),
     				        		grid=orderlinecontainer.down('grid');
     				                validateButton = orderlinecontainer.lookupReference('validateButton'),
-    				                bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
+    				                bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
     				                salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
     				                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
     				                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-    				                form=grid.lookupReference('form');
+    				                form=orderlinecontainer.lookupReference('form');
+//    				                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
+//    				                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
     			                	validateButton.disable();
     			                	salesViewOrderbutton.enable();
     			                	salesOrderbutton.disable();
@@ -158,20 +160,23 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			        	var status=jsonValue.status;
 			        	if(status=='success'){
 			        		proceed=false;
-			        		
 			        		var orderlinecontainer = me.getView(),
 			        		grid=orderlinecontainer.down('grid');
 			                validateButton = orderlinecontainer.lookupReference('validateButton'),
-			                bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
+			                bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
 			                salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
 			                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
 			                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-			                form=grid.lookupReference('form');
+			                form=orderlinecontainer.lookupReference('form');
+//			                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
+//			                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
 		                	validateButton.disable();
 		                	salesViewOrderbutton.enable();
 		                	salesOrderbutton.disable();
 		                	cancelOrderButton.disable();
 		                	form.disable();
+//		                	grid0.lookupReference('form').disable();
+//		                	grid1.lookupReference('form').disable();
 		                	me.runTime.setAllowOrderLineEdit(false);
 		                	me.getView().store.load();
 			        		Ext.Msg.alert('',salesOrderCreationMsg);
@@ -190,7 +195,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	          }
 			});
     	}
-    	
     },
     updateOrderLinedetail:function(editor, context, eOpts){
     	var ctx = context,me=this,
