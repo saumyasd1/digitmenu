@@ -215,23 +215,23 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 var orderlinecontainer = owner.down('orderlinecontainer'),
         		grid=orderlinecontainer.down('grid');
                 validateButton = orderlinecontainer.lookupReference('validateButton'),
-                bulkUpdateButton=grid.lookupReference('bulkUpdateButton'),
+                bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
                 salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
                 salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
                 cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-                form=grid.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
-                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
-                grid0.lookupReference('form')
+                form=orderlinecontainer.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
+//                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
+//                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
+               // grid0.lookupReference('form')
                 if(status != waitingForCSRStatus) {
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
                 	salesViewOrderbutton.disable();
                 	salesOrderbutton.disable();
                 	cancelOrderButton.disable();
-                	grid0.lookupReference('form').disable();
-                	grid1.lookupReference('form').disable();
-//                	form.disable();
+//                	grid0.lookupReference('form').disable();
+//                	grid1.lookupReference('form').disable();
+           	        form.disable();
                 }
                 if(salesOrderCount!=0){
                 	salesViewOrderbutton.enable();
