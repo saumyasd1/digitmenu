@@ -146,9 +146,81 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		                    handler:function(cmp,checked){
 		                	var activeitme=(checked)?0:1;
 		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
+		                	if(activeitme==0)
+		                		me.lookupReference('form').disable();
+		                	else
+		                		me.lookupReference('form').enable();
+		                		
 		                    }
 			        }]
-					}
+					},
+					{
+						xtype:'toolbar',
+						buttonAlign:'right',
+						margin:'0 10 0 10',
+						border:'0 0 1 0',
+						style: {
+						    borderColor: '#cecece',
+						    borderStyle: 'solid'
+						},
+						layout: {
+						    type: 'hbox',
+						    align: 'left'
+						},
+						items:[{
+			            xtype: 'form',
+			            reference: 'form',
+			            margin:'10 10 10 10',
+			            layout: 'hbox',
+			            items: [{
+			                xtype: 'radiogroup',
+			                reference: 'radioGroup',
+			                layout:'hbox',
+			                items: [{
+			                    boxLabel: '<b>Order Line Update</b>',
+			                    labelWidth:100,
+			                    name: 'rb',
+			                    inputValue: '1',
+			                    checked: true,
+			                    width:180
+		                        }, 
+		                        {
+				                    xtype: 'tbspacer',
+				                    width: 15
+				                },
+				                {
+				                    boxLabel: '<b>Variable Order Update</b>',
+				                    labelWidth:120,
+				                    name: 'rb',
+				                    inputValue: '2',
+				                    width:160
+		                         }],
+					                listeners: {
+					                    change: 'radioButtonClick'
+					                }
+		                        },
+		                            {
+						                xtype: 'tbspacer',
+						                width: 20
+		                           },{
+					                xtype: 'combo',
+					                hidden: true,
+					                editable:false,
+					                displayField: 'variableFieldName',
+					                valueField: 'variableFieldName',
+					                reference: 'variableFieldCombo'
+		                       }, {
+					                xtype: 'tbspacer',
+					                width: 20
+		                       },{
+						            xtype: 'button',
+						            text: bulkUpdateButtonText,
+						            ui:'blue-plain',
+						            reference:'bulkUpdateButton',
+						            handler: 'getUpdateScreen'
+					              }]
+		        }
+						]}
 				]
 			},{
 			xtype:'container',
