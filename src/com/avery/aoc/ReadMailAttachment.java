@@ -324,7 +324,7 @@ public class ReadMailAttachment
       public boolean accept(File directory, String filename)
       {
         for (String ext : orderFileExtension) {
-          if (filename.endsWith(ext))
+          if (filename.toLowerCase().endsWith(ext))
             return true;
         }
         return false;
@@ -364,13 +364,13 @@ public class ReadMailAttachment
           String contentType = fileTypeMap.getContentType(filename);
           String FileContentType = "";
 
-          if ((!filename.endsWith(".xls")) && 
-            (!filename.endsWith(".xlsx")) && 
-            (!filename.endsWith(".pdf"))) continue;
+          if ((!filename.toLowerCase().endsWith(".xls")) && 
+            (!filename.toLowerCase().endsWith(".xlsx")) && 
+            (!filename.toLowerCase().endsWith(".pdf"))) continue;
           fileStream = new FileInputStream(path + File.separator + 
             filename);
-          if ((filename.endsWith(".xls")) || 
-            (filename.endsWith(".xlsx")))
+          if ((filename.toLowerCase().endsWith(".xls")) || 
+            (filename.toLowerCase().endsWith(".xlsx")))
             FileContentType = "Order";
           else {
             FileContentType = "AdditionalData";
