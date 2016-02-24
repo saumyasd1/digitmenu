@@ -996,7 +996,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		          }, {
     		              text: "Variable Field Name",
     		              dataIndex: 'variablefieldname',
-    		              width: 140
+    		              width: 140,
+    		              renderer:function(v, metadata,rec){
+      		          		var mandatory=rec.get('mandatory');
+      		      			if(mandatory=='Y'){
+      		      				return '<div>'+v+'<font size=2 color=red>*</font></div>';
+      		      			}
+      		      			else{
+      		      					return '<div>'+v+'</div>';
+      		      			}
+      		          }
     		          }, {
     		              text: "Variable Field Value",
     		              dataIndex: 'variabledatavalue',
