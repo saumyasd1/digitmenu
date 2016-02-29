@@ -313,7 +313,8 @@ public class ReceiveMail
 				if (!caseSensitive) {
 					if (UniqueID.equalsIgnoreCase(recievedUniqqueID)) {
 						message = (Message)msgs.get(i);
-						String emailBody = IOUtils.toString(getBodyMessage(message, bodyContentType), systemEncoding);
+//						String emailBody = IOUtils.toString(getBodyMessage(message, bodyContentType), systemEncoding);
+						String emailBody = getBodyMessage(message, bodyContentType, systemEncoding);
 						Date receivedDate = ((Message)msgs.get(i)).getReceivedDate();
 
 						Message forward = new MimeMessage(session);
@@ -399,7 +400,7 @@ public class ReceiveMail
       }
       else if ((msgPart.equalsIgnoreCase("BODY")) || 
         (msgPart.equalsIgnoreCase("MULTIPART"))) {
-        getBodyMessage(msg, contentType);
+//        getBodyMessage(msg, contentType);
         filteredMessages.add(msg);
       }
       else {
@@ -456,6 +457,74 @@ public class ReceiveMail
     return null;
   }
 
+  private String getBodyMessage(Message msg, String bodyContentType,String systemencoding) throws Exception
+  {
+    Multipart mp = null;
+    String encoding = null;
+    Object content = msg.getContent();
+    String type1 = msg.getContentType();
+    if ((content instanceof Multipart)) {
+      mp = (Multipart)msg.getContent(); } else {
+      if ((content instanceof BASE64DecoderStream)) {
+        BASE64DecoderStream base64DecoderStream = (BASE64DecoderStream)msg
+          .getContent();
+        StringWriter writer = new StringWriter();
+        IOUtils.copy(base64DecoderStream, writer);
+        String base64decodedString = writer.toString();
+        return IOUtils.toString(new ByteArrayInputStream(base64decodedString.getBytes()));
+      }
+      return IOUtils.toString(new ByteArrayInputStream(((String)content).getBytes()));
+    }
+
+    String contentType = mp.getContentType();
+    Part part = null;
+
+    part = mp.getBodyPart(0);
+    Enumeration e = part.getAllHeaders();
+    while ((e != null) && (e.hasMoreElements())) {
+      Header header = (Header)e.nextElement();
+      if ((header.getName() == null) || 
+        (header.getValue() == null))
+        continue;
+      if ((!header.getName().toLowerCase()
+        .startsWith("content-type")) || 
+        (!header.getValue().toLowerCase().startsWith(
+        "multipart/alternative")))
+        continue;
+      Multipart mpp = (Multipart)part.getContent();
+      Part part0 = null;
+      if ((bodyContentType == null) || 
+        (bodyContentType.equalsIgnoreCase("")))
+        bodyContentType = "text/plain";
+      if (bodyContentType.equalsIgnoreCase("text/plain"))
+        part0 = mpp.getBodyPart(0);
+      else if (bodyContentType.equalsIgnoreCase("text/html"))
+        part0 = mpp.getBodyPart(1);
+      else
+        part0 = mpp.getBodyPart(0);
+      String type = part0.getContentType();
+      String charset = type.substring(type.lastIndexOf("=")+1, type.length());
+      if(charset.equalsIgnoreCase(systemencoding))
+    	  encoding = systemencoding;
+      else
+    	  encoding = charset;
+      if ((type != null) && (
+        (type.trim().toLowerCase().startsWith("text/html")) || 
+        (type.trim().toLowerCase().startsWith("text/plain")))) {
+    	return IOUtils.toString(part0.getInputStream(), encoding);
+//        return part0.getInputStream();
+      }
+
+    }
+
+    part = mp.getBodyPart(0);
+    if (contentType == null) {
+      throw new Exception("Content Type : Invalid Content Type\n");
+    }
+    return IOUtils.toString(part.getInputStream(), systemencoding);
+//    return part.getInputStream();
+  }
+  
   private InputStream getBodyMessage(Message msg, String bodyContentType) throws Exception
   {
     Multipart mp = null;
