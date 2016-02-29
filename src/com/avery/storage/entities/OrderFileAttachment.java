@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
@@ -371,6 +372,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			byte[] bytes = IOUtils.toByteArray(is);
 			String fileName = "\""+orderFileAttachment.getFileName()+"\"";
 			//FormDataBodyPart bodyPart = new FormDataBodyPart("file", is, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+			
 
 			//bodyPart.setContentDisposition(FormDataContentDisposition.name("file")
               //                                             .fileName(orderFileAttachment.getFileName()).build());
@@ -379,7 +381,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			//rb = Response.ok(form,MediaType.MULTIPART_FORM_DATA);
 			return Response
 		            .ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
-		            .header("content-disposition","attachment; filename = "+fileName)
+		            .header("content-disposition","attachment; filename = \"" + URLEncoder.encode(orderFileAttachment.getFileName(), "utf-8").replace("+", " ")+ "\"")
 		            .build();
 		} catch (WebApplicationException ex) {
 			throw ex;
