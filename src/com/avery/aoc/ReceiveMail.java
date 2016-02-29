@@ -49,6 +49,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 import javax.mail.search.FlagTerm;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
@@ -194,7 +195,7 @@ public class ReceiveMail
     String UniqueID = null;
 
     if (subject != null) {
-      subject = subject.replace(' ', ' ');
+      subject = subject.replace(' ', ' ');
     }
 
     if ((subject == null) || (subject.trim().equals(""))) {
@@ -209,7 +210,7 @@ public class ReceiveMail
         if (subject1 == null)
           subject1 = "";
         else {
-          subject1 = subject1.replace(' ', ' ');
+          subject1 = subject1.replace(' ', ' ');
         }
         if (!caseSensitive) {
           if (!this.pm.isMatch(subject1.toLowerCase().trim(), 
@@ -648,6 +649,7 @@ public class ReceiveMail
     if ((msgPart.equalsIgnoreCase("ATTACHMENT")) || 
       (msgPart.equalsIgnoreCase("MULTIPART"))) {
       list = new HashMap();
+      List filenamelist = new ArrayList();
       if (sourceFileName != null) {
         sourceFileName = MimeUtility.decodeText(sourceFileName);
       }
@@ -667,8 +669,15 @@ public class ReceiveMail
               " not found in attachment");
           }
 
-          list.put(MimeUtility.decodeText(part.getFileName()).trim(), 
-            part.getInputStream());
+          String fName = MimeUtility.decodeText(part.getFileName()).trim();
+          filenamelist = checkDuplicate(filenamelist, fName);
+          fName = (String)filenamelist.get(filenamelist.size()-1);
+          
+//          list.put(MimeUtility.decodeText(part.getFileName()).trim(), 
+//            part.getInputStream());
+          
+          list.put(fName, part.getInputStream());
+          
         }
 
       }
@@ -753,4 +762,33 @@ public class ReceiveMail
 		      }
 		    }
 		  }
+  
+  public List checkDuplicate(List filenamelist,String fname) throws Exception{
+	  int count = 0;
+	  String basename = FilenameUtils.getBaseName(fname);
+	  String fileExtension = FilenameUtils.getExtension(fname);
+	  String valueSeprator = (String)DatabaseUtils.getPropertiesMap().get("aoc.environment.valueSeprator");
+	  String filename = "";
+	  if(filenamelist.contains(fname)){
+		  if(fname.contains(valueSeprator)){
+			  String arr[] = basename.split(valueSeprator);
+			  count = Integer.parseInt(arr[1])+1;
+			  filename = arr[0] + valueSeprator + count + "."+fileExtension;
+			  filenamelist.add(filename);
+		  }else{
+			  String arr[] = basename.split(valueSeprator);
+			  if(arr.length > 1)
+				  count = Integer.parseInt(arr[1])+1;
+			  else
+				  count++;
+			  filename = arr[0] + valueSeprator + count + "."+fileExtension;
+			  checkDuplicate(filenamelist, filename);
+		  }
+		  
+	  }else{
+		  filenamelist.add(fname);
+	  }
+	  
+	  return filenamelist;
+  }
 		}
