@@ -9,6 +9,7 @@ validateFieldFailedConfirmatonMsg='Some of the validations has failed. Are you s
 confirmBulkUpdateSave='Are you Sure you want to make/save these changes?',
 noRecordsToUpdateMessage='There are no record(s) to update',
 changeOrderLineStatusAlert='One/some of the lines is/are not allow to proceed, please cancel or fix the error before submitting',
-InvalidComboValueAlert='One or more value are not valid.Please correct the values before proceeding'
+InvalidComboValueAlert='One or more value are not valid.Please correct the values before proceeding',
+onProductLineChangeAlert='Please delete the attachment before changing the productline'
 ;
 
