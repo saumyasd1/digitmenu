@@ -146,11 +146,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		                    handler:function(cmp,checked){
 		                	var activeitme=(checked)?0:1;
 		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
-		                	if(activeitme==0)
-		                		me.lookupReference('form').disable();
-		                	else
-		                		me.lookupReference('form').enable();
-		                		
+		                	if(record.get('Status')==4 && AOC.config.Runtime.getAllowOrderLineEdit())
+		                	{
+		                		if(checked==false)
+		                		   me.lookupReference('form').enable();
+		                	    else 
+		            		       me.lookupReference('form').disable();
+		                	}	
 		                    }
 			        }]
 					},

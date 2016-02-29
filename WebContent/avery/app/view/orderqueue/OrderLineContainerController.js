@@ -69,8 +69,9 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	Ext.getBody().unmask();
     },
     submitSalesOrder:function(){
-    	Ext.getBody().mask('Loading...');
-    	var grid=this.getView().down('grid'),store=grid.store,me=this,status;
+    	Ext.getBody().mask('Loading...'); //show message on missing field
+    	var grid=this.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),store=grid.store,me=this,status;;
+    	//var grid=this.getView().down('#orderlineexpandablegridrowmodel'),store=grid.store,me=this,status;
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
@@ -113,7 +114,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				        	var status=jsonValue.status;
     				        	if(status=='success'){
     				        		proceed=false;
-    				        		
     				        		var orderlinecontainer = me.getView(),
     				        		grid=orderlinecontainer.down('grid');
     				                validateButton = orderlinecontainer.lookupReference('validateButton'),
@@ -122,8 +122,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
     				                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
     				                form=orderlinecontainer.lookupReference('form');
-//    				                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
-//    				                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
     			                	validateButton.disable();
     			                	salesViewOrderbutton.enable();
     			                	salesOrderbutton.disable();
@@ -156,6 +154,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	    		async:false,
 	 		    url : applicationContext+'/rest/router/salesorder/'+id,
 	 		    success : function(response, opts) {
+	 		    	debugger;
 	 		    	var jsonValue=Ext.decode(response.responseText);
 			        	var status=jsonValue.status;
 			        	if(status=='success'){
@@ -168,15 +167,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
 			                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
 			                form=orderlinecontainer.lookupReference('form');
-//			                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
-//			                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
 		                	validateButton.disable();
 		                	salesViewOrderbutton.enable();
 		                	salesOrderbutton.disable();
 		                	cancelOrderButton.disable();
 		                	form.disable();
-//		                	grid0.lookupReference('form').disable();
-//		                	grid1.lookupReference('form').disable();
 		                	me.runTime.setAllowOrderLineEdit(false);
 		                	me.getView().store.load();
 			        		Ext.Msg.alert('',salesOrderCreationMsg);
@@ -241,5 +236,100 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	    		validateButton.enable();
     	    	}
     	 }
-    }
+    },
+    getUpdateScreen:function(){
+    	var me=this;
+    	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
+      	 var height=viwport.getHeight()-20;
+      	 var width=viwport.getWidth()-20;
+      	 var id=this.runTime.getOrderQueueId();
+      	 var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,store,win,innerGridType,comboValue='';
+      	 if(radioGroupValue=='2'){
+      		var comboField=this.lookupReference('variableFieldCombo');
+      		comboValue=comboField.getValue();
+      		if(comboValue=='' || comboValue==null){
+      			Ext.Msg.alert('', 'Please select a value from the drop down before drop down.');
+      			return false;
+      		}
+      		innerGridType='bulkUpdateVariableHeaderrGrid';
+      		height=height-180;
+      		width=width-240;
+      		store=Ext.create('AOC.store.OrderLineStore', {
+      			model:'AOC.model.VariableHeaderModel',
+    			proxy : {
+    				type : 'rest',
+    				url : applicationContext+'/rest/orderlinedetails/order/'+id+'/'+comboValue,
+    				reader:{
+    			        type:'json', 
+    			        rootProperty: 'OrderLineDetail'
+    			    }
+    			}
+    		}); 
+      	 }else{
+      		store=Ext.create('AOC.store.OrderLineStore', {
+    			proxy : {
+    				type : 'rest',
+    				url : applicationContext+'/rest/orderLines/order/'+id,
+    				reader:{
+    			        type:'json', 
+    			        rootProperty: 'orderLine'
+    			    }
+    		}
+    		});
+      		innerGridType='bulkupdateorderlinegrid';
+      	 }
+		   var win=Ext.create('AOC.view.base.BaseWindow',{
+			 	height:height,
+				width:width,
+				layout: 'fit',
+				draggable: false,
+				modal:true,
+				listeners:{ 
+			 	      close:function(obj,eOpts){
+			 	    	 var orderline=Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+			 	    	     orderline.store.load();
+			 	}
+				},
+				items:[{
+					xtype:innerGridType,
+					store:store,
+					variableColumnName:comboValue
+				}]
+		   });
+		   win.show();
+    },
+    radioButtonClick:function(obj,newValue,oldValue){
+    	var comboField=this.lookupReference('variableFieldCombo');
+    	if(newValue.rb=='2'){
+    		Ext.getBody().mask('Loading..');
+    		var id= this.runTime.getOrderQueueId();
+    		Ext.Ajax.request( {
+    			method:'GET',
+    			url : applicationContext+'/rest/orderlinedetails/order/'+id,
+		        success : function(response, opts) {
+		        	var jsonValue=Ext.decode(response.responseText);
+		        	var serviceStoreData = [];
+		        	if(jsonValue.length>0){
+		        	jsonValue.forEach(function(item){
+                		var service = [item];
+                		if(item.toLowerCase()!=qtyVariableLabel && item.toLowerCase().indexOf(sizeVariableLabel)==-1)
+                			serviceStoreData.push(service);
+                	});
+		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+                 	   		fields : ['variableFieldName'],	
+            	            data : serviceStoreData
+                    });
+		        	comboField.bindStore(serviceStore);
+		        	}
+		        	comboField.setVisible(true);
+		        	Ext.getBody().unmask();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+	          }
+	  	});
+    	}else{
+    		comboField.setVisible(false);
+    	}
+    },
 })

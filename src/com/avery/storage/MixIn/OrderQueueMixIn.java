@@ -144,8 +144,6 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract String getPreProcessPID();
 		
-		@JsonIgnore
-		public abstract Date getReceivedDate();
 		
 		@JsonIgnore
 		public abstract String getFileExtension();
