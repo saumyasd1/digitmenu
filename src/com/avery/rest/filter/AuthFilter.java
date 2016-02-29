@@ -33,11 +33,12 @@ public class AuthFilter implements ContainerRequestFilter {
             method = (method == null) ? "" : method;
             String requestURI = requestContext.getUriInfo().getAbsolutePath()
                     .toString();
-			if (requestContext.getMediaType() != null
-					&& requestContext.getMediaType().toString()
-							.indexOf("multipart/form-data") != -1) {
-				return;
-			}
+            if(requestContext==null || requestContext.getMediaType()==null)
+                return;
+            if (requestContext.getMediaType().toString()
+                    .indexOf("multipart/form-data") != -1) {
+                return;
+            }
             if (method.equals("POST")
                     && (requestURI.indexOf("login/user") != -1)) {
                 return;
@@ -57,12 +58,12 @@ public class AuthFilter implements ContainerRequestFilter {
                             .set("Operation", method).set("Headers", headers);
                 }
             }else{
-            	AppLogger.getSystemLogger().error(
+//                throw SystemException
+//                .wrap(null, RestErrorCode.AUTH_FAILED_INVALID_TOKEN)
+//                .set("Request URI", requestURI)
+//                .set("Operation", method).set("Headers", headers);
+                AppLogger.getSystemLogger().error(
                         "Token is not found request.");
-                throw SystemException
-                .wrap(null, RestErrorCode.AUTH_FAILED_INVALID_TOKEN)
-                .set("Request URI", requestURI)
-                .set("Operation", method).set("Headers", headers);
             }
         } catch (SystemException se) {
             authenticated = false;
