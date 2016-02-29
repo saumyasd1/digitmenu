@@ -274,6 +274,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 },
 	 onProductLineSelection:function(obj,newValue){
 		 if(newValue !=null && newValue!=''){
+			 var attachmentinfostore =Ext.ComponentQuery.query('weborderview attachmentinfoGrid')[0].getStore();
 			 var store=obj.store;
 			 var record=store.getById(newValue),form=this.getView();
 			 var attachmentCount=form.attachmentCount;
@@ -283,8 +284,14 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 var currentAttachmentField=form.lookupReference('attachment'+attachmentCount);
 			 if(!attachmentRequired){
 				 if(currentAttachmentField)
+				    {
 					 currentAttachmentField.hide();
-			 }else{
+					 if(attachmentinfostore.data.length!=0)
+						 Ext.Msg.alert('',onProductLineChangeAlert);
+				 }
+					 
+			 }
+			 else{
 				 if(currentAttachmentField)
 					 currentAttachmentField.show();
 			 }
