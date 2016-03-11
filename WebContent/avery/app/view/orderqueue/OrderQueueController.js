@@ -220,17 +220,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
                 cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
                 form=orderlinecontainer.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-//                var grid0=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridvv');
-//                var grid1=orderlinecontainer.down('#orderlineexpandablegridcard').down('#orderlineexpandablegridrowmodel');
-               // grid0.lookupReference('form')
                 if(status != waitingForCSRStatus) {
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
                 	salesViewOrderbutton.disable();
                 	salesOrderbutton.disable();
                 	cancelOrderButton.disable();
-//                	grid0.lookupReference('form').disable();
-//                	grid1.lookupReference('form').disable();
            	        form.disable();
                 }
                 if(salesOrderCount!=0){
@@ -299,7 +294,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	"emailBody":rec.get('emailBody'),"orderFileType":oderFileName,
             	"oldOrderId":rec.get('id')
                 });
-                var controller=  weborderform.getController();
+                var controller=weborderform.getController();
                 if(!Ext.isEmpty(oderFileName)){
                 controller.insertFileInGrid(oderFileName,'Order File Type',false,null,rec.get('OrderFile')[0].id);
                 }
