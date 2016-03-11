@@ -154,7 +154,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	    		async:false,
 	 		    url : applicationContext+'/rest/router/salesorder/'+id,
 	 		    success : function(response, opts) {
-	 		    	debugger;
 	 		    	var jsonValue=Ext.decode(response.responseText);
 			        	var status=jsonValue.status;
 			        	if(status=='success'){
@@ -331,5 +330,5 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}else{
     		comboField.setVisible(false);
     	}
-    },
+    }
 })
