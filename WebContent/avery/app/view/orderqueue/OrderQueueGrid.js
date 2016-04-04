@@ -72,7 +72,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			
         {
 		    header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
-		   //	text:'',
             width:40,
 			dataIndex:'error',
 			menuDisabled  :true,
@@ -92,8 +91,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'OrderSource',
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
-				var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
-				var filename=record.get('id');
 				if(v=='Email')
 					return '<div><img class="viewemail" src="' + mailIcon + '" /></div>';
 				else
@@ -106,7 +103,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'OrderFile',
 			renderer:function(v,cell,record){
 				if(v.length!=0){
-					var fileName=v[0].fileName
+					var fileName=v[0].fileName;
 					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
 				}else 
 					return '';
@@ -122,7 +119,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				if(v)
 					return '<div><img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" /></div>';
 				else
-					return ''
+					return '';
         }
         },
         {
@@ -157,11 +154,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : 'Order Status',
             width:200,
 			dataIndex:'Status',
-			editor:{
-				xtype:'combo',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
-			},
 			renderer:function(v){
 				return AOC.util.Helper.getSatus(v);
 			}
