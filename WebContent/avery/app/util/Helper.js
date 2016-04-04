@@ -143,24 +143,27 @@ loadCodeStore:function(type){
         });
     },
     getSatus:function(v){
-    	var me=this,
-    	store= Ext.data.StoreManager.lookup('codeid') == null ?me.getCodeStore('code') : Ext.data.StoreManager.lookup('codeid'),
-    	statusRecord=store.findRecord( 'code', v),
-		va=statusRecord.get('value');
-    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==orderRead || v==booked)
-	   {
-    		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
-	   }
-		else if(v==waitingForCSRStatus || v==submissionProcessRunningStatus || v==exportingProcessRunningStatus || v==processingOrder)
-		{
-			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.watch + '" /><font color=#EF4300>&nbsp&nbsp&nbsp'+va+'</font></div>';
-		}
-		else if( v==cancelStatus)
-		{
-		 return '<div><img  src="' + AOC.config.Settings.buttonIcons.cancel + '" /><font color=silver>&nbsp&nbsp&nbsp'+va+'</font></div>';
-		}
-		else
-			return '<div><img  src="' + AOC.config.Settings.buttonIcons.error + '" /><font color=red>&nbsp&nbsp&nbsp'+va+'</font</div>';
+    	if(v!==''){
+	    	var me=this,
+	    	store= Ext.data.StoreManager.lookup('codeid') == null ?me.getCodeStore('code') : Ext.data.StoreManager.lookup('codeid'),
+	    	statusRecord=store.findRecord( 'code', v),
+			va=statusRecord.get('value');
+	    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==orderRead || v==booked)
+		   {
+	    		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
+		   }
+			else if(v==waitingForCSRStatus || v==submissionProcessRunningStatus || v==exportingProcessRunningStatus || v==processingOrder)
+			{
+				 return '<div><img  src="' + AOC.config.Settings.buttonIcons.watch + '" /><font color=#EF4300>&nbsp&nbsp&nbsp'+va+'</font></div>';
+			}
+			else if( v==cancelStatus)
+			{
+			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.cancel + '" /><font color=silver>&nbsp&nbsp&nbsp'+va+'</font></div>';
+			}
+			else
+				return '<div><img  src="' + AOC.config.Settings.buttonIcons.error + '" /><font color=red>&nbsp&nbsp&nbsp'+va+'</font</div>';
+    	}
+    	return '';
     },
     setCookie:function(cname, cvalue, exdays) {
         var d = new Date();
