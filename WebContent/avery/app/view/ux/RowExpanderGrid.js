@@ -59,11 +59,12 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	        var reusedCmpIds = [] ;
 	        Ext.Array.each( view.getNodes(), function(node) {
 	            var record = view.getRecord(node),
-	                recordId = this.getRecordKey(record) ;
+	                recordId = this.getRecordKey(record),
+	                rowIndex=view.indexOf(node);
 	                
 	            if( !Ext.isEmpty(this.obj_recordId_componentId[recordId]) ) {
 	                var cmpId = this.obj_recordId_componentId[recordId] ;
-	                
+	                this.toggleRow(rowIndex, record);
 	                reusedCmpIds.push(cmpId) ;
 	                var reusedComponent = Ext.getCmp(this.obj_recordId_componentId[recordId]),
 	                    targetRowbody = Ext.DomQuery.selectNode('div.x-grid-rowbody', node);
