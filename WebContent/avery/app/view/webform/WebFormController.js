@@ -1,9 +1,10 @@
 Ext.define('AOC.view.webform.WebFormController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.webFormMain',
+  
     runTime : AOC.config.Runtime,
     onPartnerChange:function(obj,newValue){
-    	var messageField=this.getView().down('#messageFieldItemId');
+    	var messageField=this.getView().down('#messageFieldItemId'),me=this;
     	if(newValue!=null){
     	var productLineCombo=this.lookupReference('productLineCombo'),rboCombo=this.lookupReference('rboCombo');
     	var store=null;
@@ -17,6 +18,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	jsonValue.forEach(function(item){
   		var service = item;
   		serviceStoreData.push(service);
+  		
   	});
     	store =  Ext.create('Ext.data.Store',{
     		fields:['id'],
@@ -34,12 +36,16 @@ Ext.define('AOC.view.webform.WebFormController', {
      	   	 fields : ['rboName','id','productLineType'],	
 	         data : serviceStoreData1
         });
-    	     productLineCombo.bindStore(store);
-    	     productLineCombo.reset();
+    	     debugger;
+    	     var form =me.getView();
+    	     if(form !=null && !form.isResubmit){
+    	    	 rboCombo.reset();
+    	    	 productLineCombo.reset();
+    	     }
     	     rboCombo.bindStore(serviceStore);
-    	     rboCombo.reset();
     	     rboCombo.enable();
-    	     messageField.hide();
+    	     productLineCombo.bindStore(store);
+    	     messageField.show();
     	  }
     	}else{
   		  messageField.setValue('No RBO configured for the selected Parter. Please select a differet partner to proceed further');
@@ -286,10 +292,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 				 if(currentAttachmentField)
 				    {
 					 currentAttachmentField.hide();
-					 if(attachmentinfostore.data.length!=0)
+					 if(attachmentinfostore.data.length=0){
 						 Ext.Msg.alert('',onProductLineChangeAlert);
 				 }
-					 
+					} 
 			 }
 			 else{
 				 if(currentAttachmentField)
@@ -310,17 +316,21 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 },
 	 onRBOChange:function(obj,newValue){
 		 if(newValue !=null && newValue!=''){
-		 Ext.getBody().mask('Loading....');
-		 var productLineCombo=this.getView().lookupReference('productLineCombo');
-		 productLineCombo.setValue('');
-		 var store=productLineCombo.store;
-		 store.clearFilter();
-		 store.filterBy(function(record){
-			 if(record.get('rboName')==newValue)
-				 return true;
-       });
-		 productLineCombo.reset();
-		 productLineCombo.enable();
+			 Ext.getBody().mask('Loading....');
+			 var productLineCombo=this.getView().lookupReference('productLineCombo');
+			// productLineCombo.setValue('');
+			 var store=productLineCombo.store;
+			 store.clearFilter();
+			 store.filterBy(function(record){
+				 if(record.get('rboName')==newValue)
+					 return true;
+	   		});
+			 //productLineCombo.reset();
+			 productLineCombo.enable();
+			 var form =this.getView();
+    	     if(form !=null && !form.isResubmit){
+    	    	 productLineCombo.reset();
+    	     }
 		 }
 		 Ext.getBody().unmask();
 	 },
