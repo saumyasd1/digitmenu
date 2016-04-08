@@ -128,6 +128,7 @@ Ext.define('AOC.controller.MenuController', {
 	      }else if(xtype=="weborderview"){
 				var weborderview=  Ext.ComponentQuery.query('weborderview')[0];
 				weborderview.down('form').reset();
+				weborderview.down('form').isResubmit=false;
 				weborderview.down('form').lookupReference('rboCombo').disable();
 				weborderview.down('form').lookupReference('productLineCombo').disable();
 				weborderview.down('form').lookupReference('partnerCombo').getStore().load();
