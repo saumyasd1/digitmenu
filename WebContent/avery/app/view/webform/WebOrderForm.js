@@ -14,10 +14,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	requires: ['AOC.lang.lit'],
 	border:false,
 	attachmentCount:1,
+	isResubmit:false,
 	layout: {
         type: 'anchor'
     },
     reset: function() {
+    	this.isResubmit=false;
     	var i=this.attachmentCount,currentAttachment,form=this;
     	for(var j=2;j<=i;j++){
     		currentAttachment=form.lookupReference('attachment'+j);
@@ -80,6 +82,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				xtype:'combo',
         				emptyText:'Partner Name',
         				reference:'partnerCombo',
+        				itemId:'partnerCombo',
         				store:'PartnerManagementStore',
         				valueField:'id',
         				name:'partnerName',
@@ -97,6 +100,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				xtype:'combo',
         				emptyText:'RBO',
         				reference:'rboCombo',
+        				itemId:'rboCombo',
         				editable:false,
         				displayField:'rboName',
         				name:'rboName',
@@ -113,6 +117,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			{
         				xtype:'combo',
         				reference:'productLineCombo',
+        				itemId:'productLineCombo',
         				displayField:'productLineType',
         				valueField:'id',
         				editable:true,
@@ -133,6 +138,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelAlign:'right',
         			name: 'email',
         			reference:'email',
+        			itemId:'email',
         			anchor:'100%',
         			vtype:'email',
         			fieldLabel:'Sender Email',
@@ -156,6 +162,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			anchor:'100%',
         			reference:'subject',
         			fieldLabel:'Email Subject',
+        			itemId:'subject',
         			value:'',
         			labelSeparator:'',
         			allowBlank: false,
@@ -177,6 +184,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			name: 'emailBody',
         			reference:'emailBody',
         			fieldLabel:'Email Body',
+        			itemId:'emailBody',
         			value:'',
         			labelSeparator:'',
         			disabled:true,
@@ -195,6 +203,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			name : 'orderFileType',
         			reference:'orderFileType',
         			fieldLabel : 'Order File', 
+        			itemId:'orderFileType',
         			labelSeparator:'',
         			labelWidth : 200,
         			anchor:'100%',
@@ -217,6 +226,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			anchor:'100%',
         			reference: 'attachment1',
         			fieldLabel:'Attachments',
+        			itemId:'attachment1',
         			labelSeparator:'',
         			allowBlank: true,
         			labelWidth : 200,
@@ -232,6 +242,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         		},{
      			     xtype:'hidden',
      			     name:'oldOrderId'
+     			     
      			 },
      			 {
      			     xtype:'hidden',
