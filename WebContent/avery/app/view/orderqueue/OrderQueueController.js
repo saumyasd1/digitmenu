@@ -274,6 +274,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	
             },
             reSubmitOrder:function(cmp){
+            	debugger;
                 var rec =e.record;
                 var con=AOC.app.getController('MenuController');
                 con.selectCard('weborderview');
@@ -286,17 +287,41 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 attachmentinfoGrid.getView().refresh();
                 var partnerId =(Ext.isEmpty(rec.get('partner')))?"":rec.get('partner').id,
                 productLineId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').id,
-                rboId =(Ext.isEmpty(rec.get('productLine')))?"":rec.get('productLine').rboId,
-                oderFileName = (Ext.isEmpty(rec.get('OrderFile')[0]))?"":rec.get('OrderFile')[0].fileName;
-                weborderform.getForm().setValues({"partnerName":partnerId,
-            	"rboName":rec.get('RBOName'),"productLineType":productLineId,
-            	"email":rec.get('SenderEmailID'),"subject":rec.get('Subject'),
-            	"emailBody":rec.get('emailBody'),"orderFileType":oderFileName,
-            	"oldOrderId":rec.get('id')
-                });
-                var controller=weborderform.getController();
-                if(!Ext.isEmpty(oderFileName)){
-                controller.insertFileInGrid(oderFileName,'Order File Type',false,null,rec.get('OrderFile')[0].id);
+                rboName =(Ext.isEmpty(rec.get('RBOName')))?"":rec.get('RBOName'),
+                senderEmailID =(Ext.isEmpty(rec.get('senderEmailID')))?"":rec.get('senderEmailID'),
+                subject =(Ext.isEmpty(rec.get('subject')))?"":rec.get('subject'),
+                emailBody =(Ext.isEmpty(rec.get('emailBody')))?"":rec.get('emailBody'),
+                orderFileName = (Ext.isEmpty(rec.get('OrderFile')[0]))?"":rec.get('OrderFile')[0].fileName;
+                weborderview.down('form').lookupReference('partnerCombo').getStore().load();
+//                weborderview.down('form').lookupReference('partnerCombo').getStore().load();
+//                weborderform.getForm().setValues({"partnerName":partnerId});
+//                weborderform.getForm().setValues({"rboName":rec.get('RBOName')});
+//                weborderform.getForm().setValues({"productLineType":productLineId});
+//                weborderform.getForm().setValues({"email":rec.get('SenderEmailID')});
+//                weborderform.getForm().setValues({"subject":rec.get('Subject')});
+//                weborderform.getForm().setValues({"emailBody":rec.get('emailBody')});
+//                weborderform.getForm().setValues({"orderFileType":oderFileName});
+//                weborderform.getForm().setValues({"oldOrderId":rec.get('id')});
+//                weborderform.getForm().setValues({"partnerName":partnerId,
+//            	"rboName":rec.get('RBOName'),"productLineType":productLineId,
+//            	"email":rec.get('SenderEmailID'),"subject":rec.get('Subject'),
+//            	"emailBody":rec.get('emailBody'),"orderFileType":oderFileName,
+//            	"oldOrderId":rec.get('id')
+//                });
+
+                  weborderform.down('#partnerCombo').setValue(partnerId);
+                  weborderform.down('#rboCombo').setValue(rboName);
+                  weborderform.down('#productLineCombo').setValue(productLineId);
+                  weborderform.down('#email').setValue(senderEmailID);
+                  weborderform.down('#subject').setValue(subject);
+                  weborderform.down('#emailBody').setValue(emailBody);
+                  weborderform.down('#orderFileType').setValue(orderFileName);
+                  
+                  
+                  
+              var controller=weborderform.getController();
+                if(!Ext.isEmpty(orderFileName)){
+                	controller.insertFileInGrid(oderFileName,'Order File Type',false,null,rec.get('OrderFile')[0].id);
                 }
                 var attachFile=(Ext.isEmpty(rec.get('orderFileAttachment')))?[]:rec.get('orderFileAttachment');
             	 for(var i=0;i<attachFile.length;i++){
@@ -305,8 +330,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	 }
             	weborderview.down('#backButtonimage').setVisible(true);
             	weborderview.updateHeaderLabel(fixAndResubmitWebOredr);
+            	weborderform.isResubmit=true;
             }
-        }
+	          } 
 	          });
 	      callout.show();   
 	  },
