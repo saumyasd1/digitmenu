@@ -40,13 +40,13 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	   
 	    onExpand: function(rowNode, record, expandRow) {
-	    	
+	    	debugger;
 	    	var recordId = this.getRecordKey(record) ;
 	    	var id = record.get('id') ;
-	    	var openRowArray=new Array();
-	    		
-	    	openRowArray.push(id);
-	    	AOC.config.Runtime.setOpenRow(openRowArray);
+	    	var openRowArray=AOC.config.Runtime.getOpenRow();
+	    		openRowArray.push(id);
+	    	
+	    	//AOC.config.Runtime.setOpenRow(openRowArray);
 	        if( Ext.isEmpty( this.obj_recordId_componentId[id] ) ) {
 	            var view = this.grid.getView(),
 	                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode)),
@@ -67,36 +67,22 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	    
 	    onRefresh: function(view) {
-	    	
 	    	var me= this;
-	    
-	    	
-	    	var reusedCmpIds = [] ;
+	    var reusedCmpIds = [] ;
 	        Ext.Array.each( view.getNodes(), function(node) {
-	        	
-	            var record = view.getRecord(node);
+	        	 var record = view.getRecord(node);
 	            recordId = this.getRecordKey(record);
 	            var id=record.get('id');
-	            var openRowArray= new Array();
-	            	//AOC.config.Runtime.getOpenRow();
-	          rowIndex=view.indexOf(node);
-	          var luv3 =AOC.config.Runtime.getLuv();
-	          var luv4 = AOC.config.Runtime.getOpenRow();
-	         /*if(AOC.config.Runtime.getOpenRow().indexOf(AOC.config.Runtime.getLuv())>=0){
-	        	 me.toggleRow(rowIndex, record); 
-	        	 me.selectRowOnExpand;
-	         }*/
-	          var check=AOC.config.Runtime.getFetch();//[3,9]
-	          var box=check.length;
-	          for(i=0;i<=box;i++){
-	         if(id==check[i])
-	          {
-	        	 var x= AOC.config.Runtime.getGame();
-	        	 record = this.view.getRecord(node),
-	        	 me.toggleRow(rowIndex, record); 
-		        	 
-		         }
-	          }
+	            rowIndex=view.indexOf(node);
+	       AOC.config.Runtime.getOpenRow();
+	       var openRowArray= AOC.config.Runtime.getOpenRow();
+	         
+	       if(openRowArray.indexOf(id)>-1)
+	        {
+	        record = this.view.getRecord(node),
+	        me.toggleRow(rowIndex, record); 
+		        	 }
+	          
 	       if( !Ext.isEmpty(this.obj_recordId_componentId[id]) ) {
 	                var cmpId = this.obj_recordId_componentId[id] ;
 	                
@@ -150,7 +136,7 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	    
 	    onCollapse:function(rowNode, record, expandRow){
-	    	
+	    	debugger;
 	    	 var id = record.get('id') ;
 	    	 var openRowArray=AOC.config.Runtime.getOpenRow();
 	    	 var index=openRowArray.indexOf(id);
