@@ -40,7 +40,7 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	   
 	    onExpand: function(rowNode, record, expandRow) {
-	    	debugger;
+	    	
 	    	var recordId = this.getRecordKey(record) ;
 	    	var id = record.get('id') ;
 	    	var openRowArray=AOC.config.Runtime.getOpenRow();
@@ -136,7 +136,7 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	    
 	    onCollapse:function(rowNode, record, expandRow){
-	    	debugger;
+	    	
 	    	 var id = record.get('id') ;
 	    	 var openRowArray=AOC.config.Runtime.getOpenRow();
 	    	 var index=openRowArray.indexOf(id);
