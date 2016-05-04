@@ -11,10 +11,6 @@ Ext.define('AOC.config.Runtime',{
         orderQueueStatus:null,
         allowOrderLineEdit:true,
         openRow:{},
-        closeRow:{},
-        fetch:new Array(),
-        luv:new Array(),
-        game:new Array(),
         user: {}
     },
     constructor : function(config){
