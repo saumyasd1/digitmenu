@@ -126,7 +126,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            reference: 'salesOrderbutton',
 			            ui:'white',
 			            autoWidth: true, 
-			            text: salesOrdersumbitText,
+			            text: AOCLit.salesOrdersumbitText,
 			            margin:'0 10 0 0',
 			            handler: 'submitSalesOrder'
 			        },{
@@ -134,7 +134,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			            reference: 'salesViewOrderbutton',
 			            ui:'white',
 			            autoWidth: true, 
-			            text: viewSalesOrderBtnText,
+			            text: AOCLit.viewSalesOrderBtnText,
 			            margin:'0 10 0 0',
 			            handler: 'viewSalesOrder',
 			            disabled:true,
@@ -216,7 +216,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					                width: 20
 		                       },{
 						            xtype: 'button',
-						            text: bulkUpdateButtonText,
+						            text: AOCLit.bulkUpdateButtonText,
 						            ui:'blue-plain',
 						            reference:'bulkUpdateButton',
 						            handler: 'getUpdateScreen'
