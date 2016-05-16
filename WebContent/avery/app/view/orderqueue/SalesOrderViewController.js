@@ -13,7 +13,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
       		var comboField=this.lookupReference('variableFieldCombo');
       		comboValue=comboField.getValue();
       		if(comboValue=='' || comboValue==null){
-      			Ext.Msg.alert('', 'Please select a value from the drop down before drop down.');
+      			Ext.Msg.alert('',AOCLit.selectValueDrpMsg);
       			return false;
       		}
       		innerGridType='bulkUpdateSalesVariableHeaderGrid';
@@ -136,7 +136,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	            jsonData:parms,
     	              url : applicationContext+'/rest/salesorders/bulkupdate',
     	                success : function(response, opts) {
-    	                      Ext.Msg.alert('Sales Order successfully updated');
+    	                      Ext.Msg.alert(AOCLit.updateSalesOrderMsg);
     	                      Ext.getBody().unmask();
     	                      me.getView().store.load();
     	                },
@@ -166,7 +166,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 	        jsonData:parms,
     		   url : applicationContext+'/rest/salesorderdetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('Sales Order successfully updated');
+			  		Ext.Msg.alert(AOCLit.updateSalesOrderMsg);
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -177,7 +177,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     },
     cancelChanges:function(){
     	var me=this;
-		Ext.Msg.confirm('', 'Are you sure you cancel the changes?',function(btn){
+		Ext.Msg.confirm('', AOCLit.cancelChangesMsg,function(btn){
 			  if(btn=='yes'){
 				  me.getView().getStore().load();
 			  }
@@ -196,7 +196,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/salesorders/bulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('','Sales Order successfully updated');
+			  		Ext.Msg.alert('',AOCLit.updateSalesOrderMsg);
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -208,7 +208,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     submitOrder:function(){
         var id = this.runTime.getOrderQueueId(),
         me = this;
-    var parameters = '{\"status\":\"' + submitToOracleStatus + '\"';
+    var parameters = '{\"status\":\"' + AOCLit.submitToOracleStatus + '\"';
     parameters = parameters + '}';
     Ext.Ajax.request({
         url: applicationContext + '/rest/orders/submittosystem/' + id,
@@ -217,7 +217,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
         success: function(response, opts) {
         	me.getView().lookupReference('submitOrder').hide();
     		me.getView().lookupReference('lastTab').hide();
-            Ext.Msg.alert('Alert','Order submission successful');
+            Ext.Msg.alert('Alert',AOCLit.submitOrderMsg);
             me.getView().store.load();
             Ext.getBody().unmask();
         },
@@ -239,7 +239,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		        		Ext.Msg.alert('','Sales Order was successfully cancelled');
 		        	}
 		        	else
-		        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+		        		Ext.Msg.alert('',AOCLit.validateErrorMsg);
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -248,4 +248,4 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 	          }
     		  }); 
     }
-})
+});
