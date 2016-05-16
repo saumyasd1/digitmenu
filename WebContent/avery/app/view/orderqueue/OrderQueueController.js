@@ -121,7 +121,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	 	else
 	 		{
 	 	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-	 	ordersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+	 	ordersearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
 	 		}
     },
     clearAdvancedSerach: function(widget) {
@@ -220,7 +220,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
                 cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
                 form=orderlinecontainer.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-                if(status != waitingForCSRStatus) {
+                if(status != AOCLit.waitingForCSRStatus) {
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
                 	salesViewOrderbutton.disable();
@@ -274,7 +274,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	
             },
             reSubmitOrder:function(cmp){
-            	debugger;
+            	
                 var rec =e.record;
                 var con=AOC.app.getController('MenuController');
                 con.selectCard('weborderview');
@@ -329,7 +329,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	     controller.insertFileInGrid(attachFile[i].fileName,'Attachment',true,i,attachFile[i].id); 
             	 }
             	weborderview.down('#backButtonimage').setVisible(true);
-            	weborderview.updateHeaderLabel(fixAndResubmitWebOredr);
+            	weborderview.updateHeaderLabel(AOCLit.fixAndResubmitWebOredr);
             	weborderform.isResubmit=true;
             }
 	          } 
@@ -386,10 +386,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		    	  return (v.salesOrderCount==0);
 	    		 },
 	    		 isReSubmitOrderDisabled:function(v){
-	    		 return (v.Status!=cancelStatus);
+	    		 return (v.Status!=AOCLit.cancelStatus);
 	    		 },
 		         isCancelOrderDisabled : function(v){
-	    		 return (v.Status!=orderError);
+	    		 return (v.Status!=AOCLit.orderError);
 		         }
 	              }
 	          );
