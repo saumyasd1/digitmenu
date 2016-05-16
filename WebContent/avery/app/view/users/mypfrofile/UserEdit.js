@@ -60,15 +60,20 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
         var me = this,
             //imageUrl = me.rec.get('imageUrl'),
             //id = me.rec.get('id'),
-            maxCharText =  maximumNChar;
+            maxCharText =  AOCLit.maximumNChar;
         return [{
             xtype: 'form',
             itemId: 'editform',
-            padding: '30 0 0 20',
+           layout:'fit',
+          
+          scrollable:'y',
+             padding: '30 0 0 20',
             mode:me.editMode,
             items: [{
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
+                flex:1,
+               
                 items: [{
                 	layout : 'vbox',
                 	items : [{
@@ -102,7 +107,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                     },
                     items: [{
                         xtype: 'label',
-                        text: personalInformation,
+                        text: AOCLit.personalInformation,
                         cls : 'userDetail-title'
                     },{
                         xtype: 'displayfield',
@@ -111,32 +116,32 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         hidden: true
                     }, {
                         name: 'firstName',
-                        fieldLabel: firstName,
+                        fieldLabel: AOCLit.firstName,
                         allowBlank: false,
                         maxLength : 64,
                         maxLengthText : maxCharText.replace("$$$$", 64),
                         regex: new RegExp(AOC.config.Settings.getNameRegex()),
-                        regexText: splCharNotAllowed
+                        regexText: AOCLit.splCharNotAllowed
                     }, {
                         name: 'lastName',
-                        fieldLabel: lastName,
+                        fieldLabel: AOCLit.lastName,
                         maxLength : 64,
                         maxLengthText : maxCharText.replace("$$$$", 64),
                         regex: new RegExp(AOC.config.Settings.getNameRegex()), 
-                        regexText: splCharNotAllowed
+                        regexText: AOCLit.splCharNotAllowed
                     }, {
                         xtype: 'radiogroup',
-                        fieldLabel : iam,
+                        fieldLabel : AOCLit.iam,
                         margin:'-4 0 4 0',
-                        items: [{boxLabel :male,name : 'gender',width: 100, inputValue :'Male', checked : true }, {boxLabel : female,name : 'gender',width: 100, inputValue : 'Female'}]
+                        items: [{boxLabel :AOCLit.male,name : 'gender',width: 100, inputValue :'Male', checked : true }, {boxLabel : AOCLit.female,name : 'gender',width: 100, inputValue : 'Female'}]
                     },{
                         name: 'email',
-                        fieldLabel: emailAddress,
+                        fieldLabel: AOCLit.emailAddress,
                         allowBlank: false,
                         regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
                     }, {
                         name: 'jobTitle',
-                        fieldLabel: jobTitle,
+                        fieldLabel: AOCLit.jobTitle,
                         maxLength : 64,
                         maxLengthText : maxCharText.replace("$$$$", 64)
                     },
@@ -150,14 +155,14 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         queryMode : 'local',
                         displayField: 'displayname',
                         valueField: 'value',
-                        fieldLabel: role
+                        fieldLabel: AOCLit.role
                     },
                     {
                    	    xtype: 'textfield',
                         inputType: 'password',
                         itemId: 'newPassword',
                         name: 'password',
-                        fieldLabel: password,
+                        fieldLabel: AOCLit.password,
                         allowBlank: !me.showPasswordField,
                         blankText : 'Password is required(should be atleast of length 8)',
                         validateOnChange:false,
@@ -173,7 +178,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         name: 'confirmPassword',
                         allowBlank: !me.showPasswordField,
                         blankText : 'Confirm Password is required',
-                        fieldLabel: confirmPassword,
+                        fieldLabel: AOCLit.confirmPassword,
                         hidden:!me.showPasswordField,
                         vtype: 'password',
                         initialPassField: 'newPassword'
@@ -187,7 +192,8 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
             	xtype :'tbspacer',
             	width :100
     		},
-            { buttons:this.buildButtons()}]
+            { buttons:this.buildButtons()
+    			}]
    
         }];
     }
