@@ -5,7 +5,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesVariableHeaderGrid', {
 	variableColumnName:null,
 	controller:'salesorder',
     requires:['AOC.util.Helper'],
-	emptyText:'<div align=center> No content type(s) to display.</div>',
+	emptyText: AOCLit.noContentTypeDispMsg,
 	runTime : AOC.config.Runtime,
     initComponent : function(){
 	var me=this;
@@ -43,10 +43,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesVariableHeaderGrid', {
     },
     buildColumns : function(){
     	var me=this;
-        return [{ text: "Customer PO Number", dataIndex: 'salesOrdercustomerPONumber' ,flex:1},
-                { text: "Customer Item Number", dataIndex: 'salesOrdercustomerItemNumber' ,flex:1},
+        return [{ text: AOCLit.custPONumber, dataIndex: 'salesOrdercustomerPONumber' ,flex:1},
+                { text: AOCLit.custItemNo, dataIndex: 'salesOrdercustomerItemNumber' ,flex:1},
                 { text: me.variableColumnName, dataIndex: 'variabledatavalue' ,flex:1,editor:{xtype:'textfield'}},
-                { text: 'Fiber Content Percentage', dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
+                { text: AOCLit.fiberContentPercent, dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
 		];
     },
     tbar: { 
@@ -55,12 +55,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesVariableHeaderGrid', {
 	    	[
 			 {
 	              xtype:'button',
-				  text:'Save',
+				  text:AOCLit.Save,
 				  handler:'saveSalesOrderDetails'
 	         },
 	         {
 	              xtype:'button',
-				  text:'Cancel',
+				  text:AOCLit.Cancel,
 				  handler:'cancelChanges'
 	         }
 			 ]
