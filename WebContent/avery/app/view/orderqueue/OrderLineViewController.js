@@ -3,7 +3,103 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     alias: 'controller.orderline',
     requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel','AOC.util.Helper'],
     runTime : AOC.config.Runtime,
+//    getUpdateScreen:function(){
+//    	var me=this;
+//    	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
+//      	 var height=viwport.getHeight()-20;
+//      	 var width=viwport.getWidth()-20;
+//      	 var id=this.runTime.getOrderQueueId();
+//      	 var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,store,win,innerGridType,comboValue='';
+//      	 if(radioGroupValue=='2'){
+//      		var comboField=this.lookupReference('variableFieldCombo');
+//      		comboValue=comboField.getValue();
+//      		if(comboValue=='' || comboValue==null){
+//      			Ext.Msg.alert('', AOCLit.selectValueDrpMsg);
+//      			return false;
+//      		}
+//      		innerGridType='bulkUpdateVariableHeaderrGrid';
+//      		height=height-180;
+//      		width=width-240;
+//      		store=Ext.create('AOC.store.OrderLineStore', {
+//      			model:'AOC.model.VariableHeaderModel',
+//    			proxy : {
+//    				type : 'rest',
+//    				url : applicationContext+'/rest/orderlinedetails/order/'+id+'/'+comboValue,
+//    				reader:{
+//    			        type:'json', 
+//    			        rootProperty: 'OrderLineDetail'
+//    			    }
+//    			}
+//    		}); 
+//      	 }else{
+//      		store=Ext.create('AOC.store.OrderLineStore', {
+//    			proxy : {
+//    				type : 'rest',
+//    				url : applicationContext+'/rest/orderLines/order/'+id,
+//    				reader:{
+//    			        type:'json', 
+//    			        rootProperty: 'orderLine'
+//    			    }
+//    		}
+//    		});
+//      		innerGridType='bulkupdateorderlinegrid';
+//      	 }
+//		   var win=Ext.create('AOC.view.base.BaseWindow',{
+//			 	height:height,
+//				width:width,
+//				layout: 'fit',
+//				draggable: false,
+//				modal:true,
+//				listeners:{ 
+//			 	      close:function(obj,eOpts){
+//			 	    	 var orderline=Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+//			 	    	     orderline.store.load();
+//			 	}
+//				},
+//				items:[{
+//					xtype:innerGridType,
+//					store:store,
+//					variableColumnName:comboValue
+//				}]
+//		   });
+//		   win.show();
+//    },
+//    radioButtonClick:function(obj,newValue,oldValue){
+//    	var comboField=this.lookupReference('variableFieldCombo');
+//    	if(newValue.rb=='2'){
+//    		Ext.getBody().mask('Loading..');
+//    		var id= this.runTime.getOrderQueueId();
+//    		Ext.Ajax.request( {
+//    			method:'GET',
+//    			url : applicationContext+'/rest/orderlinedetails/order/'+id,
+//		        success : function(response, opts) {
+//		        	var jsonValue=Ext.decode(response.responseText);
+//		        	var serviceStoreData = [];
+//		        	if(jsonValue.length>0){
+//		        	jsonValue.forEach(function(item){
+//                		var service = [item];
+//                		if(item.toLowerCase()!=qtyVariableLabel && item.toLowerCase().indexOf(sizeVariableLabel)==-1)
+//                			serviceStoreData.push(service);
+//                	});
+//		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+//                 	   		fields : ['variableFieldName'],	
+//            	            data : serviceStoreData
+//                    });
+//		        	comboField.bindStore(serviceStore);
+//		        	}
+//		        	comboField.setVisible(true);
+//		        	Ext.getBody().unmask();
+//		        },
+//		        failure: function(response, opts) {
+//		        	Ext.getBody().unmask();
+//	          }
+//	  	});
+//    	}else{
+//    		comboField.setVisible(false);
+//    	}
+//    },
     updateOrderLine:function(editor, context, eOpts){
+   
     	Ext.getBody().mask('Saving...');
     	var ctx = context,me=this,
         idx = ctx.rowIdx,
@@ -26,7 +122,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderLines/bulkupdate',
 		        success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
 			  		//Ext.Msg.alert('','Order line successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
@@ -50,7 +146,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success','Order line Detail successfully updated');
+		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
 			  		//Ext.Msg.alert('','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
@@ -85,7 +181,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
           jsonData: obj,
           url: applicationContext + '/rest/orderLines/bulkupdate',
           success: function(response, opts) {
-        	  AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+        	  AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
              // Ext.Msg.alert('', 'Order line successfully updated');
               Ext.getBody().unmask();
               ctx.store.load();
@@ -160,7 +256,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	level=record.get('level'),variablefieldname=record.get('variablefieldname').toLowerCase();
     	if(variablefieldname==qtyVariableLabel || variablefieldname.indexOf(sizeVariableLabel)!=-1)
     		return false;
-    	if(level==fiberLevel){
+    	if(level==AOCLit.fiberLevel){
     		grid.editingPlugin.editor.form.findField('fiberPercent').enable();
     	}else
     		grid.editingPlugin.editor.form.findField('fiberPercent').disable();
