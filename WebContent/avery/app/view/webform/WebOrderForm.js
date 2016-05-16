@@ -80,7 +80,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			fieldLabel:' ',
         			items:[{
         				xtype:'combo',
-        				emptyText:'Partner Name',
+        				emptyText:AOCLit.partnerName,
         				reference:'partnerCombo',
         				itemId:'partnerCombo',
         				store:'PartnerManagementStore',
@@ -123,7 +123,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				editable:true,
         				flex:1,
         				name:'productLineType',
-        				emptyText:'Product Line',
+        				emptyText:AOCLit.productLine,
         				allowBlank : false, 
         				disabled:true,
         				listeners:{
@@ -170,7 +170,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelWidth : 200,
         			labelAlign:'right',
         			maxLength : '100',
-        			blankText : 'Email Subject is required',
+        			blankText : AOCLit.emailSubReq,
         			listeners:{
       				  blur : this.notifyByImage,
       				'focus': 'notifyByMessage'
@@ -183,7 +183,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			labelAlign:'right',
         			name: 'emailBody',
         			reference:'emailBody',
-        			fieldLabel:'Email Body',
+        			fieldLabel:AOCLit.emailBody,
         			itemId:'emailBody',
         			value:'',
         			labelSeparator:'',
@@ -252,9 +252,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         },
         notifyByImage : function(config){
 	    	 if(config.isValid())
-	    		   config.setFieldStyle('background-image:url(avery/resources/images/valid_field.png);background-repeat:no-repeat;background-position:right;');
+	    		   config.setFieldStyle('background-image:url( AOC.config.Settings.buttonIcons.valid_field);background-repeat:no-repeat;background-position:right;');
 		     else
-				   config.setFieldStyle('background-image:url(avery/resources/images/invalid_field.jpg);background-repeat:no-repeat;background-position:right;');
+				   config.setFieldStyle('background-image:url(AOC.config.Settings.buttonIcons.invalid_field);background-repeat:no-repeat;background-position:right;');
 	    	
 	     }
 });
