@@ -4,7 +4,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
     itemId:'BulkUpdateSalesOrderGrid',
     controller:'salesorder',
     requires:['AOC.util.Helper'],
-	emptyText:'<div align=center> No content type(s) to display.</div>',
+	emptyText: AOCLit.noContentTypeDispMsg,
 	runTime : AOC.config.Runtime,
     initComponent : function(){
 	var me=this;
@@ -35,12 +35,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
     buildColumns : function(){
     	var me=this;
         return [
-{ text: 'Division',  dataIndex: 'division',editor:'textfield' },
-{ text: 'OrderSource', dataIndex: 'orderSource', editor:'textfield' },
-{ text: 'SOLD TO RBO #', dataIndex: 'soldTORBONumber',editor:'textfield' },
-{ text: 'Oracle Bill To Site #', dataIndex: 'oracleBilltoSiteNumber',editor:'textfield' },
-{ text: 'Oracle Ship To Site #', dataIndex: 'oracleShiptoSiteNumber',editor:'textfield' },
-{ text: 'Shipping Method', dataIndex: 'shippingMethod',width:170,editor:{
+{ text: AOCLit.Division,  dataIndex: 'division',editor:'textfield' },
+{ text: AOCLit.orderSource, dataIndex: 'orderSource', editor:'textfield' },
+{ text: AOCLit.SOLDTORBONumber, dataIndex: 'soldTORBONumber',editor:'textfield' },
+{ text: AOCLit.oracleBilltoSiteNumber, dataIndex: 'oracleBilltoSiteNumber',editor:'textfield' },
+{ text: AOCLit.oracleShiptoSiteNumber, dataIndex: 'oracleShiptoSiteNumber',editor:'textfield' },
+{ text: AOCLit.shippingMethod, dataIndex: 'shippingMethod',width:170,editor:{
 	xtype:'combo',
 	 displayField :'variableFieldName',
      valueField :'variableFieldName',
@@ -48,39 +48,39 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	 store:Ext.data.StoreManager.lookup('ShippingMethodId')==null?helper.getVariableComboStore('ShippingMethod'):Ext.data.StoreManager.lookup('ShippingMethodId')
 }
 },
-{ text: 'Customer PO #', dataIndex: 'customerPONumber',editor:'textfield' },
-{ text: 'Retailer PoCustomer job', dataIndex: 'retailerPO_CustomerJob',editor:'textfield' },
-{ text: 'Oracle Item #', dataIndex: 'oracleItemNumber',editor:'textfield' },
-{ text: 'Customer Item #', dataIndex: 'customerItemNumber',editor:'textfield' },
-{ text: 'Item Description', dataIndex: 'itemDescription',editor:'textfield' },
-{ text: 'Orderded Qty', dataIndex: 'orderdedQty',editor:'textfield' },
-{ text: 'Date Ordered', dataIndex: 'dateOrdered',editor:'textfield' },
-{ text: 'Request Date', dataIndex: 'ustomerRequestDate',editor:'textfield' },
-{ text: 'promise Date', dataIndex: 'promiseDate',editor:'textfield' },
-{ text: 'Freight Term', dataIndex: 'freightTerms',editor:'textfield' },
-{ text: 'CSR', dataIndex: 'csr',width:160,editor:{
+{ text: AOCLit.custPONumber, dataIndex: 'customerPONumber',editor:'textfield' },
+{ text: AOCLit.retailerPO_CustomerJob, dataIndex: 'retailerPO_CustomerJob',editor:'textfield' },
+{ text: AOCLit.oracleItemNo, dataIndex: 'oracleItemNumber',editor:'textfield' },
+{ text: AOCLit.custItemNo, dataIndex: 'customerItemNumber',editor:'textfield' },
+{ text: AOCLit.itemDesc, dataIndex: 'itemDescription',editor:'textfield' },
+{ text: AOCLit.orderdedQty, dataIndex: 'orderdedQty',editor:'textfield' },
+{ text: AOCLit.dateOrdered, dataIndex: 'dateOrdered',editor:'textfield' },
+{ text: AOCLit.requestDate, dataIndex: 'ustomerRequestDate',editor:'textfield' },
+{ text: AOCLit.promiseDate, dataIndex: 'promiseDate',editor:'textfield' },
+{ text: AOCLit.freightTerm, dataIndex: 'freightTerms',editor:'textfield' },
+{ text: AOCLit.CSR, dataIndex: 'csr',width:160,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
     queryMode :'local',
     store:Ext.data.StoreManager.lookup('CSRId')==null?helper.getVariableComboStore('CSR'):Ext.data.StoreManager.lookup('CSRId')	
 	} },
-{ text: 'Packing Instruction', dataIndex: 'packinginstruction',editor:'textfield' },
-{ text: 'Shipping Instruction', dataIndex: 'shippingInstructions',editor:'textfield' },
-{ text: 'Invoice Line Instruction', dataIndex: 'invoicelineInstruction',editor:'textfield' },
-{ text: 'Division For Interface ERP ORG', dataIndex: 'divisionforInterfaceERPORG',editor:'textfield' },
-{ text: 'Bill To Contact', dataIndex: 'billToContact',editor:'textfield' },
-{ text: 'Bill To Tel', dataIndex: 'billToTEL',editor:'textfield' },
-{ text: 'Bill To EMAIL', dataIndex: 'billToEMAIL',editor:'textfield' },
-{ text: 'Ship To Contact', dataIndex: 'shipTOContact',editor:'textfield' },
-{ text: 'Ship To Tel', dataIndex: 'shipTOTEL',editor:'textfield' },
-{ text: 'Ship To FAX', dataIndex: 'shipTOFAX',editor:'textfield' },
-{ text: 'Ship To EMAIL', dataIndex: 'shipTOEMAIL',editor:'textfield' },
-{ text: 'Artwork Hold', dataIndex: 'artworkhold',editor:'checkbox' },
-{ text: 'Artwork Work Attachment', dataIndex: 'artworkworkattachment',editor:'checkbox' },
-{ text: 'Variable Data Breakdown', dataIndex: 'variableDataBreakdown',editor:'textfield' },
-{ text: 'Manu. Note', dataIndex: 'manufacturingnotes',editor:'textfield' },
-{ text: 'Order Type', dataIndex: 'ordertype' ,width:180,editor:{
+{ text: AOCLit.packingInstruction, dataIndex: 'packinginstruction',editor:'textfield' },
+{ text: AOCLit.shippingInstructions, dataIndex: 'shippingInstructions',editor:'textfield' },
+{ text: AOCLit.invoiceLineInstruction, dataIndex: 'invoicelineInstruction',editor:'textfield' },
+{ text: AOCLit.divisionforInterfaceERPORG, dataIndex: 'divisionforInterfaceERPORG',editor:'textfield' },
+{ text: AOCLit.billContact, dataIndex: 'billToContact',editor:'textfield' },
+{ text: AOCLit.billToTEL, dataIndex: 'billToTEL',editor:'textfield' },
+{ text: AOCLit.billToEmail, dataIndex: 'billToEMAIL',editor:'textfield' },
+{ text: AOCLit.shipContact, dataIndex: 'shipTOContact',editor:'textfield' },
+{ text: AOCLit.shipTOTEL, dataIndex: 'shipTOTEL',editor:'textfield' },
+{ text: AOCLit.shipToFax, dataIndex: 'shipTOFAX',editor:'textfield' },
+{ text: AOCLit.shipToEmail, dataIndex: 'shipTOEMAIL',editor:'textfield' },
+{ text: AOCLit.artworkHold, dataIndex: 'artworkhold',editor:'checkbox' },
+{ text: AOCLit.artworkWorkAttachment, dataIndex: 'artworkworkattachment',editor:'checkbox' },
+{ text: AOCLit.variableDataBreakdown, dataIndex: 'variableDataBreakdown',editor:'textfield' },
+{ text: AOCLit.manufacturingNotes, dataIndex: 'manufacturingnotes',editor:'textfield' },
+{ text: AOCLit.orderType, dataIndex: 'ordertype' ,width:180,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
@@ -88,35 +88,35 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
     store:Ext.data.StoreManager.lookup('OrderTypeId')==null?helper.getVariableComboStore('OrderType'):Ext.data.StoreManager.lookup('OrderTypeId')	
 	}  
 },
-{ text: 'Order By', dataIndex: 'orderby',editor:'textfield' },
-{ text: 'End Customer', dataIndex: 'endcustomer' ,width:180 ,editor:{
+{ text: AOCLit.orderBy, dataIndex: 'orderby',editor:'textfield' },
+{ text: AOCLit.endCust, dataIndex: 'endcustomer' ,width:180 ,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
     queryMode :'local',
     store:Ext.data.StoreManager.lookup('EndCustomerId')==null?helper.getVariableComboStore('EndCustomer'):Ext.data.StoreManager.lookup('EndCustomerId')	
 	}},
-{ text: 'Shipping Only Note', dataIndex: 'shippingonlynotes',editor:'textfield' },
-{ text: 'Bank Charge', dataIndex: 'bankCharge',editor:'textfield' },
-{ text: 'Freight Terms', dataIndex: 'freightTerms',width:160,editor:{
+{ text: AOCLit.shippingOnlyNotes, dataIndex: 'shippingonlynotes',editor:'textfield' },
+{ text: AOCLit.bankCharge, dataIndex: 'bankCharge',editor:'textfield' },
+{ text: AOCLit.freightTerm, dataIndex: 'freightTerms',width:160,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
     store:Ext.data.StoreManager.lookup('FreightTermsId')==null?helper.getVariableComboStore('FreightTerms'):Ext.data.StoreManager.lookup('FreightTermsId')	
 	}  },
-{ text: 'Shipping Hold', dataIndex: 'shippinghold',editor:'checkbox' },
-{ text: 'Production Hold', dataIndex: 'productionhold',editor:'checkbox' },
-{ text: 'Split Shipset', dataIndex: 'splitshipset' ,width:180,editor:{
+{ text: AOCLit.shippingHold, dataIndex: 'shippinghold',editor:'checkbox' },
+{ text:AOCLit.productionHold , dataIndex: 'productionhold',editor:'checkbox' },
+{ text: AOCLit.splitShipset, dataIndex: 'splitshipset' ,width:180,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
     queryMode :'local',
     store:Ext.data.StoreManager.lookup('SplitShipsetId')==null?helper.getVariableComboStore('SplitShipset'):Ext.data.StoreManager.lookup('SplitShipsetId')	
 	} },
-{ text: 'Agreement', dataIndex: 'agreement',editor:'textfield' },
-{ text: 'Model serial #', dataIndex: 'modelSerialNumber',editor:'textfield' },
-{ text: 'Waive MOQ', dataIndex: 'waiveMOQ',editor:'checkbox' },
-{ text: 'APO Type', dataIndex: 'apoType' ,width:180,editor:{
+{ text: AOCLit.agreement, dataIndex: 'agreement',editor:'textfield' },
+{ text: AOCLit.modelSerialNumber, dataIndex: 'modelSerialNumber',editor:'textfield' },
+{ text: AOCLit.waiveMOQ, dataIndex: 'waiveMOQ',editor:'checkbox' },
+{ text: AOCLit.apoType, dataIndex: 'apoType' ,width:180,editor:{
 	xtype:'combo',
 	 	displayField :'variableFieldName',
     valueField :'variableFieldName',
@@ -131,12 +131,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateSalesOrderGrid', {
 	    	[
 			 {
 	              xtype:'button',
-				  text:'Save',
+				  text:AOCLit.Save,
 				  handler:'saveSalesOrder'
 	         },
 	         {
 	              xtype:'button',
-				  text:'Cancel',
+				  text:AOCLit.Cancel,
 				  handler:'cancelChanges'
 	         }
 			 ]
