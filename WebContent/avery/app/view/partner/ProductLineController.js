@@ -24,7 +24,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			var parameters=Ext.JSON.encode(valueObj);
 			var parameters=Ext.JSON.encode(valueObj2);
 			length=Object.keys(valueObj).length;
-			Msg='Product Line Updated Successfully';
+			Msg=AOCLit.updateProdLineMsg;
 		}
 		else{
 			Id=productline.partnerid;
@@ -67,7 +67,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    	};
 			methodMode='POST';
 			length=1;
-			Msg='Product Line Added Successfully';
+			Msg=AOCLit.addProdLineMsg;
 		}
 		if(length>0){
 			if(panel.getForm().isValid()){
@@ -82,7 +82,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    			Ext.getBody().unmask();
 				    			createproductline.lookupReference('rboName').focus();
 				    			createproductline.down('#messageFieldItemId').show();
-				    			createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red> An entry already exists for given Product Line and RBO Name.</font>');
+				    			createproductline.down('#messageFieldItemId').setValue(AOCLit.entryExistMsg);
 				    			return false;
 				    		}
 				    	Ext.getBody().unmask();
@@ -102,12 +102,12 @@ Ext.define('AOC.view.productline.ProductLineController', {
       	});
 		}
 		else{
-				createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>').setVisible(true);
+				createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
 		else{
-			createproductline.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>').setVisible(true);
+			createproductline.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
 			Ext.getBody().unmask();
 	}
     },
@@ -123,7 +123,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				modal:true,
 				partnerName:this.getView().partnerName
 			});
-			win.down('#titleItemId').setValue('<font size=3><b>Add Partner Product Line</b></font>').setVisible(true);
+			win.down('#titleItemId').setValue(AOCLit.addPartProdLine).setVisible(true);
 			win.show();
        
 	},
@@ -157,7 +157,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		     	            }
  	      			    }
  	      			});
- 	      			 win.down('#titleItemId').setValue('<font size=3><b>Edit Partner Product Line</b></font>').setVisible(true);
+ 	      			 win.down('#titleItemId').setValue(AOCLit.editPartProdLine).setVisible(true);
  	      			  win.show();
  	              }
                 	callout.destroy();
@@ -167,13 +167,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	     			    var id=data.id;
 	     			    var partner='';
 	     			    partner={id:id};
-	     			    Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this product line</b>', function(response) {
+	     			    Ext.MessageBox.confirm('Confirm Action', AOCLit.delPartProdLine, function(response) {
  	     				  if (response == 'yes') {
  	     					Ext.Ajax.request({
      							method:'DELETE',
      							url:applicationContext+'/rest/productLines/'+id,
      				        success : function(response, opts) {
-     				        	AOC.util.Helper.fadeoutMessage('Success','Product Line Deleted Succesfully');
+     				        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.deleteProdLineMsg);
      							//Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
      							me.runTime.getActiveGrid().store.load();
      				        },
@@ -295,7 +295,7 @@ if(!temp){
 	 	 else
 	 		 {
 			    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-	 	            productlinesearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+	 	            productlinesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
 	 		 } 	
 	},
 	clearAdvancedSerach:function(widget){
