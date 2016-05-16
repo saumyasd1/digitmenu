@@ -36,7 +36,7 @@ Ext.define('AOC.view.webform.WebFormController', {
      	   	 fields : ['rboName','id','productLineType'],	
 	         data : serviceStoreData1
         });
-    	     debugger;
+    	     
     	     var form =me.getView();
     	     if(form !=null && !form.isResubmit){
     	    	 rboCombo.reset();
@@ -48,7 +48,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	     messageField.show();
     	  }
     	}else{
-  		  messageField.setValue('No RBO configured for the selected Parter. Please select a differet partner to proceed further');
+  		  messageField.setValue(AOCLit.noRBOconfigMsg);
 		  messageField.show();
 	  }
     	}
@@ -148,7 +148,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     				 waitMsg: 'Uploading your file...',
     				 scope : this,
     		    	    success : function(form,action){
-    		    	    	Ext.Msg.alert('',webSubmissionSuccesFulMsg);
+    		    	    	Ext.Msg.alert('',AOCLit.webSubmissionSuccesFulMsg);
     		    	    	form.reset();
     		    	    	var AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId');
     		    	    	AttachmentInfoGriditemId.store.removeAll();
@@ -164,7 +164,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     }
     	    else{
     	    	Ext.getBody().unmask();
-    	    	var message=messageField.setValue('Please fill valid entry in the field marked as mandatory <img src='+errorIcon+' width="15" height="15"></font>');
+    	    	var message=messageField.setValue(AOCLit.fillMandatoryFieldMsg);
     	    	message.setVisible(true);
     		}
     },
@@ -177,7 +177,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    var extension=value.substring(value.lastIndexOf(".")+1);
 		    	if(extension!='pdf'){
 		    		obj.reset( );
-		    		Ext.Msg.alert('',uploadOnlyPdfFileAlert);
+		    		Ext.Msg.alert('',AOCLit.uploadOnlyPdfFileAlert);
 		    		Ext.getBody().unmask();
 		    		return false;
 		    	}
@@ -246,7 +246,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			    if(obj.orderSchemaType=='Excel'){
 			    	if(extension!='xls' && extension!='xlsx'){
 			    		obj.reset( );
-			    		Ext.Msg.alert('',uploadOnlyExcelFileAlert);
+			    		Ext.Msg.alert('',AOCLit.uploadOnlyExcelFileAlert);
 			    		return false;
 			    	}
 			    }
@@ -293,7 +293,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				    {
 					 currentAttachmentField.hide();
 					 if(attachmentinfostore.data.length=0){
-						 Ext.Msg.alert('',onProductLineChangeAlert);
+						 Ext.Msg.alert('',AOCLit.onProductLineChangeAlert);
 				 }
 					} 
 			 }
