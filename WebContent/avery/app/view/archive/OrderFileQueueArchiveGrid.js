@@ -3,7 +3,7 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 	itemId : 'orderFileQueueArchiveManageGriditemId',
     alias : 'widget.ar_orderfilequeue',
     controller:'orderqueue',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText: AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -25,84 +25,84 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
     	var me=this;
         return [
         			    {  
-            	            text : 'Process Instance ID',
+            	            text :AOCLit.processInstanceID,
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'pid',
             	            flex:1.5
                			},
                          {
-				        	text : 'RBO',
+				        	text : AOCLit.RBO,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'rboname',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Partner',
+				        	text : AOCLit.Partner,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'partnerName',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Sender Email ID',
+				        	text : AOCLit.senderEmailID,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'senderEmailID',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Subject',
+				        	text : AOCLit.Subject,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'subject',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Order Source',
+				        	text : AOCLit.orderSource,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'orderSource',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Submitted By',
+				        	text : AOCLit.submittedBy,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'submittedBy',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Submitted Date',
+				        	text : AOCLit.submittedDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'submittedDate',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Status',
+				        	text : AOCLit.Status,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'status',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Error',
+				        	text : AOCLit.Error,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'error',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified By',
+				        	text : AOCLit.lastModifiedBy,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedBy',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified Date',
+				        	text : AOCLit.lastModifiedDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedDate',
@@ -120,7 +120,7 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+	        		        html:AOCLit.advSearchTitle,
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -133,7 +133,7 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 //						xtype:'button',
 //						itemId:'advancesearchbutton',
 //						text:advSearchText,
-//						icon: advSearchIcon,
+//						icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
 //						iconAlign: "right",
 //				    	handler:'openAdvancedSearchWindow'
 //					 },
@@ -141,7 +141,7 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon
+						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 					}
 				 ];
 						},
