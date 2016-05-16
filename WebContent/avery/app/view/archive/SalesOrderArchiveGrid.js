@@ -3,7 +3,7 @@ Ext.define('AOC.view.archive.SalesOrderArchiveGrid', {
 	itemId : 'salesOrderArchiveGrid',
 	alias : 'widget.ar_salesorder',
 	//requires:['AOC.view.ux.CustomSearchField'],
-	emptyText : '<div align=center> No data to display.</div>',
+	emptyText : AOCLit.emptyDataMsg,
 	recordBeingEdit : null,
 	initComponent : function () {
 		var me = this;
@@ -24,67 +24,67 @@ Ext.define('AOC.view.archive.SalesOrderArchiveGrid', {
 	buildColumns : function () {
 		var me = this;
 		return [{
-				text : 'ProductLineType',
+				text : AOCLit.productLineType,
 				width : 120,
 				sortable : true,
 				dataIndex : 'productlinetype',
 				flex : 1.5
 			}, {
-				text : 'OracleExportID',
+				text : AOCLit.oracleExportID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'oracleexportid',
 				flex : 1.5
 			}, {
-				text : 'Division',
+				text : AOCLit.Division,
 				width : 120,
 				sortable : true,
 				dataIndex : 'division',
 				flex : 1.5
 			}, {
-				text : 'OrderSource',
+				text : AOCLit.orderSource,
 				width : 120,
 				sortable : true,
 				dataIndex : 'ordersource',
 				flex : 1.5
 			}, {
-				text : 'SystemUniqueID',
+				text : AOCLit.systemUniqueID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'systemuniqueid',
 				flex : 1.5
 			}, {
-				text : 'SystemUniqueIDLineNo',
+				text : AOCLit.systemUniqueIDLineNo,
 				width : 120,
 				sortable : true,
 				dataIndex : 'systemuniqueidlineno',
 				flex : 1.5
 			}, {
-				text : 'SOLDTORBONumber',
+				text : AOCLit.SOLDTORBONumber,
 				width : 120,
 				sortable : true,
 				dataIndex : 'soldtorbonumber',
 				flex : 1.5
 			},{
-				text : 'ContractNumber',
+				text : AOCLit.contractNumber,
 				width : 120,
 				sortable : true,
 				dataIndex : 'contractnumber',
 				flex : 1.5
 			}, {
-				text : 'Style',
+				text : AOCLit.Style,
 				width : 120,
 				sortable : true,
 				dataIndex : 'style',
 				flex : 1.5
 			}, {
-				text : 'OrderdedQty',
+				text : AOCLit.orderedQty,
 				width : 120,
 				sortable : true,
 				dataIndex : 'orderdedqty',
 				flex : 1.5
 			}, {
-				text : 'DateOrdered',
+				text : AOCLit.dateOrdered,
 				width : 120,
 				sortable : true,
 				dataIndex : 'dateordered',
@@ -114,7 +114,7 @@ Ext.define('AOC.view.archive.SalesOrderArchiveGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		        html:AOCLit.advSearchTitle,
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
@@ -127,7 +127,7 @@ Ext.define('AOC.view.archive.SalesOrderArchiveGrid', {
 							itemId: 'clearadvanedsearch',
 							hidden:true, 
 							handler : 'clearAdvancedSerach',
-							icon: clearSearchIcon
+							icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 						}
 					 ];
 							},
