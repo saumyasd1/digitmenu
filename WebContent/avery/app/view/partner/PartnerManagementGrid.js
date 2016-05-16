@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	controller:'partnerMain',
 	itemId : 'PartnerMangementitemId',
     alias : 'widget.partnermanagementgrid',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText: AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -37,7 +37,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		            baseCls:'custom-action',
 		  	        items:[
 		  	      {
-				  	    	  icon:menuIcon,
+				  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
 				  	    	  handler: 'onClickMenu'
 				  	    	
 		  	      }]
@@ -48,12 +48,12 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 				            baseCls:'custom-action',
 				  	        items:[
 							  	      {
-							  	    	  icon:editIcon,
+							  	    	  icon: AOC.config.Settings.buttonIcons.editIcon,
 							  	    	  handler:'editpartnermanagement'
 							  	      }]
 		                },
         			    {  
-            	            text : 'Partner Name',
+            	            text : AOCLit.partnerName,
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'partnerName',
@@ -61,21 +61,21 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             	            
                			},
 			            {
-				        	text : 'Address',
+				        	text : AOCLit.address,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'address',
 				            flex:1
 			            },
 			            {
-				        	text : 'Contact Person',
+				        	text : AOCLit.contactPerson,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'contactPerson',
 				            flex:0.5
 			            },
 			            {
-				        	text : 'Phone',
+				        	text : AOCLit.Phone,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'phone',
@@ -96,7 +96,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		                	width :10
 		        		},
 				  {
-		              icon: addImage,
+		              icon:  AOC.config.Settings.buttonIcons.addImage,
 		              text:'New',
 		              itemId : 'newPartner',
 		              handler:'createpartner',
@@ -120,7 +120,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		        html:AOCLit.advSearchTitle,
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
@@ -133,7 +133,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon
+						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 					}
 		          ];
 	},
