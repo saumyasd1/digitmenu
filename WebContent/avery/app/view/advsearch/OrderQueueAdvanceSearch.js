@@ -11,7 +11,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 			           {
 							xtype:'displayfield',
 							itemId:'tittleItemId',
-							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
 							margin:'5 0 0 200'
                         },
 						{
@@ -53,7 +53,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						},
 						{
 							xtype : 'textfield',
-							fieldLabel : 'Partner Name',
+							fieldLabel : AOCLit.partnerName,
 							name:'PartnerName',
 							width:250,
 							labelSeparator : '',
@@ -66,7 +66,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
                            margin : '5 0 0 20',
                            items:[{
 							xtype : 'textfield',
-							fieldLabel : 'Subject',
+							fieldLabel : AOCLit.Subject,
 							name:'Subject',
 							width:250,
 							labelSeparator : '',
@@ -79,7 +79,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						},
 						{
 							xtype : 'textfield',
-							fieldLabel : 'Email Body',
+							fieldLabel : AOCLit.emailBody,
 							name:'EmailBody',
 							width:250,
 							labelSeparator : '',
@@ -92,7 +92,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        margin : '5 0 0 20',
 	                        items:[{
 							xtype : 'combo',
-							fieldLabel : ' Order Status',
+							fieldLabel : AOCLit.orderStatus,
 							name:'Status',
 							width:250,
 							labelSeparator : '',
@@ -109,7 +109,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						},
 						{
 							xtype : 'combo',
-							fieldLabel : 'Product Line',
+							fieldLabel : AOCLit.productLine,
 							name:'ProductLineType',
 							itemId:'productLineComboItemId',
 							displayField:'productLineType',
@@ -125,7 +125,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        margin : '5 0 0 20',
 	                        items:[{
 							xtype : 'textfield',
-							fieldLabel : 'Sender EmailID',
+							fieldLabel : AOCLit.senderEmailID,
 							name:'SenderEmailID',
 							width:250,
 							labelSeparator : '',
@@ -138,7 +138,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						},
 						{
 							xtype : 'textfield',
-							fieldLabel : 'Order track#',
+							fieldLabel : AOCLit.orderTrackNo,
 							name:'id',
 							width:250,
 							labelSeparator : '',
@@ -152,12 +152,26 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	                        items:[
 						   {
 							xtype : 'textfield',
-							fieldLabel : 'PO#',
+							fieldLabel : AOCLit.poNumber,
 							name:'ponumber',
 							width:250,
 							labelSeparator : '',
 							labelAlign : 'top'
-						}]
+						},
+						   {
+								xtype : 'tbspacer',
+								height:5,
+								width:30
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.CSRName,
+								name:'CSRName',
+								width:250,
+								labelSeparator : '',
+								labelAlign : 'top'
+							},
+							]
 						},
 						{
 							xtype : 'tbspacer',
@@ -187,7 +201,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							name:'fromDate',
 							//value : Ext.Date.subtract (new Date(),Ext.Date.DAY,7),
 							reference:'fromDate',
-							fieldLabel : 'From Date ',
+							fieldLabel : AOCLit.fromDate,
 							width:250,
 							hidden:false,
 							labelSeparator : '',
@@ -207,7 +221,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						},
 						{
 							xtype : 'datefield',
-							fieldLabel : 'To Date ',
+							fieldLabel : AOCLit.toDate,
 							name:'toDate',
 							reference:'toDate',
 							width:250,
