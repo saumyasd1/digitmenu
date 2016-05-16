@@ -25,7 +25,24 @@ Ext.define('AOC.config.Settings',{
          EnableUpdateMoqFlag:'avery/resources/images/enable.png',
          DisableUpdateMoqFlag:'avery/resources/images/disable.png',
          success:'avery/resources/images/success.jpg',
-         invalid_field:'avery/resources/images/invalid_field.jpg'
+         invalid_field:'avery/resources/images/invalid_field.jpg',
+         addImage:'avery/resources/images/add.png',
+         menuIcon:'avery/resources/images/menuList.png',
+         editIcon:'avery/resources/images/edit.png',
+         BackIcon:'avery/resources/images/backButton.png',
+         commentIcon:'avery/resources/images/comment.png',
+         attacheImageSrc:'avery/resources/images/attachmentImage.png',
+         deleteImageSrc:'avery/resources/images/delete.png',
+         warningImageSrc:'avery/resources/images/warning.png',
+         successImageSrc:'avery/resources/images/success.jpg',
+         clearSearchIcon:'avery/resources/images/invalid_field.png',
+         errorIcon:'avery/resources/images/invalid_field.jpg',
+         tickIcon:'avery/resources/images/tick.png',
+         valid_field:'avery/resources/images/valid_field.png',
+         advSearchIcon:'avery/resources/images/search.png',
+         browseIcon:'avery/resources/images/browse.png',
+         mailIcon:'avery/resources/images/mail.png',
+         
     },
     constructor : function(config){
             this.initConfig(config);
