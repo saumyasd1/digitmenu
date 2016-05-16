@@ -70,28 +70,28 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                     	return v;
                     }
                 },{
-                    fieldLabel:iam,
+                    fieldLabel:AOCLit.iam,
                     name: 'gender',
                     itemId: 'gender',
                     renderer : function(v){
                     	return Ext.util.Format.htmlEncode(v);
                     }
                 }, {
-                    fieldLabel:emailAddress,
+                    fieldLabel:AOCLit.emailAddress,
                     name: 'email',
                     itemId: 'email',
                     renderer : function(v){
                     	return Ext.util.Format.htmlEncode(v);
                     }
                 },{
-                    fieldLabel: jobTitle,
+                    fieldLabel: AOCLit.jobTitle,
                     name: 'jobTitle',
                     itemId: 'jobTitle',
                     renderer : function(v){
                     	return Ext.util.Format.htmlEncode(v);
                     }
                 },{
-                    fieldLabel: role,
+                    fieldLabel: AOCLit.role,
                     name: 'role',
                     itemId: 'role',
                     renderer : function(v){
