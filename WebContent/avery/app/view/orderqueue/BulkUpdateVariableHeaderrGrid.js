@@ -5,7 +5,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	variableColumnName:null,
 	controller:'orderlinebulkupdate',
 	requires:['AOC.util.Helper','Ext.grid.selection.SpreadsheetModel','AOC.view.orderqueue.BulkUpdateController','Ext.grid.plugin.Clipboard'],
-	emptyText:'<div align=center> No content type(s) to display.</div>',
+	emptyText: AOCLit.noContentTypeDispMsg,
 	runTime : AOC.config.Runtime,
     initComponent : function(){
 	var me=this;
@@ -51,10 +51,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
             cls: me.rowNumbererHeaderCls,
             locked: me.hasLockedHeader,
             text:'#'
-        },{ text: "Customer PO Number", dataIndex: 'customerPONumber' ,flex:1},
-                { text: "Customer Item Number", dataIndex: 'customerItemNumber' ,flex:1},
+        },{ text: AOCLit.custPONumber, dataIndex: 'customerPONumber' ,flex:1},
+                { text: AOCLit.custItemNo, dataIndex: 'customerItemNumber' ,flex:1},
                 { text: me.variableColumnName, dataIndex: 'variabledatavalue' ,flex:1,editor:{xtype:'textfield'}},
-                { text: 'Fiber Content Percentage', dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
+                { text: AOCLit.fiberContentPercent, dataIndex: 'fiberPercent' ,flex:1,editor:'textfield'}
 		];
     },
     dockedItems: [{
@@ -78,14 +78,14 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 	    	['->',
 	    	 {
 	              xtype:'button',
-				  text:undoChangesText,
+				  text:AOCLit.undoChangesText,
 				  handler:'cancelChanges',
 				  width:65,
 				  ui:'grey-plain'
 	         },
 			 {
 	              xtype:'button',
-				  text:'Save',
+				  text:AOCLit.Save,
 				  handler:'saveOrderLineDetails',
 				  width:65,
 				  ui:'blue'
