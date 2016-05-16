@@ -23,13 +23,13 @@ Ext.define('AOC.view.partner.PartnerController', {
             methodMode = 'PUT';
             valueObj = form.getRecord().getChanges();
             length = Object.keys(valueObj).length;
-            Msg = 'Partner Updated Successfully';
+            Msg =AOCLit.updatePartnerMsg;
         } else {
             url = applicationContext + '/rest/partners';
             valueObj = form.getValues(false, true, false, true);
             methodMode = 'POST';
             length = 1;
-            Msg = 'Partner Added Successfully';
+            Msg = AOCLit.addPartnerMsg;
         }
         var parameters = Ext.JSON.encode(valueObj);
         if (length > 0) {
@@ -45,7 +45,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                             Ext.getBody().unmask();
                             createpartner.lookupReference('partnerName').focus();
                             createpartner.down('#messageFieldItemId').show();
-                            createpartner.down('#messageFieldItemId').setValue('An entry already exists for given Partner Name.');
+                            createpartner.down('#messageFieldItemId').setValue(AOCLit.partExistMsg);
                             return false;
                         }
                         Ext.getBody().unmask();
@@ -63,12 +63,12 @@ Ext.define('AOC.view.partner.PartnerController', {
                     }
                 });
             } else {
-                createpartner.down('#messageFieldItemId').setValue('Please fill valid entry in the field marked as <img src=' + errorIcon + ' width="15" height="15">').setVisible(true);
+                createpartner.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
             }
 
             this.runTime.setWindowInEditMode(false);
         } else {
-            createpartner.down('#messageFieldItemId').setValue('No field is edited,Please edit field').setVisible(true);
+            createpartner.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
         }
     },
     CancelDetails: function() {
@@ -77,16 +77,18 @@ Ext.define('AOC.view.partner.PartnerController', {
         this.runTime.setWindowInEditMode(false);
         this.runTime.getActiveGrid().store.load();
     },
+
     createpartner: function() {
         var win = Ext.ComponentQuery.query("#createpartnerItemId")[0];
         if (!win) {
             win = Ext.create('AOC.view.partner.CreatePartner', {
                 modal: true
             });
-            win.down('#titleItemId').setValue('<font size=3><b>Add Partner</b></font>').setVisible(true);
+            win.down('#titleItemId').setValue(AOCLit.addPartner).setVisible(true);
             win.show();
         }
     },
+
     onClickMenu: function(obj, rowIndex, colIndex, item, e, record) {
         var me = this;
         var callout = Ext.widget('callout', {
@@ -118,7 +120,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                                 }
                             }
                         });
-                        win.down('#titleItemId').setValue('<font size=3><b>Edit Partner</b></font>').setVisible(true);
+                        win.down('#titleItemId').setValue(AOCLit.editPartner).setVisible(true);
                         win.show();
                     }
                     callout.destroy();
@@ -130,15 +132,15 @@ Ext.define('AOC.view.partner.PartnerController', {
                     var addressCount = data.get('addressCount');
                     var orderQueueCount = data.get('orderQueueCount');
                     if (productLineCount != 0 || addressCount != 0 || orderQueueCount != 0)
-                        Ext.MessageBox.alert('', deletePartner);
+                        Ext.MessageBox.alert('', AOCLit.deletePartner);
                     else {
-                        Ext.MessageBox.confirm('Confirm Action', '<b>Are you sure,you want to delete this partner</b>', function(response) {
+                        Ext.MessageBox.confirm('Confirm Action',AOCLit.deletePartnerMsg, function(response) {
                             if (response == 'yes') {
                                 Ext.Ajax.request({
                                     method: 'DELETE',
                                     url: applicationContext + '/rest/partners/' + id,
                                     success: function(response, opts) {
-                                        AOC.util.Helper.fadeoutMessage('Success', 'Partner Deleted Succesfully');
+                                        AOC.util.Helper.fadeoutMessage('Success', AOCLit.delPartnerMsg);
                                         me.runTime.getActiveGrid().store.load();
                                     },
                                     failure: function(response, opts) {}
@@ -283,7 +285,7 @@ Ext.define('AOC.view.partner.PartnerController', {
             this.getView().up('window').hide();
         } else {
             var partnersearch = Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
-            partnersearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);;
+            partnersearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);;
         }
     },
     clearAdvancedSerach: function(widget) {
@@ -342,4 +344,5 @@ Ext.define('AOC.view.partner.PartnerController', {
     notifyByImage: function(config) {
         this.helper.notifyByImage(config);
     }
+
 });
