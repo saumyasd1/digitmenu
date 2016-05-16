@@ -12,12 +12,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	var i=0, insertShipAddress=false,insertBillAddress=false;
     	var updatedRecords=store.getModifiedRecords();
     	if(updatedRecords.length==0){
-    		Ext.Msg.alert('',noRecordsToUpdateMessage);
+    		Ext.Msg.alert('',AOCLit.noRecordsToUpdateMessage);
     		Ext.getBody().unmask();
     		return false;
     	}else{
     		Ext.getBody().unmask();
-    		Ext.Msg.confirm('',confirmBulkUpdateSave,function(btn){
+    		Ext.Msg.confirm('',AOCLit.confirmBulkUpdateSave,function(btn){
     			if(btn=='yes'){
     				var mask=Ext.getBody().mask('Saving....');
     				mask.dom.style.zIndex = '99999';
@@ -46,9 +46,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     			        jsonData:obj,
     		    		   url : applicationContext+'/rest/orderLines/bulkupdate',
     				        success : function(response, opts) {
-    				        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+    				        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
     					  		//Ext.Msg.alert('','Order line successfully updated');
-    					  		Ext.getBody().unmask();
+    				        	Ext.getBody().unmask();
     					  		me.getView().store.load();
     				        },
     				        failure: function(response, opts) {
@@ -64,7 +64,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     },
     cancelChanges:function(){
     	var me=this;
-		Ext.Msg.confirm('', 'Are you sure you want to cancel the changes?',function(btn){
+		Ext.Msg.confirm('', AOCLit.cancelChangesMsg,function(btn){
 			  if(btn=='yes'){
 				  me.getView().getStore().load();
 			  }
@@ -76,12 +76,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	parms ='';
     	var updatedRecords=store.getModifiedRecords();
     	if(updatedRecords.length==0){
-    		Ext.Msg.alert('',noRecordsToUpdateMessage);
+    		Ext.Msg.alert('',AOCLit.noRecordsToUpdateMessage);
     		Ext.getBody().unmask();
     		return false;
     	}else{
     		Ext.getBody().unmask();
-    		Ext.Msg.confirm('',confirmBulkUpdateSave,function(btn){
+    		Ext.Msg.confirm('',AOCLit.confirmBulkUpdateSave,function(btn){
     			if(btn=='yes'){
     				var mask=Ext.getBody().mask('Saving....');
     				mask.dom.style.zIndex = '99999';
@@ -95,14 +95,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     		  
     		 });
     	var obj='{"data":'+Ext.encode(parms)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'"}';
+    	
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
-		        success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success','Order line successfully updated');
+    		   success : function(response, opts) {
+		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
 			  		//Ext.Msg.alert('','Order line successfully updated');
-			  		Ext.getBody().unmask();
+		          	Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
 		        failure: function(response, opts) {
