@@ -14,7 +14,7 @@
         		     var win=field.up('window');
               		 var pwd = win.down('#'+field.initialPassField);
               		  if(val && val == pwd.getValue()){
-              		  field.vtypeText =newPasswordFailureMsg;
+              		  field.vtypeText =AOCLit.newPasswordFailureMsg;
               		    	return false;
               		   }}
               		 return true;
@@ -27,7 +27,7 @@
         		    }
         		        return true;
         		    },
-        		    passwordText :passwordsNotMatch
+        		    passwordText :AOCLit.passwordsNotMatch
          });
          Ext.apply(this, {
              items: this.buildItems()
@@ -51,7 +51,7 @@
                  itemId: 'currentPassword',
                  name: 'currentPassword',
                  labelSeparator: ' ',
-                 fieldLabel:currentPassword,
+                 fieldLabel:AOCLit.currentPassword,
                  margin:'0 0 25 0',
                  width: 700,
                  scope: me,
@@ -66,7 +66,7 @@
                  name: 'password',
                  labelSeparator: ' ',
                  margin:'0 0 25 0',
-                 fieldLabel: newPassword,
+                 fieldLabel: AOCLit.newPassword,
                  width: 700,
                  labelWidth: 200,
                  allowBlank: false,
@@ -86,7 +86,7 @@
                  labelSeparator: ' ',
                  allowBlank: false,
                  margin:'0 0 25 0',
-                 fieldLabel: confirmPassword,
+                 fieldLabel: AOCLit.confirmPassword,
                  width: 700,
                  vtype: 'password',
                  initialPassField: 'newPassword',
@@ -111,7 +111,7 @@
      if(data.passwordmatch)
 	 return true;
      else
-    	 return incorrectPasswordMsg;
+    	 return AOCLit.incorrectPasswordMsg;
      }
     	return true;
      }
