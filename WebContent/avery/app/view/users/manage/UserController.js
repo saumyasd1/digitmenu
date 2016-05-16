@@ -40,15 +40,18 @@ Ext.define('AOC.view.users.manage.UserController', {
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='PUT';
 			length = Object.keys(valueObj).length;
-			Msg='User Updated Successfully';
-		   var parameters=Ext.JSON.encode(valueObj);
+			//Msg='User Updated Successfully';
+			var Msg=AOCLit.updateUserMsg;
+			var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
 			url=applicationContext+'/rest/users';
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			valueObj.status=100;
-			Msg='User Added Successfully';
+			
+			//Msg='User Added Successfully';
+			var Msg=AOCLit.addUserMsg;
 			length = Object.keys(valueObj).length-1;
 			var parameters=Ext.JSON.encode(valueObj);
 		   }
@@ -133,13 +136,15 @@ onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
             deleteuser: function(cmp){
           	  currentRecord=e.record;
           		var ID=record.get('id');
-          		var Msg='User Deleted Succesfully';
-          		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the User?</b>',function(btn){
+          		//var Msg='User Deleted Succesfully';
+          		var Msg=AOCLit.deleteUserMsg;
+          		Ext.Msg.confirm('Alert',AOCLit.delUserMsg,function(btn){
           			  if(btn=='yes'){
           					Ext.Ajax.request({
           							method:'DELETE',
           							url:applicationContext+'/rest/users/'+ID,
           				        success : function(response, opts) {
+          				        
           				            AOC.util.Helper.fadeoutMessage('Success',Msg);
           							me.runTime.getActiveGrid().store.load();
           				        },
