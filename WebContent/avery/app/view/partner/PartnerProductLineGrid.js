@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     alias : 'widget.partnerproductlinegrid',
 	requires:['AOC.view.advsearch.ProductLineAdvanceSearch'],
 	controller:'productlineMain',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText: AOCLit.emptyDataMsg,
 	partnerid:null,
 	partnerName:null,
 	initComponent : function(){
@@ -32,12 +32,12 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            width:20,
 				            xtype:'actioncolumn',
 				  	        items:[{
-						  	    	  icon:menuIcon,
+						  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
 						  	    	  handler: 'onClickMenu'
   	                              }]
                         },
         			    {  
-            	            text : 'Partner Name',
+            	            text : AOCLit.partnerName,
             	          	width:120,
             	            sortable : true,
             	            flex:1.5,
@@ -54,21 +54,21 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Product Line',
+				        	text : AOCLit.productLine,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'productLineType',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'CSR',
+				        	text : AOCLit.CSR,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'csrName',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Packing Instruction',
+				        	text : AOCLit.packingInstruction,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'packingInstruction',
@@ -107,7 +107,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	                     	width :10
 	             		},
 				     {
-			              icon: addImage,
+			              icon:  AOC.config.Settings.buttonIcons.addImage,
 			              text:'New',
 			              itemId : 'newPartner',
 			              handler:'createproductline',
@@ -131,7 +131,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		        html:AOCLit.advSearchTitle
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
@@ -144,7 +144,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon
+						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 					}
 		          ];
 	},
