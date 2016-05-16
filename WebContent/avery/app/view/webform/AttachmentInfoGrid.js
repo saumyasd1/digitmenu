@@ -40,7 +40,7 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             width :60,
             data : '',
             renderer:function(v,cell,record){
-		return '<div><img class="deleteClass" src="' + deleteImageSrc + '" /></div>';
+		return '<div><img class="deleteClass" src="' +  AOC.config.Settings.buttonIcons.deleteImageSrc + '" /></div>';
         }
         }]};
     }
