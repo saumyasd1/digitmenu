@@ -10,7 +10,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 			items : [   {
 							xtype:'displayfield',
 							itemId:'tittleItemId',
-							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
 							margin:'5 0 0 80'
 			            },
 						{
@@ -31,7 +31,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						{
 							xtype : 'textfield',
 							itemId: 'partnernamevalue',
-							fieldLabel : 'Partner Name',
+							fieldLabel : AOCLit.partnerName,
 							name:'partnerName',
 							width:250,
 							labelSeparator : '',
@@ -73,7 +73,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'partnerfromdatecriteriavalue',
-							fieldLabel : 'From Date ',
+							fieldLabel : AOCLit.fromDate,
 							name:'fromDate',
 							reference:'fromDate',
 							width:250,
@@ -98,7 +98,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'partnertodatecriteriavalue',
-							fieldLabel : 'To Date ',
+							fieldLabel : AOCLit.toDate,
 							name:'toDate',
 							width:250,
 							reference:'toDate',
