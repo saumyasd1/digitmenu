@@ -10,7 +10,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 					       {
 								xtype:'displayfield',
 								itemId:'tittleItemId',
-								value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+								value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
 								margin:'5 0 0 200'
 				            },
 							{
@@ -36,7 +36,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 		                    margin : '5 0 0 10',
 		                    items:[{
 							xtype : 'textfield',
-							fieldLabel : 'Address',
+							fieldLabel : AOCLit.address,
 							name:'address',
 							width:250,
 							labelSeparator : '',
@@ -51,7 +51,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						},
 						{
 							xtype : 'textfield',
-							fieldLabel : 'Partner Name',
+							fieldLabel : AOCLit.partnerName,
 							name:'partnerName',
 							width:250,
 							labelSeparator : '',
@@ -86,7 +86,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							xtype : 'datefield',
 							name:'fromDate',
 							reference:'fromDate',
-							fieldLabel : 'From Date ',
+							fieldLabel : AOCLit.fromDate,
 							width:250,
 							hidden:false,
 							labelSeparator : '',
@@ -106,7 +106,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						},
 						{
 							xtype : 'datefield',
-							fieldLabel : 'To Date ',
+							fieldLabel : AOCLit.toDate,
 							name:'toDate',
 							reference:'toDate',
 							width:250,
