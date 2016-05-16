@@ -4,7 +4,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     itemId: 'salesrrderexpandablegrid',
     requires: ['Ext.grid.Panel', 'AOC.view.ux.RowExpanderGrid', 'AOC.util.Helper','Ext.grid.plugin.Clipboard'],
     controller: 'salesorder',
-    emptyText: '<div align=center>No data to display</div>',
+    emptyText: AOCLit.emptyDataMsg,
     autoHeight: true,
     columnLines: true,
     nestedGridRefrence: 'salesOrderDetail',
@@ -18,7 +18,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 	    },
     columns: [
                {
-        text: 'Status',
+        text: AOCLit.Status,
         dataIndex: 'status',
         width: 150,
         renderer:function(v){
@@ -26,7 +26,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		}
     },
     {
-  	  text: 'System Status',
+  	  text: AOCLit.systemStatus,
         dataIndex: 'systemstatus',
         width: 85,
     	renderer:function(v){
@@ -36,27 +36,27 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 				return '';
     }
   },{
-        text: 'Division',
+        text: AOCLit.Division,
         dataIndex: 'division',
         editor: 'textfield'
     }, {
-        text: 'OrderSource',
+        text: AOCLit.orderSource,
         dataIndex: 'orderSource',
         editor: 'textfield'
     }, {
-        text: 'SOLD TO RBO #',
+        text: AOCLit.SOLDTORBONumber,
         dataIndex: 'soldTORBONumber',
         editor: 'textfield'
     }, {
-        text: 'Oracle Bill To Site #',
+        text: AOCLit.oracleBilltoSiteNumber,
         dataIndex: 'oracleBilltoSiteNumber',
         editor: 'textfield'
     }, {
-        text: 'Oracle Ship To Site #',
+        text: AOCLit.oracleShiptoSiteNumber,
         dataIndex: 'oracleShiptoSiteNumber',
         editor: 'textfield'
     }, {
-        text: 'Shipping Method',
+        text: AOCLit.shippingMethod,
         dataIndex: 'shippingMethod',
         width: 170,
         editor: {
@@ -75,39 +75,39 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
         dataIndex: 'retailerPO_CustomerJob',
         editor: 'textfield'
     }, {
-        text: 'Oracle Item #',
+        text: AOCLit.oracleItemNo,
         dataIndex: 'oracleItemNumber',
         editor: 'textfield'
     }, {
-        text: 'Customer Item #',
+        text: AOCLit.custItemNo,
         dataIndex: 'customerItemNumber',
         editor: 'textfield'
     }, {
-        text: 'Item Description',
+        text: AOCLit.itemDesc,
         dataIndex: 'itemDescription',
         editor: 'textfield'
     }, {
-        text: 'Orderded Qty',
+        text:AOCLit.orderdedQty,
         dataIndex: 'customerOrderedQty',
         editor: 'textfield'
     }, {
-        text: 'Date Ordered',
+        text: AOCLit.dateOrdered,
         dataIndex: 'dateOrdered',
         editor: 'textfield'
     }, {
-        text: 'Customer Request Date',
+        text: AOCLit.custRequestDate,
         dataIndex: 'ustomerRequestDate',
         editor: 'textfield'
     }, {
-        text: 'Promise Date',
+        text: AOCLit.promiseDate,
         dataIndex: 'promiseDate',
         editor: 'textfield'
     }, {
-        text: 'Freight Terms',
+        text: AOCLit.freightTerm,
         dataIndex: 'freightTerms',
         editor: 'textfield'
     }, {
-        text: 'CSR',
+        text: AOCLit.CSR,
         dataIndex: 'csr',
         width: 160,
         editor: {
@@ -118,71 +118,71 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
         }
     }, {
-        text: 'Packing Instruction',
+        text: AOCLit.packingInstruction,
         dataIndex: 'packinginstruction',
         editor: 'textfield'
     }, {
-        text: 'Shipping Instruction',
+        text: AOCLit.shippingInstructions,
         dataIndex: 'shippingInstructions',
         editor: 'textfield'
     }, {
-        text: 'Invoice Line Instruction',
+        text: AOCLit.invoiceLineInstruction,
         dataIndex: 'invoicelineInstruction',
         editor: 'textfield'
     }, {
-        text: 'Division For Interface ERP ORG',
+        text: AOCLit.divisionforInterfaceERPORG,
         dataIndex: 'divisionforInterfaceERPORG',
         editor: 'textfield'
     }, {
-        text: 'Bill To Contact',
+        text: AOCLit.billContact,
         dataIndex: 'billToContact',
         editor: 'textfield'
     }, {
-        text: 'Bill To Telephone',
+        text: AOCLit.billToTelephone,
         dataIndex: 'billToTEL',
         editor: 'textfield'
     }, {
-        text: 'Bill To FAX',
+        text: AOCLit.billToFax,
         dataIndex: 'billToFAX',
         editor: 'textfield'
     }, {
-        text: 'Bill To EMAIL',
+        text: AOCLit.billToEmail,
         dataIndex: 'billToEMAIL',
         editor: 'textfield'
     }, {
-        text: 'Ship To Contact',
+        text: AOCLit.shipContact,
         dataIndex: 'shipTOContact',
         editor: 'textfield'
     }, {
-        text: 'Ship To Telephone',
+        text: AOCLit.shipToTelephone,
         dataIndex: 'shipTOTEL',
         editor: 'textfield'
     }, {
-        text: 'Ship To FAX',
+        text: AOCLit.shipToFax,
         dataIndex: 'shipTOFAX',
         editor: 'textfield'
     }, {
-        text: 'Ship To EMAIL',
+        text: AOCLit.shipToEmail,
         dataIndex: 'shipTOEMAIL',
         editor: 'textfield'
     }, {
-        text: 'Artwork Hold',
+        text: AOCLit.artworkHold,
         dataIndex: 'artworkhold',
         editor: 'checkbox'
     }, {
-        text: 'Artwork Work Attachment',
+        text:AOCLit.artworkWorkAttachment,
         dataIndex: 'artworkworkattachment',
         editor: 'checkbox'
     }, {
-        text: 'Variable Data Breakdown',
+        text:AOCLit.variableDataBreakdown,
         dataIndex: 'variableDataBreakdown',
         editor: 'textfield'
     }, {
-        text: 'Manu. Note',
+        text: AOCLit.manufacturingNotes,
         dataIndex: 'manufacturingnotes',
         editor: 'textfield'
     }, {
-        text: 'Order Type',
+        text: AOCLit.orderType,
         dataIndex: 'ordertype',
         width: 180,
         editor: {
@@ -193,11 +193,11 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
         }
     }, {
-        text: 'Order By',
+        text: AOCLit.orderBy,
         dataIndex: 'orderby',
         editor: 'textfield'
     }, {
-        text: 'End Customer',
+        text: AOCLit.endCust,
         dataIndex: 'endcustomer',
         width: 180,
         editor: {
@@ -208,15 +208,15 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
         }
     }, {
-        text: 'Shipping Only Notes',
+        text: AOCLit.shippingOnlyNotes,
         dataIndex: 'shippingonlynotes',
         editor: 'textfield'
     }, {
-        text: 'Bank Charge',
+        text: AOCLit.bankCharge,
         dataIndex: 'bankCharge',
         editor: 'textfield'
     }, {
-        text: 'Freight Charges',
+        text:AOCLit.freightCharge,
         dataIndex: 'freightCharge',
         width: 160,
         editor: {
@@ -227,15 +227,15 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
         }
     }, {
-        text: 'Shipping Hold',
+        text: AOCLit.shippingHold,
         dataIndex: 'shippinghold',
         editor: 'checkbox'
     }, {
-        text: 'Production Hold',
+        text: AOCLit.productionHold,
         dataIndex: 'productionhold',
         editor: 'checkbox'
     }, {
-        text: 'Split Shipset',
+        text: AOCLit.splitShipset,
         dataIndex: 'splitshipset',
         width: 180,
         editor: {
@@ -246,19 +246,19 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
             store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
         }
     }, {
-        text: 'Agreement',
+        text: AOCLit.agreement,
         dataIndex: 'agreement',
         editor: 'textfield'
     }, {
-        text: 'Model serial #',
+        text: AOCLit.modelSerialNumber,
         dataIndex: 'modelSerialNumber',
         editor: 'textfield'
     }, {
-        text: 'Waive MOQ',
+        text: AOCLit.waiveMOQ,
         dataIndex: 'waiveMOQ',
         editor: 'checkbox'
     }, {
-        text: 'APO Type',
+        text: AOCLit.apoType,
         dataIndex: 'apoType',
         width: 180,
         editor: {
@@ -299,7 +299,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		              xtype: 'rownumberer',
 	            	  text:'#'
 		          }, {
-		              text: 'Level',
+		              text: AOCLit.Level,
 		              dataIndex: 'level',
 		              width: 100
 		          }, {
@@ -311,7 +311,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		              dataIndex: 'typesetter',
 		              width: 130
 		          }, {
-		              text: "Variable Field Name",
+		              text: AOCLit.variableFieldName,
 		              dataIndex: 'variablefieldname',
 		              width: 140
 		          }, {
@@ -319,7 +319,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		              dataIndex: 'variabledatavalue',
 		              width: 140
 		          }, {
-		              text: "Fiber Content Percentage",
+		              text: AOCLit.fiberContentPercent,
 		              dataIndex: 'fiberPercent',
 		              xtype:'gridcolumn',
 		              width: 155
