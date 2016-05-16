@@ -34,11 +34,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         },
         buildButtons : function(){
             return [{
-            	text : 'Save',
+            	text : AOCLit.Save,
                 handler : 'SaveDetails'
             },
             {
-            	text : 'Cancel',
+            	text : AOCLit.Cancel,
                 handler : 'CancelDetails'
             }];
         },
@@ -85,7 +85,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'PNItemId',
         			labelAlign:'top',
         			name: 'partnerName',
-        			fieldLabel:'Partner Name',
+        			fieldLabel:AOCLit.partnerName,
         			value:me.partnerName,
         		    labelSeparator:'',
                     labelWidth : 200,
@@ -127,14 +127,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			itemId:'PLItemId',
             			labelAlign:'top',
             			name: 'productLineType',
-            			fieldLabel:'Product Line',
+            			fieldLabel:AOCLit.productLine,
             			allowBlank: false,
             			labelSeparator:'',
                         labelWidth : 200,
       		            width : 300,
       		            maxLength : '50',
       		            enforceMaxLength: true,
-      		            blankText : 'Product Line is required',
+      		            blankText : AOCLit.prodLineReq,
       		            listeners : {
       		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
@@ -148,7 +148,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			xtype:'textfield',
             			itemId:'CItemId',
             			name: 'csrName',
-            			fieldLabel:'CSR',
+            			fieldLabel:AOCLit.CSR,
             			allowBlank: false,
             			labelSeparator:'',
                         labelWidth : 200,
@@ -156,7 +156,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            labelAlign:'top',
       		            maxLength : '100',
       		            enforceMaxLength: true,
-      		            blankText : 'CSR is required',
+      		            blankText : AOCLit.CSRReq,
       		            listeners : {
       		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
@@ -176,7 +176,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			labelAlign:'top',
         			name: 'csrEmail',
         			value:'',
-        			fieldLabel:'CSR Email',
+        			fieldLabel:AOCLit.CSREmail,
         			allowBlank: false,
         			labelSeparator:'',
         			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
@@ -185,7 +185,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
   		            height:60,
   		            maxLength : '100',
   		            enforceMaxLength: true,
-  		            blankText : 'CSR is required',
+  		            blankText : AOCLit.CSRReq,
   		            listeners : {
   		            	 blur : this.notifyByImage,
   		            	'focus' : 'HideMandatoryMessage'
@@ -200,7 +200,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'SONItemId',
         			labelAlign:'top',
         			name: 'shippingOnlyNotes',
-        			fieldLabel:'Shipping Only Notes',
+        			fieldLabel:AOCLit.shippingOnlyNotes,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
@@ -225,7 +225,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'PIItemId',
         			labelAlign:'top',
         			name: 'packingInstruction',
-        			fieldLabel:'Packing Instruction',
+        			fieldLabel:AOCLit.packingInstruction,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
@@ -245,7 +245,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'PItemId',
         			labelAlign:'top',
         			name: 'invoiceLineInstruction',
-        			fieldLabel:'Invoice Line Instruction',
+        			fieldLabel:AOCLit.invoiceLineInstruction,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
@@ -270,7 +270,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			itemId:'MNItemId',
             			labelAlign:'top',
             			name: 'manufacturingNotes',
-            			fieldLabel:'Manufacturing Notes',
+            			fieldLabel:AOCLit.manufacturingNotes,
             			value:'',
             			labelSeparator:'',
                         labelWidth : 200,
@@ -378,7 +378,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			itemId:'OSTItemId',
             			labelAlign:'top',
             			name: 'orderSchemaType',
-            			fieldLabel:'Order Schema Type',
+            			fieldLabel:AOCLit.orderSchemaType,
             			value:'',
             			labelSeparator:'',
                         labelWidth : 200,
@@ -398,7 +398,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			itemId:'OHMItemId',
         			labelAlign:'top',
         			name: 'orderSchemaID',
-        			fieldLabel:'Order SchemaID',//?/
+        			fieldLabel:AOCLit.orderSchemaId,//?/
         			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
@@ -422,7 +422,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 			itemId:'ODMItemId',
                 			labelAlign:'top',
                 			name: 'orderMappingID',
-                			fieldLabel:'Order MappingID',//?/
+                			fieldLabel:AOCLit.orderMappingID,//?/
                 			value:'',
                 			labelSeparator:'',
                             labelWidth : 200,
@@ -440,7 +440,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			itemId:'PreProcessPID',
             			labelAlign:'top',
             			name: 'preProcessPID',
-            			fieldLabel:'Pre Process PID',//?/
+            			fieldLabel:AOCLit.preProcessPID,//?/
             			value:'',
             			labelSeparator:'',
                         labelWidth : 200,
@@ -462,7 +462,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                   			itemId:'additonaldataItemId',
                   			labelAlign:'top',
                   			name: 'attachmentRequired',
-                  			fieldLabel:'Additional Data Required',
+                  			fieldLabel:AOCLit.addDataReq,
                   			value:'',
                   			labelSeparator:'',
                             labelWidth : 200,
@@ -482,8 +482,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
-		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');
+		    		   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.successImageSrc+');background-repeat:no-repeat;background-position:right;');
 					else
-					   config.setFieldStyle('background-image:url('+errorIcon+');background-repeat:no-repeat;background-position:right;');
+					   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.errorIcon+');background-repeat:no-repeat;background-position:right;');
 		     }
                  });
