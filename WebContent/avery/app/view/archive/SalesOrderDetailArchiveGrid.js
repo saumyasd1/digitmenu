@@ -3,7 +3,7 @@ Ext.define('AOC.view.archive.SalesOrderDetailArchiveGrid', {
 	itemId : 'salesOrderDetailArchiveGrid',
 	alias : 'widget.ar_salesorderdetail',
 	//requires:['AOC.view.ux.CustomSearchField'],
-	emptyText : '<div align=center> No data to display.</div>',
+	emptyText : AOCLit.emptyDataMsg,
 	recordBeingEdit : null,
 	initComponent : function () {
 		var me = this;
@@ -102,7 +102,7 @@ Ext.define('AOC.view.archive.SalesOrderDetailArchiveGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		        html:AOCLit.advSearchTitle,
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
@@ -115,7 +115,7 @@ Ext.define('AOC.view.archive.SalesOrderDetailArchiveGrid', {
 							itemId: 'clearadvanedsearch',
 							hidden:true, 
 							handler : 'clearAdvancedSerach',
-							icon: clearSearchIcon
+							icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 						}
 					 ];
 							},
