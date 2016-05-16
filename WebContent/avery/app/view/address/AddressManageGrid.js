@@ -4,7 +4,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     alias : 'widget.addressmanagegrid',
     requires:['AOC.view.ux.CustomSearchField'],
     controller:'addressMain',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText:AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -38,7 +38,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				            width:20,
 				            xtype:'actioncolumn',
 				  	        items:[{
-				  	        		icon:menuIcon,
+				  	        		icon: AOC.config.Settings.buttonIcons.menuIcon,
 				  	    			handler: 'onClickMenu'
 	  	                          }]
 	                    },
@@ -117,7 +117,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				    	width :10
 					},
 				  {
-		              icon: addImage,
+		              icon:  AOC.config.Settings.buttonIcons.addImage,
 		              text:'New',
 		              itemId :'newAddress',
 		              handler:'openAddAddressWindow'
@@ -141,7 +141,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+	        		        html:AOCLit.advSearchTitle
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -154,7 +154,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 //					xtype:'button',
 //					refrence:'advancesearchbutton',
 //					text:advSearchText,
-//					icon   : advSearchIcon,
+//					icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
 //					iconAlign: "right",
 //					handler:'openAdvancedSearchWindow'
 //				 },
@@ -162,7 +162,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 				hidden:true, 
 				itemId:'clearadvanedsearch',
 				handler:'clearAdvancedSerach',
-				icon:clearSearchIcon
+				icon: AOC.config.Settings.buttonIcons.clearSearchIcon
 			}
 		          ];
 	},
