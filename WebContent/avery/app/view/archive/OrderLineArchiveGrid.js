@@ -3,7 +3,7 @@ Ext.define('AOC.view.archive.OrderLineArchiveGrid', {
 	itemId : 'orderLineArchiveGriditemId',
     alias : 'widget.ar_orderline',
     controller:'archiveMain',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText: AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -25,98 +25,98 @@ Ext.define('AOC.view.archive.OrderLineArchiveGrid', {
     	var me=this;
         return [
         			    {  
-            	            text : 'Product Line Type',
+            	            text : AOCLit.productLineType,
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'productlinetype',
             	            flex:1.5
                			},
                          {
-				        	text : 'Customer PO Number',
+				        	text : AOCLit.custPONumber,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'customerponumber',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'OrderedDate',
+				        	text : AOCLit.orderedDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'ordereddate',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Partner Customer Name',
+				        	text : AOCLit.partnerCustName,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'partnercustomername',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'SOLD TO RBO Number',
+				        	text : AOCLit.soldToRboNumber,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'soldtorbonumber',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Oracle Item Number',
+				        	text : AOCLit.oracleItemNo,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'oracleitemnumber',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Customer Item Number',
+				        	text : AOCLit.custItemNo,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'customeritemnumber',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Contract Number',
+				        	text : AOCLit.contractNo,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'contractnumber',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'StyleNo',
+				        	text : AOCLit.styleNo,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'styleno',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Customer Season',
+				        	text : AOCLit.custSeason,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'customerseason',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Customer Ordered Qty',
+				        	text : AOCLit.custOrderedQty,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'customerorderedqty',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Status',
+				        	text : AOCLit.Status,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'status',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified By',
+				        	text : AOCLit.lastModifiedBy,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedBy',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified Date',
+				        	text : AOCLit.lastModifiedDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedDate',
@@ -134,7 +134,7 @@ Ext.define('AOC.view.archive.OrderLineArchiveGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+	        		        html:AOCLit.advSearchTitle,
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -147,7 +147,7 @@ Ext.define('AOC.view.archive.OrderLineArchiveGrid', {
 //						xtype:'button',
 //						itemId:'advancesearchbutton',
 //						text:advSearchText,
-//						icon: advSearchIcon,
+//						icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
 //						iconAlign: "right",
 //				    	handler:'openAdvancedSearchWindow'
 //					 },
@@ -155,7 +155,7 @@ Ext.define('AOC.view.archive.OrderLineArchiveGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon
+						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 					}
 				 ];
 						},
