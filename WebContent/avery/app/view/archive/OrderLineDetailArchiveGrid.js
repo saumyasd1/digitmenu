@@ -3,7 +3,7 @@ Ext.define('AOC.view.archive.OrderLineDetailArchiveGrid', {
 	itemId : 'orderLineDetailArchiveGrid',
     alias : 'widget.ar_orderlinedetail',
     //requires:['AOC.view.ux.CustomSearchField'],
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText: AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -25,70 +25,70 @@ Ext.define('AOC.view.archive.OrderLineDetailArchiveGrid', {
     	var me=this;
         return [
         			    {  
-            	            text : 'Oracle Item Number',
+            	            text : AOCLit.oracleItemNo,
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'oracleitemnumber',
             	            flex:1.5
                			},
                          {
-				        	text : 'Level',
+				        	text : AOCLit.Level,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'level',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'SKUno',
+				        	text : AOCLit.SKUNo,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'skuno',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Typesetter',
+				        	text : AOCLit.typeSetter,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'typesetter',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Variable Field Name',
+				        	text : AOCLit.variableFieldName,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'variablefieldname',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Variable Data Value',
+				        	text : AOCLIt.variableDataValue,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'variabledatavalue',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Fiber Percent',
+				        	text : AOCLit.fiberPercent,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'fiberpercent',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Sent To Oracle Date',
+				        	text : AOCLit.sentToOracleDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'senttooracledate',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified By',
+				        	text : AOCLit.lastModifiedBy,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedBy',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Last Modified Date',
+				        	text : AOCLit.lastModifiedDate,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'lastModifiedDate',
@@ -106,7 +106,7 @@ Ext.define('AOC.view.archive.OrderLineDetailArchiveGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+	        		        html: AOCLit.advSearchTitle,
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -119,7 +119,7 @@ Ext.define('AOC.view.archive.OrderLineDetailArchiveGrid', {
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
 						handler : 'clearAdvancedSerach',
-						icon: clearSearchIcon
+						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 					}
 				 ];
 						},
