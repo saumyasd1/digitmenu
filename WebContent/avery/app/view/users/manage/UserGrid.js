@@ -4,7 +4,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 	itemId : 'usersgriditemId',
     alias : 'widget.usersgrid',
     controller:'userMain',
-	emptyText:'<div align=center> No data to display.</div>',
+	emptyText:AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -56,7 +56,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 		            baseCls:'custom-action',
 			  	        items:[
 			  	      {
-					  	    	  icon:menuIcon,
+					  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
 					  	    	  handler: 'onClickMenu'
 					  	    	
 			  	      }]
@@ -105,7 +105,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 		                	width :10
 		        		},
 				  {
-		              icon: addImage,
+		              icon:  AOC.config.Settings.buttonIcons.addImage,
 		              text:'New',
 		              itemId : 'newUser',
 		              handler:'createuser',
