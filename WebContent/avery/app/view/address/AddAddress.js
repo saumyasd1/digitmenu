@@ -28,11 +28,11 @@ Ext.define('AOC.view.address.AddAddress',{
         },
         buildButtons : function(){
             return [{
-            	text : 'Save',
+            	text : AOCLit.Save,
                 handler : 'saveAddressDetails'
             },
             {
-            	text : 'Cancel',
+            	text : AOCLit.Cancel,
                 handler : 'closeWindow'
             }];
         },
@@ -75,7 +75,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[{
         			xtype:'textfield',
         			name: 'orgCode',
-        			fieldLabel:'ORG Code',
+        			fieldLabel:AOCLit.orgCode,
         			allowBlank: false,
     		        listeners : {
 	                    blur : this.notifyByImage,
@@ -85,7 +85,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'combobox',
 	        			name: 'partner_id',
-	        			fieldLabel:'Partner Name',
+	        			fieldLabel:AOCLit.partnerName,
 	        			displayField:'partnerName',
 						valueField:'id',
 					    store :'PartnerManagementStore',
@@ -98,7 +98,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'description',
-	        			fieldLabel:'Description',
+	        			fieldLabel:AOCLit.Description,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
 		                    'focus' : 'HideMandatoryMessage'
@@ -107,7 +107,7 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'siteNumber',
-	        			fieldLabel:'Site Number',
+	        			fieldLabel:AOCLit.siteNumber,
 	        		    allowBlank: false,
 	      		        listeners : {
 		                    blur : this.notifyByImage,
@@ -117,37 +117,37 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'phone1',
-	        			fieldLabel:'Phone 1'
+	        			fieldLabel:AOCLit.Phone1
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'address1',
-	        			fieldLabel:'Address 1'
+	        			fieldLabel:AOCLit.address1
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'address3',
-	        			fieldLabel:'Address 3'
+	        			fieldLabel:AOCLit.address3
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'city',
-	        			fieldLabel:'City'
+	        			fieldLabel:AOCLit.City
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'country',
-	        			fieldLabel:'Country'
+	        			fieldLabel:AOCLit.Country
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'zip',
-	        			fieldLabel:'Zip'
+	        			fieldLabel:AOCLit.Zip
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'email',
-	        			fieldLabel:'Email',
+	        			fieldLabel:AOCLit.Email,
 	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
 	        		}
 	        		]
@@ -165,7 +165,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[{
         			xtype:'combo',
         			name: 'shippingMethod',
-        			fieldLabel:'Shipping Method',
+        			fieldLabel:AOCLit.shippingMethod,
         			queryMode :'local',
                     displayField: 'variableFieldName',
                     valueField: 'variableFieldName',
@@ -183,12 +183,12 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'shippingInstructions',
-	        			fieldLabel:'Shipping Instructions'
+	        			fieldLabel:AOCLit.shippingInstructions
 	        		},
 	        		{
 	        			xtype:'combobox',
 	        			name: 'siteType',
-	        			fieldLabel:'Site Type',
+	        			fieldLabel:AOCLit.siteType,
 					    store :[['B','billToSiteNumber'],['S','shipToSiteNumber']],
 					    allowBlank: false,
       		            listeners : {
@@ -199,32 +199,32 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		{
 	        			xtype:'textfield',
 	        			name: 'contact',
-	        			fieldLabel:'Contact'
+	        			fieldLabel:AOCLit.Contact
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'phone2',
-	        			fieldLabel:'Phone 2'
+	        			fieldLabel:AOCLit.phone2
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'address2',
-	        			fieldLabel:'Address 2'
+	        			fieldLabel:AOCLit.address2
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'address4',
-	        			fieldLabel:'Address 4'
+	        			fieldLabel:AOCLit.address4
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'state',
-	        			fieldLabel:'State'
+	        			fieldLabel:AOCLit.state
 	        		},
 	        		{
 	        			xtype:'textfield',
 	        			name: 'fax',
-	        			fieldLabel:'Fax'
+	        			fieldLabel:AOCLit.fax
 	        		}
 	        		 ]
         		}
@@ -241,8 +241,8 @@ Ext.define('AOC.view.address.AddAddress',{
         },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
-		    		   config.setFieldStyle('background-image:url('+successImageSrc+');background-repeat:no-repeat;background-position:right;');
+		    		   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.successImageSrc+');background-repeat:no-repeat;background-position:right;');
 					else
-					   config.setFieldStyle('background-image:url('+errorIcon+');background-repeat:no-repeat;background-position:right;');
+					   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.errorIcon+');background-repeat:no-repeat;background-position:right;');
 		     }
                  });
