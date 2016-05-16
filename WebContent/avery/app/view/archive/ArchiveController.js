@@ -129,7 +129,7 @@ Ext.define('AOC.view.archive.ArchiveController', {
 			     else
 			    	 {
 			       var archivesearch=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
-				    archivesearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+				    archivesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
 			    	 }
 			},
 			clearAdvancedSerach:function(widget){
