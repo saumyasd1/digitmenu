@@ -29,7 +29,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        	var jsonValue=Ext.decode(response.responseText);
 		        	var status=jsonValue.status;
 		        	if(status=='success')
-		        		Ext.Msg.alert('','Order was successfully validated');
+		        		Ext.Msg.alert('',AOCLit.orderValidation);
 		        	else
 		        		Ext.Msg.alert('',validateErrorMsg);
 			  		Ext.getBody().unmask();
@@ -73,36 +73,36 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	var grid=this.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),store=grid.store,me=this,status;;
     	//var grid=this.getView().down('#orderlineexpandablegridrowmodel'),store=grid.store,me=this,status;
     	if(grid.mandatoryFieldMissing){
-			Ext.Msg.alert('',orderLineMandatoryFieldMissingAlt);
+			Ext.Msg.alert('',AOCLit.orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
 			return false;
 		}
     	if(grid.mandatoryValidationFieldMissing){
     		store.load();
-			Ext.Msg.alert('',orderLineMandatoryValidationFieldMissingAlt);
+			Ext.Msg.alert('',AOCLit.orderLineMandatoryValidationFieldMissingAlt);
 			grid.showMandatoryValidationField=true;
 			Ext.getBody().unmask();
 			return false;
     	}
     		var records=store.queryBy(function(rec){
     			status=rec.get('status');
-    			if(status!=waitingForCSRStatus && status!=cancelStatus)
+    			if(status!=AOCLit.waitingForCSRStatus && status!=AOCLit.cancelStatus)
     				return true;
     		});
     		if(records.length>0){
-    			Ext.Msg.alert('',changeOrderLineStatusAlert);
+    			Ext.Msg.alert('',AOCLit.changeOrderLineStatusAlert);
     			Ext.getBody().unmask();
     			return false;
     		}
     		if(grid.invalidComboValid){
     			store.load();
-    			Ext.Msg.alert('',InvalidComboValueAlert);
+    			Ext.Msg.alert('',AOCLit.InvalidComboValueAlert);
     			grid.showInvalidCombo=true;
     			Ext.getBody().unmask();
     			return false;
     		}
     	if(grid.validationFieldMissing){
-    		Ext.Msg.confirm('',validateFieldFailedConfirmatonMsg,function(btn){
+    		Ext.Msg.confirm('',AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
     			if (btn === 'yes') {
     				var id=me.runTime.getOrderQueueId();
     		    	Ext.Ajax.request({
@@ -129,7 +129,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			                	form.disable();
     			                	me.runTime.setAllowOrderLineEdit(false);
     			                	me.getView().store.load();
-    				        		Ext.Msg.alert('',salesOrderCreationMsg);
+    				        		Ext.Msg.alert('',AOCLit.salesOrderCreationMsg);
     				        		Ext.getBody().unmask();
     				        	}
     				        	else{
@@ -173,18 +173,18 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		                	form.disable();
 		                	me.runTime.setAllowOrderLineEdit(false);
 		                	me.getView().store.load();
-			        		Ext.Msg.alert('',salesOrderCreationMsg);
+			        		Ext.Msg.alert('',AOCLit.salesOrderCreationMsg);
 			        		Ext.getBody().unmask();
 			        	}
 			        	else{
-			        		Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
-			        		proceed=false;
+			        	    Ext.Msg.alert('',AOCLit.validateErrorMsg);
+			        	    proceed=false;
 			        		Ext.getBody().unmask();
 			        	}
 		        },
 		        failure: function(response, opts) {
 		        	proceed=false;
-		        	Ext.Msg.alert('','An error occured during validation process. Please contact your system Administartor for further information.');
+		        	Ext.Msg.alert('',AOCLit.validateErrorMsg);
 		        	Ext.getBody().unmask();
 	          }
 			});
@@ -203,7 +203,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('','Order line Detail successfully updated');
+			  		Ext.Msg.alert('',AOCLit.updateOrdLineDetailMsg);
 			  		Ext.getBody().unmask();
 			  		me.getView().store.load();
 		        },
@@ -218,10 +218,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     onOrderLineStoreLoad:function(obj){
     	 var status=this.runTime.getOrderQueueActiveRecord().get('Status');
-    	 if(status==waitingForCSRStatus && this.runTime.getAllowOrderLineEdit()){
+    	 if(status==AOCLit.waitingForCSRStatus && this.runTime.getAllowOrderLineEdit()){
     		 var records=obj.queryBy(function(rec){
     				status=rec.get('status');
-    				if(status==cancelStatus)
+    				if(status==AOCLit.cancelStatus)
     					return true;
     			});
     	    	var view=this.getView(),
@@ -247,7 +247,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
       		var comboField=this.lookupReference('variableFieldCombo');
       		comboValue=comboField.getValue();
       		if(comboValue=='' || comboValue==null){
-      			Ext.Msg.alert('', 'Please select a value from the drop down before drop down.');
+      			Ext.Msg.alert('', AOCLit.selectValueDrpMsg);
       			return false;
       		}
       		innerGridType='bulkUpdateVariableHeaderrGrid';
@@ -311,7 +311,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        	if(jsonValue.length>0){
 		        	jsonValue.forEach(function(item){
                 		var service = [item];
-                		if(item.toLowerCase()!=qtyVariableLabel && item.toLowerCase().indexOf(sizeVariableLabel)==-1)
+                		if(item.toLowerCase()!=AOCLit.qtyVariableLabel && item.toLowerCase().indexOf(AOCLit.sizeVariableLabel)==-1)
                 			serviceStoreData.push(service);
                 	});
 		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
