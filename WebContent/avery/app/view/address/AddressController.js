@@ -33,7 +33,7 @@ Ext.define('AOC.view.address.AddressController', {
 		 	 else
 		 		 {
 				    var addresssearch=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-				        addresssearch.down('#messageFieldItemId').setValue('<center><font color=red>From Date must be less than or equal to To Date</font></center>').setVisible(true);
+				        addresssearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
 		 		 }
 		},
 		clearAdvancedSerach:function(widget){
@@ -129,7 +129,7 @@ Ext.define('AOC.view.address.AddressController', {
 			editMode:mode,
 			ID:id
 		});
-	    win.down('#titleItemId').setValue('<font size=3><b>'+title+'</b></font>').setVisible(true);
+	    win.down('#titleItemId').setValue(AOCLit.title).setVisible(true);
 		win.show();
 		}
 	},
@@ -151,7 +151,8 @@ Ext.define('AOC.view.address.AddressController', {
 			methodMode='PUT';
 			valueObj=form.getRecord().getChanges() ;
 			length=Object.keys(valueObj).length;
-			Msg='Address Updated Successfully';
+			//Msg='Address Updated Successfully';
+			var Msg=AOCLit.updateAddressMsg;
 			var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
@@ -159,7 +160,8 @@ Ext.define('AOC.view.address.AddressController', {
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			length=1;
-			Msg='Address Added Successfully';
+			//Msg='Address Added Successfully';
+			var Msg=AOCLit.addAddressMsg;
 			var parameters={
 					orgCode:valueObj.orgCode,
 					partnerName:valueObj.partnerName,
@@ -206,12 +208,12 @@ Ext.define('AOC.view.address.AddressController', {
               }
       	});
 		}else{
-			createaddress.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please fill valid entry in the field marked as <img src='+errorIcon+' width="15" height="15"></font>').setVisible(true);
+			createaddress.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
 		}
 		this.runTime.setWindowInEditMode(false);
 	}
 		else{
-			createaddress.down('#messageFieldItemId').setValue('<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>').setVisible(true);
+			createaddress.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
 		}
 	},
 	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
@@ -247,7 +249,7 @@ Ext.define('AOC.view.address.AddressController', {
 	     	            }
   		  		    }
   		  		});
-  		  	    win.down('#titleItemId').setValue('<font size=3><b>'+title+'</b></font>').setVisible(true);
+  		  	    win.down('#titleItemId').setValue(AOCLit.title).setVisible(true);
   		  		win.show();
   		  		}
                   	callout.destroy();
@@ -255,14 +257,14 @@ Ext.define('AOC.view.address.AddressController', {
                   deleteaddress: function(cmp){
                 	  currentRecord=e.record;
                 		var ID=record.get('id');
-                		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the Address?</b>',function(btn){
+                		Ext.Msg.confirm('Alert',AOCLit.deleteAddressMsg,function(btn){
                 			  if(btn=='yes'){
                 					Ext.Ajax.request({
                 							method:'DELETE',
                 							url:applicationContext+'/rest/address/'+ID,
                 				        success : function(response, opts) {
-                				            AOC.util.Helper.fadeoutMessage('Success','Address Deleted Succesfully');
-                							me.runTime.getActiveGrid().store.load();
+                				            AOC.util.Helper.fadeoutMessage('Success',AOCLit.deleteAddMsg);
+                				           me.runTime.getActiveGrid().store.load();
                 				        },
                 				        failure: function(response, opts) {
                 		                }
@@ -308,13 +310,13 @@ Ext.define('AOC.view.address.AddressController', {
 	deleteResource:function(record){
 		var ID=record.get('id');
 		var me=this;
-		Ext.Msg.confirm('Alert','<b>Are you sure you want to delete the Address?</b>',function(btn){
+		Ext.Msg.confirm('Alert',AOCLit.deleteAddressMsg,function(btn){
 			  if(btn=='yes'){
 					Ext.Ajax.request({
 							method:'DELETE',
 							url:applicationContext+'/rest/address/'+ID,
 				        success : function(response, opts) {
-							Ext.Msg.alert('Alert Message','<b>Address Deleted Succesfully</b>');
+							Ext.Msg.alert('Alert Message',AOCLit.deleteAddMsg);
 							me.runTime.getActiveGrid().store.load();
 				        },
 				        failure: function(response, opts) {
