@@ -48,7 +48,8 @@ Ext.define('AOC.view.webform.WebOrderView', {
  	        		 items:[
  	        	      {
 				     xtype:'weborderform',
-				     anchor:'100%'
+				     anchor:'100%',
+				     reference:'webform'
 				},{
 				     xtype:'attachmentinfoGrid',
 				     //minHeight:80,
@@ -80,12 +81,12 @@ Ext.define('AOC.view.webform.WebOrderView', {
     	 	                       xtype   : 'plainbutton',
     	 	                       margin  : '0 0 0 10',
     	 	                       itemId  : 'cancel',
-    	 	                       text    :'Cancel',
+    	 	                       text    :AOCLit.Cancel,
     	 	                       handler : 'CancelDetails'
     	 	                   },{
     	 	                       xtype   : 'whitebutton',
     	 	                       margin  : '0 0 0 10',
-    	 	                       text    :'Save',
+    	 	                       text    :AOCLit.Save,
     	 	                       itemId  : 'save',
     	 	                       handler:'SaveDetails'
     	 	                   }
