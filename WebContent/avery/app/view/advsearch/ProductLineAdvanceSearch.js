@@ -11,7 +11,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 					    {
 							xtype:'displayfield',
 							itemId:'tittleItemId',
-							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
 							margin:'5 0 0 80'
 			            },
 						{
@@ -32,7 +32,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						{
 							xtype : 'textfield',
 							itemId: 'productlinevalue',
-							fieldLabel : 'Product Line',
+							fieldLabel : AOCLit.productLine,
 							name:'productLineType',
 							width:250,
 							labelSeparator : '',
@@ -74,7 +74,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'productlinefromdatecriteriavalue',
-							fieldLabel : 'From Date ',
+							fieldLabel : AOCLit.fromDate,
 							name:'fromDate',
 							reference:'fromDate',
 							width:250,
@@ -99,7 +99,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'productlinetodatecriteriavalue',
-							fieldLabel : 'To Date ',
+							fieldLabel : AOCLit.toDate,
 							name:'toDate',
 							reference:'toDate',
 							width:250,
