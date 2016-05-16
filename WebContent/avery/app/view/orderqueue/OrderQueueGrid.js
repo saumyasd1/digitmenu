@@ -2,7 +2,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.orderqueuegrid',
     itemId:'OrderQueueGridItemId',
-	emptyText:'<div align=center> No content type(s) to display.</div>',
+	emptyText: AOCLit.noContentTypeDispMsg,
 	controller: 'orderqueue',
 	requires:['Ext.form.action.StandardSubmit','Ext.grid.plugin.Clipboard'],
 	reserveScrollbar:true,
@@ -42,19 +42,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     	//var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
         return [
              {
-        	header: '<img src="' + menuIcon + '" />',
+        	header: '<img src="' +  AOC.config.Settings.buttonIcons.menuIcon + '" />',
             //text:'',
             width:25,
 			xtype:'actioncolumn',
 			menuDisabled  :true,
 			baseCls:'custom-action',
 			items:[{
-			  icon:menuIcon,
+			  icon: AOC.config.Settings.buttonIcons.menuIcon,
 			  handler:'onClickMenu'//'showMenu'
 		  }]
         },
         {
-     	header: '<img src="' + commentIcon + '" />',
+     	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
         	//text:'',
             width:40,
 			dataIndex:'Comments',
@@ -63,7 +63,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			renderer:function(value, metadata,rec){
 				if(value){
 					var comment=Ext.String.htmlEncode(rec.data.Comments);
-		           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' + commentIcon + '" /></div>';
+		           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" /></div>';
 				}
 				else
 					return '';
@@ -72,6 +72,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			
         {
 		    header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
+		   //	text:'',
             width:40,
 			dataIndex:'error',
 			menuDisabled  :true,
@@ -91,19 +92,21 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			dataIndex:'OrderSource',
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
+				var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
+				var filename=record.get('id');
 				if(v=='Email')
-					return '<div><img class="viewemail" src="' + mailIcon + '" /></div>';
+					return '<div><img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" /></div>';
 				else
-					return '<div><img class="viewemail" src="' + browseIcon + '" /></div>';
+					return '<div><img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.browseIcon + '" /></div>';
         }
         },
-        {   header: '<img src="' + attacheImageSrc + '" />',
+        {   header: '<img src="' +  AOC.config.Settings.buttonIcons.attacheImageSrc + '" />',
             //text : 'Order File',
             width:40,
 			dataIndex:'OrderFile',
 			renderer:function(v,cell,record){
 				if(v.length!=0){
-					var fileName=v[0].fileName;
+					var fileName=v[0].fileName
 					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
 				}else 
 					return '';
@@ -119,52 +122,57 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				if(v)
 					return '<div><img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" /></div>';
 				else
-					return '';
+					return ''
         }
         },
         {
-            text : 'Order track#',
+            text : AOCLit.orderTrackNo,
             width:50,
 			dataIndex:'id'
         },
         {
-            text : 'Prv Order track#',
+            text : AOCLit.prvOrderTrackNo,
             width:80,
 			dataIndex:'prvOrderQueueID'
         },
         {
-            text : 'PO#',
+            text :AOCLit.PONumber,
             width:120,
 			dataIndex:'ponumber'
         },
        {
-            text : 'Partner Name',
+            text : AOCLit.partnerName,
             width:80,
             dataIndex:'PartnerName'
         },
 		{
-            text : 'RBO',
+            text :AOCLit.RBO,
             width:80,
             dataIndex:'RBOName'
         },{
-            text : 'Product Line', 
+            text : AOCLit.productLine, 
             width:80,
             dataIndex:'productLineType'
         },{
-            text : 'Order Status',
+            text : AOCLit.orderStatus,
             width:200,
 			dataIndex:'Status',
+			editor:{
+				xtype:'combo',
+				queryMode :'local',
+				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+			},
 			renderer:function(v){
 				return AOC.util.Helper.getSatus(v);
 			}
         },
 		{
-            text : 'Processed Date',
+            text : AOCLit.processedDate,
             width:98,
 			dataIndex:'receivedDate'
         },
         {
-            text : 'Sender Email ID',
+            text : AOCLit.senderEmailID,
             width:128,
 			dataIndex:'SenderEmailID',
 			renderer:function(v,metadata){
@@ -176,7 +184,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }
         },
 		{
-            text : 'Subject',
+            text : AOCLit.Subject,
             width:150,
 			dataIndex:'Subject',
 			renderer:function(v,metadata){
@@ -188,7 +196,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }
         },
 		{
-            text : 'Email Body',
+            text : AOCLit.emailBody,
             width:150,
 			dataIndex:'subEmailBody',
 			renderer:function(v,metadata){
@@ -200,17 +208,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }
         },
 		{
-            text : 'Submitted By',
+            text : AOCLit.submittedBy,
             width:82,
 			dataIndex:'SubmittedBy'
         },
 		{
-            text : 'Submitted Date',
+            text : AOCLit.submittedDate,
             width:95,
 			dataIndex:'submittedDate'
         },
         {
-            text : 'Acknowledgement Date',
+            text : AOCLit.acknowledgeDate,
             width:105,
 			dataIndex:'acknowledgementDate'
         }
@@ -243,7 +251,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+	        		        html:AOCLit.advSearchTitle,
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -254,7 +262,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	        		},
 			{
 				hidden:true, 
-				icon   : clearSearchIcon,
+				icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
 				itemId:'clearadvanedsearch',
 				handler:'clearAdvancedSerach'
 			}
