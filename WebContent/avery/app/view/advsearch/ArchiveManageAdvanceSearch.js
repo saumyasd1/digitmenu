@@ -11,7 +11,7 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						{
 							xtype:'displayfield',
 							itemId:'tittleItemId',
-							value:'<b><font size=3>'+advancedSearchWindowTitle+'</font></b>',
+							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
 							margin:'5 0 0 80'
 						},
 						{
@@ -51,7 +51,7 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'archivefromdatecriteriavalue',
-							fieldLabel : 'From Date ',
+							fieldLabel : AOCLit.fromDate,
 							name:'fromDate',
 							reference:'fromDate',
 							width:250,
@@ -75,7 +75,7 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 						{
 							xtype : 'datefield',
 							itemId: 'archivetodatecriteriavalue',
-							fieldLabel : 'To Date ',
+							fieldLabel : AOCLit.toDate,
 							name:'toDate',
 							reference:'toDate',
 							width:250,
