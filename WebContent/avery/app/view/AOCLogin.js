@@ -41,7 +41,7 @@ Ext.define('AOC.view.AOCLogin',{
 				       border:false,
 				       width:100,
 				       height:100,
-				       src:'avery/resources/images/logo_avery.gif'
+				       src: AOC.config.Settings.buttonIcons.logoImage
 				        },
 				        {
 				         xtype:'component',
