@@ -4,7 +4,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 	alias : 'widget.ar_partner',
 	controller:'partnerMain',
 	//requires:['AOC.view.ux.CustomSearchField'],
-	emptyText : '<div align=center> No data to display.</div>',
+	emptyText : AOCLit.emptyDataMsg,
 	recordBeingEdit : null,
 	initComponent : function () {
 		var me = this;
@@ -25,55 +25,55 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 	buildColumns : function () {
 		var me = this;
 		return [{
-				text : 'Partner ARID',
+				text : AOCLit.partnerARID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'partner_arid',
 				flex : 1.5
 			}, {
-				text : 'Partner ID',
+				text : AOCLit.partnerID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'partnerid',
 				flex : 1.5
 			}, {
-				text : 'Partner Name',
+				text : AOCLit.partnerName,
 				width : 120,
 				sortable : true,
 				dataIndex : 'partnername',
 				flex : 1.5
 			}, {
-				text : 'Address',
+				text : AOCLit.address,
 				width : 120,
 				sortable : true,
 				dataIndex : 'address',
 				flex : 1.5
 			}, {
-				text : 'Contact Person',
+				text :AOCLit.contactPerson,
 				width : 120,
 				sortable : true,
 				dataIndex : 'contactperson',
 				flex : 1.5
 			}, {
-				text : 'Phone',
+				text : AOCLit.Phone,
 				width : 120,
 				sortable : true,
 				dataIndex : 'phone',
 				flex : 1.5
 			}, {
-				text : 'isActive',
+				text : AOCLit.isActive,
 				width : 120,
 				sortable : true,
 				dataIndex : 'isactive',
 				flex : 1.5
 			}, {
-				text : 'LastModifiedBy',
+				text : AOCLit.lastModifiedBy,
 				width : 120,
 				sortable : true,
 				dataIndex : 'lastModifiedBy',
 				flex : 1.5
 			}, {
-				text : 'LastModifiedDate',
+				text : AOCLit.lastModifiedDate,
 				width : 120,
 				sortable : true,
 				dataIndex : 'lastModifiedDate',
@@ -91,7 +91,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:'<font color=#3300FF><b>Advanced Search</b></font>'
+		        		        html: AOCLit.advSearchTitle
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
@@ -104,7 +104,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 //							xtype:'button',
 //							itemId:'advancesearchbutton',
 //							text:advSearchText,
-//							icon: advSearchIcon,
+//							icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
 //							iconAlign: "right",
 //					    	handler:'openAdvancedSearchWindow'
 //						 },
@@ -112,7 +112,7 @@ Ext.define('AOC.view.archive.PartnerArchiveGrid', {
 							itemId: 'clearadvanedsearch',
 							hidden:true, 
 							handler : 'clearAdvancedSerach',
-							icon: clearSearchIcon
+							icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 						}
 					 ];
 							},
