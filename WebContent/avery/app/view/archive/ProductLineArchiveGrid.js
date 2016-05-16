@@ -4,7 +4,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 	alias : 'widget.ar_partner_rboproductline',
 	controller:'productlineMain',
 	//requires:['AOC.view.ux.CustomSearchField'],
-	emptyText : '<div align=center> No data to display.</div>',
+	emptyText : AOCLit.emptyDataMsg,
 	recordBeingEdit : null,
 	initComponent : function () {
 		var me = this;
@@ -25,79 +25,79 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 	buildColumns : function () {
 		var me = this;
 		return [{
-				text : 'Partner_RBOProductLineID',
+				text : AOCLit.partner_RBOProductLineID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'partner_rboproductlineid',
 				flex : 1.5
 			}, {
-				text : 'PartnerID',
+				text : AOCLit.partnerID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'partnerid',
 				flex : 1.5
 			}, {
-				text : 'RBOID',
+				text : AOCLit.RBOID,
 				width : 120,
 				sortable : true,
 				dataIndex : 'rboid',
 				flex : 1.5
 			}, {
-				text : 'RBOName',
+				text : AOCLit.RBOName,
 				width : 120,
 				sortable : true,
 				dataIndex : 'rboname',
 				flex : 1.5
 			}, {
-				text : 'ProductLineType',
+				text : AOCLit.productLineType,
 				width : 120,
 				sortable : true,
 				dataIndex : 'productlinetype',
 				flex : 1.5
 			}, {
-				text : 'CSRName',
+				text : AOCLit.CSRName,
 				width : 120,
 				sortable : true,
 				dataIndex : 'csrname',
 				flex : 1.5
 			}, {
-				text : 'CSREmail',
+				text : AOCLit.CSREmail,
 				width : 120,
 				sortable : true,
 				dataIndex : 'csremail',
 				flex : 1.5
 			}, {
-				text : 'OrderEmailDomain',
+				text :AOCLit.orderEmailDomain,
 				width : 120,
 				sortable : true,
 				dataIndex : 'orderemaildomain',
 				flex : 1.5
 			}, {
-				text : 'PackingInstruction',
+				text : AOCLit.packagingInstruction,
 				width : 120,
 				sortable : true,
 				dataIndex : 'packinginstruction',
 				flex : 1.5
 			}, {
-				text : 'InvoiceLineInstruction',
+				text : AOCLit.invoiceLineInstruction,
 				width : 120,
 				sortable : true,
 				dataIndex : 'invoicelineinstruction',
 				flex : 1.5
 			}, {
-				text : 'VariableDataBreakdown',
+				text : AOCLit.variableDataBreakDown,
 				width : 120,
 				sortable : true,
 				dataIndex : 'variabledatabreakdown',
 				flex : 1.5
 			}, {
-				text : 'ManufacturingNotes',
+				text : AOCLit.manufacturingNotes,
 				width : 120,
 				sortable : true,
 				dataIndex : 'manufacturingnotes',
 				flex : 1.5
 			}, {
-				text : 'ShippingOnlyNotes',
+				text : AOCLit.shippingOnlyNotes,
 				width : 120,
 				sortable : true,
 				dataIndex : 'shippingonlynotes',
@@ -124,7 +124,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 							xtype:'button',
 							itemId:'advancesearchbutton',
 							text:advSearchText,
-							icon: advSearchIcon,
+							icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
 							iconAlign: "right",
 					    	handler:'openAdvancedSearchWindow'
 						 },
@@ -132,7 +132,7 @@ Ext.define('AOC.view.archive.ProductLineArchiveGrid', {
 							itemId: 'clearadvanedsearch',
 							hidden:true, 
 							handler : 'clearAdvancedSerach',
-							icon: clearSearchIcon
+							icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
 						}
 					 ];
 							},
