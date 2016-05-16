@@ -20,7 +20,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 				items : [{
 						xtype : 'tbtext',
 						margin:'0 0 0 20',
-						text : '<div style="color:"><b>Archive-Manage</b></div>',
+						text : AOCLit.archiveManage,
 						itemId : 'archivetitleItemid'
 					},'->', {
 						xtype : 'form',
@@ -33,7 +33,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 						items : [{
 								xtype : 'combobox',
 								itemId:'choosetable',
-								fieldLabel : 'Choose Table',
+								fieldLabel : AOCLit.chooseTable,
 								labelWidth:120,
 								store : Ext.create('Ext.data.Store', {
 									fields : ['displayTableName', 'tableName'],
@@ -72,7 +72,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 								xtype : 'button',
 								text : 'Get Table Data',
 								margin:'0 20 0 20',
-								icon : advSearchIcon,
+								icon :  AOC.config.Settings.buttonIcons.advSearchIcon,
 								iconAlign : "right",
 								listeners : {
 									click : 'onButtonClick'
@@ -93,7 +93,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 						   xtype:'displayfield',
 						   itemId:'messageitemId',
 						   width:'100%',
-					       value:'<center><font size=2>No data to display,Please Select Table</font></center>'
+					       value:AOCLit.selectTableMsg,
 					}
 					      
 					]
