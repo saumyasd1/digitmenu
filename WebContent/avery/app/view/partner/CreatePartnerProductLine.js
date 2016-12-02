@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 5,
-	width: 690,
+	width: 1000,
 	border:false,
     modal:true,
     draggable:false,
@@ -13,13 +13,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
     productlineId:null,
     partnerid:null,
     partnerName:null,
-	scrollable : true,
+	scrollable : true,	
     initComponent : function(){
     	var me=this;
     	this.fieldArray = [],
             Ext.apply(this,{
                 items:this.buildContainerItem(),
-                
                 listeners:{
             	'afterrender':function(obj){
             	if(me.rec!=null){
@@ -53,7 +52,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					   },
 					   {
 					   	xtype :'tbspacer',
-					   	height:1
+					   	height:1	
 						},
 					    {
 						xtype:'displayfield',
@@ -75,7 +74,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		xtype:'form',
         		itemId:'listPanel',
         		border:false,
-        		height:400,
+        		height:710,
+        		width:980,
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'hbox',
@@ -99,12 +99,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 	width :30
         		},
         		{
-        			xtype:'textfield',
+        			xtype:'combo',
         			itemId:'RItemId',
         			labelAlign:'top',
         			name: 'rboName',
         			reference:'rboName',
-        			fieldLabel:'RBO Name',
+        			fieldLabel:AOCLit.RBO,
         			allowBlank: false,
         			value:'',
         			labelSeparator:'',
@@ -117,18 +117,109 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		            	 blur : this.notifyByImage,
 		            	'focus' : 'HideMandatoryMessage'
 	                    }
-        		}]
         		},
-        		{   xtype: 'fieldcontainer',
+        		{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{
+        			xtype:'combo',
+        			itemId:'orgCodeId',
+        			labelAlign:'top',
+        			name: 'orgCode',
+        			fieldLabel:AOCLit.orgCode,
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            maxLength : '50',
+  		            enforceMaxLength: true,
+  		            //blankText : AOCLit.prodLineReq,
+  		            listeners : {
+  		            	 blur : this.notifyByImage,
+  		            	'focus' : 'HideMandatoryMessage'
+ 	                    }
+        		}]
+        		},{   xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[
+            		{
+            			xtype:'combo',
+            			itemId:'SiteId',
+            			name: 'site',
+            			fieldLabel:'Site',
+            			allowBlank: false,
+            			labelSeparator:'',
+                        labelWidth : 200,
+      		            width : 300,
+      		            labelAlign:'top',
+      		            maxLength : '100',
+      		            enforceMaxLength: true,
+      		            //blankText : AOCLit.CSRReq,
+      		            listeners : {
+      		            	 blur : this.notifyByImage,
+      		            	'focus' : 'HideMandatoryMessage'
+     	                    }
+            		},{
+                    	xtype :'tbspacer',
+                    	width :30
+            		},
+            		{
+                   	 xtype: 'fieldcontainer',
+                       defaultType: 'radiofield',
+                       defaults: {
+                           flex: 1
+                       },
+           			labelAlign:'top',
+           			layout: 'hbox',
+           			width:300,
+           			name:'emailId',
+           			fieldLabel:'Email Domain Type',
+           			items:[{
+                           boxLabel  : 'Private',
+                           name      : 'emailId',
+                           inputValue: 'private',
+                           id        : 'radio1'	
+                       }, {
+                           boxLabel  : 'Public',
+                           name      : 'emailId',
+                           inputValue: 'public',
+                           id        : 'radio2'
+                       }]
+           		},
+           		{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+           		{
+        			xtype:'textfield',
+        			//itemId:'EmailId',
+        			name: 'EmailId',
+        			fieldLabel:'Email IDs',
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            labelAlign:'top',
+  		            maxLength : '100',
+  		            enforceMaxLength: true,
+  		            listeners : {
+  		            	 blur : this.notifyByImage,
+  		            	'focus' : 'HideMandatoryMessage'
+ 	                    }
+        		}]
+        		},{   xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
                     items:[{
-            			xtype:'textfield',
-            			itemId:'PLItemId',
+            			xtype:'combo',
             			labelAlign:'top',
-            			name: 'productLineType',
-            			fieldLabel:AOCLit.productLine,
-            			allowBlank: false,
+            			itemId:'CSRPEmailId',
+            			name: 'CSRPrimaryEmail',
+            			fieldLabel:'CSR Primary Email',
+            			//allowBlank: false,
+            			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
             			labelSeparator:'',
                         labelWidth : 200,
       		            width : 300,
@@ -145,12 +236,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                     	width :30
             		},
             		{
-            			xtype:'textfield',
-            			itemId:'CItemId',
-            			name: 'csrName',
-            			fieldLabel:AOCLit.CSR,
-            			allowBlank: false,
+            			xtype:'combo',
+            			itemId:'CSRSEmailId',
+            			name: 'CSRSecondaryEmail',
+            			fieldLabel:'CSR Secondary Email',
+            			//allowBlank: false,
             			labelSeparator:'',
+            			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
                         labelWidth : 200,
       		            width : 300,
       		            labelAlign:'top',
@@ -161,35 +253,49 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
      	                    }
+            		},
+            		{
+                    	xtype :'tbspacer',
+                    	width :30
+            		},
+            		{
+            			xtype:'combo',
+            			itemId:'PLItemId',
+            			labelAlign:'top',
+            			name: 'productLineType',
+            			fieldLabel:AOCLit.productLine,
+            			allowBlank: false,
+            			labelSeparator:'',
+                        labelWidth : 200,
+      		            width : 300,
+      		            maxLength : '50',
+      		            enforceMaxLength: true,
+      		            blankText : AOCLit.prodLineReq,
+      		            listeners : {
+      		            	 blur : this.notifyByImage,
+      		            	'focus' : 'HideMandatoryMessage'
+     	                    }
             		}]
         		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
+        		
+        		
         		{   xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
                     items:[{
         			xtype:'textfield',
-        			itemId:'CSREmaidId',
         			labelAlign:'top',
-        			name: 'csrEmail',
-        			value:'',
-        			fieldLabel:AOCLit.CSREmail,
+        			name: 'billToCode',
+        			fieldLabel:'Bill To Code',
         			allowBlank: false,
         			labelSeparator:'',
-        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
   		            maxLength : '100',
-  		            enforceMaxLength: true,
-  		            blankText : AOCLit.CSRReq,
-  		            listeners : {
-  		            	 blur : this.notifyByImage,
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
+  		            enforceMaxLength: true
+  		            //blankText : AOCLit.CSRReq
+  		           
         		},
         		{
                 	xtype :'tbspacer',
@@ -197,35 +303,45 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		},
         		{
         			xtype:'textfield',
-        			itemId:'SONItemId',
+        		    //itemId:'SONItemId',
         			labelAlign:'top',
-        			name: 'shippingOnlyNotes',
-        			fieldLabel:AOCLit.shippingOnlyNotes,
+        			name: 'shipToCode',
+        			fieldLabel:'Ship To Code',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
   		            maxLength : '300',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        		}
-        		]
-        		},
-        		{
+  		            enforceMaxLength: true
+        		},{
                 	xtype :'tbspacer',
                 	width :30
         		},
-        		{   xtype: 'fieldcontainer',
+        		{
+        			xtype:'textfield',
+        			//itemId:'CSREmaidId',
+        			labelAlign:'top',
+        		    name: 'invoiceLineInstruction',
+        			fieldLabel:'Invoice Instruction',
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '100',
+  		            enforceMaxLength: true
+        		}
+        		]
+        		},{   xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
-                    items:[{
+                    items:[
+        		{
         			xtype:'textfield',
-        			itemId:'PIItemId',
+        			//itemId:'SONItemId',
         			labelAlign:'top',
         			name: 'packingInstruction',
-        			fieldLabel:AOCLit.packingInstruction,
+        			fieldLabel:'Packaging Instruction',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
@@ -242,125 +358,303 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         		},
         		{
         			xtype:'textfield',
-        			itemId:'PItemId',
-        			labelAlign:'top',
-        			name: 'invoiceLineInstruction',
-        			fieldLabel:AOCLit.invoiceLineInstruction,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-   		            maxLength : '300',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        		}
-        		]
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{   xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[{
-                    	xtype:'textfield',
-            			itemId:'MNItemId',
-            			labelAlign:'top',
-            			name: 'manufacturingNotes',
-            			fieldLabel:AOCLit.manufacturingNotes,
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 300,
-      		            height:60,
-      		            maxLength : '300',
-      		            enforceMaxLength: true,
-      		            listeners : {
-      		            	'focus' : 'HideMandatoryMessage'
-     	                    }
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-                	xtype:'textfield',
-        			itemId:'VBItemId',
         			labelAlign:'top',
         			name: 'variableDataBreakdown',
-        			fieldLabel:'Variable Breakdown',
-        			value:'',
+        			fieldLabel:'Variable Data Breakdown',
+        			allowBlank: false,
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
-  		            labelSeparator : '',
-  		            maxLength : '300',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-    		}]
+  		            maxLength : '100',
+  		            enforceMaxLength: true
         		},
         		{
                 	xtype :'tbspacer',
                 	width :30
         		},
-        		{   xtype: 'fieldcontainer',
+        		{
+        			xtype:'textfield',
+        			//itemId:'SONItemId',
+        			labelAlign:'top',
+        			name: 'manufacturingNotes',
+        			fieldLabel:'Manufacturing Notes',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '300',
+  		            enforceMaxLength: true
+        		}]
+        		},{
+        			xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
                     items:[{
         			xtype:'textfield',
-        			itemId:'SSSBItemId',
+        			labelAlign:'top',
+        			name: 'shippingOnlyNotes',
+        			fieldLabel:'Shipping Only Notes',
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '100',
+  		            enforceMaxLength: true
+        		},
+        		{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{
+        			xtype:'combo',
+        			//itemId:'SONItemId',
         			labelAlign:'top',
         			name: 'splitShipSetBy',
         			fieldLabel:'Split Ship Set By',
-        			value:'',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            labelSeparator : '',
-  		            maxLength : '5',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        		},{
-                	xtype :'tbspacer',
-                	width :30
-        		},{
-        			xtype:'textfield',
-        			itemId:'EmailDomainItemId',
-        			labelAlign:'top',
-        			name: 'orderEmailDomain',
-        			fieldLabel:'Order Email Domain',
-        			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            height:60,
-  		            allowBlank: false,
-  		            blankText : 'Order Email Domain  is required',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	 blur : this.notifyByImage,
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        			}]
+  		            maxLength : '300',
+  		            enforceMaxLength: true
         		},
         		{
                 	xtype :'tbspacer',
                 	width :30
+        		},
+        		{
+        			xtype:'combo',
+        			//itemId:'CSREmaidId',
+        			labelAlign:'top',
+        			name: 'artWorkHold',
+        			fieldLabel:'ArtWork Hold',
+        			allowBlank: false,
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '100',
+  		            enforceMaxLength: true
+        		}]
+        		},{
+        			xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[
+        		{
+        			xtype:'textfield',
+        			//itemId:'SONItemId',
+        			labelAlign:'top',
+        			name: 'miscCSRInstruction',
+        			fieldLabel:'Misc. CSR Instructions',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '300',
+  		            enforceMaxLength: true
+        		},{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{
+        			xtype:'textfield',
+        			//itemId:'SONItemId',
+        			labelAlign:'top',
+        			name: 'shippingMethod',
+        			fieldLabel:'Shipping Method',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '300',
+  		            enforceMaxLength: true
+        		},{
+                	xtype :'tbspacer',
+                	width :30
+        		},
+        		{
+        			xtype:'textfield',
+        			//itemId:'SONItemId',
+        			labelAlign:'top',
+        			name: 'freightTerm',
+        			fieldLabel:'Freight Term',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '300',
+  		            enforceMaxLength: true
+        		}]
+        		},{
+
+        			xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[
+        		{
+        			xtype:'textfield',
+        			//itemId:'SONItemId',
+        			labelAlign:'top',
+        			name: 'shippingInstruction',
+        			fieldLabel:'Shipping Instruction',
+        			labelSeparator:'',
+                    labelWidth : 200,
+  		            width : 300,
+  		            height:60,
+  		            maxLength : '300',
+  		            enforceMaxLength: true
+        		}]
+        		},{
+                    xtype: 'fieldcontainer',
+                    fieldLabel: 'Validations',
+                    defaultType: 'checkboxfield',
+                    layout:'hbox',
+                    margin : '5 0 0 5',
+                    labelAlign:'top',
+                    name:'validation',
+                    items: [
+                        {
+                            boxLabel  : 'Waive MOA',
+                            name      : 'validation',
+                            inputValue: 'waivemoa',
+                            checked   : true,
+                            id        : 'waivemoa'
+                        },{
+                        	xtype :'tbspacer',
+                        	width :30
+                		}, {
+                            boxLabel  : 'Waive MOQ ',
+                            name      : 'validation',
+                            inputValue: 'waivemoq',
+                            checked   : true,
+                            id        : 'waivemoq'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldcontainer',
+                    fieldLabel: 'CSR Attention',
+                    defaultType: 'checkboxfield',
+                    layout:'hbox',
+                    margin : '5 0 0 5',
+                    labelAlign:'top',
+                    name:'CSRAttention',
+                    items: [
+                        {
+                            boxLabel  : 'Size Check',
+                            name      : 'CSRAttention',
+                            inputValue: 'sizecheck',
+                            checked   : true,
+                            id        : 'sizecheck'
+                        },{
+                        	xtype :'tbspacer',
+                        	width :30
+                		}, {
+                            boxLabel  : 'Discount Price',
+                            name      : 'CSRAttention',
+                            inputValue: 'discountprice',
+                            checked   : true,
+                            id        : 'discountprice'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'Fabric Check',
+                            name      : 'CSRAttention',
+                            inputValue: 'fabriccheck',
+                            checked   : true,
+                            id        : 'fabriccheck'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'Ship Mark',
+                            name      : 'CSRAttention',
+                            inputValue: 'shipmark',
+                            checked   : true,
+                            id        : 'shipmark'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'LLKK',
+                            name      : 'CSRAttention',
+                            inputValue: 'llkk',
+                            checked   : true,
+                            id        : 'llkk'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'Local Billing',
+                            name      : 'CSRAttention',
+                            inputValue: 'localbilling',
+                            checked   : true,
+                            id        : 'localbilling'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'Factory Transfer',
+                            name      : 'CSRAttention',
+                            inputValue: 'factorytransfer',
+                            checked   : true,
+                            id        : 'factorytransfer'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'Shipment Sample',
+                            name      : 'CSRAttention',
+                            inputValue: 'shipmentsample',
+                            checked   : true,
+                            id        : 'shipmentsample'
+                        }
+                        
+                    ]
+                },
+                {
+
+        			xtype: 'fieldcontainer',
+                    layout: 'hbox',
+                    margin : '5 0 0 5',
+                    items:[{
+                        xtype: 'togglebutton',
+                        fieldLabel: 'Active',
+                        value: 0,
+                        labelSeparator:'',
+                        labelAlign:'top',
+                        labelWidth : 200,
+      		            width : 30,
+      		            height:60,
+                        listeners: {
+                            changecomplete: function(slider, newValue, thumb, eOpts ){
+                                // 'do the required action'
+                            }
+                        }
+        		}]
         		}
                ]
         	},
         	{
         		xtype: 'form',
         		itemId:'AdvancedPropertiesForm',
-                width:660,
+                width:985,
                 collapseDirection: 'top',
                 animCollapse: false,
                 collapsible: true,
@@ -370,107 +664,705 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 region: 'south',
                 items:[ {
         			xtype: 'fieldcontainer',
-                    layout: 'hbox',
+                    layout: 'vbox',
                     margin : '5 0 0 5',
-                    items:[{
-                	
-            			xtype:'combobox',
-            			itemId:'OSTItemId',
-            			labelAlign:'top',
-            			name: 'orderSchemaType',
-            			fieldLabel:AOCLit.orderSchemaType,
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 300,
-      		            labelSeparator : '',
-      		            editable:false,
-      		            store: [['Excel', 'Excel']],
-      		            maxLength : '50',
-      		            enforceMaxLength: true
-            		
-                       },
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},{
-          			xtype:'textfield',
-        			itemId:'OHMItemId',
-        			labelAlign:'top',
-        			name: 'orderSchemaID',
-        			fieldLabel:AOCLit.orderSchemaId,//?/
-        			value:'',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            labelSeparator : '',
-  		            maxLength : '50',
-  		            enforceMaxLength: true
-        		}
-        		  ]
+                    items:[
+                           /*Order Tab*/
+                           {	
+                        	   xtype: 'form',
+                       		   itemId:'OrderForm',
+                               width:960,
+                               collapseDirection: 'top',
+                               animCollapse: false,
+                               collapsible: true,
+                               collapsed :true,
+                               title: 'Order',
+                               titleCollapse: true,
+                               region: 'south',
+                               items:[ {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'combo',
+                              			itemId:'FileType',
+                              			labelAlign:'top',
+                              			name: 'fileType',
+                              			fieldLabel:AOCLit.fileType,//?/
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'textfield',
+                          			itemId:'FileNamePattern',
+                          			labelAlign:'top',
+                          			name: 'fileNamePattern',
+                          			fieldLabel:AOCLit.fileNamePattern,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		},
+                            		 {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'combo',
+                              			itemId:'Schema',
+                              			labelAlign:'top',
+                              			name: 'schema',
+                              			fieldLabel:AOCLit.schema,//?/
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'combo',
+                          			itemId:'Mapping',
+                          			labelAlign:'top',
+                          			name: 'mapping',
+                          			fieldLabel:AOCLit.mapping,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		}
+                           ]
+                        	   
+                           },
+                           /*Start Additional Data*/
+                           {
+                                 	 xtype: 'form',
+                                     defaultType: 'radiofield',
+                                     defaults: {
+                                         flex: 1
+                                     },
+                         			width:300,
+                         			bodyPadding: 10,
+                         			layout: 'hbox',
+                         			name:'additionalData',
+                         			title:'Additional Data',
+                         			items:[
+                         			    {
+                                         boxLabel  : 'Yes',
+                                         name      : 'additionalData',
+                                         inputValue: 'yes',
+                                         checked: true,
+                                         id        : 'yes',
+//                                         listeners: {
+//                                             change: function (field, newValue, oldValue) {
+//                                            	 var value = newValue;
+//                                            	 if (value == true) {
+//                                                     var additionalData = Ext.getCmp('additionalData');
+//                                                     additionalData.enable();
+//                                                 }
+//                                            	 if (value == false) {
+//                                                     var additionalData = Ext.getCmp('additionalData');
+//                                                     additionalData.disable();
+//                                                 }
+//                                             }
+//                                         }
+                                     }, {
+                                         boxLabel  : 'No',
+                                         name      : 'additionalData',
+                                         inputValue: 'no',
+                                         id        : 'no'
+                                     }]
+                           },
+                           {	
+                        	   xtype: 'form',
+                       		   itemId:'AdditionalData',
+                               width:960,
+                               id:'additionalData',
+                               collapseDirection: 'top',
+                               animCollapse: false,
+                               collapsible: true,
+                               collapsed :true,
+                               title: 'Additional Data',
+                               titleCollapse: true,
+                               region: 'south',
+                               items:[ {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'combo',
+                              			itemId:'FileType',
+                              			labelAlign:'top',
+                              			name: 'fileType',
+                              			fieldLabel:AOCLit.fileType,//?/
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'textfield',
+                          			itemId:'FileNamePattern',
+                          			labelAlign:'top',
+                          			name: 'fileNamePattern',
+                          			fieldLabel:AOCLit.fileNamePattern,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		},
+                            		 {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'textfield',
+                              			itemId:'SchemaId',
+                              			labelAlign:'top',
+                              			name: 'schemaId',
+                              			fieldLabel:AOCLit.schemaId,//?/
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'textfield',
+                          			itemId:'MappingId',
+                          			labelAlign:'top',
+                          			name: 'mappingId',
+                          			fieldLabel:AOCLit.mappingId,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		},
+                            		 {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'textfield',
+                              			itemId:'MatchType',
+                              			labelAlign:'top',
+                              			name: 'matchType',
+                              			fieldLabel:'Match Type',//?/
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		}]
+                            		}]
+                           },/*End Additional Data*/
+                           
+                           /*Start of Email subject match*/
+                           {	
+                        	    xtype: 'form',
+                       		   itemId:'EmailSubjectMatch',
+                               width:960,
+                               collapseDirection: 'top',
+                               animCollapse: false,
+                               collapsible: true,
+                               collapsed :true,
+                               title: 'Email Subject Match',
+                               titleCollapse: true,
+                               region: 'south',
+                               items:[ {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'textfield',
+                              			itemId:'RBO',
+                              			labelAlign:'top',
+                              			name: 'rbo',
+                              			fieldLabel:'RBO',
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'textfield',
+                          			itemId:'ProductLine',
+                          			labelAlign:'top',
+                          			name: 'productLine',
+                          			fieldLabel:AOCLit.productLine,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		},
+                          		{
+                                	xtype :'tbspacer',
+                                	width :30
+                        		}]
+                            		},
+                            		{
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                          			xtype:'textfield',
+                          			itemId:'Instruction',
+                          			labelAlign:'top',
+                          			name: 'instruction',
+                          			fieldLabel:AOCLit.instruction,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		}]
+                           },
+                           /*End of Email subject match*/
+                           
+                           /*Start of Email match*/
+                           {	
+                        	    xtype: 'form',
+                       		   itemId:'EmailMatch',
+                               width:960,
+                               collapseDirection: 'top',
+                               animCollapse: false,
+                               collapsible: true,
+                               collapsed :true,
+                               title: 'Email Match',
+                               titleCollapse: true,
+                               region: 'south',
+                               items:[ {
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                                		xtype:'textfield',
+                              			itemId:'RBO',
+                              			labelAlign:'top',
+                              			name: 'rbo',
+                              			fieldLabel:'RBO',
+                              			value:'',
+                              			labelSeparator:'',
+                                          labelWidth : 200,
+                        		            width : 250,
+                        		            labelSeparator : '',
+                        		            maxLength : '50',
+                        		            enforceMaxLength: true
+                              		},
+                            		{
+                                    	xtype :'tbspacer',
+                                    	width :30
+                            		},
+                            		{
+                          			xtype:'textfield',
+                          			itemId:'ProductLine',
+                          			labelAlign:'top',
+                          			name: 'productLine',
+                          			fieldLabel:AOCLit.productLine,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		},
+                          		{
+                                	xtype :'tbspacer',
+                                	width :30
+                        		}]
+                            		},
+                            		{
+                             			xtype: 'fieldcontainer',
+                                        layout: 'hbox',
+                                        margin : '5 0 0 5',
+                                        items:[{
+                          			xtype:'textfield',
+                          			itemId:'Instruction',
+                          			labelAlign:'top',
+                          			name: 'instruction',
+                          			fieldLabel:AOCLit.instruction,//?/
+                          			value:'',
+                          			labelSeparator:'',
+                                      labelWidth : 200,
+                    		          width : 250,
+                    		          maxLength : '50',
+                    		          enforceMaxLength: true
+                          		}]
+                            		}]
+                           },     /*End of Email match*/
+                           /*Start of File Match- Order File*/
+                           
+                           {	
+                       	    xtype: 'form',
+                      		  itemId:'FileMatchOrderFile',
+                              width:960,
+                              collapseDirection: 'top',
+                              animCollapse: false,
+                              collapsible: true,
+                              collapsed :true,
+                              title: 'File Match - Order File',
+                              titleCollapse: true,
+                              region: 'south',
+                              items:[ {
+                            			xtype: 'fieldcontainer',
+                                       layout: 'hbox',
+                                       margin : '5 0 0 5',
+                                       items:[{
+                               		    xtype:'textfield',
+                             			itemId:'RBO',
+                             			labelAlign:'top',
+                             			name: 'rbo',
+                             			fieldLabel:'RBO',
+                             			value:'',
+                             			labelSeparator:'',
+                                         labelWidth : 200,
+                       		            width : 250,
+                       		            labelSeparator : '',
+                       		            maxLength : '50',
+                       		            enforceMaxLength: true
+                             		},
+                           		{
+                                   	xtype :'tbspacer',
+                                   	width :30
+                           		},
+                           		{
+                         			xtype:'textfield',
+                         			//itemId:'Sheet',
+                         			labelAlign:'top',
+                         			name: 'sheet',
+                         			fieldLabel:'Sheet',//?/
+                         			value:'',
+                         			labelSeparator:'',
+                                     labelWidth : 200,
+                   		          width : 250,
+                   		          maxLength : '50',
+                   		          enforceMaxLength: true
+                         		},
+                         		{
+                               	xtype :'tbspacer',
+                               	width :30
+                       		},
+                       		{
+                     			xtype:'textfield',
+                     			labelAlign:'top',
+                     			name: 'cell',
+                     			fieldLabel:'Cell',//?/
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		          width : 250,
+               		          maxLength : '50',
+               		          enforceMaxLength: true
+                     		}]
+                           		},
+                           		{
+                        			xtype: 'fieldcontainer',
+                                   layout: 'hbox',
+                                   margin : '5 0 0 5',
+                                   items:[{
+                           		    xtype:'textfield',
+                         			itemId:'ProductLine',
+                         			labelAlign:'top',
+                         			name: 'rbo',
+                         			fieldLabel:AOCLit.productLine,
+                         			value:'',
+                         			labelSeparator:'',
+                                     labelWidth : 200,
+                   		            width : 250,
+                   		            labelSeparator : '',
+                   		            maxLength : '50',
+                   		            enforceMaxLength: true
+                         		},
+                       		{
+                               	xtype :'tbspacer',
+                               	width :30
+                       		},
+                       		{
+                     			xtype:'textfield',
+                     			//itemId:'Sheet',
+                     			labelAlign:'top',
+                     			name: 'page',
+                     			fieldLabel:'Page',//?/
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		          width : 250,
+               		          maxLength : '50',
+               		          enforceMaxLength: true
+                     		}]
+                       		},
+                       		{
+                    			xtype: 'fieldcontainer',
+                               layout: 'hbox',
+                               margin : '5 0 0 5',
+                               items:[{
+                       		    xtype:'textfield',
+                     			itemId:'OrderMatch',
+                     			labelAlign:'top',
+                     			name: 'orderMatch',
+                     			fieldLabel:'Order Match',
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		            width : 250,
+               		            labelSeparator : '',
+               		            maxLength : '50',
+               		            enforceMaxLength: true
+                     		},
+                   		{
+                           	xtype :'tbspacer',
+                           	width :30
+                   		},
+                   		{
+                 			xtype:'textfield',
+                 			//itemId:'Sheet',
+                 			labelAlign:'top',
+                 			name: 'sheet',
+                 			fieldLabel:'Sheet',//?/
+                 			value:'',
+                 			labelSeparator:'',
+                            labelWidth : 200,
+           		          width : 250,
+           		          maxLength : '50',
+           		          enforceMaxLength: true
+                 		},
+                 		{
+                       	xtype :'tbspacer',
+                       	width :30
+               		},
+               		{
+             			xtype:'textfield',
+             			labelAlign:'top',
+             			name: 'cell',
+             			fieldLabel:'Cell',//?/
+             			value:'',
+             		  labelSeparator:'',
+                      labelWidth : 200,
+       		          width : 250,
+       		          maxLength : '50',
+       		          enforceMaxLength: true
+             		}]
+                   		}]
+                          },/*End of File Match- Order File*/
+                          
+                          /*Start of File Match- Additional Data File*/
+                          {	
+                       	    xtype: 'form',
+                      		  itemId:'FileMatchAdditionalFile',
+                              width:960,
+                              collapseDirection: 'top',
+                              animCollapse: false,
+                              collapsible: true,
+                              collapsed :true,
+                              title: 'File Match - Additional Data File',
+                              titleCollapse: true,
+                              region: 'south',
+                              items:[ {
+                            			xtype: 'fieldcontainer',
+                                       layout: 'hbox',
+                                       margin : '5 0 0 5',
+                                       items:[{
+                               		    xtype:'textfield',
+                             			itemId:'RBO',
+                             			labelAlign:'top',
+                             			name: 'rbo',
+                             			fieldLabel:'RBO',
+                             			value:'',
+                             			labelSeparator:'',
+                                         labelWidth : 200,
+                       		            width : 250,
+                       		            labelSeparator : '',
+                       		            maxLength : '50',
+                       		            enforceMaxLength: true
+                             		},
+                           		{
+                                   	xtype :'tbspacer',
+                                   	width :30
+                           		},
+                           		{
+                         			xtype:'textfield',
+                         			//itemId:'Sheet',
+                         			labelAlign:'top',
+                         			name: 'sheet',
+                         			fieldLabel:'Sheet',//?/
+                         			value:'',
+                         			labelSeparator:'',
+                                     labelWidth : 200,
+                   		          width : 250,
+                   		          maxLength : '50',
+                   		          enforceMaxLength: true
+                         		},
+                         		{
+                               	xtype :'tbspacer',
+                               	width :30
+                       		},
+                       		{
+                     			xtype:'textfield',
+                     			labelAlign:'top',
+                     			name: 'cell',
+                     			fieldLabel:'Cell',//?/
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		          width : 250,
+               		          maxLength : '50',
+               		          enforceMaxLength: true
+                     		}]
+                           		},
+                           		{
+                        			xtype: 'fieldcontainer',
+                                   layout: 'hbox',
+                                   margin : '5 0 0 5',
+                                   items:[{
+                           		    xtype:'textfield',
+                         			itemId:'ProductLine',
+                         			labelAlign:'top',
+                         			name: 'rbo',
+                         			fieldLabel:AOCLit.productLine,
+                         			value:'',
+                         			labelSeparator:'',
+                                     labelWidth : 200,
+                   		            width : 250,
+                   		            labelSeparator : '',
+                   		            maxLength : '50',
+                   		            enforceMaxLength: true
+                         		},
+                       		{
+                               	xtype :'tbspacer',
+                               	width :30
+                       		},
+                       		{
+                     			xtype:'textfield',
+                     			//itemId:'Sheet',
+                     			labelAlign:'top',
+                     			name: 'page',
+                     			fieldLabel:'Page',//?/
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		          width : 250,
+               		          maxLength : '50',
+               		          enforceMaxLength: true
+                     		}]
+                       		},
+                       		{
+                    			xtype: 'fieldcontainer',
+                               layout: 'hbox',
+                               margin : '5 0 0 5',
+                               items:[{
+                       		    xtype:'textfield',
+                     			itemId:'AdditonalDataMatch',
+                     			labelAlign:'top',
+                     			name: 'additionalDataMatch',
+                     			fieldLabel:'Additional Data Match',
+                     			value:'',
+                     			labelSeparator:'',
+                                 labelWidth : 200,
+               		            width : 250,
+               		            labelSeparator : '',
+               		            maxLength : '50',
+               		            enforceMaxLength: true
+                     		},
+                   		{
+                           	xtype :'tbspacer',
+                           	width :30
+                   		},
+                   		{
+                 			xtype:'textfield',
+                 			//itemId:'Sheet',
+                 			labelAlign:'top',
+                 			name: 'sheet',
+                 			fieldLabel:'Sheet',//?/
+                 			value:'',
+                 			labelSeparator:'',
+                             labelWidth : 200,
+           		          width : 250,
+           		          maxLength : '50',
+           		          enforceMaxLength: true
+                 		},
+                 		{
+                       	xtype :'tbspacer',
+                       	width :30
+               		},
+               		{
+             			xtype:'textfield',
+             			labelAlign:'top',
+             			name: 'cell',
+             			fieldLabel:'Cell',//?/
+             			value:'',
+             			labelSeparator:'',
+                         labelWidth : 200,
+       		          width : 250,
+       		          maxLength : '50',
+       		          enforceMaxLength: true
+             		}]
+                   		}]
+                          },
+                          {
+                             	xtype :'tbspacer',
+                             	width :30
+                     		}
+                          
+                          /*End of File Match- Additional Data File*/
+                ]
         		 },
                      {
                        	xtype :'tbspacer',
                        	width :30
-               		  },
-               		 {
-              			xtype: 'fieldcontainer',
-                          layout: 'hbox',
-                          margin : '5 0 0 5',
-                          items:[{
-                  			xtype:'textfield',
-                			itemId:'ODMItemId',
-                			labelAlign:'top',
-                			name: 'orderMappingID',
-                			fieldLabel:AOCLit.orderMappingID,//?/
-                			value:'',
-                			labelSeparator:'',
-                            labelWidth : 200,
-          		            width : 300,
-          		            labelSeparator : '',
-          		            maxLength : '50',
-          		            enforceMaxLength: true
-                		},
-              		{
-                      	xtype :'tbspacer',
-                      	width :30
-              		},
-              		{
-            			xtype:'textfield',
-            			itemId:'PreProcessPID',
-            			labelAlign:'top',
-            			name: 'preProcessPID',
-            			fieldLabel:AOCLit.preProcessPID,//?/
-            			value:'',
-            			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 300,
-      		            maxLength : '50',
-      		            enforceMaxLength: true
-            		}]
-              		},
-               	   {
-                      	xtype :'tbspacer',
-                      	width :30
-              		  },
-              		 {
-                			xtype: 'fieldcontainer',
-                            layout: 'hbox',
-                            margin : '5 0 0 5',
-                            items:[{
-                    	    xtype:'checkbox',
-                  			itemId:'additonaldataItemId',
-                  			labelAlign:'top',
-                  			name: 'attachmentRequired',
-                  			fieldLabel:AOCLit.addDataReq,
-                  			value:'',
-                  			labelSeparator:'',
-                            labelWidth : 200,
-            		        width : 300,
-            		        enforceMaxLength: true
-                  		    }]
-                		}
-]
+               		  }
+              		  ]
                 },
                 {
                 	xtype :'tbspacer',
@@ -486,4 +1378,5 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					else
 					   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.errorIcon+');background-repeat:no-repeat;background-position:right;');
 		     }
-                 });
+});
+
