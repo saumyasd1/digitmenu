@@ -2,7 +2,7 @@ Ext.define('AOC.controller.MenuController', {
 	extend :'Ext.app.Controller',
 	alias: 'controller.menuController',
 	requires:['AOC.view.ux.Callout'],
-	stores:['Sections','PartnerManagementStore','AddressStore','OrderQueueStore','OrderCharts','HomePageOders','Roles'],
+	stores:['Sections','EmailManagementStore','PartnerManagementStore','AddressStore','OrderQueueStore','OrderCharts','HomePageOders','Roles'],
 	views : ['base.BaseToolbar','Viewport','users.manage.User'],
 	refs : [{
 		selector : 'viewport #toolbarviewitemid',
@@ -19,6 +19,10 @@ Ext.define('AOC.controller.MenuController', {
 		{
 		   	selector : 'viewport #AOCContainer',
 	 	 	ref : 'mainContainer'
+	    },
+	    {
+	    	selector : 'viewport #EmailMangementitemId',
+	 	 	ref : 'emailManagementGrid'
 	    },
 	    {
 		   	selector : 'viewport #OrderQueueGridItemId',
@@ -71,6 +75,7 @@ Ext.define('AOC.controller.MenuController', {
 		  me.runtime = AOC.config.Runtime;
 		  me.helper = AOC.util.Helper;
 	},
+	
 	onClickLogIn:function(cmp){
 	    var me=this,
 	    form= cmp.down('form'),
@@ -145,7 +150,13 @@ Ext.define('AOC.controller.MenuController', {
 			  var store=Ext.ComponentQuery.query('maincontainer partnermanagementgrid')[0].getStore();
 			  store.clearFilter(true);
 			  store.load();	  
-	      }else if (xtype=="addressmanage"){
+	      }
+	      else if(xtype=="emailmanagement"){
+			  var store=Ext.ComponentQuery.query('maincontainer emailmanagementgrid')[0].getStore();
+			  store.clearFilter(true);
+			  store.load();	  
+	      }
+	      else if (xtype=="addressmanage"){
 			  var store=Ext.ComponentQuery.query('maincontainer addressmanagegrid')[0].getStore();
 			  store.clearFilter(true);
 			  store.load();	  
