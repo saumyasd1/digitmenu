@@ -4,11 +4,13 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	controller:'emailQueueController',
 	itemId : 'EmailMangementitemId',
     alias : 'widget.emailmanagementgrid',
+    reserveScrollbar:true,
     initComponent : function(){
     	var me=this;
         Ext.apply(this,{
             columns : this.buildColumns(),
     		columnLines:false,
+    		dockedItems : this.buildDockedItems(),
     		store:Ext.create('AOC.store.EmailManagementStore', {
     				storeId:'EmailManagementStoreId'}),
 //    		listeners:{
@@ -17,7 +19,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 //    			             	  }
 //    			 },		
             tbar: { 
-            	    height: 40,
+            	    height: 50,
         		    items : me.buildtbar()
                   },
             viewConfig : {
@@ -153,7 +155,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   		        		    autoEl: {
   		        		        tag: 'a',
   		        		        href: '#',
-  		        		        html:AOCLit.advSearchTitle,
+  		        		        html:AOCLit.advSearchTitle
   		        		    },
   		        		    listeners: {
   		        		    	 el : {
@@ -170,5 +172,19 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   					}
   		          ];
   	},
+  	 buildDockedItems : function(){
+     	var me=this;
+         return [
+ 			{
+             xtype : 'pagingtoolbar',
+             dock : 'bottom',
+             ui : 'darktoolbar',
+             itemId:'pagingtoolbar',
+             store:me.store,
+             displayInfo:true,
+             plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
+             
+         }];
+     }
     
 });
