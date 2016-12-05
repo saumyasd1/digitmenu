@@ -220,30 +220,57 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria = session.createCriteria(OrderQueue.class);
 		if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+			
 			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
 				String sDate=searchMap.get("fromDate");
 				String eDate=searchMap.get("toDate");
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			String PartnerName=searchMap.get("PartnerName");
-			if(PartnerName!=null && !"".equals(PartnerName)){
-				criteria.createAlias("partner", "partner");
-				criteria.add(Restrictions.ilike("partner"+".partnerName",PartnerName,MatchMode.ANYWHERE));
-			}
+//			String PartnerName=searchMap.get("PartnerName");
+			String PartnerName=searchMap.get("PartnerID");
+			//if(PartnerName!=null && !"".equals(PartnerName)){
+		
+			//		criteria.createAlias("partner", "partner");
+		
+			//	criteria.add(Restrictions.ilike("partner"+".partnerName",PartnerName,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("partner",PartnerName,MatchMode.EXACT));
+		//	}
+//			String PartnerID=searchMap.get("PartnerID");
+//			if(PartnerID!=null && !"".equals(PartnerID)){
+//				criteria.createAlias("partner", "partner");
+//				criteria.add(Restrictions.ilike("partner"+".id",PartnerID,MatchMode.ANYWHERE));
+//			}
+			
 			String RBOName=searchMap.get("RBOName");
-			if(RBOName!=null && !"".equals(RBOName)){
-				criteria.add(Restrictions.ilike("rboName",RBOName,MatchMode.ANYWHERE));
-			}
+		//	if(RBOName!=null && !"".equals(RBOName)){
+//				criteria.add(Restrictions.ilike("rboName",RBOName,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.eq("rboName","GAP%"));
+		//	}
+			
+//			String RBOID=searchMap.get("RBOID");
+//			if(RBOID!=null && !"".equals(RBOID)){
+//				criteria.add(Restrictions.ilike("id",RBOID,MatchMode.ANYWHERE));
+//			}
+			
 			String Subject=searchMap.get("Subject");
 			if(Subject!=null && !"".equals(Subject)){
 				criteria.add(Restrictions.ilike("subject",Subject,MatchMode.ANYWHERE));
 			}
 			String Status=searchMap.get("Status");
-			if (Status != null && !"".equals(Status)) {
-			String[] status = Status.split(",");
-			criteria.add(Restrictions.in("status", status));
-			}
+		//	if (Status != null && !"".equals(Status)) {
+		//	String[] status = Status.split(",");
+
+			//			criteria.add(Restrictions.in("status", status));
+			criteria.add(Restrictions.eq("status", "Received%"));
+		//	}
+			
+//			String Status=searchMap.get("code");
+//			if (Status != null && !"".equals(Status)) {
+//			String[] status = Status.split(",");
+//			criteria.add(Restrictions.in("code", status));
+//			}
+			
 			String days=searchMap.get("days");
 			if(days!=null && !"".equals(days)){
 			long lastDays= Long.parseLong(days);
