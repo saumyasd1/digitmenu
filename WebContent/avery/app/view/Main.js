@@ -5,6 +5,7 @@ Ext.define('AOC.view.Main',{
 	            'AOC.view.ToolbarView',
 	            'AOC.view.orderqueue.OrderQueueView',
 	            'AOC.view.partner.PartnerManagement',
+	            'AOC.view.email.EmailManagement',
 	            'AOC.view.address.AddressManage',
 	            'AOC.view.webform.WebOrderView',
 	            'AOC.view.archive.ArchiveManage',
@@ -29,22 +30,28 @@ Ext.define('AOC.view.Main',{
         	return [   
         	           {
         	              xtype : 'homewrapper'
-        	           },{
+        	           },
+        	           {
+        				   xtype:'emailmanagement'
+        			   },
+        			   {
 		    	     xtype : 'orderqueueview' 
-		           },{
+		           },
+		           {
 			       xtype : 'partnermanagement'
-			   },{
+			   },
+			   {
 			       xtype : 'addressmanage'
 			   },{
 			       xtype : 'weborderview'
 			   },{
 			       xtype : 'archivemanage'
-			   },{
+			   },
+			   {
 			       xtype:'profileinfowrapper'
 			   },
 			   {
 				   xtype:'users'
-			   }
-			   ]
+			   }]
                  }
 		});
