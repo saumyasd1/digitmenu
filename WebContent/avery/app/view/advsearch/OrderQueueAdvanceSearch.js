@@ -170,7 +170,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								width:250,
 								labelSeparator : '',
 								labelAlign : 'top'
-							},
+							}
 							]
 						},
 						{
