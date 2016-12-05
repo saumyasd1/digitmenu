@@ -31,12 +31,13 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
   },
   buildColumns : function(){
     	var me=this;
-		        return [       {
+		        return [ 
+		                 {
 		            xtype:'actioncolumn',
 		            width:25,
 		            baseCls:'custom-action',
 		  	        items:[
-		  	      {
+		  	               {
 				  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
 				  	    	  handler: 'onClickMenu'
 				  	    	
