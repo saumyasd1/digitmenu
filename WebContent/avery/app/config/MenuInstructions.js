@@ -11,6 +11,11 @@ Ext.define('AOC.config.MenuInstructions', {
 			controller : 'MenuController',
 			fnc : 'loadHomePage'
 		},
+		EmailManagement : {
+			tab : 'AOC APP',
+			controller : 'MenuController',
+			fnc : 'loadEmailManagement'
+		},
 		PartnerManagement : {
 			tab : 'AOC APP',
 			controller : 'MenuController',
