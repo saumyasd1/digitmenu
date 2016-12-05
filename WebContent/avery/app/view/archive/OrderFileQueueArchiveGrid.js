@@ -120,7 +120,7 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:AOCLit.advSearchTitle,
+	        		        html:AOCLit.advSearchTitle
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
@@ -129,14 +129,6 @@ Ext.define('AOC.view.archive.OrderFileQueueArchiveGrid', {
 	        		    	 }
 	        	            }
 	        		},
-//				    {
-//						xtype:'button',
-//						itemId:'advancesearchbutton',
-//						text:advSearchText,
-//						icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
-//						iconAlign: "right",
-//				    	handler:'openAdvancedSearchWindow'
-//					 },
 					{
 						itemId: 'clearadvanedsearch',
 						hidden:true, 
