@@ -118,6 +118,66 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
     }
     },
+    /*New Field-1*/
+    {
+        text: 'Variable Data',
+        dataIndex: 'variabledata',
+        width: 50
+    }, 
+    /*New Field-2*/
+    {
+        text: 'COO',
+        dataIndex: 'coo',
+        width: 50
+    },
+    /*New Field-3*/    
+    {
+        text: 'Fabric Content',
+        dataIndex: 'fabriccontent',
+        width: 50
+    },
+    /*New Field-4*/    
+    {
+        text: 'Revise Order',
+        dataIndex: 'reviseorder',
+        width: 50
+    },
+    /*New Field-5*/    
+    {
+        text: 'Recall',
+        //dataIndex: 'moqValidationFlag',
+        width: 50,
+    	renderer:function(value, metadata,rec){
+    		var moqValidationFlag=rec.data.moqValidationFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+			}
+			else{
+				if(rec.get('status')==AOCLit.waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false))
+					this.mandatoryValidationFieldMissing=true;
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+			}
+    }
+    },
+    /*New Field-6*/    
+    {
+        text: 'Cancel',
+        //dataIndex: 'moqValidationFlag',
+        width: 50,
+    	renderer:function(value, metadata,rec){
+    		var moqValidationFlag=rec.data.moqValidationFlag;
+    		var checkvalue=value.trim();
+			if(checkvalue.substr(0,1)=='S'){
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+			}
+			else{
+				if(rec.get('status')==AOCLit.waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false))
+					this.mandatoryValidationFieldMissing=true;
+				return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+			}
+    }
+    },
     {
         text: 'Round Qty',
         dataIndex: 'roundQty',
@@ -787,8 +847,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	return '<div>'+v+'</div>';
         }
     }, {
-        text: 'Shipping Only Notes',
-        dataIndex: 'shippingonlynotes',
+        text: 'Ship Mark',
+        dataIndex: 'shipmark',
+        width: 150,
+        editor: 'textfield'
+    },{
+        text: 'Additional Label item # change',
+        dataIndex: 'additionallabelitemchange',
         width: 150,
         editor: 'textfield'
     }, {
