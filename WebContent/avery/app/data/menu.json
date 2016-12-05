@@ -11,6 +11,14 @@
             },
             {
                 "item": {
+                    "ServiceName": "EmailManagement",
+                    "DisplayName": "Email Management",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+            {
+                "item": {
                     "ServiceName": "OrderQueueScreen",
                     "DisplayName": "Order Queue",
                     "Align": "Left",
