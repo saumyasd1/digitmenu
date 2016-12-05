@@ -274,7 +274,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             	
             },
             reSubmitOrder:function(cmp){
-            	
                 var rec =e.record;
                 var con=AOC.app.getController('MenuController');
                 con.selectCard('weborderview');
@@ -335,6 +334,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	          } 
 	          });
 	      callout.show();   
+	      var heightAbove = e.getY() - Ext.getBody().getScroll().top,
+	        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
+	  	    if(heightBelow<(callout.getHeight()+40)){
+	  		  callout.calloutArrowLocation='bottom-left'; 
+	  		  callout.relativePosition='b-t';
+	  		  callout.relativeOffsets = [55, 0];
+	  	  }
+	  	    else{
+	  		  callout.calloutArrowLocation='top-left'; 
+	  		  callout.relativePosition='t-b';
+	  		callout.relativeOffsets = [55, 5];
+	  	  }
+	        callout.show();
 	  },
 	  onAfterRenderEditCallout : function(cmp){
 	        var me = this;
