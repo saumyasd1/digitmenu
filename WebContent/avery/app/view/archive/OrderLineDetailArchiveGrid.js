@@ -106,7 +106,7 @@ Ext.define('AOC.view.archive.OrderLineDetailArchiveGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html: AOCLit.advSearchTitle,
+	        		        html: AOCLit.advSearchTitle
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
