@@ -41,7 +41,7 @@ Ext.define('AOC.config.Settings',{
          valid_field:'avery/resources/images/valid_field.png',
          advSearchIcon:'avery/resources/images/search.png',
          browseIcon:'avery/resources/images/browse.png',
-         mailIcon:'avery/resources/images/mail.png',
+         mailIcon:'avery/resources/images/mail.png'
          
     },
     constructor : function(config){
