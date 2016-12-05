@@ -102,7 +102,7 @@ Ext.define('AOC.view.archive.SalesOrderDetailArchiveGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:AOCLit.advSearchTitle,
+		        		        html:AOCLit.advSearchTitle
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
