@@ -187,6 +187,19 @@ Ext.define('AOC.view.partner.PartnerController', {
 
             }
         });
+        //Adding functionality related to Menu item visibility(KKaY)
+        callout.show();
+        var heightAbove = e.getY() - Ext.getBody().getScroll().top,
+        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
+  	    if(heightBelow<(callout.getHeight()+40)){
+  		  callout.calloutArrowLocation='bottom-left'; 
+  		  callout.relativePosition='b-t';
+  		  callout.relativeOffsets = [75, 0];
+  	  }else{
+  		  callout.calloutArrowLocation='top-left'; 
+  		  callout.relativePosition='t-b';
+  		callout.relativeOffsets = [75, 5];
+  	  }
         callout.show();
     },
     onAfterRenderEditCallout: function(cmp) {
@@ -206,11 +219,11 @@ Ext.define('AOC.view.partner.PartnerController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
+            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
             '</tpl>',
-            '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
+            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
             '</tpl>',
-            '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">View ProductLine</div>',
+            '<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">Partner Data Structure</div>',
             '</tpl>'
         );
     },
