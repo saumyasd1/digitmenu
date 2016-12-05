@@ -22,7 +22,7 @@ Ext.define('AOC.view.AOCHeader',{
                      xtype: 'image',
                      src: settings.buttonIcons.logoImage,
                      width:60,
-		     height:60
+		             height:60
         	     },{
         		 xtype:'component',
 		         height:60,
@@ -36,19 +36,8 @@ Ext.define('AOC.view.AOCHeader',{
         	     },{
         		 xtype:'component',
         		 flex:1
-        	     },{
-                         xtype: 'image',
-                         src: settings.buttonIcons.notification,
-                         margin:'25 20 25 0',
-                         width:15,
-    		         height:15
-            	     },{
-                         xtype: 'image',
-                         src: settings.buttonIcons.settings,
-                         margin:'25 20 25 0',
-                         width:15,
-    		         height:15
-            	     },{
+        	     },
+            	     {
                          xtype: 'image',
                          src: settings.buttonIcons.defaultUserImg,
                          border:true,
