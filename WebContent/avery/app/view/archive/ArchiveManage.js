@@ -93,7 +93,7 @@ Ext.define('AOC.view.archive.ArchiveManage', {
 						   xtype:'displayfield',
 						   itemId:'messageitemId',
 						   width:'100%',
-					       value:AOCLit.selectTableMsg,
+					       value:AOCLit.selectTableMsg
 					}
 					      
 					]
