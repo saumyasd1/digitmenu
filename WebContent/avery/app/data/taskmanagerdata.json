@@ -14,9 +14,9 @@
          "flex":1
       },
       {
-         "text":"Subject",
+         "text":"subject",
          "type":"string",
-         "dataIndex":"Subject",
+         "dataIndex":"subject",
          "flex":1
       },
        {
@@ -41,8 +41,8 @@
       "mapping":"From"
    },
    {
-       "name":"Subject",
-       "mapping":"Subject"
+       "name":"subject",
+       "mapping":"subject"
    },
    {
        "name":"CC",
@@ -57,32 +57,32 @@
       {
          "Date/Time":"1212",
          "From":"Gimmill",
-         "Subject":"Under Armour",
+         "subject":"Under Armour",
          "CC":"abc@gmail.com",
          "CSR":"Fwd:FW17"
       },
        {
          "Date/Time":"1212",
          "From":"Gimmill",
-         "Subject":"Under Armour",
+         "subject":"Under Armour",
          "CC":"abc@gmail.com",
          "CSR":"Fwd:FW17"
       }, {
          "Date/Time":"1212",
          "From":"Gimmill",
-         "Subject":"Under Armour",
+         "subject":"Under Armour",
          "CC":"abc@gmail.com",
          "CSR":"Fwd:FW17"
       }, {
          "Date/Time":"1212",
          "From":"Gimmill",
-         "Subject":"Under Armour",
+         "subject":"Under Armour",
          "CC":"abc@gmail.com",
          "CSR":"Fwd:FW17"
       }, {
          "Date/Time":"1212",
          "From":"Gimmill",
-         "Subject":"Under Armour",
+         "subject":"Under Armour",
          "CC":"abc@gmail.com",
          "CSR":"Fwd:FW17"
       }
