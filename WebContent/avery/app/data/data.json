@@ -1,0 +1,191 @@
+{
+   "success":true,
+   
+   "columns":[
+      {
+         "text":"Tracking #",
+         "type":"string",
+         "dataIndex":"Tracking #",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+      {
+         "text":"Partner Name",
+         "type":"string",
+         "dataIndex":"Partner Name",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+      {
+         "text":"Sender Email Id",
+         "type":"string",
+         "dataIndex":"Sender Email Id",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+      {
+         "text":"Subject",
+         "type":"string",
+         "dataIndex":"Subject",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"Email",
+         "type":"string",
+         "dataIndex":"Email",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"Status",
+         "type":"string",
+         "dataIndex":"Status",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"Received Date",
+         "type":"string",
+         "dataIndex":"Received Date",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"Read Date",
+         "type":"string",
+         "dataIndex":"Read Date",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"Acknowledged Date",
+         "type":"string",
+         "dataIndex":"Acknowledged Date",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      },
+       {
+         "text":"CC",
+         "type":"string",
+         "dataIndex":"CC",
+         "flex":1,
+         "editor": {
+                "xtype": "textfield"
+            }
+      }
+      
+   ],
+   "fields":[{
+       "name":"Tracking #",
+        "mapping":"Tracking #"
+   },
+   { "name":"Partner Name",
+      "mapping":"Partner Name"
+   },
+   {
+       "name":"Sender Email Id",
+       "mapping":"Sender Email Id"
+   },
+   {
+       "name":"Subject",
+       "mapping":"Subject"
+       },
+       {
+       "name":"Email",
+       "mapping":"Email"
+       },
+       {
+       "name":"Status",
+       "mapping":"Status"
+       },
+       {
+       "name":"Received Date",
+       "mapping":"Received Date"
+       },
+       {
+       "name":"Read Date",
+       "mapping":"Read Date"
+       },
+       {
+       "name":"Acknowledged Date",
+       "mapping":"Acknowledged Date"
+       },
+       {
+       "name":"CC",
+       "mapping":"CC"
+      
+   }],
+   "data":[
+      {
+         "Tracking #":"1212",
+         "Partner Name":"Gimmill",
+         "RBO":"Under Armour",
+         "Sender Email Id":"abc@gmail.com",
+         "Subject":"Fwd:FW17",
+         "Email":"mail.png",
+         "Status":"Processed",
+         "Received Date":"09-Dec-2016 16:44:54",
+         "Read Date":"09-Dec-2016 16:44:54",
+         "Acknowledged Date":"09-Dec-2016 16:44:54",
+         "CC":"helen.mai@ap.avery.dennison.com"
+      },
+      {
+         "Tracking #":"1212",
+         "Partner Name":"Gimmill",
+         "RBO":"Under Armour",
+         "Sender Email Id":"abc@gmail.com",
+         "Subject":"Fwd:FW17",
+         "Email":"mail.png",
+         "Status":"Processed",
+         "Received Date":"09-Dec-2016 16:44:54",
+         "Read Date":"09-Dec-2016 16:44:54",
+         "Acknowledged Date":"09-Dec-2016 16:44:54",
+         "CC":"helen.mai@ap.avery.dennison.com"
+      },
+      {
+         "Tracking #":"1212",
+         "Partner Name":"Gimmill",
+         "RBO":"Under Armour",
+         "Sender Email Id":"abc@gmail.com",
+         "Subject":"Fwd:FW17",
+         "Email":"mail.png",
+         "Status":"Processed",
+         "Received Date":"09-Dec-2016 16:44:54",
+         "Read Date":"09-Dec-2016 16:44:54",
+         "Acknowledged Date":"09-Dec-2016 16:44:54",
+         "CC":"helen.mai@ap.avery.dennison.com"
+      },
+      {
+         "Tracking #":"1212",
+         "Partner Name":"Gimmill",
+         "RBO":"Under Armour",
+         "Sender Email Id":"abc@gmail.com",
+         "Subject":"Fwd:FW17",
+         "Email":"mail.png",
+         "Status":"Processed",
+         "Received Date":"09-Dec-2016 16:44:54",
+         "Read Date":"09-Dec-2016 16:44:54",
+         "Acknowledged Date":"09-Dec-2016 16:44:54",
+         "CC":"helen.mai@ap.avery.dennison.com"
+      }
+   ]
+}
