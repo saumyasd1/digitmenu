@@ -5,6 +5,14 @@ Ext.define('AOC.store.EmailManagementStore', {
 	remoteSort: true,
 	totalCount:'total',
 	pageSize:pageSize,
-	storeId:'EmailManagementStoreId'
+	storeId:'EmailManagementStoreId',
+		proxy: {
+            type: 'rest',
+            url: applicationContext+'/rest/emailqueue',
+            reader: {
+                type: 'json',
+                rootProperty: 'emailqueue'
+            }
+		}
 });
 
