@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import org.slf4j.Logger;
 
 import com.avery.logging.AppLogger;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @MappedSuperclass
 public class MainAbstractEntity extends AbstractEntityImpl {
@@ -21,7 +22,7 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
+	@Column(name = "id")
 	private long id;
 
 	public long getId() {
@@ -32,20 +33,22 @@ public class MainAbstractEntity extends AbstractEntityImpl {
 		this.id = id;
 	}
 	
-	@Column(name = "CreatedDate")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
+	@Column(name = "createdDate")
     private Date createdDate;
 	
-	@Column(name = "CreatedBy",length = 50)
+	@Column(name = "createdBy",length = 50)
     private String createdBy;
 	
-	@Column(name = "LastModifiedDate")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
+	@Column(name = "lastModifiedDate")
     private Date lastModifiedDate;
 	
 	public Date getCreatedDate() {
 		return createdDate;
 	}
 	
-	@Column(name = "LastModifiedBy",length = 50)
+	@Column(name = "lastModifiedBy",length = 50)
     private String lastModifiedBy;
 
 	public void setCreatedDate(Date createdDate) {
