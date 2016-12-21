@@ -9,10 +9,18 @@
                     "Path": "AOC App"
                 }
             },
-            {
+             {
                 "item": {
                     "ServiceName": "EmailManagement",
                     "DisplayName": "Email Management",
+                    "Align": "Left",
+                    "Path": "AOC App"
+                }
+            },
+             {
+                "item": {
+                    "ServiceName": "TaskManager",
+                    "DisplayName": "Task Manager",
                     "Align": "Left",
                     "Path": "AOC App"
                 }
