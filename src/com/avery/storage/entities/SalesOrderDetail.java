@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,167 +41,232 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
-@Table(name = "SalesOrderDetail")
+@Table(name = "salesorderdetails")
 @Path("salesorderdetails")
 public class SalesOrderDetail extends MainAbstractEntity{
 	
+	public SalesOrderDetail(){
+		
+	}
+	
 	private static final long serialVersionUID = 5347331042125950674L;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "SalesOrderID", nullable = true)
-	private SalesOrder salesOrderForVariableData;
-	
-	@Column(name = "ProcessQueueID",length = 50)
-    private int processQueueID; 
-	
-	@Column(name = "SOnumber",length = 50)
-    private String sonumber;
-	
-	@Column(name = "Divison",length = 50)
-    private String divison;
-	
-	@Column(name = "SODetails",length = 250)
-    private String soDetails;
-	
-	
-	@Column(name = "Oracleitemnumber",length = 50)
-    private String oracleitemnumber;
-	
-	@Column(name = "Level",length = 50)
-    private String level;
-	
-	@Column(name = "SKUno",length = 50)
-    private String skuno;
-	
-	@Column(name = "typesetter",length = 50)
-    private String typesetter;
-	
-	@Column(name = "Variablefieldname",length = 100)
-    private String variablefieldname;
-	
-	@Column(name = "variabledatavalue",length = 250)
-    private String variabledatavalue;
-	
-	@Column(name = "FiberPercent",columnDefinition = "varchar(500)")
-    private String fiberPercent;
-	
-	@Column(name = "SentToOracleDate")
-    private Date sentToOracleDate;
-	
-	@Column(name = "DivisionforInterfaceERPORG",length = 50)
-    private String divisionforInterfaceERPORG;
-	
-	public SalesOrder getSalesOrderForVariableData() {
-		return salesOrderForVariableData;
+	@Column(name="division" , length=100)
+	String division;
+	@Column(name="soNumber" , length=100)
+	String soNumber;
+	@Column(name="soDetails" , length=100)
+	String soDetails;
+	@Column(name="oracleItemNumber" , length=50)
+	String oracleItemNumber;
+	@Column(name="level" , length=100)
+	String level;
+	@Column(name="SKUno" , length=100)
+	String SKUno;
+	@Column(name="typeSetter" , length=100)
+	String typeSetter;
+	@Column(name="variableFieldName" , length=100)
+	String variableFieldName;
+	@Column(name="variableDataValue" , length=100)
+	String variableDataValue;
+	@Column(name="fiberPercent" )
+	int fiberPercent;
+	@Column(name="sumOfFiberPercentage" )
+	int sumOfFiberPercentage ;
+	@Column(name = "comment",length=250)
+	String comment;
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="salesOrderId")
+	SalesOrder varSalesOrderLine;
+
+	public SalesOrderDetail(String division, String sOnumber) {
+		division = division;
+		soNumber = sOnumber;
 	}
 
-	public void setSalesOrderForVariableData(SalesOrder salesOrderForVariableData) {
-		this.salesOrderForVariableData = salesOrderForVariableData;
+
+
+
+	public String getDivision() {
+		return division;
 	}
 
-	public int getProcessQueueID() {
-		return processQueueID;
+
+
+
+	public void setDivision(String division) {
+		this.division = division;
 	}
 
-	public void setProcessQueueID(int processQueueID) {
-		this.processQueueID = processQueueID;
+
+
+
+	public String getSoNumber() {
+		return soNumber;
 	}
 
-	public String getSonumber() {
-		return sonumber;
+
+
+
+	public void setSoNumber(String soNumber) {
+		this.soNumber = soNumber;
 	}
 
-	public void setSonumber(String sonumber) {
-		this.sonumber = sonumber;
-	}
 
-	public String getDivison() {
-		return divison;
-	}
 
-	public void setDivison(String divison) {
-		this.divison = divison;
-	}
 
 	public String getSoDetails() {
 		return soDetails;
 	}
 
+
+
+
 	public void setSoDetails(String soDetails) {
 		this.soDetails = soDetails;
 	}
 
-	public String getOracleitemnumber() {
-		return oracleitemnumber;
+
+
+
+	public String getOracleItemNumber() {
+		return oracleItemNumber;
 	}
 
-	public void setOracleitemnumber(String oracleitemnumber) {
-		this.oracleitemnumber = oracleitemnumber;
+
+
+
+	public void setOracleItemNumber(String oracleItemNumber) {
+		this.oracleItemNumber = oracleItemNumber;
 	}
+
+
+
 
 	public String getLevel() {
 		return level;
 	}
 
+
+
+
 	public void setLevel(String level) {
 		this.level = level;
 	}
 
-	public String getSkuno() {
-		return skuno;
+
+
+
+	public String getSKUno() {
+		return SKUno;
 	}
 
-	public void setSkuno(String skuno) {
-		this.skuno = skuno;
+
+
+
+	public void setSKUno(String sKUno) {
+		SKUno = sKUno;
 	}
 
-	public String getTypesetter() {
-		return typesetter;
+
+
+
+	public String getTypeSetter() {
+		return typeSetter;
 	}
 
-	public void setTypesetter(String typesetter) {
-		this.typesetter = typesetter;
+
+
+
+	public void setTypeSetter(String typeSetter) {
+		this.typeSetter = typeSetter;
 	}
 
-	public String getVariablefieldname() {
-		return variablefieldname;
+
+
+
+	public String getVariableFieldName() {
+		return variableFieldName;
 	}
 
-	public void setVariablefieldname(String variablefieldname) {
-		this.variablefieldname = variablefieldname;
+
+
+
+	public void setVariableFieldName(String variableFieldName) {
+		this.variableFieldName = variableFieldName;
 	}
 
-	public String getVariabledatavalue() {
-		return variabledatavalue;
+
+
+
+	public String getVariableDataValue() {
+		return variableDataValue;
 	}
 
-	public void setVariabledatavalue(String variabledatavalue) {
-		this.variabledatavalue = variabledatavalue;
+
+
+
+	public void setVariableDataValue(String variableDataValue) {
+		this.variableDataValue = variableDataValue;
 	}
 
-	public String getFiberPercent() {
+
+
+
+	public int getFiberPercent() {
 		return fiberPercent;
 	}
 
-	public void setFiberPercent(String fiberPercent) {
+
+
+
+	public void setFiberPercent(int fiberPercent) {
 		this.fiberPercent = fiberPercent;
 	}
 
-	public Date getSentToOracleDate() {
-		return sentToOracleDate;
+
+
+
+	public int getSumOfFiberPercentage() {
+		return sumOfFiberPercentage;
 	}
 
-	public void setSentToOracleDate(Date sentToOracleDate) {
-		this.sentToOracleDate = sentToOracleDate;
-	}
-	
-	public String getDivisionforInterfaceERPORG() {
-		return divisionforInterfaceERPORG;
+
+
+
+	public void setSumOfFiberPercentage(int sumOfFiberPercentage) {
+		this.sumOfFiberPercentage = sumOfFiberPercentage;
 	}
 
-	public void setDivisionforInterfaceERPORG(String divisionforInterfaceERPORG) {
-		this.divisionforInterfaceERPORG = divisionforInterfaceERPORG;
+
+
+
+	public String getComment() {
+		return comment;
 	}
+
+
+
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+
+
+
+	public SalesOrder getVarSalesOrderLine() {
+		return varSalesOrderLine;
+	}
+
+
+
+
+	public void setVarSalesOrderLine(SalesOrder varSalesOrderLine) {
+		this.varSalesOrderLine = varSalesOrderLine;
+	}
+
+
 
 
 	@GET
