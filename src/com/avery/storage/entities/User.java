@@ -39,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @Path("users")
 public class User extends MainAbstractEntity {
 
@@ -48,37 +48,51 @@ public class User extends MainAbstractEntity {
 	 */
 	private static final long serialVersionUID = 1833552362987121156L;
 
-	@Column(name = "FIRST_NAME", length = 64)
-	@Size(min = 0, max = 64, message = "First Name not valid, min:0 and max:64")
-	private String firstName;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name = "firstName", length = 64)
+	String firstName;
+	@Column(name = "lastName", length = 64)
+	String lastName;
+	@Column(name = "email", length = 255)
+	String email;
+	@Column(name = "gender", length = 6)
+	String gender;
+	@Column(name = "jobTitle", length = 64)
+	String jobTitle;
+	@Column(name = "password", length = 255)
+	String password;
+	@Column(name = "role", length = 20)
+	String role;
+	@Column(name = "siteId")
+	int siteId;
+	@Column(name = "status")
+	int status;
+	@Column(name = "middleName", length = 64)
+	String middleName;
 
-	@Column(name = "LAST_NAME", length = 64)
-	@Size(min = 0, max = 64, message = "Last Name not valid, min:0 and max:64")
-	private String lastName;
+	public User() {
 
-	@Column(name = "EMAIL", length = 255, nullable = false, unique = true)
-	@NotNull
-	@Size(min = 1, max = 255, message = "Email not valid, min:1 and max:255")
-	private String email;
+	}
 
-	@Column(name = "PASSWORD", length = 255)
-	private String password;
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+
+	}
 	
-	@Column(name = "JOBTITLE", length = 64)
-	@Size(min = 0, max = 64, message = "Job Title not valid, min:1 and max:64")
-	private String jobTitle;
-
-	@Column(name = "STATUS")
-	private int status;
-
-	@Column(name = "GENDER",length = 6)
-	private String gender;
-	
-	@Column(name = "ROLE", length = 20)
-	private String role;
-
 	
 	
+
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -103,12 +117,12 @@ public class User extends MainAbstractEntity {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getJobTitle() {
@@ -119,20 +133,12 @@ public class User extends MainAbstractEntity {
 		this.jobTitle = jobTitle;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getRole() {
@@ -141,6 +147,30 @@ public class User extends MainAbstractEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
 	@Override
