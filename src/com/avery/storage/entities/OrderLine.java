@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,8 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
@@ -47,402 +50,254 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
-@Table(name = "OrderLine")
+@Table(name = "orderline")
 @Path("orderLines")
 public class OrderLine extends MainAbstractEntity{
 	
-/*	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "OrderFileAttchmentID", nullable = true)
-	private OrderFileAttachment orderFileAttchment;*/
+	public OrderLine(){
+		
+	}
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6740793676369214590L;
-
-	@Column(name = "OrderFileAttchmentID")
-    private int orderFileAttchmentID; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "OrderQueueID", nullable = true)
-	private OrderQueue orderQueueForOrderLine;
 	
-	@Column(name = "PartnerID",length = 50)
-    private String partnerID; 
+	@Column(name = "customerPONumber", length = 50)
+	String customerPONumber;
+	@Column(name = "orderedDate")
+	Date orderedDate;
+	@Column(name = "partnerCustomerName", length = 250)
+	String partnerCustomerName;
+	@Column(name = "bulk")
+	boolean bulk;
+	@Column(name = "partnerVendorName", length = 250)
+	String partnerVendorName;
+	@Column(name = "shipToCustomer", length = 250)
+	String shipToCustomer;
+	@Column(name = "shipToContact", length = 250)
+	String shipToContact;
+	@Column(name = "shipToAddress1", length = 250)
+	String shipToAddress1;
+	@Column(name = "shipToAddress2", length = 250)
+	String shipToAddress2;
+	@Column(name = "shipToAddress3", length = 250)
+	String shipToAddress3;
+	@Column(name = "shipToCity", length = 100)
+	String shipToCity;
+	@Column(name = "shipToState", length = 100)
+	String shipToState;
+	@Column(name = "shipToZip", length = 50)
+	String shipToZip;
+	@Column(name = "shipToCountry", length = 100)
+	String shipToCountry;
+	@Column(name = "shipToTelephone", length = 50)
+	String shipToTelephone;
+	@Column(name = "shipToFax", length = 100)
+	String shipToFax;
+	@Column(name = "shipToEmail", length = 100)
+	String shipToEmail;
+	@Column(name = "billToCustomer", length = 250)
+	String billToCustomer;
+	@Column(name = "billToContact", length = 250)
+	String billToContact;
+	@Column(name = "billToAddress1", length = 250)
+	String billToAddress1;
+	@Column(name = "billToAddress2", length = 250)
+	String billToAddress2;
+	@Column(name = "billToAddress3", length = 250)
+	String billToAddress3;
+	@Column(name = "billToCity", length = 100)
+	String billToCity;
+	@Column(name = "billToState", length = 100)
+	String billToState;
+	@Column(name = "billToZip", length = 50)
+	String billToZip;
+	@Column(name = "billToCountry", length = 100)
+	String billToCountry;
+	@Column(name = "billToTelephone", length = 50)
+	String billToTelephone;
+	@Column(name = "billToFax", length = 100)
+	String billToFax;
+	@Column(name = "billToEmail", length = 100)
+	String billToEmail;
+	@Column(name = "requestedDevliveryDate")
+	Date requestedDevliveryDate;
+	@Column(name = "shippingMethod", length = 50)
+	String shippingMethod;
+	@Column(name = "specialInstruction", length = 500)
+	String specialInstruction;
+	@Column(name = "orderReceivedDate")
+	Date orderReceivedDate;
+	@Column(name = "soldToRBONumber", length = 50)
+	String soldToRBONumber;
+	@Column(name = "oracleBillToSiteNumber", length = 50)
+	String oracleBillToSiteNumber;
+	@Column(name = "oracleShipToSiteNumber", length = 50)
+	String oracleShipToSiteNumber;
+	@Column(name = "retailerPO_CustomerJob", length = 100)
+	String retailerPO_CustomerJob;
+	@Column(name = "averyItemNumber", length = 50)
+	String averyItemNumber;
+	@Column(name = "customerItemNumber", length = 50)
+	String customerItemNumber;
+	@Column(name = "itemDescription", length = 50)
+	String itemDescription;
+	@Column(name = "customerColorCode", length = 50)
+	String customerColorCode;
+	@Column(name = "customerColorDescription", length = 50)
+	String customerColorDescription;
+	@Column(name = "customerSize", length = 50)
+	String customerSize;
+	@Column(name = "customerUnitPrice", length = 50)
+	String customerUnitPrice;
+	@Column(name = "customerCost", length = 50)
+	String customerCost;
+	@Column(name = "contractNumber", length = 50)
+	String contractNumber;
+	@Column(name = "styleNo", length = 50)
+	String styleNo;
+	@Column(name = "customerItemNumber1", length = 50)
+	String customerItemNumber1;
+	@Column(name = "customerItemNumber2", length = 50)
+	String customerItemNumber2;
+	@Column(name = "customerSeason", length = 50)
+	String customerSeason;
+	@Column(name = "customerUOM", length = 50)
+	String customerUOM;
+	@Column(name = "customerOrderedQty", length = 50)
+	String customerOrderedQty;
+	@Column(name = "calculatedOrderdedQty", length = 10)
+	String calculatedOrderdedQty;
+	@Column(name = "orderDate")
+	Date orderDate;
+	@Column(name = " customerRequestDate")
+	Date customerRequestDate;
+	@Column(name = "promiseDate")
+	Date promiseDate;
+	@Column(name = "freightTerms", length = 50)
+	String freightTerms;
+	@Column(name = "csr", length = 50)
+	String csr;
+	@Column(name = "packingInstruction", length = 500)
+	String packingInstruction;
+	@Column(name = "shippingInstructions", length = 500)
+	String shippingInstructions;
+	@Column(name = "invoicelineInstruction", length = 500)
+	String invoicelineInstruction;
+	@Column(name = "divisionForInterfaceERPORG", length = 100)
+	String divisionForInterfaceERPORG;
+	@Column(name = "artWorkhold", length = 5)
+	String artWorkhold;
+	@Column(name = "artworkAttachment", length = 5)
+	String artworkAttachment;
+	@Column(name = "variableDataBreakdown", length = 500)
+	String variableDataBreakdown;
+	@Column(name = "manufacturingNotes", length = 500)
+	String manufacturingNotes;
+	@Column(name = "orderType", length = 50)
+	String orderType;
+	@Column(name = "orderBy", length = 50)
+	String orderBy;
+	@Column(name = "endCustomer", length = 50)
+	String endCustomer;
+	@Column(name = "shippingOnlyNotes", length = 500)
+	String shippingOnlyNotes;
+	@Column(name = "bankCharge", length = 10)
+	String bankCharge;
+	@Column(name = "freightCharge", length = 10)
+	String freightCharge;
+	@Column(name = "shippingHold", length = 50)
+	String shippingHold;
+	@Column(name = "productionHold", length = 5)
+	String productionHold;
+	@Column(name = "splitShipset", length = 5)
+	String splitShipset;
+	@Column(name = "agreement", length = 50)
+	String agreement;
+	@Column(name = "modelSerialNumber", length = 50)
+	String modelSerialNumber;
+	@Column(name = "waiveMOQ", length = 5)
+	String waiveMOQ;
+	@Column(name = "targetSystem", length = 50)
+	String targetSystem;
+	@Column(name = "APOType", length = 5)
+	String APOType;
+	@Column(name = "sentToOracleDate")
+	Date sentToOracleDate;
+	@Column(name = "status", length = 100,nullable=false)
+	String status;
+	@Column(name="reviseOrderFlag",length=50)
+	String reviseOrderFlag;
+	@Column(name="cooTranslationFlag",length=50)
+	String cooTranslationFlag;
+	@Column(name="febricPercentageFlag",length=50)
+	String febricPercentageFlag;
+	@Column(name = "duplicatePOFlag",length=50)
+	String duplicatePOFlag;
+	@Column(name = "customerPOFlag",length=50)
+	String customerPOFlag;
+	@Column(name = "bulkSampleValidationFlag",length=50)
+	String bulkSampleValidationFlag;
+	@Column(name = "MOQValidationFlag",length=50)
+	String MOQValidationFlag;
+	@Column(name = "ATOValidationFlag",length=50)
+	String ATOValidationFlag;
+	@Column(name = "mandatoryVariableDataFieldFlag",length=50)
+	String mandatoryVariableDataFieldFlag;
+	@Column(name = "HTLSizePageValidationFlag",length=50)
+	String HTLSizePageValidationFlag;
+	@Column(name = "region", length = 100)
+	String region;
+	@Column(name = "PONumber", length = 100)
+	String PONumber;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name = "roundQty", length = 100)
+	String roundQty;
+	@Column(name = "MOQDiffQty", length = 100)
+	String MOQDiffQty;
+	@Column(name = "updateMOQ", length = 100)
+	String updateMOQ;
+	@Column(name = "customerNumber", length = 100)
+	String customerNumber;
+	@Column(name = "rushOrderCheck", length = 100)
+	String rushOrderCheck;
+	@Column(name = "FOO", length = 100)
+	String FOO;
+	@Column(name = "sample", length = 100)
+	String sample;
+	@Column(name = "qtyUnit", length = 100)
+	String qtyUnit;
+	@Column(name = "remark", length = 100)
+	String remark;
+	@Column(name = "pageSize", length = 100)
+	String pageSize;
+	@Column(name = "fabricCode", length = 100)
+	String fabricCode;
+	@Column(name = "carrier", length = 100)
+	String carrier;
+	@Column(name = "account", length = 100)
+	String account;
+	@Column(name = "shipVia", length = 100)
+	String shipVia;
+	@Column(name = "createdByName", length = 50)
+	String createdByName;
+	@Column(name = "lastModifiedByName", length = 50)
+	String lastModifiedByName;
+	@Column(name = "productLineType", length = 50)
+	String productLineType;
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="orderQueueId",nullable=false)
+	OrderQueue varOrderFileQueue;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
+	//@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+//	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
 	
-	@Column(name = "RBOID",length = 50)
-    private String rboID; 
 	
-	@Column(name = "ProductLineType",length = 50)
-    private String productLineType; 
 	
-	@Column(name = "CustomerPONumber",length = 100)
-    private String customerPONumber; 
 	
-	@Column(name = "OrderedDate")
-    private Date orderedDate; 
-	
-	@Column(name = "PartnerCustomerName",length = 250)
-    private String partnerCustomerName; 
-	
-	@Column(name = "Bulk")
-    private Boolean bulk; 
-	
-	@Column(name = "PartnerVendorName",length = 250)
-    private String partnerVendorName; 
-	
-	@Column(name = "ShipToCustomer",length = 250)
-    private String shipToCustomer; 
-	
-	@Column(name = "ShipToContact",length = 250)
-    private String shipToContact; 
-	
-	@Column(name = "ShipToAddress1",length = 250)
-    private String shipToAddress1; 
-
-	@Column(name = "ShipToAddress2",length = 250)
-    private String shipToAddress2; 
-	
-	@Column(name = "ShipToAddress3",length = 250)
-    private String shipToAddress3; 
-	
-	@Column(name = "ShipToCity",length = 100)
-    private String shipToCity; 
-	
-	@Column(name = "ShipToState",length = 100)
-    private String shipToState; 
-	
-	@Column(name = "ShipToZip",length = 50)
-    private String shipToZip; 
-	
-	@Column(name = "ShipToCountry",length = 100)
-    private String shipToCountry; 
-	
-	@Column(name = "ShipToTelephone",length = 50)
-    private String shipToTelephone; 
-	
-	@Column(name = "ShipToFax",length = 100)
-    private String shipToFax; 
-	
-	@Column(name = "ShipToEmail",length = 100)
-    private String shipToEmail; 
-	
-	@Column(name = "BillToCustomer",length = 250)
-    private String billToCustomer; 
-	
-	@Column(name = "BillToContact",length = 250)
-    private String billToContact; 
-
-	@Column(name = "BillToAddress1",length = 250)
-    private String billToAddress1; 
-	
-	@Column(name = "BillToAddress2",length = 250)
-    private String billToAddress2; 
-	
-	@Column(name = "BillToAddress3",length = 250)
-    private String billToAddress3; 
-	
-	@Column(name = "BillToCity",length = 100)
-    private String billToCity; 
-	
-	@Column(name = "BillToState",length = 100)
-    private String billToState; 
-	
-	@Column(name = "BillToZip",length = 50)
-    private String billToZip; 
-	
-	@Column(name = "BillToCountry",length = 100)
-    private String billToCountry; 
-	
-	@Column(name = "BillToTelephone",length = 50)
-    private String billToTelephone; 
-	
-	@Column(name = "BillToFax",length = 100)
-    private String billToFax; 
-	
-	@Column(name = "BillToEmail",length = 100)
-    private String billToEmail; 
-	
-	@Column(name = "RequestedDevliveryDate")
-    private Date requestedDevliveryDate; 
-
-	@Column(name = "ShippingMethod",length = 100)
-    private String shippingMethod; 
-	
-	@Column(name = "SpecialInstruction",length = 500)
-    private String specialInstruction; 
-	
-	@Column(name = "OrderReceivedDate")
-    private Date orderReceivedDate; 
-	
-	@Column(name = "SOLDTORBONumber",length = 50)
-    private String soldTORBONumber; 
-	
-	@Column(name = "OracleBilltoSiteNumber",length = 50)
-    private String oracleBilltoSiteNumber; 
-	
-	@Column(name = "OracleShiptoSiteNumber",length = 50)
-    private String oracleShiptoSiteNumber; 
-	
-	@Column(name = "RetailerPO_CustomerJob",length = 100)
-    private String retailerPO_CustomerJob; 
-	
-	@Column(name = "AveryItemNumber",length = 50)
-    private String averyItemNumber; 
-	
-	@Column(name = "OracleItemNumber",length = 50)
-    private String oracleItemNumber; 
-	
-	@Column(name = "CustomerItemNumber",length = 50)
-    private String customerItemNumber; 
-	
-	@Column(name = "ItemDescription",length = 200)
-    private String itemDescription; 
-
-	@Column(name = "CustomerColorCode",length = 50)
-    private String customerColorCode; 
-	
-	@Column(name = "CustomerColorDescription",length = 200)
-    private String customerColorDescription; 
-	
-	@Column(name = "CustomerSize",length = 50)
-    private String customerSize; 
-	
-	@Column(name = "CustomerUnitPrice",length = 50)
-    private String customerUnitPrice; 
-	
-	@Column(name = "CustomerCost",length = 50)
-    private String customerCost; 
-	
-	@Column(name = "ContractNumber",length = 50)
-    private String contractNumber; 
-	
-	@Column(name = "StyleNo",length = 50)
-    private String styleNo; 
-
-	@Column(name = "CustomerItemNumber1",length = 50)
-    private String customerItemNumber1; 
-	
-	@Column(name = "CustomerItemNumber2",length = 50)
-    private String customerItemNumber2; 
-	
-	@Column(name = "CustomerSeason",length = 50)
-    private String customerSeason; 
-	
-	@Column(name = "CustomerUOM",length = 50)
-    private String customerUOM; 
-	
-	@Column(name = "CustomerOrderedQty",length = 50)
-    private String customerOrderedQty; 
-	
-	@Column(name = "CalculatedOrderdedQty",length = 10)
-    private String calculatedOrderdedQty; 
-	
-	@Column(name = "OrderDate")
-    private Date orderDate; 
-
-	@Column(name = "CustomerRequestDate")
-    private Date customerRequestDate; 
-	
-	@Column(name = "PromiseDate")
-    private Date promiseDate; 
-	
-	@Column(name = "FreightTerms",length = 50)
-    private String freightTerms; 
-	
-	@Column(name = "CSR",length = 50)
-    private String csr; 
-	
-	@Column(name = "PackingInstruction",columnDefinition = "varchar(500)")
-    private String packingInstruction; 
-	
-	@Column(name = "ShippingInstructions",columnDefinition = "varchar(500)")
-    private String shippingInstructions; 
-	
-	@Column(name = "InvoicelineInstruction",columnDefinition = "varchar(500)")
-    private String invoicelineInstruction; 
-
-	@Column(name = "DivisionforInterfaceERPORG",length = 10)
-    private String divisionforInterfaceERPORG; 
-	
-	@Column(name = "Artworkhold",length = 5)
-    private String artworkhold; 
-	
-	@Column(name = "Artworkworkattachment",length = 5)
-    private String artworkworkattachment; 
-	
-	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
-    private String variableDataBreakdown; 
-	
-	@Column(name = "Manufacturingnotes",columnDefinition = "varchar(500)")
-    private String manufacturingnotes; 
-	
-	@Column(name = "Ordertype",length = 50)
-    private String ordertype; 
-	
-	@Column(name = "Orderby",length = 50)
-    private String orderby; 
-
-	@Column(name = "Endcustomer",length = 50)
-    private String endcustomer; 
-	
-	@Column(name = "Shippingonlynotes",columnDefinition = "varchar(500)")
-    private String shippingonlynotes; 
-	
-	@Column(name = "BankCharge",length = 10)
-    private String bankCharge; 
-	
-	@Column(name = "FreightCharge",length = 10)
-    private String freightCharge; 
-	
-	@Column(name = "Shippinghold",length = 5)
-    private String shippinghold; 
-	
-	@Column(name = "Productionhold",length = 5)
-    private String productionhold; 
-	
-	@Column(name = "Splitshipset",length = 5)
-    private String splitshipset; 
-
-	@Column(name = "Agreement",length = 50)
-    private String agreement; 
-	
-	@Column(name = "ModelSerialNumber",length = 50)
-    private String modelSerialNumber; 
-	
-	@Column(name = "WaiveMOQ",length = 5)
-    private String waiveMOQ; 
-	
-	@Column(name = "APOType",length = 5)
-    private String apoType; 
-	
-	@Column(name = "SentToOracleDate")
-    private Date sentToOracleDate; 
-	
-	@Column(name = "Status",length = 50)
-    private String status; 
-	
-	@Column(name = "DuplicatePOFlag",length = 250)
-    private String duplicatePOFlag; 
-
-	@Column(name = "CustomerPOFlag",length = 250)
-    private String customerPOFlag; 
-	
-	@Column(name = "BulkSampleValidationFlag",length = 250)
-    private String bulkSampleValidationFlag; 
-	
-	@Column(name = "MOQValidationFlag",length = 250)
-    private String moqValidationFlag; 
-	
-	@Column(name = "ATOValidationFlag",length = 250)
-    private String atoValidationFlag; 
-	
-	@Column(name = "MandatoryVariableDataFieldFlag",length = 250)
-    private String mandatoryVariableDataFieldFlag; 
-	
-	@Column(name = "Comment",length = 255)
-    private String comment; 
-	
-	@Column(name = "PONumber",length = 100)
-    private String poNumber;
-
-	@Column(name = "RoundQty",length = 50)
-    private String roundQty; 
-	
-	@Column(name = "MOQDiffQty",length = 50)
-    private String moqDiffQty;
-	
-	@Column(name = "Region",length = 50)
-    private String region;
-	
-	public String getUpdateMoq() {
-		return updateMoq;
-	}
-
-	public void setUpdateMoq(String updateMoq) {
-		this.updateMoq = updateMoq;
-	}
-	@Column(name = "UpdateMOQ",length = 50)
-    private String updateMoq;
-	
-	public String getRegion() {
-		return region;
-	}
-
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getPoNumber() {
-		return poNumber;
-	}
-
-	public void setPoNumber(String poNumber) {
-		this.poNumber = poNumber;
-	}
-	@Column(name = "HTLSizePageValidationFlag",length = 250)
-    private String htlSizePageValidationFlag;
-	
-	@Fetch(FetchMode.SELECT)
-	@OneToMany(mappedBy = "orderLineForVariableData", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<OrderLineDetail> orderLineDetail;
-
-	
-	public Set<OrderLineDetail> getOrderLineDetail() {
-		return orderLineDetail;
-	}
-
-	public void setOrderLineDetail(Set<OrderLineDetail> orderLineDetail) {
-		this.orderLineDetail = orderLineDetail;
-	}
-
-	public int getOrderFileAttchmentID() {
-		return orderFileAttchmentID;
-	}
-
-	public void setOrderFileAttchmentID(int orderFileAttchmentID) {
-		this.orderFileAttchmentID = orderFileAttchmentID;
-	}
-
-	public OrderQueue getOrderQueueForOrderLine() {
-		return orderQueueForOrderLine;
-	}
-
-	public void setOrderQueueForOrderLine(OrderQueue orderQueueForOrderLine) {
-		this.orderQueueForOrderLine = orderQueueForOrderLine;
-	}
-
-	public String getPartnerID() {
-		return partnerID;
-	}
-
-	public void setPartnerID(String partnerID) {
-		this.partnerID = partnerID;
-	}
-
-	public String getRboID() {
-		return rboID;
-	}
-
-	public void setRboID(String rboID) {
-		this.rboID = rboID;
-	}
-
-	public String getProductLineType() {
-		return productLineType;
-	}
-
-	public void setProductLineType(String productLineType) {
-		this.productLineType = productLineType;
-	}
 
 	public String getCustomerPONumber() {
 		return customerPONumber;
@@ -468,11 +323,11 @@ public class OrderLine extends MainAbstractEntity{
 		this.partnerCustomerName = partnerCustomerName;
 	}
 
-	public Boolean isBulk() {
+	public boolean isBulk() {
 		return bulk;
 	}
 
-	public void setBulk(Boolean bulk) {
+	public void setBulk(boolean bulk) {
 		this.bulk = bulk;
 	}
 
@@ -708,28 +563,28 @@ public class OrderLine extends MainAbstractEntity{
 		this.orderReceivedDate = orderReceivedDate;
 	}
 
-	public String getSoldTORBONumber() {
-		return soldTORBONumber;
+	public String getSoldToRBONumber() {
+		return soldToRBONumber;
 	}
 
-	public void setSoldTORBONumber(String soldTORBONumber) {
-		this.soldTORBONumber = soldTORBONumber;
+	public void setSoldToRBONumber(String soldToRBONumber) {
+		this.soldToRBONumber = soldToRBONumber;
 	}
 
-	public String getOracleBilltoSiteNumber() {
-		return oracleBilltoSiteNumber;
+	public String getOracleBillToSiteNumber() {
+		return oracleBillToSiteNumber;
 	}
 
-	public void setOracleBilltoSiteNumber(String oracleBilltoSiteNumber) {
-		this.oracleBilltoSiteNumber = oracleBilltoSiteNumber;
+	public void setOracleBillToSiteNumber(String oracleBillToSiteNumber) {
+		this.oracleBillToSiteNumber = oracleBillToSiteNumber;
 	}
 
-	public String getOracleShiptoSiteNumber() {
-		return oracleShiptoSiteNumber;
+	public String getOracleShipToSiteNumber() {
+		return oracleShipToSiteNumber;
 	}
 
-	public void setOracleShiptoSiteNumber(String oracleShiptoSiteNumber) {
-		this.oracleShiptoSiteNumber = oracleShiptoSiteNumber;
+	public void setOracleShipToSiteNumber(String oracleShipToSiteNumber) {
+		this.oracleShipToSiteNumber = oracleShipToSiteNumber;
 	}
 
 	public String getRetailerPO_CustomerJob() {
@@ -746,14 +601,6 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setAveryItemNumber(String averyItemNumber) {
 		this.averyItemNumber = averyItemNumber;
-	}
-
-	public String getOracleItemNumber() {
-		return oracleItemNumber;
-	}
-
-	public void setOracleItemNumber(String oracleItemNumber) {
-		this.oracleItemNumber = oracleItemNumber;
 	}
 
 	public String getCustomerItemNumber() {
@@ -940,28 +787,28 @@ public class OrderLine extends MainAbstractEntity{
 		this.invoicelineInstruction = invoicelineInstruction;
 	}
 
-	public String getDivisionforInterfaceERPORG() {
-		return divisionforInterfaceERPORG;
+	public String getDivisionForInterfaceERPORG() {
+		return divisionForInterfaceERPORG;
 	}
 
-	public void setDivisionforInterfaceERPORG(String divisionforInterfaceERPORG) {
-		this.divisionforInterfaceERPORG = divisionforInterfaceERPORG;
+	public void setDivisionForInterfaceERPORG(String divisionForInterfaceERPORG) {
+		this.divisionForInterfaceERPORG = divisionForInterfaceERPORG;
 	}
 
-	public String getArtworkhold() {
-		return artworkhold;
+	public String getArtWorkhold() {
+		return artWorkhold;
 	}
 
-	public void setArtworkhold(String artworkhold) {
-		this.artworkhold = artworkhold;
+	public void setArtWorkhold(String artWorkhold) {
+		this.artWorkhold = artWorkhold;
 	}
 
-	public String getArtworkworkattachment() {
-		return artworkworkattachment;
+	public String getArtworkAttachment() {
+		return artworkAttachment;
 	}
 
-	public void setArtworkworkattachment(String artworkworkattachment) {
-		this.artworkworkattachment = artworkworkattachment;
+	public void setArtworkAttachment(String artworkAttachment) {
+		this.artworkAttachment = artworkAttachment;
 	}
 
 	public String getVariableDataBreakdown() {
@@ -972,44 +819,44 @@ public class OrderLine extends MainAbstractEntity{
 		this.variableDataBreakdown = variableDataBreakdown;
 	}
 
-	public String getManufacturingnotes() {
-		return manufacturingnotes;
+	public String getManufacturingNotes() {
+		return manufacturingNotes;
 	}
 
-	public void setManufacturingnotes(String manufacturingnotes) {
-		this.manufacturingnotes = manufacturingnotes;
+	public void setManufacturingNotes(String manufacturingNotes) {
+		this.manufacturingNotes = manufacturingNotes;
 	}
 
-	public String getOrdertype() {
-		return ordertype;
+	public String getOrderType() {
+		return orderType;
 	}
 
-	public void setOrdertype(String ordertype) {
-		this.ordertype = ordertype;
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
 	}
 
-	public String getOrderby() {
-		return orderby;
+	public String getOrderBy() {
+		return orderBy;
 	}
 
-	public void setOrderby(String orderby) {
-		this.orderby = orderby;
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
-	public String getEndcustomer() {
-		return endcustomer;
+	public String getEndCustomer() {
+		return endCustomer;
 	}
 
-	public void setEndcustomer(String endcustomer) {
-		this.endcustomer = endcustomer;
+	public void setEndCustomer(String endCustomer) {
+		this.endCustomer = endCustomer;
 	}
 
-	public String getShippingonlynotes() {
-		return shippingonlynotes;
+	public String getShippingOnlyNotes() {
+		return shippingOnlyNotes;
 	}
 
-	public void setShippingonlynotes(String shippingonlynotes) {
-		this.shippingonlynotes = shippingonlynotes;
+	public void setShippingOnlyNotes(String shippingOnlyNotes) {
+		this.shippingOnlyNotes = shippingOnlyNotes;
 	}
 
 	public String getBankCharge() {
@@ -1028,28 +875,28 @@ public class OrderLine extends MainAbstractEntity{
 		this.freightCharge = freightCharge;
 	}
 
-	public String getShippinghold() {
-		return shippinghold;
+	public String getShippingHold() {
+		return shippingHold;
 	}
 
-	public void setShippinghold(String shippinghold) {
-		this.shippinghold = shippinghold;
+	public void setShippingHold(String shippingHold) {
+		this.shippingHold = shippingHold;
 	}
 
-	public String getProductionhold() {
-		return productionhold;
+	public String getProductionHold() {
+		return productionHold;
 	}
 
-	public void setProductionhold(String productionhold) {
-		this.productionhold = productionhold;
+	public void setProductionHold(String productionHold) {
+		this.productionHold = productionHold;
 	}
 
-	public String getSplitshipset() {
-		return splitshipset;
+	public String getSplitShipset() {
+		return splitShipset;
 	}
 
-	public void setSplitshipset(String splitshipset) {
-		this.splitshipset = splitshipset;
+	public void setSplitShipset(String splitShipset) {
+		this.splitShipset = splitShipset;
 	}
 
 	public String getAgreement() {
@@ -1076,12 +923,20 @@ public class OrderLine extends MainAbstractEntity{
 		this.waiveMOQ = waiveMOQ;
 	}
 
-	public String getApoType() {
-		return apoType;
+	public String getTargetSystem() {
+		return targetSystem;
 	}
 
-	public void setApoType(String apoType) {
-		this.apoType = apoType;
+	public void setTargetSystem(String targetSystem) {
+		this.targetSystem = targetSystem;
+	}
+
+	public String getAPOType() {
+		return APOType;
+	}
+
+	public void setAPOType(String aPOType) {
+		APOType = aPOType;
 	}
 
 	public Date getSentToOracleDate() {
@@ -1098,6 +953,30 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getReviseOrderFlag() {
+		return reviseOrderFlag;
+	}
+
+	public void setReviseOrderFlag(String reviseOrderFlag) {
+		this.reviseOrderFlag = reviseOrderFlag;
+	}
+
+	public String getCooTranslationFlag() {
+		return cooTranslationFlag;
+	}
+
+	public void setCooTranslationFlag(String cooTranslationFlag) {
+		this.cooTranslationFlag = cooTranslationFlag;
+	}
+
+	public String getFebricPercentageFlag() {
+		return febricPercentageFlag;
+	}
+
+	public void setFebricPercentageFlag(String febricPercentageFlag) {
+		this.febricPercentageFlag = febricPercentageFlag;
 	}
 
 	public String getDuplicatePOFlag() {
@@ -1124,38 +1003,62 @@ public class OrderLine extends MainAbstractEntity{
 		this.bulkSampleValidationFlag = bulkSampleValidationFlag;
 	}
 
-	public String getMoqValidationFlag() {
-		return moqValidationFlag;
+	public String getMOQValidationFlag() {
+		return MOQValidationFlag;
 	}
 
-	public void setMoqValidationFlag(String moqValidationFlag) {
-		this.moqValidationFlag = moqValidationFlag;
+	public void setMOQValidationFlag(String mOQValidationFlag) {
+		MOQValidationFlag = mOQValidationFlag;
 	}
 
-	public String getAtoValidationFlag() {
-		return atoValidationFlag;
+	public String getATOValidationFlag() {
+		return ATOValidationFlag;
 	}
 
-	public void setAtoValidationFlag(String atoValidationFlag) {
-		this.atoValidationFlag = atoValidationFlag;
+	public void setATOValidationFlag(String aTOValidationFlag) {
+		ATOValidationFlag = aTOValidationFlag;
 	}
 
 	public String getMandatoryVariableDataFieldFlag() {
 		return mandatoryVariableDataFieldFlag;
 	}
 
-	public void setMandatoryVariableDataFieldFlag(
-			String mandatoryVariableDataFieldFlag) {
+	public void setMandatoryVariableDataFieldFlag(String mandatoryVariableDataFieldFlag) {
 		this.mandatoryVariableDataFieldFlag = mandatoryVariableDataFieldFlag;
 	}
 
-	public String getHtlSizePageValidationFlag() {
-		return htlSizePageValidationFlag;
+	public String getHTLSizePageValidationFlag() {
+		return HTLSizePageValidationFlag;
 	}
 
-	public void setHtlSizePageValidationFlag(String htlSizePageValidationFlag) {
-		this.htlSizePageValidationFlag = htlSizePageValidationFlag;
+	public void setHTLSizePageValidationFlag(String hTLSizePageValidationFlag) {
+		HTLSizePageValidationFlag = hTLSizePageValidationFlag;
 	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getPONumber() {
+		return PONumber;
+	}
+
+	public void setPONumber(String pONumber) {
+		PONumber = pONumber;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	public String getRoundQty() {
 		return roundQty;
 	}
@@ -1163,13 +1066,158 @@ public class OrderLine extends MainAbstractEntity{
 	public void setRoundQty(String roundQty) {
 		this.roundQty = roundQty;
 	}
-	public String getMoqDiffQty() {
-		return moqDiffQty;
+
+	public String getMOQDiffQty() {
+		return MOQDiffQty;
 	}
 
-	public void setMoqDiffQty(String moqDiffQty) {
-		this.moqDiffQty = moqDiffQty;
+	public void setMOQDiffQty(String mOQDiffQty) {
+		MOQDiffQty = mOQDiffQty;
 	}
+
+	public String getUpdateMOQ() {
+		return updateMOQ;
+	}
+
+	public void setUpdateMOQ(String updateMOQ) {
+		this.updateMOQ = updateMOQ;
+	}
+
+	public String getCustomerNumber() {
+		return customerNumber;
+	}
+
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
+	}
+
+	public String getRushOrderCheck() {
+		return rushOrderCheck;
+	}
+
+	public void setRushOrderCheck(String rushOrderCheck) {
+		this.rushOrderCheck = rushOrderCheck;
+	}
+
+	public String getFOO() {
+		return FOO;
+	}
+
+	public void setFOO(String fOO) {
+		FOO = fOO;
+	}
+
+	public String getSample() {
+		return sample;
+	}
+
+	public void setSample(String sample) {
+		this.sample = sample;
+	}
+
+	public String getQtyUnit() {
+		return qtyUnit;
+	}
+
+	public void setQtyUnit(String qtyUnit) {
+		this.qtyUnit = qtyUnit;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(String pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public String getFabricCode() {
+		return fabricCode;
+	}
+
+	public void setFabricCode(String fabricCode) {
+		this.fabricCode = fabricCode;
+	}
+
+	public String getCarrier() {
+		return carrier;
+	}
+
+	public void setCarrier(String carrier) {
+		this.carrier = carrier;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getShipVia() {
+		return shipVia;
+	}
+
+	public void setShipVia(String shipVia) {
+		this.shipVia = shipVia;
+	}
+
+	public String getCreatedByName() {
+		return createdByName;
+	}
+
+	public void setCreatedByName(String createdByName) {
+		this.createdByName = createdByName;
+	}
+
+	public String getLastModifiedByName() {
+		return lastModifiedByName;
+	}
+
+	public void setLastModifiedByName(String lastModifiedByName) {
+		this.lastModifiedByName = lastModifiedByName;
+	}
+
+	public String getProductLineType() {
+		return productLineType;
+	}
+
+	public void setProductLineType(String productLineType) {
+		this.productLineType = productLineType;
+	}
+
+	public OrderQueue getVarOrderFileQueue() {
+		return varOrderFileQueue;
+	}
+
+	public void setVarOrderFileQueue(OrderQueue varOrderFileQueue) {
+		this.varOrderFileQueue = varOrderFileQueue;
+	}
+
+	public List<OrderLineDetail> getListOrderlineDetails() {
+		return listOrderlineDetails;
+	}
+
+	public void setListOrderlineDetails(List<OrderLineDetail> listOrderlineDetails) {
+		this.listOrderlineDetails = listOrderlineDetails;
+	}
+
+//	public List<SalesOrder> getListSalesOrderLine() {
+//		return listSalesOrderLine;
+//	}
+//
+//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
+//		this.listSalesOrderLine = listSalesOrderLine;
+//	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
