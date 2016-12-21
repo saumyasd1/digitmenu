@@ -31,24 +31,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-@Entity
-@Table(name = "StatusCode")
+//@Entity
+@Table(name = "statuscode")
 @Path("code")
 public class Code extends MainAbstractEntity {
 	
 	private static final long serialVersionUID = -7583544833630759455L;
 
-	@Column(name = "Type", length = 50)
+	@Column(name = "type", length = 50)
     private String type; 
 	
-	@Column(name = "Code",columnDefinition = "varchar(1000)")
+	@Column(name = "code",columnDefinition = "varchar(1000)")
     private String code;  
 	
-	@Column(name = "Value",columnDefinition = "varchar(1000)")
+	@Column(name = "value",columnDefinition = "varchar(1000)")
     private String value;  
 	
-	@Column(name = "Description",columnDefinition = "varchar(1000)")
-    private String description;  
+	@Column(name = "comment",columnDefinition = "varchar(1000)")
+    private String comment;  
 
 	public String getType() {
 		return type;
@@ -73,13 +73,13 @@ public class Code extends MainAbstractEntity {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-	public String getDescription() {
-		return description;
+	
+	public String getComment() {
+		return comment;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	@Override
