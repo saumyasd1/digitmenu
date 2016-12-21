@@ -47,7 +47,7 @@ public class ExcelUtils {
 		Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
 		while (CrunchifyIterator.hasNext()) {
 			OrderQueue obj=CrunchifyIterator.next();
-			fileList=obj.getOrderFileAttachment();
+			//fileList=obj.getOrderFileAttachment();
 			orderFile="";
 			additionalData="";
 			for(OrderFileAttachment fileObj:fileList){
@@ -66,7 +66,7 @@ public class ExcelUtils {
 			Row row = sheet.createRow(rowIndex);
 			Cell cell1 = row.createCell(columncellCount);
 			cell1.setCellValue(obj.getId());
-			Cell cell2 = row.createCell(++columncellCount);
+			/*Cell cell2 = row.createCell(++columncellCount);
 			if(obj.getPrvOrderQueueID()!= null)
 			cell2.setCellValue(obj.getPrvOrderQueueID());
 			Cell cell3 = row.createCell(++columncellCount);
@@ -79,7 +79,7 @@ public class ExcelUtils {
 			cell6.setCellValue(additionalData);
 			Cell cell7 = row.createCell(++columncellCount);
 			if(obj.getPartner()!=null && !obj.getPartner().equals(""))
-				cell7.setCellValue(obj.getPartner().getPartnerName());
+				cell7.setCellValue(obj.getPartner().getName());
 			Cell cell8 = row.createCell(++columncellCount);
 			cell8.setCellValue(obj.getRboName());
 			Cell cell9 = row.createCell(++columncellCount);
@@ -103,7 +103,7 @@ public class ExcelUtils {
 				cell15.setCellValue(obj.getSubmittedDate().toString());
 			Cell cell16 = row.createCell(++columncellCount);
 			if(obj.getAcknowledgementDate()!=null)
-			cell16.setCellValue(obj.getAcknowledgementDate().toString());
+			cell16.setCellValue(obj.getAcknowledgementDate().toString());*/
 			Cell cell17 = row.createCell(++columncellCount);
 			cell17.setCellValue(obj.getComment());
 			Cell cell18 = row.createCell(++columncellCount);
