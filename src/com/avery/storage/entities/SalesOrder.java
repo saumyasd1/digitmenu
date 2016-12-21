@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
@@ -40,881 +43,954 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
-@Table(name = "SalesOrder")
+@Table(name = "salesorderline")
 @Path("salesorders")
 public class SalesOrder extends MainAbstractEntity{
 	
 	private static final long serialVersionUID = -6121468415641006948L;
 
-	@Column(name = "OrderQueueID")
-    private Long orderQueueID; 
-	
-	@Column(name = "OrderFileAttchmentID")
-    private int orderFileAttchmentID; 
-	
-	@Column(name = "PartnerID",length = 50)
-    private String partnerID; 
-	
-	@Column(name = "RBOID",length = 50)
-    private String rboID; 
-	
-	@Column(name = "ProductLineType",length = 50)
-    private String productLineType; 
-	
-	@Column(name = "OracleExportID")
-    private Integer oracleExportID; 
-	
-	@Column(name = "Division",length = 10)
-    private String division;
-	
-	@Column(name = "OrderSource",length = 50)
-    private String orderSource;
-	
-	@Column(name = "SystemUniqueID",length = 50)
-    private String systemUniqueID;
-	
-	
-	@Column(name = "SystemUniqueIDLineNo",length = 50)
-    private String systemUniqueIDLineNo;
-	
-	@Column(name = "SOLDTORBONumber",length = 50)
-    private String soldTORBONumber;
-	
-	@Column(name = "OracleBilltoSiteNumber",length = 50)
-    private String oracleBilltoSiteNumber;
-	
-	@Column(name = "OracleShiptoSiteNumber",length = 50)
-    private String oracleShiptoSiteNumber;
-	
-	@Column(name = "ShippingMethod",length = 50)
-    private String shippingMethod;
-	
-	@Column(name = "CustomerPONumber",length = 100)
-    private String customerPONumber;
-	
-	@Column(name = "RetailerPO_CustomerJob",length = 100)
-    private String retailerPO_CustomerJob;
-	
-	@Column(name = "OracleItemNumber",length = 50)
-    private String oracleItemNumber;
-	
-	
-	@Column(name = "CustomerItemNumber",length = 50)
-    private String customerItemNumber;
-	
-	@Column(name = "ItemDescription",length = 50)
-    private String itemDescription;
-	
-	@Column(name = "CustomerColorCode",length = 50)
-    private String customerColorCode;
-	
-	@Column(name = "CustomerColorDescription",length = 50)
-    private String customerColorDescription;
-	
-	@Column(name = "CustomerSize",length = 50)
-    private String customerSize;
-	
-	@Column(name = "CustomerUnitPrice",length = 50)
-    private String customerUnitPrice;
-	
-	@Column(name = "CustomerCost",length = 50)
-    private String customerCost;
-	
-	@Column(name = "ContractNumber",length = 50)
-    private String contractNumber;
-	
-	@Column(name = "Style",length = 50)
-    private String style;
-	
-	@Column(name = "CustomerItemNumber1",length = 50)
-    private String customerItemNumber1;
-	
-	@Column(name = "CustomerItemNumber2",length = 50)
-    private String customerItemNumber2;
-	
-	@Column(name = "CustomerSeason",length = 50)
-    private String customerSeason;
-	
-	@Column(name = "CustomerUOM",length = 50)
-    private String customerUOM;
-	
-	@Column(name = "CustomerOrderedQty",length = 50)
-    private String customerOrderedQty;
-	
-	@Column(name = "OrderdedQty",length = 10)
-    private String orderdedQty;
-	
-	@Column(name = "DateOrdered")
-    private Date dateOrdered;
-	
-	@Column(name = "CustomerRequestDate")
-    private Date ustomerRequestDate;
-	
-	@Column(name = "PromiseDate")
-    private Date promiseDate;
-	
-	
-	@Column(name = "FreightTerms",length = 50)
-    private String freightTerms;
-	
-	@Column(name = "CSR",length = 50)
-    private String csr;
-	
-	@Column(name = "PackingInstruction",length = 500)
-    private String packingInstruction;
-	
-	@Column(name = "ShippingInstructions",length = 500)
-    private String shippingInstructions;
-	
-	@Column(name = "InvoicelineInstruction",length = 500)
-    private String invoicelineInstruction;
-	
-	@Column(name = "DivisionforInterfaceERPORG",length = 10)
-    private String divisionforInterfaceERPORG;
-	
-	@Column(name = "BillToContact",length = 50)
-    private String billToContact; 
-	
-	@Column(name = "BillToTEL",length = 50)
-    private String billToTEL;
-	
-	@Column(name = "BillToFAX",length = 50)
-    private String billToFAX;
-	
-	@Column(name = "BillToEMAIL",length = 50)
-    private String billToEMAIL;
-	
-	
-	@Column(name = "SHIPTOContact",length = 50)
-    private String shipTOContact;
-	
-	@Column(name = "SHIPTOTEL",length = 50)
-    private String shipTOTEL;
-	
-	@Column(name = "SHIPTOFAX",length = 50)
-    private String shipTOFAX;
-	
-	@Column(name = "SHIPTOEMAIL",length = 50)
-    private String shipTOEMAIL;
-	
-	@Column(name = "Artworkhold",length = 5)
-    private String artworkhold;
-	
-	@Column(name = "Artworkworkattachment",length = 5)
-    private String artworkworkattachment;
-	
-	@Column(name = "VariableDataBreakdown",columnDefinition = "varchar(500)")
-    private String variableDataBreakdown;
-	
-	@Column(name = "Manufacturingnotes",columnDefinition = "varchar(500)")
-    private String manufacturingnotes;
-	
-	
-	@Column(name = "Ordertype",length = 50)
-    private String ordertype;
-	
-	@Column(name = "Orderby",length = 50)
-    private String orderby;
-	
-	@Column(name = "Endcustomer",length = 50)
-    private String endcustomer;
-	
-	@Column(name = "Shippingonlynotes",length = 500)
-    private String shippingonlynotes;
-	
-	@Column(name = "BankCharge",length = 10)
-    private String bankCharge;
-	
-	@Column(name = "FreightCharge",length = 10)
-    private String freightCharge;
-	
-	@Column(name = "Shippinghold",length = 5)
-    private String shippinghold; 
-	
-	@Column(name = "Productionhold",length = 5)
-    private String productionhold; 
-	
-	@Column(name = "Splitshipset",length = 5)
-    private String splitshipset; 
+	@Column(name = "division", length = 100)
+	String division;
+	@Column(name = "orderSource", length = 100)
+	String orderSource;
+	@Column(name = "systemUniqueId", length = 100)
+	String systemUniqueId;
+	@Column(name = "systemUniqueIdLineNo", length = 100)
+	String systemUniqueIdLineNo;
+	@Column(name = "soldToRboNumber", length = 100)
+	String soldToRboNumber;
+	@Column(name = "shippingMethod", length = 100)
+	String shippingMethod;
+	@Column(name = "customerPoNumber", length = 100)
+	String customerPoNumber;
+	@Column(name = "retailerPo_CustomerJob", length = 100)
+	String retailerPo_CustomerJob;
+	@Column(name = "itemDescription", length = 100)
+	String itemDescription;
+	@Column(name = "orderdedQty", length = 100)
+	String orderdedQty;
+	@Column(name = "dateOrdered")
+	Date dateOrdered;
+	@Column(name = "customerRequestDate")
+	Date customerRequestDate;
+	@Column(name = "promiseDate")
+	Date promiseDate;
+	@Column(name = "freightTerms", length = 100)
+	String freightTerms;
+	@Column(name = "csr", length = 100)
+	String csr;
+	@Column(name = "packingInstruction", length = 100)
+	String packingInstruction;
+	@Column(name = "shippingInstructions", length = 100)
+	String shippingInstructions;
+	@Column(name = "invoiceLineInstruction", length = 100)
+	String invoiceLineInstruction;
+	@Column(name = "divisionForInterfaceErporg", length = 10)
+	String divisionForInterfaceErporg;
+	@Column(name = "billToContact", length = 100)
+	String billToContact;
+	@Column(name = "billToTel", length = 50)
+	String billToTel;
+	@Column(name = "billToFax", length = 50)
+	String billToFax;
+	@Column(name = "billToEmail", length = 50)
+	String billToEmail;
+	@Column(name = "shipToContact", length = 50)
+	String shipToContact;
+	@Column(name = "shipToTel", length = 50)
+	String shipToTel;
+	@Column(name = "shipToFax", length = 50)
+	String shipToFax;
+	@Column(name = "shipToEmail", length = 50)
+	String shipToEmail;
+	@Column(name = "artworkHold", length = 100)
+	String artworkHold;
+	@Column(name = "artworkAttachment", length = 5)
+	String artworkAttachment;
+	@Column(name = "variableDataBreakdown", length = 100)
+	String variableDataBreakdown;
+	@Column(name = "manufacturingNotes", length = 100)
+	String manufacturingNotes;
+	@Column(name = "orderType", length = 100)
+	String orderType;
+	@Column(name = "orderBy", length = 100)
+	String orderBy;
+	@Column(name = "endCustomer", length = 100)
+	String endCustomer;
+	@Column(name = "shippingOnlyNotes", length = 100)
+	String shippingOnlyNotes;
+	@Column(name = "bankCharge", length = 100)
+	String bankCharge;
+	@Column(name = "freightCharge", length = 100)
+	String freightCharge;
+	@Column(name = "shippingHold", length = 100)
+	String shippingHold;
+	@Column(name = "productionHold", length = 100)
+	String productionHold;
+	@Column(name = "splitShipSet", length = 100)
+	String splitShipSet;
+	@Column(name = "agreement", length = 100)
+	String agreement;
+	@Column(name = "modelSerialNumber", length = 100)
+	String modelSerialNumber;
+	@Column(name = "waiveMOQ", length = 100)
+	String waiveMOQ;
+	@Column(name = "apoType", length = 100)
+	String apoType;
+	@Column(name = "atoValidationFlag",length=50)
+	String atoValidationFlag;
+	@Column(name = "bulkSampleValidationFlag",length=50)
+	String bulkSampleValidationFlag;// 250
+	@Column(name = "comment", length = 250)
+	String comment;// 250
+	@Column(name = "contractNumber", length = 50)
+	String contractNumber;// 50
+	@Column(name = "customerColorCode", length = 200)
+	String customerColorCode;// 200
+	@Column(name = "customerColorDescription", length = 50)
+	String customerColorDescription;
+	@Column(name = "customerCost", length = 50)
+	String customerCost;
+	@Column(name = "customerItemNumber", length = 50)
+	String customerItemNumber;
+	@Column(name = "customerItemNumber1", length = 50)
+	String customerItemNumber1;
+	@Column(name = "customerItemNumber2", length = 50)
+	String customerItemNumber2;
+	@Column(name = "customerOrderedQty", length = 50)
+	String customerOrderedQty;
+	@Column(name = "customerPoFlag", length = 50)
+	String customerPoFlag;
+	@Column(name = "customerSeason", length = 50)
+	String customerSeason;
+	@Column(name = "customerSize", length = 50)
+	String customerSize;
+	@Column(name = "customerUnitPrice", length = 50)
+	String customerUnitPrice;
+	@Column(name = "customerUom", length = 50)
+	String customerUom;
+	@Column(name = "duplicatePoFlag",length=50)
+	String duplicatePOFlag;// 250
+	@Column(name = "grpedOlid", length = 1000)
+	String grpedOLID;// 1000
+	@Column(name = "htlSizePageValidationFlag",length=50)
+	String htlSizePageValidationFlag;// 250
+	@Column(name = "mandatoryVariableDataFieldFlag", length = 50)
+	String mandatoryVariableDataFieldFlag;
+	@Column(name = "moqValidationFlag", length = 50)
+	String moqValidationFlag;
+	@Column(name = "oracleBillToSiteNumber", length = 100)
+	String oracleBillToSiteNumber;// 100
+	@Column(name = "oracleExportId")
+	int oracleExportId;
+	@Column(name = "oracleItemNumber", length = 100)
+	String oracleItemNumber;// 100
+	@Column(name = "oracleShipToSiteNumber", length = 100)
+	String oracleShipToSiteNumber;// 100
+	@Column(name = "sentToOracleDate")
+	Date sentToOracleDate;
+	@Column(name = "system_Status",length=2000)
+	String system_Status;
+	@Column(name = "status",length=2000)
+	String status;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "orderLineId")
+//	OrderLine varOrderLine;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "orderQueueId")
+	OrderQueue varOrderFileQueue;
+//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "partnerId")
+//	Partner varPartner;
+//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "rboId")
+//	RBO varRbo;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "varSalesOrderLine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<SalesOrderDetail> listSalesOrderDetails=new ArrayList<SalesOrderDetail>();
+	
+	public SalesOrder() {}
 
-	@Column(name = "Agreement",length = 50)
-    private String agreement; 
-	
-	@Column(name = "ModelSerialNumber",length = 50)
-    private String modelSerialNumber; 
-	
-	@Column(name = "WaiveMOQ",length = 5)
-    private String waiveMOQ; 
-	
-	@Column(name = "APOType",length = 5)
-    private String apoType; 
-	
-	@Column(name = "SentToOracleDate")
-    private Date sentToOracleDate; 
-	
-	@Column(name = "Status",length = 2000)
-    private String status; 
-	
-	@Column(name = "DuplicatePOFlag",length = 250)
-    private String duplicatePOFlag; 
 
-	@Column(name = "CustomerPOFlag",length = 250)
-    private String customerPOFlag; 
-	
-	@Column(name = "BulkSampleValidationFlag",length = 250)
-    private String bulkSampleValidationFlag; 
-	
-	@Column(name = "MOQValidationFlag",length = 250)
-    private String moqValidationFlag; 
-	
-	@Column(name = "ATOValidationFlag",length = 250)
-    private String atoValidationFlag; 
-	
-	@Column(name = "MandatoryVariableDataFieldFlag",length = 250)
-    private String mandatoryVariableDataFieldFlag; 
-	
-	@Column(name = "HTLSizePageValidationFlag",length = 250)
-    private String htlSizePageValidationFlag; 
-	
-	@Column(name = "System_Status",length = 2000)
-    private String systemstatus; 
-	
-	@Column(name = "GrpedOLID",columnDefinition = "varchar(1000)")
-    private String grpedOLID;
-	
-	
-	/*@OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<SalesOrderDetail> salesOrderDetail;*/
-	
-	public String getGrpedOLID() {
-		return grpedOLID;
+	public SalesOrder(String division, String orderSource) {
+		division = division;
+		orderSource = orderSource;
 	}
-
-	public void setGrpedOLID(String grpedOLID) {
-		this.grpedOLID = grpedOLID;
-	}
-	@Fetch(FetchMode.SELECT)
-	@OneToMany(mappedBy = "salesOrderForVariableData", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<SalesOrderDetail> salesOrderDetail;
-
-
-	public Set<SalesOrderDetail> getSalesOrderDetail() {
-		return salesOrderDetail;
-	}
-
-	public void setSalesOrderDetail(Set<SalesOrderDetail> salesOrderDetail) {
-	this.salesOrderDetail = salesOrderDetail;
-	}
-
-	public Long getOrderQueueID() {
-		return orderQueueID;
-	}
-
-	public void setOrderQueueID(Long orderQueueID) {
-		this.orderQueueID = orderQueueID;
-	}
-
-	public int getOrderFileAttchmentID() {
-		return orderFileAttchmentID;
-	}
-
-	public void setOrderFileAttchmentID(int orderFileAttchmentID) {
-		this.orderFileAttchmentID = orderFileAttchmentID;
-	}
-
-	public String getPartnerID() {
-		return partnerID;
-	}
-
-	public void setPartnerID(String partnerID) {
-		this.partnerID = partnerID;
-	}
-
-	public String getRboID() {
-		return rboID;
-	}
-
-	public void setRboID(String rboID) {
-		this.rboID = rboID;
-	}
-
-	public String getProductLineType() {
-		return productLineType;
-	}
-
-	public void setProductLineType(String productLineType) {
-		this.productLineType = productLineType;
-	}
-
-	public Integer getOracleExportID() {
-		return oracleExportID;
-	}
-
-	public void setOracleExportID(Integer oracleExportID) {
-		this.oracleExportID = oracleExportID;
-	}
+	
 
 	public String getDivision() {
 		return division;
 	}
 
+
 	public void setDivision(String division) {
 		this.division = division;
 	}
+
 
 	public String getOrderSource() {
 		return orderSource;
 	}
 
+
 	public void setOrderSource(String orderSource) {
 		this.orderSource = orderSource;
 	}
 
-	public String getSystemUniqueID() {
-		return systemUniqueID;
+
+	public String getSystemUniqueId() {
+		return systemUniqueId;
 	}
 
-	public void setSystemUniqueID(String systemUniqueID) {
-		this.systemUniqueID = systemUniqueID;
+
+	public void setSystemUniqueId(String systemUniqueId) {
+		this.systemUniqueId = systemUniqueId;
 	}
 
-	public String getSystemUniqueIDLineNo() {
-		return systemUniqueIDLineNo;
+
+	public String getSystemUniqueIdLineNo() {
+		return systemUniqueIdLineNo;
 	}
 
-	public void setSystemUniqueIDLineNo(String systemUniqueIDLineNo) {
-		this.systemUniqueIDLineNo = systemUniqueIDLineNo;
+
+	public void setSystemUniqueIdLineNo(String systemUniqueIdLineNo) {
+		this.systemUniqueIdLineNo = systemUniqueIdLineNo;
 	}
 
-	public String getSoldTORBONumber() {
-		return soldTORBONumber;
+
+	public String getSoldToRboNumber() {
+		return soldToRboNumber;
 	}
 
-	public void setSoldTORBONumber(String soldTORBONumber) {
-		this.soldTORBONumber = soldTORBONumber;
+
+	public void setSoldToRboNumber(String soldToRboNumber) {
+		this.soldToRboNumber = soldToRboNumber;
 	}
 
-	public String getOracleBilltoSiteNumber() {
-		return oracleBilltoSiteNumber;
-	}
-
-	public void setOracleBilltoSiteNumber(String oracleBilltoSiteNumber) {
-		this.oracleBilltoSiteNumber = oracleBilltoSiteNumber;
-	}
-
-	public String getOracleShiptoSiteNumber() {
-		return oracleShiptoSiteNumber;
-	}
-
-	public void setOracleShiptoSiteNumber(String oracleShiptoSiteNumber) {
-		this.oracleShiptoSiteNumber = oracleShiptoSiteNumber;
-	}
 
 	public String getShippingMethod() {
 		return shippingMethod;
 	}
 
+
 	public void setShippingMethod(String shippingMethod) {
 		this.shippingMethod = shippingMethod;
 	}
 
-	public String getCustomerPONumber() {
-		return customerPONumber;
+
+	public String getCustomerPoNumber() {
+		return customerPoNumber;
 	}
 
-	public void setCustomerPONumber(String customerPONumber) {
-		this.customerPONumber = customerPONumber;
+
+	public void setCustomerPoNumber(String customerPoNumber) {
+		this.customerPoNumber = customerPoNumber;
 	}
 
-	public String getRetailerPO_CustomerJob() {
-		return retailerPO_CustomerJob;
+
+	public String getRetailerPo_CustomerJob() {
+		return retailerPo_CustomerJob;
 	}
 
-	public void setRetailerPO_CustomerJob(String retailerPO_CustomerJob) {
-		this.retailerPO_CustomerJob = retailerPO_CustomerJob;
+
+	public void setRetailerPo_CustomerJob(String retailerPo_CustomerJob) {
+		this.retailerPo_CustomerJob = retailerPo_CustomerJob;
 	}
 
-	public String getOracleItemNumber() {
-		return oracleItemNumber;
-	}
-
-	public void setOracleItemNumber(String oracleItemNumber) {
-		this.oracleItemNumber = oracleItemNumber;
-	}
-
-	public String getCustomerItemNumber() {
-		return customerItemNumber;
-	}
-
-	public void setCustomerItemNumber(String customerItemNumber) {
-		this.customerItemNumber = customerItemNumber;
-	}
 
 	public String getItemDescription() {
 		return itemDescription;
 	}
 
+
 	public void setItemDescription(String itemDescription) {
 		this.itemDescription = itemDescription;
 	}
 
-	public String getCustomerColorCode() {
-		return customerColorCode;
-	}
-
-	public void setCustomerColorCode(String customerColorCode) {
-		this.customerColorCode = customerColorCode;
-	}
-
-	public String getCustomerColorDescription() {
-		return customerColorDescription;
-	}
-
-	public void setCustomerColorDescription(String customerColorDescription) {
-		this.customerColorDescription = customerColorDescription;
-	}
-
-	public String getCustomerSize() {
-		return customerSize;
-	}
-
-	public void setCustomerSize(String customerSize) {
-		this.customerSize = customerSize;
-	}
-
-	public String getCustomerUnitPrice() {
-		return customerUnitPrice;
-	}
-
-	public void setCustomerUnitPrice(String customerUnitPrice) {
-		this.customerUnitPrice = customerUnitPrice;
-	}
-
-	public String getCustomerCost() {
-		return customerCost;
-	}
-
-	public void setCustomerCost(String customerCost) {
-		this.customerCost = customerCost;
-	}
-
-	public String getContractNumber() {
-		return contractNumber;
-	}
-
-	public void setContractNumber(String contractNumber) {
-		this.contractNumber = contractNumber;
-	}
-
-	public String getStyle() {
-		return style;
-	}
-
-	public void setStyle(String style) {
-		this.style = style;
-	}
-
-	public String getCustomerItemNumber1() {
-		return customerItemNumber1;
-	}
-
-	public void setCustomerItemNumber1(String customerItemNumber1) {
-		this.customerItemNumber1 = customerItemNumber1;
-	}
-
-	public String getCustomerItemNumber2() {
-		return customerItemNumber2;
-	}
-
-	public void setCustomerItemNumber2(String customerItemNumber2) {
-		this.customerItemNumber2 = customerItemNumber2;
-	}
-
-	public String getCustomerSeason() {
-		return customerSeason;
-	}
-
-	public void setCustomerSeason(String customerSeason) {
-		this.customerSeason = customerSeason;
-	}
-
-	public String getCustomerUOM() {
-		return customerUOM;
-	}
-
-	public void setCustomerUOM(String customerUOM) {
-		this.customerUOM = customerUOM;
-	}
-
-	public String getCustomerOrderedQty() {
-		return customerOrderedQty;
-	}
-
-	public void setCustomerOrderedQty(String customerOrderedQty) {
-		this.customerOrderedQty = customerOrderedQty;
-	}
 
 	public String getOrderdedQty() {
 		return orderdedQty;
 	}
 
+
 	public void setOrderdedQty(String orderdedQty) {
 		this.orderdedQty = orderdedQty;
 	}
+
 
 	public Date getDateOrdered() {
 		return dateOrdered;
 	}
 
+
 	public void setDateOrdered(Date dateOrdered) {
 		this.dateOrdered = dateOrdered;
 	}
 
-	public Date getUstomerRequestDate() {
-		return ustomerRequestDate;
+
+	public Date getCustomerRequestDate() {
+		return customerRequestDate;
 	}
 
-	public void setUstomerRequestDate(Date ustomerRequestDate) {
-		this.ustomerRequestDate = ustomerRequestDate;
+
+	public void setCustomerRequestDate(Date customerRequestDate) {
+		this.customerRequestDate = customerRequestDate;
 	}
+
 
 	public Date getPromiseDate() {
 		return promiseDate;
 	}
 
+
 	public void setPromiseDate(Date promiseDate) {
 		this.promiseDate = promiseDate;
 	}
+
 
 	public String getFreightTerms() {
 		return freightTerms;
 	}
 
+
 	public void setFreightTerms(String freightTerms) {
 		this.freightTerms = freightTerms;
 	}
+
 
 	public String getCsr() {
 		return csr;
 	}
 
+
 	public void setCsr(String csr) {
 		this.csr = csr;
 	}
+
 
 	public String getPackingInstruction() {
 		return packingInstruction;
 	}
 
+
 	public void setPackingInstruction(String packingInstruction) {
 		this.packingInstruction = packingInstruction;
 	}
+
 
 	public String getShippingInstructions() {
 		return shippingInstructions;
 	}
 
+
 	public void setShippingInstructions(String shippingInstructions) {
 		this.shippingInstructions = shippingInstructions;
 	}
 
-	public String getInvoicelineInstruction() {
-		return invoicelineInstruction;
+
+	public String getInvoiceLineInstruction() {
+		return invoiceLineInstruction;
 	}
 
-	public void setInvoicelineInstruction(String invoicelineInstruction) {
-		this.invoicelineInstruction = invoicelineInstruction;
+
+	public void setInvoiceLineInstruction(String invoiceLineInstruction) {
+		this.invoiceLineInstruction = invoiceLineInstruction;
 	}
 
-	public String getDivisionforInterfaceERPORG() {
-		return divisionforInterfaceERPORG;
+
+	public String getDivisionForInterfaceErporg() {
+		return divisionForInterfaceErporg;
 	}
 
-	public void setDivisionforInterfaceERPORG(String divisionforInterfaceERPORG) {
-		this.divisionforInterfaceERPORG = divisionforInterfaceERPORG;
+
+	public void setDivisionForInterfaceErporg(String divisionForInterfaceErporg) {
+		this.divisionForInterfaceErporg = divisionForInterfaceErporg;
 	}
+
 
 	public String getBillToContact() {
 		return billToContact;
 	}
 
+
 	public void setBillToContact(String billToContact) {
 		this.billToContact = billToContact;
 	}
 
-	public String getBillToTEL() {
-		return billToTEL;
+
+	public String getBillToTel() {
+		return billToTel;
 	}
 
-	public void setBillToTEL(String billToTEL) {
-		this.billToTEL = billToTEL;
+
+	public void setBillToTel(String billToTel) {
+		this.billToTel = billToTel;
 	}
 
-	public String getBillToFAX() {
-		return billToFAX;
+
+	public String getBillToFax() {
+		return billToFax;
 	}
 
-	public void setBillToFAX(String billToFAX) {
-		this.billToFAX = billToFAX;
+
+	public void setBillToFax(String billToFax) {
+		this.billToFax = billToFax;
 	}
 
-	public String getBillToEMAIL() {
-		return billToEMAIL;
+
+	public String getBillToEmail() {
+		return billToEmail;
 	}
 
-	public void setBillToEMAIL(String billToEMAIL) {
-		this.billToEMAIL = billToEMAIL;
+
+	public void setBillToEmail(String billToEmail) {
+		this.billToEmail = billToEmail;
 	}
 
-	public String getShipTOContact() {
-		return shipTOContact;
+
+	public String getShipToContact() {
+		return shipToContact;
 	}
 
-	public void setShipTOContact(String shipTOContact) {
-		this.shipTOContact = shipTOContact;
+
+	public void setShipToContact(String shipToContact) {
+		this.shipToContact = shipToContact;
 	}
 
-	public String getShipTOTEL() {
-		return shipTOTEL;
+
+	public String getShipToTel() {
+		return shipToTel;
 	}
 
-	public void setShipTOTEL(String shipTOTEL) {
-		this.shipTOTEL = shipTOTEL;
+
+	public void setShipToTel(String shipToTel) {
+		this.shipToTel = shipToTel;
 	}
 
-	public String getShipTOFAX() {
-		return shipTOFAX;
+
+	public String getShipToFax() {
+		return shipToFax;
 	}
 
-	public void setShipTOFAX(String shipTOFAX) {
-		this.shipTOFAX = shipTOFAX;
+
+	public void setShipToFax(String shipToFax) {
+		this.shipToFax = shipToFax;
 	}
 
-	public String getShipTOEMAIL() {
-		return shipTOEMAIL;
+
+	public String getShipToEmail() {
+		return shipToEmail;
 	}
 
-	public void setShipTOEMAIL(String shipTOEMAIL) {
-		this.shipTOEMAIL = shipTOEMAIL;
+
+	public void setShipToEmail(String shipToEmail) {
+		this.shipToEmail = shipToEmail;
 	}
 
-	public String getArtworkhold() {
-		return artworkhold;
+
+	public String getArtworkHold() {
+		return artworkHold;
 	}
 
-	public void setArtworkhold(String artworkhold) {
-		this.artworkhold = artworkhold;
+
+	public void setArtworkHold(String artworkHold) {
+		this.artworkHold = artworkHold;
 	}
 
-	public String getArtworkworkattachment() {
-		return artworkworkattachment;
+
+	public String getArtworkAttachment() {
+		return artworkAttachment;
 	}
 
-	public void setArtworkworkattachment(String artworkworkattachment) {
-		this.artworkworkattachment = artworkworkattachment;
+
+	public void setArtworkAttachment(String artworkAttachment) {
+		this.artworkAttachment = artworkAttachment;
 	}
+
 
 	public String getVariableDataBreakdown() {
 		return variableDataBreakdown;
 	}
 
+
 	public void setVariableDataBreakdown(String variableDataBreakdown) {
 		this.variableDataBreakdown = variableDataBreakdown;
 	}
 
-	public String getManufacturingnotes() {
-		return manufacturingnotes;
+
+	public String getManufacturingNotes() {
+		return manufacturingNotes;
 	}
 
-	public void setManufacturingnotes(String manufacturingnotes) {
-		this.manufacturingnotes = manufacturingnotes;
+
+	public void setManufacturingNotes(String manufacturingNotes) {
+		this.manufacturingNotes = manufacturingNotes;
 	}
 
-	public String getOrdertype() {
-		return ordertype;
+
+	public String getOrderType() {
+		return orderType;
 	}
 
-	public void setOrdertype(String ordertype) {
-		this.ordertype = ordertype;
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
 	}
 
-	public String getOrderby() {
-		return orderby;
+
+	public String getOrderBy() {
+		return orderBy;
 	}
 
-	public void setOrderby(String orderby) {
-		this.orderby = orderby;
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
-	public String getEndcustomer() {
-		return endcustomer;
+
+	public String getEndCustomer() {
+		return endCustomer;
 	}
 
-	public void setEndcustomer(String endcustomer) {
-		this.endcustomer = endcustomer;
+
+	public void setEndCustomer(String endCustomer) {
+		this.endCustomer = endCustomer;
 	}
 
-	public String getShippingonlynotes() {
-		return shippingonlynotes;
+
+	public String getShippingOnlyNotes() {
+		return shippingOnlyNotes;
 	}
 
-	public void setShippingonlynotes(String shippingonlynotes) {
-		this.shippingonlynotes = shippingonlynotes;
+
+	public void setShippingOnlyNotes(String shippingOnlyNotes) {
+		this.shippingOnlyNotes = shippingOnlyNotes;
 	}
+
 
 	public String getBankCharge() {
 		return bankCharge;
 	}
 
+
 	public void setBankCharge(String bankCharge) {
 		this.bankCharge = bankCharge;
 	}
+
 
 	public String getFreightCharge() {
 		return freightCharge;
 	}
 
+
 	public void setFreightCharge(String freightCharge) {
 		this.freightCharge = freightCharge;
 	}
 
-	public String getShippinghold() {
-		return shippinghold;
+
+	public String getShippingHold() {
+		return shippingHold;
 	}
 
-	public void setShippinghold(String shippinghold) {
-		this.shippinghold = shippinghold;
+
+	public void setShippingHold(String shippingHold) {
+		this.shippingHold = shippingHold;
 	}
 
-	public String getProductionhold() {
-		return productionhold;
+
+	public String getProductionHold() {
+		return productionHold;
 	}
 
-	public void setProductionhold(String productionhold) {
-		this.productionhold = productionhold;
+
+	public void setProductionHold(String productionHold) {
+		this.productionHold = productionHold;
 	}
 
-	public String getSplitshipset() {
-		return splitshipset;
+
+	public String getSplitShipSet() {
+		return splitShipSet;
 	}
 
-	public void setSplitshipset(String splitshipset) {
-		this.splitshipset = splitshipset;
+
+	public void setSplitShipSet(String splitShipSet) {
+		this.splitShipSet = splitShipSet;
 	}
+
 
 	public String getAgreement() {
 		return agreement;
 	}
 
+
 	public void setAgreement(String agreement) {
 		this.agreement = agreement;
 	}
+
 
 	public String getModelSerialNumber() {
 		return modelSerialNumber;
 	}
 
+
 	public void setModelSerialNumber(String modelSerialNumber) {
 		this.modelSerialNumber = modelSerialNumber;
 	}
+
 
 	public String getWaiveMOQ() {
 		return waiveMOQ;
 	}
 
+
 	public void setWaiveMOQ(String waiveMOQ) {
 		this.waiveMOQ = waiveMOQ;
 	}
+
 
 	public String getApoType() {
 		return apoType;
 	}
 
+
 	public void setApoType(String apoType) {
 		this.apoType = apoType;
 	}
 
-	public Date getSentToOracleDate() {
-		return sentToOracleDate;
-	}
-
-	public void setSentToOracleDate(Date sentToOracleDate) {
-		this.sentToOracleDate = sentToOracleDate;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getDuplicatePOFlag() {
-		return duplicatePOFlag;
-	}
-
-	public void setDuplicatePOFlag(String duplicatePOFlag) {
-		this.duplicatePOFlag = duplicatePOFlag;
-	}
-
-	public String getCustomerPOFlag() {
-		return customerPOFlag;
-	}
-
-	public void setCustomerPOFlag(String customerPOFlag) {
-		this.customerPOFlag = customerPOFlag;
-	}
-
-	public String getBulkSampleValidationFlag() {
-		return bulkSampleValidationFlag;
-	}
-
-	public void setBulkSampleValidationFlag(String bulkSampleValidationFlag) {
-		this.bulkSampleValidationFlag = bulkSampleValidationFlag;
-	}
-
-	public String getMoqValidationFlag() {
-		return moqValidationFlag;
-	}
-
-	public void setMoqValidationFlag(String moqValidationFlag) {
-		this.moqValidationFlag = moqValidationFlag;
-	}
 
 	public String getAtoValidationFlag() {
 		return atoValidationFlag;
 	}
 
+
 	public void setAtoValidationFlag(String atoValidationFlag) {
 		this.atoValidationFlag = atoValidationFlag;
 	}
 
-	public String getMandatoryVariableDataFieldFlag() {
-		return mandatoryVariableDataFieldFlag;
+
+	public String getBulkSampleValidationFlag() {
+		return bulkSampleValidationFlag;
 	}
 
-	public void setMandatoryVariableDataFieldFlag(
-			String mandatoryVariableDataFieldFlag) {
-		this.mandatoryVariableDataFieldFlag = mandatoryVariableDataFieldFlag;
+
+	public void setBulkSampleValidationFlag(String bulkSampleValidationFlag) {
+		this.bulkSampleValidationFlag = bulkSampleValidationFlag;
 	}
+
+
+	public String getComment() {
+		return comment;
+	}
+
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+
+	public String getContractNumber() {
+		return contractNumber;
+	}
+
+
+	public void setContractNumber(String contractNumber) {
+		this.contractNumber = contractNumber;
+	}
+
+
+	public String getCustomerColorCode() {
+		return customerColorCode;
+	}
+
+
+	public void setCustomerColorCode(String customerColorCode) {
+		this.customerColorCode = customerColorCode;
+	}
+
+
+	public String getCustomerColorDescription() {
+		return customerColorDescription;
+	}
+
+
+	public void setCustomerColorDescription(String customerColorDescription) {
+		this.customerColorDescription = customerColorDescription;
+	}
+
+
+	public String getCustomerCost() {
+		return customerCost;
+	}
+
+
+	public void setCustomerCost(String customerCost) {
+		this.customerCost = customerCost;
+	}
+
+
+	public String getCustomerItemNumber() {
+		return customerItemNumber;
+	}
+
+
+	public void setCustomerItemNumber(String customerItemNumber) {
+		this.customerItemNumber = customerItemNumber;
+	}
+
+
+	public String getCustomerItemNumber1() {
+		return customerItemNumber1;
+	}
+
+
+	public void setCustomerItemNumber1(String customerItemNumber1) {
+		this.customerItemNumber1 = customerItemNumber1;
+	}
+
+
+	public String getCustomerItemNumber2() {
+		return customerItemNumber2;
+	}
+
+
+	public void setCustomerItemNumber2(String customerItemNumber2) {
+		this.customerItemNumber2 = customerItemNumber2;
+	}
+
+
+	public String getCustomerOrderedQty() {
+		return customerOrderedQty;
+	}
+
+
+	public void setCustomerOrderedQty(String customerOrderedQty) {
+		this.customerOrderedQty = customerOrderedQty;
+	}
+
+
+	public String getCustomerPoFlag() {
+		return customerPoFlag;
+	}
+
+
+	public void setCustomerPoFlag(String customerPoFlag) {
+		this.customerPoFlag = customerPoFlag;
+	}
+
+
+	public String getCustomerSeason() {
+		return customerSeason;
+	}
+
+
+	public void setCustomerSeason(String customerSeason) {
+		this.customerSeason = customerSeason;
+	}
+
+
+	public String getCustomerSize() {
+		return customerSize;
+	}
+
+
+	public void setCustomerSize(String customerSize) {
+		this.customerSize = customerSize;
+	}
+
+
+	public String getCustomerUnitPrice() {
+		return customerUnitPrice;
+	}
+
+
+	public void setCustomerUnitPrice(String customerUnitPrice) {
+		this.customerUnitPrice = customerUnitPrice;
+	}
+
+
+	public String getCustomerUom() {
+		return customerUom;
+	}
+
+
+	public void setCustomerUom(String customerUom) {
+		this.customerUom = customerUom;
+	}
+
+
+	public String getDuplicatePOFlag() {
+		return duplicatePOFlag;
+	}
+
+
+	public void setDuplicatePOFlag(String duplicatePOFlag) {
+		this.duplicatePOFlag = duplicatePOFlag;
+	}
+
+
+	public String getGrpedOLID() {
+		return grpedOLID;
+	}
+
+
+	public void setGrpedOLID(String grpedOLID) {
+		this.grpedOLID = grpedOLID;
+	}
+
 
 	public String getHtlSizePageValidationFlag() {
 		return htlSizePageValidationFlag;
 	}
 
+
 	public void setHtlSizePageValidationFlag(String htlSizePageValidationFlag) {
 		this.htlSizePageValidationFlag = htlSizePageValidationFlag;
 	}
 
-	public String getSystemstatus() {
-		return systemstatus;
+
+	public String getMandatoryVariableDataFieldFlag() {
+		return mandatoryVariableDataFieldFlag;
 	}
 
-	public void setSystemstatus(String systemstatus) {
-		this.systemstatus = systemstatus;
+
+	public void setMandatoryVariableDataFieldFlag(String mandatoryVariableDataFieldFlag) {
+		this.mandatoryVariableDataFieldFlag = mandatoryVariableDataFieldFlag;
 	}
+
+
+	public String getMoqValidationFlag() {
+		return moqValidationFlag;
+	}
+
+
+	public void setMoqValidationFlag(String moqValidationFlag) {
+		this.moqValidationFlag = moqValidationFlag;
+	}
+
+
+	public String getOracleBillToSiteNumber() {
+		return oracleBillToSiteNumber;
+	}
+
+
+	public void setOracleBillToSiteNumber(String oracleBillToSiteNumber) {
+		this.oracleBillToSiteNumber = oracleBillToSiteNumber;
+	}
+
+
+	public int getOracleExportId() {
+		return oracleExportId;
+	}
+
+
+	public void setOracleExportId(int oracleExportId) {
+		this.oracleExportId = oracleExportId;
+	}
+
+
+	public String getOracleItemNumber() {
+		return oracleItemNumber;
+	}
+
+
+	public void setOracleItemNumber(String oracleItemNumber) {
+		this.oracleItemNumber = oracleItemNumber;
+	}
+
+
+	public String getOracleShipToSiteNumber() {
+		return oracleShipToSiteNumber;
+	}
+
+
+	public void setOracleShipToSiteNumber(String oracleShipToSiteNumber) {
+		this.oracleShipToSiteNumber = oracleShipToSiteNumber;
+	}
+
+
+	public Date getSentToOracleDate() {
+		return sentToOracleDate;
+	}
+
+
+	public void setSentToOracleDate(Date sentToOracleDate) {
+		this.sentToOracleDate = sentToOracleDate;
+	}
+
+
+	public String getSystem_Status() {
+		return system_Status;
+	}
+
+
+	public void setSystem_Status(String system_Status) {
+		this.system_Status = system_Status;
+	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+//	public OrderLine getVarOrderLine() {
+//		return varOrderLine;
+//	}
+//
+//
+//	public void setVarOrderLine(OrderLine varOrderLine) {
+//		this.varOrderLine = varOrderLine;
+//	}
+
+
+	public OrderQueue getVarOrderFileQueue() {
+		return varOrderFileQueue;
+	}
+
+
+	public void setVarOrderFileQueue(OrderQueue varOrderFileQueue) {
+		this.varOrderFileQueue = varOrderFileQueue;
+	}
+
+
+//	public Partner getVarPartner() {
+//		return varPartner;
+//	}
+//
+//
+//	public void setVarPartner(Partner varPartner) {
+//		this.varPartner = varPartner;
+//	}
+//
+//
+//	public RBO getVarRbo() {
+//		return varRbo;
+//	}
+//
+//
+//	public void setVarRbo(RBO varRbo) {
+//		this.varRbo = varRbo;
+//	}
+
+
+	public List<SalesOrderDetail> getListSalesOrderDetails() {
+		return listSalesOrderDetails;
+	}
+
+
+	public void setListSalesOrderDetails(List<SalesOrderDetail> listSalesOrderDetails) {
+		this.listSalesOrderDetails = listSalesOrderDetails;
+	}
+
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
