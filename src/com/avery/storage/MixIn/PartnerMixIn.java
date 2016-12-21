@@ -2,16 +2,12 @@ package com.avery.storage.MixIn;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
-
-
-
-
-
-
 import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.ProductLine;
+import com.avery.storage.entities.SalesOrder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class PartnerMixIn {
@@ -40,5 +36,10 @@ public abstract class PartnerMixIn {
 	@JsonIgnore
 	public abstract Boolean isActive() ;
 	
+	@JsonIgnore
+	public abstract List<ProductLine> getVarProductLine();
+	
+	@JsonIgnore
+	public abstract List<SalesOrder> getListSalesOrderLine();	
 	
 }
