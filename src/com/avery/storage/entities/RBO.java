@@ -19,99 +19,67 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.avery.storage.MainAbstractEntity;
+
 @Entity
 @Table(name = "rbo")
-public class RBO {
+public class RBO extends MainAbstractEntity{
+	
+	
+	public RBO() {
+		
+	}
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id",nullable=false)
-	int ID;
-	@Column(name = "RBOName", length = 250)
-	String RBOName;
+	@Column(name = "rboName", length = 250)
+	String rboName;
 	@Column(name = "comment", length = 250)
 	String comment;
-	@Column(name = "createdBy", length = 50)
-	String createdBy;
-	@Column(name = "createdDate")
-	Date createdDate;
-	@Column(name = "lastModifiedBy", length = 50)
-	String lastModifiedBy;
-	@Column(name = "lastModifiedDate")
-	Date lastModifiedDate;
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy = "varRbo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<ProductLine> varProductLine = new ArrayList<ProductLine>();
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy = "varRbo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<SalesOrderLine> varSalesOrderLine = new ArrayList<SalesOrderLine>();
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy = "varRbo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	List<ProductLine> listProductLine = new ArrayList<ProductLine>();
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy = "varRbo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
 	
-	
-	public RBO() {}
-	
-	public RBO(int iD, String rBOName) {
+	public RBO(int id, String rboName) {
 		super();
-		ID = iD;
-		RBOName = rBOName;
+		id = id;
+		rboName = rboName;
 	}
-	public int getID() {
-		return ID;
+
+	public String getRboName() {
+		return rboName;
 	}
-	public void setID(int iD) {
-		ID = iD;
+
+	public void setRboName(String rboName) {
+		this.rboName = rboName;
 	}
-	public String getRBOName() {
-		return RBOName;
-	}
-	public void setRBOName(String rBOName) {
-		RBOName = rBOName;
-	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
 
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	public List<ProductLine> getVarProductLine() {
-		return varProductLine;
-	}
-	public void setVarProductLine(List<ProductLine> varProductLine) {
-		this.varProductLine = varProductLine;
-	}
-	public List<SalesOrderLine> getVarSalesOrderLine() {
-		return varSalesOrderLine;
-	}
-	public void setVarSalesOrderLine(List<SalesOrderLine> varSalesOrderLine) {
-		this.varSalesOrderLine = varSalesOrderLine;
-	}
-	
+//	public List<ProductLine> getListProductLine() {
+//		return listProductLine;
+//	}
+//
+//	public void setListProductLine(List<ProductLine> listProductLine) {
+//		this.listProductLine = listProductLine;
+//	}
+//
+//	public List<SalesOrder> getListSalesOrderLine() {
+//		return listSalesOrderLine;
+//	}
+//
+//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
+//		this.listSalesOrderLine = listSalesOrderLine;
+//	}
+//	
+//	
 	
 	
 
