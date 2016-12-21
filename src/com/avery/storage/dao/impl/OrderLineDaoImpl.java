@@ -122,7 +122,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		if(!address.equals("")){
 			Session session = getSessionFactory().getCurrentSession();
 			Address adrObj=new Address();
-			adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
+			//adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
 			adrObj.setAddress1(orderLine.getShipToAddress1());
 			adrObj.setAddress2(orderLine.getShipToAddress2());
 			adrObj.setAddress3(orderLine.getShipToAddress3());
@@ -133,20 +133,20 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setPhone1(orderLine.getShipToTelephone());
 			adrObj.setEmail(orderLine.getShipToEmail());
 			adrObj.setContact(orderLine.getShipToContact());
-			adrObj.setShippingMethod(orderLine.getShippingMethod());
-			adrObj.setFreightTerms(orderLine.getFreightTerms());
-			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			//adrObj.setShippingMethod(orderLine.getShippingMethod());
+			//adrObj.setFreightTerms(orderLine.getFreightTerms());
+			//adrObj.setShippingInstructions(orderLine.getShippingInstructions());
 			adrObj.setDescription("Inserted By Adeptia");
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
 			adrObj.setSiteType("S");
-			adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+			//adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
 			Partner partnerObj=new Partner();
 			Long partnerId=0L;
-			if(orderLine.getPartnerID()!=null)
+			/*if(orderLine.getPartnerID()!=null)
 				partnerId=Long.parseLong(orderLine.getPartnerID());
-			partnerObj.setId(partnerId);
-			adrObj.setPartner(partnerObj);
+			*/partnerObj.setId(partnerId);
+			//adrObj.setPartner(partnerObj);
 			session.save(adrObj);
 		}
 	}
@@ -157,7 +157,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		if(!address.equals("")){
 			Session session = getSessionFactory().getCurrentSession();
 			Address adrObj=new Address();
-			adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
+			//adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
 			adrObj.setAddress1(billToAddress1);
 			adrObj.setAddress2(billToAddress2);
 			adrObj.setAddress3(orderLine.getBillToAddress3());
@@ -168,20 +168,20 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setPhone1(orderLine.getBillToTelephone());
 			adrObj.setEmail(orderLine.getBillToEmail());
 			adrObj.setContact(orderLine.getBillToContact());
-			adrObj.setShippingMethod(orderLine.getShippingMethod());
-			adrObj.setFreightTerms(orderLine.getFreightTerms());
-			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			//adrObj.setShippingMethod(orderLine.getShippingMethod());
+			//adrObj.setFreightTerms(orderLine.getFreightTerms());
+			//adrObj.setShippingInstructions(orderLine.getShippingInstructions());
 			adrObj.setDescription("Inserted By Adeptia");
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
-			adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+			//adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
 			adrObj.setSiteType("B");
 			Partner partnerObj=new Partner();
 			Long partnerId=0L;
-			if(orderLine.getPartnerID()!=null)
+			/*if(orderLine.getPartnerID()!=null)
 				partnerId=Long.parseLong(orderLine.getPartnerID());
-			partnerObj.setId(partnerId);
-			adrObj.setPartner(partnerObj);
+			*/partnerObj.setId(partnerId);
+			//adrObj.setPartner(partnerObj);
 			session.save(adrObj);
 		}
 	}
