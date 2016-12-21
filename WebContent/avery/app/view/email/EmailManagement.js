@@ -17,8 +17,22 @@ Ext.define('AOC.view.email.EmailManagement',{
 				hidden:false,
     			items:[{
     				xtype:'emailmanagementgrid',
-					CartId:1
-    			}]
+    				CartId:1,
+    				itemId:'EmailMangementitemId'
+    			},
+    			{
+    				xtype:'viewmail',
+    				CartId:1,
+					itemId: 'viewMailItemId'
+					
+    			},
+    			{
+    				xtype:'orderqueuegrid',
+					CartId:1,
+					itemId: 'EmailOrderQueueGridItemId'
+					
+    			}
+    			]
     		}]
 	 	});
 	 	this.callParent(arguments);
