@@ -109,7 +109,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 			        
 				  {
 					xtype : 'tbtext',
-					itemId : 'PartnertextItemId',
+					itemId : 'addressManagetextItemId',
 					text : '<div style="color:"><b>Address-Manage</b></div>'
 				   },
 				   {
