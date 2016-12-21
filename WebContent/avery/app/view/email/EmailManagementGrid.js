@@ -1,7 +1,7 @@
 Ext.define('AOC.view.email.EmailManagementGrid', {
 	extend : 'Ext.grid.Panel',
 	requires : ['AOC.util.Helper'],
-	controller:'emailQueueController',
+	controller:'emailManagementController',
 	itemId : 'EmailMangementitemId',
     alias : 'widget.emailmanagementgrid',
     reserveScrollbar:true,
@@ -13,11 +13,11 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
     		dockedItems : this.buildDockedItems(),
     		store:Ext.create('AOC.store.EmailManagementStore', {
     				storeId:'EmailManagementStoreId'}),
-//    		listeners:{
-//    	        activate:function(obj){
-//    			             	 me.down('pagingtoolbar').bindStore(obj.getStore());
-//    			             	  }
-//    			 },		
+    		listeners:{
+    	        activate:function(obj){
+    			             	 me.down('pagingtoolbar').bindStore(obj.getStore());
+    			             	  }
+    			 },		
             tbar: { 
             	    height: 50,
         		    items : me.buildtbar()
@@ -31,97 +31,116 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
       },
       buildColumns : function(){
       	var me=this;
-  		        return [       {
-  		            xtype:'actioncolumn',
+  		        return [  {
+  		        	header: '<img src="' +  AOC.config.Settings.buttonIcons.menuIcon + '" />',
+  		            //text:'',
   		            width:25,
-  		            baseCls:'custom-action',
-  		  	        items:[
-  		  	      {
-  				  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
-  				  	    	  handler: 'onClickMenu'
-  				  	    	
-  		  	      }]
+  					xtype:'actioncolumn',
+  					menuDisabled  :true,
+  					baseCls:'custom-action',
+  					items:[{
+  					  icon: AOC.config.Settings.buttonIcons.menuIcon,
+  					  handler:'onClickMenu'//'showMenu'
+  				  }]
   		        },
+  		      {
+  		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+  	            width:40,
+  				dataIndex:'Comments',
+  				menuDisabled  :true,
+  				baseCls:'custom-action',
+  				renderer:function(value, metadata,rec){
+  					if(value){
+  						var comment=Ext.String.htmlEncode(rec.data.Comments);
+  			           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" /></div>';
+  					}
+  					else
+  						return '';
+  				} 
+  			   	},
   				          {
   				            xtype:'actioncolumn',
   				            width:25,
   				            baseCls:'custom-action'
-  				  	        //items:[
-//  							  	      {
-//  							  	    	  icon: AOC.config.Settings.buttonIcons.editIcon,
-//  							  	    	  handler:'editpartnermanagement'
-//  							  	      }]
   		                },
           			    {  
               	            text : 'Tracking #',
               	          	width:120,
               	            sortable : true,
-              	            dataIndex:'trackingId',
-              	            flex:0.5
+              	            dataIndex:'Tracking #',
+              	            flex:1
               	            
                  			},
   			            {
   				        	text : 'Partner Name',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'partnerName',
+  				            dataIndex:'Partner Name',
   				            flex:1
+  			            },{
+
+  				        	text : 'RBO',
+  				          	width:120,
+  				            sortable : true,
+  				            dataIndex:'RBO',
+  				            flex:1
+  			            
   			            },
   			            {
   				        	text : 'Sender Email Id',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'senderEmailId',
-  				            flex:0.5
+  				            dataIndex:'Sender Email Id',
+  				            flex:1
   			            },
   			            {
   				        	text :'Subject',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'subject',
-  				            flex:0.5
+  				            dataIndex:'Subject',
+  				            flex:1
   			            },
   			            {
   				        	text :'Email',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'email',
-  				            flex:0.5
+  				            dataIndex:'Email',
+  				            flex:1
   			            },
   			            {
   				        	text :'Status',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'status',
-  				            flex:0.5
+  				            dataIndex:'Status',
+  				            flex:1
   			            },
   			            {
   				        	text :'Received Date',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'receivedDate',
-  				            flex:0.5
+  				            dataIndex:'Received Date',
+  				            flex:1
   			            },
   			          {
   				        	text :'Read Date',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'readDate',
-  				            flex:0.5
+  				            dataIndex:'Read Date',
+  				            flex:1
   			            },
   			          {
   				        	text :'Acknowledged Date',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'acknowledgedDate',
-  				            flex:0.5
+  				            dataIndex:'Acknowledged Date',
+  				            flex:1
   			            },
   			          {
   				        	text :'CC',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'cc',
-  				            flex:0.5
+  				            dataIndex:'CC',
+  				            flex:1
   			            }
           ]
       },
