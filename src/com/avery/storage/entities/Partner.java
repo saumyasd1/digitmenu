@@ -1,8 +1,10 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,127 +34,150 @@ import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.AddressMixIn;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
+import com.avery.storage.MixIn.RboMixIn;
+import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-/**
- * 20-Nov-2015
- * 
- * @author Shaifali
- */
 
 
 @Entity
-@Table(name = "Partner")
+@Table(name = "partner")
 @Path("partners")
 public class Partner extends MainAbstractEntity {
 	
 	private static final long serialVersionUID = -8487156716364715527L;
-	
-	
-	@Column(name = "PartnerName",length = 250)
-    private String partnerName; 
-	
-	@Column(name = "Address",columnDefinition = "varchar(500)")
-    private String address;   
-	
-	@Column(name = "ContactPerson",length = 100)
-    private String contactPerson; 
-	
-	@Column(name = "Phone",length = 100)
-    private String phone; 
-	
-	@Column(name = "Active")
-    private Boolean active;  
-	
-	private transient int productLineCount;
-	
-	private transient int orderQueueCount;
-	
-	private transient int addressCount;
-	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "partner")
-	private Set<ProductLine> productLine;
-	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "partner")
-	private Set<Address> adressObj;
-	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "partner")
-	private Set<OrderQueue> orderQueue;
-	
-	public Set<OrderQueue> getOrderQueue() {
-		return orderQueue;
-	}
 
-	public void setOrderQueue(Set<OrderQueue> orderQueue) {
-		this.orderQueue = orderQueue;
-	}
-	
-	public Set<Address> getAdressObj() {
-		return adressObj;
-	}
+	@Column(name = "partnerName", length = 250)
+	String partnerName;
+	@Column(name = "emailDomain", length = 100)
+	String emailDomain;
+	@Column(name = "emailId", length = 100)
+	String emailId;
+	@Column(name = "address1", length = 250)
+	String address1;
+	@Column(name = "address2", length = 250)
+	String address2;
+	@Column(name = "address3", length = 250)
+	String address3;
+	@Column(name = "city", length = 250)
+	String city;
+	@Column(name = "state", length = 250)
+	String state;
+	@Column(name = "country", length = 250)
+	String country;
+	@Column(name = "phone", length = 250)
+	String phone;
+	@Column(name = "alternatePhone", length = 250)
+	String alternatePhone;
+	@Column(name = "fax", length = 250)
+	String fax;
+	@Column(name = "contactPerson", length = 250)
+	String contactPerson;
+	@Column(name = "active")
+	boolean active;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name = "siteId")
+	int siteId;
+	@Column(name="zip",length=50)
+	String zip;
+	@Column(name = "orgCode", length = 50)
+	String orgCode;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<ProductLine> varProductLine = new ArrayList<ProductLine>();
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
 
-	public void setAdressObj(Set<Address> adressObj) {
-		this.adressObj = adressObj;
+	
+	public Partner(){
+		
 	}
 	
-	public Set<ProductLine> getProductLine() {
-		return productLine;
-	}
+	
 
-	public void setProductLine(Set<ProductLine> productLine) {
-		this.productLine = productLine;
-	}
-	
-	public int getProductLineCount() {
-		return productLineCount;
-	}
-	
-	public void setProductLineCount(int productLineCount) {
-		this.productLineCount = productLineCount;
-	}
-
-	public int getAddressCount() {
-		return addressCount;
-	}
-	
-	public void setAddressCount(int addressCount) {
-		this.addressCount = addressCount;
-	}
-	
-	public int getOrderQueueCount() {
-		return orderQueueCount;
-	}
-	
-	public void setOrderQueueCount(int orderQueueCount) {
-		this.orderQueueCount = orderQueueCount;
-	}
-	
 	public String getPartnerName() {
 		return partnerName;
 	}
+
+
 
 	public void setPartnerName(String partnerName) {
 		this.partnerName = partnerName;
 	}
 
-	public String getAddress() {
-		return address;
+
+
+	public String getEmailDomain() {
+		return emailDomain;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setEmailDomain(String emailDomain) {
+		this.emailDomain = emailDomain;
 	}
 
-	public String getContactPerson() {
-		return contactPerson;
+	public String getEmailId() {
+		return emailId;
 	}
 
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddress3() {
+		return address3;
+	}
+
+	public void setAddress3(String address3) {
+		this.address3 = address3;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getPhone() {
@@ -161,14 +188,87 @@ public class Partner extends MainAbstractEntity {
 		this.phone = phone;
 	}
 
-	public Boolean isActive() {
+	public String getAlternatePhone() {
+		return alternatePhone;
+	}
+
+	public void setAlternatePhone(String alternatePhone) {
+		this.alternatePhone = alternatePhone;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getContactPerson() {
+		return contactPerson;
+	}
+
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+
 	
+	public List<ProductLine> getVarProductLine() {
+		return varProductLine;
+	}
+
+	public void setVarProductLine(List<ProductLine> varProductLine) {
+		this.varProductLine = varProductLine;
+	}
+
+//	public List<SalesOrder> getListSalesOrderLine() {
+//		return listSalesOrderLine;
+//	}
+//
+//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
+//		this.listSalesOrderLine = listSalesOrderLine;
+//	}
+
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -178,6 +278,10 @@ public class Partner extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
+			mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
+			mapper.addMixIn(RBO.class, RboMixIn.class);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
