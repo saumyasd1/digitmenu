@@ -4,15 +4,20 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -34,100 +39,67 @@ import org.hibernate.annotations.NotFoundAction;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
-@Table(name = "OrderFileAttachment")
+@Table(name = "orderfileattachment")
 @Path("orderattachements")
 public class OrderFileAttachment extends MainAbstractEntity {
+	
+	public OrderFileAttachment(){
+		
+	}
 
 	private static final long serialVersionUID = -5438437762230204443L;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "OrderQueueID", nullable = true)
-	private OrderQueue orderQueue;
+	@Column(name = "fileName", length = 250)
+	String fileName;
+	@Column(name = "fileExtension", length = 50)
+	String fileExtension;
+	@Column(name = "fileContentType", length = 100)
+	String fileContentType;
+	@Column(name = "fileData", length = 100)
+	String fileData;
+	@Column(name = "additionalDataFileKey", length = 100)
+	String additionalDataFileKey;
+	@Column(name = "filePath", length=250)
+	String filePath;
+	@Column(name = "status", length = 100)
+	String status;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name="error",length=50)
+	String error;
+	@Column(name="orderFileId")
+	int orderFileId;
 	
-	@Column(name = "OrderQueuePID",length=50)
-    private String orderQueuePId; 
+	@Column(name="productLineMatch",length=100)
+	String productLineMatch;
+	@Column(name="rboMatch",length=100)
+	String rboMatch;
+	@Column(name="fileContentMatch",length=100)
+	String fileContentMatch;
 	
-	public String getOrderQueuePId() {
-		return orderQueuePId;
-	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "orderEmailQueueId")
+	OrderEmailQueue varOrderEmailQueue;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "productLineId")
+	ProductLine varProductLine;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "varOrderFileAttachment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<OrderQueue> listOrderFileQueue = new ArrayList<OrderQueue>();
 
-	public void setOrderQueuePId(String orderQueuePId) {
-		this.orderQueuePId = orderQueuePId;
-	}
-
-	@NotFound(action=NotFoundAction.IGNORE)
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PartnerID", nullable = true)
-	private Partner partnerObj;
-	
-	@Column(name = "RBOID",length = 50)
-    private String rboID; 
-	
-	@Column(name = "ReceivedDate")
-    private Date receivedDate;
-	
-	@Column(name = "FileName",length = 250)
-    private String fileName;
-	
-	@Column(name = "FileExtension",length = 50)
-    private String fileExtension;
-	
-	@Column(name = "FileData")
-	@Lob
-    private Blob fileData;
 	
 	
-	@Column(name = "FileContentType",length = 50)
-    private String fileContentType;
-	
-	@Column(name = "StyleNo",length = 50)
-    private String styleNo;
-	
-	@Column(name = "Status",length = 50)
-    private String status;
-	
-	@Column(name = "Error",length = 50)
-    private String error;
-
-	public OrderQueue getOrderQueue() {
-		return orderQueue;
-	}
-
-	public void setOrderQueue(OrderQueue orderQueue) {
-		this.orderQueue = orderQueue;
-	}
-
-	public Partner getPartnerObj() {
-		return partnerObj;
-	}
-
-	public void setPartnerObj(Partner partnerObj) {
-		this.partnerObj = partnerObj;
-	}
-
-
-	public String getRboID() {
-		return rboID;
-	}
-
-	public void setRboID(String rboID) {
-		this.rboID = rboID;
-	}
-
-	public Date getReceivedDate() {
-		return receivedDate;
-	}
-
-	public void setReceivedDate(Date receivedDate) {
-		this.receivedDate = receivedDate;
-	}
 
 	public String getFileName() {
 		return fileName;
@@ -145,14 +117,6 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		this.fileExtension = fileExtension;
 	}
 
-	public Blob getFileData() {
-		return fileData;
-	}
-
-	public void setFileData(Blob fileData) {
-		this.fileData = fileData;
-	}
-
 	public String getFileContentType() {
 		return fileContentType;
 	}
@@ -161,12 +125,28 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		this.fileContentType = fileContentType;
 	}
 
-	public String getStyleNo() {
-		return styleNo;
+	public String getFileData() {
+		return fileData;
 	}
 
-	public void setStyleNo(String styleNo) {
-		this.styleNo = styleNo;
+	public void setFileData(String fileData) {
+		this.fileData = fileData;
+	}
+
+	public String getAdditionalDataFileKey() {
+		return additionalDataFileKey;
+	}
+
+	public void setAdditionalDataFileKey(String additionalDataFileKey) {
+		this.additionalDataFileKey = additionalDataFileKey;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
 	public String getStatus() {
@@ -177,6 +157,14 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		this.status = status;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	public String getError() {
 		return error;
 	}
@@ -184,7 +172,63 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	public void setError(String error) {
 		this.error = error;
 	}
-	
+
+	public int getOrderFileId() {
+		return orderFileId;
+	}
+
+	public void setOrderFileId(int orderFileId) {
+		this.orderFileId = orderFileId;
+	}
+
+	public String getProductLineMatch() {
+		return productLineMatch;
+	}
+
+	public void setProductLineMatch(String productLineMatch) {
+		this.productLineMatch = productLineMatch;
+	}
+
+	public String getRboMatch() {
+		return rboMatch;
+	}
+
+	public void setRboMatch(String rboMatch) {
+		this.rboMatch = rboMatch;
+	}
+
+	public String getFileContentMatch() {
+		return fileContentMatch;
+	}
+
+	public void setFileContentMatch(String fileContentMatch) {
+		this.fileContentMatch = fileContentMatch;
+	}
+
+	public OrderEmailQueue getVarOrderEmailQueue() {
+		return varOrderEmailQueue;
+	}
+
+	public void setVarOrderEmailQueue(OrderEmailQueue varOrderEmailQueue) {
+		this.varOrderEmailQueue = varOrderEmailQueue;
+	}
+
+	public ProductLine getVarProductLine() {
+		return varProductLine;
+	}
+
+	public void setVarProductLine(ProductLine varProductLine) {
+		this.varProductLine = varProductLine;
+	}
+
+	public List<OrderQueue> getListOrderFileQueue() {
+		return listOrderFileQueue;
+	}
+
+	public void setListOrderFileQueue(List<OrderQueue> listOrderFileQueue) {
+		this.listOrderFileQueue = listOrderFileQueue;
+	}
+
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -329,13 +373,16 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
 			orderFileAttachment = orderFileAttachmentService.readAllByOrderID(entityId);
 			if (orderFileAttachment == null)
 				throw new Exception("Unable to find order attachments");
-			mapper.writeValue(writer, orderFileAttachment);
+			Map entitiesMap = new HashMap();
+			entitiesMap.put("viewmail", orderFileAttachment);
+			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -349,7 +396,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		return rb.build();
 	}
 	
-	@GET
+/*	@GET
 	@Path("/download/{id:[0-9]+}")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getFileByID(@Context UriInfo ui,
@@ -394,6 +441,6 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		}
 		//return rb.build();
 	}
-
+*/
 
 }
