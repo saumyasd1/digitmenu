@@ -1,6 +1,6 @@
 package com.avery.storage.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,14 +9,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "site")
 public class Site {
+	
+	
+	public Site(){
+		
+	}
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id")
-	int id;
+	long id;
+	@Column(name = "name",length=50,unique=true)
+	String name;
 	@Column(name = "comment",length=250)
 	String comment;
 	@Column(name = "createdBy",length=50)
@@ -27,18 +35,18 @@ public class Site {
 	String lastModifiedBy;
 	@Column(name = "lastModifiedDate")
 	Date lastModifiedDate;
-	@Column(name = "name",length=50)
-	String name;
-	
-	
-	
-	public Site() {}
-	
-	public int getId() {
+
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getComment() {
 		return comment;
@@ -64,24 +72,14 @@ public class Site {
 	public void setLastModifiedBy(String lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
 	}
-
-	protected Date getLastModifiedDate() {
+	public Date getLastModifiedDate() {
 		return lastModifiedDate;
 	}
-
-	protected void setLastModifiedDate(Date lastModifiedDate) {
+	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
-
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	
 	
 	
-
 }
