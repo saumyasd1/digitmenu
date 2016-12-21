@@ -87,9 +87,9 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		String partnerName="",rboName="",productLineType="";
 		Long id=productLine.getId();
 		List<ProductLine> productLineList = null;
-		partnerobj=productLine.getPartner();
+		//partnerobj=productLine.getPartner();
 		partnerName=partnerobj.getPartnerName();
-		rboName=productLine.getRboName();
+		//rboName=productLine.getRboName();
 		productLineType=productLine.getProductLineType();
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
