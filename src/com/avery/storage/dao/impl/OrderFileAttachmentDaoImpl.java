@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
 
@@ -32,15 +34,16 @@ OrderFileAttachmentDao {
 		Session session = null;
 		Criteria criteria = null;
 		try{
+			Map entitiesMap = new HashMap();
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
-			ProjectionList projections = Projections.projectionList();
+			/*ProjectionList projections = Projections.projectionList();
 			projections.add(Projections.property("id"), "id");
 			projections.add(Projections.property("fileName"), "fileName");
 			criteria.setProjection(projections);
-			OrderQueue orderQueue = new OrderQueue();
-			orderQueue.setId(orderID);
-			criteria.add(Restrictions.eq("orderQueue", orderQueue));
+			*/
+			criteria.setMaxResults(10);
+			criteria.add(Restrictions.eq("varOrderEmailQueue.id", orderID));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
