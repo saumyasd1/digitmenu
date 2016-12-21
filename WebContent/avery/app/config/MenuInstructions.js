@@ -16,6 +16,11 @@ Ext.define('AOC.config.MenuInstructions', {
 			controller : 'MenuController',
 			fnc : 'loadEmailManagement'
 		},
+		TaskManager : {
+			tab : 'AOC APP',
+			controller : 'MenuController',
+			fnc : 'loadTaskManager'
+		},
 		PartnerManagement : {
 			tab : 'AOC APP',
 			controller : 'MenuController',
@@ -35,6 +40,11 @@ Ext.define('AOC.config.MenuInstructions', {
 			tab : 'AOC APP',
 			controller : 'MenuController',
 			fnc : 'loadArchiveManage'
+		},
+		TaskManager : {
+			tab : 'AOC APP',
+			controller : 'MenuController',
+			fnc : 'loadTaskManager'
 		}
 },
 	constructor : function(config) {
