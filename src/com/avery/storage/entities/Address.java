@@ -36,193 +36,64 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 @Entity
-@Table(name = "Address")
+@Table(name = "address")
 @Path("address")
 public class Address extends MainAbstractEntity {
+	
+	public Address(){
+		
+	}
 
 	private static final long serialVersionUID = 3208431286041487210L;
-
-	@Column(name = "OrgCode",length = 50)
-    private String orgCode; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PartnerID", nullable = true)
-	private Partner partner;
+	@Column(name = "description", length = 500)
+	String description;
+	@Column(name = "address1", length = 500)
+	String address1;
+	@Column(name = "address2", length = 500)
+	String address2;
+	@Column(name = "address3", length = 500)
+	String address3;
+	@Column(name = "address4", length = 500)
+	String address4;
+	@Column(name = "city", length = 250)
+	String city;
+	@Column(name = "state", length = 250)
+	String state;
+	@Column(name = "country", length = 250)
+	String country;
+	@Column(name = "contact", length = 255)
+	String contact;
+	@Column(name = "email", length = 255)
+	String email;
+	@Column(name = "fax", length = 255)
+	String fax;
+	@Column(name = "phone1", length = 255)
+	String phone1;
+	@Column(name = "phone2", length = 255)
+	String phone2;
+	@Column(name = "siteNumber",length=255)
+	String siteNumber;
+	@Column(name = "siteType", length = 255)
+	String siteType;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name = "siteId")
+	int siteId;
+	@Column(name="zip",length=250)
+	String zip;
+	@Column(name = "orgCodeId")
+	int orgCodeId;
+	@Column(name = "system")
+	int system;
+	@Column(name = "freightTerm", length = 250)
+	String freightTerm;
+	@Column(name = "shippingMethod", length = 255)
+	String shippingMethod;
+	@Column(name = "shippingInstruction", length = 255)
+	String shippingInstruction;
 	
-	@Column(name = "BillToSiteNumber",length = 50)
-    private String billToSiteNumber; 
 	
-	@Column(name = "ShipToSiteNumber",length = 50)
-    private String shipToSiteNumber; 
-	
-	@Column(name = "Description",columnDefinition = "varchar(500)")
-    private String description;  
-	
-	@Column(name = "Address1",columnDefinition = "varchar(500)")
-    private String address1;  
-	
-	@Column(name = "Address2",columnDefinition = "varchar(500)")
-    private String address2;  
-	
-	@Column(name = "Address3",columnDefinition = "varchar(500)")
-    private String address3;  
-	
-	@Column(name = "Address4",columnDefinition = "varchar(500)")
-    private String address4;  
-	
-	@Column(name = "City",length = 250)
-    private String city;  
-
-	@Column(name = "State",length = 250)
-    private String state;  
-	
-	@Column(name = "Country",length = 250)
-    private String country;  
-	
-	@Column(name = "Zip",length = 250)
-    private String zip;  
-	
-	@Column(name = "BillToContact",length = 250)
-    private String billToContact;  
-	
-	@Column(name = "BillToPhone1",length = 250)
-    private String billToPhone1;  
-	
-	@Column(name = "BillToPhone2",length = 250)
-    private String billToPhone2;  
-	
-	@Column(name = "BillToFax",length = 250)
-    private String billToFax;  
-	
-	@Column(name = "BillToEmail",length = 250)
-    private String billToEmail;  
-	
-	@Column(name = "ShipToContact",length = 250)
-    private String shipToContact;  
-	
-	@Column(name = "ShipToPhone1",length = 250)
-    private String shipToPhone1;  
-	
-	@Column(name = "ShipToPhone2",length = 250)
-    private String shipToPhone2;  
-	
-	@Column(name = "ShippingMethod",length = 100)
-    private String shippingMethod;  
-	
-	@Column(name = "FreightTerms",length = 50)
-    private String freightTerms;  
-	
-	@Column(name = "ShippingInstructions",columnDefinition = "varchar(500)")
-    private String shippingInstructions;  
-	
-	@Column(name = "SiteNumber",length = 255)
-    private String siteNumber; 
-	
-	public String getSiteNumber() {
-		return siteNumber;
-	}
-
-	public void setSiteNumber(String siteNumber) {
-		this.siteNumber = siteNumber;
-	}
-	@Column(name = "Contact",length = 255)
-    private String contact;  
-	
-	@Column(name = "Phone1",length = 255)
-    private String phone1;  
-	
-	@Column(name = "Phone2",length = 255)
-    private String phone2;  
-	
-	@Column(name = "Fax",length = 255)
-    private String fax;  
-	
-	@Column(name = "Email",length = 255)
-    private String email; 
-	
-	@Column(name = "SiteType",length = 255)
-    private String siteType; 
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	public String getPhone1() {
-		return phone1;
-	}
-
-	public void setPhone1(String phone1) {
-		this.phone1 = phone1;
-	}
-
-	public String getPhone2() {
-		return phone2;
-	}
-
-	public void setPhone2(String phone2) {
-		this.phone2 = phone2;
-	}
-
-	public String getFax() {
-		return fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSiteType() {
-		return siteType;
-	}
-
-	public void setSiteType(String siteType) {
-		this.siteType = siteType;
-	}
-
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
-
-	public Partner getPartner() {
-		return partner;
-	}
-
-	public void setPartner(Partner partner) {
-		this.partner = partner;
-	}
-
-	public String getBillToSiteNumber() {
-		return billToSiteNumber;
-	}
-
-	public void setBillToSiteNumber(String billToSiteNumber) {
-		this.billToSiteNumber = billToSiteNumber;
-	}
-
-	public String getShipToSiteNumber() {
-		return shipToSiteNumber;
-	}
-
-	public void setShipToSiteNumber(String shipToSiteNumber) {
-		this.shipToSiteNumber = shipToSiteNumber;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -287,6 +158,78 @@ public class Address extends MainAbstractEntity {
 		this.country = country;
 	}
 
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
+
+	public String getSiteNumber() {
+		return siteNumber;
+	}
+
+	public void setSiteNumber(String siteNumber) {
+		this.siteNumber = siteNumber;
+	}
+
+	public String getSiteType() {
+		return siteType;
+	}
+
+	public void setSiteType(String siteType) {
+		this.siteType = siteType;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
+
 	public String getZip() {
 		return zip;
 	}
@@ -295,68 +238,28 @@ public class Address extends MainAbstractEntity {
 		this.zip = zip;
 	}
 
-	public String getBillToContact() {
-		return billToContact;
+	public int getOrgCodeId() {
+		return orgCodeId;
 	}
 
-	public void setBillToContact(String billToContact) {
-		this.billToContact = billToContact;
+	public void setOrgCodeId(int orgCodeId) {
+		this.orgCodeId = orgCodeId;
 	}
 
-	public String getBillToPhone1() {
-		return billToPhone1;
+	public int getSystem() {
+		return system;
 	}
 
-	public void setBillToPhone1(String billToPhone1) {
-		this.billToPhone1 = billToPhone1;
+	public void setSystem(int system) {
+		this.system = system;
 	}
 
-	public String getBillToPhone2() {
-		return billToPhone2;
+	public String getFreightTerm() {
+		return freightTerm;
 	}
 
-	public void setBillToPhone2(String billToPhone2) {
-		this.billToPhone2 = billToPhone2;
-	}
-
-	public String getBillToFax() {
-		return billToFax;
-	}
-
-	public void setBillToFax(String billToFax) {
-		this.billToFax = billToFax;
-	}
-
-	public String getBillToEmail() {
-		return billToEmail;
-	}
-
-	public void setBillToEmail(String billToEmail) {
-		this.billToEmail = billToEmail;
-	}
-
-	public String getShipToContact() {
-		return shipToContact;
-	}
-
-	public void setShipToContact(String shipToContact) {
-		this.shipToContact = shipToContact;
-	}
-
-	public String getShipToPhone1() {
-		return shipToPhone1;
-	}
-
-	public void setShipToPhone1(String shipToPhone1) {
-		this.shipToPhone1 = shipToPhone1;
-	}
-
-	public String getShipToPhone2() {
-		return shipToPhone2;
-	}
-
-	public void setShipToPhone2(String shipToPhone2) {
-		this.shipToPhone2 = shipToPhone2;
+	public void setFreightTerm(String freightTerm) {
+		this.freightTerm = freightTerm;
 	}
 
 	public String getShippingMethod() {
@@ -367,23 +270,14 @@ public class Address extends MainAbstractEntity {
 		this.shippingMethod = shippingMethod;
 	}
 
-	public String getFreightTerms() {
-		return freightTerms;
+	public String getShippingInstruction() {
+		return shippingInstruction;
 	}
 
-	public void setFreightTerms(String freightTerms) {
-		this.freightTerms = freightTerms;
+	public void setShippingInstruction(String shippingInstruction) {
+		this.shippingInstruction = shippingInstruction;
 	}
 
-	public String getShippingInstructions() {
-		return shippingInstructions;
-	}
-
-	public void setShippingInstructions(String shippingInstructions) {
-		this.shippingInstructions = shippingInstructions;
-	}
-
-	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
