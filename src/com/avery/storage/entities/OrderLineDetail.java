@@ -2,9 +2,11 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,74 +43,42 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
-@Table(name = "OrderLineDetail")
+@Table(name = "orderlinedetails")
 @Path("orderlinedetails")
 public class OrderLineDetail extends MainAbstractEntity{
+	
+	public OrderLineDetail(){
+		
+	}
 
 	private static final long serialVersionUID = 8615509397523320616L;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "OrderLineID", nullable = true)
-	private OrderLine orderLineForVariableData;
+	@Column(name = "level", length = 50)
+	String level;
+	@Column(name = "SKUno", length = 50)
+	String SKUno;
+	@Column(name = "typeSetter", length = 50)
+	String typeSetter;
+	@Column(name = "fiberPercent")
+	int fiberPercent;
+	@Column(name = "sumOfFiberPercentage")
+	int sumOfFiberPercentage;
+	@Column(name = "mandatory", length = 100)
+	String mandatory;
+	@Column(name = "comment", length = 250)
+	String comment;
+	@Column(name = "variableDataValue", length = 250)
+	String variableDataValue;
+	@Column(name = "variableFieldName", length = 100)
+	String variableFieldName;
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="orderLineId")
+	OrderLine varOrderLine;
 	
-	@Column(name = "OrderQueueID")
-    private int orderQueueID; 
 	
-	@Column(name = "Oracleitemnumber",length = 50)
-    private String Oracleitemnumber;
-	
-	@Column(name = "Level",length = 50)
-    private String level;
-	
-	@Column(name = "SKUno",length = 50)
-    private String skuno;
-	
-	
-	@Column(name = "typesetter",length = 50)
-    private String typesetter;
-	
-	@Column(name = "Variablefieldname",length = 100)
-    private String variablefieldname;
-	
-	@Column(name = "variabledatavalue",length = 250)
-    private String variabledatavalue;
-	
-	@Column(name = "FiberPercent",length = 250)
-    private String fiberPercent;
-	
-	@Column(name = "SentToOracleDate")
-    private String sentToOracleDate;
-	
-	@Column(name = "Mandatory",length = 50)
-    private String mandatory; 
-	
-	@Column(name = "DivisionforInterfaceERPORG",length = 50)
-    private String divisionforInterfaceERPORG; 
-	
-	public OrderLine getOrderLineForVariableData() {
-		return orderLineForVariableData;
-	}
 
-	public void setOrderLineForVariableData(OrderLine orderLineForVariableData) {
-		this.orderLineForVariableData = orderLineForVariableData;
-	}
-
-	public int getOrderQueueID() {
-		return orderQueueID;
-	}
-
-	public void setOrderQueueID(int orderQueueID) {
-		this.orderQueueID = orderQueueID;
-	}
-
-	public String getOracleitemnumber() {
-		return Oracleitemnumber;
-	}
-
-	public void setOracleitemnumber(String oracleitemnumber) {
-		Oracleitemnumber = oracleitemnumber;
-	}
-
+	
+	
 	public String getLevel() {
 		return level;
 	}
@@ -117,53 +87,38 @@ public class OrderLineDetail extends MainAbstractEntity{
 		this.level = level;
 	}
 
-	public String getSkuno() {
-		return skuno;
+	public String getSKUno() {
+		return SKUno;
 	}
 
-	public void setSkuno(String skuno) {
-		this.skuno = skuno;
+	public void setSKUno(String sKUno) {
+		SKUno = sKUno;
 	}
 
-	public String getTypesetter() {
-		return typesetter;
+	public String getTypeSetter() {
+		return typeSetter;
 	}
 
-	public void setTypesetter(String typesetter) {
-		this.typesetter = typesetter;
+	public void setTypeSetter(String typeSetter) {
+		this.typeSetter = typeSetter;
 	}
 
-	public String getVariablefieldname() {
-		return variablefieldname;
-	}
-
-	public void setVariablefieldname(String variablefieldname) {
-		this.variablefieldname = variablefieldname;
-	}
-
-	public String getVariabledatavalue() {
-		return variabledatavalue;
-	}
-
-	public void setVariabledatavalue(String variabledatavalue) {
-		this.variabledatavalue = variabledatavalue;
-	}
-
-	public String getFiberPercent() {
+	public int getFiberPercent() {
 		return fiberPercent;
 	}
 
-	public void setFiberPercent(String fiberPercent) {
+	public void setFiberPercent(int fiberPercent) {
 		this.fiberPercent = fiberPercent;
 	}
 
-	public String getSentToOracleDate() {
-		return sentToOracleDate;
+	public int getSumOfFiberPercentage() {
+		return sumOfFiberPercentage;
 	}
 
-	public void setSentToOracleDate(String sentToOracleDate) {
-		this.sentToOracleDate = sentToOracleDate;
+	public void setSumOfFiberPercentage(int sumOfFiberPercentage) {
+		this.sumOfFiberPercentage = sumOfFiberPercentage;
 	}
+
 
 	public String getMandatory() {
 		return mandatory;
@@ -172,16 +127,39 @@ public class OrderLineDetail extends MainAbstractEntity{
 	public void setMandatory(String mandatory) {
 		this.mandatory = mandatory;
 	}
-	
-	public String getDivisionforInterfaceERPORG() {
-		return divisionforInterfaceERPORG;
+
+	public String getComment() {
+		return comment;
 	}
 
-	public void setDivisionforInterfaceERPORG(String divisionforInterfaceERPORG) {
-		this.divisionforInterfaceERPORG = divisionforInterfaceERPORG;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
-	
-	
+
+	public String getVariableDataValue() {
+		return variableDataValue;
+	}
+
+	public void setVariableDataValue(String variableDataValue) {
+		this.variableDataValue = variableDataValue;
+	}
+
+	public String getVariableFieldName() {
+		return variableFieldName;
+	}
+
+	public void setVariableFieldName(String variableFieldName) {
+		this.variableFieldName = variableFieldName;
+	}
+
+	public OrderLine getVarOrderLine() {
+		return varOrderLine;
+	}
+
+	public void setVarOrderLine(OrderLine varOrderLine) {
+		this.varOrderLine = varOrderLine;
+	}
+
 	@GET
 	@Path("/order/{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
