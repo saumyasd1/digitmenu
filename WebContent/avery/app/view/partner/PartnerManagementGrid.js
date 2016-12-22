@@ -43,16 +43,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 				  	    	
 		  	      }]
 		        },
-				          {
-				            xtype:'actioncolumn',
-				            width:25,
-				            baseCls:'custom-action',
-				  	        items:[
-							  	      {
-							  	    	  icon: AOC.config.Settings.buttonIcons.editIcon,
-							  	    	  handler:'editpartnermanagement'
-							  	      }]
-		                },
         			    {  
             	            text : AOCLit.partnerName,
             	          	width:120,
@@ -121,7 +111,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		        		    autoEl: {
 		        		        tag: 'a',
 		        		        href: '#',
-		        		        html:AOCLit.advSearchTitle,
+		        		        html:AOCLit.advSearchTitle
 		        		    },
 		        		    listeners: {
 		        		    	 el : {
