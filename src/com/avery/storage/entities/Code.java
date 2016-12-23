@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-//@Entity
+@Entity
 @Table(name = "statuscode")
 @Path("code")
 public class Code extends MainAbstractEntity {
