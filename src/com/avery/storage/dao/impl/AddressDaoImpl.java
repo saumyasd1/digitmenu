@@ -1,7 +1,10 @@
 package com.avery.storage.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -11,11 +14,19 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
+import com.avery.storage.entities.Org;
+import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 
@@ -28,6 +39,8 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		Map entitiesMap =new HashMap();
 		Session session=null;
 		Criteria criteria=null;
+        Criteria criteria_org = null;
+        Criteria criteria_system = null;
 		int totalCount=0;
 		String queryString=(String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
@@ -67,9 +80,19 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
-        entitiesMap.put("totalCount", totalCount);
+
+		entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("address", new LinkedHashSet(criteria.list()));
-		return entitiesMap;
+        
+       
+
+        criteria_org = session.createCriteria(Org.class);
+        entitiesMap.put("org", new LinkedHashSet(criteria_org.list()));
+
+        criteria_system = session.createCriteria(SystemInfo.class);
+        entitiesMap.put("system", new LinkedHashSet(criteria_system.list()));
+
+        return entitiesMap;
 	}
 
 	
