@@ -59,7 +59,7 @@ public class OrderSystemInfo {
 	ProductLine varProductLine;
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId")
-	System varSystem;
+	SystemInfo varSystem;
 	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrgInfo> listOrgInfo=new ArrayList<OrgInfo>();
 	
@@ -221,12 +221,12 @@ public class OrderSystemInfo {
 	}
 
 
-	System getVarSystem() {
+	SystemInfo getVarSystem() {
 		return varSystem;
 	}
 
 
-	void setVarSystem(System varSystem) {
+	void setVarSystem(SystemInfo varSystem) {
 		this.varSystem = varSystem;
 	}
 
