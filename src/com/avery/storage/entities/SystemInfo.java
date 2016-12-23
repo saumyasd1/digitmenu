@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="system")
-public class System {
+public class SystemInfo {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -37,7 +37,7 @@ public class System {
 	OrderSystemInfo varOrderSystemInfo;
 	
 	
-	public System() {}
+	public SystemInfo() {}
 
 
 
