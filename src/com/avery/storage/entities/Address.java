@@ -26,7 +26,9 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.AddressMixIn;
+import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.AddressService;
 import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -287,7 +289,9 @@ public class Address extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
+			//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
 			entitiesMap = addressService.readWithCriteria( queryParamMap);
