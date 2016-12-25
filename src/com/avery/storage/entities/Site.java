@@ -1,47 +1,46 @@
 package com.avery.storage.entities;
 
-import java.util.Date;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
+import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.SiteMixIn;
+import com.avery.storage.service.SiteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
 @Table(name = "site")
-public class Site {
+@Path("site")
+public class Site extends MainAbstractEntity{
 	
-	
-	public Site(){
-		
-	}
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "id")
-	long id;
 	@Column(name = "name",length=50,unique=true)
 	String name;
 	@Column(name = "comment",length=250)
 	String comment;
-	@Column(name = "createdBy",length=50)
-	String createdBy;
-	@Column(name = "createdDate")
-	Date createdDate;
-	@Column(name = "lastModifiedBy",length=50)
-	String lastModifiedBy;
-	@Column(name = "lastModifiedDate")
-	Date lastModifiedDate;
 
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -54,32 +53,41 @@ public class Site {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
 	
+	@OneToMany(mappedBy="site",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	List<SystemInfo> systemInfoList=new ArrayList<SystemInfo>();
 	
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<Site> siteList = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			mapper.addMixIn(Site.class, SiteMixIn.class);
+			SiteService siteService = (SiteService) SpringConfig
+					.getInstance().getBean("siteService");
+			siteList = siteService.readAll();
+			if (siteList == null)
+				throw new Exception("Unable to find order configuration");
+			mapper.writeValue(writer, siteList);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order configuration " , ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order configuration " ,e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
 	
 	
 }
