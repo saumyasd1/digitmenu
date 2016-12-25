@@ -1,48 +1,67 @@
 package com.avery.storage.entities;
 
-import java.sql.Date;
+import java.io.StringWriter;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import com.avery.app.config.SpringConfig;
+import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrgMixIn;
+import com.avery.storage.service.OrgService;
+import com.avery.utils.ApplicationUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 @Entity
 @Table(name="org")
-public class Org {
+@Path("org")
+public class Org extends MainAbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "id")
-	long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 738382022130142163L;
+
 	@Column(name = "name",length=50,unique=true)
-	String name;
-	@Column(name = "comment",length=250)
-	String comment;
-	@Column(name = "createdBy",length=50)
-	String createdBy;
-	@Column(name = "createdDate")
-	Date createdDate;
-	@Column(name = "lastModifiedBy",length=50)
-	String lastModifiedBy;
-	@Column(name = "lastModifiedDate")
-	Date lastModifiedDate;
+	private String name;
 	
+	@Column(name = "comment",length=250)
+	private String comment;
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="systemId",nullable=false)
+	private SystemInfo system;
 	
 	public Org() {}
 
-
-	public long getId() {
-		return id;
+	public SystemInfo getSystem() {
+		return system;
 	}
 
-
-	public void setId(long id) {
-		this.id = id;
+	public void setSystem(SystemInfo system) {
+		this.system = system;
 	}
-
 
 	String getName() {
 		return name;
@@ -62,49 +81,37 @@ public class Org {
 	void setComment(String comment) {
 		this.comment = comment;
 	}
-
-
-	String getCreatedBy() {
-		return createdBy;
-	}
-
-
-	void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-
-	Date getCreatedDate() {
-		return createdDate;
-	}
-
-
-	void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-
-	String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-
-
-	void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
-
-
-	Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-
-	void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
 	
-	
-	
-	
-	
+	@GET
+	@Path("/system/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrgBySystemId(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("id") String systemId) {
+		Response.ResponseBuilder rb = null;
+		List<Org> orgs = null;
+		try{
+			Long entityId = Long.parseLong(systemId);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			OrgService orgService = (OrgService) SpringConfig
+					.getInstance().getBean("orgService");
+			orgs = orgService.readAllBySystemId(entityId);
+			if (orgs == null)
+				throw new Exception("Unable to find Order Line");
+			mapper.setDateFormat(ApplicationUtils.df);
+			mapper.writeValue(writer, orgs);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 }
