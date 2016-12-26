@@ -12,5 +12,7 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 	public Map readAllByPartnerID(MultivaluedMap queryMap) throws Exception;
 
 	public Boolean checkDuplicateValues(ProductLine productLine) throws Exception;
+	
+	public ProductLine create(String productLineData);
 
 }
