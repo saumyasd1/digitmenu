@@ -101,6 +101,8 @@ public class OrderQueue extends MainAbstractEntity{
 	 String subject;
 	@Column(name="submittedBy",length=50)
 	 String submittedBy;
+	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name="submittedDate")
 	 Date submittedDate;
 	@Column(name="status",length=100)
@@ -113,6 +115,8 @@ public class OrderQueue extends MainAbstractEntity{
 	 int prevOrderQueueId;
 	@Column(name="error",length=1000)
 	String error;
+	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name="feedbackAcknowledgementDate")
 	Date feedbackAcknowledgementDate;
 	
@@ -280,12 +284,13 @@ public class OrderQueue extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
-			mapper.addMixIn(OrderFileAttachment.class, OrderQueueMixIn.class);
-			mapper.addMixIn(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
-			mapper.addMixIn(Partner.class,PartnerMixIn.class);//added
+			//mapper.addMixIn(OrderFileAttachment.class, OrderQueueMixIn.class);
+			//mapper.addMixIn(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
+			//mapper.addMixIn(Partner.class,PartnerMixIn.class);//added
 			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);//added
-			mapper.addMixIn(ProductLine.class,OrderQueueMixIn.class);
+			//mapper.addMixIn(ProductLine.class,OrderQueueMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService.readWithCriteria(queryParamMap);
