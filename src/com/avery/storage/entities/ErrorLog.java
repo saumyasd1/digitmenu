@@ -11,7 +11,7 @@ import com.mysql.jdbc.Blob;
 
 
 
-//@Entity
+@Entity
 @Table(name = "errorlog")
 @Path("errorLog")
 public class ErrorLog extends MainAbstractEntity{
