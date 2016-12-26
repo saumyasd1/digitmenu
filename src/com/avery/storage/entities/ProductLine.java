@@ -14,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -37,6 +36,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -218,35 +218,14 @@ public class ProductLine extends MainAbstractEntity{
 	String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
 	String defaultSystem;
-	/*
-    @Column(name = "packingInstruction", length = 500)
-	String packingInstruction;// 500
-	@Column(name = "manufacturingNotes", length = 500)
-	String manufacturingNotes;// 500
-    @Column(name = "shippingMark")
-	boolean shippingMark;
-	@Column(name = "shippingOnlyNotes", length = 500)
-	String shippingOnlyNotes;// 500
-	@Column(name = "splitShipSetBy", length = 5)
-	String splitShipSetBy;// 5
-	@Column(name = "variableDataBreakdown", length = 500)
-	String variableDataBreakdown;// 500@Column(name = "artworkHold", length = 5)
-	String artworkHold;// 5
-	@Column(name = "defaultBillToCode", length = 255)
-	String defaultBillToCode;// 255
-	@Column(name = "defaultShipToCode", length = 255)
-	String defaultShipToCode;// 255	
-	@Column(name = "discountOffer")
-	boolean discountOffer;
-	*/
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rboId")
-	RBO varRbo;
+	private RBO rbo;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "partnerId")
 	Partner varPartner;
-	@OneToOne(mappedBy = "varProductLine", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	OrderQueue listOrderFileQueue;
+	@OneToMany(mappedBy = "varProductLine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<OrderQueue> listOrderFileQueue;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderFileAttachment> listOrderFileAttachments=new ArrayList<OrderFileAttachment>();
@@ -913,12 +892,12 @@ public class ProductLine extends MainAbstractEntity{
 		this.defaultSystem = defaultSystem;
 	}
 
-	public RBO getVarRbo() {
-		return varRbo;
+	public RBO getRbo() {
+		return rbo;
 	}
 
-	public void setVarRbo(RBO varRbo) {
-		this.varRbo = varRbo;
+	public void setRbo(RBO rbo) {
+		this.rbo = rbo;
 	}
 
 	public Partner getVarPartner() {
@@ -929,11 +908,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.varPartner = varPartner;
 	}
 
-	public OrderQueue getListOrderFileQueue() {
+	public List<OrderQueue> getListOrderFileQueue() {
 		return listOrderFileQueue;
 	}
 
-	public void setListOrderFileQueue(OrderQueue listOrderFileQueue) {
+	public void setListOrderFileQueue(List<OrderQueue> listOrderFileQueue) {
 		this.listOrderFileQueue = listOrderFileQueue;
 	}
 
@@ -960,7 +939,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			//mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
+			mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
@@ -998,17 +977,21 @@ public class ProductLine extends MainAbstractEntity{
 			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			valueExist = productLineService.checkDuplicateValues(productline);
-			responseMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			if (valueExist) {
-				responseMap.put("valueExist",true);
-				responseMapper.writeValue(writer, responseMap);
-			}else{
-				id = productLineService.create(productline);
-				responseMap.put("valueExist",false);
-				responseMap.put("id",id);
-				responseMapper.writeValue(writer, responseMap);
-			}
+			productLineService.create(data);
+			responseMap.put("valueExist",false);
+//			responseMap.put("id",id);
+			responseMapper.writeValue(writer, responseMap);
+//			valueExist = productLineService.checkDuplicateValues(productline);
+//			responseMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//			if (valueExist) {
+//				responseMap.put("valueExist",true);
+//				responseMapper.writeValue(writer, responseMap);
+//			}else{
+//				id = productLineService.create(productline);
+//				responseMap.put("valueExist",false);
+//				responseMap.put("id",id);
+//				responseMapper.writeValue(writer, responseMap);
+//			}
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
