@@ -49,7 +49,7 @@ public class Org extends MainAbstractEntity {
 	@Column(name = "comment",length=250)
 	private String comment;
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId",nullable=false)
 	private SystemInfo system;
 	
@@ -93,13 +93,13 @@ public class Org extends MainAbstractEntity {
 			Long entityId = Long.parseLong(systemId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(Org.class, OrgMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
 			OrgService orgService = (OrgService) SpringConfig
 					.getInstance().getBean("orgService");
 			orgs = orgService.readAllBySystemId(entityId);
 			if (orgs == null)
-				throw new Exception("Unable to find Order Line");
+				throw new Exception("Unable to find Org.");
 			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orgs);
 			rb = Response.ok(writer.toString());
