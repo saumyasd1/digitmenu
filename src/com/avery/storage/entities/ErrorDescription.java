@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 
 import com.avery.storage.MainAbstractEntity;
 
-//@Entity
+@Entity
 @Table(name = "errordescription")
 @Path("errorDescription")
 public class ErrorDescription extends MainAbstractEntity{
