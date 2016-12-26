@@ -14,22 +14,31 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             dismissDelay: 0,
             listeners: {
             	afterrender: me.onAfterRenderEditCallout,
-            	viewMail: function(){
+            	viewMail: function(){  
             		currentRecord = e.record;
-             	      var id = currentRecord.get('id');
-             	      var form = Ext.ComponentQuery.query('#viewmailformItemId')[0];
-             	      form.loadRecord(currentRecord);
-	                    store = Ext.create('AOC.store.ViewMailformStore', {
-	                        storeId: 'ViewMailformStoreId',
-	                        totalCount: 'total'
-	                    });
-	                   panel = Ext.ComponentQuery.query('#taskManagerPanel')[0];
-	                   var viewmail = Ext.ComponentQuery.query('#EmailAttachmentInfoGriditemId')[0];
-	                   viewmail.bindStore(store);
-	                   panel.getLayout().setActiveItem(1);
-	                    me.runTime.setActiveGrid(viewmail);
-	                    callout.destroy();
-          	    },
+         	      var id = currentRecord.get('id');
+         	     var panel = Ext.ComponentQuery.query('#taskManagerPanel')[0];
+           	      var form = panel.down('#viewmailformItemId');
+           	      form.loadRecord(currentRecord);
+                    store = Ext.create('AOC.store.ViewMailformStore',{
+                        storeId: 'ViewMailformStoreId',
+                        totalCount: 'total',
+                        proxy : {
+                    		type : 'rest',
+                    		url : applicationContext+'/rest/orderattachements/order/'+id,
+                    		reader:{
+                    	        type:'json', 
+                    	        rootProperty: 'viewmail',
+                    	        totalProperty: 'totalCount'
+                    	    }
+                    	}
+                    });
+                   
+                   var viewmail = panel.down('#EmailAttachmentInfoGriditemId');
+                   viewmail.bindStore(store);
+                   panel.getLayout().setActiveItem(1);
+                    me.runTime.setActiveGrid(viewmail);
+                    callout.destroy();},
           	  markasRead:function(){
           		  
           	  },
