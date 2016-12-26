@@ -34,8 +34,8 @@ Ext.define('AOC.view.email.EmailManagementController', {
 	                    	    }
 	                    	}
 	                    });
-	                   panel = Ext.ComponentQuery.query('#emailPanel')[0];
-	                   var viewmail = Ext.ComponentQuery.query('#EmailAttachmentInfoGriditemId')[0];
+	                   var panel = Ext.ComponentQuery.query('#emailPanel')[0];
+	                   var viewmail = panel.down('#EmailAttachmentInfoGriditemId');
 	                   viewmail.bindStore(store);
 	                   panel.getLayout().setActiveItem(1);
 	                    me.runTime.setActiveGrid(viewmail);
