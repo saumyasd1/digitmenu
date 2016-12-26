@@ -85,7 +85,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
         },  {
             xtype: 'displayfield',
             labelAlign: 'top',
-            name: 'Sender Email Id',
+            name: 'senderEmailId',
             itemId: 'senderemailId',
             fieldLabel: 'Sender Email ID',
             labelSeparator: ''
