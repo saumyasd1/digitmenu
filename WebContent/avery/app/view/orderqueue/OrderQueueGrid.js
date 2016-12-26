@@ -226,7 +226,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     },
     buildtbar:function(){
 		var me=this;
-			return [
+			return [ {
+			    xtype: 'component',
+			    itemId:'OrderQueueBackButton',
+			    hidden:true,
+			    autoEl: {
+			    	tag: 'img',
+			        src: AOC.config.Settings.buttonIcons.backIcon
+			    },
+				    listeners: {
+				    	 el : {
+				    		    click    : 'backButton'
+				    	 }
+			      }
+			},
 				   {
 					xtype : 'tbtext',
 					itemId : 'OrderQueuetextItemId',
@@ -251,7 +264,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	        		    autoEl: {
 	        		        tag: 'a',
 	        		        href: '#',
-	        		        html:AOCLit.advSearchTitle,
+	        		        html:AOCLit.advSearchTitle
 	        		    },
 	        		    listeners: {
 	        		    	 el : {
