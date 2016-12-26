@@ -79,13 +79,13 @@ Ext.define('AOC.view.viewmail.ViewMail', {
     	 	                       margin  : '0 0 0 10',
     	 	                       text    :'Download All',
     	 	                       itemId  : 'save',
-    	 	                       //handler:'SaveDetails'
+    	 	                       handler:'SaveDetails'
     	 	                   },{
     	 	                       xtype   : 'whitebutton',
     	 	                       margin  : '0 0 0 10',
     	 	                       itemId  : 'cancel',
     	 	                       text    :'Process Order',
-    	 	                       //handler : 'CancelDetails'
+    	 	                       handler : 'CancelDetails'
     	 	                   }
     	 	                   ]
     	 	                    }]
