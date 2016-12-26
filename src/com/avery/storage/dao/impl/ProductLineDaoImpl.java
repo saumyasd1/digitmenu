@@ -1,6 +1,9 @@
 package com.avery.storage.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +19,16 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderSystemInfo;
+import com.avery.storage.entities.OrgInfo;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
+import com.avery.storage.entities.RBO;
+import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implements
@@ -46,7 +55,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		String PartnerId=(String)queryMap.getFirst("partnerId");
 		Long partnerId=Long.valueOf(PartnerId);
 		partner.setId(partnerId);
-		criteria.add(Restrictions.eq("partner", partner));
+		criteria.add(Restrictions.eq("varPartner", partner));
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
 		if(queryString!=null){
@@ -94,7 +103,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
 		Conjunction disCriteria = Restrictions.conjunction();
-		criteria.createAlias("partner", "partner");
+		criteria.createAlias("varPartner", "partner");
 		disCriteria.add(Restrictions.eq("partner"+".partnerName",partnerName));
 		disCriteria.add(Restrictions.eq("rboName", rboName));
 		disCriteria.add(Restrictions.eq("productLineType", productLineType));
@@ -107,6 +116,68 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		if(totalCount>0)
 			valueExist=true;
 		return valueExist;
+	}
+
+
+	@Override
+	public ProductLine create(String productLineData) {
+		Session session = getSessionFactory().getCurrentSession();
+		ProductLine pk=new ProductLine();
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap<String,Object> productLineMap=null;
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+				false);
+		try {
+			pk = mapper.readValue(productLineData, ProductLine.class);
+			productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
+		
+		RBO rbo=new RBO();
+		
+		rbo.setId((int)productLineMap.get("rboId"));
+		pk.setRbo(rbo);
+		session.saveOrUpdate(pk);
+		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
+		for(int i=0;i<ordersystemList.size();i++){
+			OrderSystemInfo sys=new OrderSystemInfo();
+			LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
+			sys.setCsrName((String)systemMap.get("csrName"));
+			sys.setPackingInstruction((String)systemMap.get("packingInstruction"));
+			sys.setVariableDataBreakdown((String)systemMap.get("variableDataBreakdown"));
+			sys.setManufacturingNotes((String)systemMap.get("manufacturingNotes"));
+			sys.setInvoiceNote((String)systemMap.get("invoiceNote"));
+			sys.setShippingMark((String)systemMap.get("shippingMark"));
+			sys.setVarProductLine(pk);
+			sys.setCreatedDate(new Date());
+//			sys.setArtworkHold((Boolean)systemMap.get("artworkHold"));
+			sys.setSplitShipSetBy((String)systemMap.get("splitShipSetBy"));
+			SystemInfo sysInfo=new SystemInfo();
+//			sysInfo.setId((Integer)systemMap.get("systemId"));
+			sysInfo=(SystemInfo) session.get(SystemInfo.class, ((Integer)systemMap.get("systemId")).longValue());
+			sys.setVarSystem(sysInfo);
+			Long systemId=(Long)session.save(sys);
+			List orgInfoList=(ArrayList)systemMap.get("orgInfo");
+			for(int j=0;j<orgInfoList.size();j++){
+				//orgInfo=[{orgCodeId=1, default=true, id=extModel1438-1, manufacturingNotes=sad, invoiceNote=asda, variableDataBreakdown=PREPAID}]
+				OrgInfo org=new OrgInfo();
+				LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
+				org.setOrgCodeId((Integer)orgMap.get("orgCodeId"));
+				org.setBillToCode((String)orgMap.get("legacybilltocode"));
+				org.setShipToCode((String)orgMap.get("legacyshiptocode"));
+				org.setDefault((Boolean)orgMap.get("default"));
+				org.setFreightTerm((String)orgMap.get("freightterms"));
+				org.setShippingInstruction((String)orgMap.get("shippinginstructions"));
+				org.setShippingMethod((String)orgMap.get("shippingmethod"));
+				sys.setId(systemId);
+				org.setVarOrderSystemInfo(sys);
+				session.save(org);
+			}
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		// session.getTransaction().commit();
+		return pk;
 	}
 
 	
