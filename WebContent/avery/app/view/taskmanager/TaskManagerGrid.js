@@ -47,13 +47,13 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   			            {
   				        	text : 'Date/Time',
   				            sortable : true,
-  				            dataIndex:'Date/Time',
+  				            dataIndex:'createdDate',
   				            flex:0.5
   			            },
   			            {
   				        	text : 'From',
   				            sortable : true,
-  				            dataIndex:'From',
+  				            dataIndex:'senderEmailId',
   				            flex:0.5
   			            },
   			            {
@@ -65,7 +65,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   			            {
   				        	text :'CC',
   				            sortable : true,
-  				            dataIndex:'CC',
+  				            dataIndex:'ccMailId',
   				            flex:0.5
   			            },
   			          {
