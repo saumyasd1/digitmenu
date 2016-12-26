@@ -56,8 +56,8 @@ public class SystemInfo extends MainAbstractEntity{
 
 	
 	
-	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	OrderSystemInfo varOrderSystemInfo;
+	@OneToMany(mappedBy="varSystem",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	List<OrderSystemInfo> varOrderSystemInfo;
 	
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
@@ -104,12 +104,12 @@ public class SystemInfo extends MainAbstractEntity{
 		this.comment = comment;
 	}
 
-	OrderSystemInfo getVarOrderSystemInfo() {
+	public List<OrderSystemInfo> getVarOrderSystemInfo() {
 		return varOrderSystemInfo;
 	}
 
 
-	void setVarOrderSystemInfo(OrderSystemInfo varOrderSystemInfo) {
+	public void setVarOrderSystemInfo(List<OrderSystemInfo> varOrderSystemInfo) {
 		this.varOrderSystemInfo = varOrderSystemInfo;
 	}
 	
