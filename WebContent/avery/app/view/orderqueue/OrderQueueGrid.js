@@ -55,7 +55,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },
         {
      	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
-        	//text:'',
             width:40,
 			dataIndex:'Comments',
 			menuDisabled  :true,
@@ -72,7 +71,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			
         {
 		    header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
-		   //	text:'',
             width:40,
 			dataIndex:'error',
 			menuDisabled  :true,
@@ -190,7 +188,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			renderer:function(v,metadata){
 				if(v){
 					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-					return '<div>'+v+'</span></div>';
+					return '<div>'+v+'</div>';
 				}else 
 					return '';
         }
