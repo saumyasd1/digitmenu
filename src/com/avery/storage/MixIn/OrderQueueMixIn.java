@@ -3,12 +3,15 @@ package com.avery.storage.MixIn;
 
 import java.sql.Blob;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
+import com.avery.storage.entities.SalesOrder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -148,6 +151,18 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract String getFileExtension();
 		
+		@JsonIgnore
+		public abstract ProductLine getVarProductLine(); 
 		
+//		@JsonIgnore
+//		public abstract OrderFileAttachment getVarOrderFileAttachment();
+//		
+		
+		@JsonIgnore
+		public abstract List<OrderLine> getListOrderLine();
+		
+		
+		@JsonIgnore
+		public abstract List<SalesOrder> getListSalesOrderLine();
 		
 }
