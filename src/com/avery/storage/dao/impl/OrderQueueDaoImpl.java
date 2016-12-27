@@ -1,8 +1,6 @@
 package com.avery.storage.dao.impl;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,8 +31,11 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.OrderLine;
+import com.avery.storage.entities.OrderEmailQueue;
+import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.OrderLine;
+import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
@@ -53,6 +54,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
 		Map entitiesMap =new HashMap();
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
 		int totalCount=0;
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
@@ -84,8 +87,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			//orderQueue.setSubEmailBody(subEmailBody);
 		}
+		
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("orders", new LinkedHashSet(list));
+        criteria = session.createCriteria(OrderFileAttachment.class);
+        
+        entitiesMap.put("attachmentqueue", new LinkedHashSet(criteria.list()));
+
+        criteria = session.createCriteria(OrderEmailQueue.class);
+        
+        entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
 	}
 
@@ -198,8 +209,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		ProjectionList projectionList = Projections.projectionList();
-		projectionList
-				.add(Projections.property("receivedDate"), "receivedDate");
+		//projectionList.add(Projections.property("receivedDate"), "receivedDate");
 		projectionList.add(Projections.property("id"), "id");
 		projectionList.add(Projections.property("status"), "status");
 		Date endDate = new Date(System.currentTimeMillis());
@@ -249,7 +259,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			long lastDays= Long.parseLong(days);
 			Date endDate = new Date(System.currentTimeMillis());
 			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
-			criteria.add(Restrictions.between("receivedDate", startDate, endDate));
+			//criteria.add(Restrictions.between("receivedDate", startDate, endDate));
 			}
 			String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
@@ -289,7 +299,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		        Date todate1 = cal.getTime();    
 		        String strDate = HibernateUtils.sdfDate.format(todate1);
 		    String endDate = HibernateUtils.sdfDate.format(date);
-		    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, endDate);
+		    //criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, endDate);
 		}
 		return criteria;
 	}
@@ -316,7 +326,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Criteria criteria=session.createCriteria(OrderQueue.class);
 	    Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy");
 	    String strDate = HibernateUtils.sdfDate.format(now);
-	    criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
+	    //criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
 		return criteria;
 	}
 	
