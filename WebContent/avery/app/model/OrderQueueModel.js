@@ -98,7 +98,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 	    convert: function( v, record ) {
 	    	var attachmentFileList=[];
 	    	var OrderFile=[];
-	        var order=record.get('orderFileAttachment');
+	        var order=record.get('varOrderFileAttachment');
 	        var length= order.length;
 	        var flag=false;
 		      for(var i=0;i<length;i++){ 
