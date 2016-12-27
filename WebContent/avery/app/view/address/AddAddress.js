@@ -73,15 +73,14 @@ Ext.define('AOC.view.address.AddAddress',{
       		            labelSeparator : ''
             		},
                     items:[{
-        			xtype:'textfield',
-        			name: 'orgCode',
-        			fieldLabel:AOCLit.orgCode,
-        			allowBlank: false,
-    		        listeners : {
-	                    blur : this.notifyByImage,
-	                    'focus' : 'HideMandatoryMessage'
- 	                     }
-	        		},
+                		xtype:'combo',
+                		name: 'system',
+                		fieldLabel:'System',
+                		//queryMode :'local',
+                        displayField: 'name',
+                        valueField: 'id',
+                        store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+        	        	},
 	        		{
 	        			xtype:'combobox',
 	        			name: 'partner_id',
@@ -126,13 +125,18 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
+	        			name: 'address2',
+	        			fieldLabel:AOCLit.address2
+	        		},
+	        		{
+	        			xtype:'textfield',
 	        			name: 'address3',
 	        			fieldLabel:AOCLit.address3
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'city',
-	        			fieldLabel:AOCLit.City
+	        			name: 'address4',
+	        			fieldLabel:AOCLit.address4
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -143,12 +147,6 @@ Ext.define('AOC.view.address.AddAddress',{
 	        			xtype:'textfield',
 	        			name: 'zip',
 	        			fieldLabel:AOCLit.Zip
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'email',
-	        			fieldLabel:AOCLit.Email,
-	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
 	        		}
 	        		]
         		},
@@ -163,6 +161,17 @@ Ext.define('AOC.view.address.AddAddress',{
       		           
             		},
                     items:[{
+            			xtype:'combobox',
+            			name: 'orgCode',
+            			fieldLabel:AOCLit.orgCode,
+            			allowBlank: false,
+        		        listeners : {
+    	                    blur : this.notifyByImage,
+    	                    'focus' : 'HideMandatoryMessage',
+    	                    'change':'onOrgChange'
+     	                     }
+    	        		},
+    	        	{
         			xtype:'combo',
         			name: 'shippingMethod',
         			fieldLabel:AOCLit.shippingMethod,
@@ -208,13 +217,13 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'address2',
-	        			fieldLabel:AOCLit.address2
+	        			name: 'city',
+	        			fieldLabel:AOCLit.City
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'address4',
-	        			fieldLabel:AOCLit.address4
+	        			name: 'fax',
+	        			fieldLabel:AOCLit.fax
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -223,8 +232,9 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'fax',
-	        			fieldLabel:AOCLit.fax
+	        			name: 'email',
+	        			fieldLabel:AOCLit.Email,
+	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
 	        		}
 	        		 ]
         		}
