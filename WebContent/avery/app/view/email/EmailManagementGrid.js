@@ -67,6 +67,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
               	            text : 'Tracking #',
               	          	width:120,
               	            sortable : true,
+              	            align: 'right',
               	            dataIndex:'Tracking #',
               	            flex:1
               	            
@@ -91,21 +92,42 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				          	width:120,
   				            sortable : true,
   				            dataIndex:'Sender Email Id',
-  				            flex:1
+  				            flex:1,
+  				            renderer:function(v,metadata){
+  							if(v){
+  								metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+  								return '<div>'+v+'</div>';
+  							}else 
+  								return '';
+  			        }
   			            },
   			            {
   				        	text :'Subject',
   				          	width:120,
   				            sortable : true,
   				            dataIndex:'Subject',
-  				            flex:1
+  				            flex:1,
+  				          renderer:function(v,metadata){
+    							if(v){
+    								metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+    								return '<div>'+v+'</div>';
+    							}else 
+    								return '';
+    			        }
   			            },
   			            {
   				        	text :'Email',
   				          	width:120,
   				            sortable : true,
   				            dataIndex:'Email',
-  				            flex:1
+  				            flex:1,
+  				          renderer:function(v,metadata){
+    							if(v){
+    								metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+    								return '<div>'+v+'</div>';
+    							}else 
+    								return '';
+    			        }
   			            },
   			            {
   				        	text :'Status',
