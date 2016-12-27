@@ -18,6 +18,7 @@ Ext.define('AOC.lang.lit',{
     "profileInfo": 'My Profile',
     "updateUserMsg": "User updated successfully",
     "addUserMsg": "User Added Successfully",
+    "productLine":'Product Line',
     "deleteUserMsg": "User Deleted Successfully",
     "delUserMsg":'<b>Are you sure you want to delete the User?</b>',
     "noFieldModifiedMsg": "No field has been modified.",
