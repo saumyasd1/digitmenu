@@ -100,7 +100,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	                 {
 	     				xtype : 'tbtext',
 	     				itemId : 'ProductlinetextItemId',
-	     				text : '<div style="color:"><b>Partner Product Line-Manage</b></div>'
+	     				text : '<div style="color:"><b>Partner Data Structure-Manage</b></div>'
 	                    },
 	                    {
 	                     	xtype :'tbspacer',
@@ -119,7 +119,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Search Product Line "
+		    			emptyText: "Search Data Structure "
 					 },
 					 {
 		                	xtype :'tbspacer',
