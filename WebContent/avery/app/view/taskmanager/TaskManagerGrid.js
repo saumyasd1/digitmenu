@@ -29,6 +29,11 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
         });
            this.callParent(arguments);
       },
+      plugins: [
+                Ext.create('Ext.grid.plugin.CellEditing', {
+                    clicksToEdit: 1
+                })
+            ],
       selType: 'checkboxmodel',
       buildColumns : function(){
       	var me=this;
@@ -38,29 +43,46 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				            header: '<img src="'+AOC.config.Settings.buttonIcons.menuIcon + '" />',
 				            baseCls:'custom-action',
 				  	        items:
-				  	        [{
+				  	        [{	
 						  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
 						  	    	  handler: 'onClickMenu'
 						  	    	
 				  	      }]
 				        },
-  			            {
-  				        	text : 'Date/Time',
+				        {
+  				        	text :'CSR',
   				            sortable : true,
-  				            dataIndex:'createdDate',
-  				            flex:0.5
+  				            dataIndex:'CSR',
+  				            flex:0.5,
+  				            editor: {
+  			                xtype: 'combobox'
+  			            }
   			            },
   			            {
   				        	text : 'From',
   				            sortable : true,
   				            dataIndex:'senderEmailId',
-  				            flex:0.5
+  				            flex:0.5,
+  				          renderer:function(v,metadata){
+    							if(v){
+    								metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+    								return '<div>'+v+'</div>';
+    							}else 
+    								return '';
+    			        }
   			            },
   			            {
   				        	text :'Subject',
   				            sortable : true,
   				            dataIndex:'subject',
-  				            flex:0.5
+  				            flex:0.5,
+  				          renderer:function(v,metadata){
+    							if(v){
+    								metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+    								return '<div>'+v+'</div>';
+    							}else 
+    								return '';
+    			        }
   			            },
   			            {
   				        	text :'CC',
@@ -74,15 +96,12 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   				            dataIndex:'status',
   				            flex:0.5
   			            },
-  			            {
-  				        	text :'CSR',
+  			          {
+  				        	text : 'Date/Time',
   				            sortable : true,
-  				            dataIndex:'CSR',
-  				            flex:0.5,
-  				            editor: {
-  			                xtype: 'checkbox',
-  			                cls: 'x-grid-checkheader-editor'
-  			            }
+  				            dataIndex:'createdDate',
+  				            align: 'right',
+  				            flex:0.5
   			            }
           ]
       },
@@ -129,6 +148,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
              plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
              
          }];
-     }
+     },
+     
     
 });
+
