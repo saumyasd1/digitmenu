@@ -5,6 +5,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	controller:'productlineMain',
 	bodyPadding: 5,
 	width: 1000,
+	height:500,
 	border:false,
     modal:true,
     draggable:false,
@@ -18,7 +19,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
     	var me=this;
     	this.fieldArray = [],
             Ext.apply(this,{
-                items:this.buildContainerItem(),
+                items:this.buildItem(),
+                //layout:'fit',
+                buttons:this.buildButtons(),
                 listeners:{
             	'afterrender':function(obj){
             	if(me.rec!=null){
@@ -64,24 +67,38 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         				height:400,
         				scrollable:true,
         				items:this.buildItem()
-        			},
-        			{buttons:this.buildButtons()}]
+        			}]
         },
         buildItem:function(){
-        	var me=this;
+        	var me=this,siteStore=Ext.data.StoreManager.lookup('siteId')==null?Ext.create('AOC.store.SiteStore'):Ext.data.StoreManager.lookup('siteId'),
+        			rboStore=Ext.data.StoreManager.lookup('rboId')==null?Ext.create('AOC.store.RBOStore'):Ext.data.StoreManager.lookup('rboId');
         	return [
         	{
+						xtype:'displayfield',
+						itemId:'titleItemId',
+						vale:'',
+						hidden:false,
+						margin : '5 0 0 220'
+					   },
+					   {
+					   	xtype :'tbspacer',
+					   	height:1	
+						},
+					    {
+						xtype:'displayfield',
+						itemId:'messageFieldItemId',
+						hidden:true
+					},{
         		xtype:'form',
         		itemId:'listPanel',
         		border:false,
-        		height:710,
         		width:980,
         		items:[{
         			xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
                     items:[{
-        			xtype:'textfield',
+        			xtype:'displayfield',
         			itemId:'PNItemId',
         			labelAlign:'top',
         			name: 'partnerName',
@@ -106,39 +123,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			reference:'rboName',
         			fieldLabel:AOCLit.RBO,
         			allowBlank: false,
-        			value:'',
         			labelSeparator:'',
                     labelWidth : 200,
   		            width : 300,
   		            maxLength : '50',
   		            enforceMaxLength: true,
+  		            store:rboStore,
+  		            displayField:'rboName',
+  		            valueField:'id',
   		            blankText : 'RBO Name is required',
   		            listeners : {
 		            	 blur : this.notifyByImage,
 		            	'focus' : 'HideMandatoryMessage'
 	                    }
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'combo',
-        			itemId:'orgCodeId',
-        			labelAlign:'top',
-        			name: 'orgCode',
-        			fieldLabel:AOCLit.orgCode,
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            maxLength : '50',
-  		            enforceMaxLength: true,
-  		            //blankText : AOCLit.prodLineReq,
-  		            listeners : {
-  		            	 blur : this.notifyByImage,
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
         		}]
         		},{   xtype: 'fieldcontainer',
                     layout: 'hbox',
@@ -152,68 +149,91 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			allowBlank: false,
             			labelSeparator:'',
                         labelWidth : 200,
+                        valueField:'id',
+                        displayField:'name',
       		            width : 300,
       		            labelAlign:'top',
       		            maxLength : '100',
+      		            store:siteStore,
       		            enforceMaxLength: true,
       		            //blankText : AOCLit.CSRReq,
       		            listeners : {
       		            	 blur : this.notifyByImage,
-      		            	'focus' : 'HideMandatoryMessage'
+     		            	'focus' : 'HideMandatoryMessage',
+     		            	'select':'onSiteSelect'
      	                    }
             		},{
                     	xtype :'tbspacer',
                     	width :30
-            		},
-            		{
-                   	 xtype: 'fieldcontainer',
-                       defaultType: 'radiofield',
-                       defaults: {
-                           flex: 1
-                       },
-           			labelAlign:'top',
-           			layout: 'hbox',
-           			width:300,
-           			name:'emailId',
-           			fieldLabel:'Email Domain Type',
-           			items:[{
-                           boxLabel  : 'Private',
-                           name      : 'emailId',
-                           inputValue: 'private',
-                           id        : 'radio1'	
-                       }, {
-                           boxLabel  : 'Public',
-                           name      : 'emailId',
-                           inputValue: 'public',
-                           id        : 'radio2'
-                       }]
-           		},
-           		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-           		{
-        			xtype:'textfield',
-        			//itemId:'EmailId',
-        			name: 'EmailId',
-        			fieldLabel:'Email IDs',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            labelAlign:'top',
-  		            maxLength : '100',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	 blur : this.notifyByImage,
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        		}]
-        		},{   xtype: 'fieldcontainer',
+            		}
+            		]
+        		},{
+        			xtype:'fieldcontainer',
+        			reference:'systemcontainer',
+        			fieldLabel:'Systems',
+        			labelAlign:'top'
+        		},{
+                  	 xtype: 'fieldcontainer',
+         			 labelAlign:'top',
+         			 layout: 'hbox',
+         			 items:[{
+         				xtype:'radiogroup',
+         				fieldLabel:'Email Domain Type',
+         				width:400,
+         				items:[{
+                            boxLabel  : 'Private',
+                            name      : 'emailIdType',
+                            inputValue: 'private',
+                            id        : 'radio1',
+                            width : 100
+                        }, {
+                            boxLabel  : 'Public',
+                            name      : 'emailIdType',
+                            inputValue: 'public',
+                            id        : 'radio2',
+                            width:100,
+                            checked:true
+                        }]
+         			},{
+                 			xtype:'textfield',
+                 			margin:'0 0 0 200',
+                 			labelAlign:'top',
+                 			name: 'publicemailId',
+                 			fieldLabel:'Email IDS(Public)',
+                 			//allowBlank: false,
+                 			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+                 			labelSeparator:'',
+                             labelWidth : 200,
+           		            width : 300,
+           		            maxLength : '50',
+           		            enforceMaxLength: true,
+           		            listeners : {
+           		            	 blur : this.notifyByImage,
+           		            	'focus' : 'HideMandatoryMessage'
+          	                    }
+                     },{
+              			xtype:'textfield',
+             			labelAlign:'top',
+             			name: 'publicemailId',
+             			fieldLabel:'Email IDS(Private)',
+             			//allowBlank: false,
+             			hidden:true,
+             			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+             			labelSeparator:'',
+                         labelWidth : 200,
+       		            width : 300,
+       		            maxLength : '50',
+       		            enforceMaxLength: true,
+       		            listeners : {
+       		            	 blur : this.notifyByImage,
+       		            	'focus' : 'HideMandatoryMessage'
+      	                    }
+                 }]
+         		},{   xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
                     items:[{
-            			xtype:'combo',
+            			xtype:'textfield',
             			labelAlign:'top',
             			itemId:'CSRPEmailId',
             			name: 'CSRPrimaryEmail',
@@ -236,7 +256,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                     	width :30
             		},
             		{
-            			xtype:'combo',
+            			xtype:'textfield',
             			itemId:'CSRSEmailId',
             			name: 'CSRSecondaryEmail',
             			fieldLabel:'CSR Secondary Email',
@@ -264,7 +284,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
             			labelAlign:'top',
             			name: 'productLineType',
             			fieldLabel:AOCLit.productLine,
-            			allowBlank: false,
+            			allowBlank: true,
             			labelSeparator:'',
                         labelWidth : 200,
       		            width : 300,
@@ -276,237 +296,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            	'focus' : 'HideMandatoryMessage'
      	                    }
             		}]
-        		},
-        		
-        		
-        		{   xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[{
-        			xtype:'textfield',
-        			labelAlign:'top',
-        			name: 'billToCode',
-        			fieldLabel:'Bill To Code',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '100',
-  		            enforceMaxLength: true
-  		            //blankText : AOCLit.CSRReq
-  		           
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        		    //itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'shipToCode',
-        			fieldLabel:'Ship To Code',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		},{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        			//itemId:'CSREmaidId',
-        			labelAlign:'top',
-        		    name: 'invoiceLineInstruction',
-        			fieldLabel:'Invoice Instruction',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '100',
-  		            enforceMaxLength: true
-        		}
-        		]
-        		},{   xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'packingInstruction',
-        			fieldLabel:'Packaging Instruction',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-   		            maxLength : '300',
-  		            enforceMaxLength: true,
-  		            listeners : {
-  		            	'focus' : 'HideMandatoryMessage'
- 	                    }
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        			labelAlign:'top',
-        			name: 'variableDataBreakdown',
-        			fieldLabel:'Variable Data Breakdown',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '100',
-  		            enforceMaxLength: true
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'manufacturingNotes',
-        			fieldLabel:'Manufacturing Notes',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		}]
-        		},{
-        			xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[{
-        			xtype:'textfield',
-        			labelAlign:'top',
-        			name: 'shippingOnlyNotes',
-        			fieldLabel:'Shipping Only Notes',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '100',
-  		            enforceMaxLength: true
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'combo',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'splitShipSetBy',
-        			fieldLabel:'Split Ship Set By',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		},
-        		{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'combo',
-        			//itemId:'CSREmaidId',
-        			labelAlign:'top',
-        			name: 'artWorkHold',
-        			fieldLabel:'ArtWork Hold',
-        			allowBlank: false,
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '100',
-  		            enforceMaxLength: true
-        		}]
-        		},{
-        			xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'miscCSRInstruction',
-        			fieldLabel:'Misc. CSR Instructions',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		},{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'shippingMethod',
-        			fieldLabel:'Shipping Method',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		},{
-                	xtype :'tbspacer',
-                	width :30
-        		},
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'freightTerm',
-        			fieldLabel:'Freight Term',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		}]
-        		},{
-
-        			xtype: 'fieldcontainer',
-                    layout: 'hbox',
-                    margin : '5 0 0 5',
-                    items:[
-        		{
-        			xtype:'textfield',
-        			//itemId:'SONItemId',
-        			labelAlign:'top',
-        			name: 'shippingInstruction',
-        			fieldLabel:'Shipping Instruction',
-        			labelSeparator:'',
-                    labelWidth : 200,
-  		            width : 300,
-  		            height:60,
-  		            maxLength : '300',
-  		            enforceMaxLength: true
-        		}]
         		},{
                     xtype: 'fieldcontainer',
                     fieldLabel: 'Validations',
@@ -536,66 +325,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                 },
                 {
                     xtype: 'fieldcontainer',
-                    fieldLabel: 'CSR Attention',
+                    fieldLabel: '<b>CSR Attention</b>',
                     defaultType: 'checkboxfield',
                     layout:'hbox',
                     margin : '5 0 0 5',
                     labelAlign:'top',
                     name:'CSRAttention',
                     items: [
-                        {
-                            boxLabel  : 'Size Check',
-                            name      : 'CSRAttention',
-                            inputValue: 'sizecheck',
-                            checked   : true,
-                            id        : 'sizecheck'
-                        },{
-                        	xtype :'tbspacer',
-                        	width :30
-                		}, {
-                            boxLabel  : 'Discount Price',
-                            name      : 'CSRAttention',
-                            inputValue: 'discountprice',
-                            checked   : true,
-                            id        : 'discountprice'
-                        },
-                        {
-                        	xtype:'tbspacer',
-                        	width:30
-                        },
-                        {
-                            boxLabel  : 'Fabric Check',
-                            name      : 'CSRAttention',
-                            inputValue: 'fabriccheck',
-                            checked   : true,
-                            id        : 'fabriccheck'
-                        },
-                        {
-                        	xtype:'tbspacer',
-                        	width:30
-                        },
-                        {
-                            boxLabel  : 'Ship Mark',
-                            name      : 'CSRAttention',
-                            inputValue: 'shipmark',
-                            checked   : true,
-                            id        : 'shipmark'
-                        },
-                        {
-                        	xtype:'tbspacer',
-                        	width:30
-                        },
-                        {
-                            boxLabel  : 'LLKK',
-                            name      : 'CSRAttention',
-                            inputValue: 'llkk',
-                            checked   : true,
-                            id        : 'llkk'
-                        },
-                        {
-                        	xtype:'tbspacer',
-                        	width:30
-                        },
                         {
                             boxLabel  : 'Local Billing',
                             name      : 'CSRAttention',
@@ -624,6 +360,45 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                             inputValue: 'shipmentsample',
                             checked   : true,
                             id        : 'shipmentsample'
+                        }
+                        
+                    ]
+                },
+                {
+                    xtype: 'fieldcontainer',
+                    defaultType: 'checkboxfield',
+                    layout:'hbox',
+                    margin : '5 0 0 5',
+                    labelAlign:'top',
+                    name:'CSRAttention1',
+                    items: [
+                        {
+                            boxLabel  : 'Size Check',
+                            name      : 'CSRAttention',
+                            inputValue: 'sizecheck',
+                            checked   : true,
+                            id        : 'sizecheck'
+                        },{
+                        	xtype :'tbspacer',
+                        	width :30
+                		},
+                        {
+                            boxLabel  : 'Fabric Check',
+                            name      : 'CSRAttention',
+                            inputValue: 'fabriccheck',
+                            checked   : true,
+                            id        : 'fabriccheck'
+                        },
+                        {
+                        	xtype:'tbspacer',
+                        	width:30
+                        },
+                        {
+                            boxLabel  : 'LLKK',
+                            name      : 'CSRAttention',
+                            inputValue: 'llkk',
+                            checked   : true,
+                            id        : 'llkk'
                         }
                         
                     ]
@@ -772,25 +547,18 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                                          name      : 'additionalData',
                                          inputValue: 'yes',
                                          checked: true,
-                                         id        : 'yes',
-//                                         listeners: {
-//                                             change: function (field, newValue, oldValue) {
-//                                            	 var value = newValue;
-//                                            	 if (value == true) {
-//                                                     var additionalData = Ext.getCmp('additionalData');
-//                                                     additionalData.enable();
-//                                                 }
-//                                            	 if (value == false) {
-//                                                     var additionalData = Ext.getCmp('additionalData');
-//                                                     additionalData.disable();
-//                                                 }
-//                                             }
-//                                         }
+                                         id        : 'yes'
                                      }, {
                                          boxLabel  : 'No',
                                          name      : 'additionalData',
                                          inputValue: 'no',
-                                         id        : 'no'
+                                         id        : 'no',
+                                         listeners: {
+                                             change: function (field, newValue, oldValue) {
+                                            	 field.up('form').down('#AdditionalData').setDisabled(newValue);
+                                             	
+                                             }
+                                         }
                                      }]
                            },
                            {	
