@@ -129,7 +129,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "controlData")
 	boolean controlData;
 	@Column(name = "CSRPrimaryId", length = 250)
-	String CSRPrimaryId;// 250
+	private String CSRPrimaryId;// 250
 	@Column(name = "CSRSecondaryId", length = 250)
 	String CSRSecondaryId;// 250
 	@Column(name = "emailSubjectProductLineMatch", length = 100)
@@ -221,17 +221,11 @@ public class ProductLine extends MainAbstractEntity{
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rboId")
 	private RBO rbo;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "partnerId")
 	Partner varPartner;
-	@OneToMany(mappedBy = "varProductLine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<OrderQueue> listOrderFileQueue;
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<OrderFileAttachment> listOrderFileAttachments=new ArrayList<OrderFileAttachment>();
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
+//	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+//	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
 	
 	
 	
@@ -908,29 +902,14 @@ public class ProductLine extends MainAbstractEntity{
 		this.varPartner = varPartner;
 	}
 
-	public List<OrderQueue> getListOrderFileQueue() {
-		return listOrderFileQueue;
-	}
 
-	public void setListOrderFileQueue(List<OrderQueue> listOrderFileQueue) {
-		this.listOrderFileQueue = listOrderFileQueue;
-	}
-
-	public List<OrderFileAttachment> getListOrderFileAttachments() {
-		return listOrderFileAttachments;
-	}
-
-	public void setListOrderFileAttachments(List<OrderFileAttachment> listOrderFileAttachments) {
-		this.listOrderFileAttachments = listOrderFileAttachments;
-	}
-
-	public List<OrderSystemInfo> getListOrderSystemInfo() {
-		return listOrderSystemInfo;
-	}
-
-	public void setListOrderSystemInfo(List<OrderSystemInfo> listOrderSystemInfo) {
-		this.listOrderSystemInfo = listOrderSystemInfo;
-	}
+//	public List<OrderSystemInfo> getListOrderSystemInfo() {
+//		return listOrderSystemInfo;
+//	}
+//
+//	public void setListOrderSystemInfo(List<OrderSystemInfo> listOrderSystemInfo) {
+//		this.listOrderSystemInfo = listOrderSystemInfo;
+//	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -939,7 +918,7 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(Partner.class,ProductLineMixIn.class);
+			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
@@ -977,7 +956,7 @@ public class ProductLine extends MainAbstractEntity{
 			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productLineService.create(data);
+			//productLineService.create(data);
 			responseMap.put("valueExist",false);
 //			responseMap.put("id",id);
 			responseMapper.writeValue(writer, responseMap);
