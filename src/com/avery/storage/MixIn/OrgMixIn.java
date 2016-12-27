@@ -2,6 +2,7 @@ package com.avery.storage.MixIn;
 
 import java.sql.Date;
 
+import com.avery.storage.entities.SystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class OrgMixIn {
@@ -20,4 +21,7 @@ public abstract class OrgMixIn {
 	
 	@JsonIgnore
 	public abstract Date getLastModifiedDate();
+	
+	@JsonIgnore
+	public abstract SystemInfo getSystem();
 }
