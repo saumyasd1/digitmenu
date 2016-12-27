@@ -32,7 +32,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						{
 							xtype : 'textfield',
 							itemId: 'productlinevalue',
-							fieldLabel : AOCLit.productLine,
+							fieldLabel : AOCLit.partnerDataStructure,
 							name:'productLineType',
 							width:250,
 							labelSeparator : '',
