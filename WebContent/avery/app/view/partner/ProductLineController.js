@@ -2,7 +2,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.productlineMain',
     runTime : AOC.config.Runtime,
-    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
+    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper','AOC.view.partner.SystemGrid','AOC.view.partner.OrgGrid'],
     SaveDetails:function(){
 		Ext.getBody().mask('Saving....');
 		var me=this;
@@ -27,6 +27,24 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			Msg=AOCLit.updateProdLineMsg;
 		}
 		else{
+			var systemcontainer=this.getView().lookupReference('systemcontainer'),
+			checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore;
+			var orderSystemInfo=new Array();
+			for(var jj=0;jj<checkboArray.length;jj++){
+				currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
+				if(currentcheckBox.getValue()){
+					systemGridStore=me.getView().lookupReference(checkboArray[jj]+'systemGrid').getStore();
+					orgGridStore=me.getView().lookupReference(checkboArray[jj]+'orgGrid').getStore();
+					var orgInfo=new Array(),currentStore;
+					for(var k=0;k<orgGridStore.getCount();k++){
+						currentStore=orgGridStore.getAt(k).data;
+						orgInfo.push(currentStore);
+					}
+					systemGridStore.getAt(0).data.orgInfo=orgInfo;
+					orderSystemInfo.push(systemGridStore.getAt(0).data);
+					
+				}
+			}
 			Id=productline.partnerid;
 			partnerName=productline.partnerName;
 			var partner='';
@@ -35,7 +53,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			valueObj=form.getValues(false,true,false,true);
 			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
 			parameters={
-					rboName:valueObj.rboName,
+					rboId:valueObj.rboName,
+					partnerId:Id,
+					CSRPrimaryID:valueObj.CSRPrimaryID,
+					orderSystemInfo:orderSystemInfo,
 					productLineType:valueObj.productLineType,
 					csrName:valueObj.csrName,
 					packingInstruction:valueObj.packingInstruction,
@@ -89,7 +110,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    	createproductline.destroy();
 				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
 			  			//Ext.Msg.alert('Alert Message',Msg);
-			  			productline.store.load();
+			  			//productline.store.load();
 				  		
 		        },
 		        failure: function(response, opts) {
@@ -352,5 +373,122 @@ if(!temp){
 	    {
 		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
 		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
-	    }
+	    },
+	    onSiteSelect:function(cmp){
+	    	Ext.getBody();
+	    	var value=cmp.getValue(),me=this;
+	    	Ext.Ajax.request( {
+				method: 'GET',
+			    url : applicationContext+'/rest/system/site/'+value,
+			    success : function(response, opts) {
+			    	var systemContainer=me.getView().lookupReference('systemcontainer'),
+			    	itemsTobeRemoved=systemContainer.items.items;
+			    	for(var j=itemsTobeRemoved.length-1;j>=0;j--){
+			    		systemContainer.remove(itemsTobeRemoved[j]);
+			    	}
+			    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
+			    		systemcontainer.checkboArray=new Array();
+			    		if(jsonString.length==0){
+			    			AOC.util.Helper.fadeoutMessage('Success','No System Configured for the selected site. Please select another site');
+			    			return false;
+			    		}
+			    		
+			    		for(var i=0;i<jsonString.length;i++){
+			    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
+			    			systemcontainer.checkboArray.push(jsonString[i].name);
+			    		}
+			    	Ext.getBody().unmask();
+			  		
+	        },
+	        failure: function(response, opts) {
+	        	
+          }
+	    })
+	    	},
+	    	getSystemContainer:function(selectedSystemArray){
+	    		var me=this;
+	    		var response = Ext.Ajax.request({
+		            async: false,
+		            url: applicationContext+'/rest/org/system/'+selectedSystemArray.id
+		        });
+		        var items = Ext.decode(response.responseText);
+		      	var jsonValue=Ext.decode(response.responseText),
+		      	totalOrgConfigured=jsonValue.length;
+		      	var orgStore=Ext.create('Ext.data.Store',{
+	    			fields:['id','name'],
+	    			storeId:'systemStore'+selectedSystemArray.id,
+	    			data:jsonValue
+		      	});
+	    		var systemStore=Ext.create('Ext.data.Store',{
+	    			fields:['id','name'],
+	    			storeId:'systemStore'+selectedSystemArray.id,
+	    			data:[{
+	    				'csrname':'','systemId':selectedSystemArray.id
+	    			}]
+	    		});
+	    		var orgOrderStore;
+	    		if(totalOrgConfigured>0){
+	    			orgOrderStore=Ext.create('Ext.data.Store',{
+		    			fields:['id','name'],
+		    			storeId:'orgStore'+selectedSystemArray.id,
+		    			data:[{
+		    				'orgCodeId':jsonValue[0].id,'default':true
+		    			}]
+		    		});
+	    		}
+	    		return [{
+	    			xtype:'checkbox',
+	    			boxLabel  : selectedSystemArray.name,
+	    			reference  : selectedSystemArray.name,
+                    name      :selectedSystemArray.name,
+                    inputValue: selectedSystemArray.id,
+                    listeners:{
+                    	'change':function(cmp,newValue){
+                    		var systemGrid=me.getView().lookupReference(cmp.name+'systemGrid'),
+                    		orgGrid=me.getView().lookupReference(cmp.name+'orgGrid');
+                    		if(newValue){
+                    			orgGrid.setDisabled(false);
+                    			systemGrid.setDisabled(false);
+                    		}else{
+                    			orgGrid.setDisabled(true);
+                    			systemGrid.setDisabled(true);
+                    		}
+                    	}
+                    }
+	    		},{
+	    			xtype:'systemgrid',
+	    			store:systemStore,
+	    			disabled:true,
+	    			reference:selectedSystemArray.name+'systemGrid'
+	    		},{
+	    			xtype:'fieldcontainer',
+	    			layout:'hbox',
+	    			items:[{
+		    			xtype:'orggrid',
+		    			width:800,
+		    			store:orgOrderStore,
+		    			orgStore:orgStore,
+		    			uniqueName:selectedSystemArray.name,
+		    			maxRecord:totalOrgConfigured,
+		    			disabled:true,
+		    			reference:selectedSystemArray.name+'orgGrid'
+		    		},{
+	    				xtype:'button',
+	    				margin:'40 0 0 20',
+	    				maxRecord:totalOrgConfigured,
+	    				text:'Plus',
+	    				listeners:{
+	    					'click':function(cmp){
+	    						if(orgOrderStore.getCount()<totalOrgConfigured){
+	    							orgOrderStore.add({orgCodeId:''});
+	    							orgOrderStore.commit();
+	    						}else{
+	    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
+	    						}
+	    					}
+	    				}
+	    			}]
+	    		}]
+	    	}
+	    	
 });
