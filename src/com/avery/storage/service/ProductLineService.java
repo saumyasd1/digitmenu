@@ -37,5 +37,12 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 		return getProductLineDao().checkDuplicateValues(productLine);
 		
 	}
+	
+	@Transactional 
+	public ProductLine create(String productLineData) throws Exception{
+		
+		return getProductLineDao().create(productLineData);
+		
+	}
 
 }
