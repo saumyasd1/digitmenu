@@ -130,11 +130,21 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		try {
 			pk = mapper.readValue(productLineData, ProductLine.class);
 			productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
-		
 		RBO rbo=new RBO();
-		
+		Partner partner=new Partner();
+		partner.setId(Integer.parseInt((String)productLineMap.get("partnerId")));
 		rbo.setId((int)productLineMap.get("rboId"));
 		pk.setRbo(rbo);
+		pk.setVarPartner(partner);
+		pk.setCSRPrimaryId((String)productLineMap.get("CSRPrimaryID"));
+		pk.setWaiveMOA((boolean)productLineMap.get("waivemoa"));
+		pk.setWaiveMOQ((boolean)productLineMap.get("waivemoq"));
+		pk.setLocalBilling((boolean)productLineMap.get("localbilling"));
+		pk.setFactoryTransfer((boolean)productLineMap.get("factorytransfer"));
+		pk.setShipmentSample((boolean)productLineMap.get("shipmentsample"));
+		pk.setLLKK((boolean)productLineMap.get("llkk"));
+		pk.setCSRSecondaryId((String)productLineMap.get("CSRSecondaryID"));
+		pk.setCreatedDate(new Date());
 		session.saveOrUpdate(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		for(int i=0;i<ordersystemList.size();i++){
@@ -151,13 +161,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 //			sys.setArtworkHold((Boolean)systemMap.get("artworkHold"));
 			sys.setSplitShipSetBy((String)systemMap.get("splitShipSetBy"));
 			SystemInfo sysInfo=new SystemInfo();
-//			sysInfo.setId((Integer)systemMap.get("systemId"));
 			sysInfo=(SystemInfo) session.get(SystemInfo.class, ((Integer)systemMap.get("systemId")).longValue());
 			sys.setVarSystem(sysInfo);
 			Long systemId=(Long)session.save(sys);
 			List orgInfoList=(ArrayList)systemMap.get("orgInfo");
 			for(int j=0;j<orgInfoList.size();j++){
-				//orgInfo=[{orgCodeId=1, default=true, id=extModel1438-1, manufacturingNotes=sad, invoiceNote=asda, variableDataBreakdown=PREPAID}]
 				OrgInfo org=new OrgInfo();
 				LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
 				org.setOrgCodeId((Integer)orgMap.get("orgCodeId"));
