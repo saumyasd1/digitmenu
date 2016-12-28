@@ -30,8 +30,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -222,14 +220,14 @@ public class ProductLine extends MainAbstractEntity{
 	String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
 	String defaultSystem;
-//	@ManyToOne(fetch = FetchType.EAGER)
-//	@JoinColumn(name = "rboId")
-//	private RBO rbo;
-//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//	@JoinColumn(name = "partnerId")
-//	Partner varPartner;
-//	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-//	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "rboId")
+	private RBO rbo;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "partnerId")
+	Partner varPartner;
+	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
 	
 	
 	
@@ -890,21 +888,21 @@ public class ProductLine extends MainAbstractEntity{
 		this.defaultSystem = defaultSystem;
 	}
 
-//	public RBO getRbo() {
-//		return rbo;
-//	}
-//
-//	public void setRbo(RBO rbo) {
-//		this.rbo = rbo;
-//	}
-//
-//	public Partner getVarPartner() {
-//		return varPartner;
-//	}
-//
-//	public void setVarPartner(Partner varPartner) {
-//		this.varPartner = varPartner;
-//	}
+	public RBO getRbo() {
+		return rbo;
+	}
+
+	public void setRbo(RBO rbo) {
+		this.rbo = rbo;
+	}
+
+	public Partner getVarPartner() {
+		return varPartner;
+	}
+
+	public void setVarPartner(Partner varPartner) {
+		this.varPartner = varPartner;
+	}
 	public String getDataStructureName() {
 		return dataStructureName;
 	}
@@ -1135,7 +1133,7 @@ public class ProductLine extends MainAbstractEntity{
 	@GET
 	@Path("/productLineType")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProductLineType(UriInfo ui, HttpHeaders hh) {
+	public Response getProductLineType(@Context UriInfo ui, @Context HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		List<ProductLine> productline = null;
 		try {
