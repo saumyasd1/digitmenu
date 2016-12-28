@@ -8,5 +8,9 @@ import com.avery.storage.entities.OrderEmailQueue;
 public interface OrderEmailQueueDao extends GenericDao<OrderEmailQueue, Long>{
 	
 	public Map getUnidentifiedEntities();
+	
+	public void cancelEmail(String data, Long entityId);
+
+	public void disregardEmail(String data, Long entityId);
 
 }
