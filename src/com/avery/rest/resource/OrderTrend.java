@@ -140,7 +140,7 @@ public class OrderTrend {
 			}
 			for (OrderQueue orderQueue : set) {
 				datamap.put("day", formatter.format(endDate));
-				recieveDate = orderQueue.getReceivedDate();
+//				recieveDate = orderQueue.getReceivedDate();
 				if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
 					for (String status : statusMap.keySet()) {
 						if (orderQueue.getStatus().equals(status)) {
@@ -230,7 +230,7 @@ public class OrderTrend {
 		}
 		Map<String, Object> m = null;
 		for (OrderQueue orderQueue : set) {
-			recieveDate = orderQueue.getReceivedDate();
+//			recieveDate = orderQueue.getReceivedDate();
 			if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
 				status = orderQueue.getStatus();
 				switch (status) {
