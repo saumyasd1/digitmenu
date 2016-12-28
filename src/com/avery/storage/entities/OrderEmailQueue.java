@@ -13,7 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -498,6 +500,55 @@ public class OrderEmailQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
+	
+	@PUT
+	@Path("cancelemail/{id:[0-9]+}")
+	public Response cancelEmail(@Context UriInfo ui,
+			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
+		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
+		try {
+			OrderEmailQueueService orderQueueService = (OrderEmailQueueService) SpringConfig
+					.getInstance().getBean("orderEmailQueueService");
+			orderQueueService.cancelEmail(data,orderEmailQueueEntityId);
+			   return Response.ok().build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling email", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling email", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+    @PUT
+	@Path("disregardemail/{id:[0-9]+}")
+	public Response disregardEmail(@Context UriInfo ui,
+			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
+		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
+		try {
+			OrderEmailQueueService orderQueueService = (OrderEmailQueueService) SpringConfig
+					.getInstance().getBean("orderEmailQueueService");
+			orderQueueService.disregardEmail(data,orderEmailQueueEntityId);
+			   return Response.ok().build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling email", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while cancelling email", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
 
 	
 
