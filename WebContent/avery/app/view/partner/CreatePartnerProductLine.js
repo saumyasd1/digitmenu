@@ -273,15 +273,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
       		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
      	                    }
-            		},
-            		{
-                    	xtype :'tbspacer',
-                    	width :30
-            		},
-            		{
+            		}]
+        		},{
+        			xtype:'fieldcontainer',
+        			layout:'hbox',
+        			fieldLabel:'Product Line',
+        			margin : '5 0 0 5',
+        			items:[{
+        				xtype:'radio',
+        				boxLabel:'Unique',
+        				input:'unique',
+        				name:'productlineType'
+        			},{
             			xtype:'combo',
-            			itemId:'PLItemId',
-            			labelAlign:'top',
             			name: 'productLineType',
             			fieldLabel:AOCLit.productLine,
             			allowBlank: true,
@@ -289,13 +293,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                         labelWidth : 200,
       		            width : 300,
       		            maxLength : '50',
+      		            store:[['HTL','HTL'],['PFL','PFL'],['WVL','WVL']],
       		            enforceMaxLength: true,
       		            blankText : AOCLit.prodLineReq,
       		            listeners : {
       		            	 blur : this.notifyByImage,
       		            	'focus' : 'HideMandatoryMessage'
      	                    }
-            		}]
+            		},{
+        				xtype:'radio',
+        				boxLabel:'Mixed',
+        				inputValue:'MIXED',
+        				name:'productlineType'
+        			}]
         		},{
                     xtype: 'fieldcontainer',
                     fieldLabel: 'Validations',
@@ -307,19 +317,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                     items: [
                         {
                             boxLabel  : 'Waive MOA',
-                            name      : 'validation',
-                            inputValue: 'waivemoa',
-                            checked   : true,
-                            id        : 'waivemoa'
+                            name      : 'waivemoa',
+                            inputValue: 'waivemoa'
                         },{
                         	xtype :'tbspacer',
                         	width :30
                 		}, {
                             boxLabel  : 'Waive MOQ ',
-                            name      : 'validation',
-                            inputValue: 'waivemoq',
-                            checked   : true,
-                            id        : 'waivemoq'
+                            name      : 'waivemoq',
+                            inputValue: 'waivemoq'
                         }
                     ]
                 },
@@ -334,10 +340,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                     items: [
                         {
                             boxLabel  : 'Local Billing',
-                            name      : 'CSRAttention',
-                            inputValue: 'localbilling',
-                            checked   : true,
-                            id        : 'localbilling'
+                            name      : 'localbilling',
+                            inputValue: 'localbilling'
                         },
                         {
                         	xtype:'tbspacer',
@@ -345,10 +349,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                         },
                         {
                             boxLabel  : 'Factory Transfer',
-                            name      : 'CSRAttention',
-                            inputValue: 'factorytransfer',
-                            checked   : true,
-                            id        : 'factorytransfer'
+                            name      : 'factorytransfer',
+                            inputValue: 'factorytransfer'
                         },
                         {
                         	xtype:'tbspacer',
@@ -356,10 +358,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                         },
                         {
                             boxLabel  : 'Shipment Sample',
-                            name      : 'CSRAttention',
-                            inputValue: 'shipmentsample',
-                            checked   : true,
-                            id        : 'shipmentsample'
+                            name      : 'shipmentsample',
+                            inputValue: 'shipmentsample'
                         }
                         
                     ]
@@ -374,20 +374,16 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                     items: [
                         {
                             boxLabel  : 'Size Check',
-                            name      : 'CSRAttention',
-                            inputValue: 'sizecheck',
-                            checked   : true,
-                            id        : 'sizecheck'
+                            name      : 'sizecheck',
+                            inputValue: 'sizecheck'
                         },{
                         	xtype :'tbspacer',
                         	width :30
                 		},
                         {
                             boxLabel  : 'Fabric Check',
-                            name      : 'CSRAttention',
-                            inputValue: 'fabriccheck',
-                            checked   : true,
-                            id        : 'fabriccheck'
+                            name      : 'fabriccheck',
+                            inputValue: 'fabriccheck'
                         },
                         {
                         	xtype:'tbspacer',
@@ -395,10 +391,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                         },
                         {
                             boxLabel  : 'LLKK',
-                            name      : 'CSRAttention',
-                            inputValue: 'llkk',
-                            checked   : true,
-                            id        : 'llkk'
+                            name      : 'llkk',
+                            inputValue: 'llkk'
                         }
                         
                     ]
