@@ -50,12 +50,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			var partner='';
 			partner={id:Id,partnerName:partnerName};
 			url=applicationContext+'/rest/productLines';
-			valueObj=form.getValues(false,true,false,true);
+			valueObj=form.getValues(false,false,false,true);
 			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
 			parameters={
 					rboId:valueObj.rboName,
 					partnerId:Id,
-					CSRPrimaryID:valueObj.CSRPrimaryID,
+					CSRPrimaryID:valueObj.CSRPrimaryEmail,
+					CSRSecondaryID:valueObj.CSRSecondaryEmail,
+					waivemoa:valueObj.waivemoa,
+					waivemoq:valueObj.waivemoq,
+					shipmentsample:valueObj.shipmentsample,
+					factorytransfer:valueObj.factorytransfer,
+					localbilling:valueObj.localbilling,
+					llkk:valueObj.llkk,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:valueObj.productLineType,
 					csrName:valueObj.csrName,
@@ -375,7 +382,7 @@ if(!temp){
 		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
 	    },
 	    onSiteSelect:function(cmp){
-	    	Ext.getBody();
+	    	Ext.getBody().mask('Loading....');
 	    	var value=cmp.getValue(),me=this;
 	    	Ext.Ajax.request( {
 				method: 'GET',
@@ -390,6 +397,7 @@ if(!temp){
 			    		systemcontainer.checkboArray=new Array();
 			    		if(jsonString.length==0){
 			    			AOC.util.Helper.fadeoutMessage('Success','No System Configured for the selected site. Please select another site');
+			    			Ext.getBody().unmask();
 			    			return false;
 			    		}
 			    		
