@@ -145,6 +145,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		pk.setLLKK((boolean)productLineMap.get("llkk"));
 		pk.setCSRSecondaryId((String)productLineMap.get("CSRSecondaryID"));
 		pk.setCreatedDate(new Date());
+		pk.setProductLineType((String)productLineMap.get("productLineType"));
+		pk.setEmail((String)productLineMap.get("email"));
 		session.saveOrUpdate(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		for(int i=0;i<ordersystemList.size();i++){
