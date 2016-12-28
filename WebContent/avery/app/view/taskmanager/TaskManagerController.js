@@ -42,9 +42,18 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
           	  markasRead:function(){
           		  
           	  },
-          	  disregard:function(){
-        		  
-        	  }
+          	   disregard:function(){
+               currentRecord = e.record;
+               var id = currentRecord.get('id');
+               var win = Ext.create('AOC.view.taskmanager.DisregardEmailWindow');
+               callout.destroy();
+                 win.show();
+                 me.runTime.setOrderEmailQueueId(id);
+                 // me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
+                 me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
+                 //me.runTime.setAllowOrderLineEdit(true);
+                // var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+              }
             }
         });
         //Adding functionality related to Menu item visibility
