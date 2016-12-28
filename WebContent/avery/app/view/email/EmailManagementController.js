@@ -41,12 +41,18 @@ Ext.define('AOC.view.email.EmailManagementController', {
 	                    me.runTime.setActiveGrid(viewmail);
 	                    callout.destroy();
 },
-            	    cancelMail:function(){
-            	    	 currentRecord = e.record;
-                  	     var id = currentRecord.get('id');
-                  	     var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
-           	             win.show();
-            	    },
+            	      cancelMail:function(){
+                         currentRecord = e.record;
+                         var id = currentRecord.get('id');
+                         var win = Ext.create('AOC.view.email.CancelEmailWindow');
+                         callout.destroy();
+                         win.show();
+                   me.runTime.setOrderEmailQueueId(id);
+                  // me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
+                   me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
+                   //me.runTime.setAllowOrderLineEdit(true);
+                     // var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+                    },
             	    viewOrder: function(cmp) {
             	    	                    var data = e.record;
             	    	                    var id = data.id;
