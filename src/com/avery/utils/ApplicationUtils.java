@@ -25,4 +25,18 @@ public class ApplicationUtils {
 		}
 		return map;
 	}
+	public static HashMap<String,Object> convertJSONtoObjectMaps(String jsonStr) throws  IOException,Exception {
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		try {
+			if(jsonStr != null)
+			{
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(jsonStr, 
+					    new TypeReference<HashMap<String,Object>>(){});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 }
