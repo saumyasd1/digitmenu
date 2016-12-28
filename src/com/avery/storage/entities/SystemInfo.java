@@ -64,7 +64,7 @@ public class SystemInfo extends MainAbstractEntity{
 	@JoinColumn(name="siteId",nullable=false)
 	Site site;
 	
-	@OneToMany(mappedBy="system",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="system",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<Org> orgList=new ArrayList<Org>();
 	
 	public List<Org> getOrgList() {

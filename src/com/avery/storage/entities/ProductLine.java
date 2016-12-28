@@ -228,10 +228,19 @@ public class ProductLine extends MainAbstractEntity{
 	Partner varPartner;
 	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
+	@Column(name = "email")
+	private String email;
 	
 	
 	
-	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public boolean isActive() {
 		return active;
 	}
@@ -965,7 +974,7 @@ public class ProductLine extends MainAbstractEntity{
 			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			//productLineService.create(data);
+			productLineService.create(data);
 			responseMap.put("valueExist",false);
 			responseMapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
