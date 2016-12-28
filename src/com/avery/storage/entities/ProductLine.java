@@ -1,3 +1,4 @@
+
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
@@ -35,6 +36,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.ProductLineService;
@@ -204,6 +206,8 @@ public class ProductLine extends MainAbstractEntity{
 	String preProcessPID;// 50
 	@Column(name = "productLineType", length = 25)
 	String productLineType;// 25
+	@Column(name = "DataStructureName", length = 100)
+	String dataStructureName;
 	@Column(name = "shipmentSample")
 	boolean shipmentSample;
     @Column(name = "waiveMOA")
@@ -218,12 +222,12 @@ public class ProductLine extends MainAbstractEntity{
 	String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
 	String defaultSystem;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "rboId")
-	private RBO rbo;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "partnerId")
-	Partner varPartner;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "rboId")
+//	private RBO rbo;
+//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "partnerId")
+//	Partner varPartner;
 //	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 //	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
 	
@@ -886,20 +890,27 @@ public class ProductLine extends MainAbstractEntity{
 		this.defaultSystem = defaultSystem;
 	}
 
-	public RBO getRbo() {
-		return rbo;
+//	public RBO getRbo() {
+//		return rbo;
+//	}
+//
+//	public void setRbo(RBO rbo) {
+//		this.rbo = rbo;
+//	}
+//
+//	public Partner getVarPartner() {
+//		return varPartner;
+//	}
+//
+//	public void setVarPartner(Partner varPartner) {
+//		this.varPartner = varPartner;
+//	}
+	public String getDataStructureName() {
+		return dataStructureName;
 	}
 
-	public void setRbo(RBO rbo) {
-		this.rbo = rbo;
-	}
-
-	public Partner getVarPartner() {
-		return varPartner;
-	}
-
-	public void setVarPartner(Partner varPartner) {
-		this.varPartner = varPartner;
+	public void setDataStructureName(String dataStructureName) {
+		this.dataStructureName = dataStructureName;
 	}
 
 
@@ -956,7 +967,7 @@ public class ProductLine extends MainAbstractEntity{
 			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productLineService.create(data);
+			//productLineService.create(data);
 			responseMap.put("valueExist",false);
 			responseMapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
@@ -1121,6 +1132,36 @@ public class ProductLine extends MainAbstractEntity{
 		}
 	}
 	
+	@GET
+	@Path("/productLineType")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProductLineType(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<ProductLine> productline = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			productline = productLineService.readAll();
+			if (productline == null)
+				throw new Exception("Unable to find Product Line");
+			mapper.writeValue(writer, productline);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
 	
 	
 	
