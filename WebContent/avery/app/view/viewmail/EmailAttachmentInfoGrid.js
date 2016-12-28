@@ -11,14 +11,13 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 //			listeners:{
 //				'cellclick':'onAttachmentGridCellClick'
 //			}
+			 plugins: [{
+			        ptype: 'cellediting',
+			        clicksToEdit: 1
+			    }]
         });
         this.callParent(arguments);
     },
-    plugins: [
-              Ext.create('Ext.grid.plugin.CellEditing', {
-                  clicksToEdit: 1
-              })
-          ],
           selType: 'checkboxmodel',
     buildColumns : function(){
         return {
