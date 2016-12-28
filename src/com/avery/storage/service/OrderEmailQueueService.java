@@ -30,5 +30,14 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 	public Map getWithUnidentifiedStatus(){
 		return getOrderEmailQueueDao().getUnidentifiedEntities();
 	}
+	
+	@Transactional
+	public void cancelEmail(String data,Long entityId){
+		getOrderEmailQueueDao().cancelEmail(data,entityId);
+	}
 
+	@Transactional
+	public void disregardEmail(String data,Long entityId){
+		getOrderEmailQueueDao().disregardEmail(data,entityId);
+	}
 }
