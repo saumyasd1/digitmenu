@@ -8,9 +8,6 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
             columns : this.buildColumns(),
 			columnLines:true,
 			layout:'fit',
-//			listeners:{
-//				'cellclick':'onAttachmentGridCellClick'
-//			}
 			 plugins: [{
 			        ptype: 'cellediting',
 			        clicksToEdit: 1
@@ -43,7 +40,12 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	        dataIndex:'Partner Data Structure',
 	        name: 'Partner Data Structure',
 	        editor: {
-	        	xtype:'combobox'
+	        	xtype:'combobox',
+	        	editable:false,
+	        	displayField:'value',
+				valueField:'code',
+				queryMode :'local',
+	        	store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('orderlineid')
 	        }
         }, {
         	xtype: 'checkcolumn',
