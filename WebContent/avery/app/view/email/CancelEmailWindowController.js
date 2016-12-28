@@ -4,7 +4,6 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 'AOC.view.advsearch.OrderQueueAdvanceSearch', 'AOC.view.orderqueue.OrderLineExpandableGrid'],
     runTime: AOC.config.Runtime,
     cancelEmail: function() {
-    	debugger;
     	Ext.getBody().mask('Cancelling...');
         var id = this.runTime.getOrderEmailQueueId(),
         me = this;
