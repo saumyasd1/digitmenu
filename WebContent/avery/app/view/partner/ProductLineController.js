@@ -8,11 +8,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var me=this;
 		var createproductline=this.getView();
 		var panel=createproductline.down('#listPanel');
-		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0];
-		var valueObj='',valueObj2='',form=this.getView().down('form');
-		var AdvancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
-		var editMode=this.getView().editMode,url='';
-		var length=0;
+		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
+		valueObj='',valueObj2='',form=this.getView().down('form'),
+		AdvancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
+		editMode=this.getView().editMode,url='',
+		length=0,hiddenProductLineField=this.getView().lookupReference('productLineHidden'),productLineValue=hiddenProductLineField.getValue();
 		if(editMode){
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
@@ -53,7 +53,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			valueObj=form.getValues(false,false,false,true);
 			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
 			parameters={
-					rboId:valueObj.rboName,
+					rboId:valueObj.rboId,
 					partnerId:Id,
 					CSRPrimaryID:valueObj.CSRPrimaryEmail,
 					CSRSecondaryID:valueObj.CSRSecondaryEmail,
@@ -64,34 +64,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					localbilling:valueObj.localbilling,
 					llkk:valueObj.llkk,
 					orderSystemInfo:orderSystemInfo,
-					productLineType:valueObj.productLineType,
-					csrName:valueObj.csrName,
-					packingInstruction:valueObj.packingInstruction,
-					splitShipSetBy:valueObj.splitShipSetBy,
-					orderEmailDomain:valueObj.orderEmailDomain,
-					invoiceLineInstruction:valueObj.invoiceLineInstruction,
-					manufacturingNotes:valueObj.manufacturingNotes,
-					attachmentMappingName2:valueObj.attachmentMappingName2,
-					variableDataBreakdown:valueObj.variableDataBreakdown,
-					shippingOnlyNotes:valueObj.shippingOnlyNotes,
-					orderSchemaType:valueObj2.orderSchemaType,
-					orderSchemaID:valueObj2.orderSchemaID,
-					orderMappingID:valueObj2.orderMappingID,
-					attachmentRequired:valueObj2.attachmentRequired,
-					attachmentSchemaType_1:valueObj2.attachmentSchemaType_1,
-					attachmentMappingID_1:valueObj2.attachmentMappingID_1,
-					attachmentIdentifier_1:valueObj2.attachmentIdentifier_1,
-					attachmentSchemaID_2:valueObj2.attachmentSchemaID_2,
-					attachmentSchemaType_2:valueObj2.attachmentSchemaType_2,
-					attachmentMappingID_2:valueObj2.attachmentMappingID_2,
-					attachmentIdentifier_2:valueObj2.attachmentIdentifier_2,
-					attachmentSchemaID_3:valueObj2.attachmentSchemaID_3,
-					attachmentSchemaType_3:valueObj2.attachmentSchemaType_3,
-					attachmentMappingID_3:valueObj2.attachmentMappingID_3,
-					attachmentIdentifier_3:valueObj2.attachmentIdentifier_3,
-					csrEmail:valueObj.csrEmail,
-					preProcessPID:valueObj2.preProcessPID,
-					partner:partner
+					productLineType:productLineValue,
+					email:valueObj.email
+					
 		    	};
 			methodMode='POST';
 			length=1;
@@ -497,6 +472,21 @@ if(!temp){
 	    				}
 	    			}]
 	    		}]
+	    	},
+	    	onProductLineChange:function(cmp,newValue){
+	    		var productLineCombo=this.getView().lookupReference('productLineTypeCombo'),
+	    		hiddenProductLineField=this.getView().lookupReference('productLineHidden');
+	    		if(newValue){
+	    			productLineCombo.show();
+	    			hiddenProductLineField.setValue(productLineCombo.getValue());
+	    		}else{
+	    			productLineCombo.hide();
+	    			hiddenProductLineField.setValue('MIXED');
+	    		}
+	    	},
+	    	onProductLineComboChange:function(cmp,value){
+	    		var hiddenProductLineField=this.getView().lookupReference('productLineHidden');
+	    		hiddenProductLineField.setValue(value);
 	    	}
 	    	
 });

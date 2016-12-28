@@ -119,8 +119,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         			xtype:'combo',
         			itemId:'RItemId',
         			labelAlign:'top',
-        			name: 'rboName',
-        			reference:'rboName',
+        			name: 'rboId',
+        			reference:'rboId',
         			fieldLabel:AOCLit.RBO,
         			allowBlank: false,
         			labelSeparator:'',
@@ -176,34 +176,16 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                   	 xtype: 'fieldcontainer',
          			 labelAlign:'top',
          			 layout: 'hbox',
+         			 margin : '5 0 0 5',
          			 items:[{
-         				xtype:'radiogroup',
-         				fieldLabel:'Email Domain Type',
-         				width:400,
-         				items:[{
-                            boxLabel  : 'Private',
-                            name      : 'emailIdType',
-                            inputValue: 'private',
-                            id        : 'radio1',
-                            width : 100
-                        }, {
-                            boxLabel  : 'Public',
-                            name      : 'emailIdType',
-                            inputValue: 'public',
-                            id        : 'radio2',
-                            width:100,
-                            checked:true
-                        }]
-         			},{
                  			xtype:'textfield',
-                 			margin:'0 0 0 200',
                  			labelAlign:'top',
-                 			name: 'publicemailId',
-                 			fieldLabel:'Email IDS(Public)',
+                 			name: 'email',
+                 			fieldLabel:'Email ID',
                  			//allowBlank: false,
                  			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
                  			labelSeparator:'',
-                             labelWidth : 200,
+                            labelWidth : 200,
            		            width : 300,
            		            maxLength : '50',
            		            enforceMaxLength: true,
@@ -211,24 +193,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
            		            	 blur : this.notifyByImage,
            		            	'focus' : 'HideMandatoryMessage'
           	                    }
-                     },{
-              			xtype:'textfield',
-             			labelAlign:'top',
-             			name: 'publicemailId',
-             			fieldLabel:'Email IDS(Private)',
-             			//allowBlank: false,
-             			hidden:true,
-             			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-             			labelSeparator:'',
-                         labelWidth : 200,
-       		            width : 300,
-       		            maxLength : '50',
-       		            enforceMaxLength: true,
-       		            listeners : {
-       		            	 blur : this.notifyByImage,
-       		            	'focus' : 'HideMandatoryMessage'
-      	                    }
-                 }]
+                     }]
          		},{   xtype: 'fieldcontainer',
                     layout: 'hbox',
                     margin : '5 0 0 5',
@@ -283,28 +248,38 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
         				xtype:'radio',
         				boxLabel:'Unique',
         				input:'unique',
-        				name:'productlineType'
+        				name:'productlineType',
+        				checked:true,
+        				listeners:{
+        					change:'onProductLineChange'
+        				}
         			},{
             			xtype:'combo',
-            			name: 'productLineType',
+            			name: 'productLineTypeCombo',
             			fieldLabel:AOCLit.productLine,
             			allowBlank: true,
+            			reference:'productLineTypeCombo',
             			labelSeparator:'',
-                        labelWidth : 200,
-      		            width : 300,
-      		            maxLength : '50',
+                        labelWidth : 100,
+      		            width : 200,
+      		            margin:' 0 10 0 10',
       		            store:[['HTL','HTL'],['PFL','PFL'],['WVL','WVL']],
-      		            enforceMaxLength: true,
+      		            value:'HTL',
       		            blankText : AOCLit.prodLineReq,
       		            listeners : {
       		            	 blur : this.notifyByImage,
-      		            	'focus' : 'HideMandatoryMessage'
+      		            	'focus' : 'HideMandatoryMessage',
+      		            	change:'onProductLineComboChange'
      	                    }
             		},{
         				xtype:'radio',
         				boxLabel:'Mixed',
         				inputValue:'MIXED',
         				name:'productlineType'
+        			},{
+        				xtype:'hiddenfield',
+        				reference:'productLineHidden',
+        				value:'HTL'
         			}]
         		},{
                     xtype: 'fieldcontainer',
