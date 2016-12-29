@@ -10,7 +10,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
     alias: 'widget.viewmailform',
     itemId: 'viewmailformItemId',
     controller: 'viewMailController',
-    bodyPadding: '0 200 0 200',
+    bodyPadding: 10,
     requires: ['AOC.lang.lit'],
     border: false,
     attachmentCount: 1,
@@ -20,108 +20,124 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
     },
     initComponent: function () {
         var me = this;
-        this.fieldArray = [],
-            Ext.apply(this, {
-                items: this.buildItem()
-            });
-        this.callParent(arguments);
+        me.fieldArray = [],
+		Ext.apply(me, {
+			items: me.buildItem()
+		});
+        me.callParent(arguments);
     },
     buildItem: function () {
         var me = this;
-        return [{
-            xtype: 'fieldcontainer',
-            border: false,
-            layout: 'hbox',
-            items: [{
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'partner',
-                itemId: 'subject',
-                fieldLabel: 'Partner',
-                labelSeparator: ''
-            }, {
-                xtype: 'tbspacer',
-                width: 100
-            }, {
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'Tracking #',
-                itemId: 'trackingId',
-                fieldLabel: 'Tracking ID#',
-                labelSeparator: ''
-            }]
-        }, {
-            xtype: 'fieldcontainer',
-            border: false,
-            layout: 'hbox',
-            items: [{
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'subject',
-                itemId: 'subject',
-                fieldLabel: 'Email Subject',
-                labelSeparator: ''
-            }, {
-                xtype: 'tbspacer',
-                width: 100
-            }, {
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'RBO',
-                itemId: 'rbo',
-                fieldLabel: 'RBO Match',
-                labelSeparator: ''
-            }, {
-                xtype: 'tbspacer',
-                width: 100
-            }, {
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'Product Line',
-                itemId: 'productline',
-                fieldLabel: 'Product Line Match',
-                labelSeparator: ''
-            }]
-        },  {
-            xtype: 'displayfield',
-            labelAlign: 'top',
-            name: 'senderEmailId',
-            itemId: 'senderemailId',
-            fieldLabel: 'Sender Email ID',
-            labelSeparator: ''
-        }, {
-            xtype: 'fieldcontainer',
-            border: false,
-            layout: 'hbox',
-            items: [{
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'Email', //name:'mailBody'(DB column name)
-                itemId: 'mailbody',
-                fieldLabel: 'Email Body',
-                labelSeparator: ''
-            }, {
-                xtype: 'tbspacer',
-                width: 100
-            }, {
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'RBO',
-                itemId: 'rbo',
-                fieldLabel: 'RBO Match',
-                labelSeparator: ''
-            }, {
-                xtype: 'tbspacer',
-                width: 100
-            }, {
-                xtype: 'displayfield',
-                labelAlign: 'top',
-                name: 'Product Line',
-                itemId: 'productline',
-                fieldLabel: 'Product Line Match',
-                labelSeparator: ''
-            }]
-        }]
+        return [
+            {
+				xtype: 'fieldcontainer',
+				border: false,
+				layout: 'hbox',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+					labelAlign:'left',
+					labelWidth:150
+				},
+				defaultType:'displayfield',
+				margin:'0 0 5 0',
+				items: [
+					{
+						name: 'partner',
+						itemId: 'subject',
+						fieldLabel: 'Partner',
+						flex:2
+					}, 
+					
+					{
+						name: 'Tracking #',
+						itemId: 'trackingId',
+						fieldLabel: 'Tracking ID#',
+						flex:1
+					},
+					
+					{
+						name: 'senderEmailId',
+						itemId: 'senderemailId',
+						fieldLabel: 'Sender Email ID',
+						flex:1
+					}
+				]
+			}, 
+			{
+				xtype: 'fieldcontainer',
+				border: false,
+				layout: 'hbox',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+					labelAlign:'left',
+					labelWidth:150
+				},
+				defaultType:'displayfield',
+				margin:'0 0 5 0',
+				items: [
+					{
+						name: 'subject',
+						itemId: 'subject',
+						fieldLabel: 'Email Subject',
+						flex:2
+					}, 
+					/*{
+						xtype: 'tbspacer',
+						width: 100
+					},*/ 
+					{
+						name: 'RBO',
+						itemId: 'rbo',
+						fieldLabel: 'RBO Match',
+						flex:1
+					}, 
+					
+					{
+						name: 'Product Line',
+						itemId: 'productline',
+						fieldLabel: 'Product Line Match',
+						flex:1
+					}
+				]
+			},
+			{
+				xtype: 'fieldcontainer',
+				border: false,
+				layout: 'hbox',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+					labelAlign:'left',
+					labelWidth:150
+				},
+				margin:'0 0 5 0',
+				defaultType:'displayfield',
+				items: [
+					{
+						name: 'Email', //name:'mailBody'(DB column name)
+						itemId: 'mailbody',
+						fieldLabel: 'Email Body',
+						flex:2
+					},
+					
+					{
+						name: 'RBO',
+						itemId: 'rbo',
+						fieldLabel: 'RBO Match',
+						flex:1
+					}, 
+					
+					{
+						name: 'Product Line',
+						itemId: 'productline',
+						fieldLabel: 'Product Line Match',
+						flex:1
+					}
+				]
+			}
+		]
     },
     notifyByImage: function (config) {
         if (config.isValid())
