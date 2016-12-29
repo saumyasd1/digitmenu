@@ -89,9 +89,9 @@ Ext.define('AOC.view.viewmail.ViewMail', {
     	 	                   },{
     	 	                       xtype   : 'whitebutton',
     	 	                       margin  : '0 0 0 10',
-    	 	                       itemId  : 'cancel',
+    	 	                       itemId  : 'processButton',
     	 	                       text    : 'Process Order',
-    	 	                       handler : 'CancelDetails'
+    	 	                       handler : 'processOrder'
     	 	                   }
     	 	                  
     	 	                   ]
