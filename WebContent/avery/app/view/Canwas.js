@@ -1,41 +1,34 @@
 Ext.define('AOC.view.Canwas',{
-	extend:'Ext.Container',
+	extend:'Ext.panel.Panel',
 	alias:'widget.canwas',
 	requires : [
-	            'AOC.view.Main',
-	            'AOC.view.MainMenu'
-	            ],
+	    'AOC.view.Main',
+	    'AOC.view.MainMenu'
+    ],
+    
+    layout:{
+    	type: 'border'
+	},
+	bodyStyle:'background-color: rgb(246, 246, 246);',
 	initComponent : function(){
-    	var me=this;
-    	this.fieldArray = [],
-            Ext.apply(this,{
-                items:this.buildItem(),
-                layout: {
-                	type: 'vbox',
-                	align: 'strech',
-                	pack: 'left'
-                	}
-            });
-            this.callParent(arguments);
-        },
-        buildItem:function(){
-        	var me=this;
-        	return [{
-        	 xtype:'mainmenu',
-        	 width:'100%',
-        	 style  : AOC.config.Settings.getBaseBackgroundColor(),
-        	 height:60
-        	},{
-        	    xtype:'maincontainer' ,
-        	    margin:'0 20 0 20',
-        	    width:'100%',
-        	    flex:1,
-        	    style:{"background-color": "#ffffff;","border-radius":"10px"}
-        	},{
-        	 xtype:'container',
-        	 width:'100%',
-        	 style  : AOC.config.Settings.getBaseBackgroundColor(),
-        	 height:20
-        	}]
-        }
-	});
+		this.items = this.buildItems();
+    	this.callParent(arguments);
+    },
+    
+    buildItems:function(){
+    	return [
+	        {
+				 xtype:'mainmenu',
+				 region:'north',
+				 style  : AOC.config.Settings.getBaseBackgroundColor(),
+				 height:60
+	    	},
+	    	{
+	    	    xtype:'maincontainer' ,
+	    	    margin:'0 10 10 10',
+	    	    region:'center',
+	    	    style:{"background-color": "#fff;","border-radius":"5px",'border':'solid 1px #ccc'}
+	    	}
+    	]
+    }
+});
