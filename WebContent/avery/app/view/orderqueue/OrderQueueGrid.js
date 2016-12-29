@@ -124,6 +124,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         }
         },
         {
+            text : AOCLit.TrackingNo,
+            width:50,
+			dataIndex:'trackingid'
+        },
+        {
             text : AOCLit.orderTrackNo,
             width:50,
 			dataIndex:'id'
@@ -224,7 +229,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     },
     buildtbar:function(){
 		var me=this;
-			return [ {
+			return [
+			   {
 			    xtype: 'component',
 			    itemId:'OrderQueueBackButton',
 			    hidden:true,
