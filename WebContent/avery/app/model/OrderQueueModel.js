@@ -2,6 +2,11 @@ Ext.define('AOC.model.OrderQueueModel',{
     extend: 'Ext.data.Model',
 	idProperty:'id',
     fields: [
+{
+	name : 'TrackingId',
+	mapping : 'trackingid',
+	type: 'string'
+},
         {
 		name : 'PartnerName',
 		mapping : 'partner.partnerName',
