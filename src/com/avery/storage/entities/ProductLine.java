@@ -228,7 +228,7 @@ public class ProductLine extends MainAbstractEntity{
 	Partner varPartner;
 	@OneToMany(mappedBy="varProductLine",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
-	@Column(name = "email")
+	@Column(name = "email", length = 100)
 	private String email;
 	
 	
@@ -974,9 +974,17 @@ public class ProductLine extends MainAbstractEntity{
 			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productLineService.create(data);
-			responseMap.put("valueExist",false);
-			responseMapper.writeValue(writer, responseMap);
+			valueExist = productLineService.checkDuplicateValues(productline);
+			responseMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (valueExist) {
+				responseMap.put("valueExist",true);
+				responseMapper.writeValue(writer, responseMap);
+			}else{
+				id = productLineService.create(productline);
+				responseMap.put("valueExist",false);
+				responseMap.put("id",id);
+				responseMapper.writeValue(writer, responseMap);
+			}
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
