@@ -7,7 +7,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     initComponent : function(){
         Ext.apply(this,{
             columns : this.buildColumns(),
-			columnLines:true,
+			columnLines:true
 			//listeners:{
 			//	'cellclick':'onAttachmentGridCellClick'
 			//}
@@ -41,13 +41,18 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				},
 				{
 					text : 'Partner Data Structure',
-					flex :1,
+					flex :1.3,
 					dataIndex:'Partner Data Structure',
 					name: 'Partner Data Structure',
 					editor: {
-						xtype:'combobox'
-					}
-				}, 
+						xtype:'combobox',
+						displayField:'dataStructureName',
+						valueField:'dataStructureName',
+						queryMode :'local',
+						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('orderlineid')
+						  	        }
+
+					}, 
 				{
 					xtype: 'checkcolumn',
 					text : 'Additional File',
@@ -90,8 +95,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'disregard',
 					name: 'disregard',
 					editor: {
-						xtype: 'checkbox',
-					   // cls: 'x-grid-checkheader-editor'
+						xtype: 'checkbox'
 					}
 				}
 			]
