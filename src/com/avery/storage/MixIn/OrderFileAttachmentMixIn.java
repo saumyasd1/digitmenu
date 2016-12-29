@@ -36,8 +36,8 @@ public abstract class OrderFileAttachmentMixIn {
 
 	public abstract String getFileContentMatch();
 
-	@JsonIgnore
-	public abstract ProductLine getVarProductLine();
+//	@JsonIgnore
+//	public abstract ProductLine getVarProductLine();
 
 	@JsonIgnore
 	public abstract List<OrderQueue> getListOrderFileQueue();

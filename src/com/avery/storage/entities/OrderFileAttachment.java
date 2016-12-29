@@ -91,7 +91,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "orderEmailQueueId")
 	OrderEmailQueue varOrderEmailQueue;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "productLineId")
 	ProductLine varProductLine;
 	@LazyCollection(LazyCollectionOption.FALSE)
