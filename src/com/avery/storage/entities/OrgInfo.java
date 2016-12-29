@@ -33,6 +33,9 @@ public class OrgInfo extends MainAbstractEntity{
 	String shippingMethod;
 	@Column(name="shippingInstruction",length=255)
 	String shippingInstruction;
+	@Column(name="systemId",length=255)
+	String systemId;
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="orderSystemInfoId")
 	OrderSystemInfo varOrderSystemInfo;
@@ -86,6 +89,12 @@ public class OrgInfo extends MainAbstractEntity{
 	}
 	public void setVarOrderSystemInfo(OrderSystemInfo varOrderSystemInfo) {
 		this.varOrderSystemInfo = varOrderSystemInfo;
+	}
+	public String getSystemId() {
+		return systemId;
+	}
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;
 	}
 	
 	
