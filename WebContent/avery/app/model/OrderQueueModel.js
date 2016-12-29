@@ -13,7 +13,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 	},
 	{
 		name : 'prvOrderQueueID',
-		mapping : 'prvOrderQueueID',
+		mapping : 'prevOrderQueueId',
 		type: 'string'
 	},{
 		name : 'ProductLineType',
@@ -31,7 +31,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 	},
 	{
 		name : 'SenderEmailID',
-		mapping : 'senderEmailID',
+		mapping : 'senderEmailId',
 		type: 'string'
 	}, {
 		name : 'Subject',
@@ -67,7 +67,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 		type: 'string'
 	}, {
 		name : 'ponumber',
-		mapping : 'ponumber',
+		mapping : 'poNumber',
 		type: 'string'
 	},{
 		name : 'SubmittedBy',
