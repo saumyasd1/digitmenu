@@ -118,6 +118,7 @@ Ext.define('AOC.lang.lit',{
     "Error": 'Error',
     //order line and order line detail
     "fiberPercent": 'Fiber Percent',
+    "TrackingNo":'Tracking #',
     "sentToOracleDate":'Sent To Oracle Date',
     "lastModifiedBy": 'Last Modified By',
     "lastModifiedDate":'Last Modified Date',
