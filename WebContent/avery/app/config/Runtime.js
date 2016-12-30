@@ -6,6 +6,7 @@ Ext.define('AOC.config.Runtime',{
         windowInEditMode:false,
         orderQueueId:null,
         orderEmailQueueId:null,
+        attachmentQueueId:null,
         orderQueueActiveRecord:null,
         orderEmailQueueActiveRecord:null,
         orderEmailQueueStatus:null,
