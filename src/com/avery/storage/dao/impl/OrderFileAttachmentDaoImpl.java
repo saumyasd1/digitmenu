@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -20,9 +21,16 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
+import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.Partner;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Repository
 public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachment, Long> implements
@@ -95,6 +103,138 @@ OrderFileAttachmentDao {
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void identifyEmail(String data, Long entityId) {
+		ObjectMapper mapper = new ObjectMapper();
+		Long currentObjId=0L;
+		ObjectReader updater=null;
+		Session session = null;
+	//	String commentString="";
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+			session = getSessionFactory().getCurrentSession();
+			OrderFileAttachment OrderFileAttachmentObj=null;
+			OrderFileAttachmentObj=(OrderFileAttachment) session.get(OrderFileAttachment.class,entityId);
+			updater = mapper.readerForUpdating(OrderFileAttachmentObj);
+			OrderFileAttachmentObj = updater.readValue(data);
+			//if(OrderFileAttachmentObj.getComment()!=null)
+		    //commentString=OrderFileAttachmentObj.getComment().replace("::", "\n");
+			//OrderFileAttachmentObj.setComment(commentString);
+			OrderFileAttachmentObj.preUpdateOp();
+			session.update(OrderFileAttachmentObj);
+			OrderFileAttachmentObj.postUpdateOp();
+			//commentString="";
+			String status=OrderFileAttachmentObj.getStatus();
+			//String comment=OrderFileAttachmentObj.getComment();
+//			if(!"".equals(comment)){
+//				commentString=",comment=:comment ";
+//			}
+			String s = "update OrderEmailQueue set status=:value where id =:id "; 
+			Query q = session.createQuery(s);
+			q.setString("value",status);
+//			if(!"".equals(comment)){
+//				q.setString("comment",comment);
+//			}
+			q.setLong("id",entityId);
+			q.executeUpdate();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while disregarding attachment", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while disregarding attachment", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
+	@Override
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress){
+		ObjectMapper mapper = new ObjectMapper();
+		Long currentObjId=0L;
+		ObjectReader updater=null;
+		String[] objArray=jsonData.split("@@@");
+		Session session = null;
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			session = getSessionFactory().getCurrentSession();
+			
+			String t=null;
+			//boolean insertShipAddress=false,insertBillAddress=false;
+			for(int i=0;i<objArray.length;i++){
+				t=objArray[i];
+				OrderFileAttachment orderLine = mapper.readValue(t,OrderFileAttachment.class);
+				//currentObjId=orderLine.getId();
+				OrderFileAttachment attachmentObj=new OrderFileAttachment();
+				attachmentObj.setId(orderLine.getId());
+				attachmentObj.setStatus(orderLine.getStatus());
+				attachmentObj.setFileContentType(orderLine.getFileContentType());
+				attachmentObj.setVarProductLine(orderLine.getVarProductLine());
+				session.save(attachmentObj);
+				orderLine=(OrderFileAttachment) session.get(OrderFileAttachment.class,currentObjId);
+				updater = mapper.readerForUpdating(orderLine);
+				orderLine = updater.readValue(t);
+				orderLine.preUpdateOp();
+				session.update(orderLine);
+				orderLine.postUpdateOp();
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
+	
+	@Override
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId){
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectReader updater=null;
+		Session session = null;
+		boolean fileContentType=false,status=false;
+		try{
+			
+			session = getSessionFactory().getCurrentSession();
+			List<OrderFileAttachment> entities = readAllByOrderID(orderQueueId);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			for(OrderFileAttachment orderLine:entities){
+				updater = mapper.readerForUpdating(orderLine);
+				orderLine = updater.readValue(jsonData);
+				orderLine.preUpdateOp();
+				session.update(orderLine);
+				orderLine.postUpdateOp();
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
 	}
 
 
