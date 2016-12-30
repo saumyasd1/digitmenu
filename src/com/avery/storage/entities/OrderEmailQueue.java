@@ -531,17 +531,17 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		try {
-			OrderEmailQueueService orderQueueService = (OrderEmailQueueService) SpringConfig
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
-			orderQueueService.disregardEmail(data,orderEmailQueueEntityId);
+			orderEmailQueueService.disregardEmail(data,orderEmailQueueEntityId);
 			   return Response.ok().build();
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
-					"Error while cancelling email", ex);
+					"Error while disregarding email", ex);
 			throw ex;
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
-					"Error while cancelling email", e);
+					"Error while disregarding email", e);
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
