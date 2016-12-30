@@ -7,15 +7,49 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     initComponent : function(){
         Ext.apply(this,{
             columns : this.buildColumns(),
-			columnLines:true
-			//listeners:{
-			//	'cellclick':'onAttachmentGridCellClick'
-			//}
+			columnLines:true,
+			listeners:{
+				edit:function ( editor ,e ) { 
+					var valueObj = e.record.data,
+					dataStructure = e.record.get('dataStructureName');
+					attachmentId = valueObj.id;
+					var parameters = Ext.JSON.encode({productLineId:dataStructure,id:attachmentId});
+					Ext.Ajax.request({
+	                    method: 'PUT',
+	                    jsonData: parameters,
+	                    url: applicationContext+'/rest/orderattachements/order/'+attachmentId,
+	                    success: function(response, opts) {
+	                        var jsonString = Ext.JSON.decode(response.responseText);
+	                        var valueExist = jsonString.valueExist;
+	                        if (valueExist) {
+	                            Ext.getBody().unmask();
+	                            //createpartner.lookupReference('partnerName').focus();
+	                            //createpartner.down('#messageFieldItemId').show();
+	                            //createpartner.down('#messageFieldItemId').setValue(AOCLit.partExistMsg);
+	                            return false;
+	                        }
+	                        Ext.getBody().unmask();
+	                        createpartner.destroy();
+	                        AOC.util.Helper.fadeoutMessage('Success', Msg);
+	                        grid.store.load();
+	                    },
+	                    failure: function(response, opts) {
+	                        Msg = response.responseText;
+	                        Msg = Msg.replace("Exception:", " ");
+	                        //  AOC.util.Helper.fadeoutMessage('Success',Msg);
+	                        Ext.Msg.alert('Alert Message', Msg);
+	                        Ext.getBody().unmask();
+	                        createpartner.destroy();
+	                    }
+	                });
+				}
+			
+			}
         });
         this.callParent(arguments);
     },
     plugins: [
-		{
+		      {
 			        ptype: 'cellediting',
 			        clicksToEdit: 1
 			    }
@@ -42,16 +76,15 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				{
 					text : 'Partner Data Structure',
 					flex :1.3,
-					dataIndex:'Partner Data Structure',
+					dataIndex:'dataStructureName',
 					name: 'Partner Data Structure',
 					editor: {
 						xtype:'combobox',
 						displayField:'dataStructureName',
-						valueField:'dataStructureName',
+						valueField:'id',
 						queryMode :'local',
-						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('orderlineid')
-						  	        }
-
+						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
+						  }
 					}, 
 				{
 					xtype: 'checkcolumn',
@@ -63,12 +96,6 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						xtype: 'checkbox',
 						cls: 'x-grid-checkheader-editor'
 					}
-				},
-				{
-					text : 'Group',
-					flex :1,
-					dataIndex:'Group',
-					name: 'Group'
 				},
 				{
 					text : 'RBO Match',
