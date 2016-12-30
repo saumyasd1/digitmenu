@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -36,11 +37,16 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
+import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
+import com.avery.storage.service.OrderLineService;
+import com.avery.utils.ApplicationUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -284,6 +290,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
+		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -442,5 +449,82 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		//return rb.build();
 	}
 */
+	    @PUT
+		@Path("identified/{id:[0-9]+}")
+		public Response identifyEmail(@Context UriInfo ui,
+				@Context HttpHeaders hh, String data, @PathParam("id") String attachmentQueueId) {
+			Long orderFileAttachmentEntityId = Long.parseLong(attachmentQueueId);
+			try {
+				OrderFileAttachmentService attachmentService = (OrderFileAttachmentService) SpringConfig
+						.getInstance().getBean("orderFileAttachmentService");
+				attachmentService.identifyEmail(data,orderFileAttachmentEntityId);
+				   return Response.ok().build();
+			} catch (WebApplicationException ex) {
+				AppLogger.getSystemLogger().error(
+						"Error while disregarding attachment", ex);
+				throw ex;
+			} catch (Exception e) {
+				AppLogger.getSystemLogger().error(
+						"Error while disregarding email", e);
+				throw new WebApplicationException(Response
+						.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(ExceptionUtils.getRootCauseMessage(e))
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+		}
+	    
+	    @PUT
+		@Path("updateattachments")
+		public Response updateEntities(@Context UriInfo ui,
+				@Context HttpHeaders hh, String data) {
+			String jsonData="";
+			boolean fileContentTypes=false;
+			boolean status=false;
+			boolean updateAll=true;
+			Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
+			Long bulkUpdateAllById=0L;
+			Map<String,String> jsonMap=null;
+			try {
+				OrderFileAttachmentService orderLineService = (OrderFileAttachmentService) SpringConfig
+						.getInstance().getBean("orderFileAttachmentService");
+				jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+				fileContentTypes=Boolean.parseBoolean((String)jsonMap.get("fileContentTypes"));
+				status=Boolean.parseBoolean((String)jsonMap.get("status"));
+				jsonData=(String)jsonMap.get("data");
+				flagMap.put("status", status);
+				flagMap.put("fileContentTypes", fileContentTypes);
+				updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
+				if(updateAll){
+					if((String)jsonMap.get("id")!=null){
+						bulkUpdateAllById = Long.parseLong((String)jsonMap.get("id"));
+						orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById);
+					}else{
+						throw new Exception("Unable to update all records as the Attachment Id is not present");
+					}
+				}
+				else
+					orderLineService.bulkUpdate(jsonData, flagMap);
+				boolean triggerValidationFlow = PropertiesConfig
+						.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
+				if(triggerValidationFlow){
+					Router router=new Router();
+					router.validateOrder(Long.parseLong((String)jsonMap.get("id")));
+				}
+				return Response.ok().build();
+			} catch (WebApplicationException ex) {
+				AppLogger.getSystemLogger().error("Error while Saving attachment", ex);
+				throw ex;
+			} catch (Exception e) {
+				AppLogger.getSystemLogger().error(
+						"Error while Saving attachment", e);
+				throw new WebApplicationException(Response
+						.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(ExceptionUtils.getRootCauseMessage(e))
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+		}
+	    
+	    
+	    
 
 }
