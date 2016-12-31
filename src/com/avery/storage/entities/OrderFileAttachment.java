@@ -1,11 +1,7 @@
 package com.avery.storage.entities;
 
-import java.io.InputStream;
 import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.sql.Blob;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,28 +27,20 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
-import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
-import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
-import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "orderfileattachment")
@@ -474,42 +461,34 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		}
 	    
 	    @PUT
-		@Path("updateattachments")
+		@Path("/updateattachments")
 		public Response updateEntities(@Context UriInfo ui,
 				@Context HttpHeaders hh, String data) {
-			String jsonData="";
-			boolean fileContentTypes=false;
-			boolean status=false;
-			boolean updateAll=true;
-			Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
-			Long bulkUpdateAllById=0L;
-			Map<String,String> jsonMap=null;
+	    	List<Map<String,Object>> jsonData=null;
+			Map<String,Object> jsonMap=null;
 			try {
-				OrderFileAttachmentService orderLineService = (OrderFileAttachmentService) SpringConfig
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+						false);
+				// toggle this property value based on your input JSON dataR
+				mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+				OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 						.getInstance().getBean("orderFileAttachmentService");
-				jsonMap=ApplicationUtils.convertJSONtoMaps(data);
-				fileContentTypes=Boolean.parseBoolean((String)jsonMap.get("fileContentTypes"));
-				status=Boolean.parseBoolean((String)jsonMap.get("status"));
-				jsonData=(String)jsonMap.get("data");
-				flagMap.put("status", status);
-				flagMap.put("fileContentTypes", fileContentTypes);
-				updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
-				if(updateAll){
-					if((String)jsonMap.get("id")!=null){
-						bulkUpdateAllById = Long.parseLong((String)jsonMap.get("id"));
-						orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById);
-					}else{
-						throw new Exception("Unable to update all records as the Attachment Id is not present");
-					}
+				jsonMap=ApplicationUtils.convertJSONtoObjectMaps(data);
+				jsonData=(List<Map<String,Object>>)jsonMap.get("json");
+				for(int i=0;i<jsonData.size();i++){
+					Map<String,Object> fileAttachment=(Map<String,Object>)jsonData.get(i);
+					int id=(int)fileAttachment.get("id");
+					OrderFileAttachment fileAttachementObj=orderFileAttachmentService.read((long)id);
+					ProductLine  productLineObj =new ProductLine();
+					productLineObj.setId((int)fileAttachment.get("productLineId"));
+					fileAttachementObj.setId((int)fileAttachment.get("id"));
+					fileAttachementObj.setVarProductLine(productLineObj);
+					fileAttachementObj.setStatus(Integer.toString((int)fileAttachment.get("status")));
+					fileAttachementObj.setFileContentType((String) fileAttachment.get("fileContentType"));
+					orderFileAttachmentService.update(fileAttachementObj);
 				}
-				else
-					orderLineService.bulkUpdate(jsonData, flagMap);
-				boolean triggerValidationFlow = PropertiesConfig
-						.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
-				if(triggerValidationFlow){
-					Router router=new Router();
-					router.validateOrder(Long.parseLong((String)jsonMap.get("id")));
-				}
+				
 				return Response.ok().build();
 			} catch (WebApplicationException ex) {
 				AppLogger.getSystemLogger().error("Error while Saving attachment", ex);
