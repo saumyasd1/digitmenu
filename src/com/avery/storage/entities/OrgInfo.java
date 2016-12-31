@@ -20,25 +20,23 @@ public class OrgInfo extends MainAbstractEntity{
 	 */
 	private static final long serialVersionUID = -2757286170711042719L;
 	@Column(name="orgCodeId")
-    int orgCodeId;
+	private int orgCodeId;
 	@Column(name="isDefault")
-	boolean isDefault;
+	private boolean isDefault;
 	@Column(name="billToCode",length=250)
-	String billToCode;
+	private String billToCode;
 	@Column(name="shipToCode",length=250)
-	String shipToCode;
+	private String shipToCode;
 	@Column(name="freightTerm",length=250)
-	String freightTerm;
+	private String freightTerm;
 	@Column(name="shippingMethod",length=255)
-	String shippingMethod;
+	private String shippingMethod;
 	@Column(name="shippingInstruction",length=255)
-	String shippingInstruction;
-	@Column(name="systemId",length=255)
-	String systemId;
+	private String shippingInstruction;
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="orderSystemInfoId")
-	OrderSystemInfo varOrderSystemInfo;
+	private OrderSystemInfo varOrderSystemInfo;
 
 
 
@@ -90,14 +88,4 @@ public class OrgInfo extends MainAbstractEntity{
 	public void setVarOrderSystemInfo(OrderSystemInfo varOrderSystemInfo) {
 		this.varOrderSystemInfo = varOrderSystemInfo;
 	}
-	public String getSystemId() {
-		return systemId;
-	}
-	public void setSystemId(String systemId) {
-		this.systemId = systemId;
-	}
-	
-	
-	
-	
 }
