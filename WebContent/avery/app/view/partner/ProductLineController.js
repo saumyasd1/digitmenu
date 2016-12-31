@@ -92,7 +92,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    	createproductline.destroy();
 				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
 			  			//Ext.Msg.alert('Alert Message',Msg);
-			  			//productline.store.load();
+			  			productline.store.load();
 				  		
 		        },
 		        failure: function(response, opts) {
