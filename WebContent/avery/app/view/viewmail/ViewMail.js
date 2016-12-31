@@ -1,5 +1,5 @@
 Ext.define('AOC.view.viewmail.ViewMail', { 
-	extend : 'Ext.Panel',
+	extend : 'Ext.panel.Panel',
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.viewmail.EmailAttachmentInfoGrid','AOC.view.viewmail.ViewMailForm'],
 	alias : 'widget.viewmail',
 	controller:'viewMailController',
@@ -15,6 +15,10 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 		me.bbar = me.buildBBar();
 		me.callParent(arguments);
 	},
+	listeners:{
+		show:'onViewShow'
+	},
+	
 	buildTBar:function(){
 		return [
 			{
@@ -37,7 +41,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   margin  : '0 10 0 10',
 			   text    : 'Save',
 			   itemId  : 'saveAttachment',
-			   handler : 'SaveDetails'
+			   handler : 'onSaveBtnClicked'
 			},
 			{
 			   xtype   : 'whitebutton',
@@ -48,9 +52,10 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			},
 			{
 			   xtype   : 'whitebutton',
-			   itemId  : 'cancel',
-			   text    : 'Process Order'
-			   //handler : 'CancelDetails'
+			   itemId  : 'processOrderBtn',
+			   text    : 'Process Order',
+			   disabled: false,
+			   handler : 'onProcessOrderBtnClicked'
 			}
 		]
 	},
