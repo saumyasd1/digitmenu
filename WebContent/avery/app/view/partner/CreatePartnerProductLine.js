@@ -86,8 +86,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'combo',
 								itemId:'RItemId',
-								name: 'rboName',
-								reference:'rboName',
+								name: 'rboId',
+								reference:'rboId',
 								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
 								margin:'0 10 0 10',
