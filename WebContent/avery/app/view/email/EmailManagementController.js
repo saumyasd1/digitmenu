@@ -36,18 +36,19 @@ Ext.define('AOC.view.email.EmailManagementController', {
 	                    });
 	                   var panel = Ext.ComponentQuery.query('#emailPanel')[0];
 	                   var viewmail = panel.down('#EmailAttachmentInfoGriditemId');
+	                   viewmail.trackingId = id;
 	                   viewmail.bindStore(store);
 	                   panel.getLayout().setActiveItem(1);
 	                    me.runTime.setActiveGrid(viewmail);
 	                    callout.destroy();
-},
+	                    },
             	      cancelMail:function(){
                          currentRecord = e.record;
                          var id = currentRecord.get('id');
                          var win = Ext.create('AOC.view.email.CancelEmailWindow');
                          callout.destroy();
                          win.show();
-                   me.runTime.setOrderEmailQueueId(id);
+                         me.runTime.setOrderEmailQueueId(id);
                   // me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
                    me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
                    //me.runTime.setAllowOrderLineEdit(true);
