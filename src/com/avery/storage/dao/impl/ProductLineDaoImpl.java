@@ -130,54 +130,97 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		try {
 			pk = mapper.readValue(productLineData, ProductLine.class);
 			productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
-		RBO rbo=new RBO();
-		Partner partner=new Partner();
-		partner.setId(Integer.parseInt((String)productLineMap.get("partnerId")));
-		rbo.setId((int)productLineMap.get("rboId"));
-		pk.setRbo(rbo);
-		pk.setVarPartner(partner);
-		pk.setCSRPrimaryId((String)productLineMap.get("CSRPrimaryID"));
-		pk.setWaiveMOA((boolean)productLineMap.get("waivemoa"));
-		pk.setWaiveMOQ((boolean)productLineMap.get("waivemoq"));
-		pk.setLocalBilling((boolean)productLineMap.get("localbilling"));
-		pk.setFactoryTransfer((boolean)productLineMap.get("factorytransfer"));
-		pk.setShipmentSample((boolean)productLineMap.get("shipmentsample"));
-		pk.setLLKK((boolean)productLineMap.get("llkk"));
-		pk.setCSRSecondaryId((String)productLineMap.get("CSRSecondaryID"));
+		
+		int rboId=(productLineMap.get("rboId")==null?0:(int)productLineMap.get("rboId"));
+		if(rboId!=0){
+			RBO rbo=new RBO();
+			rbo.setId(rboId);
+			pk.setRbo(rbo);	
+		}
+		int partnerId=(productLineMap.get("partnerId")==null?0:Integer.parseInt((String)productLineMap.get("partnerId")));
+		if(partnerId!=0){
+			Partner partner=new Partner();
+			partner.setId(partnerId);
+			pk.setVarPartner(partner);	
+		}
+		String CSRPrimaryID=productLineMap.get("CSRPrimaryID")==null?"":(String)productLineMap.get("CSRPrimaryID");
+		pk.setCSRPrimaryId(CSRPrimaryID);
+		
+		boolean waivemoa=productLineMap.get("waivemoa")==null?false:(boolean)productLineMap.get("waivemoa");
+		pk.setWaiveMOA(waivemoa);
+		boolean waivemoq=productLineMap.get("waivemoq")==null?false:(boolean)productLineMap.get("waivemoq");
+		pk.setWaiveMOQ(waivemoq);
+		boolean localbilling=productLineMap.get("localbilling")==null?false:(boolean)productLineMap.get("localbilling");
+		pk.setLocalBilling(localbilling);
+		boolean factorytransfer=productLineMap.get("factorytransfer")==null?false:(boolean)productLineMap.get("factorytransfer");
+		pk.setFactoryTransfer(factorytransfer);
+		boolean shipmentsample=productLineMap.get("shipmentsample")==null?false:(boolean)productLineMap.get("shipmentsample");
+		pk.setShipmentSample(shipmentsample);
+		boolean llkk=productLineMap.get("llkk")==null?false:(boolean)productLineMap.get("llkk");
+		pk.setLLKK(llkk);
+		
+		String CSRSecondaryID=productLineMap.get("CSRSecondaryID")==null?"":(String)productLineMap.get("CSRSecondaryID");
+		pk.setCSRSecondaryId(CSRSecondaryID);
+		
 		pk.setCreatedDate(new Date());
-		pk.setProductLineType((String)productLineMap.get("productLineType"));
-		pk.setEmail((String)productLineMap.get("email"));
+		String productLineType=productLineMap.get("productLineType")==null?"":(String)productLineMap.get("productLineType");
+		pk.setProductLineType(productLineType);
+		
+		String email=productLineMap.get("email")==null?"":(String)productLineMap.get("email");
+		pk.setEmail(email);
+		
 		session.saveOrUpdate(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		for(int i=0;i<ordersystemList.size();i++){
 			OrderSystemInfo sys=new OrderSystemInfo();
 			LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
-			sys.setCsrName((String)systemMap.get("csrName"));
-			sys.setPackingInstruction((String)systemMap.get("packingInstruction"));
-			sys.setVariableDataBreakdown((String)systemMap.get("variableDataBreakdown"));
-			sys.setManufacturingNotes((String)systemMap.get("manufacturingNotes"));
-			sys.setInvoiceNote((String)systemMap.get("invoiceNote"));
-			sys.setShippingMark((String)systemMap.get("shippingMark"));
+			String csrName=systemMap.get("csrName")==null?"":(String)systemMap.get("csrName");
+			sys.setCsrName(csrName);
+			String packingInstruction=systemMap.get("packingInstruction")==null?"":(String)systemMap.get("packingInstruction");
+			sys.setPackingInstruction(packingInstruction);
+			String variableDataBreakdown=systemMap.get("variableDataBreakdown")==null?"":(String)systemMap.get("variableDataBreakdown");
+			sys.setVariableDataBreakdown(variableDataBreakdown);
+			String manufacturingNotes=systemMap.get("manufacturingNotes")==null?"":(String)systemMap.get("manufacturingNotes");
+			sys.setManufacturingNotes(manufacturingNotes);
+			String invoiceNote=systemMap.get("invoiceNote")==null?"":(String)systemMap.get("invoiceNote");
+			sys.setInvoiceNote(invoiceNote);
+			String shippingMark=systemMap.get("shippingMark")==null?"":(String)systemMap.get("shippingMark");
+			sys.setShippingMark(shippingMark);
+			String splitShipSetBy=systemMap.get("splitShipSetBy")==null?"":(String)systemMap.get("splitShipSetBy");
+			sys.setSplitShipSetBy(splitShipSetBy);
 			sys.setVarProductLine(pk);
 			sys.setCreatedDate(new Date());
-//			sys.setArtworkHold((Boolean)systemMap.get("artworkHold"));
-			sys.setSplitShipSetBy((String)systemMap.get("splitShipSetBy"));
+			
 			SystemInfo sysInfo=new SystemInfo();
-			sysInfo=(SystemInfo) session.get(SystemInfo.class, ((Integer)systemMap.get("systemId")).longValue());
+			Long systemId=systemMap.get("systemId")==null?0L:((Integer)systemMap.get("systemId")).longValue();
+			sysInfo=(SystemInfo) session.get(SystemInfo.class, systemId);
 			sys.setVarSystem(sysInfo);
-			Long systemId=(Long)session.save(sys);
+			Long OrderSystemInfoId=(Long)session.save(sys);
 			List orgInfoList=(ArrayList)systemMap.get("orgInfo");
 			for(int j=0;j<orgInfoList.size();j++){
 				OrgInfo org=new OrgInfo();
 				LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
-				org.setOrgCodeId((Integer)orgMap.get("orgCodeId"));
-				org.setBillToCode((String)orgMap.get("legacybilltocode"));
-				org.setShipToCode((String)orgMap.get("legacyshiptocode"));
+				
+				int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
+				org.setOrgCodeId(orgCodeId);
+				
+				String legacybilltocode=orgMap.get("legacybilltocode")==null?"":(String)orgMap.get("legacybilltocode");
+				org.setBillToCode(legacybilltocode);
+				
+				String legacyshiptocode=orgMap.get("legacyshiptocode")==null?"":(String)orgMap.get("legacyshiptocode");
+				org.setShipToCode(legacyshiptocode);
+				
 				org.setDefault((Boolean)orgMap.get("default"));
-				org.setFreightTerm((String)orgMap.get("freightterms"));
-				org.setShippingInstruction((String)orgMap.get("shippinginstructions"));
-				org.setShippingMethod((String)orgMap.get("shippingmethod"));
-				sys.setId(systemId);
+				
+				String freightterms=orgMap.get("freightterms")==null?"":(String)orgMap.get("freightterms");
+				org.setFreightTerm(freightterms);
+				
+				String shippinginstructions=orgMap.get("shippinginstructions")==null?"":(String)orgMap.get("shippinginstructions");
+				org.setShippingInstruction(shippinginstructions);
+				
+				String shippingmethod=orgMap.get("shippingmethod")==null?"":(String)orgMap.get("shippingmethod");
+				org.setShippingMethod(shippingmethod);
+				sys.setId(OrderSystemInfoId);
 				org.setVarOrderSystemInfo(sys);
 				session.save(org);
 			}
