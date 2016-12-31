@@ -7,7 +7,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	width: 1000,
 	height:550,
     modal:true,
-    //draggable:false,
+    draggable:false,
     editMode:false,
     rec:null,
     productlineId:null,
@@ -623,7 +623,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										labelSeparator:'',
 										labelWidth : 150,
 										width : 450,
-										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;'
 									}
 								]
 						   },
