@@ -3,7 +3,6 @@ Ext.define('AOC.view.taskmanager.DisregardEmailWindowController', {
     alias: 'controller.disregardEmail',
     runTime: AOC.config.Runtime,
     disregardEmail: function() {
-    	debugger;
     	Ext.getBody().mask('Disregarding...');
         var id = this.runTime.getOrderEmailQueueId(),
         me = this;
