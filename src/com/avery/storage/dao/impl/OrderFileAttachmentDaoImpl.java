@@ -111,7 +111,6 @@ OrderFileAttachmentDao {
 		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
-	//	String commentString="";
 		try{
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
@@ -120,33 +119,22 @@ OrderFileAttachmentDao {
 			OrderFileAttachmentObj=(OrderFileAttachment) session.get(OrderFileAttachment.class,entityId);
 			updater = mapper.readerForUpdating(OrderFileAttachmentObj);
 			OrderFileAttachmentObj = updater.readValue(data);
-			//if(OrderFileAttachmentObj.getComment()!=null)
-		    //commentString=OrderFileAttachmentObj.getComment().replace("::", "\n");
-			//OrderFileAttachmentObj.setComment(commentString);
 			OrderFileAttachmentObj.preUpdateOp();
 			session.update(OrderFileAttachmentObj);
 			OrderFileAttachmentObj.postUpdateOp();
-			//commentString="";
 			String status=OrderFileAttachmentObj.getStatus();
-			//String comment=OrderFileAttachmentObj.getComment();
-//			if(!"".equals(comment)){
-//				commentString=",comment=:comment ";
-//			}
-			String s = "update OrderEmailQueue set status=:value where id =:id "; 
+			String s = "update OrderFileAttachment set status=:value where id =:id "; 
 			Query q = session.createQuery(s);
 			q.setString("value",status);
-//			if(!"".equals(comment)){
-//				q.setString("comment",comment);
-//			}
 			q.setLong("id",entityId);
 			q.executeUpdate();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
-					"Error while disregarding attachment", ex);
+					"Error while processing order", ex);
 			throw ex;
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
-					"Error while disregarding attachment", e);
+					"Error while processing order", e);
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
