@@ -148,8 +148,6 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
              plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
              
          }];
-     },
-     
-    
+     }
 });
 
