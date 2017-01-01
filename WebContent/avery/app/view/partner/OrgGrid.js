@@ -38,6 +38,8 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				            editor:{
 				            	xtype:'combo',
 				            	store:me.orgStore,
+				            	displayField:'name',
+				            	valueField:'id',
 				            	listeners:{
 				            		'render':function(cmp){
 				            			var store=cmp.getStore();
@@ -53,7 +55,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				        	text : 'Legacy Bill to Code',
 				          	width:100,
 				            sortable : true,
-				            dataIndex:'legacybilltocode',
+				            dataIndex:'billToCode',
 				            editor:{
 				            	xtype:'textfield'
 				            }
@@ -62,7 +64,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				        	text : 'Legacy Ship to Code',
 				          	width:100,
 				            sortable : true,
-				            dataIndex:'legacyshiptocode',
+				            dataIndex:'shipToCode',
 				            editor:{
 				            	xtype:'textfield'
 				            }
@@ -71,7 +73,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				        	text : 'Freight Terms',
 				          	width:120,
 				            sortable : true,
-				            dataIndex:'freightterms',
+				            dataIndex:'freightTerm',
 				            editor: {
 				                xtype: 'combo',
 				                displayField: 'variableFieldName',
@@ -84,7 +86,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
                         {
 				            text : 'Shipping method',
 				            width:150,
-				            dataIndex:'shippingmethod',
+				            dataIndex:'shippingMethod',
 				            editor: {
 				                xtype: 'combo',
 				                displayField: 'variableFieldName',
@@ -97,7 +99,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
                         {
 				            text : 'Shipping Instructions',
 				            width:150,
-				            dataIndex:'shippinginstructions',
+				            dataIndex:'shippingInstruction',
 				            editor:{
 				            	xtype:'textfield'
 				            }

@@ -55,14 +55,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			parameters={
 					rboId:valueObj.rboId,
 					partnerId:Id,
-					CSRPrimaryID:valueObj.CSRPrimaryEmail,
-					CSRSecondaryID:valueObj.CSRSecondaryEmail,
-					waivemoa:valueObj.waivemoa,
-					waivemoq:valueObj.waivemoq,
-					shipmentsample:valueObj.shipmentsample,
-					factorytransfer:valueObj.factorytransfer,
-					localbilling:valueObj.localbilling,
-					llkk:valueObj.llkk,
+					CSRPrimaryID:valueObj.CSRPrimaryId,
+					CSRSecondaryID:valueObj.CSRSecondaryId,
+					waivemoa:valueObj.waiveMOA,
+					waivemoq:valueObj.waiveMOQ,
+					shipmentsample:valueObj.shipmentSample,
+					factorytransfer:valueObj.factoryTransfer,
+					localbilling:valueObj.localBilling,
+					llkk:valueObj.LLKK,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue,
 					email:valueObj.email
@@ -122,8 +122,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			this.runTime.getActiveGrid().store.load();
 	},
 	createproductline:function(){
+		var viewModel=Ext.create('Ext.app.ViewModel',{
+		});
 			win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
 				modal:true,
+				viewModel:viewModel,
 				partnerName:this.getView().partnerName
 			});
 			win.down('#titleItemId').setValue(AOCLit.addPartProdLine).setVisible(true);
@@ -143,26 +146,44 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	          listeners            : {
                 afterrender : me.onAfterRenderEditCallout,
                 edit: function(cmp){
-                	var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
- 	      			if(!win){
+                	
  	      				var data=e.record;
  	      				 var id=data.id;
- 	      			    win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
- 	      				modal:true,
- 	      				partnerName:me.getView().partnerName,
- 	      			    editMode:true,
- 	      			    rec:data,
- 	      			    productlineId:id,
- 	      			    listeners: {
-		     	        	'close':function( panel, eOpts ) {
-		     	        		 Ext.getBody().unmask();
-		     	        		 win.destroy();
-		     	            }
- 	      			    }
- 	      			});
- 	      			 win.down('#titleItemId').setValue(AOCLit.editPartProdLine).setVisible(true);
- 	      			  win.show();
- 	              }
+ 	      			 Ext.Ajax.request({
+							method:'GET',
+							url:applicationContext+'/rest/productLines/'+id,
+							success : function(response, opts) {
+								var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
+								var viewModel=Ext.create('Ext.app.ViewModel',{
+									data:jsonString
+								});
+								var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
+			 	      			if(!win){
+									win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+				 	      				modal:true,
+				 	      				partnerName:me.getView().partnerName,
+				 	      			    editMode:true,
+				 	      			    viewModel:viewModel,
+				 	      			    rec:jsonString,
+				 	      			    productlineId:id,
+				 	      			    listeners: {
+						     	        	'close':function( panel, eOpts ) {
+						     	        		 Ext.getBody().unmask();
+						     	        		 win.destroy();
+						     	            }
+				 	      			    }
+				 	      			});
+			 	      			}
+			 	      			//win.reset();
+			 	      			win.down('#titleItemId').setValue(AOCLit.editPartProdLine).setVisible(true);
+//			 	      			win.fireafterrender
+			 	      			win.show();
+				        },
+				        failure: function(response, opts) {
+				        	AOC.util.Helper.fadeoutMessage('Failure','Error while trying to fetch partner data structure information from the server.');
+		                }
+		        	});
+ 	      			 
                 	callout.destroy();
                 },
                 deleteproductline: function(cmp){
@@ -380,6 +401,25 @@ if(!temp){
 			    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
 			    			systemcontainer.checkboArray.push(jsonString[i].name);
 			    		}
+			    		if(!cmp.changedBefore && me.getView().editMode){
+			    			cmp.changedBefore=true;
+			    			var view=me.getView(),data=view.getViewModel().getData(),
+				    		listOrderSystemInfo=data.listOrderSystemInfo;
+				    		//this.getView().down('#SiteId').setValue(view.getViewModel().get('siteId'));
+				    		if(listOrderSystemInfo.length>0){
+				    			for(var i=0;i<listOrderSystemInfo.length;i++){
+				    				debugger;
+				    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
+				    				checkBox=view.lookupReference(systemName);
+				    				checkBox.setValue(true);
+				    				var systemStore=Ext.data.StoreManager.lookup('systemStore'+system.id),orgStore=Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
+				    				systemStore.removeAll();
+				    				systemStore.add(listOrderSystemInfo[i]);
+				    				orgStore.removeAll();
+				    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
+				    			}
+				    		}
+			    		}
 			    	Ext.getBody().unmask();
 			  		
 	        },
@@ -399,7 +439,7 @@ if(!temp){
 		      	totalOrgConfigured=jsonValue.length;
 		      	var orgStore=Ext.create('Ext.data.Store',{
 	    			fields:['id','name'],
-	    			storeId:'systemStore'+selectedSystemArray.id,
+	    			storeId:'orgStore'+selectedSystemArray.id,
 	    			data:jsonValue
 		      	});
 	    		var systemStore=Ext.create('Ext.data.Store',{
@@ -413,7 +453,7 @@ if(!temp){
 	    		if(totalOrgConfigured>0){
 	    			orgOrderStore=Ext.create('Ext.data.Store',{
 		    			fields:['id','name'],
-		    			storeId:'orgStore'+selectedSystemArray.id,
+		    			storeId:'orgInfoStore'+selectedSystemArray.id,
 		    			data:[{
 		    				'orgCodeId':jsonValue[0].id,'default':true
 		    			}]
@@ -428,20 +468,23 @@ if(!temp){
                     listeners:{
                     	'change':function(cmp,newValue){
                     		var systemGrid=me.getView().lookupReference(cmp.name+'systemGrid'),
-                    		orgGrid=me.getView().lookupReference(cmp.name+'orgGrid');
+                    		orgGrid=me.getView().lookupReference(cmp.name+'orgGrid'),
+                    		plusButton=me.getView().lookupReference(cmp.name+'Plus');
                     		if(newValue){
-                    			orgGrid.setDisabled(false);
-                    			systemGrid.setDisabled(false);
+                    			orgGrid.show();
+                    			systemGrid.show();
+                    			plusButton.show();
                     		}else{
-                    			orgGrid.setDisabled(true);
-                    			systemGrid.setDisabled(true);
+                    			orgGrid.hide();
+                    			systemGrid.hide();
+                    			plusButton.hide();
                     		}
                     	}
                     }
 	    		},{
 	    			xtype:'systemgrid',
 	    			store:systemStore,
-	    			disabled:true,
+	    			hidden:true,
 	    			reference:selectedSystemArray.name+'systemGrid'
 	    		},{
 	    			xtype:'fieldcontainer',
@@ -453,13 +496,15 @@ if(!temp){
 		    			orgStore:orgStore,
 		    			uniqueName:selectedSystemArray.name,
 		    			maxRecord:totalOrgConfigured,
-		    			disabled:true,
+		    			hidden:true,
 		    			reference:selectedSystemArray.name+'orgGrid'
 		    		},{
 	    				xtype:'button',
 	    				margin:'40 0 0 20',
 	    				maxRecord:totalOrgConfigured,
 	    				text:'Plus',
+	    				reference:selectedSystemArray.name+'Plus',
+	    				hidden:true,
 	    				listeners:{
 	    					'click':function(cmp){
 	    						if(orgOrderStore.getCount()<totalOrgConfigured){
@@ -487,6 +532,11 @@ if(!temp){
 	    	onProductLineComboChange:function(cmp,value){
 	    		var hiddenProductLineField=this.getView().lookupReference('productLineHidden');
 	    		hiddenProductLineField.setValue(value);
+	    	},
+	    	afterWindowRender:function(){
+	    		
+//	    		debugger;
+//	    		view.lookupReference()
 	    	}
 	    	
 });

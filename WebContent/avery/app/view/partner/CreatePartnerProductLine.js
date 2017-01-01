@@ -20,13 +20,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		this.callParent(arguments);
 	},
 	listeners:{
-		'afterrender':function(obj){
-			var me = this;
-			if(me.rec!=null){
-				me.down('form').loadRecord(me.rec);
-				me.down('#AdvancedPropertiesForm').loadRecord(me.rec);
-			}
-		}
+		'afterrender':'afterWindowRender'
 	},
 	buildButtons : function(){
 		return [
@@ -44,7 +38,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		var me = this,
 			siteStore = Ext.data.StoreManager.lookup('siteId')== null ? Ext.create('AOC.store.SiteStore') : Ext.data.StoreManager.lookup('siteId'),
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
-			
+			siteStore.load();
+			rboStore.load();
 		return [
 			{
 				xtype:'displayfield',
@@ -88,6 +83,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								itemId:'RItemId',
 								name: 'rboId',
 								reference:'rboId',
+								bind:'{rbo.id}',
 								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
 								margin:'0 10 0 10',
@@ -106,6 +102,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								name: 'site',
 								fieldLabel:'Site',
 								allowBlank: false,
+								bind:'{siteId}',
+								changedBefore:false,
 								valueField:'id',
 								displayField:'name',
 								maxLength : '100',
@@ -114,7 +112,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								listeners : {
 									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage',
-									'select':'onSiteSelect'
+									'change':'onSiteSelect'
 								}
 							}
 						]
@@ -161,6 +159,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								labelWidth:100,
 								allowBlank: true,
 								reference:'productLineTypeCombo',
+								hidden:'{productLineType}'=='MIXED'?true:false,
 								width : 220,
 								margin:' 0 10 0 10',
 								store:[['HTL','HTL'],['PFL','PFL'],['WVL','WVL']],
@@ -182,13 +181,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'hiddenfield',
 								reference:'productLineHidden',
-								value:'HTL'
+								value:'HTL',
+								value:'{productLineType}'
 							}
 						]
 	        		},
 	        		{
 						xtype:'textfield',
-						name: 'emailId',
+						name: 'email',
+						bind:'{CSRPrimaryId}',
 						fieldLabel:'Email ID',
 						regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 						width : 455,
@@ -216,8 +217,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						items:[
 							{
 								xtype:'textfield',
-								itemId:'CSRPEmailId',
-								name: 'CSRPrimaryEmail',
+								itemId:'CSRPrimaryId',
+								name: 'CSRPrimaryId',
+								bind:'{CSRPrimaryId}',
 								fieldLabel:'CSR Primary Email',
 								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
@@ -229,8 +231,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							},
 							{
 								xtype:'textfield',
-								itemId:'CSRSEmailId',
-								name: 'CSRSecondaryEmail',
+								itemId:'CSRSecondaryId',
+								name: 'CSRSecondaryId',
+								bind:'{CSRSecondaryId}',
 								fieldLabel:'CSR Secondary Email',
 								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
@@ -260,17 +263,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						items: [
 							{
 								boxLabel : 'Waive MOA',
-								name : 'validation',
-								inputValue : 'waivemoa',
-								checked : true,
-								id : 'waivemoa'
+								name : 'waiveMOA',
+								inputValue : 'waiveMOA',
+								id : 'waiveMOA',
+								bind:'{waiveMOA}'
 							},
 							{
 								boxLabel : 'Waive MOQ ',
-								name : 'validation',
-								inputValue: 'waivemoq',
-								checked : true,
-								id : 'waivemoq'
+								name : 'waiveMOQ',
+								inputValue: 'waiveMOQ',
+								id : 'waiveMOQ',
+								bind:'{waiveMOQ}'
 							}
 						]
 					},
@@ -291,24 +294,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						items: [
 							{
 								boxLabel : 'Local Billing',
-								name : 'CSRAttention',
-								inputValue: 'localbilling',
-								checked : true,
-								id: 'localbilling'
+								name : 'localBilling',
+								inputValue: 'localBilling',
+								id: 'localBilling',
+								bind:'{localBilling}'
 							},
 							{
 								boxLabel : 'Factory Transfer',
-								name : 'CSRAttention',
-								inputValue : 'factorytransfer',
-								checked : true,
-								id : 'factorytransfer'
+								name : 'factoryTransfer',
+								inputValue : 'factoryTransfer',
+								id : 'factoryTransfer',
+								bind:'{factoryTransfer}'
 							},
 							{
 								boxLabel: 'Shipment Sample',
-								name : 'CSRAttention',
-								inputValue : 'shipmentsample',
-								checked : true,
-								id : 'shipmentsample'
+								name : 'shipmentSample',
+								inputValue : 'shipmentSample',
+								id : 'shipmentSample',
+								bind:'{shipmentSample}'
 							}
 							
 						]
@@ -328,22 +331,22 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								boxLabel : 'Size Check',
 								name  : 'CSRAttention',
 								inputValue : 'sizecheck',
-								checked : true,
-								id : 'sizecheck'
+								id : 'sizecheck',
+								bind:'{sizecheck}'
 							},
 							{
 								boxLabel : 'Fabric Check',
 								name : 'CSRAttention',
 								inputValue : 'fabriccheck',
-								checked : true,
-								id : 'fabriccheck'
+								id : 'fabriccheck',
+								bind:'{fabriccheck}'
 							},
 							{
 								boxLabel : 'LLKK',
-								name : 'CSRAttention',
-								inputValue : 'llkk',
-								checked : true,
-								id : 'llkk'
+								name : 'LLKK',
+								inputValue : 'LLKK',
+								id : 'LLKK',
+								bind:'{LLKK}'
 							}
 						]
 					},
