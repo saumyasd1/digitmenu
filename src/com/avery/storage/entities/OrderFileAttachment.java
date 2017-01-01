@@ -35,6 +35,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
+import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -368,6 +369,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
