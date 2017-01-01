@@ -1,6 +1,9 @@
 package com.avery.storage.MixIn;
 
 
+import java.util.List;
+
+import com.avery.storage.entities.OrderSystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class PartnerDataStructureMixin {
@@ -117,6 +120,9 @@ public abstract class PartnerDataStructureMixin {
 	public abstract String getEmailBodyRBOMatchLocation();
 	@JsonIgnore
 	public abstract String getFileRBOMatchLocation();
+	
+	@JsonIgnore
+	public abstract List<OrderSystemInfo> getListOrderSystemInfo();
 	}
 	
 	

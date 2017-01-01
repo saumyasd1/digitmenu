@@ -204,21 +204,21 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
 				org.setOrgCodeId(orgCodeId);
 				
-				String legacybilltocode=orgMap.get("legacybilltocode")==null?"":(String)orgMap.get("legacybilltocode");
+				String legacybilltocode=orgMap.get("billToCode")==null?"":(String)orgMap.get("billToCode");
 				org.setBillToCode(legacybilltocode);
 				
-				String legacyshiptocode=orgMap.get("legacyshiptocode")==null?"":(String)orgMap.get("legacyshiptocode");
+				String legacyshiptocode=orgMap.get("shipToCode")==null?"":(String)orgMap.get("shipToCode");
 				org.setShipToCode(legacyshiptocode);
 				
-				org.setDefault((Boolean)orgMap.get("default"));
+				org.setDefault(orgMap.get("default")==null?false:(Boolean)orgMap.get("default"));
 				
-				String freightterms=orgMap.get("freightterms")==null?"":(String)orgMap.get("freightterms");
+				String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
 				org.setFreightTerm(freightterms);
 				
-				String shippinginstructions=orgMap.get("shippinginstructions")==null?"":(String)orgMap.get("shippinginstructions");
+				String shippinginstructions=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
 				org.setShippingInstruction(shippinginstructions);
 				
-				String shippingmethod=orgMap.get("shippingmethod")==null?"":(String)orgMap.get("shippingmethod");
+				String shippingmethod=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
 				org.setShippingMethod(shippingmethod);
 				sys.setId(OrderSystemInfoId);
 				org.setVarOrderSystemInfo(sys);
@@ -232,6 +232,14 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		// session.getTransaction().commit();
 		return pk;
 	}
-
+	@Override
+	public ProductLine read(Long id) {
+		Session session = getSessionFactory().getCurrentSession();//single-entity
+		session.enableFetchProfile( "single-entity" );
+		// session.beginTransaction();
+		ProductLine entity = (ProductLine) session.get(getType(), id);
+		// session.getTransaction().commit();
+		return entity;
+	}
 	
 }

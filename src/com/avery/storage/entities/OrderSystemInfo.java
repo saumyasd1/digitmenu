@@ -1,11 +1,15 @@
 package com.avery.storage.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.avery.storage.MainAbstractEntity;
@@ -20,31 +24,31 @@ public class OrderSystemInfo extends MainAbstractEntity {
 	 */
 	private static final long serialVersionUID = 4788222987397974679L;
 	@Column(name="artworkHold",length=5)
-	String artworkHold;
+	private String artworkHold;
 	@Column(name="csrName",length=250)
-	String csrName;
+	private String csrName;
 	@Column(name="manufacturingNotes",length=500)
-	String manufacturingNotes;
+	private String manufacturingNotes;
 	@Column(name="packingInstruction",length=500)
-	String packingInstruction;
+	private String packingInstruction;
 	@Column(name="shippingMark",length=500)
-	String shippingMark;
+	private String shippingMark;
 	@Column(name="discountOffer")
-	boolean discountOffer;
+	private boolean discountOffer;
 	@Column(name="invoiceNote",length=500)
-	String invoiceNote;
+	private String invoiceNote;
 	@Column(name="splitShipSetBy",length=5)
-	String splitShipSetBy;
+	private String splitShipSetBy;
 	@Column(name="variableDataBreakdown",length=500)
 	String variableDataBreakdown;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
-	ProductLine varProductLine;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private ProductLine varProductLine;
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="systemId")
-	SystemInfo varSystem;
-//	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-//	List<OrgInfo> listOrgInfo=new ArrayList<OrgInfo>();
+	private SystemInfo varSystem;
+	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	private List<OrgInfo> listOrgInfo;
 	
 	
 	public OrderSystemInfo() {}
@@ -161,14 +165,14 @@ public class OrderSystemInfo extends MainAbstractEntity {
 	}
 
 
-//	List<OrgInfo> getListOrgInfo() {
-//		return listOrgInfo;
-//	}
-//
-//
-//	void setListOrgInfo(List<OrgInfo> listOrgInfo) {
-//		this.listOrgInfo = listOrgInfo;
-//	}
+	public List<OrgInfo> getListOrgInfo() {
+		return listOrgInfo;
+	}
+
+
+	public void setListOrgInfo(List<OrgInfo> listOrgInfo) {
+		this.listOrgInfo = listOrgInfo;
+	}
 	
 	
 	

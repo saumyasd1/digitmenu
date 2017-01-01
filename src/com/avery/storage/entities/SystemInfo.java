@@ -49,23 +49,18 @@ public class SystemInfo extends MainAbstractEntity{
 	private static final long serialVersionUID = 3946547049807497262L;
 
 	@Column(name = "name",length=50,unique=true)
-	String name;
+	private String name;
 	
 	@Column(name = "comment",length=250)
-	String comment;
-
-	
-	
-	@OneToMany(mappedBy="varSystem",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<OrderSystemInfo> varOrderSystemInfo;
+	private String comment;
 	
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="siteId",nullable=false)
-	Site site;
+	private Site site;
 	
 	@OneToMany(mappedBy="system",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<Org> orgList=new ArrayList<Org>();
+	private List<Org> orgList;
 	
 	public List<Org> getOrgList() {
 		return orgList;
@@ -104,14 +99,6 @@ public class SystemInfo extends MainAbstractEntity{
 		this.comment = comment;
 	}
 
-	public List<OrderSystemInfo> getVarOrderSystemInfo() {
-		return varOrderSystemInfo;
-	}
-
-
-	public void setVarOrderSystemInfo(List<OrderSystemInfo> varOrderSystemInfo) {
-		this.varOrderSystemInfo = varOrderSystemInfo;
-	}
 	
 	@GET
 	@Path("/site/{id:[0-9]+}")

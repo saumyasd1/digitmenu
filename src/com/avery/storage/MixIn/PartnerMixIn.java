@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class PartnerMixIn {
 	
 	@JsonIgnore
-	public abstract Set<ProductLine> getProductLine();
+	public abstract List<ProductLine> getVarProductLine();
 	
 	@JsonIgnore
 	public abstract Set<Address> getAdressObj();
@@ -35,9 +35,6 @@ public abstract class PartnerMixIn {
 	
 	@JsonIgnore
 	public abstract Boolean isActive() ;
-	
-	@JsonIgnore
-	public abstract List<ProductLine> getVarProductLine();
 	
 	@JsonIgnore
 	public abstract List<SalesOrder> getListSalesOrderLine();	

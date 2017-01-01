@@ -45,4 +45,8 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 		
 	}
 
+	@Transactional
+	public ProductLine read(Long id) {
+		return getProductLineDao().read(id);
+	}
 }

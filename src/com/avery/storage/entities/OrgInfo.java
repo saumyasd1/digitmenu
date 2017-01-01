@@ -73,18 +73,22 @@ public class OrgInfo extends MainAbstractEntity{
 	public String getShippingMethod() {
 		return shippingMethod;
 	}
+	
 	public void setShippingMethod(String shippingMethod) {
 		this.shippingMethod = shippingMethod;
 	}
+	
 	public String getShippingInstruction() {
 		return shippingInstruction;
 	}
 	public void setShippingInstruction(String shippingInstruction) {
 		this.shippingInstruction = shippingInstruction;
 	}
+	
 	public OrderSystemInfo getVarOrderSystemInfo() {
 		return varOrderSystemInfo;
 	}
+	
 	public void setVarOrderSystemInfo(OrderSystemInfo varOrderSystemInfo) {
 		this.varOrderSystemInfo = varOrderSystemInfo;
 	}

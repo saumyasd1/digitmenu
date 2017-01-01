@@ -63,22 +63,22 @@ public class Org extends MainAbstractEntity {
 		this.system = system;
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
 
-	void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
 
-	String getComment() {
+	public String getComment() {
 		return comment;
 	}
 
 
-	void setComment(String comment) {
+	public void setComment(String comment) {
 		this.comment = comment;
 	}
 	

@@ -36,9 +36,9 @@ public class Site extends MainAbstractEntity{
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "name",length=50,unique=true)
-	String name;
+	private String name;
 	@Column(name = "comment",length=250)
-	String comment;
+	private String comment;
 
 
 	public String getName() {
@@ -55,7 +55,7 @@ public class Site extends MainAbstractEntity{
 	}
 	
 	@OneToMany(mappedBy="site",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<SystemInfo> systemInfoList=new ArrayList<SystemInfo>();
+	private List<SystemInfo> systemInfoList;
 	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {

@@ -1,23 +1,16 @@
 package com.avery.storage.MixIn;
 
 import java.sql.Date;
-import java.util.List;
 
 import com.avery.storage.entities.ProductLine;
-import com.avery.storage.entities.SalesOrder;
+import com.avery.storage.entities.SystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public abstract class RboMixIn {
+public abstract class OrderSystemInfoMixIn {
 	
 	@JsonIgnore
-	public abstract List<ProductLine> getListProductLine();
-	
-	@JsonIgnore
-	public abstract List<SalesOrder> getListSalesOrderLine();
-	
-	@JsonIgnore
-	public abstract String getComment();
-	
+	public abstract  ProductLine getVarProductLine();
+
 	@JsonIgnore
 	public abstract String getCreatedBy();
 	

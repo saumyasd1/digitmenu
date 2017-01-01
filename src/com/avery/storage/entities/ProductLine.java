@@ -2,13 +2,11 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,13 +28,20 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.FetchProfile;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrderSystemInfoMixIn;
+import com.avery.storage.MixIn.OrgInfoMixin;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.PartnerMixIn;
+import com.avery.storage.MixIn.ProductLineEditMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
+import com.avery.storage.MixIn.RboMixIn;
+import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +51,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Entity
 @Table(name = "partner_rboproductline")
 @Path("productLines")
+@FetchProfile(name = "single-entity", fetchOverrides = {
+		   @FetchProfile.FetchOverride(entity = ProductLine.class, association ="listOrderSystemInfo",mode=FetchMode.JOIN)
+		})
 public class ProductLine extends MainAbstractEntity{
 	
 	public ProductLine(){
@@ -199,40 +207,57 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "orderSchemaType", length = 50)
 	String orderSchemaType;// 50
 	@Column(name = "others")
-	boolean others;// Others (pls specify)
+	private boolean others;// Others (pls specify)
 	@Column(name = "preProcessPID", length = 50)
-	String preProcessPID;// 50
+	private String preProcessPID;// 50
 	@Column(name = "productLineType", length = 25)
-	String productLineType;// 25
+	private String productLineType;// 25
 	@Column(name = "DataStructureName", length = 100)
-	String dataStructureName;
+	private String dataStructureName;
 	@Column(name = "shipmentSample")
 	boolean shipmentSample;
     @Column(name = "waiveMOA")
-	boolean waiveMOA;
+    private boolean waiveMOA;
 	@Column(name = "waiveMOQ")
-	boolean waiveMOQ;
+	private boolean waiveMOQ;
 	@Column(name = "localItem")
-	boolean localItem;
+	private boolean localItem;
 	@Column(name = "averyItem")
-	boolean averyItem;	
+	private boolean averyItem;	
 	@Column(name = "customerItemIdentifierDescription",length=500)
-	String customerItemIdentifierDescription;
+	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
-	String defaultSystem;
+	private String defaultSystem;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rboId")
 	private RBO rbo;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "partnerId")
-	Partner varPartner;
-	@OneToMany(mappedBy="varProductLine",fetch=FetchType.EAGER)
-	List<OrderSystemInfo> listOrderSystemInfo=new ArrayList<OrderSystemInfo>();
+	private Partner varPartner;
+	@OneToMany(mappedBy="varProductLine",fetch=FetchType.LAZY)
+	private List<OrderSystemInfo> listOrderSystemInfo;
 	@Column(name = "email", length = 100)
 	private String email;
 	
+	private transient long siteId;
 	
 	
+	public long getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(long l) {
+		this.siteId = l;
+	}
+
+	public List<OrderSystemInfo> getListOrderSystemInfo() {
+		return listOrderSystemInfo;
+	}
+
+	public void setListOrderSystemInfo(List<OrderSystemInfo> listOrderSystemInfo) {
+		this.listOrderSystemInfo = listOrderSystemInfo;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -921,14 +946,6 @@ public class ProductLine extends MainAbstractEntity{
 	}
 
 
-//	public List<OrderSystemInfo> getListOrderSystemInfo() {
-//		return listOrderSystemInfo;
-//	}
-//
-//	public void setListOrderSystemInfo(List<OrderSystemInfo> listOrderSystemInfo) {
-//		this.listOrderSystemInfo = listOrderSystemInfo;
-//	}
-
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -937,6 +954,9 @@ public class ProductLine extends MainAbstractEntity{
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
+			mapper.addMixIn(RBO.class,RboMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class, OrderSystemInfoMixIn.class);
+			mapper.addMixIn(ProductLine.class, OrderSystemInfoMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
@@ -1048,16 +1068,34 @@ public class ProductLine extends MainAbstractEntity{
 			Long entityId = Long.parseLong(id);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,ProductLineEditMixIn.class);
+			mapper.addMixIn(RBO.class,RboMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class, OrderSystemInfoMixIn.class);
+			mapper.addMixIn(Partner.class, PartnerMixIn.class);
+			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
+			mapper.addMixIn(OrgInfo.class,OrgInfoMixin.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
 			ProductLine productline = productLineService.read(entityId);
+//			ErrorCode lazyCode = findErrorCodeById(1);
+//			// eager load associations
+//			Hibernate.initialize(lazyCode);
 			if (productline == null)
 				throw new WebApplicationException(Response
 						.status(Status.BAD_REQUEST)
 						.entity("Product Line entity with id \"" + id
 								+ "\" doesn't exist")
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			List<OrderSystemInfo> obj=productline.getListOrderSystemInfo();
+			if(obj.size()!=0){
+				OrderSystemInfo oSysInfoObj=obj.get(0);
+				SystemInfo sysInfoList=oSysInfoObj.getVarSystem();
+				if(sysInfoList!=null){
+					productline.setSiteId(sysInfoList.getId());
+				}
+				
+			}
 			mapper.writeValue(writer, productline);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -1087,7 +1125,12 @@ public class ProductLine extends MainAbstractEntity{
 		try{
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
+			mapper.addMixIn(RBO.class,RboMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class, OrderSystemInfoMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class,ProductLineMixIn.class);
+			mapper.addMixIn(Partner.class, PartnerMixIn.class);
+			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig

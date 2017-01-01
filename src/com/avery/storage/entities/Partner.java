@@ -92,7 +92,7 @@ public class Partner extends MainAbstractEntity {
 	String orgCode;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<ProductLine> varProductLine = new ArrayList<ProductLine>();
+	private List<ProductLine> varProductLine = new ArrayList<ProductLine>();
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();

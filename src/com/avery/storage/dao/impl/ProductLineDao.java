@@ -14,5 +14,7 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 	public Boolean checkDuplicateValues(ProductLine productLine) throws Exception;
 	
 	public ProductLine create(String productLineData);
+	
+	public ProductLine read(Long id) ;
 
 }
