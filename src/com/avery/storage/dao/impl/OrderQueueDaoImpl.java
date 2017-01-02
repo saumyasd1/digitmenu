@@ -344,4 +344,42 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		List<OrderQueue> list = criteria.list();
 		return list;
 	}
+	
+	@Override
+	public void identifyEmail(String data, Long entityId) {
+		ObjectMapper mapper = new ObjectMapper();
+		Long currentObjId=0L;
+		ObjectReader updater=null;
+		Session session = null;
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+			session = getSessionFactory().getCurrentSession();
+			OrderFileAttachment OrderFileAttachmentObj=null;
+			OrderFileAttachmentObj=(OrderFileAttachment) session.get(OrderFileAttachment.class,entityId);
+			updater = mapper.readerForUpdating(OrderFileAttachmentObj);
+			OrderFileAttachmentObj = updater.readValue(data);
+			OrderFileAttachmentObj.preUpdateOp();
+			session.update(OrderFileAttachmentObj);
+			OrderFileAttachmentObj.postUpdateOp();
+			String status=OrderFileAttachmentObj.getStatus();
+			String s = "update OrderFileAttachment set status=:value where id =:id "; 
+			Query q = session.createQuery(s);
+			q.setString("value",status);
+			q.setLong("id",entityId);
+			q.executeUpdate();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
 }
