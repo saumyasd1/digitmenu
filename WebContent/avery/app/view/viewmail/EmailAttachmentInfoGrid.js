@@ -5,6 +5,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     controller:'viewMailController',
     reserveScrollbar:true,
     columnLines:true,
+    isIdentifiedFlag:false,
     
     initComponent : function(){
     	this.columns = this.buildColumns();
