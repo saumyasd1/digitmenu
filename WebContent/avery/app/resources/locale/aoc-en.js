@@ -367,6 +367,7 @@ Ext.define('AOC.lang.lit',{
     "booked":'99',
     "oracleError":'98',
     "fiberLevel":'FIBRE',
+    "identifiedStatus":'19',
     "centerStyleDiv":'<div align="center"><b><font color=#006FDD>',
     "mandatoryValidationCellColor":'background-color:yellow'
     });
