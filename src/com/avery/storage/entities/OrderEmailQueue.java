@@ -3,6 +3,7 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,6 @@ import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
-import com.avery.storage.service.OrderFileAttachmentService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -315,7 +315,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
-			//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
 			entitiesMap = orderEmailQueueService.readWithCriteria( queryParamMap);
@@ -550,28 +550,41 @@ public class OrderEmailQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
+
     
     @PUT
-   	@Path("identified/{id:[0-9]+}")
-   	public Response identifyEmail(@Context UriInfo ui,
-   			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
-   		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
-   		try {
-   			OrderEmailQueueService emailQueueService = (OrderEmailQueueService) SpringConfig
-   					.getInstance().getBean("orderEmailQueueService");
-   			emailQueueService.identifyEmail(data,orderEmailQueueEntityId);
-   			   return Response.ok().build();
-   		} catch (WebApplicationException ex) {
-   			AppLogger.getSystemLogger().error(
-   					"Error while processing order", ex);
-   			throw ex;
-   		} catch (Exception e) {
-   			AppLogger.getSystemLogger().error(
-   					"Error while processing order", e);
-   			throw new WebApplicationException(Response
-   					.status(Status.INTERNAL_SERVER_ERROR)
-   					.entity(ExceptionUtils.getRootCauseMessage(e))
-   					.type(MediaType.TEXT_PLAIN_TYPE).build());
-   		}
-   	}
+  	@Path("/identified/{id:[0-9]+}")
+  	public Response identifyEmail(@Context UriInfo ui,
+  			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
+  		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
+  		Response.ResponseBuilder rb = null;
+  		try {
+  			
+  			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			// toggle this property value based on your input JSON dataR
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+  			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
+  					.getInstance().getBean("orderEmailQueueService");
+  			orderEmailQueueService.identifyEmail(data,orderEmailQueueEntityId);
+  			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+  		} catch (WebApplicationException ex) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", ex);
+  			throw ex;
+  		} catch (Exception e) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", e);
+  			throw new WebApplicationException(Response
+  					.status(Status.INTERNAL_SERVER_ERROR)
+  					.entity(ExceptionUtils.getRootCauseMessage(e))
+  					.type(MediaType.TEXT_PLAIN_TYPE).build());
+  		}
+		return rb.build();
+  	}
 }
