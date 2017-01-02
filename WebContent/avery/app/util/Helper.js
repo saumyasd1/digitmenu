@@ -117,7 +117,6 @@ loadCodeStore:function(type){
 		Ext.Array.forEach(jsonValue.ArrayList,function(item){
 		store.add(item);
 	});
-		
 	}
 }
 },
@@ -146,8 +145,9 @@ loadCodeStore:function(type){
     	if(v!==''){
 	    	var me=this,
 	    	store= Ext.data.StoreManager.lookup('codeid') == null ?me.getCodeStore('code') : Ext.data.StoreManager.lookup('codeid'),
-	    	statusRecord=store.findRecord( 'code', v),
-			va=statusRecord.get('value');
+	    	statusRecord=store ? store.findRecord( 'code', v) : '',
+			va = statusRecord ? statusRecord.get('value') :'';
+	    	
 	    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==orderRead || v==booked)
 		   {
 	    		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
