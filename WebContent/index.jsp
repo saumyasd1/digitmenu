@@ -6,6 +6,8 @@ int pageSize=25;
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="https://use.fontawesome.com/515eec56c1.js"></script>
   <style type="text/css">
 ::-ms-clear {
    display: none;
@@ -32,6 +34,9 @@ int pageSize=25;
 			font-size:15px!important;
 			text-align:center;
 			font-family: "Lucida Grande","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif"!important;
+		}
+		.nestedGrid .x-grid-item, body{
+			color:#2c3e50 !important;
 		}
 	</style>
   <title>Avery Dennison Web App</title>    
