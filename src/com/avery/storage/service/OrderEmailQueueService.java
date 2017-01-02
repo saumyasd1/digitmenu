@@ -40,4 +40,9 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 	public void disregardEmail(String data,Long entityId){
 		getOrderEmailQueueDao().disregardEmail(data,entityId);
 	}
+	
+	@Transactional
+	public void identifyEmail(String data,Long entityId){
+		getOrderEmailQueueDao().identifyEmail(data,entityId);
+	}
 }
