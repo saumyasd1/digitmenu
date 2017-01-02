@@ -197,18 +197,18 @@ public class SalesOrder extends MainAbstractEntity{
 	String system_Status;
 	@Column(name = "status",length=2000)
 	String status;
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//	@JoinColumn(name = "orderLineId")
-//	OrderLine varOrderLine;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "orderLineId")
+	OrderLine varOrderLine;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "orderQueueId")
 	OrderQueue varOrderFileQueue;
-//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//	@JoinColumn(name = "partnerId")
-//	Partner varPartner;
-//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//	@JoinColumn(name = "rboId")
-//	RBO varRbo;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "partnerId")
+	Partner varPartner;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "rboId")
+	RBO varRbo;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varSalesOrderLine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<SalesOrderDetail> listSalesOrderDetails=new ArrayList<SalesOrderDetail>();
@@ -942,14 +942,14 @@ public class SalesOrder extends MainAbstractEntity{
 	}
 
 
-//	public OrderLine getVarOrderLine() {
-//		return varOrderLine;
-//	}
-//
-//
-//	public void setVarOrderLine(OrderLine varOrderLine) {
-//		this.varOrderLine = varOrderLine;
-//	}
+	public OrderLine getVarOrderLine() {
+		return varOrderLine;
+	}
+
+
+	public void setVarOrderLine(OrderLine varOrderLine) {
+		this.varOrderLine = varOrderLine;
+	}
 
 
 	public OrderQueue getVarOrderFileQueue() {
@@ -962,24 +962,24 @@ public class SalesOrder extends MainAbstractEntity{
 	}
 
 
-//	public Partner getVarPartner() {
-//		return varPartner;
-//	}
-//
-//
-//	public void setVarPartner(Partner varPartner) {
-//		this.varPartner = varPartner;
-//	}
-//
-//
-//	public RBO getVarRbo() {
-//		return varRbo;
-//	}
-//
-//
-//	public void setVarRbo(RBO varRbo) {
-//		this.varRbo = varRbo;
-//	}
+	public Partner getVarPartner() {
+		return varPartner;
+	}
+
+
+	public void setVarPartner(Partner varPartner) {
+		this.varPartner = varPartner;
+	}
+
+
+	public RBO getVarRbo() {
+		return varRbo;
+	}
+
+
+	public void setVarRbo(RBO varRbo) {
+		this.varRbo = varRbo;
+	}
 
 
 	public List<SalesOrderDetail> getListSalesOrderDetails() {
