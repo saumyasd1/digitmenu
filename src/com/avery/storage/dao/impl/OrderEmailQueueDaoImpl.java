@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
+import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
@@ -96,7 +97,6 @@ OrderEmailQueueDao {
 	@Override
 	public void cancelEmail(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
 		String commentString="";
@@ -146,7 +146,6 @@ OrderEmailQueueDao {
 	@Override
 	public void disregardEmail(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
 		String commentString="";
@@ -185,6 +184,44 @@ OrderEmailQueueDao {
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
 					"Error while disregarding email", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
+
+	@Override
+	public void identifyEmail(String data, Long entityId) {
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectReader updater= null ;
+		Session session = null;
+		try{
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+			session = getSessionFactory().getCurrentSession();
+			OrderEmailQueue orderEmailQueueObj=null;
+			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
+			updater = mapper.readerForUpdating(orderEmailQueueObj);
+			orderEmailQueueObj = updater.readValue(data);
+			orderEmailQueueObj.preUpdateOp();
+			session.update(orderEmailQueueObj);
+			orderEmailQueueObj.postUpdateOp();
+			String status=orderEmailQueueObj.getStatus();
+			String s = "update OrderEmailQueue set status=:value where id =:id "; 
+			Query q = session.createQuery(s);
+			q.setString("value",status);
+			q.setLong("id",entityId);
+			q.executeUpdate();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", e);
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
