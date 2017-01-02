@@ -1,7 +1,10 @@
 Ext.define('AOC.controller.MenuController', {
 	extend :'Ext.app.Controller',
 	alias: 'controller.menuController',
-	requires:['AOC.view.ux.Callout'],
+	requires:[
+	     'AOC.view.ux.Callout',
+	     'AOC.view.taskmanager.TaskManager'
+	],
 	stores:['Sections','PartnerManagementStore','EmailManagementStore','AddressStore','OrderQueueStore','OrderCharts','HomePageOders','Roles'],
 	views : ['base.BaseToolbar','Viewport','users.manage.User'],
 	refs : [{
@@ -66,7 +69,8 @@ Ext.define('AOC.controller.MenuController', {
 	                save : me.onClickSaveProfile,
 	                cancel:me.onClickCancelProfile
 	         }
-		}); 
+		});
+		
 		this.profileMenuTpl = this.buildMenuTpl();
 		me.on({
 	            scope           : me,
@@ -78,6 +82,7 @@ Ext.define('AOC.controller.MenuController', {
 		  me.runtime = AOC.config.Runtime;
 		  me.helper = AOC.util.Helper;
 	},
+	
 	onClickLogIn:function(cmp){
 	    var me=this,
 	    form= cmp.down('form'),
@@ -166,7 +171,7 @@ Ext.define('AOC.controller.MenuController', {
 	  },
 	  selectCard:function(xtype){
 	      var me=this,
-	      cardLayout =me.getMainCard().getLayout(),
+	      cardLayout = me.getMainCard().getLayout(),
 	      section= Ext.ComponentQuery.query(xtype)[0],
 	      activeItem=cardLayout.getActiveItem();
 	      if(activeItem && activeItem.xtype==xtype){
