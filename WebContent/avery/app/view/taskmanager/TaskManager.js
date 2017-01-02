@@ -3,32 +3,31 @@ Ext.define('AOC.view.taskmanager.TaskManager',{
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.taskmanager.TaskManagerGrid'],
 	alias : 'widget.taskmanager',
 	itemId : 'taskManageritemId',
+	layout:'fit',
+	border:'4 4 4 4',
 	initComponent : function() {
-		Ext.apply(this, {
-			layout :'fit', 
-			border:'4 4 4 4',	
-			items : [ {
+		this.items = this.buildItems();
+	 	this.callParent(arguments);
+	},
+	buildItems:function(){
+		return [
+			{
     			xtype : 'container',
     			flex : 1.8,
     			layout:'card',
 				itemId:'taskManagerPanel',
-				collapsible :false,
-				
 				activeItem: 0,
-				hidden:false,
-    			items:[{
-    				xtype:'taskManagergrid',
-					CartId:1,
-					itemId:'TaskManagerGriditemId'
-    			},
-    			{
-    				xtype:'viewmail',
-    				CartId:1,
-					itemId: 'viewMailItemId'
-					
-    			}]
-    		}]
-	 	});
-	 	this.callParent(arguments);
+    			items:[
+					{
+						xtype:'taskManagergrid',
+						itemId:'TaskManagerGriditemId'
+					},
+					{
+						xtype:'viewmail',
+						itemId: 'viewMailItemId'
+					}
+				]
+			}
+		];
 	}
 });
