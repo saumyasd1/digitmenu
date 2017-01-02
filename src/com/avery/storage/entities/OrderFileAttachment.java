@@ -85,7 +85,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "orderEmailQueueId")
 	OrderEmailQueue varOrderEmailQueue;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne( fetch = FetchType.EAGER)
 	@JoinColumn(name = "productLineId")
 	ProductLine varProductLine;
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -446,7 +446,9 @@ public class OrderFileAttachment extends MainAbstractEntity {
 				@Context HttpHeaders hh, String data) {
 	    	List<Map<String,Object>> jsonData=null;
 			Map<String,Object> jsonMap=null;
+			Response.ResponseBuilder rb = null;
 			try {
+				
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 						false);
@@ -460,16 +462,34 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					Map<String,Object> fileAttachment=(Map<String,Object>)jsonData.get(i);
 					int id=(int)fileAttachment.get("id");
 					OrderFileAttachment fileAttachementObj=orderFileAttachmentService.read((long)id);
-					ProductLine  productLineObj =new ProductLine();
-					productLineObj.setId((int)fileAttachment.get("productLineId"));
-					fileAttachementObj.setId((int)fileAttachment.get("id"));
-					fileAttachementObj.setVarProductLine(productLineObj);
-					fileAttachementObj.setStatus(Integer.toString((int)fileAttachment.get("status")));
-					fileAttachementObj.setFileContentType((String) fileAttachment.get("fileContentType"));
+					
+
+					int productLineId=(fileAttachment.get("productLineId")==null?0: Integer.parseInt((String)fileAttachment.get("productLineId")));  
+					if(productLineId!=0){
+						ProductLine  productLineObj =new ProductLine();
+						productLineObj.setId(productLineId);
+						fileAttachementObj.setVarProductLine(productLineObj);
+					}
+					int attachmentId = (fileAttachment.get("id")==null?0:(int)fileAttachment.get("id"));
+					if(attachmentId!=0){
+						fileAttachementObj.setId(attachmentId);
+					}
+					int attachmentStatus = (fileAttachment.get("status")==null?0:(int)fileAttachment.get("status"));
+					if(attachmentStatus==0){
+						fileAttachementObj.setStatus(Integer.toString(attachmentStatus));
+					}
+					String fileContentType = (fileAttachment.get("fileContentType")==null?"":(String)fileAttachment.get("fileContentType"));
+					if(fileContentType.equals("")){
+						fileAttachementObj.setFileContentType(fileContentType);
+					}
 					orderFileAttachmentService.update(fileAttachementObj);
 				}
+				Map entitiesMap = new HashMap();
+				StringWriter writer = new StringWriter();
+				entitiesMap.put("success", true);
+				mapper.writeValue(writer, entitiesMap);
+				rb = Response.ok(writer.toString());
 				
-				return Response.ok().build();
 			} catch (WebApplicationException ex) {
 				AppLogger.getSystemLogger().error("Error while Saving attachment", ex);
 				throw ex;
@@ -481,6 +501,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 						.entity(ExceptionUtils.getRootCauseMessage(e))
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
+			return rb.build();
 		}
 	    
 	    
