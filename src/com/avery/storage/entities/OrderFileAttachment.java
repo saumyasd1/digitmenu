@@ -438,29 +438,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		//return rb.build();
 	}
 */
-	    @PUT
-		@Path("identified/{id:[0-9]+}")
-		public Response identifyEmail(@Context UriInfo ui,
-				@Context HttpHeaders hh, String data, @PathParam("id") String attachmentQueueId) {
-			Long orderFileAttachmentEntityId = Long.parseLong(attachmentQueueId);
-			try {
-				OrderFileAttachmentService attachmentService = (OrderFileAttachmentService) SpringConfig
-						.getInstance().getBean("orderFileAttachmentService");
-				attachmentService.identifyEmail(data,orderFileAttachmentEntityId);
-				   return Response.ok().build();
-			} catch (WebApplicationException ex) {
-				AppLogger.getSystemLogger().error(
-						"Error while disregarding attachment", ex);
-				throw ex;
-			} catch (Exception e) {
-				AppLogger.getSystemLogger().error(
-						"Error while disregarding email", e);
-				throw new WebApplicationException(Response
-						.status(Status.INTERNAL_SERVER_ERROR)
-						.entity(ExceptionUtils.getRootCauseMessage(e))
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			}
-		}
+	   
 	    
 	    @PUT
 		@Path("/updateattachments")
