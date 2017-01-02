@@ -12,10 +12,4 @@ public interface OrderFileAttachmentDao extends GenericDao<OrderFileAttachment, 
 	
 	public List<OrderFileAttachment> readFileByID(Long fileID);
 	
-	public void identifyEmail(String data, Long entityId);
-	
-	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress);
-	
-	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> insertAddress,Long orderQueueId);
-
 }
