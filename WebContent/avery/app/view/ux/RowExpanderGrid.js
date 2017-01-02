@@ -46,12 +46,12 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    	var openRowArray=AOC.config.Runtime.getOpenRow();
 	    		openRowArray.push(id);
 	    	
-	    	//AOC.config.Runtime.setOpenRow(openRowArray);
+	    	AOC.config.Runtime.setOpenRow(openRowArray);
 	        if( Ext.isEmpty( this.obj_recordId_componentId[id] ) ) {
 	            var view = this.grid.getView(),
 	                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode)),
 	                targetRowbody = Ext.DomQuery.selectNode('div.x-grid-rowbody', expandRow) ;
-	           // var openRow=AOC.config.Runtime.getOpenRow();
+	            var openRow=AOC.config.Runtime.getOpenRow();
 	            
 	            while (targetRowbody.hasChildNodes()) {
 	                targetRowbody.removeChild(targetRowbody.lastChild);
