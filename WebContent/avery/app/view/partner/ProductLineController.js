@@ -408,7 +408,6 @@ if(!temp){
 				    		//this.getView().down('#SiteId').setValue(view.getViewModel().get('siteId'));
 				    		if(listOrderSystemInfo.length>0){
 				    			for(var i=0;i<listOrderSystemInfo.length;i++){
-				    				debugger;
 				    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
 				    				checkBox=view.lookupReference(systemName);
 				    				checkBox.setValue(true);
@@ -534,9 +533,6 @@ if(!temp){
 	    		hiddenProductLineField.setValue(value);
 	    	},
 	    	afterWindowRender:function(){
-	    		
-//	    		debugger;
-//	    		view.lookupReference()
 	    	}
 	    	
 });
