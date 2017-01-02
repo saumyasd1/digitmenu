@@ -47,7 +47,7 @@ public class OrderSystemInfo extends MainAbstractEntity {
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="systemId")
 	private SystemInfo varSystem;
-	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.EAGER, orphanRemoval = true)
 	private List<OrgInfo> listOrgInfo;
 	
 	
