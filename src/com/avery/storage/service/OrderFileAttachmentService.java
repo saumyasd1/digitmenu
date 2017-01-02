@@ -39,25 +39,6 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 		return getOrderFileAttachmentDao().readFileByID(entityId);
 		
 	}
-
-	@Transactional
-	public void identifyEmail(String data,Long entityId){
-		getOrderFileAttachmentDao().identifyEmail(data,entityId);
-	}
 	
-	@Transactional
-	public void bulkUpdate(String jsonData,Map<String,Boolean> flagMap){
-		
-		getOrderFileAttachmentDao().bulkUpdate(jsonData, flagMap);
-		
-	}
-	
-	@Transactional
-	public void bulkUpdateAll(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId){
-		
-		getOrderFileAttachmentDao().bulkUpdateAllById(jsonData,flagMap,orderQueueId);
-		
-	}
-
 
 }
