@@ -41,7 +41,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			criteria = session.createCriteria(OrderLine.class);
 			OrderQueue orderQueue = new OrderQueue();
 			orderQueue.setId(orderID);
-			criteria.add(Restrictions.eq("orderQueueForOrderLine", orderQueue));
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderID));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
