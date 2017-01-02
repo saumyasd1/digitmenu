@@ -77,7 +77,6 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   	},
   	
   	onSaveBtnClicked:function(){	
-  		debugger;
   		Ext.getBody().mask('Saving....');
   		var me = this,
   			parameters = Ext.JSON.encode({json:this.emailGridRecordArray}),
@@ -92,7 +91,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	            Ext.getBody().unmask();
 	            me.verifyIdentifiedDisregardRecords();
 	            AOC.util.Helper.fadeoutMessage('Success', jsonString.message);
-	            gridView.store.load();
+	            me.backButton();
 	        },
 	        failure: function(response, opts) {
 	            var msg = response.responseText;
@@ -118,32 +117,40 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	},
 	
 	onProcessOrderBtnClicked:function(){
-		debugger;
-		var gridView = this.getView().down('#EmailAttachmentInfoGriditemId'),
-			trackingId = gridView.trackingId,
-			obj = {id:trackingId, state:true};
+		var me = this;
 		
-		Ext.getBody().mask('Processing Order....');
-		Ext.Ajax.request({
-	        jsonData: Ext.JSON.encode(obj),
-	        method:'PUT',
-	        url: applicationContext+'/rest/orderattachements/identified/' +trackingId,
-	        success: function(response, opts) {
-	            var jsonString = Ext.JSON.decode(response.responseText);
-	           
-	            Ext.getBody().unmask();
-	            AOC.util.Helper.fadeoutMessage('Success', jsonString.message);
-	            me.backButton();
-	        },
-	        failure: function(response, opts) {
-	            var msg = response.responseText;
-	            msg = msg.replace("Exception:", " ");
-	            Ext.Msg.alert('Alert Message', msg);
-	            Ext.getBody().unmask();
-	        }
-	    });
+		Ext.Msg.show({
+		    title:'Process Order',
+		    message: 'Are you sure, you want to process order?',
+		    buttons: Ext.Msg.YESNO,
+		    icon: Ext.Msg.QUESTION,
+		    fn: function(btn) {
+		        if (btn === 'yes') {
+		        	var gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
+						trackingId = gridView.trackingId,
+						obj = {id:trackingId, status:gridView.isIdentifiedFlag ? AOCLit.identifiedStatus  :''};
+				
+					Ext.getBody().mask('Processing Order....');
+					Ext.Ajax.request({
+				        jsonData: Ext.JSON.encode(obj),
+				        url: applicationContext+'/rest/orderattachements/identified/' +trackingId,
+				        success: function(response, opts) {
+				            var jsonString = Ext.JSON.decode(response.responseText);
+				            Ext.getBody().unmask();
+				            AOC.util.Helper.fadeoutMessage('Success', jsonString.message);
+				            me.backButton();
+				        },
+				        failure: function(response, opts) {
+				            var msg = response.responseText;
+				            msg = msg.replace("Exception:", " ");
+				            Ext.Msg.alert('Alert Message', msg);
+				            Ext.getBody().unmask();
+				        }
+				    });
+		        } 
+		    }
+		});
 	},
-	
 	editEmailAttachmentGridColumn:function(editor, e){
 		var me = this,
 			record = e.record,
@@ -190,9 +197,13 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			}
 		});
 		
+		if(totalCount == totalIdentifiedCount){
+			gridView.isIdentifiedFlag = true;
+		}
 		if(totalCount == totalIdentifiedCount || totalCount == (totalIdentifiedCount + totalDisregardCount)){
 			me.enableDisableProcessBtn(false);
 		}else{
+			gridView.isIdentifiedFlag = false;
 			me.enableDisableProcessBtn(true);
 		}
 	},
