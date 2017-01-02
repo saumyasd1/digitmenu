@@ -35,6 +35,7 @@ import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
+import com.avery.storage.service.OrderFileAttachmentService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -549,8 +550,28 @@ public class OrderEmailQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-
-
-	
-
+    
+    @PUT
+   	@Path("identified/{id:[0-9]+}")
+   	public Response identifyEmail(@Context UriInfo ui,
+   			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
+   		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
+   		try {
+   			OrderEmailQueueService emailQueueService = (OrderEmailQueueService) SpringConfig
+   					.getInstance().getBean("orderEmailQueueService");
+   			emailQueueService.identifyEmail(data,orderEmailQueueEntityId);
+   			   return Response.ok().build();
+   		} catch (WebApplicationException ex) {
+   			AppLogger.getSystemLogger().error(
+   					"Error while processing order", ex);
+   			throw ex;
+   		} catch (Exception e) {
+   			AppLogger.getSystemLogger().error(
+   					"Error while processing order", e);
+   			throw new WebApplicationException(Response
+   					.status(Status.INTERNAL_SERVER_ERROR)
+   					.entity(ExceptionUtils.getRootCauseMessage(e))
+   					.type(MediaType.TEXT_PLAIN_TYPE).build());
+   		}
+   	}
 }
