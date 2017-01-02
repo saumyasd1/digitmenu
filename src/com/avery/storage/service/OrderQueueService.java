@@ -55,4 +55,10 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public List getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception{
 		return 	getOrderQueueDao().getAllEntitiesListForOpenReport(queryMap);
 	}
+
+	@Transactional
+	public void identifyEmail(String data,Long entityId){
+		getOrderQueueDao().identifyEmail(data,entityId);
+	}
+
 }
