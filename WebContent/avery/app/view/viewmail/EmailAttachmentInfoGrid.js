@@ -79,6 +79,9 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						store:new Ext.data.JsonStore({
 							data:[
 							      {
+							    	  fileContentType:'Order File' 
+							      },
+							      {
 							    	  fileContentType:'Additional File' 
 							      },
 							      {
@@ -95,13 +98,14 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'status',
 					name: 'status',
 					renderer:function(value, record){
-						if(value == 1){
+						if(value == 8){
 							return 'Identified';
-						}else if(value == 2){
+						}else if(value == 6){
 							return 'Unidentified';
-						}else{
+						}else if(value == 7){
 							return 'Disregard';
 						}
+						return '';
 					}
 				},
 				{
