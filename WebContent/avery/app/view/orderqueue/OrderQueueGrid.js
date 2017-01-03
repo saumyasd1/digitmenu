@@ -18,20 +18,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				height: 50,
     		    items : me.buildtbar()
               },
-              store:Ext.create('AOC.store.OrderQueueStore', {
-					//storeId: 'OrderQueueStoreStoreId',
-					totalCount: 'total',
-					proxy : {
-						type : 'rest',
-						url : applicationContext+'/rest/orders',
-						reader:{
-							type:'json', 
-							rootProperty: 'orders',
-							totalProperty: 'totalCount'
-						}
-					},
-					autoLoad:true,
-              }),
+              store:'OrderQueueStore',
 				selModel: {
 			       type: 'spreadsheet',
 			       rowNumbererHeaderWidth:0
