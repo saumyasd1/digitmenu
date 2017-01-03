@@ -143,26 +143,82 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		/*New Field-1*/
 		{
 			text: 'Variable Data',
-			dataIndex: 'variabledata',
-			width: 50
+	
+			dataIndex: 'mandatoryVariableDataFieldFlag',
+			width: 65,
+			renderer:function(value, metadata,rec){
+				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag;
+				var checkvalue = value ? value.trim()  :'';
+				if(checkvalue.substr(0,1) == 't'){
+					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+				}
+				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+						this.mandatoryValidationFieldMissing = true;
+						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					}
+				}
+			}
 		}, 
 		/*New Field-2*/
 		{
 			text: 'COO',
-			dataIndex: 'coo',
-			width: 50
+			
+			dataIndex: 'cooTranslationFlag',
+			width: 65,
+			renderer:function(value, metadata,rec){
+				var cooTranslationFlag= rec.data.cooTranslationFlag;
+				var checkvalue = value ? value.trim()  :'';
+				if(checkvalue.substr(0,1) == 't'){
+					return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+				}
+				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+						this.mandatoryValidationFieldMissing = true;
+						return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					}
+				}
+			}
 		},
 		/*New Field-3*/    
 		{
 			text: 'Fabric Content',
-			dataIndex: 'fabricContent',
-			width: 50
+			
+			dataIndex: 'febricPercentageFlag',
+			width: 65,
+			renderer:function(value, metadata,rec){
+				var febricPercentageFlag= rec.data.febricPercentageFlag;
+				var checkvalue = value ? value.trim()  :'';
+				if(checkvalue.substr(0,1) == 't'){
+					return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+				}
+				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+						this.mandatoryValidationFieldMissing = true;
+						return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					}
+				}
+			}
 		},
 		/*New Field-4*/    
 		{
 			text: 'Revise Order',
-			dataIndex: 'reviceOrder',
-			width: 50
+			
+			dataIndex: 'reviseOrderFlag',
+			width: 65,
+			renderer:function(value, metadata,rec){
+				var reviseOrderFlag= rec.data.reviseOrderFlag;
+				var checkvalue = value ? value.trim()  :'';
+				if(checkvalue.substr(0,1) == 't'){
+					return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
+				}
+				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+						this.mandatoryValidationFieldMissing = true;
+						return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					}
+				}
+			}
 		},
 		/*New Field-5*/    
 		{
