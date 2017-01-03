@@ -328,6 +328,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             standardSubmit: true,   
             url : applicationContext+'/rest/orders/download/emailbody/'+record.get('emailQueueId')
         });
+		
         form.submit({
         	method : 'GET'
         });
