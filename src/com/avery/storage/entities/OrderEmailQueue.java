@@ -3,6 +3,7 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,8 +103,6 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	
 	@OneToMany(mappedBy = "varOrderEmailQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
-
-
 	
 	
 	public String getProcessId() {
@@ -308,34 +307,22 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	//OrderFileAttachment orderFileId = listOrderFileAttachment.id;
 
 	
-	@Transient
-	private String partnerName;
-	public String getPartnerName() {
-		return partnerName;
-	}
 
-	public void setPartnerName(String partnerName) {
-		this.partnerName = partnerName;
-	}
-	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?,?> entitiesMap=null;
-		Map emailQueue = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
-			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
-			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+            mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
+            mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
 			entitiesMap = orderEmailQueueService.readWithCriteria( queryParamMap);
-			emailQueue = orderEmailQueueService.getAllEntities();
-		
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
 			mapper.writeValue(writer, entitiesMap);
