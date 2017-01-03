@@ -58,6 +58,8 @@ import org.hibernate.annotations.Type;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrderEmailQueueMixin;
+import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
@@ -306,12 +308,16 @@ public class OrderQueue extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
+			mapper.addMixIn(OrderEmailQueue.class, OrderEmailQueueMixin.class);
+			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+			//mapper.addMixIn(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);//added
 			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);//added
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
-			orderQueue = orderQueueService.getAllEntities();//readWithCriteria(queryParamMap);
+			orderQueue = orderQueueService.readWithCriteria(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			mapper.setDateFormat(ApplicationUtils.df);
@@ -554,6 +560,7 @@ public class OrderQueue extends MainAbstractEntity{
 		FileOutputStream outstream = null;
 		String fileName = null;
 		String type = null;
+		OrderEmailQueue varOrderEmailQueue = null;
 		String fileExtension = null;
 		String fileContentType = null;
 		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
@@ -593,6 +600,7 @@ public class OrderQueue extends MainAbstractEntity{
 					orderFileAttachment.setFileContentType(fileContentType);
 					orderFileAttachment.setCreatedDate(new Date());
 					orderFileAttachmentService.create(orderFileAttachment);
+					orderFileAttachment.setVarOrderEmailQueue(varOrderEmailQueue);
 					}
 				}
 			}catch(WebApplicationException wae){

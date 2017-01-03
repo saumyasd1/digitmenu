@@ -63,6 +63,11 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	}
 	
 	@Transactional
+	public void identifyEmail(String data,Long entityId){
+		getOrderQueueDao().identifyEmail(data,entityId);
+	}
+	
+	@Transactional
 	public Map getAllEntities(){
 		return getOrderQueueDao().getAllEntitiesList();
 	}

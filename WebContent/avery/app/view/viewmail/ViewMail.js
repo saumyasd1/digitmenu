@@ -54,7 +54,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   xtype   : 'whitebutton',
 			   itemId  : 'processOrderBtn',
 			   text    : 'Process Order',
-			   disabled: false,
+			   disabled: true,
 			   handler : 'onProcessOrderBtnClicked'
 			}
 		]

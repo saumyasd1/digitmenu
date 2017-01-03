@@ -28,10 +28,6 @@ Ext.define('AOC.view.email.EmailManagement',{
 					{
 						xtype:'viewmail',
 						itemId: 'viewMailItemId'
-					},
-					{
-						xtype:'orderqueuegrid',
-						itemId: 'EmailOrderQueueGridItemId'
 					}
     			]
     		}

@@ -61,38 +61,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
 				},
 				viewOrder: function(cmp) {
 					var currentRecord = e.record,
-						id = currentRecord.id,
-						panel = Ext.ComponentQuery.query('#emailPanel')[0],
-						orderQueueView = panel.down('#EmailOrderQueueGridItemId');
+						id = currentRecord.id;
 					
-					store = orderQueueView.store;
-					store.load({
-						params:{id:id},
-						callback:function(records, oper, success){
-							console.log('loaded');
-						}
-					});
-					
-					/*store = Ext.create('AOC.store.OrderQueueStore', {
-						storeId: 'OrderQueueStoreStoreId',
-						totalCount: 'total',
-						proxy : {
-							type : 'rest',
-							url : applicationContext+'/rest/orders/'+id,
-							reader:{
-								type:'json', 
-								rootProperty: 'orders',
-								totalProperty: 'totalCount'
-							}
-						},
-						autoLoad:true,
-					});*/
-					
-					orderQueueView.down('#OrderQueueBackButton').setVisible(true);
-					
-					panel.getLayout().setActiveItem(2);
-					orderQueueView.orderTrackNo = id;
-					me.runTime.setActiveGrid(orderQueueView);
+					AOC.app.fireEvent('changemainview','orderqueueview', id);
 					callout.destroy();
 				}
             }

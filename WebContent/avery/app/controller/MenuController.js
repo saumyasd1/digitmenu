@@ -71,6 +71,14 @@ Ext.define('AOC.controller.MenuController', {
 	         }
 		});
 		
+		me.listen({
+			controller:{
+				'*': {
+					'changemainview' : me.onChangeMainView
+				}
+			}
+		});
+		
 		this.profileMenuTpl = this.buildMenuTpl();
 		me.on({
 	            scope           : me,
@@ -81,6 +89,22 @@ Ext.define('AOC.controller.MenuController', {
 		  me.settings = AOC.config.Settings;
 		  me.runtime = AOC.config.Runtime;
 		  me.helper = AOC.util.Helper;
+	},
+	
+	onChangeMainView : function(xtype, emailQueueId){
+		this.selectCard(xtype);
+		if(xtype == 'orderqueueview'){
+			var mainCont = Ext.ComponentQuery.query('maincontainer')[0],
+				store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
+			
+			mainCont.getLayout().setActiveItem(2);
+			store.load({
+				params:{emailQueueId : emailQueueId },
+				callback:function(records, oper, success){
+					console.log('loaded');
+				}
+			});
+		}
 	},
 	
 	onClickLogIn:function(cmp){
