@@ -304,10 +304,6 @@ public class OrderEmailQueue extends MainAbstractEntity{
 		this.listOrderFileAttachment = listOrderFileAttachment;
 	}
 
-	//OrderFileAttachment orderFileId = listOrderFileAttachment.id;
-
-	
-
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
