@@ -98,15 +98,14 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'status',
 					name: 'status',
 					renderer:function(value, record){
-						return value;
-						/*if(value == 8){
+						if(value == 8){
 							return 'Identified';
 						}else if(value == 6){
 							return 'Unidentified';
 						}else if(value == 7){
 							return 'Disregard';
 						}
-						return '';*/
+						return '';
 					}
 				},
 				{

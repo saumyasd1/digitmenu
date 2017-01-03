@@ -11,7 +11,7 @@ Ext.define('AOC.model.ViewMailModel',{
 	    {name: 'contentType', mapping:'fileContentType', type: 'string'},
 	    {name: 'fileContentMatch', mapping:'fileContentMatch', type: 'string'},
 	    {name:'id', type:'int'},
-	    {name:'status', type:'string'}
+	    {name:'status', type:'int'}
     ]
 });
 
