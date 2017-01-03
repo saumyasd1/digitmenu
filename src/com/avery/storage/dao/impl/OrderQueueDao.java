@@ -23,6 +23,8 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	
 	public List getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception;
 	
+	public void identifyEmail(String data, Long entityId);
+	
 	public Map getViewOrdersByEmailId(int emailQueueId);
 	
 	public Map getAllEntitiesList();
