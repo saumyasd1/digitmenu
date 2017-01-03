@@ -18,8 +18,21 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				height: 50,
     		    items : me.buildtbar()
               },
-              store:'OrderQueueStore',
-              selModel: {
+              store:Ext.create('AOC.store.OrderQueueStore', {
+					//storeId: 'OrderQueueStoreStoreId',
+					totalCount: 'total',
+					proxy : {
+						type : 'rest',
+						url : applicationContext+'/rest/orders',
+						reader:{
+							type:'json', 
+							rootProperty: 'orders',
+							totalProperty: 'totalCount'
+						}
+					},
+					autoLoad:true,
+              }),
+				selModel: {
 			       type: 'spreadsheet',
 			       rowNumbererHeaderWidth:0
 			    },
@@ -127,17 +140,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         {
             text : AOCLit.TrackingNo,
             width:50,
-			dataIndex:'TrackingId'
+			dataIndex:'TrackingId',
+			align: 'right',
         },
         {
             text : AOCLit.orderTrackNo,
             width:50,
-			dataIndex:'id'
+			dataIndex:'id',
+			align: 'right',
         },
         {
             text : AOCLit.prvOrderTrackNo,
             width:80,
-			dataIndex:'prvOrderQueueID'
+			dataIndex:'prvOrderQueueID',
+			align: 'right',
         },
         {
             text :AOCLit.PONumber,
