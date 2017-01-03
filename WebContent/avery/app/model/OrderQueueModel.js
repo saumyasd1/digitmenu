@@ -4,12 +4,12 @@ Ext.define('AOC.model.OrderQueueModel',{
     fields: [
 {
 	name : 'TrackingId',
-	mapping : 'trackingid',
+	mapping : 'emailQueueId',
 	type: 'string'
 },
         {
 		name : 'PartnerName',
-		mapping : 'partner.partnerName',
+		mapping : 'partnerName',
 		type: 'string'
 	}, {
 		name : 'RBOName',
@@ -22,12 +22,12 @@ Ext.define('AOC.model.OrderQueueModel',{
 		type: 'string'
 	},{
 		name : 'ProductLineType',
-		mapping : 'productLine.id',
+		mapping : 'productLineId',
 		type: 'string'
 	}, 
 	   {
 		name: 'productLineType', 
-	    mapping:'productLine.productLineType',
+	    mapping:'productLineType',
 	    type: 'string'},
 	{
 		name : 'Status',
@@ -63,7 +63,7 @@ Ext.define('AOC.model.OrderQueueModel',{
 	},
 	{
 		name : 'acknowledgementDate',
-		mapping : 'acknowledgementDate',
+		mapping : 'feedbackAcknowledgementDate',
 		type: 'string'
 	},
 	{
@@ -96,8 +96,8 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'attachmentPresent',
 		mapping : 'attachmentPresent',
 		type:'boolean'
-	},
-	{
+	}
+	/*{
 	    name: 'orderFiles',
 	    type: 'string',
 	    convert: function( v, record ) {
@@ -121,6 +121,6 @@ Ext.define('AOC.model.OrderQueueModel',{
 	         record.commit();
 	         return true;
 	    }
-	}
+	}*/
     ]
 });

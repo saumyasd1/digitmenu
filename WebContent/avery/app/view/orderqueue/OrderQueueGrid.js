@@ -91,7 +91,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			menuDisabled  :true,
 			renderer:function(v,cell,record){
 				var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
-				var filename=record.get('id');
+				var filename=record.get('emailQueueId');
 				if(v=='Email')
 					return '<div><img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" /></div>';
 				else
@@ -103,11 +103,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width:40,
 			dataIndex:'OrderFile',
 			renderer:function(v,cell,record){
-				if(v.length!=0){
+				return '<div><img class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
+				/*if(v.length!=0){
 					var fileName=v[0].fileName
 					return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
 				}else 
-					return '';
+					return '';*/
         }
         },
         {
@@ -126,7 +127,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         {
             text : AOCLit.TrackingNo,
             width:50,
-			dataIndex:'trackingid'
+			dataIndex:'TrackingId'
         },
         {
             text : AOCLit.orderTrackNo,
@@ -325,7 +326,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	}else if(e.target.className=='viewemail'){
 		var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
-            url : applicationContext+'/rest/orders/download/emailbody/'+record.get('id')
+            url : applicationContext+'/rest/orders/download/emailbody/'+record.get('emailQueueId')
         });
         form.submit({
         	method : 'GET'
