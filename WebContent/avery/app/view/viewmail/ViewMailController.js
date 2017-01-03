@@ -87,7 +87,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	        jsonData: parameters,
 	        url: applicationContext+'/rest/orderattachements/updateattachments',
 	        success: function(response, opts) {
-	            //var jsonString = Ext.JSON.decode(response.responseText);
+	           
 	        	gridView.emailGridRecordArray = [];
 	            Ext.getBody().unmask();
 	            me.verifyIdentifiedDisregardRecords();
