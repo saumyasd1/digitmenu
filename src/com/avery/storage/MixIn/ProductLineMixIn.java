@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class ProductLineMixIn {
 
-	@JsonIgnore
-	public abstract Partner getVarPartner();
+	
 	
 	@JsonIgnore
 	public abstract  List<OrderQueue> getListOrderFileQueue();
