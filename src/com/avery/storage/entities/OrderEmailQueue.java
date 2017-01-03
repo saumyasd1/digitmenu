@@ -3,7 +3,6 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -104,6 +104,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
 
 
+	
 	
 	public String getProcessId() {
 		return processId;
@@ -304,11 +305,24 @@ public class OrderEmailQueue extends MainAbstractEntity{
 		this.listOrderFileAttachment = listOrderFileAttachment;
 	}
 
+	//OrderFileAttachment orderFileId = listOrderFileAttachment.id;
 
+	
+	@Transient
+	private String partnerName;
+	public String getPartnerName() {
+		return partnerName;
+	}
+
+	public void setPartnerName(String partnerName) {
+		this.partnerName = partnerName;
+	}
+	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?,?> entitiesMap=null;
+		Map emailQueue = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -320,6 +334,8 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
 			entitiesMap = orderEmailQueueService.readWithCriteria( queryParamMap);
+			emailQueue = orderEmailQueueService.getAllEntities();
+		
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
 			mapper.writeValue(writer, entitiesMap);
