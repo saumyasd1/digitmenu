@@ -314,6 +314,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig

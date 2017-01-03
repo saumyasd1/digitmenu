@@ -139,7 +139,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "CSRPrimaryId", length = 250)
 	private String CSRPrimaryId;// 250
 	@Column(name = "CSRSecondaryId", length = 250)
-	String CSRSecondaryId;// 250
+	private String CSRSecondaryId;// 250
 	@Column(name = "emailSubjectProductLineMatch", length = 100)
 	String emailSubjectProductLineMatch;// 100
 	@Column(name = "emailSubjectProductlineMatchLocation", length = 100)
@@ -1022,28 +1022,8 @@ public class ProductLine extends MainAbstractEntity{
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			// read existing entity from database
-			ProductLine productline = productLineService.read(Long.parseLong(id));
-			if (productline == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("Product Line entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			}
-			ObjectReader updater = mapper.readerForUpdating(productline);
-			// build updated entity object from input data
-			productline = updater.readValue(data);
-			boolean valueExist = productLineService.checkDuplicateValues(productline);
-			if (valueExist) {
-				responseMap.put("valueExist",true);
-				mapper.writeValue(writer, responseMap);
-			}else{
-				productLineService.update(productline);
-				responseMap.put("valueExist",false);
-				responseMap.put("productline",productline);
-				mapper.writeValue(writer, responseMap);
-			}
+			productLineService.update(data,Long.valueOf(id));
+			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(

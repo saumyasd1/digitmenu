@@ -479,7 +479,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 						fileAttachementObj.setStatus(Integer.toString(attachmentStatus));
 					}
 					String fileContentType = (fileAttachment.get("fileContentType")==null?"":(String)fileAttachment.get("fileContentType"));
-					if(fileContentType.equals("")){
+					if(!fileContentType.equals("")){ 
 						fileAttachementObj.setFileContentType(fileContentType);
 					}
 					orderFileAttachmentService.update(fileAttachementObj);

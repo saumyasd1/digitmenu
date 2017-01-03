@@ -93,7 +93,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				                valueField: 'variableFieldName',
 				                editable:false,
 				                queryMode :'local',
-				                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
+				                store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
 				            }
                         },
                         {

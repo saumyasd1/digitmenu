@@ -14,7 +14,7 @@ Ext.define('AOC.config.Runtime',{
         hideSubmitToSystemButton:false,
         orderQueueStatus:null,
         allowOrderLineEdit:true,
-        openRow:{},
+        openRow:[],
         user: {}
     },
     constructor : function(config){

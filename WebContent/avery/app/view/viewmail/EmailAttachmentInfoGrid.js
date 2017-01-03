@@ -6,6 +6,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     reserveScrollbar:true,
     columnLines:true,
     isIdentifiedFlag:false,
+    emailGridRecordArray:[],
     
     initComponent : function(){
     	this.columns = this.buildColumns();
@@ -68,7 +69,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				{
 					text : 'File Content Type',
 					flex :1.3,
-					dataIndex:'fileContentType',
+					dataIndex:'contentType',
 					name: 'File Content Type',
 					editor: {
 						xtype:'combobox',
@@ -95,7 +96,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					name: 'status',
 					renderer:function(value, record){
 						if(value == 1){
-							return 'Indentified';
+							return 'Identified';
 						}else if(value == 2){
 							return 'Unidentified';
 						}else{

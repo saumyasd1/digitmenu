@@ -49,4 +49,11 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 	public ProductLine read(Long id) {
 		return getProductLineDao().read(id);
 	}
+	
+	@Transactional 
+	public ProductLine update(String productLineData,Long id) throws Exception{
+		
+		return getProductLineDao().update(productLineData,id);
+		
+	}
 }

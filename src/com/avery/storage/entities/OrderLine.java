@@ -291,9 +291,9 @@ public class OrderLine extends MainAbstractEntity{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
-	//@LazyCollection(LazyCollectionOption.FALSE)
-//	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-//	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
 	
 	
 	
@@ -1211,13 +1211,13 @@ public class OrderLine extends MainAbstractEntity{
 		this.listOrderlineDetails = listOrderlineDetails;
 	}
 
-//	public List<SalesOrder> getListSalesOrderLine() {
-//		return listSalesOrderLine;
-//	}
-//
-//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
-//		this.listSalesOrderLine = listSalesOrderLine;
-//	}
+	public List<SalesOrder> getListSalesOrderLine() {
+		return listSalesOrderLine;
+	}
+
+	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
+		this.listSalesOrderLine = listSalesOrderLine;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -1381,11 +1381,12 @@ public class OrderLine extends MainAbstractEntity{
 			orderLine = orderLineService.readAllByOrderID(entityId);
 			if (orderLine == null)
 				throw new Exception("Unable to find Order Line");
-			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
+			/*SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 						.getInstance().getBean("salesOrderService");
 			salesOrderCount=salesOrderService.getCountByOrderID(entityId);
-			orderLineMap.put("orderLine", orderLine);
 			orderLineMap.put("salesOrderCount", salesOrderCount);
+			*/
+			orderLineMap.put("orderLine", orderLine);
 			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orderLineMap);
 			rb = Response.ok(writer.toString());
