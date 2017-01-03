@@ -5,16 +5,18 @@ Ext.define('AOC.util.ProxyExceptionHandler',{
         Ext.Ajax.on('beforerequest',this.handleBeforeRequest,this);
         Ext.Ajax.on('requestexception',this.handleException,this);
 	},
-	handleBeforeRequest: function(conn,option,opt){
-    	    var timeout = AOC.config.Settings.getRequestTimeOut();
-	    option.headers={"Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="};
+	handleBeforeRequest: function(conn, option, opt){
+		var timeout = AOC.config.Settings.getRequestTimeOut();
+		option.headers={"Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="};
 	    var headers = option.headers;
+		
 	    if(headers){	
-		var helper = AOC.util.Helper,
-		jwtValue=helper.getCookie("authorization");
-		if(!Ext.isEmpty(jwtValue)){
-		    option.headers.Authorization=jwtValue;
-		}}
+			var helper = AOC.util.Helper,
+			jwtValue=helper ? helper.getCookie("authorization")  :'';
+			if(!Ext.isEmpty(jwtValue)){
+				option.headers.Authorization=jwtValue;
+			}
+		}
         if(Ext.isEmpty(option.timeout) || isNaN(option.timeout) || option.timeout< timeout){
             option.timeout=timeout;
         }
@@ -28,6 +30,6 @@ Ext.define('AOC.util.ProxyExceptionHandler',{
         	    AOC.util.Helper.deleteCookie("authorization");
 	            window.location.reload();
         	},this);
-	}
+		}
 	}
 });
