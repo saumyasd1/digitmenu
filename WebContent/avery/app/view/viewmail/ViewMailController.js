@@ -191,9 +191,9 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			totalDisregardCount = 0;
 		
 		store.each(function(record){
-			if(record.get('status') == 8){
+			if(record.get('status') == 'Identified'){
 				totalIdentifiedCount++;
-			}else if(record.get('status') == 6){
+			}else if(record.get('status') == 'Unidentified'){
 				totalUnidentifiedCount++;
 			}else{
 				totalDisregardCount++;
