@@ -160,14 +160,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text : AOCLit.orderStatus,
             width:200,
 			dataIndex:'status',
-//			editor:{
-//				xtype:'combo',
-//				queryMode :'local',
-//				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
-//			},
-//			renderer:function(v){
-//				return AOC.util.Helper.getSatus(v);
-//			}
+			editor:{
+				xtype:'combo',
+				queryMode :'local',
+				store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('OrderQueue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+			},
+			renderer:function(v){
+				return AOC.util.Helper.getSatus(v);
+			}
         },
 		{
             text : AOCLit.processedDate,
