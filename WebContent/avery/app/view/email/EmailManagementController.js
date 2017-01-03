@@ -16,76 +16,101 @@ Ext.define('AOC.view.email.EmailManagementController', {
             dismissDelay: 0,
             listeners: {
             	afterrender: me.onAfterRenderEditCallout,
-            	  viewMail: function(){
-            		  currentRecord = e.record;
-               	      var id = currentRecord.get('id');
-               	      var form = Ext.ComponentQuery.query('#viewmailformItemId')[0];
-               	      form.loadRecord(currentRecord);
-	                    store = Ext.create('AOC.store.ViewMailformStore',{
-	                        storeId: 'ViewMailformStoreId',
-	                        totalCount: 'total',
-	                        proxy : {
-	                    		type : 'rest',
-	                    		url : applicationContext+'/rest/orderattachements/order/'+id,
-	                    		reader:{
-	                    	        type:'json', 
-	                    	        rootProperty: 'viewmail',
-	                    	        totalProperty: 'totalCount'
-	                    	    }
-	                    	}
-	                    });
-	                   var panel = Ext.ComponentQuery.query('#emailPanel')[0];
-	                   var viewmail = panel.down('#EmailAttachmentInfoGriditemId');
-	                   viewmail.trackingId = id;
-	                   viewmail.bindStore(store);
-	                   panel.getLayout().setActiveItem(1);
-	                    me.runTime.setActiveGrid(viewmail);
-	                    callout.destroy();
-	                    },
-            	      cancelMail:function(){
-                         currentRecord = e.record;
-                         var id = currentRecord.get('id');
-                         var win = Ext.create('AOC.view.email.CancelEmailWindow');
-                         callout.destroy();
-                         win.show();
-                         me.runTime.setOrderEmailQueueId(id);
-                  // me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
-                   me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
-                   //me.runTime.setAllowOrderLineEdit(true);
-                     // var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-                    },
-            	    viewOrder: function(cmp) {
-            	    	                    var data = e.record;
-            	    	                    var id = data.id;
-            	    	                    store = Ext.create('AOC.store.OrderQueueStore', {
-            	    	                        storeId: 'OrderQueueStoreStoreId',
-            	    	                        totalCount: 'total'
-            	    	                    });
-            	    	                   var panel = Ext.ComponentQuery.query('#emailPanel')[0];
-            	    	                   var orderQueueView = panel.down('#EmailOrderQueueGridItemId');
-            	    	                   orderQueueView.down('#OrderQueueBackButton').setVisible(true);
-            	    	                   orderQueueView.bindStore(store);
-            	    	                   panel.getLayout().setActiveItem(2);
-            	    	                   orderQueueView.orderTrackNo = id;
-            	    	                   orderQueueView.down('#pagingtoolbar').bindStore(store);
-            	    	                   me.runTime.setActiveGrid(orderQueueView);
-            	    	                   callout.destroy();
-            	    	                }
+				viewMail: function(){
+					currentRecord = e.record;
+					var id = currentRecord.get('id'),
+						form = Ext.ComponentQuery.query('#viewmailformItemId')[0],
+						panel = Ext.ComponentQuery.query('#emailPanel')[0],
+						viewmail = panel.down('#EmailAttachmentInfoGriditemId');
+						
+					form.loadRecord(currentRecord);
+					
+					store = Ext.create('AOC.store.ViewMailformStore',{
+						storeId: 'ViewMailformStoreId',
+						totalCount: 'total',
+						proxy : {
+							type : 'rest',
+							url : applicationContext+'/rest/orderattachements/order/'+id,
+							reader:{
+								type:'json', 
+								rootProperty: 'viewmail',
+								totalProperty: 'totalCount'
+							}
+						}
+					});
+					
+					viewmail.trackingId = id;
+					viewmail.bindStore(store); //Bind Store to viewmail grid
+					
+					panel.getLayout().setActiveItem(1);
+					me.runTime.setActiveGrid(viewmail);
+					callout.destroy();
+				},
+				cancelMail:function(){
+					var currentRecord = e.record,
+						id = currentRecord.get('id'),
+						win = Ext.create('AOC.view.email.CancelEmailWindow');
+						
+					callout.destroy();
+					win.show();
+					me.runTime.setOrderEmailQueueId(id);
+					// me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
+					me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
+					//me.runTime.setAllowOrderLineEdit(true);
+					// var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+				},
+				viewOrder: function(cmp) {
+					var currentRecord = e.record,
+						id = currentRecord.id,
+						panel = Ext.ComponentQuery.query('#emailPanel')[0],
+						orderQueueView = panel.down('#EmailOrderQueueGridItemId');
+					
+					store = orderQueueView.store;
+					store.load({
+						params:{id:id},
+						callback:function(records, oper, success){
+							console.log('loaded');
+						}
+					});
+					
+					/*store = Ext.create('AOC.store.OrderQueueStore', {
+						storeId: 'OrderQueueStoreStoreId',
+						totalCount: 'total',
+						proxy : {
+							type : 'rest',
+							url : applicationContext+'/rest/orders/'+id,
+							reader:{
+								type:'json', 
+								rootProperty: 'orders',
+								totalProperty: 'totalCount'
+							}
+						},
+						autoLoad:true,
+					});*/
+					
+					orderQueueView.down('#OrderQueueBackButton').setVisible(true);
+					
+					panel.getLayout().setActiveItem(2);
+					orderQueueView.orderTrackNo = id;
+					me.runTime.setActiveGrid(orderQueueView);
+					callout.destroy();
+				}
             }
         });
         //Adding functionality related to Menu item visibility
         callout.show();
         var heightAbove = e.getY() - Ext.getBody().getScroll().top,
         heightBelow = Ext.Element.getViewportHeight() - heightAbove;
+		
   	    if(heightBelow<(callout.getHeight()+40)){
-  		  callout.calloutArrowLocation='bottom-left'; 
-  		  callout.relativePosition='b-t';
-  		  callout.relativeOffsets = [60, 0];
-  	  }else{
-  		  callout.calloutArrowLocation='top-left'; 
-  		  callout.relativePosition='t-b';
-  		callout.relativeOffsets = [60, 5];
-  	  }
+			callout.calloutArrowLocation='bottom-left'; 
+			callout.relativePosition='b-t';
+			callout.relativeOffsets = [60, 0];
+		}else{
+			callout.calloutArrowLocation='top-left'; 
+			callout.relativePosition='t-b';
+			callout.relativeOffsets = [60, 5];
+		}
         callout.show();
     },
     onAfterRenderEditCallout: function(cmp) {
@@ -110,13 +135,11 @@ Ext.define('AOC.view.email.EmailManagementController', {
             '</tpl>',
             '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
             '</tpl>',
-            { isCancelOrderDisabled : function(v)
-        	 {
-	    		 return (v.Status!=AOCLit.orderError);
-	          }
+            { 
+				isCancelOrderDisabled : function(v){
+					return (v.Status!=AOCLit.orderError);
+				}
             }
         );
     }
-    
-  
-    });
+});

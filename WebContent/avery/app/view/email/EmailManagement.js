@@ -3,11 +3,16 @@ Ext.define('AOC.view.email.EmailManagement',{
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.email.EmailManagementGrid'],
 	alias : 'widget.emailmanagement',
 	itemId : 'emailmanagementitemId',
+	layout :'fit', 
+	border:'4 4 4 4',
+	
 	initComponent : function() {
-		Ext.apply(this, {
-			layout :'fit', 
-			border:'4 4 4 4',	
-			items : [ {
+		this.items = this.buildItems();
+	 	this.callParent(arguments);
+	},
+	buildItems:function(){
+		return [
+			{
     			xtype : 'container',
     			flex : 1.8,
     			layout:'card',
@@ -15,26 +20,21 @@ Ext.define('AOC.view.email.EmailManagement',{
 				collapsible :false,
 				activeItem: 0,
 				hidden:false,
-    			items:[{
-    				xtype:'emailmanagementgrid',
-    				CartId:1,
-    				itemId:'EmailMangementitemId'
-    			},
-    			{
-    				xtype:'viewmail',
-    				CartId:1,
-					itemId: 'viewMailItemId'
-					
-    			},
-    			{
-    				xtype:'orderqueuegrid',
-					CartId:1,
-					itemId: 'EmailOrderQueueGridItemId'
-					
-    			}
+    			items:[
+					{
+						xtype:'emailmanagementgrid',
+						itemId:'EmailMangementitemId'
+					},
+					{
+						xtype:'viewmail',
+						itemId: 'viewMailItemId'
+					},
+					{
+						xtype:'orderqueuegrid',
+						itemId: 'EmailOrderQueueGridItemId'
+					}
     			]
-    		}]
-	 	});
-	 	this.callParent(arguments);
+    		}
+		]
 	}
 });
