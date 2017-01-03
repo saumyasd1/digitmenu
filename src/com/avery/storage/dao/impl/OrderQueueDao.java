@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -22,5 +23,7 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	
 	public List getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception;
 	
-	public void identifyEmail(String data, Long entityId);
+	public Map getViewOrdersByEmailId(int emailQueueId);
+	
+	public Map getAllEntitiesList();
 }

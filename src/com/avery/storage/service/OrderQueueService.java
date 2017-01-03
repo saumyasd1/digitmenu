@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -55,10 +56,14 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public List getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception{
 		return 	getOrderQueueDao().getAllEntitiesListForOpenReport(queryMap);
 	}
-
+	
 	@Transactional
-	public void identifyEmail(String data,Long entityId){
-		getOrderQueueDao().identifyEmail(data,entityId);
+	public Map viewOrdersByEmailQueueId(int emailQueueId){
+		return getOrderQueueDao().getViewOrdersByEmailId(emailQueueId);
 	}
-
+	
+	@Transactional
+	public Map getAllEntities(){
+		return getOrderQueueDao().getAllEntitiesList();
+	}
 }

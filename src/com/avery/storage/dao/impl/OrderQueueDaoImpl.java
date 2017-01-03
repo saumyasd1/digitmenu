@@ -31,13 +31,9 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.OrderLine;
-import com.avery.storage.entities.RBO;
-import com.avery.storage.entities.SalesOrder;
-import com.avery.utils.ApplicationConstants;
+import com.avery.storage.entities.Partner;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.HibernateUtils;
@@ -49,6 +45,36 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Repository
 public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implements
 		OrderQueueDao {
+	
+	@Override
+	public Map getAllEntitiesList(){
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrderQueue.class)
+				.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+				.createAlias("varProductLine", "varProductLine")
+				.createAlias("varProductLine.varPartner", "partner")
+				.setProjection(Projections.projectionList()
+					.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+					.add(Projections.property("partner.partnerName"),"partnerName")
+					.add(Projections.property("id"),"id")
+					.add(Projections.property("subject"),"subject")
+					.add(Projections.property("poNumber"),"poNumber")
+					.add(Projections.property("prevOrderQueueId"),"prevOrderQueueId")
+					.add(Projections.property("status"),"status")
+					.add(Projections.property("submittedBy"),"submittedBy")
+					.add(Projections.property("submittedDate"),"submittedDate")
+					.add(Projections.property("feedbackAcknowledgementDate"),"feedbackAcknowledgementDate")
+					.add(Projections.property("lastModifiedBy"),"lastModifiedBy")
+					.add(Projections.property("lastModifiedDate"),"lastModifiedDate"))
+				.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
+
+		entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
+		//entitiesMap.put("partner", criteria1.list());
+		return entitiesMap;
+	}
 
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
@@ -87,16 +113,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			//orderQueue.setSubEmailBody(subEmailBody);
 		}
-		
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("orders", new LinkedHashSet(list));
-        criteria = session.createCriteria(OrderFileAttachment.class);
-        
-        entitiesMap.put("attachmentqueue", new LinkedHashSet(criteria.list()));
-
-        criteria = session.createCriteria(OrderEmailQueue.class);
-        
-        entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
 	}
 
@@ -346,40 +364,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	}
 	
 	@Override
-	public void identifyEmail(String data, Long entityId) {
-		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
-		ObjectReader updater=null;
+	public Map getViewOrdersByEmailId(int emailQueueId){
+		Map entitiesMap = new HashMap();
 		Session session = null;
-		try{
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-			session = getSessionFactory().getCurrentSession();
-			OrderFileAttachment OrderFileAttachmentObj=null;
-			OrderFileAttachmentObj=(OrderFileAttachment) session.get(OrderFileAttachment.class,entityId);
-			updater = mapper.readerForUpdating(OrderFileAttachmentObj);
-			OrderFileAttachmentObj = updater.readValue(data);
-			OrderFileAttachmentObj.preUpdateOp();
-			session.update(OrderFileAttachmentObj);
-			OrderFileAttachmentObj.postUpdateOp();
-			String status=OrderFileAttachmentObj.getStatus();
-			String s = "update OrderFileAttachment set status=:value where id =:id "; 
-			Query q = session.createQuery(s);
-			q.setString("value",status);
-			q.setLong("id",entityId);
-			q.executeUpdate();
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while processing order", ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while processing order", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
 		
+		Criteria criteria = session.createCriteria(OrderFileAttachment.class);
+		return entitiesMap;
 	}
 }

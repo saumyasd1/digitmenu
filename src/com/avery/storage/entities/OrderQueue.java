@@ -24,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -57,8 +58,6 @@ import org.hibernate.annotations.Type;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.OrderEmailQueueMixin;
-import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
@@ -140,10 +139,31 @@ public class OrderQueue extends MainAbstractEntity{
 	List<AuditTrail> listAuditTrail=new ArrayList<AuditTrail>();*/
 	
 	
-		public String getpId() {
-		return pId;
+	//Transient variables will not reflect in db
+	@Transient
+	private String partnerName;
+
+	public String getPartnerName() {
+		return partnerName;
 	}
 
+	public void setPartnerName(String partnerName) {
+		this.partnerName = partnerName;
+	}
+
+	@Transient
+	private long emailQueueId;
+	public long getEmailQueueId() {
+		return emailQueueId;
+	}
+
+	public void setEmailQueueId(long emailQueueId) {
+		this.emailQueueId = emailQueueId;
+	}
+
+	public String getpId() {
+		return pId;
+	}
 	public void setpId(String pId) {
 		this.pId = pId;
 	}
@@ -286,17 +306,12 @@ public class OrderQueue extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			mapper.addMixIn(OrderQueue.class, OrderQueueMixIn.class);
-			mapper.addMixIn(OrderEmailQueue.class, OrderEmailQueueMixin.class);
-			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
-			//mapper.addMixIn(MainAbstractEntity.class, OrderQueueMixIn.class);//added mixIn
-			mapper.addMixIn(Partner.class,PartnerMixIn.class);//added
 			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);//added
-			//mapper.addMixIn(ProductLine.class,OrderQueueMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
-			orderQueue = orderQueueService.readWithCriteria(queryParamMap);
+			orderQueue = orderQueueService.getAllEntities();//readWithCriteria(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			mapper.setDateFormat(ApplicationUtils.df);
@@ -423,6 +438,29 @@ public class OrderQueue extends MainAbstractEntity{
 		}
 	}
 	
+	@GET
+	@Path("view/{id:[0-9]+}")
+	public Response viewOrders(@Context UriInfo ui, @Context HttpHeaders hh, @PathParam("id") int emailQueueId){
+		Response.ResponseBuilder rb = null;
+		Map<?,?> entitiesMap = null;
+		
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance().getBean("orderQueueService");
+			entitiesMap = orderQueueService.viewOrdersByEmailQueueId(emailQueueId);
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find any data");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rb.build();
+	}
+	
 	@PUT
 	@Path("cancelorder/{id:[0-9]+}")
 	public Response cancelOrder(@Context UriInfo ui,
@@ -516,7 +554,6 @@ public class OrderQueue extends MainAbstractEntity{
 		FileOutputStream outstream = null;
 		String fileName = null;
 		String type = null;
-		OrderEmailQueue varOrderEmailQueue = null;
 		String fileExtension = null;
 		String fileContentType = null;
 		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
@@ -556,7 +593,6 @@ public class OrderQueue extends MainAbstractEntity{
 					orderFileAttachment.setFileContentType(fileContentType);
 					orderFileAttachment.setCreatedDate(new Date());
 					orderFileAttachmentService.create(orderFileAttachment);
-					orderFileAttachment.setVarOrderEmailQueue(varOrderEmailQueue);
 					}
 				}
 			}catch(WebApplicationException wae){
@@ -622,7 +658,7 @@ public class OrderQueue extends MainAbstractEntity{
 		Map<String,String> codeMap=new HashMap<String,String>();
 		CodeService CodeService = (CodeService) SpringConfig
 				.getInstance().getBean("codeService");
-		List<Code> list=CodeService.readByType("OrderQueue");
+		List<Code> list=CodeService.readByType("orderfilequeue");
 		String code="",value="";
 		Iterator<Code> codeIterator = list.iterator();
 		while (codeIterator.hasNext()) {
