@@ -76,16 +76,38 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				        	text : 'Partner Name',
   				          	width:120,
   				            sortable : true,
-  				            dataIndex:'Partner Name',
-  				            flex:1
+  				            name:'PartnerName',
+  				            dataIndex:'PartnerName',
+  				            flex:1,
+	  				        renderer:function(val, metaData, record){
+				            	var listOrderFileAttachment = record.get('listOrderFileAttachment'),
+				            		partnerName =[],
+				            		len = listOrderFileAttachment.length;
+				            	
+				            	for(var i=0;i<len;i++){
+				            		var data = listOrderFileAttachment[i];
+				            		data.varProductLine  ? partnerName.push(data.varProductLine.varPartner.partnerName) :'';
+				            	}
+				            	return partnerName.join('');
+					         }
   			            },{
 
   				        	text : 'RBO',
   				          	width:120,
   				            sortable : true,
   				            dataIndex:'RBO',
-  				            flex:1
-  			            
+  				            flex:1,
+  				            renderer:function(val, metaData, record){
+  				            	var listOrderFileAttachment = record.get('listOrderFileAttachment'),
+  				            		rboName =[],
+  				            		len = listOrderFileAttachment.length;
+  				            	
+  				            	for(var i=0;i<len;i++){
+  				            		var data = listOrderFileAttachment[i];
+  				            		data.varProductLine  ? rboName.push(data.varProductLine.rbo.rboName) :'';
+  				            	}
+  				            	return rboName.join('');
+  				            }
   			            },
   			            {
   				        	text : 'Sender Email Id',
