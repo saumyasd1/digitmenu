@@ -622,7 +622,7 @@ public class OrderQueue extends MainAbstractEntity{
 		Map<String,String> codeMap=new HashMap<String,String>();
 		CodeService CodeService = (CodeService) SpringConfig
 				.getInstance().getBean("codeService");
-		List<Code> list=CodeService.readByType("orderfilequeue");
+		List<Code> list=CodeService.readByType("OrderQueue");
 		String code="",value="";
 		Iterator<Code> codeIterator = list.iterator();
 		while (codeIterator.hasNext()) {
