@@ -3,7 +3,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     alias: 'controller.taskManagerController',
     runTime : AOC.config.Runtime,
     requires:[
-        'AOC.view.taskmanager.AssignCSRWindow'
+        //'AOC.view.taskmanager.AssignCSRWindow'
     ],
     onClickMenu: function(obj, rowIndex, colIndex, item, e, record) {
         var me = this;
@@ -48,7 +48,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 					currentRecord = e.record;
 					var id = currentRecord.get('id');
 					
-					var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
+					/*var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
 						callback:function(rec){
 							var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
 								taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId'),
@@ -63,7 +63,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 						},
 						recordId:id
 					});
-					assignCsrWin.show();
+					assignCsrWin.show();*/
 				},
 				disregard:function(){
 					currentRecord = e.record;
