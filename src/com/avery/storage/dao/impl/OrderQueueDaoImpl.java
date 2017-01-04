@@ -51,6 +51,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implements
 		OrderQueueDao {
 	
+	
+	//Note:- This method is not currently being used but maybe used later so, it needs to be kept
 	@Override
 	public Map getAllEntitiesList(){
 		Map entitiesMap = new HashMap();
@@ -90,9 +92,34 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		int totalCount=0;
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
-		Criteria criteria= getCriteria(queryMap);
-		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+
+		//Following code adds partner name, rboname, productline and emailqueueid in the order queue
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+			.add(Projections.property("partner.partnerName"),"partnerName")
+			.add(Projections.property("id"),"id")
+			.add(Projections.property("subject"),"subject")
+			.add(Projections.property("poNumber"),"poNumber")
+			.add(Projections.property("prevOrderQueueId"),"prevOrderQueueId")
+			.add(Projections.property("status"),"status")
+			.add(Projections.property("submittedBy"),"submittedBy")
+			.add(Projections.property("submittedDate"),"submittedDate")
+			.add(Projections.property("feedbackAcknowledgementDate"),"feedbackAcknowledgementDate")
+			.add(Projections.property("lastModifiedBy"),"lastModifiedBy")
+			.add(Projections.property("lastModifiedDate"),"lastModifiedDate")
+			.add(Projections.property("rbo.rboName"),"rboName")
+			.add(Projections.property("varProductLine.productLineType"),"productLineType");
+		
+		Criteria criteria= session.createCriteria(OrderQueue.class);//getCriteria(queryMap);
+		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+			.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+			.createAlias("varProductLine", "varProductLine")
+			.createAlias("varProductLine.varPartner", "partner")
+			.createAlias("varProductLine.rbo", "rbo")
+			.setProjection(proj)	
+			.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		criteria.addOrder(Order.desc("lastModifiedDate"));
+		
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
@@ -100,34 +127,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
-		List list = criteria.list();
-		OrderQueue orderQueue = null;
-		String subEmailBody="";
-		for (Object obj : list) {
-			orderQueue = (OrderQueue) obj;
-			long id = orderQueue.getId();
-			/*subEmailBody=orderQueue.getEmailBody();
-			orderQueue.setOrderLineCount(getCountBasedOnOrderId(OrderLine.class,id,"orderQueueForOrderLine.id"));
-			orderQueue.setSalesOrderCount(getCountBasedOnOrderId(SalesOrder.class,id,"orderQueueID"));
-			*/if(subEmailBody!=null){
-				if(subEmailBody.length()<100){
-					subEmailBody=subEmailBody.substring(0, subEmailBody.length());
-				}else{
-					subEmailBody=subEmailBody.substring(0, 100);
-				}
-			}
-			//orderQueue.setSubEmailBody(subEmailBody);
-		}
 		
+		if(queryMap.getFirst("emailQueueId") != null){
+			String emailQueueId=(String) queryMap.getFirst("emailQueueId");
+			Long queueId = Long.parseLong(emailQueueId);
+			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
+			System.out.println(queueId);
+			
+		}
+		 entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
+		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
         entitiesMap.put("totalCount", totalCount);
-        entitiesMap.put("orders", new LinkedHashSet(list));
-        criteria = session.createCriteria(OrderFileAttachment.class);
-        
-        entitiesMap.put("attachmentqueue", new LinkedHashSet(criteria.list()));
-
-        criteria = session.createCriteria(OrderEmailQueue.class);
-        
-        entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
 	}
 
@@ -420,5 +430,22 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		
 		Criteria criteria = session.createCriteria(OrderFileAttachment.class);
 		return entitiesMap;
+	}
+	
+	
+	//implementation of get mail body path method
+	@Override
+	public String getMailBodyPath(long trackid){
+		String mailBodyPath = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrderEmailQueue.class)
+				.add(Restrictions.eq("id", trackid))
+				.setProjection(Projections.projectionList()
+						.add(Projections.property("mailBody"),"mailBody"));
+		List list = criteria.list();
+		mailBodyPath = (String) list.get(0);
+		//System.out.println(mailBodyPath);
+		return mailBodyPath;
 	}
 }
