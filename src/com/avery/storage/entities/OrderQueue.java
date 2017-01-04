@@ -155,6 +155,8 @@ public class OrderQueue extends MainAbstractEntity{
 	
 	@Transient
 	private String productLineType;
+	@Transient
+	private String senderEmailId;
 
 	public String getPartnerName() {
 		return partnerName;
@@ -178,6 +180,14 @@ public class OrderQueue extends MainAbstractEntity{
 
 	public void setRboName(String rboName) {
 		this.rboName = rboName;
+	}
+
+	public String getSenderEmailId() {
+		return senderEmailId;
+	}
+
+	public void setSenderEmailId(String senderEmailId) {
+		this.senderEmailId = senderEmailId;
 	}
 
 	public String getProductLineType() {
