@@ -65,6 +65,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.createAlias("varProductLine.varPartner", "partner")
 				.setProjection(Projections.projectionList()
 					.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+					.add(Projections.property("orderemailqueue.senderEmailId"),"senderEmailId")
 					.add(Projections.property("partner.partnerName"),"partnerName")
 					.add(Projections.property("id"),"id")
 					.add(Projections.property("subject"),"subject")
@@ -96,6 +97,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		//Following code adds partner name, rboname, productline and emailqueueid in the order queue
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+		    .add(Projections.property("orderemailqueue.senderEmailId"),"senderEmailId")
 			.add(Projections.property("partner.partnerName"),"partnerName")
 			.add(Projections.property("id"),"id")
 			.add(Projections.property("subject"),"subject")
@@ -133,6 +135,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			Long queueId = Long.parseLong(emailQueueId);
 			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
 			System.out.println(queueId);
+			
+		}
+		if(queryMap.getFirst("senderEmailId") != null){
+			String senderEmailId=(String) queryMap.getFirst("senderEmailId");
+			String senderEmail = senderEmailId;
+			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
+			System.out.println(senderEmail);
 			
 		}
 		 entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
