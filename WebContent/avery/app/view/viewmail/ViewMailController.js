@@ -76,11 +76,17 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	   }
   	},
   	
-  	onSaveBtnClicked:function(){	
+  	onSaveBtnClicked:function(btn){	
   		Ext.getBody().mask('Saving....');
   		var me = this,
-  			gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
-  			parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
+  			gridView = me.getView().down('#EmailAttachmentInfoGriditemId')
+  			editorPlugin = gridView.editingPlugin;
+  		
+  		if(editorPlugin.editing){
+  			gridView.focus();
+  		}
+  		
+		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
   		
   		Ext.Ajax.request({
 	        method: 'PUT',
@@ -92,8 +98,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	            Ext.getBody().unmask();
 	            me.verifyIdentifiedDisregardRecords();
 	            Ext.Msg.alert('Success', 'Current state saved successfully');
-	           
-	            me.backButton();
+	            gridView.store.load();
+	            
 	        },
 	        failure: function(response, opts) {
 	            var msg = response.responseText;
@@ -129,7 +135,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		        if (btn === 'yes') {
 		        	var gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
 						trackingId = gridView.trackingId,
-						obj = {json:{id:trackingId, status:gridView.isIdentifiedFlag ? AOCLit.identifiedStatus  :''}};
+						obj = {id:trackingId, status:gridView.isIdentifiedFlag ? AOCLit.identifiedStatus  :''};
 				
 					Ext.getBody().mask('Processing Order....');
 					Ext.Ajax.request({
@@ -173,7 +179,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		for(var i = 0; i < len; i++){
 			if(grid.emailGridRecordArray[i].id == record.get('id')){
 				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureName');
-				grid.emailGridRecordArray[i].fileContentType = record.get('fileContentType');
+				grid.emailGridRecordArray[i].fileContentType = record.get('contentType');
 				return;
 			}
 		}

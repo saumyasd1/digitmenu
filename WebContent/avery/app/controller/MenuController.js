@@ -64,6 +64,10 @@ Ext.define('AOC.controller.MenuController', {
 	    {
 	    	ref: 'mainMenu',
     		selector:'viewport canwas mainmenu'
+	    },
+	    {
+	    	ref: 'orderQueueViewContainer',
+    		selector:'viewport canwas maincontainer orderqueueview #orderQueueViewItemId1'
 	    }
 	],
 	menuInstructions : AOC.config.MenuInstructions,
@@ -117,6 +121,7 @@ Ext.define('AOC.controller.MenuController', {
 				mainMenu = this.getMainMenu();
 			
 			mainMenu.getSelectionModel().select(mainMenu.getStore().getAt(3), false, true);
+			this.getOrderQueueViewContainer().getLayout().setActiveItem(0);
 			store.load({
 				params:{emailQueueId : emailQueueId },
 				callback:function(records, oper, success){
