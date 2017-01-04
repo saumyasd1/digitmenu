@@ -2,6 +2,8 @@ package com.avery.storage.entities;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,6 +147,15 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private String partnerName;
 
+	@Transient
+	private long emailQueueId;
+	
+	@Transient
+	private String rboName;
+	
+	@Transient
+	private String productLineType;
+
 	public String getPartnerName() {
 		return partnerName;
 	}
@@ -153,8 +164,6 @@ public class OrderQueue extends MainAbstractEntity{
 		this.partnerName = partnerName;
 	}
 
-	@Transient
-	private long emailQueueId;
 	public long getEmailQueueId() {
 		return emailQueueId;
 	}
@@ -162,6 +171,25 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setEmailQueueId(long emailQueueId) {
 		this.emailQueueId = emailQueueId;
 	}
+	
+	public String getRboName() {
+		return rboName;
+	}
+
+	public void setRboName(String rboName) {
+		this.rboName = rboName;
+	}
+
+	public String getProductLineType() {
+		return productLineType;
+	}
+
+	public void setProductLineType(String productLineType) {
+		this.productLineType = productLineType;
+	}
+	
+	
+	
 
 	public String getpId() {
 		return pId;
@@ -713,24 +741,39 @@ public class OrderQueue extends MainAbstractEntity{
 		return codeMap;
 	}
 	
-/*	@GET
+	@GET
 	@Path("/download/emailbody/{orderid}")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getEmailBody(@Context UriInfo ui,
 	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
 		Long orderQueueEntityId = Long.parseLong(orderid);
 		OrderQueue orderQueue=null;
+		String mailBodyFilePath = "";
 		try {
-			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+			/*OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService.read(orderQueueEntityId);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Order with the given id");
 			InputStream is = new ByteArrayInputStream(orderQueue.getEmailBody().getBytes("UTF-8"));;
 			byte[] bytes = IOUtils.toByteArray(is);
-			String fileName = "\""+orderid+".html\"";
+			String fileName = "\""+orderid+".html\"";*/
+			
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			mailBodyFilePath = orderQueueService.getMailBodyFilePathByTrackId(orderQueueEntityId);
+			if(mailBodyFilePath == null)
+				throw new NullPointerException("Mail Body not found in the database, returned null");
+			System.out.println(orderid+" "+mailBodyFilePath);
+			File file = new File(mailBodyFilePath);
+			if(!file.exists()){
+				throw new FileNotFoundException("The Mail Body file is not available at location:\""+mailBodyFilePath+"\".");
+			}
+				
+			String fileName = mailBodyFilePath.substring(mailBodyFilePath.lastIndexOf("/")+1);
+			
 			return Response
-					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
+					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
 		            .header("content-disposition","attachment; filename = "+fileName)
 		            .build();
 		} catch (WebApplicationException ex) {
@@ -742,5 +785,5 @@ public class OrderQueue extends MainAbstractEntity{
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-	}*/
+	}
 }
