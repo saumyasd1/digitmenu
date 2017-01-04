@@ -54,14 +54,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		  }]
         },
         {
-     	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+        	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
             width:40,
 			dataIndex:'Comments',
 			menuDisabled  :true,
 			baseCls:'custom-action',
 			renderer:function(value, metadata,rec){
 				if(value){
-					var comment=Ext.String.htmlEncode(rec.data.Comments);
+					var comment=Ext.String.htmlEncode(rec.data.comment);
 		           return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" /></div>';
 				}
 				else
@@ -70,19 +70,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		   	},
 			
         {
-		    header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
-            width:40,
-			dataIndex:'error',
-			menuDisabled  :true,
-			baseCls:'custom-action',
-			renderer:function(value, metadata,rec){
-				if(value){
-					var error=Ext.String.htmlEncode(rec.data.error);
-					return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' +  AOC.config.Settings.buttonIcons.error + '" /></div>';
-				}
-				else
-					return '';
-        }
+		   	 header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
+	            width:40,
+				dataIndex:'error',
+				menuDisabled  :true,
+				baseCls:'custom-action',
+				renderer:function(value, metadata,rec){
+					if(value){
+						var error=Ext.String.htmlEncode(rec.data.error);
+						return '<div><img data-qtip="<font color=blue>'+error+'</font>"   src="' +  AOC.config.Settings.buttonIcons.error + '" /></div>';
+					}
+					else
+						return '';
+	        }
         },
         {
             text : '',
