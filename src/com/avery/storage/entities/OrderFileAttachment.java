@@ -35,6 +35,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
+import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.utils.ApplicationUtils;
@@ -370,6 +371,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
+			mapper.addMixIn(ProductLine.class, PartnerDataStructureMixin.class);//adding partnerDataStructureMixin for data population on attchmnt grid(Krishna varshney)
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
@@ -462,9 +464,12 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					Map<String,Object> fileAttachment=(Map<String,Object>)jsonData.get(i);
 					int id=(int)fileAttachment.get("id");
 					OrderFileAttachment fileAttachementObj=orderFileAttachmentService.read((long)id);
-					
-
-					int productLineId=(fileAttachment.get("productLineId")==null?0: Integer.parseInt((String)fileAttachment.get("productLineId")));  
+					int productLineId=(fileAttachment.get("productLineId")==null || fileAttachment.get("productLineId").equals("")?0: Integer.parseInt((String)fileAttachment.get("productLineId")));  
+					if(productLineId == 0){
+						ProductLine  productLineObj =new ProductLine();
+						productLineObj.setId(productLineId);
+						orderFileAttachmentService.update(fileAttachementObj);
+					}
 					if(productLineId!=0){
 						ProductLine  productLineObj =new ProductLine();
 						productLineObj.setId(productLineId);
@@ -475,13 +480,20 @@ public class OrderFileAttachment extends MainAbstractEntity {
 						fileAttachementObj.setId(attachmentId);
 					}
 					int attachmentStatus = (fileAttachment.get("status")==null?0:(int)fileAttachment.get("status"));
-					if(attachmentStatus==0){
+					if(attachmentStatus==0)
 						fileAttachementObj.setStatus(Integer.toString(attachmentStatus));
-					}
+					
 					String fileContentType = (fileAttachment.get("fileContentType")==null?"":(String)fileAttachment.get("fileContentType"));
 					if(!fileContentType.equals("")){ 
 						fileAttachementObj.setFileContentType(fileContentType);
 					}
+					if(productLineId!=0 && fileContentType.equals("Disregard")){
+						fileAttachementObj.setStatus("7");
+					}
+					else if(productLineId!=0){
+						fileAttachementObj.setStatus("8");
+					}
+					
 					orderFileAttachmentService.update(fileAttachementObj);
 				}
 				Map entitiesMap = new HashMap();
