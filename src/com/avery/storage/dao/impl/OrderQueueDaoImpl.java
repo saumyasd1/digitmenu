@@ -101,6 +101,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			.add(Projections.property("partner.partnerName"),"partnerName")
 			.add(Projections.property("id"),"id")
 			.add(Projections.property("subject"),"subject")
+			.add(Projections.property("comment"),"comment")
+			.add(Projections.property("error"),"error")
 			.add(Projections.property("poNumber"),"poNumber")
 			.add(Projections.property("prevOrderQueueId"),"prevOrderQueueId")
 			.add(Projections.property("status"),"status")
