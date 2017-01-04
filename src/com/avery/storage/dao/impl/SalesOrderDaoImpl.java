@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -35,8 +36,10 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 		Criteria criteria = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
+			OrderQueue orderQueue = new OrderQueue();
+			orderQueue.setId(orderID);
 			criteria = session.createCriteria(SalesOrder.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID));
+			criteria.add(Restrictions.eq("varOrderFileQueue", orderQueue));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(

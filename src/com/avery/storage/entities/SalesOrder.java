@@ -35,6 +35,7 @@ import org.hibernate.annotations.FetchMode;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.SalesOrderDetailMixIn;
 import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
@@ -1139,7 +1140,8 @@ public class SalesOrder extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(SalesOrderDetail.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrderDetail.class, SalesOrderDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
