@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -553,7 +552,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 
     
     @PUT
-  	@Path("/identified/{id:[0-9]+}")
+  	@Path("identified/{id:[0-9]+}")
   	public Response identifyEmail(@Context UriInfo ui,
   			@Context HttpHeaders hh, String data, @PathParam("id") String orderEmailQueueId) {
   		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
