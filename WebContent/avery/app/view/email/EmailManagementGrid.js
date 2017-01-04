@@ -46,13 +46,14 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
   		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
   	            width:40,
-  				dataIndex:'Comments',
-  				menuDisabled  :true,
+  				dataIndex:'comment',
+  				menuDisabled :true,
   				baseCls:'custom-action',
-  				renderer:function(value, metadata, rec){
+  				renderer:function(value, metaData, rec){
   					if(value){
-  						var comment=Ext.String.htmlEncode(rec.data.Comments);
-						return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" /></div>';
+  						var comment = Ext.String.htmlEncode(value);
+  						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+						return '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />';
   					}else{
   						return '';
 					}
@@ -68,7 +69,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				width:120,
 				sortable : true,
 				align: 'right',
-				dataIndex:'Tracking #',
+				dataIndex:'id',
 				flex:1
 			},
 			{
@@ -76,7 +77,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				width:120,
 				sortable : true,
 				name:'PartnerName',
-				dataIndex:'PartnerName',
+				dataIndex:'',
 				flex:1,
 				renderer:function(val, metaData, record){
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
@@ -94,7 +95,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text : 'RBO',
 				width:120,
 				sortable : true,
-				dataIndex:'RBO',
+				dataIndex:'',
 				flex:1,
 				renderer:function(val, metaData, record){
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
@@ -112,30 +113,20 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text : 'Sender Email Id',
 				width:120,
 				sortable : true,
-				dataIndex:'Sender Email Id',
+				dataIndex:'senderEmailId',
 				flex:1,
 				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else{ 
-						return '';
-					}
+					return me.tipRenderer(v, metadata);
 				}	
 			},
 			{
 				text :'Subject',
 				width:120,
 				sortable : true,
-				dataIndex:'Subject',
+				dataIndex:'subject',
 				flex:1,
-				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else {
-						return '';
-					}
+				renderer:function(v, metadata){
+					return me.tipRenderer(v, metadata);
 				}
 			},
 			{
@@ -144,20 +135,15 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				sortable : true,
 				dataIndex:'Email',
 				flex:1,
-				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else {
-						return '';
-					}
+				renderer:function(v, metadata){
+					return me.tipRenderer(v, metadata);
 				}
 			},
 			{
 				text :'Status',
 				width:120,
 				sortable : true,
-				dataIndex:'Status',
+				dataIndex:'status',
 				flex:1,
 				renderer:function(value, metaData, rec){
 					return AOC.util.Helper.getSatus(value);
@@ -167,21 +153,21 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text :'Received Date',
 				width:120,
 				sortable : true,
-				dataIndex:'Received Date',
+				dataIndex:'receivedDate',
 				flex:1
 			},
 			{
 				text :'Read Date',
 				width:120,
 				sortable : true,
-				dataIndex:'Read Date',
+				dataIndex:'readDate',
 				flex:1
 			},
 			{
 				text :'Acknowledged Date',
 				width:120,
 				sortable : true,
-				dataIndex:'Acknowledged Date',
+				dataIndex:'acknowledgementDate',
 				flex:1
 			},
 			{
@@ -192,6 +178,15 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				flex:1
 			}
 		]
+	},
+	
+	tipRenderer:function(v, metaData){
+		if(v){
+			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+			return Ext.String.htmlEncode(v);
+		}else {
+			return '';
+		}
 	},
 	buildtbar:function(){
 		var me=this;

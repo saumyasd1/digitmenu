@@ -43,14 +43,14 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 				margin:'0 0 5 0',
 				items: [
 					{
-						name: 'partner',
-						itemId: 'subject',
+						name: 'PartnerName',
+						itemId: 'partnerName',
 						fieldLabel: 'Partner',
 						flex:2
 					}, 
 					
 					{
-						name: 'Tracking #',
+						name: 'id',
 						itemId: 'trackingId',
 						fieldLabel: 'Tracking ID#',
 						flex:1
