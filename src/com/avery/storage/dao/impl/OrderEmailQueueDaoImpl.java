@@ -206,10 +206,10 @@ OrderEmailQueueDao {
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			updater = mapper.readerForUpdating(orderEmailQueueObj);
 			orderEmailQueueObj = updater.readValue(data);
+			String status=orderEmailQueueObj.getStatus();
 			orderEmailQueueObj.preUpdateOp();
 			session.update(orderEmailQueueObj);
 			orderEmailQueueObj.postUpdateOp();
-			String status=orderEmailQueueObj.getStatus();
 			String s = "update OrderEmailQueue set status=:value where id =:id "; 
 			Query q = session.createQuery(s);
 			q.setString("value",status);
