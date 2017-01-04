@@ -54,6 +54,12 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            flex:1.5
 			            },
 			            {
+			            	text:'Data Structure Name',
+			            	width:120,
+			            	sortable:true,
+			            	dataIndex:'dataStructureName'
+			            },
+			            {
 				        	text : AOCLit.productLine,
 				          	width:120,
 				            sortable : true,

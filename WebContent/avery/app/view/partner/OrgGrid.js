@@ -49,6 +49,12 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				            	    	store.load();
 				            		}
 				            	}
+				            },
+				            renderer:function(value){
+				            	if(Ext.isEmpty(value))
+				            		return '';
+				            	var record=me.orgStore.find('id',value);
+				            	return '<div>'+me.orgStore.getAt(record).get('name')+'</div>'
 				            }
 			            },
 			            {

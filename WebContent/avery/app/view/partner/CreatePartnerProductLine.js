@@ -79,6 +79,27 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								value: me.partnerName
 							},
 							{
+								xtype:'textfield',
+								itemId:'dataStructureName',
+								name: 'dataStructureName',
+								width: 300,
+								fieldLabel: 'Data Structure Name',
+								bind:'{dataStructureName}'
+							}
+						]
+					},
+					{
+						xtype:'fieldcontainer',
+						layout:'hbox',
+						margin : '0 0 5 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+							labelAlign:'left',
+							labelWidth:150,
+							width:300
+						},
+						items:[{
 								xtype:'combo',
 								itemId:'RItemId',
 								name: 'rboId',
@@ -104,18 +125,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								allowBlank: false,
 								bind:'{siteId}',
 								changedBefore:false,
+								reference:'site',
 								valueField:'id',
 								displayField:'name',
 								maxLength : '100',
 								store:siteStore,
+								siteChanged:false,
 								enforceMaxLength: true,
 								listeners : {
 									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage',
 									'change':'onSiteSelect'
 								}
-							}
-						]
+							}]
 					},
 					{
 						xtype:'fieldcontainer',
@@ -123,7 +145,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						fieldLabel:'Systems',
 						labelSeparator:'',
 						labelAlign:'top',
-						margin : '0 0 5 0',
+						margin : '0 0 0 0',
+						checkboArray:new Array(),
 						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
 					},
 					{
@@ -146,6 +169,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								boxLabel:'Unique',
 								width:80,
 								input:'unique',
+								reference:'unique',
 								name:'productlineType',
 								checked:true,
 								listeners:{
@@ -159,7 +183,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								labelWidth:100,
 								allowBlank: true,
 								reference:'productLineTypeCombo',
-								hidden:'{productLineType}'=='MIXED'?true:false,
+//								hidden:'{productLineType}'=='MIXED'?true:false,
 								width : 220,
 								margin:' 0 10 0 10',
 								store:[['HTL','HTL'],['PFL','PFL'],['WVL','WVL']],
@@ -176,20 +200,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								boxLabel:'Mixed',
 								margin:'0 0 0 10',
 								inputValue:'MIXED',
+								reference:'mixed',
 								name:'productlineType'
 							},
 							{
 								xtype:'hiddenfield',
 								reference:'productLineHidden',
-								value:'HTL',
-								value:'{productLineType}'
+								//value:('{productLineType}'==null||'{productLineType}'=='')?'HTL':'{productLineType}'
 							}
 						]
 	        		},
 	        		{
 						xtype:'textfield',
 						name: 'email',
-						bind:'{CSRPrimaryId}',
+						bind:'{email}',
 						fieldLabel:'Email ID',
 						regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 						width : 455,
@@ -351,20 +375,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						]
 					},
 					{
-						xtype: 'togglebutton',
-						fieldLabel: 'Active',
-						labelWidth:50,
-						value: 0,
-						labelSeparator:'',
-						labelAlign:'left',
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-						width : 30,
-						height:30,
-						listeners: {
-							changecomplete: function(slider, newValue, thumb, eOpts ){
-								// 'do the required action'
-							}
-						}
+                        xtype: 'togglebutton',
+                        fieldLabel: 'Active',
+                        value: 0,
+                        labelSeparator:'',
+                        labelAlign:'top',
+                        labelWidth : 200,
+      		            width : 30,
+      		            height:60,
+      		            bind:'{active}',
+                        listeners: {
+                            changecomplete: function(slider, newValue, thumb, eOpts ){
+                                // 'do the required action'
+                            }
+                        }
 					}
 			   ]
 			},
@@ -417,14 +441,16 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												name: 'fileType',
 												fieldLabel:'File Type',
 												maxLength : 50,
-												enforceMaxLength: true
+												enforceMaxLength: true,
+												bind:'{orderFileNameExtension}'
 											},
 											{
 												xtype:'textfield',
 												itemId:'FileNamePattern',
 												margin:'0 0 0 10',
 												name: 'fileNamePattern',
-												fieldLabel:'File Name Pattern'
+												fieldLabel:'File Name Pattern',
+												bind:'{orderFileNamePattern}'
 											}
 										]
 									},
@@ -441,21 +467,23 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										},
 										items:[
 											{
-												xtype:'combo',
+												xtype:'textfield',
 												itemId:'Schema',
-												name: 'schema',
+												name: 'orderSchemaID',
 												fieldLabel:'Schema',
 												maxLength : '50',
-												enforceMaxLength: true
+												enforceMaxLength: true,
+												bind:'{orderSchemaID}'
 											},
 											{
-												xtype:'combo',
+												xtype:'textfield',
 												itemId:'Mapping',
 												margin:'0 0 0 10',
-												name: 'mapping',
+												name: 'orderMappingID',
 												fieldLabel:'Mapping',//?/
 												maxLength : '50',
-												enforceMaxLength: true
+												enforceMaxLength: true,
+												bind:'{orderMappingID}'
 											}
 										]
 									}
@@ -468,22 +496,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								width:300,
 								margin:'5 0 0 0',
 								name:'AdditionalData',
+								reference:'attachmentRequired',
 								fieldLabel:'Additional Data',
 								labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
 								labelSeparator:'',
 								labelWidth:150,
+								//bind:'{attachmentRequired}',
 								items:[
 									{
 										 boxLabel : 'Yes',
-										 name : 'AdditionalData',
-										 inputValue : 'yes',
-										 checked : true,
+										 name : 'attachmentRequired',
+										 inputValue : 'true',
+//										 checked : true,
 										 id : 'yes'
 									 }, 
 									 {
 										 boxLabel : 'No',
-										 name : 'AdditionalData',
-										 inputValue : 'no',
+										 name : 'attachmentRequired',
+										 inputValue :'false',
 										 id : 'no',
 										 listeners: {
 											 change: function (field, newValue, oldValue) {
@@ -524,6 +554,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												name: 'fileType',
 												fieldLabel:'File Type',//?/
 												maxLength : '50',
+												bind:'{attachmentFileNameExtension_1}',
 												enforceMaxLength: true
 											},
 											{
@@ -531,7 +562,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												itemId:'FileNamePattern',
 												name: 'fileNamePattern',
 												fieldLabel:'File Name Pattern',//?/
-												margin:'0 0 0 10'
+												margin:'0 0 0 10',
+												bind:'{attachmentFileNamePattern_1}'
 											}
 										]
 									},
@@ -551,12 +583,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'SchemaId',
 												name: 'schemaId',
+												bind:'{attachmentSchemaID_1}',
 												fieldLabel:'Schema ID',//?/
 											},
 											{
 												xtype:'textfield',
 												itemId:'MappingId',
 												name: 'mappingId',
+												bind:'{attachmentMappingID_1}',
 												fieldLabel:'Mapping ID',//?/
 												margin:'0 0 0 10'
 											}
@@ -569,7 +603,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
 										name: 'matchType',
 										fieldLabel:'Match Type',//?/
-										value:'',
+										bind:'{attachmentIdentifier_1}',
 										labelSeparator:'',
 										labelWidth : 150,
 										width : 450
@@ -606,14 +640,16 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'RBO',
 												name: 'rbo',
-												fieldLabel:'RBO'
+												fieldLabel:'RBO',
+												bind:'{emailSubjectRBOMatch}'
 											},
 											{
 												xtype:'textfield',
 												itemId:'ProductLine',
 												margin:'0 0 0 10',
 												name: 'productLine',
-												fieldLabel:'Product Line Type'
+												fieldLabel:'Product Line Type',
+												bind:'{emailSubjectProductLineMatch}'
 											}
 										]
 									},
@@ -661,14 +697,16 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'RBO',
 												name: 'rbo',
-												fieldLabel:'RBO'
+												fieldLabel:'RBO',
+												bind:'{emailBodyRBOMatch}'
 											},
 											{
 												xtype:'textfield',
 												itemId:'ProductLine',
 												margin:'0 0 0 10',
 												name: 'productLine',
-												fieldLabel:'Product Line'
+												fieldLabel:'Product Line',
+												bind:'{emailBodyProductLineMatch}'
 											}
 										]
 									},
@@ -714,7 +752,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'RBO',
 												name: 'rbo',
-												fieldLabel:'RBO'
+												fieldLabel:'RBO',
+												bind:'{fileRBOMatch}'
 											},
 											{
 												xtype:'textfield',
@@ -747,7 +786,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'ProductLine',
 												name: 'rbo',
-												fieldLabel:'Product Line'
+												fieldLabel:'Product Line',
+												bind:'{fileProductlineMatch}'
 											},
 											{
 												xtype:'textfield',
@@ -773,7 +813,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'OrderMatch',
 												name: 'orderMatch',
-												fieldLabel:'Order Match'
+												fieldLabel:'Order Match',
+												bind:'{fileOrderMatch}'
 											},
 											{
 												xtype:'textfield',

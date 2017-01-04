@@ -11,40 +11,79 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
 		valueObj='',valueObj2='',form=this.getView().down('form'),
 		AdvancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
-		editMode=this.getView().editMode,url='',
+		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
 		length=0,hiddenProductLineField=this.getView().lookupReference('productLineHidden'),productLineValue=hiddenProductLineField.getValue();
+		var systemcontainer=this.getView().lookupReference('systemcontainer'),
+		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore;
+		var orderSystemInfo=new Array();
+		for(var jj=0;jj<checkboArray.length;jj++){
+			currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
+			if(currentcheckBox.getValue()){
+				systemGridStore=me.getView().lookupReference(checkboArray[jj]+'systemGrid').getStore();
+				orgGridStore=me.getView().lookupReference(checkboArray[jj]+'orgGrid').getStore();
+				var orgInfo=new Array(),currentStore;
+				for(var k=0;k<orgGridStore.getCount();k++){
+					currentStore=orgGridStore.getAt(k).data;
+					orgInfo.push(currentStore);
+				}
+				systemGridStore.getAt(0).data.orgInfo=orgInfo;
+				orderSystemInfo.push(systemGridStore.getAt(0).data);
+				
+			}
+		}
+		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData(),
+		attachmentRequired=this.getView().lookupReference('attachmentRequired');
+		debugger;
+		var attachmentRequired=attachmentRequired.getValue().attachmentRequired;
 		if(editMode){
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
-			form.updateRecord();
-			AdvancedPropertiesForm.updateRecord();
 			methodMode='PUT';
-			valueObj=form.getRecord().getChanges();
-			valueObj2=AdvancedPropertiesForm.getRecord().getChanges();
-			var parameters=Ext.JSON.encode(valueObj);
-			var parameters=Ext.JSON.encode(valueObj2);
+			valueObj=form.getValues(false,true,false,true);
+//			valueObj2=AdvancedPropertiesForm.getRecord().getChanges();
+//			var parameters=Ext.JSON.encode(valueObj);
+//			var parameters=Ext.JSON.encode(valueObj2);
 			length=Object.keys(valueObj).length;
 			Msg=AOCLit.updateProdLineMsg;
+			parameters={
+					rboId:valueObj.rboId,
+					partnerId:Id,
+					CSRPrimaryId:valueObj.CSRPrimaryId,
+					CSRSecondaryId:valueObj.CSRSecondaryId,
+					waiveMOA:valueObj.waiveMOA,
+					waiveMOQ:valueObj.waiveMOQ,
+					shipmentSample:valueObj.shipmentSample,
+					factoryTransfer:valueObj.factoryTransfer,
+					localBilling:valueObj.localBilling,
+					LLKK:valueObj.LLKK,
+					orderSystemInfo:orderSystemInfo,
+					productLineType:productLineValue,
+					email:valueObj.email,
+					siteChanged:site.siteChanged,
+					emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
+					emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
+					emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
+					emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
+					fileRBOMatch:dataModel.fileRBOMatch,
+					fileProductlineMatch:dataModel.fileProductlineMatch,
+					fileOrderMatch:dataModel.fileOrderMatch,
+					orderFileNameExtension:dataModel.orderFileNameExtension,
+					orderFileNamePattern:dataModel.orderFileNamePattern,
+					orderMappingID:dataModel.orderMappingID,
+					orderSchemaID:dataModel.orderSchemaID,
+					attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
+					attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
+					attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
+					attachmentMappingID_1:dataModel.attachmentMappingID_1,
+					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
+					dataStructureName:dataModel.dataStructureName,
+					active:dataModel.active,
+					attachmentRequired:attachmentRequired
+					
+		    	};
 		}
 		else{
-			var systemcontainer=this.getView().lookupReference('systemcontainer'),
-			checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore;
-			var orderSystemInfo=new Array();
-			for(var jj=0;jj<checkboArray.length;jj++){
-				currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
-				if(currentcheckBox.getValue()){
-					systemGridStore=me.getView().lookupReference(checkboArray[jj]+'systemGrid').getStore();
-					orgGridStore=me.getView().lookupReference(checkboArray[jj]+'orgGrid').getStore();
-					var orgInfo=new Array(),currentStore;
-					for(var k=0;k<orgGridStore.getCount();k++){
-						currentStore=orgGridStore.getAt(k).data;
-						orgInfo.push(currentStore);
-					}
-					systemGridStore.getAt(0).data.orgInfo=orgInfo;
-					orderSystemInfo.push(systemGridStore.getAt(0).data);
-					
-				}
-			}
+			
 			Id=productline.partnerid;
 			partnerName=productline.partnerName;
 			var partner='';
@@ -52,6 +91,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			url=applicationContext+'/rest/productLines';
 			valueObj=form.getValues(false,false,false,true);
 			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
+			methodMode='POST';
+			length=1;
+			Msg=AOCLit.addProdLineMsg;
 			parameters={
 					rboId:valueObj.rboId,
 					partnerId:Id,
@@ -65,14 +107,30 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					llkk:valueObj.LLKK,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue,
-					email:valueObj.email
+					email:valueObj.email,
+					emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
+					emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
+					emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
+					emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
+					fileRBOMatch:dataModel.fileRBOMatch,
+					fileProductlineMatch:dataModel.fileProductlineMatch,
+					fileOrderMatch:dataModel.fileOrderMatch,
+					orderFileNameExtension:dataModel.orderFileNameExtension,
+					orderFileNamePattern:dataModel.orderFileNamePattern,
+					orderMappingID:dataModel.orderMappingID,
+					orderSchemaID:dataModel.orderSchemaID,
+					attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
+					attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
+					attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
+					attachmentMappingID_1:dataModel.attachmentMappingID_1,
+					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
+					dataStructureName:dataModel.dataStructureName,
+					active:dataModel.active,
+					attachmentRequired:attachmentRequired
 					
 		    	};
-			methodMode='POST';
-			length=1;
-			Msg=AOCLit.addProdLineMsg;
 		}
-		if(length>0){
+		
 			if(panel.getForm().isValid()){
 				Ext.Ajax.request( {
 					method: methodMode,
@@ -108,11 +166,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
 		}
 		this.runTime.setWindowInEditMode(false);
-	}
-		else{
-			createproductline.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
-			Ext.getBody().unmask();
-	}
     },
 	CancelDetails:function()
 	{       
@@ -390,18 +443,18 @@ if(!temp){
 			    		systemContainer.remove(itemsTobeRemoved[j]);
 			    	}
 			    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
-			    		systemcontainer.checkboArray=new Array();
 			    		if(jsonString.length==0){
 			    			AOC.util.Helper.fadeoutMessage('Success','No System Configured for the selected site. Please select another site');
 			    			Ext.getBody().unmask();
 			    			return false;
 			    		}
-			    		
+			    		checkboArray=new Array();
 			    		for(var i=0;i<jsonString.length;i++){
 			    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
 			    			systemcontainer.checkboArray.push(jsonString[i].name);
 			    		}
-			    		if(!cmp.changedBefore && me.getView().editMode){
+			    		if(me.getView().editMode)
+			    		if(!cmp.changedBefore){
 			    			cmp.changedBefore=true;
 			    			var view=me.getView(),data=view.getViewModel().getData(),
 				    		listOrderSystemInfo=data.listOrderSystemInfo;
@@ -418,7 +471,9 @@ if(!temp){
 				    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
 				    			}
 				    		}
-			    		}
+			    		}else{
+			    			cmp.siteChanged=true;		
+			    			}
 			    	Ext.getBody().unmask();
 			  		
 	        },
@@ -442,22 +497,28 @@ if(!temp){
 	    			data:jsonValue
 		      	});
 	    		var systemStore=Ext.create('Ext.data.Store',{
-	    			fields:['id','name'],
+	    			fields:['id','name',{
+	    				name:'newRecord',defaultValue:false
+	    			}],
 	    			storeId:'systemStore'+selectedSystemArray.id,
 	    			data:[{
-	    				'csrname':'','systemId':selectedSystemArray.id
+	    				'csrname':'','systemId':selectedSystemArray.id,newRecord:true
 	    			}]
 	    		});
-	    		var orgOrderStore;
+	    		var orgOrderStore,data='';
 	    		if(totalOrgConfigured>0){
-	    			orgOrderStore=Ext.create('Ext.data.Store',{
-		    			fields:['id','name'],
-		    			storeId:'orgInfoStore'+selectedSystemArray.id,
-		    			data:[{
-		    				'orgCodeId':jsonValue[0].id,'default':true
-		    			}]
-		    		});
+	    			data={
+		    				'orgCodeId':jsonValue[0].id,'default':true,newRecord:true
+	    			};
 	    		}
+	    			orgOrderStore=Ext.create('Ext.data.Store',{
+		    			fields:['id','name',{
+		    				name:'newRecord',defaultValue:false
+		    			}],
+		    			storeId:'orgInfoStore'+selectedSystemArray.id,
+		    			data:[data]
+		    		});
+	    		
 	    		return [{
 	    			xtype:'checkbox',
 	    			boxLabel  : selectedSystemArray.name,
@@ -507,8 +568,8 @@ if(!temp){
 	    				listeners:{
 	    					'click':function(cmp){
 	    						if(orgOrderStore.getCount()<totalOrgConfigured){
-	    							orgOrderStore.add({orgCodeId:''});
-	    							orgOrderStore.commit();
+	    							orgOrderStore.add({orgCodeId:'',newRecord:true});
+	    							//orgOrderStore.commit();
 	    						}else{
 	    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
 	    						}
@@ -533,6 +594,23 @@ if(!temp){
 	    		hiddenProductLineField.setValue(value);
 	    	},
 	    	afterWindowRender:function(){
+	    		var view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
+	    		mixed=view.lookupReference('mixed'),
+	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
+	    		if(data.productLineType=='MIXED'){
+	    			unique.setValue(false);
+	    			mixed.setValue(true);
+	    			combo.hide();
+	    			productLineHidden.setValue('MIXED');
+	    		}else{
+	    			unique.setValue(true);
+	    			mixed.setValue(false);
+	    			combo.show();
+	    			productLineHidden.setValue(data.productLineType);
+	    		}
+	    		var attachmentRequiredF=this.getView().lookupReference('attachmentRequired');
+	    		attachmentRequiredF.setValue({attachmentRequired:data.attachmentRequired});
+//	    		radios.items.items[index].setValue(true/false);
 	    	}
 	    	
 });
