@@ -4,16 +4,18 @@ Ext.define('AOC.model.EmailManagementModel',{
     fields: [
         // set up the fields mapping into the xml doc
         //{name: 'id', mapping:'ID',type: 'string'},
-	    {name: 'Tracking #', mapping:'id',type: 'string'},
-		{name: 'PartnerName', mapping:'partner.partnerName',type: 'string'},
+	    {name: 'id', mapping:'id',type: 'string'},
+		{name: 'PartnerName', mapping:'partnerName',type: 'string'},
 		{name:'RBO',mapping:'rbo',type:'string'},
-		{name: 'Sender Email Id', mapping:'senderEmailId',type: 'string'},
+		{name: 'senderEmailId', mapping:'senderEmailId',type: 'string'},
 		{name: 'Email', mapping:'toMailId',type: 'string'},
-		{name: 'Status', mapping:'status',type: 'string'},
-		{name: 'Received Date', mapping:'receivedDate',type: 'string'},
-		{name: 'Read Date', mapping:'readDate',type: 'string'},
-		{name: 'Acknowledged Date', mapping:'acknowledgementDate',type: 'string'},
+		{name: 'status', mapping:'status',type: 'string'},
+		{name: 'receivedDate', mapping:'receivedDate',type: 'string'},
+		{name: 'readDate', mapping:'readDate',type: 'string'},
+		{name: 'acknowledgementDate', mapping:'acknowledgementDate',type: 'string'},
 		{name: 'CC', mapping:'ccMailId',type: 'string'},
+		{name:'comment', type:'string'},
+		{name:'subject', type:'string'},
 		{name:'listOrderFileAttachment'}
 	    ]
 });

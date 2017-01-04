@@ -14,7 +14,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     },
     
     listeners:{
-		edit:'editEmailAttachmentGridColumn',
+		edit:'editEmailAttachmentGridColumn'
 	},
     
     plugins: [
