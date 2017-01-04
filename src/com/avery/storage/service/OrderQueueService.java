@@ -71,4 +71,11 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public Map getAllEntities(){
 		return getOrderQueueDao().getAllEntitiesList();
 	}
+	
+	
+	//Method added for getting mailbody path for downloading
+	@Transactional
+	public String getMailBodyFilePathByTrackId(long trackid){
+		return getOrderQueueDao().getMailBodyPath(trackid);
+	}
 }
