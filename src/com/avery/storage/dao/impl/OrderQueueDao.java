@@ -28,4 +28,6 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	public Map getViewOrdersByEmailId(int emailQueueId);
 	
 	public Map getAllEntitiesList();
+	
+	public String getMailBodyPath(long trackid);//getting mail body path
 }
