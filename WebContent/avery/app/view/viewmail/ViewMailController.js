@@ -188,9 +188,13 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			totalCount = store.getCount(),
 			totalIdentifiedCount = 0,
 			totalUnidentifiedCount = 0,
-			totalDisregardCount = 0;
+			totalDisregardCount = 0,
+			totalAdditionalFile = 0;
 		
 		store.each(function(record){
+			if(record.get('contentType') == 'Additional File'){
+				totalAdditionalFile++;
+			}
 			if(record.get('status') == '8'){
 				totalIdentifiedCount++;
 			}else if(record.get('status') == '6'){
@@ -201,6 +205,11 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		});
 		
 		if(totalCount > 0){
+			if(totalCount == totalAdditionalFile){
+				gridView.isIdentifiedFlag = false;
+				me.enableDisableProcessBtn(true);
+				return;
+			}
 			if(totalCount == totalIdentifiedCount){
 				gridView.isIdentifiedFlag = true;
 			}
