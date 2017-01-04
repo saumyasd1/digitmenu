@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class ProductLineMixIn {
 
-	
+	@JsonIgnore
+	public abstract Partner getVarPartner();
 	
 	@JsonIgnore
 	public abstract  List<OrderQueue> getListOrderFileQueue();
@@ -36,16 +37,14 @@ public abstract class ProductLineMixIn {
 	
 	@JsonIgnore
 	public abstract List<OrderSystemInfo> getListOrderSystemInfo();
-		
-		@JsonIgnore
-	 public abstract  String getDataStructureName();
-		@JsonIgnore
-		public abstract ProductLine getVarProductLine();
 
-		@JsonIgnore
-		public abstract SystemInfo getVarSystem();
-		
-		@JsonIgnore
-		public abstract List<OrgInfo> getListOrgInfo();
+	@JsonIgnore
+	public abstract ProductLine getVarProductLine();
+
+	@JsonIgnore
+	public abstract SystemInfo getVarSystem();
+	
+	@JsonIgnore
+	public abstract List<OrgInfo> getListOrgInfo();
 
 }

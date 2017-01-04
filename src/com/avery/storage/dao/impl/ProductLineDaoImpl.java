@@ -174,59 +174,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		session.saveOrUpdate(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		for(int i=0;i<ordersystemList.size();i++){
-			OrderSystemInfo sys=new OrderSystemInfo();
 			LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
-			String csrName=systemMap.get("csrName")==null?"":(String)systemMap.get("csrName");
-			sys.setCsrName(csrName);
-			String packingInstruction=systemMap.get("packingInstruction")==null?"":(String)systemMap.get("packingInstruction");
-			sys.setPackingInstruction(packingInstruction);
-			String variableDataBreakdown=systemMap.get("variableDataBreakdown")==null?"":(String)systemMap.get("variableDataBreakdown");
-			sys.setVariableDataBreakdown(variableDataBreakdown);
-			String manufacturingNotes=systemMap.get("manufacturingNotes")==null?"":(String)systemMap.get("manufacturingNotes");
-			sys.setManufacturingNotes(manufacturingNotes);
-			String invoiceNote=systemMap.get("invoiceNote")==null?"":(String)systemMap.get("invoiceNote");
-			sys.setInvoiceNote(invoiceNote);
-			String shippingMark=systemMap.get("shippingMark")==null?"":(String)systemMap.get("shippingMark");
-			sys.setShippingMark(shippingMark);
-			String splitShipSetBy=systemMap.get("splitShipSetBy")==null?"":(String)systemMap.get("splitShipSetBy");
-			sys.setSplitShipSetBy(splitShipSetBy);
-			sys.setVarProductLine(pk);
-			sys.setCreatedDate(new Date());
-			
-			SystemInfo sysInfo=new SystemInfo();
-			Long systemId=systemMap.get("systemId")==null?0L:((Integer)systemMap.get("systemId")).longValue();
-			sysInfo=(SystemInfo) session.get(SystemInfo.class, systemId);
-			sys.setVarSystem(sysInfo);
-			Long OrderSystemInfoId=(Long)session.save(sys);
-			List orgInfoList=(ArrayList)systemMap.get("orgInfo");
-			for(int j=0;j<orgInfoList.size();j++){
-				OrgInfo org=new OrgInfo();
-				LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
-				
-				int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
-				org.setOrgCodeId(orgCodeId);
-				
-				String legacybilltocode=orgMap.get("billToCode")==null?"":(String)orgMap.get("billToCode");
-				org.setBillToCode(legacybilltocode);
-				
-				String legacyshiptocode=orgMap.get("shipToCode")==null?"":(String)orgMap.get("shipToCode");
-				org.setShipToCode(legacyshiptocode);
-				
-				org.setDefault(orgMap.get("default")==null?false:(Boolean)orgMap.get("default"));
-				
-				String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
-				org.setFreightTerm(freightterms);
-				
-				String shippinginstructions=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
-				org.setShippingInstruction(shippinginstructions);
-				
-				String shippingmethod=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
-				org.setShippingMethod(shippingmethod);
-				sys.setId(OrderSystemInfoId);
-				org.setVarOrderSystemInfo(sys);
-				session.save(org);
-			}
+			addOrderSystemInfo(session,systemMap,pk);
 		}
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -267,67 +218,25 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		}
 		pk.setLastModifiedDate(new Date());
 		update(pk);
+		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		if(productLineMap.get("siteChanged")==null?false:(boolean)productLineMap.get("siteChanged")){
 			String hql = "delete from OrderSystemInfo where varProductLine.id=:id";
 		    org.hibernate.Query query = session.createQuery(hql);
 		    query.setLong("id",id);
 		    int rowCount = query.executeUpdate();
-			List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
+			
 			for(int i=0;i<ordersystemList.size();i++){
-				OrderSystemInfo sys=new OrderSystemInfo();
 				LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
-				String csrName=systemMap.get("csrName")==null?"":(String)systemMap.get("csrName");
-				sys.setCsrName(csrName);
-				String packingInstruction=systemMap.get("packingInstruction")==null?"":(String)systemMap.get("packingInstruction");
-				sys.setPackingInstruction(packingInstruction);
-				String variableDataBreakdown=systemMap.get("variableDataBreakdown")==null?"":(String)systemMap.get("variableDataBreakdown");
-				sys.setVariableDataBreakdown(variableDataBreakdown);
-				String manufacturingNotes=systemMap.get("manufacturingNotes")==null?"":(String)systemMap.get("manufacturingNotes");
-				sys.setManufacturingNotes(manufacturingNotes);
-				String invoiceNote=systemMap.get("invoiceNote")==null?"":(String)systemMap.get("invoiceNote");
-				sys.setInvoiceNote(invoiceNote);
-				String shippingMark=systemMap.get("shippingMark")==null?"":(String)systemMap.get("shippingMark");
-				sys.setShippingMark(shippingMark);
-				String splitShipSetBy=systemMap.get("splitShipSetBy")==null?"":(String)systemMap.get("splitShipSetBy");
-				sys.setSplitShipSetBy(splitShipSetBy);
-				sys.setVarProductLine(pk);
-				sys.setCreatedDate(new Date());
-				
-				SystemInfo sysInfo=new SystemInfo();
-				Long systemId=systemMap.get("systemId")==null?0L:((Integer)systemMap.get("systemId")).longValue();
-				sysInfo=(SystemInfo) session.get(SystemInfo.class, systemId);
-				sys.setVarSystem(sysInfo);
-				Long OrderSystemInfoId=(Long)session.save(sys);
-				List orgInfoList=(ArrayList)systemMap.get("orgInfo");
-				for(int j=0;j<orgInfoList.size();j++){
-					OrgInfo org=new OrgInfo();
-					LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
-					
-					int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
-					org.setOrgCodeId(orgCodeId);
-					
-					String legacybilltocode=orgMap.get("billToCode")==null?"":(String)orgMap.get("billToCode");
-					org.setBillToCode(legacybilltocode);
-					
-					String legacyshiptocode=orgMap.get("shipToCode")==null?"":(String)orgMap.get("shipToCode");
-					org.setShipToCode(legacyshiptocode);
-					
-					org.setDefault(orgMap.get("default")==null?false:(Boolean)orgMap.get("default"));
-					
-					String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
-					org.setFreightTerm(freightterms);
-					
-					String shippinginstructions=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
-					org.setShippingInstruction(shippinginstructions);
-					
-					String shippingmethod=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
-					org.setShippingMethod(shippingmethod);
-					sys.setId(OrderSystemInfoId);
-					org.setVarOrderSystemInfo(sys);
-					session.save(org);
-				}
+				addOrderSystemInfo(session,systemMap,pk);
 			}
 		}else{
+			for(int i=0;i<ordersystemList.size();i++){
+				LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
+				if(systemMap.get("newRecord")==null?false:(boolean)systemMap.get("newRecord"))
+					addOrderSystemInfo(session,systemMap,pk);
+				else
+					updateOrderSystemInfo(session,systemMap);
+			}
 			
 		}
 		} catch (Exception e) {
@@ -337,4 +246,129 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		// session.getTransaction().commit();
 		return pk;
 	}
+	
+	private OrderSystemInfo addOrderSystemInfo(Session session,Map systemMap,ProductLine pk){
+		OrderSystemInfo sys=new OrderSystemInfo();
+		String csrName=systemMap.get("csrName")==null?"":(String)systemMap.get("csrName");
+		sys.setCsrName(csrName);
+		String packingInstruction=systemMap.get("packingInstruction")==null?"":(String)systemMap.get("packingInstruction");
+		sys.setPackingInstruction(packingInstruction);
+		String variableDataBreakdown=systemMap.get("variableDataBreakdown")==null?"":(String)systemMap.get("variableDataBreakdown");
+		sys.setVariableDataBreakdown(variableDataBreakdown);
+		String manufacturingNotes=systemMap.get("manufacturingNotes")==null?"":(String)systemMap.get("manufacturingNotes");
+		sys.setManufacturingNotes(manufacturingNotes);
+		String invoiceNote=systemMap.get("invoiceNote")==null?"":(String)systemMap.get("invoiceNote");
+		sys.setInvoiceNote(invoiceNote);
+		String shippingMark=systemMap.get("shippingMark")==null?"":(String)systemMap.get("shippingMark");
+		sys.setShippingMark(shippingMark);
+		String splitShipSetBy=systemMap.get("splitShipSetBy")==null?"":(String)systemMap.get("splitShipSetBy");
+		sys.setSplitShipSetBy(splitShipSetBy);
+		sys.setVarProductLine(pk);
+		sys.setCreatedDate(new Date());
+		
+		SystemInfo sysInfo=new SystemInfo();
+		Long systemId=systemMap.get("systemId")==null?0L:((Integer)systemMap.get("systemId")).longValue();
+		sysInfo=(SystemInfo) session.get(SystemInfo.class, systemId);
+		sys.setVarSystem(sysInfo);
+		Long OrderSystemInfoId=(Long)session.save(sys);
+		sys.setId(OrderSystemInfoId);
+		List orgInfoList=(ArrayList)systemMap.get("orgInfo");
+		for(int j=0;j<orgInfoList.size();j++){
+			LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
+			addOrgInfo(session,orgMap,sys);
+		}
+		return sys;
+	}
+	
+	private OrgInfo addOrgInfo(Session session, Map orgMap,OrderSystemInfo sys){
+		OrgInfo org = new OrgInfo();
+		int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
+		org.setOrgCodeId(orgCodeId);
+		
+		String legacybilltocode=orgMap.get("billToCode")==null?"":(String)orgMap.get("billToCode");
+		org.setBillToCode(legacybilltocode);
+		
+		String legacyshiptocode=orgMap.get("shipToCode")==null?"":(String)orgMap.get("shipToCode");
+		org.setShipToCode(legacyshiptocode);
+		
+		org.setDefault(orgMap.get("default")==null?false:(Boolean)orgMap.get("default"));
+		
+		String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
+		org.setFreightTerm(freightterms);
+		
+		String shippinginstructions=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
+		org.setShippingInstruction(shippinginstructions);
+		
+		String shippingmethod=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
+		org.setShippingMethod(shippingmethod);
+		
+		org.setVarOrderSystemInfo(sys);
+		session.save(org);
+		return org;
+	}
+	
+	private OrderSystemInfo updateOrderSystemInfo(Session session,Map systemMap) throws Exception{
+		session.clear();
+		ObjectMapper mapper = new ObjectMapper();
+		OrderSystemInfo sys=null;
+		try {
+		String orderSystemData=ApplicationUtils.convertObjectMapstoJSON(systemMap);
+		Long id=Long.valueOf((int)systemMap.get("id"));
+		sys = (OrderSystemInfo) session.get(OrderSystemInfo.class, id);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+				false);
+		ObjectReader updater = mapper.readerForUpdating(sys);
+		// build updated entity object from input data
+		
+		
+		sys = updater.readValue(orderSystemData);
+		sys.setLastModifiedDate(new Date());
+		session.update(sys);
+		List orgInfoList=(ArrayList)systemMap.get("orgInfo");
+		if(orgInfoList!=null)
+		for(int j=0;j<orgInfoList.size();j++){
+			LinkedHashMap orgMap=(LinkedHashMap) orgInfoList.get(j);
+			if(orgMap.get("newRecord")==null?false:(boolean)orgMap.get("newRecord"))
+				addOrgInfo(session,orgMap,sys);
+			else{
+				List<OrgInfo> orgInfoSessionList=sys.getListOrgInfo();
+				OrgInfo tempOrg=new OrgInfo();
+				tempOrg.setId(Long.valueOf((int)orgMap.get("id")));
+				int index=orgInfoSessionList.indexOf((Object)tempOrg);
+				OrgInfo org=orgInfoSessionList.get(index);
+				updateOrderInfo(session,orgMap,org);
+			}
+				
+		}
+		
+	}catch(Exception e){
+		throw e;
+	}
+		return sys;
+	}
+	private OrgInfo updateOrderInfo(Session session,Map systemMap,OrgInfo org) throws Exception{
+		session.clear();
+		ObjectMapper mapper = new ObjectMapper();
+//		OrgInfo org=null;
+		try {
+		String orgInfoData=ApplicationUtils.convertObjectMapstoJSON(systemMap);
+		Long id=Long.valueOf((int)systemMap.get("id"));
+		org = (OrgInfo) session.load(OrgInfo.class, id);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+				false);
+		ObjectReader updater = mapper.readerForUpdating(org);
+		// build updated entity object from input data
+		
+		
+		org = updater.readValue(orgInfoData);
+		org.setLastModifiedDate(new Date());
+		session.update(org);
+		
+		
+	}catch(Exception e){
+		throw e;
+	}
+		return org;
+	}
+
 }

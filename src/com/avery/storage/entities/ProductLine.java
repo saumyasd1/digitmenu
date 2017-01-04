@@ -1072,7 +1072,9 @@ public class ProductLine extends MainAbstractEntity{
 				OrderSystemInfo oSysInfoObj=obj.get(0);
 				SystemInfo sysInfoList=oSysInfoObj.getVarSystem();
 				if(sysInfoList!=null){
-					productline.setSiteId(sysInfoList.getId());
+					Site site=sysInfoList.getSite();
+					if(site!=null)
+						productline.setSiteId(site.getId());
 				}
 				
 			}
