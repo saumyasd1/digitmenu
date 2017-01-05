@@ -55,11 +55,11 @@ public class SystemInfo extends MainAbstractEntity{
 	private String comment;
 	
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="siteId",nullable=false)
 	private Site site;
 	
-	@OneToMany(mappedBy="system",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="system",fetch=FetchType.LAZY)
 	private List<Org> orgList;
 	
 	public List<Org> getOrgList() {

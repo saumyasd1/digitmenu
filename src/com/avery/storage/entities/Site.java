@@ -54,7 +54,7 @@ public class Site extends MainAbstractEntity{
 		this.comment = comment;
 	}
 	
-	@OneToMany(mappedBy="site",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="site",fetch=FetchType.LAZY)
 	private List<SystemInfo> systemInfoList;
 	
 	@Override

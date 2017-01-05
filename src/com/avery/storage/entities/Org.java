@@ -49,7 +49,7 @@ public class Org extends MainAbstractEntity {
 	@Column(name = "comment",length=250)
 	private String comment;
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId",nullable=false)
 	private SystemInfo system;
 	

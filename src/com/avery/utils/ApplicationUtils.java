@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -39,4 +40,16 @@ public class ApplicationUtils {
 		}
 		return map;
 	}
+	
+	public static String convertObjectMapstoJSON(Map map) throws  IOException,Exception {
+		String jsonStr="";
+		try {
+				ObjectMapper mapper = new ObjectMapper();
+				jsonStr = mapper.writeValueAsString(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonStr;
+	}
+	
 }

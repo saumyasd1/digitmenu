@@ -44,10 +44,10 @@ public class OrderSystemInfo extends MainAbstractEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
 	private ProductLine varProductLine;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="systemId")
 	private SystemInfo varSystem;
-	@OneToMany(mappedBy="varOrderSystemInfo",cascade=CascadeType.ALL,fetch=FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy="varOrderSystemInfo",fetch=FetchType.EAGER)
 	private List<OrgInfo> listOrgInfo;
 	
 	

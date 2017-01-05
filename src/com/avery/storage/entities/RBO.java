@@ -47,7 +47,7 @@ public class RBO extends MainAbstractEntity{
 	@Column(name = "comment", length = 250)
 	String comment;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "rbo")
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "rbo")
 	Set<ProductLine> productLine;
 //
 //	public List<ProductLine> getVarProductLine() {

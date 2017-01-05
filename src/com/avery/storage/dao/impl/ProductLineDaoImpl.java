@@ -196,7 +196,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	}
 	
 	@Override
-	public ProductLine update(String productLineData,Long id) {
+	public ProductLine update(String productLineData,Long id) throws Exception{
 		Session session = getSessionFactory().getCurrentSession();
 		ProductLine pk = (ProductLine) session.get(getType(), id);
 		ObjectMapper mapper = new ObjectMapper();
@@ -205,10 +205,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				false);
 		ObjectReader updater = mapper.readerForUpdating(pk);
 		// build updated entity object from input data
-		
-		try {
-			pk = updater.readValue(productLineData);
-			productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
+		pk = updater.readValue(productLineData);
+		productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
 		
 		int rboId=(productLineMap.get("rboId")==null?0:(int)productLineMap.get("rboId"));
 		if(rboId!=0){
@@ -239,15 +237,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			}
 			
 		}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 		// session.getTransaction().commit();
 		return pk;
 	}
 	
-	private OrderSystemInfo addOrderSystemInfo(Session session,Map systemMap,ProductLine pk){
+	private OrderSystemInfo addOrderSystemInfo(Session session,Map systemMap,ProductLine pk) throws Exception{
 		OrderSystemInfo sys=new OrderSystemInfo();
 		String csrName=systemMap.get("csrName")==null?"":(String)systemMap.get("csrName");
 		sys.setCsrName(csrName);
@@ -280,7 +274,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		return sys;
 	}
 	
-	private OrgInfo addOrgInfo(Session session, Map orgMap,OrderSystemInfo sys){
+	private OrgInfo addOrgInfo(Session session, Map orgMap,OrderSystemInfo sys) throws Exception{
 		OrgInfo org = new OrgInfo();
 		int orgCodeId=(orgMap.get("orgCodeId")==null?0:(int)orgMap.get("orgCodeId"));
 		org.setOrgCodeId(orgCodeId);
@@ -308,12 +302,14 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	}
 	
 	private OrderSystemInfo updateOrderSystemInfo(Session session,Map systemMap) throws Exception{
-		session.clear();
-		ObjectMapper mapper = new ObjectMapper();
+		Long id=Long.valueOf((int)systemMap.get("id"));
 		OrderSystemInfo sys=null;
+//		session.evict(sys);
+		ObjectMapper mapper = new ObjectMapper();
+		
 		try {
 		String orderSystemData=ApplicationUtils.convertObjectMapstoJSON(systemMap);
-		Long id=Long.valueOf((int)systemMap.get("id"));
+		
 		sys = (OrderSystemInfo) session.get(OrderSystemInfo.class, id);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
@@ -332,11 +328,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				addOrgInfo(session,orgMap,sys);
 			else{
 				List<OrgInfo> orgInfoSessionList=sys.getListOrgInfo();
-				OrgInfo tempOrg=new OrgInfo();
-				tempOrg.setId(Long.valueOf((int)orgMap.get("id")));
-				int index=orgInfoSessionList.indexOf((Object)tempOrg);
-				OrgInfo org=orgInfoSessionList.get(index);
-				updateOrderInfo(session,orgMap,org);
+				updateOrderInfo(session,orgMap);
 			}
 				
 		}
@@ -346,10 +338,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	}
 		return sys;
 	}
-	private OrgInfo updateOrderInfo(Session session,Map systemMap,OrgInfo org) throws Exception{
-		session.clear();
+	private OrgInfo updateOrderInfo(Session session,Map systemMap) throws Exception{
+		//session.clear();
 		ObjectMapper mapper = new ObjectMapper();
-//		OrgInfo org=null;
+		OrgInfo org=null;
 		try {
 		String orgInfoData=ApplicationUtils.convertObjectMapstoJSON(systemMap);
 		Long id=Long.valueOf((int)systemMap.get("id"));

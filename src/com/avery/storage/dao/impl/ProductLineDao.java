@@ -17,5 +17,5 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 	
 	public ProductLine read(Long id) ;
 
-	public ProductLine update(String productLineData,Long id);
+	public ProductLine update(String productLineData,Long id) throws Exception;
 }
