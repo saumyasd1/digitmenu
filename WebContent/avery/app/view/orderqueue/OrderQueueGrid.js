@@ -39,7 +39,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         this.callParent(arguments);
     },
     buildColumns : function(){
-    	//var store= Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+    	
         return [
 			{
 				header: '<img src="' +  AOC.config.Settings.buttonIcons.menuIcon + '" />',
@@ -296,11 +296,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		if(e.target.className=='vieworderattachment'){
-			var list=record.get('OrderFile'),htmlString='';
-			for(var i=0;i<list.length;i++){
-				htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
-			}
-			td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
+			var form = Ext.create('Ext.form.Panel', { 
+				standardSubmit: true,   
+				url : applicationContext+'/rest/orders/download/orderfile/'+record.get('id')
+			});
+			form.submit({
+				method : 'GET'
+			});
 		}
 		else if(e.target.className=='viewattachment'){
 			var list=record.get('attachmentFileList'),htmlString='';
