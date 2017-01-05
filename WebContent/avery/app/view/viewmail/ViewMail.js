@@ -4,6 +4,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 	alias : 'widget.viewmail',
 	controller:'viewMailController',
 	itemId : 'viewMailItemId',
+	bodyStyle:'background-color:#fff;',
 	layout:{
 		type:'border'
 	},
@@ -11,7 +12,10 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		me.tbar = me.buildTBar();
+		me.tbar = {
+			height:AOC.config.Settings.config.defaultTbarHeight,
+			items :me.buildTBar()
+		}
 		me.bbar = me.buildBBar();
 		me.callParent(arguments);
 	},
@@ -24,7 +28,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			{
 				xtype:'tbtext',
 				text:'View Mail Detail',
-				style:'color: #333f49;font-weight:bold;font-size:15px;'
+				style:AOC.config.Settings.config.tabHeaderTitleStyle
 			}
 		]
 	},
@@ -65,10 +69,15 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				 xtype:'viewmailform',
 				 reference:'webform',
 				 region:'north',
-				 height:180
+				 height:150,
+				 scrollable:true,
+				 margin:'0 10 0 10',
+				 style:'border-top:solid 1px #cecece;',
 			},
 			{
 				 xtype:'emailattachmentinfoGrid',
+				 style:AOC.config.Settings.config.defaultBorderStyle,
+				 margin:'0 1 0 1',
 				 scrollable:true,
 				 region:'center'
 			 }

@@ -23,7 +23,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}
 			},		
             tbar: { 
-				height: 50,
+				height: AOC.config.Settings.config.defaultTbarHeight,
 				items : me.buildtbar()
 			}
         });
@@ -194,7 +194,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				xtype : 'tbtext',
 				itemId : 'EmailQueueTextId',
-				text : '<div style="color:#2c3e50;font-weight:bold;">Email Queue</div>'
+				text : 'Email Queue',
+				style:AOC.config.Settings.config.tabHeaderTitleStyle
 			},
 			'->',
 			{

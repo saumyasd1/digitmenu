@@ -346,11 +346,12 @@ Ext.define('AOC.lang.lit',{
     "uploadOnlyPdfFileAlert":'Please attach only pdf type of files',
     "onProductLineChangeAlert":'Please delete the attachment before changing the productline',
     "noRBOconfigMsg":'No RBO configured for the selected Parter. Please select a differet partner to proceed further',
+    
     //Status Code
     "orderReceivedStatus":'1',
     "orderError":'2',
     "orderPreProcessedStatus":'3',
-    "waitingForCSRStatus":'4',
+    //"waitingForCSRStatus":'4',
     "salesOrderCreatedStatus":'5',
     "submitToOracleStatus=salesOrderGeneratedStatus":'6',
     "salesOrderSubmittedStatus":'7',
@@ -367,7 +368,7 @@ Ext.define('AOC.lang.lit',{
     "booked":'99',
     "oracleError":'98',
     "fiberLevel":'FIBRE',
-    "identifiedStatus":'19',
+    "identifiedStatus":'5',
     "centerStyleDiv":'<div align="center"><b><font color=#006FDD>',
     "mandatoryValidationCellColor":'background-color:yellow'
-    });
+});

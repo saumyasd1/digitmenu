@@ -46,13 +46,14 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						name: 'PartnerName',
 						itemId: 'partnerName',
 						fieldLabel: 'Partner',
-						flex:2
+						flex:1.5
 					}, 
 					
 					{
 						name: 'id',
 						itemId: 'trackingId',
 						fieldLabel: 'Tracking ID#',
+						labelWidth:180,
 						flex:1
 					},
 					
@@ -60,6 +61,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						name: 'senderEmailId',
 						itemId: 'senderemailId',
 						fieldLabel: 'Sender Email ID',
+						labelWidth:180,
 						flex:1
 					}
 				]
@@ -70,9 +72,8 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 				layout: 'hbox',
 				defaults:{
 					labelSeparator:'',
-					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-					labelAlign:'left',
-					labelWidth:150
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign
 				},
 				defaultType:'displayfield',
 				margin:'0 0 5 0',
@@ -81,23 +82,22 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						name: 'subject',
 						itemId: 'subject',
 						fieldLabel: 'Email Subject',
-						flex:2
+						labelWidth:150,
+						flex:1.5
 					}, 
-					/*{
-						xtype: 'tbspacer',
-						width: 100
-					},*/ 
 					{
-						name: 'RBO',
+						name: 'emailSubjectRBOMatch',
 						itemId: 'rbo',
-						fieldLabel: 'RBO Match',
+						labelWidth:180,
+						fieldLabel: 'Subject RBO Match',
 						flex:1
 					}, 
 					
 					{
-						name: 'Product Line',
+						name: 'emailSubjectProductLineMatch',
 						itemId: 'productline',
-						fieldLabel: 'Product Line Match',
+						labelWidth:180,
+						fieldLabel: 'Subject Product Line Match',
 						flex:1
 					}
 				]
@@ -108,9 +108,8 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 				layout: 'hbox',
 				defaults:{
 					labelSeparator:'',
-					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-					labelAlign:'left',
-					labelWidth:150
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign
 				},
 				margin:'0 0 5 0',
 				defaultType:'displayfield',
@@ -119,20 +118,23 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						name: 'Email', //name:'mailBody'(DB column name)
 						itemId: 'mailbody',
 						fieldLabel: 'Email Body',
-						flex:2
+						labelWidth:150,
+						flex:1.5
 					},
 					
 					{
-						name: 'RBO',
+						name: 'emailBodyRBOMatch',
 						itemId: 'rbo',
-						fieldLabel: 'RBO Match',
+						labelWidth:180,
+						fieldLabel: 'Body RBO Match',
 						flex:1
 					}, 
 					
 					{
-						name: 'Product Line',
+						name: 'emailBodyProductLineMatch',
 						itemId: 'productline',
-						fieldLabel: 'Product Line Match',
+						labelWidth:180,
+						fieldLabel: 'Body Product Line Match',
 						flex:1
 					}
 				]

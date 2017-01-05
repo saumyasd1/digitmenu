@@ -5,7 +5,14 @@ Ext.define('AOC.config.Settings',{
         nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$',
         baseUserUrl :applicationContext+'/rest/users',
         baseOrderTrendUrl:applicationContext+'/rest/ordertrend',
-        requestTimeOut       : 300000
+        requestTimeOut: 300000,
+        tabHeaderTitleStyle:'color:#2f3338;font-size:13px;font-weight:bold;',
+        defaultFormLabelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+        defaultBorderStyle:'border:solid 1px #cecece;',
+        defaultTbarHeight:50
+    },
+    form:{
+    	defaultLabelAlign:'left'
     },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',

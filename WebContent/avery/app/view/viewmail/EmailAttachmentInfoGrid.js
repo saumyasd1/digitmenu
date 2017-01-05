@@ -53,6 +53,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						displayField:'dataStructureName',
 						valueField:'id',
 						queryMode :'local',
+						editable:false,
 						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
@@ -73,19 +74,22 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					name: 'File Content Type',
 					editor: {
 						xtype:'combobox',
-						displayField:'fileContentType',
-						valueField:'fileContentType',
+						displayField:'name',
+						valueField:'code',
 						queryMode :'local',
 						store:new Ext.data.JsonStore({
 							data:[
 							      {
-							    	  fileContentType:'Order File' 
+							    	  name:'Order',
+							    	  code:'Order'
 							      },
 							      {
-							    	  fileContentType:'Additional File' 
+							    	  name:'Additional Data',
+							    	  code:'AdditionalData'
 							      },
 							      {
-							    	  fileContentType:'Disregard' 
+							    	  name:'Disregard',
+							    	  code:'Disregard'
 							      }
 							],
 							fields:['fileContentType']
