@@ -46,6 +46,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   text    : 'Save',
 			   reference:'saveEmailAttachmentBtn',
 			   itemId  : 'saveAttachment',
+			   disabled:true,
 			   handler : 'onSaveBtnClicked'
 			},
 			{
@@ -53,6 +54,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   margin  : '0 10 0 0',
 			   itemId  : 'downloadAttachments',
 			   text    : 'Download Attachment(s)',
+			   reference:'downLoadAttachmentBtn',
 			   handler : 'onDownloadAttachmentBtnClick'
 			},
 			{

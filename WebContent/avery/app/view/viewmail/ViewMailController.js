@@ -193,6 +193,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			store = gridView.store,
 			refs = this.getReferences(),
 			saveBtn = refs.saveEmailAttachmentBtn;
+			downLoadAttachmentBtn = refs.downLoadAttachmentBtn,
 			totalCount = store.getCount(),
 			totalIdentifiedCount = 0,
 			totalUnidentifiedCount = 0,
@@ -213,6 +214,9 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		});
 		
 		if(totalCount > 0){
+			saveBtn.setDisabled(false);
+			downLoadAttachmentBtn.setDisabled(false);
+			
 			if(totalCount == totalAdditionalFile){
 				gridView.isIdentifiedFlag = false;
 				me.enableDisableProcessBtn(true);
@@ -227,12 +231,17 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 				gridView.isIdentifiedFlag = false;
 				me.enableDisableProcessBtn(true);
 			}
+		}else{
+			downLoadAttachmentBtn.setDisabled(true);
+			saveBtn.setDisabled(true);
+			me.enableDisableProcessBtn(true);
 		}
+		
 		if(gridView.status == '5'){
 			saveBtn.setDisabled(true);
 			me.enableDisableProcessBtn(true);
 		}else{
-			saveBtn.setDisabled(false);
+			saveBtn.setDisabled(totalCount > 0 ? false : true);
 		}
 	},
 	
@@ -275,8 +284,12 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			recordsArray = gridView.getSelectionModel().getSelection(),
 			len = recordsArray.length;
 		
-		for(var i=0;i<len;i++){
-			me.downLoadFile(recordsArray[i].get('id'));
+		if(len > 0){
+			for(var i=0;i<len;i++){
+				me.downLoadFile(recordsArray[i].get('id'));
+			}
+		}else{
+			Ext.Msg.alert(AOCLit.warningTite, AOCLit.selectAttachmentFileMsg);
 		}
 	}
 });

@@ -370,5 +370,9 @@ Ext.define('AOC.lang.lit',{
     "fiberLevel":'FIBRE',
     "identifiedStatus":'5',
     "centerStyleDiv":'<div align="center"><b><font color=#006FDD>',
-    "mandatoryValidationCellColor":'background-color:yellow'
+    "mandatoryValidationCellColor":'background-color:yellow',
+    
+    //added alert messages(AK)
+    'selectAttachmentFileMsg':'Please select atleast one file to proceed.',
+    'warningTitle':'Warning'
 });
