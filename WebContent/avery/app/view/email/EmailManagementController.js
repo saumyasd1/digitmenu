@@ -50,6 +50,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					});
 					
 					viewmail.trackingId = id;
+					viewmail.status = currentRecord.get('status');
 					viewmail.bindStore(store); //Bind Store to viewmail grid
 					
 					panel.getLayout().setActiveItem(1);

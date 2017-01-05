@@ -191,6 +191,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		var me = this,
 			gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
 			store = gridView.store,
+			refs = this.getReferences(),
+			saveBtn = refs.saveEmailAttachmentBtn;
 			totalCount = store.getCount(),
 			totalIdentifiedCount = 0,
 			totalUnidentifiedCount = 0,
@@ -226,10 +228,17 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 				me.enableDisableProcessBtn(true);
 			}
 		}
+		if(gridView.status == '5'){
+			saveBtn.setDisabled(true);
+			me.enableDisableProcessBtn(true);
+		}else{
+			saveBtn.setDisabled(false);
+		}
 	},
 	
 	enableDisableProcessBtn:function(showFlag){
-		var button = Ext.ComponentQuery.query('#processOrderBtn')[0];
+		var refs = this.getReferences(),
+			button = refs.processOrderBtn;
 		button.setDisabled(showFlag);
 	},
 	

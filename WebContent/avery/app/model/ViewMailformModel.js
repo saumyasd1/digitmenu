@@ -2,7 +2,8 @@ Ext.define('AOC.model.ViewMailModel',{
     extend: 'Ext.data.Model',
     fields: [
         {name: 'fileName', mapping:'fileName', type: 'string'},
-	    {name: 'dataStructureName', mapping:'varProductLine.id', type: 'string'},
+	    {name: 'dataStructureNameId', mapping:'varProductLine.id', type: 'int'},
+	    {name: 'dataStructureName', mapping:'varProductLine.dataStructureName', type: 'string'},
 	    {name: 'senderEmailId', mapping:'senderEmailId', type: 'string'},
 	    {name: 'additionalDataFileKey', mapping:'additionalDataFileKey', type: 'string'},
 	    {name: 'rboMatch', mapping:'rboMatch', type: 'string'},

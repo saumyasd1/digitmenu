@@ -20,12 +20,20 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     plugins: [
 		{
 	        ptype: 'cellediting',
-	        clicksToEdit: 1
+	        clicksToEdit: 1,
+	        listeners: {
+                beforeedit: function(e, editor){
+	                if (editor.grid.status == '5'){
+	                	return false;
+	                } 
+                }
+	        }
 	    }
 	],
 	selType: 'checkboxmodel',
 	
     buildColumns : function(){
+    	var me = this;
         return {
 			defaults : {
                 draggable : false,
@@ -46,7 +54,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				{
 					text : 'Partner Data Structure',
 					flex :1.3,
-					dataIndex:'dataStructureName',
+					dataIndex:'dataStructureNameId',
 					name: 'Partner Data Structure',
 					editor: {
 						xtype:'combobox',
@@ -57,8 +65,13 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
-						var editor = metaData.column.getEditor(record);    
-					    var storeRecord = editor.store.getById(value);     
+						if(me.status == '5'){
+							return record.get('dataStructureName');
+						}
+						
+						var editor = metaData.column.getEditor(record),    
+					    	storeRecord = editor.store.getById(value);
+						
 					    if(storeRecord) {       
 					        return storeRecord.data[editor.displayField];
 					    }
@@ -77,24 +90,25 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						displayField:'name',
 						valueField:'code',
 						queryMode :'local',
+						editable:false,
 						store:new Ext.data.JsonStore({
 							data:[
-							      {
-							    	  name:'Order',
-							    	  code:'Order'
-							      },
-							      {
-							    	  name:'Additional Data',
-							    	  code:'AdditionalData'
-							      },
-							      {
-							    	  name:'Disregard',
-							    	  code:'Disregard'
-							      }
+						      {
+						    	  name:'Order',
+						    	  code:'Order'
+						      },
+						      {
+						    	  name:'Additional Data',
+						    	  code:'AdditionalData'
+						      },
+						      {
+						    	  name:'Disregard',
+						    	  code:'Disregard'
+						      }
 							],
-							fields:['fileContentType']
+							fields:['name', 'code']
 						})
-					}
+					} 
 				}, 
 				{
 					text : 'Status',

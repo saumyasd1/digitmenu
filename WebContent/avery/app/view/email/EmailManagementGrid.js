@@ -119,7 +119,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}
 			},
 			{
-				text :'Email',
+				text :'Receiver Email ID',
 				width:120,
 				dataIndex:'Email',
 				flex:1,

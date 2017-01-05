@@ -44,6 +44,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   xtype   : 'whitebutton',
 			   margin  : '0 10 0 10',
 			   text    : 'Save',
+			   reference:'saveEmailAttachmentBtn',
 			   itemId  : 'saveAttachment',
 			   handler : 'onSaveBtnClicked'
 			},
@@ -58,6 +59,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   xtype   : 'whitebutton',
 			   itemId  : 'processOrderBtn',
 			   text    : 'Process Order',
+			   reference:'processOrderBtn',
 			   disabled: true,
 			   handler : 'onProcessOrderBtnClicked'
 			}
