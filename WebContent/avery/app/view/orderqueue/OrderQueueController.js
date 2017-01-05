@@ -392,7 +392,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	              '</tpl>',
 	              {
 	    		 isViewOrderDisabled:function(v){
-		    	   return (v.orderLineCount==0);
+	    			 return (v.Status<19);
 	    		 },
 	    		 isViewSalesDisabled:function(v){
 		    	  return (v.salesOrderCount==0);
