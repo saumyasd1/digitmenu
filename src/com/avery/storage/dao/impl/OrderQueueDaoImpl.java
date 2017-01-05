@@ -117,7 +117,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Criteria criteria= session.createCriteria(OrderQueue.class);//getCriteria(queryMap);
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 			.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
-			.createAlias("varProductLine", "varProductLine")
+			.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
 			.createAlias("varProductLine.varPartner", "partner")
 			.createAlias("varProductLine.rbo", "rbo")
 			.setProjection(proj)	
