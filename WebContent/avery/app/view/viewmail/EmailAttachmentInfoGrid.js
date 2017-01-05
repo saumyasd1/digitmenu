@@ -14,7 +14,8 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     },
     
     listeners:{
-		edit:'editEmailAttachmentGridColumn'
+		edit:'editEmailAttachmentGridColumn',
+		cellclick:'onEmailAttachmentGridCellClick'
 	},
     
     plugins: [
@@ -48,7 +49,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'fileName',
 					name: 'fileName',
 					renderer: function (value) {
-						return '<a href="#">'+ value +'</a>';
+						return '<a class="emailAttachmentLink" href="#">'+ value +'</a>';
 					}
 				},
 				{

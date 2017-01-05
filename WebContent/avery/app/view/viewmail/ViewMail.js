@@ -52,8 +52,8 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   xtype   : 'whitebutton',
 			   margin  : '0 10 0 0',
 			   itemId  : 'downloadAttachments',
-			   text    : 'Download Attachment(s)'
-			   //handler : 'CancelDetails'
+			   text    : 'Download Attachment(s)',
+			   handler : 'onDownloadAttachmentBtnClick'
 			},
 			{
 			   xtype   : 'whitebutton',
@@ -80,6 +80,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				 xtype:'emailattachmentinfoGrid',
 				 style:AOC.config.Settings.config.defaultBorderStyle,
 				 margin:'0 1 0 1',
+				 reference:'emailAttachmentInfoGrid',
 				 scrollable:true,
 				 region:'center'
 			 }

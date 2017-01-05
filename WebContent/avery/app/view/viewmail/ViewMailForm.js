@@ -87,16 +87,17 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 					}, 
 					{
 						name: 'emailSubjectRBOMatch',
-						itemId: 'rbo',
+						itemId: 'emailSubjectRBOMatch',
 						labelWidth:180,
 						fieldLabel: 'Subject RBO Match',
+						reference:'emailSubjectRBOMatch',
 						flex:1
 					}, 
-					
 					{
 						name: 'emailSubjectProductLineMatch',
-						itemId: 'productline',
+						itemId: 'emailSubjectProductLineMatch',
 						labelWidth:180,
+						reference:'emailSubjectProductLineMatch',
 						fieldLabel: 'Subject Product Line Match',
 						flex:1
 					}
@@ -124,15 +125,17 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 					
 					{
 						name: 'emailBodyRBOMatch',
-						itemId: 'rbo',
+						itemId: 'emailBodyRBOMatch',
 						labelWidth:180,
 						fieldLabel: 'Body RBO Match',
+						reference:'emailBodyRBOMatch',
 						flex:1
 					}, 
 					
 					{
 						name: 'emailBodyProductLineMatch',
-						itemId: 'productline',
+						itemId: 'emailBodyProductLineMatch',
+						reference:'emailBodyProductLineMatch',
 						labelWidth:180,
 						fieldLabel: 'Body Product Line Match',
 						flex:1

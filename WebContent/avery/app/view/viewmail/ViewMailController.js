@@ -17,7 +17,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
             dismissDelay: 0,
             listeners: {
             	afterrender: me.onAfterRenderEditCallout,
-            	    disregard: function(cmp) {}
+        	    disregard: function(cmp) {}
             }
         });
         //Adding functionality related to Menu item visibility
@@ -250,5 +250,33 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		store.on('load',function(){
 			me.verifyIdentifiedDisregardRecords();
 		});
+	},
+	
+	onEmailAttachmentGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+		if(e.target.className=='emailAttachmentLink'){
+			this.downLoadFile(record.get('id'));
+		}
+	},
+	
+	downLoadFile:function(id){
+		var form = Ext.create('Ext.form.Panel', { 
+			standardSubmit: true,   
+			url : applicationContext+'/rest/orderattachements/download/'+id
+		});
+		form.submit({
+			method : 'GET'
+		});
+	},
+	
+	onDownloadAttachmentBtnClick:function(){
+		var me = this,
+			refs = me.getReferences(),
+			gridView = refs.emailAttachmentInfoGrid,
+			recordsArray = gridView.getSelectionModel().getSelection(),
+			len = recordsArray.length;
+		
+		for(var i=0;i<len;i++){
+			me.downLoadFile(recordsArray[i].get('id'));
+		}
 	}
 });
