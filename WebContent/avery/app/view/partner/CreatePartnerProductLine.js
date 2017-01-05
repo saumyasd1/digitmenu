@@ -46,7 +46,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				itemId:'titleItemId',
 				vale:'',
 				hidden:false,
-				margin : '5 0 0 220'
+				style:'margin:0px auto;color:#2f3338;font-size:13px;font-weight:bold;',
 			},
 			{
 				xtype:'displayfield',
@@ -61,7 +61,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype: 'fieldcontainer',
 						layout: 'column',
-						margin : '0 0 5 0',
+						margin : '10 0 5 0',
 						defaults:{
 							labelSeparator:'',
 							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
@@ -85,6 +85,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								width: 300,
 								fieldLabel: 'Data Structure Name',
 								bind:'{dataStructureName}'
+							},
+							{
+								xtype:'combo',
+								itemId:'RItemId',
+								name: 'rboId',
+								reference:'rboId',
+								bind:'{rbo.id}',
+								fieldLabel:AOCLit.RBO,
+								allowBlank: false,
+								margin:'0 10 0 20',
+								store:rboStore,
+								displayField:'rboName',
+								valueField:'id',
+								blankText : 'RBO Name is required',
+								listeners : {
+									 blur : this.notifyByImage,
+									'focus' : 'HideMandatoryMessage'
+								}
 							}
 						]
 					},
@@ -97,26 +115,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
 							labelAlign:'left',
 							labelWidth:150,
-							width:300
+							width:455
 						},
-						items:[{
-								xtype:'combo',
-								itemId:'RItemId',
-								name: 'rboId',
-								reference:'rboId',
-								bind:'{rbo.id}',
-								fieldLabel:AOCLit.RBO,
-								allowBlank: false,
-								margin:'0 10 0 10',
-								store:rboStore,
-								displayField:'rboName',
-								valueField:'id',
-								blankText : 'RBO Name is required',
-								listeners : {
-									 blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
-								}
-							},
+						items:[
 							{
 								xtype:'combo',
 								itemId:'SiteId',
@@ -137,7 +138,26 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									'focus' : 'HideMandatoryMessage',
 									'change':'onSiteSelect'
 								}
-							}]
+							},
+							{
+								xtype:'textfield',
+								name: 'email',
+								bind:'{email}',
+								fieldLabel:'Email ID',
+								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+								//width : 400,
+								//flex:0.8,
+								margin:'0 0 5 10',
+								labelSeparator:'',
+								labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+								labelAlign:'left',
+								labelWidth:150,
+								listeners : {
+									 blur : this.notifyByImage,
+									'focus' : 'HideMandatoryMessage'
+								}
+							}
+						]
 					},
 					{
 						xtype:'fieldcontainer',
@@ -210,7 +230,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							}
 						]
 	        		},
-	        		{
+	        		/*{
 						xtype:'textfield',
 						name: 'email',
 						bind:'{email}',
@@ -226,7 +246,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							 blur : this.notifyByImage,
 							'focus' : 'HideMandatoryMessage'
 						}
-					},
+					},*/
 					{   
 						xtype: 'fieldcontainer',
 						layout: 'column',

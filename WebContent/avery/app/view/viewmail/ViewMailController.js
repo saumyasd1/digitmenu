@@ -86,28 +86,43 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			gridView.focus();
   		}
   		
-		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
+  		var orderFlag = false,
+  			len = gridView.emailGridRecordArray.length;
   		
-  		Ext.Ajax.request({
-	        method: 'PUT',
-	        jsonData: parameters,
-	        url: applicationContext+'/rest/orderattachements/updateattachments',
-	        success: function(response, opts) {
-	           
-	        	gridView.emailGridRecordArray = [];
-	            Ext.getBody().unmask();
-	            me.verifyIdentifiedDisregardRecords();
-	            Ext.Msg.alert('Success', 'Current state saved successfully');
-	            gridView.store.load();
-	            
-	        },
-	        failure: function(response, opts) {
-	            var msg = response.responseText;
-	            msg = msg.replace("Exception:", " ");
-	            Ext.Msg.alert('Alert Message', msg);
-	            Ext.getBody().unmask();
-	        }
-	    });
+  		for(var i=0; i<len; i++){
+  			var rec = gridView.emailGridRecordArray[i];
+  			if(rec.fileContentType == 'Order' && !rec.productLineId){
+  				orderFlag = true;
+  			}
+  		}
+  		
+  		if(orderFlag){
+  			Ext.Msg.alert(AOCLit.warning, 'Please select Partner Data Structure.');
+  		}
+  		else{
+			var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
+	  		
+	  		Ext.Ajax.request({
+		        method: 'PUT',
+		        jsonData: parameters,
+		        url: applicationContext+'/rest/orderattachements/updateattachments',
+		        success: function(response, opts) {
+		           
+		        	gridView.emailGridRecordArray = [];
+		            Ext.getBody().unmask();
+		            me.verifyIdentifiedDisregardRecords();
+		            Ext.Msg.alert('Success', 'Current state saved successfully');
+		            gridView.store.load();
+		            
+		        },
+		        failure: function(response, opts) {
+		            var msg = response.responseText;
+		            msg = msg.replace("Exception:", " ");
+		            Ext.Msg.alert('Alert Message', msg);
+		            Ext.getBody().unmask();
+		        }
+		    });
+  		}
   	},
   	
   	onDataStructureChange:function(combobox, newValue, eOpts){
