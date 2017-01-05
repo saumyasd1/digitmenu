@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "AuditTrail")
+@Table(name = "audittrail")
 public class AuditTrail {
 	
 	private static final long serialVersionUID = 1L;
@@ -46,10 +46,7 @@ public class AuditTrail {
 	String statusDescription;
 	@Column(name = "user",length=50)
 	String user;
-	/*@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name="orderQueueId")
-	OrderFileQueue varOrderFileQueue;
-*/
+
 	public int getId() {
 		return id;
 	}
