@@ -78,4 +78,10 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public String getMailBodyFilePathByTrackId(long trackid){
 		return getOrderQueueDao().getMailBodyPath(trackid);
 	}
+	
+	//Method for getting order file path to be downloaded
+	@Transactional
+	public String getOrderFilePathByOrderFileQueueId(long orderFileQueueId){
+		return getOrderQueueDao().getOrderFilePath(orderFileQueueId);
+	}
 }
