@@ -807,4 +807,43 @@ public class OrderQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
+	
+	
+	//method for downloading order file
+	@GET
+	@Path("/download/orderfile/{orderid}")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getOrderFile(@Context UriInfo ui,
+	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
+		Long orderFileQueueId = Long.parseLong(orderid);
+		OrderQueue orderQueue=null;
+		String orderFilePath = "";
+		try {
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			orderFilePath = orderQueueService.getOrderFilePathByOrderFileQueueId(orderFileQueueId);
+			if(orderFilePath == null)
+				throw new NullPointerException("Order File not found in the database, returned null");
+			System.out.println(orderid+" "+orderFilePath);
+			File file = new File(orderFilePath);
+			if(!file.exists()){
+				throw new FileNotFoundException("The Order file is not available at location:\""+orderFilePath+"\".");
+			}
+				
+			String fileName = orderFilePath.substring(orderFilePath.lastIndexOf("/")+1);
+			
+			return Response
+					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+		            .header("content-disposition","attachment; filename = "+fileName)
+		            .build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 }
