@@ -49,6 +49,28 @@ public class Code extends MainAbstractEntity {
 	
 	@Column(name = "comment",columnDefinition = "varchar(1000)")
     private String comment;  
+	
+	@Column(name = "colorCode",columnDefinition = "varchar(100)")
+    private String colorCode;  
+	
+	@Column(name = "iconName",columnDefinition = "varchar(100)")
+    private String iconName; 
+	
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
 
 	public String getType() {
 		return type;
