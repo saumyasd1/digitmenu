@@ -519,8 +519,4 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			}
 			return rb.build();
 		}
-	    
-	    
-	    
-
 }
