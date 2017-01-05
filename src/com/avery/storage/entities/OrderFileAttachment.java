@@ -487,11 +487,15 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					if(!fileContentType.equals("")){ 
 						fileAttachementObj.setFileContentType(fileContentType);
 					}
+					//Changing status before updating above parameters
 					if(productLineId!=0 && fileContentType.equals("Disregard")){
+						fileAttachementObj.setStatus("7");//In statuscode table Disregard:7
+					}
+					else if(productLineId==0 && fileContentType.equals("Disregard") ){
 						fileAttachementObj.setStatus("7");
 					}
 					else if(productLineId!=0){
-						fileAttachementObj.setStatus("8");
+						fileAttachementObj.setStatus("8");//In statuscode table Identified:8
 					}
 					
 					orderFileAttachmentService.update(fileAttachementObj);
