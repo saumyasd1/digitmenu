@@ -67,7 +67,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{  
 				text : 'Tracking #',
 				width:120,
-				sortable : true,
 				align: 'right',
 				dataIndex:'id',
 				flex:1
@@ -75,44 +74,35 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text : 'Partner Name',
 				width:120,
-				sortable : true,
 				name:'PartnerName',
+				menuDisabled :true,
+				sortable:false,
 				dataIndex:'',
 				flex:1,
 				renderer:function(val, metaData, record){
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
-						partnerName =[],
-						len = listOrderFileAttachment.length;
+						data = (listOrderFileAttachment && listOrderFileAttachment.length) > 0 ? listOrderFileAttachment[0] : {};
 					
-					for(var i=0;i<len;i++){
-						var data = listOrderFileAttachment[i];
-						data.varProductLine  ? partnerName.push(data.varProductLine.varPartner ? data.varProductLine.varPartner.partnerName  :'') :'';
-					}
-					return partnerName.join('');
+					return data.varProductLine && data.varProductLine.varPartner  ? data.varProductLine.varPartner.partnerName :'';
 				 }
 			},
 			{
 				text : 'RBO',
 				width:120,
-				sortable : true,
 				dataIndex:'',
+				menuDisabled :true,
+				sortable:false,
 				flex:1,
 				renderer:function(val, metaData, record){
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
-						rboName =[],
-						len = listOrderFileAttachment.length;
+						data = (listOrderFileAttachment && listOrderFileAttachment.length) > 0 ? listOrderFileAttachment[0] : {};
 					
-					for(var i=0;i<len;i++){
-						var data = listOrderFileAttachment[i];
-						data.varProductLine  ? rboName.push(data.varProductLine.rbo ? data.varProductLine.rbo.rboName : '') :'';
-					}
-					return rboName.join('');
+					return (data.varProductLine && data.varProductLine.rbo)  ? data.varProductLine.rbo.rboName  :'';
 				}
 			},
 			{
 				text : 'Sender Email Id',
 				width:120,
-				sortable : true,
 				dataIndex:'senderEmailId',
 				flex:1,
 				renderer:function(v,metadata){
@@ -122,7 +112,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text :'Subject',
 				width:120,
-				sortable : true,
 				dataIndex:'subject',
 				flex:1,
 				renderer:function(v, metadata){
@@ -132,7 +121,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text :'Email',
 				width:120,
-				sortable : true,
 				dataIndex:'Email',
 				flex:1,
 				renderer:function(v, metadata){
@@ -142,7 +130,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text :'Status',
 				width:120,
-				sortable : true,
 				dataIndex:'status',
 				flex:1,
 				renderer:function(value, metaData, rec){
@@ -152,30 +139,29 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text :'Received Date',
 				width:120,
-				sortable : true,
 				dataIndex:'receivedDate',
 				flex:1
 			},
 			{
 				text :'Read Date',
 				width:120,
-				sortable : true,
 				dataIndex:'readDate',
 				flex:1
 			},
 			{
 				text :'Acknowledged Date',
 				width:120,
-				sortable : true,
 				dataIndex:'acknowledgementDate',
 				flex:1
 			},
 			{
 				text :'CC',
 				width:120,
-				sortable : true,
 				dataIndex:'CC',
-				flex:1
+				flex:1,
+				renderer:function(v, metaData){
+					return me.tipRenderer(v, metaData);
+				}
 			}
 		]
 	},

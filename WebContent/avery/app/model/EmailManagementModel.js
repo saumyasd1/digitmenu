@@ -4,7 +4,7 @@ Ext.define('AOC.model.EmailManagementModel',{
     fields: [
         // set up the fields mapping into the xml doc
         //{name: 'id', mapping:'ID',type: 'string'},
-	    {name: 'id', mapping:'id',type: 'string'},
+	    {name: 'id', mapping:'id',type: 'int'},
 		{name: 'PartnerName', mapping:'partnerName',type: 'string'},
 		{name:'RBO',mapping:'rbo',type:'string'},
 		{name: 'senderEmailId', mapping:'senderEmailId',type: 'string'},
@@ -17,6 +17,6 @@ Ext.define('AOC.model.EmailManagementModel',{
 		{name:'comment', type:'string'},
 		{name:'subject', type:'string'},
 		{name:'listOrderFileAttachment'}
-	    ]
+    ]
 });
 

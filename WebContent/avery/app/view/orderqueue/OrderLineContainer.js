@@ -136,7 +136,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						reference: 'form',
 						padding:'10 0 10 0',
 						layout: 'hbox',
-						width:630,
+						width:500,
 						defaults:{
 							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 							labelSeparator:''
