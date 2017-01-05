@@ -30,4 +30,6 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	public Map getAllEntitiesList();
 	
 	public String getMailBodyPath(long trackid);//getting mail body path
+	
+	public String getOrderFilePath(long orderFileQueueId);//getting order file path
 }

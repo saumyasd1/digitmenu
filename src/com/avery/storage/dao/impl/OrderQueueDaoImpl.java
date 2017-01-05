@@ -100,7 +100,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		    .add(Projections.property("orderemailqueue.senderEmailId"),"senderEmailId")
 			.add(Projections.property("partner.partnerName"),"partnerName")
 			.add(Projections.property("id"),"id")
-			.add(Projections.property("subject"),"subject")
+			.add(Projections.property("orderemailqueue.subject"),"subject")
 			.add(Projections.property("comment"),"comment")
 			.add(Projections.property("error"),"error")
 			.add(Projections.property("poNumber"),"poNumber")
@@ -458,5 +458,23 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		mailBodyPath = (String) list.get(0);
 		//System.out.println(mailBodyPath);
 		return mailBodyPath;
+	}
+	
+	//get order file path method
+	@Override
+	public String getOrderFilePath(long orderFileQueueId){
+		String orderFilePath = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrderFileAttachment.class)
+				.createAlias("listOrderFileQueue", "orderfilequeue")
+				.add(Restrictions.eq("orderfilequeue.id", orderFileQueueId))
+				.setProjection(Projections.projectionList()
+						.add(Projections.property("filePath"),"filePath"));
+				//.setResultTransformer(Transformers.aliasToBean(OrderFileAttachment.class));
+		List list = criteria.list();
+		orderFilePath = (String) list.get(0);
+		//System.out.println(mailBodyPath);
+		return orderFilePath;
 	}
 }
