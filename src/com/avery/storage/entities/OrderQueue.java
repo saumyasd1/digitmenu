@@ -125,6 +125,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name="feedbackAcknowledgementDate")
 	Date feedbackAcknowledgementDate;
 	
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
+	@Column(name="acknowledgementDate")
+	Date acknowledgementDate;
+	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
 	ProductLine varProductLine;
@@ -280,6 +284,13 @@ public class OrderQueue extends MainAbstractEntity{
 		this.feedbackAcknowledgementDate = feedbackAcknowledgementDate;
 	}
 
+	public Date getAcknowledgementDate() {
+		return acknowledgementDate;
+	}
+
+	public void setAcknowledgementDate(Date acknowledgementDate) {
+		this.acknowledgementDate = acknowledgementDate;
+	}
 	public ProductLine getVarProductLine() {
 		return varProductLine;
 	}
