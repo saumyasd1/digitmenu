@@ -12,6 +12,10 @@ Ext.define('AOC.store.TaskManagerStore', {
 	        type:'json', 
 	        rootProperty:'emailqueue'
 	    }
-	}
+	},
+	sorters: [{
+ 		property:'lastModifiedDate',
+ 		direction:'ASC'
+ 			}]
 });
 
