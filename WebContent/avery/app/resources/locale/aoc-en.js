@@ -247,6 +247,10 @@ Ext.define('AOC.lang.lit',{
     "fiberContentPercent":'Fiber Content Percentage',
     "confirmBulkUpdateSave":'Are you Sure you want to make/save these changes?',
     "noRecordsToUpdateMessage":'There are no record(s) to update',
+    //Orderqueue
+    "lastmodifiedby":'Last Modified By',
+    "lastmodifieddate":'Last Modified Date',
+    
     //Sales Order
     "oracleExportID": 'OracleExportID',
     "Division":'Division',
