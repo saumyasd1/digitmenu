@@ -53,20 +53,11 @@ OrderEmailQueueDao {
 				String eDate=searchMap.get("toDate");
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			/*String partnerName=searchMap.get("partnerName");
-			if(partnerName!=null && !"".equals(partnerName)){
-				criteria.createAlias("partner", "partner");
-	            criteria.add(Restrictions.ilike("partner"+".partnerName",partnerName,MatchMode.ANYWHERE));
-//				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
-			}*/
+			
 			String orderEmailQueue=searchMap.get("orderEmailQueue");
 			if(orderEmailQueue!=null && !"".equals(orderEmailQueue)){
 				Disjunction disCriteria = Restrictions.disjunction();
-				/*disCriteria.add(Restrictions.ilike("address1", address,MatchMode.ANYWHERE));
-				disCriteria.add(Restrictions.ilike("address2", address,MatchMode.ANYWHERE));
-				disCriteria.add(Restrictions.ilike("address3", address,MatchMode.ANYWHERE));
-				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
-				*/criteria.add(disCriteria);
+				criteria.add(disCriteria);
 			}
 		}   
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
