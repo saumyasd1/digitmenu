@@ -297,6 +297,17 @@ public class OrderLine extends MainAbstractEntity{
 	/*Not in use currently*/
 	@Column(name = "averyMOQ", length = 50)
 	String averyMOQ;
+	@Column(name = "averyRoundupQty", length = 50)
+	String averyRoundupQty;
+	@Column(name = "averyATO", length = 50)
+	String averyATO;
+	@Column(name = "averyRegion", length = 50)
+	String averyRegion;
+	@Column(name = "averyProductLineType", length = 50)
+	String averyProductLineType;
+	
+	@Column(name = "averySample", length = 50)
+	String averySample;
 	public String getAveryMOQ() {
 		return averyMOQ;
 	}
@@ -344,22 +355,6 @@ public class OrderLine extends MainAbstractEntity{
 	public void setAverySample(String averySample) {
 		this.averySample = averySample;
 	}
-
-	@Column(name = "averyRoundupQty", length = 50)
-	String averyRoundupQty;
-	@Column(name = "averyATO", length = 50)
-	String averyATO;
-	@Column(name = "averyRegion", length = 50)
-	String averyRegion;
-	@Column(name = "averyProductLineType", length = 50)
-	String averyProductLineType;
-	
-	@Column(name = "averySample", length = 50)
-	String averySample;
-	
-	
-	
-	
 
 	public String getCustomerPONumber() {
 		return customerPONumber;
