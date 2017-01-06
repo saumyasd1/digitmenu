@@ -104,10 +104,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text : 'Sender Email Id',
 				width:120,
 				dataIndex:'senderEmailId',
-				flex:1,
-				renderer:function(v,metadata){
-					return me.tipRenderer(v, metadata);
-				}	
+				flex:1
 			},
 			{
 				text :'Subject',
