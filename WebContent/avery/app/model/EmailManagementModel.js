@@ -2,8 +2,6 @@ Ext.define('AOC.model.EmailManagementModel',{
     extend: 'Ext.data.Model',
 	idProperty:null,
     fields: [
-        // set up the fields mapping into the xml doc
-        //{name: 'id', mapping:'ID',type: 'string'},
 	    {name: 'id', mapping:'id',type: 'int'},
 		{name: 'PartnerName', mapping:'partnerName',type: 'string'},
 		{name:'RBO',mapping:'rbo',type:'string'},
@@ -13,6 +11,8 @@ Ext.define('AOC.model.EmailManagementModel',{
 		{name: 'receivedDate', mapping:'receivedDate',type: 'string'},
 		{name: 'readDate', mapping:'readDate',type: 'string'},
 		{name: 'acknowledgementDate', mapping:'acknowledgementDate',type: 'string'},
+		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
+		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'},
 		{name: 'CC', mapping:'ccMailId',type: 'string'},
 		{name:'comment', type:'string'},
 		{name:'subject', type:'string'},
