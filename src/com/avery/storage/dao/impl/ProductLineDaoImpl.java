@@ -170,7 +170,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		
 		String email=productLineMap.get("email")==null?"":(String)productLineMap.get("email");
 		pk.setEmail(email);
-		
+		pk=saveOrUpdateAdvancedProperties(pk,productLineMap);
 		session.saveOrUpdate(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		for(int i=0;i<ordersystemList.size();i++){
@@ -189,9 +189,77 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	public ProductLine read(Long id) {
 		Session session = getSessionFactory().getCurrentSession();//single-entity
 		session.enableFetchProfile( "single-entity" );
-		// session.beginTransaction();
+		
 		ProductLine entity = (ProductLine) session.get(getType(), id);
-		// session.getTransaction().commit();
+//		String fileProductlineSheetMatch;
+//		String fileProductlineCellMatch;
+//		String fileRBOSheetMatch;
+//		String fileRBOCellMatch;
+//		String attachmentFileProductlineMatchSheet;
+//		String attachmentFileProductlineMatch;
+//		String attachmentFileProductlineMatchCell;
+//		String attachmentFileOrderMatchCell;
+//		String attachmentFileOrderMatchSheet;
+		if(entity.isFileOrderMatchRequired()){
+			String fileOrderMatchLocation=entity.getFileOrderMatchLocation();
+			String[] fileOrderMatchLocationArray=fileOrderMatchLocation.split(";");
+			if(fileOrderMatchLocationArray!=null && fileOrderMatchLocationArray.length==3){
+				String[] fileOrderMatchSheetArray=fileOrderMatchLocationArray[0].split(":");
+				entity.setFileOrderMatchSheet(fileOrderMatchSheetArray[1]);
+				String[] fileOrderMatchArray=fileOrderMatchLocationArray[1].split(":");
+				entity.setFileOrderMatch(fileOrderMatchArray[1]);
+				String[] fileOrderMatchCellArray=fileOrderMatchLocationArray[2].split(":");
+				entity.setFileOrderMatchCell(fileOrderMatchCellArray[1]);
+			}
+		}
+		if(entity.isFileProductLineMatchRequired()){
+			String fileProductLineMatchLocation=entity.getFileProductLineMatchLocation();
+			String[] fileProductLineMatchLocationArray=fileProductLineMatchLocation.split(";");
+			if(fileProductLineMatchLocationArray!=null && fileProductLineMatchLocationArray.length==3){
+				String[] fileProductlineSheetMatchArray=fileProductLineMatchLocationArray[0].split(":");
+				entity.setFileProductlineSheetMatch(fileProductlineSheetMatchArray[1]);
+				String[] fileProductlineMatchArray=fileProductLineMatchLocationArray[1].split(":");
+				entity.setFileProductlineMatch(fileProductlineMatchArray[1]);
+				String[] fileProductlineCellMatchArray=fileProductLineMatchLocationArray[2].split(":");
+				entity.setFileProductlineCellMatch(fileProductlineCellMatchArray[1]);
+			}
+		}
+		if(entity.isFileRBOMatchRequired()){
+			String fileRBOMatchLocation=entity.getFileRBOMatchLocation();
+			String[] fileRBOMatchLocationArray=fileRBOMatchLocation.split(";");
+			if(fileRBOMatchLocationArray!=null && fileRBOMatchLocationArray.length==3){
+				String[] fileRBOSheetMatchArray=fileRBOMatchLocationArray[0].split(":");
+				entity.setFileRBOSheetMatch(fileRBOSheetMatchArray[1]);
+				String[] fileRBOMatchArray=fileRBOMatchLocationArray[1].split(":");
+				entity.setFileRBOMatch(fileRBOMatchArray[1]);
+				String[] fileRBOCellMatchArray=fileRBOMatchLocationArray[2].split(":");
+				entity.setFileRBOCellMatch(fileRBOCellMatchArray[1]);
+			}
+		}
+		if(entity.isAttachmentFileProductlineMatchRequired()){
+			String attachmentFileProductlineMatchLocation=entity.getAttachmentFileProductlineMatchLocation();
+			String[] attachmentFileProductlineMatchLocationArray=attachmentFileProductlineMatchLocation.split(";");
+			if(attachmentFileProductlineMatchLocationArray!=null && attachmentFileProductlineMatchLocationArray.length==3){
+				String[] attachmentFileProductlineMatchSheetArray=attachmentFileProductlineMatchLocationArray[0].split(":");
+				entity.setAttachmentFileProductlineMatchSheet(attachmentFileProductlineMatchSheetArray[1]);
+				String[] attachmentFileProductlineMatchArray=attachmentFileProductlineMatchLocationArray[1].split(":");
+				entity.setAttachmentFileProductlineMatch(attachmentFileProductlineMatchArray[1]);
+				String[] attachmentFileProductlineMatchCellArray=attachmentFileProductlineMatchLocationArray[2].split(":");
+				entity.setAttachmentFileProductlineMatchCell(attachmentFileProductlineMatchCellArray[1]);
+			}
+		}
+		if(entity.isAttachmentFileOrderMatchRequired()){
+			String attachmentFileOrderMatch=entity.getAttachmentFileOrderMatchLocation();
+			String[] attachmentFileOrderMatchLocationArray=attachmentFileOrderMatch.split(";");
+			if(attachmentFileOrderMatchLocationArray!=null && attachmentFileOrderMatchLocationArray.length==3){
+				String[] attachmentFileOrderMatchSheetArray=attachmentFileOrderMatchLocationArray[0].split(":");
+				entity.setAttachmentFileOrderMatchSheet(attachmentFileOrderMatchSheetArray[1]);
+				String[] attachmentFileOrderMatchArray=attachmentFileOrderMatchLocationArray[1].split(":");
+				entity.setAttachmentFileOrderMatch(attachmentFileOrderMatchArray[1]);
+				String[] attachmentFileOrderMatchCellArray=attachmentFileOrderMatchLocationArray[2].split(":");
+				entity.setAttachmentFileOrderMatchCell(attachmentFileOrderMatchCellArray[1]);
+			}
+		}
 		return entity;
 	}
 	
@@ -215,6 +283,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setRbo(rbo);	
 		}
 		pk.setLastModifiedDate(new Date());
+		pk=saveOrUpdateAdvancedProperties(pk,productLineMap);
 		update(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
 		if(productLineMap.get("siteChanged")==null?false:(boolean)productLineMap.get("siteChanged")){
@@ -361,6 +430,57 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		throw e;
 	}
 		return org;
+	}
+	
+	private ProductLine saveOrUpdateAdvancedProperties(ProductLine pk,Map productLineMap){
+		String fileOrderMatchCell=productLineMap.get("fileOrderMatchCell")==null?"":(String)productLineMap.get("fileOrderMatchCell");
+		String fileOrderMatchSheet=productLineMap.get("fileOrderMatchSheet")==null?"":(String)productLineMap.get("fileOrderMatchSheet");
+		String fileOrderMatch=productLineMap.get("fileOrderMatch")==null?"":(String)productLineMap.get("fileOrderMatch");
+		if(fileOrderMatchSheet.equals("") && fileOrderMatchCell.equals("")){
+			pk.setFileOrderMatch(fileOrderMatch);
+			pk.setFileOrderMatchRequired(false);
+		}else{
+			pk.setFileOrderMatchLocation("Sheet Name : "+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell : "+fileOrderMatchCell+";");
+			pk.setFileOrderMatchRequired(true);
+		}
+		String fileProductlineMatch=productLineMap.get("fileProductlineMatch")==null?"":(String)productLineMap.get("fileProductlineMatch");
+		String fileProductlineSheetMatch=productLineMap.get("fileProductlineSheetMatch")==null?"":(String)productLineMap.get("fileProductlineSheetMatch");
+		String fileProductlineCellMatch=productLineMap.get("filfileProductlineCellMatcheOrderMatch")==null?"":(String)productLineMap.get("fileProductlineCellMatch");
+		if(fileProductlineCellMatch.equals("") && fileProductlineSheetMatch.equals("")){
+			pk.setFileProductlineMatch(fileProductlineMatch);
+			pk.setFileProductLineMatchRequired(false);
+		}else{
+			pk.setFileProductLineMatchLocation("Sheet Name : "+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell : "+fileProductlineCellMatch+";");
+			pk.setFileProductLineMatchRequired(true);
+		}
+		String fileRBOMatch=productLineMap.get("fileRBOMatch")==null?"":(String)productLineMap.get("fileRBOMatch");
+		String fileRBOSheetMatch=productLineMap.get("fileRBOSheetMatch")==null?"":(String)productLineMap.get("fileRBOSheetMatch");
+		String fileRBOCellMatch=productLineMap.get("fileRBOCellMatch")==null?"":(String)productLineMap.get("fileRBOCellMatch");
+		if(fileRBOSheetMatch.equals("") && fileRBOCellMatch.equals("")){
+			pk.setFileRBOMatch(fileRBOMatch);
+			pk.setFileRBOMatchRequired(false);
+		}else{
+			pk.setFileRBOMatchLocation("Sheet Name : "+fileRBOSheetMatch+";Value:"+fileRBOMatch+";Cell : "+fileRBOCellMatch+";");
+			pk.setFileRBOMatchRequired(true);
+		}
+		String attachmentFileProductlineMatchSheet=productLineMap.get("attachmentFileProductlineMatchSheet")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchSheet");
+		String attachmentFileProductlineMatch=productLineMap.get("attachmentFileProductlineMatch")==null?"":(String)productLineMap.get("attachmentFileProductlineMatch");
+		String attachmentFileProductlineMatchCell=productLineMap.get("attachmentFileProductlineMatchCell")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchCell");
+		if(!(attachmentFileProductlineMatchCell.equals("") && attachmentFileProductlineMatchSheet.equals(""))){
+			pk.setAttachmentFileProductlineMatchLocation("Sheet Name : "+attachmentFileProductlineMatchSheet+";Value:"+attachmentFileProductlineMatch+";Cell : "+attachmentFileProductlineMatchCell+";");
+			pk.setAttachmentFileProductlineMatchRequired(true);
+		}
+		String attachmentFileOrderMatchCell=productLineMap.get("attachmentFileOrderMatchCell")==null?"":(String)productLineMap.get("attachmentFileOrderMatchCell");
+		String attachmentFileOrderMatchSheet=productLineMap.get("attachmentFileOrderMatchSheet")==null?"":(String)productLineMap.get("attachmentFileOrderMatchSheet");
+		String attachmentFileOrderMatch=productLineMap.get("attachmentFileOrderMatch")==null?"":(String)productLineMap.get("attachmentFileOrderMatch");
+		if(attachmentFileOrderMatchCell.equals("") && attachmentFileOrderMatchSheet.equals("")){
+			pk.setAttachmentFileOrderMatch(fileRBOMatch);
+			pk.setAttachmentFileOrderMatchRequired(false);
+		}else{
+			pk.setAttachmentFileOrderMatchLocation("Sheet Name : "+attachmentFileOrderMatchSheet+";Value:"+attachmentFileOrderMatch+";Cell : "+attachmentFileOrderMatchCell+";");
+			pk.setAttachmentFileOrderMatchRequired(true);
+		}
+		return pk;
 	}
 
 }
