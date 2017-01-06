@@ -119,7 +119,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}
 			},
 			{
-				text :'Receiver Email ID',
+				text :'Receiver Email Id',
 				width:120,
 				dataIndex:'Email',
 				flex:1,
@@ -137,24 +137,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}
 			},
 			{
-				text :'Received Date',
-				width:120,
-				dataIndex:'receivedDate',
-				flex:1
-			},
-			{
-				text :'Read Date',
-				width:120,
-				dataIndex:'readDate',
-				flex:1
-			},
-			{
-				text :'Acknowledged Date',
-				width:120,
-				dataIndex:'acknowledgementDate',
-				flex:1
-			},
-			{
 				text :'CC',
 				width:120,
 				dataIndex:'CC',
@@ -162,7 +144,53 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				renderer:function(v, metaData){
 					return me.tipRenderer(v, metaData);
 				}
-			}
+			},
+			{
+				text :'Received Date',
+				width:120,
+				dataIndex:'receivedDate',
+				flex:1,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
+			},
+			{
+				text :'Read Date',
+				width:120,
+				dataIndex:'readDate',
+				flex:1,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
+			},
+			{
+				text :'Acknowledged Date',
+				width:120,
+				dataIndex:'acknowledgementDate',
+				flex:1,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
+			},
+			{
+				text :'Last Modified By',
+				width:120,
+				dataIndex:'lastModifiedBy',
+				flex:1,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
+			},
+			{
+				text :'Last Modified Date',
+				width:120,
+				dataIndex:'lastModifiedDate',
+				flex:1,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
+			},
+			
 		]
 	},
 	
