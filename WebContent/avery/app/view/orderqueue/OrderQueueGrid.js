@@ -230,6 +230,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				text : AOCLit.submittedDate,
 				width:95,
 				dataIndex:'submittedDate'
+			},{
+				text :'Last Modified By',
+				dataIndex:'lastModifiedBy',
+				flex:0.5
+			},
+			{
+				text :'Last Modified Date',
+				dataIndex:'lastModifiedDate',
+				flex:0.5
 			},
 			{
 				text : AOCLit.acknowledgeDate,
