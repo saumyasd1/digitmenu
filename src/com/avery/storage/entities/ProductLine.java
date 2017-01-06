@@ -224,6 +224,8 @@ public class ProductLine extends MainAbstractEntity{
 	private boolean localItem;
 	@Column(name = "averyItem")
 	private boolean averyItem;	
+	@Column(name = "sizeCheck")
+	private boolean sizeCheck;	
 	@Column(name = "customerItemIdentifierDescription",length=500)
 	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
@@ -241,6 +243,13 @@ public class ProductLine extends MainAbstractEntity{
 	
 	private transient long siteId;
 	
+	public boolean isSizeCheck() {
+		return sizeCheck;
+	}
+
+	public void setSizeCheck(boolean sizeCheck) {
+		this.sizeCheck = sizeCheck;
+	}
 	
 	public long getSiteId() {
 		return siteId;
