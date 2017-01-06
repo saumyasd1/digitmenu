@@ -8,7 +8,9 @@ Ext.define('AOC.model.PartnerManagementModel',{
 		{name: 'address', mapping:'address',type: 'string'},
 		{name: 'contactPerson', mapping:'contactPerson',type: 'string'},
 		{name: 'phone', mapping:'phone',type: 'string'},
-		{name: 'active', mapping:'active',type: 'boolean'}
+		{name: 'active', mapping:'active',type: 'boolean'},
+		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
+		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'}
 	    ]
 });
 
