@@ -125,7 +125,10 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text :'Status',
 				width:120,
 				dataIndex:'status',
-				flex:1
+				flex:1,
+				renderer:function(v){
+					return AOC.util.Helper.getSatus(v);
+				}
 			},
 			{
 				text :'CC',
