@@ -62,15 +62,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				text : 'From',
 				sortable : true,
 				dataIndex:'senderEmailId',
-				flex:0.5,
-				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else {
-						return '';
-					}
-				}
+				flex:0.5
 			},
 			{
 				text :'Subject',
@@ -78,19 +70,17 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				dataIndex:'subject',
 				flex:0.5,
 				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else {
-						return '';
-					}
+					return me.tipRenderer(v, metadata);
 				}
 			},
 			{
 				text :'CC',
 				sortable : true,
 				dataIndex:'ccMailId',
-				flex:0.5
+				flex:0.5,
+				renderer:function(v,metadata){
+					return me.tipRenderer(v, metadata);
+				}
 			},
 			{
 				text :'Status',
@@ -99,13 +89,31 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				flex:0.5
 			},
 			{
-				text : 'Date/Time',
+				text : 'Date-Time',
 				sortable : true,
 				dataIndex:'createdDate',
 				align: 'right',
 				flex:0.5
+			},
+			{
+				text :'Last Modified By',
+				dataIndex:'lastModifiedBy',
+				flex:0.5
+			},
+			{
+				text :'Last Modified Date',
+				dataIndex:'lastModifiedDate',
+				flex:0.5
 			}
 		];
+	},
+	tipRenderer:function(v, metaData){
+		if(v){
+			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+			return Ext.String.htmlEncode(v);
+		}else {
+			return '';
+		}
 	},
 	buildTbar:function(){
   		var me=this;
