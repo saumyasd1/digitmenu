@@ -71,7 +71,17 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 				            sortable : true,
 				            dataIndex:'phone',
 				            flex:0.5
-			            }
+			            },
+			            {
+							text :AOCLit.lastmodifiedby,
+							dataIndex:'lastModifiedBy',
+							width:120
+						},
+						{
+							text :AOCLit.lastmodifieddate,
+							dataIndex:'lastModifiedDate',
+							width:120
+						}
         ];
     },
 	 buildtbar:function(){
