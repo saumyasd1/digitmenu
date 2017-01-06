@@ -33,8 +33,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				activate:function(obj){
 					me.down('pagingtoolbar').bindStore(obj.getStore());
 				}
-			},
-              
+			}
         });
         this.callParent(arguments);
     },
@@ -131,19 +130,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				text : AOCLit.TrackingNo,
 				width:50,
 				dataIndex:'TrackingId',
-				align: 'right',
+				align: 'right'
 			},
 			{
 				text : AOCLit.orderTrackNo,
 				width:50,
 				dataIndex:'id',
-				align: 'right',
+				align: 'right'
 			},
 			{
 				text : AOCLit.prvOrderTrackNo,
 				width:80,
 				dataIndex:'prvOrderQueueID',
-				align: 'right',
+				align: 'right'
 			},
 			{
 				text :AOCLit.PONumber,

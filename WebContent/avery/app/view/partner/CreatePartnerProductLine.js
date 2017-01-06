@@ -46,7 +46,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				itemId:'titleItemId',
 				vale:'',
 				hidden:false,
-				style:'margin:0px auto;color:#2f3338;font-size:13px;font-weight:bold;',
+				style:'margin:0px auto;color:#2f3338;font-size:13px;font-weight:bold;'
 			},
 			{
 				xtype:'displayfield',
@@ -145,8 +145,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								bind:'{email}',
 								fieldLabel:'Email ID',
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-								//width : 400,
-								//flex:0.8,
+								
 								margin:'0 0 5 10',
 								labelSeparator:'',
 								labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
@@ -167,7 +166,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelAlign:'top',
 						margin : '0 0 0 0',
 						checkboArray:new Array(),
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;'
 					},
 					{
 	        			xtype:'fieldcontainer',
@@ -225,7 +224,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							},
 							{
 								xtype:'hiddenfield',
-								reference:'productLineHidden',
+								reference:'productLineHidden'
 								//value:('{productLineType}'==null||'{productLineType}'=='')?'HTL':'{productLineType}'
 							}
 						]
@@ -604,7 +603,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												itemId:'SchemaId',
 												name: 'schemaId',
 												bind:'{attachmentSchemaID_1}',
-												fieldLabel:'Schema ID',//?/
+												fieldLabel:'Schema ID'//?/
 											},
 											{
 												xtype:'textfield',
