@@ -10,5 +10,9 @@ Ext.define('AOC.store.OrderQueueStore', {
 	        rootProperty: 'orders',
 	        totalProperty: 'totalCount'
 	    }
-	}
+	},
+	sorters: [{
+ 		property:'lastModifiedDate',
+ 		direction:'ASC'
+ 			}]
 });
