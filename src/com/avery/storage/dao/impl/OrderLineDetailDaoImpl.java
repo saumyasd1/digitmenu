@@ -36,10 +36,12 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		Criteria criteria = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(OrderLineDetail.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
+			criteria = session.createCriteria(OrderLineDetail.class)
+					.createAlias("varOrderLine", "varOrderLine")
+					.createAlias("varOrderLine.varOrderFileQueue", "varOrderFileQueue");
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderID));
 			criteria.setProjection( Projections.projectionList()
-			        .add( Projections.distinct(Projections.property("variablefieldname")) ));
+			        .add( Projections.distinct(Projections.property("variableFieldName")) ));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
