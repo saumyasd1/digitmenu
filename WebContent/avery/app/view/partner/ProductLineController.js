@@ -18,7 +18,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var orderSystemInfo=new Array();
 		for(var jj=0;jj<checkboArray.length;jj++){
 			currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
-			if(currentcheckBox.getValue()){
+			if(currentcheckBox && currentcheckBox.getValue()){
 				systemGridStore=me.getView().lookupReference(checkboArray[jj]+'systemGrid').getStore();
 				orgGridStore=me.getView().lookupReference(checkboArray[jj]+'orgGrid').getStore();
 				var orgInfo=new Array(),currentStore;
@@ -77,7 +77,20 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
 					dataStructureName:dataModel.dataStructureName,
 					active:dataModel.active,
-					attachmentRequired:attachmentRequired
+					attachmentRequired:attachmentRequired,
+					fileOrderMatchCell:dataModel.fileOrderMatchCell,
+					fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
+					fileOrderMatch:dataModel.fileOrderMatch,
+					fileRBOCellMatch:dataModel.fileRBOCellMatch,
+					fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
+					attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
+					attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
+					attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
+					attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
+					attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
+					attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
+					fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
+					fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch
 					
 		    	};
 		}
@@ -125,7 +138,20 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
 					dataStructureName:dataModel.dataStructureName,
 					active:dataModel.active,
-					attachmentRequired:attachmentRequired
+					attachmentRequired:attachmentRequired,
+					fileOrderMatchCell:dataModel.fileOrderMatchCell,
+					fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
+					fileOrderMatch:dataModel.fileOrderMatch,
+					fileRBOCellMatch:dataModel.fileRBOCellMatch,
+					fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
+					attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
+					attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
+					attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
+					attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
+					attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
+					attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
+					fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
+					fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch
 					
 		    	};
 		}
