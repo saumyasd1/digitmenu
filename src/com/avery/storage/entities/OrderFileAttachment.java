@@ -1,5 +1,7 @@
 package com.avery.storage.entities;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +36,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+//import com.avery.storage.MixIn.AdditionalFilesMixIn;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.ProductLineMixIn;
@@ -519,4 +522,39 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			}
 			return rb.build();
 		}
+	    
+	    @GET
+		@Path("/download/{filePath : .+}")
+		@Produces(MediaType.MULTIPART_FORM_DATA)
+		public Response getFileByID(@Context UriInfo ui,
+				@Context HttpHeaders hh, @PathParam("filePath") String filePath) {
+			OrderFileAttachment orderFileAttachment = null;
+			try{
+				
+				File file = new File(filePath);
+				if(!file.exists()){
+					throw new FileNotFoundException("The file is not available at location:\""+filePath+"\".");
+				}
+					
+				String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
+				
+				
+				return Response
+			            .ok(file, MediaType.APPLICATION_OCTET_STREAM)
+			            .header("content-disposition","attachment; filename = " + fileName)
+			            .build();
+			} catch (WebApplicationException ex) {
+				throw ex;
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new WebApplicationException(Response
+						.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(ExceptionUtils.getRootCauseMessage(e))
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			//return rb.build();
+		}
+	
+
+	    
 }
