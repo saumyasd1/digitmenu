@@ -440,17 +440,17 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileOrderMatch(fileOrderMatch);
 			pk.setFileOrderMatchRequired(false);
 		}else{
-			pk.setFileOrderMatchLocation("Sheet Name : "+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell : "+fileOrderMatchCell+";");
+			pk.setFileOrderMatchLocation("Sheet Name:"+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell:"+fileOrderMatchCell+";");
 			pk.setFileOrderMatchRequired(true);
 		}
 		String fileProductlineMatch=productLineMap.get("fileProductlineMatch")==null?"":(String)productLineMap.get("fileProductlineMatch");
 		String fileProductlineSheetMatch=productLineMap.get("fileProductlineSheetMatch")==null?"":(String)productLineMap.get("fileProductlineSheetMatch");
-		String fileProductlineCellMatch=productLineMap.get("filfileProductlineCellMatcheOrderMatch")==null?"":(String)productLineMap.get("fileProductlineCellMatch");
+		String fileProductlineCellMatch=productLineMap.get("fileProductlineCellMatch")==null?"":(String)productLineMap.get("fileProductlineCellMatch");
 		if(fileProductlineCellMatch.equals("") && fileProductlineSheetMatch.equals("")){
 			pk.setFileProductlineMatch(fileProductlineMatch);
 			pk.setFileProductLineMatchRequired(false);
 		}else{
-			pk.setFileProductLineMatchLocation("Sheet Name : "+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell : "+fileProductlineCellMatch+";");
+			pk.setFileProductLineMatchLocation("Sheet Name:"+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell:"+fileProductlineCellMatch+";");
 			pk.setFileProductLineMatchRequired(true);
 		}
 		String fileRBOMatch=productLineMap.get("fileRBOMatch")==null?"":(String)productLineMap.get("fileRBOMatch");
@@ -460,14 +460,14 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileRBOMatch(fileRBOMatch);
 			pk.setFileRBOMatchRequired(false);
 		}else{
-			pk.setFileRBOMatchLocation("Sheet Name : "+fileRBOSheetMatch+";Value:"+fileRBOMatch+";Cell : "+fileRBOCellMatch+";");
+			pk.setFileRBOMatchLocation("Sheet Name:"+fileRBOSheetMatch+";Value:"+fileRBOMatch+";Cell:"+fileRBOCellMatch+";");
 			pk.setFileRBOMatchRequired(true);
 		}
 		String attachmentFileProductlineMatchSheet=productLineMap.get("attachmentFileProductlineMatchSheet")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchSheet");
 		String attachmentFileProductlineMatch=productLineMap.get("attachmentFileProductlineMatch")==null?"":(String)productLineMap.get("attachmentFileProductlineMatch");
 		String attachmentFileProductlineMatchCell=productLineMap.get("attachmentFileProductlineMatchCell")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchCell");
 		if(!(attachmentFileProductlineMatchCell.equals("") && attachmentFileProductlineMatchSheet.equals(""))){
-			pk.setAttachmentFileProductlineMatchLocation("Sheet Name : "+attachmentFileProductlineMatchSheet+";Value:"+attachmentFileProductlineMatch+";Cell : "+attachmentFileProductlineMatchCell+";");
+			pk.setAttachmentFileProductlineMatchLocation("Sheet Name :"+attachmentFileProductlineMatchSheet+";Value:"+attachmentFileProductlineMatch+";Cell:"+attachmentFileProductlineMatchCell+";");
 			pk.setAttachmentFileProductlineMatchRequired(true);
 		}
 		String attachmentFileOrderMatchCell=productLineMap.get("attachmentFileOrderMatchCell")==null?"":(String)productLineMap.get("attachmentFileOrderMatchCell");
@@ -477,7 +477,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setAttachmentFileOrderMatch(fileRBOMatch);
 			pk.setAttachmentFileOrderMatchRequired(false);
 		}else{
-			pk.setAttachmentFileOrderMatchLocation("Sheet Name : "+attachmentFileOrderMatchSheet+";Value:"+attachmentFileOrderMatch+";Cell : "+attachmentFileOrderMatchCell+";");
+			pk.setAttachmentFileOrderMatchLocation("Sheet Name :"+attachmentFileOrderMatchSheet+";Value:"+attachmentFileOrderMatch+";Cell:"+attachmentFileOrderMatchCell+";");
 			pk.setAttachmentFileOrderMatchRequired(true);
 		}
 		return pk;
