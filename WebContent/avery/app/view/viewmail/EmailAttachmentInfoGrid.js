@@ -110,6 +110,13 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 							fields:['name', 'code']
 						})
 					} 
+				},
+				{
+					text : 'Additional Data File Key',
+					flex :1.3,
+					dataIndex:'additionalDataFileKey',
+					name: 'additionalDataFileKey',
+					editor:'textfield'
 				}, 
 				{
 					text : 'Status',
