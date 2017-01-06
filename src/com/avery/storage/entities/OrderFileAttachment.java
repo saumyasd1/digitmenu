@@ -464,7 +464,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					Map<String,Object> fileAttachment=(Map<String,Object>)jsonData.get(i);
 					int id=(int)fileAttachment.get("id");
 					OrderFileAttachment fileAttachementObj=orderFileAttachmentService.read((long)id);
-					int productLineId=(fileAttachment.get("productLineId")==null || fileAttachment.get("productLineId").equals("")?0: Integer.parseInt((String)fileAttachment.get("productLineId")));  
+					int productLineId = (fileAttachment.get("productLineId")==null?0:(int)fileAttachment.get("productLineId"));
 					if(productLineId == 0){
 						ProductLine  productLineObj =new ProductLine();
 						productLineObj.setId(productLineId);
