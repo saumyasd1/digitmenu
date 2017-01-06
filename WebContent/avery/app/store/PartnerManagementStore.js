@@ -19,6 +19,10 @@ Ext.define('AOC.store.PartnerManagementStore', {
             "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
         }
         
-    }
+    },
+    sorters: [{
+ 		property:'lastModifiedDate',
+ 		direction:'ASC'
+ 			}]
 });
 
