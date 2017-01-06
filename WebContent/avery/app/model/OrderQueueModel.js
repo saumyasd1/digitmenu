@@ -96,31 +96,20 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'attachmentPresent',
 		mapping : 'attachmentPresent',
 		type:'boolean'
-	}
-	/*{
+	},
+	{
+		name: 'lastModifiedBy', 
+		mapping:'lastModifiedBy',
+		type: 'string'
+	},
+    {
+	    name:'lastModifiedDate',
+	    mapping:'lastModifiedDate',
+		type:'string'
+			},
+	{ //this column need to be implemented for multiple attachments(window)
 	    name: 'orderFiles',
-	    type: 'string',
-	    convert: function( v, record ) {
-	    	var attachmentFileList=[];
-	    	var OrderFile=[];
-	        var order=record.get('varOrderFileAttachment');
-	        var length= order.length;
-	        var flag=false;
-		      for(var i=0;i<length;i++){ 
-		    	  var fileContentType=order[i].fileContentType;
-		    	  if(fileContentType=='Order'){
-		    		  OrderFile.push({fileName:order[i].fileName,id:order[i].id});
-		    	  }else{
-		    		  attachmentFileList.push({fileName:order[i].fileName,id:order[i].id});
-		    		  flag=true;
-		    	  }
-		      }
-	      	 record.set('attachmentPresent',flag);
-	      	 record.set('attachmentFileList',attachmentFileList);
-	         record.set('OrderFile',OrderFile);
-	         record.commit();
-	         return true;
-	    }
-	}*/
+	    type: 'string'
+	}
     ]
 });
