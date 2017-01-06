@@ -33,7 +33,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData(),
 		attachmentRequired=this.getView().lookupReference('attachmentRequired');
-		debugger;
 		var attachmentRequired=attachmentRequired.getValue().attachmentRequired;
 		if(editMode){
 			Id=createproductline.productlineId;
