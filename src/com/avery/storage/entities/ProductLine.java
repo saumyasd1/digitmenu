@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.FetchProfile;
 
@@ -45,7 +46,6 @@ import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
@@ -63,39 +63,44 @@ public class ProductLine extends MainAbstractEntity{
 	private static final long serialVersionUID = -8487156716364715527L;
 
 	@Column(name = "active")
-	boolean active;
+	private boolean active;
+	
+	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchLocation", length = 100)
-	String attachmentFileMatchLocation;// 100
+	private String attachmentFileMatchLocation;// 100
+	
+	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchRequired")
-	boolean attachmentFileMatchRequired;
+	private boolean attachmentFileMatchRequired;
+	
 	@Column(name = "attachmentFileNameExtension_1", length = 50)
-	String attachmentFileNameExtension_1;// 50
+	private String attachmentFileNameExtension_1;// 50
 	@Column(name = "attachmentFileNameExtension_2", length = 50)
-	String attachmentFileNameExtension_2;// 50
+	private String attachmentFileNameExtension_2;// 50
 	@Column(name = "attachmentFileNameExtension_3", length = 50)
-	String attachmentFileNameExtension_3;// 50
+	private String attachmentFileNameExtension_3;// 50
 	@Column(name = "attachmentFileNameExtension_4", length = 50)
-	String attachmentFileNameExtension_4;// 50
+	private String attachmentFileNameExtension_4;// 50
 	@Column(name = "attachmentFileNamePattern_1", length = 100)
-	String attachmentFileNamePattern_1;// 100
+	private String attachmentFileNamePattern_1;// 100
 	@Column(name = "attachmentFileNamePattern_2", length = 100)
-	String attachmentFileNamePattern_2;// 100
+	private String attachmentFileNamePattern_2;// 100
 	@Column(name = "attachmentFileNamePattern_3", length = 100)
-	String attachmentFileNamePattern_3;// 100
+	private String attachmentFileNamePattern_3;// 100
 	@Column(name = "attachmentFileNamePattern_4", length = 100)
 	String attachmentFileNamePattern_4;// 100
 	@Column(name = "attachmentFileOrderMatch", length = 100)
 	String attachmentFileOrderMatch;// 100
 	@Column(name = "attachmentFileOrderMatchLocation", length = 100)
-	String attachmentFileOrderMatchLocation;// 100
+	private String attachmentFileOrderMatchLocation;// 100
 	@Column(name = "attachmentFileOrderMatchRequired")
-	boolean attachmentFileOrderMatchRequired;
+	private boolean attachmentFileOrderMatchRequired;
 	@Column(name = "attachmentFileProductlineMatchLocation", length = 100)
-	String attachmentFileProductlineMatchLocation;// 100
+	private String attachmentFileProductlineMatchLocation;// 100
 	@Column(name = "attachmentFileProductlineMatchRequired")
-	boolean attachmentFileProductlineMatchRequired;
+	private boolean attachmentFileProductlineMatchRequired;
 	@Column(name = "attachmentFileRBOMatch", length = 100)
-	String attachmentFileRBOMatch;// 100
+	private String attachmentFileRBOMatch;// 100
 	@Column(name = "attachmentIdentifier_1", length = 50)
 	String attachmentIdentifier_1;// 50
 	@Column(name = "attachmentIdentifier_2", length = 50)
@@ -224,8 +229,6 @@ public class ProductLine extends MainAbstractEntity{
 	private boolean localItem;
 	@Column(name = "averyItem")
 	private boolean averyItem;	
-	@Column(name = "sizeCheck")
-	private boolean sizeCheck;	
 	@Column(name = "customerItemIdentifierDescription",length=500)
 	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
@@ -243,14 +246,120 @@ public class ProductLine extends MainAbstractEntity{
 	
 	private transient long siteId;
 	
-	public boolean isSizeCheck() {
-		return sizeCheck;
+	private transient String fileOrderMatchSheet;
+	
+	private transient String fileOrderMatchCell;
+	
+	private transient String fileProductlineSheetMatch;
+	
+	private transient String fileProductlineCellMatch;
+	
+	private transient String fileRBOSheetMatch;
+	
+	private transient String fileRBOCellMatch;
+	
+	private transient String attachmentFileProductlineMatchSheet;
+	
+	private transient String attachmentFileProductlineMatch;
+	
+	private transient String attachmentFileProductlineMatchCell;
+	
+	private transient String attachmentFileOrderMatchCell;
+	
+	private transient String attachmentFileOrderMatchSheet;
+	
+	public String getFileOrderMatchSheet() {
+		return fileOrderMatchSheet;
 	}
 
-	public void setSizeCheck(boolean sizeCheck) {
-		this.sizeCheck = sizeCheck;
+	public void setFileOrderMatchSheet(String fileOrderMatchSheet) {
+		this.fileOrderMatchSheet = fileOrderMatchSheet;
 	}
-	
+
+	public String getFileOrderMatchCell() {
+		return fileOrderMatchCell;
+	}
+
+	public void setFileOrderMatchCell(String fileOrderMatchCell) {
+		this.fileOrderMatchCell = fileOrderMatchCell;
+	}
+
+	public String getFileProductlineSheetMatch() {
+		return fileProductlineSheetMatch;
+	}
+
+	public void setFileProductlineSheetMatch(String fileProductlineSheetMatch) {
+		this.fileProductlineSheetMatch = fileProductlineSheetMatch;
+	}
+
+	public String getFileProductlineCellMatch() {
+		return fileProductlineCellMatch;
+	}
+
+	public void setFileProductlineCellMatch(String fileProductlineCellMatch) {
+		this.fileProductlineCellMatch = fileProductlineCellMatch;
+	}
+
+	public String getFileRBOSheetMatch() {
+		return fileRBOSheetMatch;
+	}
+
+	public void setFileRBOSheetMatch(String fileRBOSheetMatch) {
+		this.fileRBOSheetMatch = fileRBOSheetMatch;
+	}
+
+	public String getFileRBOCellMatch() {
+		return fileRBOCellMatch;
+	}
+
+	public void setFileRBOCellMatch(String fileRBOCellMatch) {
+		this.fileRBOCellMatch = fileRBOCellMatch;
+	}
+
+	public String getAttachmentFileProductlineMatchSheet() {
+		return attachmentFileProductlineMatchSheet;
+	}
+
+	public void setAttachmentFileProductlineMatchSheet(
+			String attachmentFileProductlineMatchSheet) {
+		this.attachmentFileProductlineMatchSheet = attachmentFileProductlineMatchSheet;
+	}
+
+	public String getAttachmentFileProductlineMatch() {
+		return attachmentFileProductlineMatch;
+	}
+
+	public void setAttachmentFileProductlineMatch(
+			String attachmentFileProductlineMatch) {
+		this.attachmentFileProductlineMatch = attachmentFileProductlineMatch;
+	}
+
+	public String getAttachmentFileProductlineMatchCell() {
+		return attachmentFileProductlineMatchCell;
+	}
+
+	public void setAttachmentFileProductlineMatchCell(
+			String attachmentFileProductlineMatchCell) {
+		this.attachmentFileProductlineMatchCell = attachmentFileProductlineMatchCell;
+	}
+
+	public String getAttachmentFileOrderMatchCell() {
+		return attachmentFileOrderMatchCell;
+	}
+
+	public void setAttachmentFileOrderMatchCell(String attachmentFileOrderMatchCell) {
+		this.attachmentFileOrderMatchCell = attachmentFileOrderMatchCell;
+	}
+
+	public String getAttachmentFileOrderMatchSheet() {
+		return attachmentFileOrderMatchSheet;
+	}
+
+	public void setAttachmentFileOrderMatchSheet(
+			String attachmentFileOrderMatchSheet) {
+		this.attachmentFileOrderMatchSheet = attachmentFileOrderMatchSheet;
+	}
+
 	public long getSiteId() {
 		return siteId;
 	}
