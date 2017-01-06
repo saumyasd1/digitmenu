@@ -15,7 +15,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		Ext.apply(this, {
 			tbar:{
 				height:AOC.config.Settings.config.defaultTbarHeight,
-				items:me.buildTbar(),
+				items:me.buildTbar()
 			}
 	 	});
 	 	me.callParent(arguments);
@@ -69,7 +69,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				autoWidth: true, 
 				text: AOCLit.viewSalesOrderBtnText,
 				handler: 'viewSalesOrder',
-				disabled:true,
+				disabled:true
 			}
 		]
 	},
@@ -93,7 +93,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					{
 						fieldLabel:'Partner',
 						value : record.get('PartnerName'),
-						flex:1.5,
+						flex:1.5
 					},
 					{
 						fieldLabel : 'RBO',

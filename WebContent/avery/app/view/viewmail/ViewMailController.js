@@ -97,7 +97,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   		}
   		
   		if(orderFlag){
-  			Ext.Msg.alert(AOCLit.warning, 'Please select Partner Data Structure.');
+  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
+  			Ext.getBody().unmask();
   		}
   		else{
 			var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
@@ -179,7 +180,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			record = e.record
 			grid = editor.grid,
 			obj = {
-				productLineId:record.get('dataStructureName'), 
+				productLineId:record.get('dataStructureNameId'), 
 				id:record.get('id'),
 				status:1,
 				fileContentType:record.get('contentType')
@@ -193,7 +194,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		
 		for(var i = 0; i < len; i++){
 			if(grid.emailGridRecordArray[i].id == record.get('id')){
-				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureName');
+				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureNameId');
 				grid.emailGridRecordArray[i].fileContentType = record.get('contentType');
 				return;
 			}
@@ -278,14 +279,14 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	
 	onEmailAttachmentGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		if(e.target.className=='emailAttachmentLink'){
-			this.downLoadFile(record.get('id'));
+			this.downLoadFile(record.get('filePath'));
 		}
 	},
 	
-	downLoadFile:function(id){
+	downLoadFile:function(filePath){
 		var form = Ext.create('Ext.form.Panel', { 
 			standardSubmit: true,   
-			url : applicationContext+'/rest/orderattachements/download/'+id
+			url : applicationContext+'/rest/orderattachements/download/'+filePath
 		});
 		form.submit({
 			method : 'GET'
@@ -301,7 +302,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		
 		if(len > 0){
 			for(var i=0;i<len;i++){
-				me.downLoadFile(recordsArray[i].get('id'));
+				me.downLoadFile(recordsArray[i].get('filePath'));
 			}
 		}else{
 			Ext.Msg.alert(AOCLit.warningTite, AOCLit.selectAttachmentFileMsg);

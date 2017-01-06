@@ -76,7 +76,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				 height:150,
 				 scrollable:true,
 				 margin:'0 10 0 10',
-				 style:'border-top:solid 1px #cecece;',
+				 style:'border-top:solid 1px #cecece;'
 			},
 			{
 				 xtype:'emailattachmentinfoGrid',
