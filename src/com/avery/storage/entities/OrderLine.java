@@ -291,9 +291,71 @@ public class OrderLine extends MainAbstractEntity{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+//	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
+	/*Not in use currently*/
+	@Column(name = "averyMOQ", length = 50)
+	String averyMOQ;
+	public String getAveryMOQ() {
+		return averyMOQ;
+	}
+
+	public void setAveryMOQ(String averyMOQ) {
+		this.averyMOQ = averyMOQ;
+	}
+
+	public String getAveryRoundupQty() {
+		return averyRoundupQty;
+	}
+
+	public void setAveryRoundupQty(String averyRoundupQty) {
+		this.averyRoundupQty = averyRoundupQty;
+	}
+
+	public String getAveryATO() {
+		return averyATO;
+	}
+
+	public void setAveryATO(String averyATO) {
+		this.averyATO = averyATO;
+	}
+
+	public String getAveryRegion() {
+		return averyRegion;
+	}
+
+	public void setAveryRegion(String averyRegion) {
+		this.averyRegion = averyRegion;
+	}
+
+	public String getAveryProductLineType() {
+		return averyProductLineType;
+	}
+
+	public void setAveryProductLineType(String averyProductLineType) {
+		this.averyProductLineType = averyProductLineType;
+	}
+
+	public String getAverySample() {
+		return averySample;
+	}
+
+	public void setAverySample(String averySample) {
+		this.averySample = averySample;
+	}
+
+	@Column(name = "averyRoundupQty", length = 50)
+	String averyRoundupQty;
+	@Column(name = "averyATO", length = 50)
+	String averyATO;
+	@Column(name = "averyRegion", length = 50)
+	String averyRegion;
+	@Column(name = "averyProductLineType", length = 50)
+	String averyProductLineType;
+	
+	@Column(name = "averySample", length = 50)
+	String averySample;
 	
 	
 	
@@ -1210,14 +1272,14 @@ public class OrderLine extends MainAbstractEntity{
 	public void setListOrderlineDetails(List<OrderLineDetail> listOrderlineDetails) {
 		this.listOrderlineDetails = listOrderlineDetails;
 	}
-
-	public List<SalesOrder> getListSalesOrderLine() {
-		return listSalesOrderLine;
-	}
-
-	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
-		this.listSalesOrderLine = listSalesOrderLine;
-	}
+//
+//	public List<SalesOrder> getListSalesOrderLine() {
+//		return listSalesOrderLine;
+//	}
+//
+//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
+//		this.listSalesOrderLine = listSalesOrderLine;
+//	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -1412,7 +1474,9 @@ public class OrderLine extends MainAbstractEntity{
 		Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
 		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
+		Response.ResponseBuilder rb = null;
 		try {
+			ObjectMapper mapper = new ObjectMapper();
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
@@ -1438,7 +1502,11 @@ public class OrderLine extends MainAbstractEntity{
 				Router router=new Router();
 				router.validateOrder(Long.parseLong((String)jsonMap.get("orderQueueId")));
 			}
-			return Response.ok().build();
+			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Permorfing bulk update", ex);
@@ -1451,6 +1519,7 @@ public class OrderLine extends MainAbstractEntity{
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+		return rb.build();
 	}
 
 

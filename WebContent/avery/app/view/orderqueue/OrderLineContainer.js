@@ -42,7 +42,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				xtype:'button',
 				reference:'validateButton',
 				ui:'white',
-				text: 'Validate',
+				text: '<b>Validate</b>',
 				margin:'0 10 0 10',
 				handler: 'validateOrderLine'
 			},
@@ -51,7 +51,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				ui:'white', 
 				reference:'cancelOrderButton',
 				margin:'0 10 0 0',
-				text: 'Cancel Order',
+				text: '<b>Cancel Order</b>',
 				handler: 'cancelOrder'
 			},
 			{
@@ -113,8 +113,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						handler:function(cmp, checked){
 		                	var activeitme =(checked) ? 0 : 1;
 		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
-		                	if(record.get('Status')==4 && AOC.config.Runtime.getAllowOrderLineEdit()){
-									if(checked==false){
+		                	if(record.get('Status') == 4 && AOC.config.Runtime.getAllowOrderLineEdit()){
+									if(!checked){
 									   me.lookupReference('form').enable();
 									}
 									else{ 
@@ -136,7 +136,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						reference: 'form',
 						padding:'10 0 10 0',
 						layout: 'hbox',
-						width:500,
+						maxWidth:620,
+						minWidth:400,
 						defaults:{
 							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 							labelSeparator:''
@@ -170,10 +171,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 								xtype: 'combo',
 								hidden: true,
 								editable:false,
+								hideLabel:true,
 								margin:'0 0 0 20',
 								displayField: 'variableFieldName',
 								valueField: 'variableFieldName',
-								reference: 'variableFieldCombo'
+								reference: 'variableFieldCombo',
+								width:180
 							}, 
 							{
 								xtype: 'button',

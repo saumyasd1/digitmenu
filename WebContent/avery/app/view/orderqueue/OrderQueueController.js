@@ -187,12 +187,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
             viewOrders: function(cmp){
                currentRecord = e.record;
         	   var id = currentRecord.get('id');
+        	   
                me.runTime.setOrderQueueId(id);
                me.runTime.setOrderQueueActiveRecord(currentRecord);
                me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
                me.runTime.setAllowOrderLineEdit(true);
-               var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+               
+               //var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+               
         	   Ext.getBody().mask('Loading...');
+        	   
                 var owner = me.getView().ownerCt;
                 var status=currentRecord.get('Status');
                 var store = Ext.create('AOC.store.OrderLineStore', {
@@ -206,6 +210,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                         }
                     }
                 });
+                
                 owner.insert({
                     xtype: 'orderlinecontainer',
                     flex: 1,
@@ -213,24 +218,37 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 });
                 
                 var orderlinecontainer = owner.down('orderlinecontainer'),
-        		grid=orderlinecontainer.down('grid');
+        		grid = orderlinecontainer.down('orderlineexpandablegrid');
+                grid.editGrid = true;
+                
                 validateButton = orderlinecontainer.lookupReference('validateButton'),
                 bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
                 salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
                 salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
                 cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-                form=orderlinecontainer.lookupReference('form'),salesOrderCount=currentRecord.get('salesOrderCount');
-                if(status != AOCLit.waitingForCSRStatus) {
+                form=orderlinecontainer.lookupReference('form'),
+                salesOrderCount = currentRecord.get('salesOrderCount');
+                
+                if(status >= '19') {
+                	validateButton.enable();
+                	bulkUpdateButton.enable();
+                	salesViewOrderbutton.disable();
+                	salesOrderbutton.enable();
+                	cancelOrderButton.enable();
+           	        form.enable();
+                }else{
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
-                	salesViewOrderbutton.disable();
+                	salesViewOrderbutton.enable();
                 	salesOrderbutton.disable();
                 	cancelOrderButton.disable();
            	        form.disable();
                 }
+                
                 if(salesOrderCount!=0){
                 	salesViewOrderbutton.enable();
                 }
+                
                 owner.getLayout().setActiveItem(1);
                 Ext.getBody().unmask();
             	callout.destroy();

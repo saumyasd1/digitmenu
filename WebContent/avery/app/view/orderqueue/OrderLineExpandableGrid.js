@@ -264,8 +264,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 50,
 			editor: 'numberfield',
 			renderer:function(value, metadata, record){
-				if(Ext.isNumber(value)){
-					return value;
+				if(value){
+					return Number(value)
 				}
 				return '';
 			}
@@ -276,8 +276,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 55,
 			editor: 'numberfield',
 			renderer:function(value, metadata, record){
-				if(Ext.isNumber(value)){
-					return value;
+				if(value){
+					return Number(value)
 				}
 				return '';
 			}
@@ -1162,16 +1162,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         Ext.apply(this, {
 		    plugins: me.getOuterGridPlugin(),
 	        listeners:{
-	            	scope:this,
-	            	cellclick:'onCellClickToView',
-	            	'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-						if(cellIndex==0){
-							return false;
-						}
+				scope:this,
+				cellclick:'onCellClickToView',
+				'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+					if(cellIndex==0){
+						return false;
 					}
-	            }
-	        }
-        );
+				}
+			}
+		});
+		
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
@@ -1196,7 +1196,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						sel=(me.editGrid) ? 'rowmodel' : 'spreadsheet';
 						
 					return Ext.create('Ext.grid.Panel',{
-						nestedGridRefrence: 'listOrderlineDetails',
+						//nestedGridRefrence: 'listOrderlineDetails',
 						modal: 'AOC.model.VariableHeaderModel',
 						cls: 'nestedGrid',
 						store:store,
@@ -1361,14 +1361,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	getRowExpander();
     },
     getOuterGridPlugin:function(){
-    	var me=this,orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
+    	var me = this,
+    		orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
+    	
     	if(me.editGrid){
-    	if(orderQueueStatus==AOCLit.waitingForCSRStatus){
-    		return [me.getRowExpander(),me.getOuterGridRowEditor()];
+    	if(orderQueueStatus >= AOCLit.waitingForCSRStatus){
+    		return [me.getRowExpander(), me.getOuterGridRowEditor()];
     	}else
     		return [me.getRowExpander(),{ptype: 'clipboard'}];
     	}else{
-        		return [me.getRowExpander(),{ptype: 'clipboard'}];
+    		return [me.getRowExpander(),{ptype: 'clipboard'}];
     	}
     },
     getOuterGridRowEditor:function(){

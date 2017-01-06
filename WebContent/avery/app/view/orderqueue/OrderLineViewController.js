@@ -99,16 +99,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 //    	}
 //    },
     updateOrderLine:function(editor, context, eOpts){
-   
     	Ext.getBody().mask('Saving...');
-    	var ctx = context,me=this,
-        idx = ctx.rowIdx,
-        currentRecord = ctx.store.getAt(idx),parms='';
-    	var obj=currentRecord.getChanges( ) ;
-    	obj.id=currentRecord.id;
-    	var insertBillAddress=false,insertShipAddress=false;
-    	var runTime = AOC.config.Runtime;
-    	if(idx==0){
+    	
+    	var me = this,
+    		ctx = context,
+        	idx = ctx.rowIdx,
+        	currentRecord = ctx.store.getAt(idx),
+        	obj = currentRecord.getChanges(),
+        	insertBillAddress = false,
+        	insertShipAddress = false,
+        	runTime = AOC.config.Runtime;
+    	
+    	obj.id = currentRecord.id;
+    	
+    	if(idx == 0){
     		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!='' && currentRecord.getModified('oracleBilltoSiteNumber')==''){
     			insertBillAddress=true;
     	  }
@@ -116,21 +120,23 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			insertShipAddress=true;
     		}
 		}
-		var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
-    	Ext.Ajax.request({
-    		method:'PUT',
-	        jsonData:obj,
-    		   url : applicationContext+'/rest/orderLines/bulkupdate',
-		        success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
-			  		//Ext.Msg.alert('','Order line successfully updated');
-			  		Ext.getBody().unmask();
-			  		me.getView().store.load();
-		        },
-		        failure: function(response, opts) {
-		        	Ext.getBody().unmask();
-	          }
-    		  });
+    	
+		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+		
+		Ext.Ajax.request({
+			method:'PUT',
+			jsonData:params,
+			url : applicationContext+'/rest/orderLines/bulkupdate',
+			success : function(response, opts) {
+				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
+				Ext.Msg.alert('Success','Order line successfully updated');
+				Ext.getBody().unmask();
+				me.getView().store.load();
+			},
+			failure: function(response, opts) {
+				Ext.getBody().unmask();
+			}
+		});
     },
     updateOrderLinedetail:function(editor, context, eOpts){
     	Ext.getBody().mask('Saving...');
@@ -160,29 +166,32 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	Ext.getBody().mask('Saving...');
     	editorPlugin.suspendEvent('edit');
     	editorPlugin.completeEdit();
-      editorPlugin.resumeEvent('edit');
+    	editorPlugin.resumeEvent('edit');
+    	
       var ctx = editorPlugin.context,
           idx = ctx.rowIdx,
-          currentRecord = ctx.store.getAt(idx);
-      var obj = currentRecord.getChanges();
-      var insertBillAddress=false,insertShipAddress=false;
-  	var runTime = AOC.config.Runtime;
-  	if(idx==0){
+          currentRecord = ctx.store.getAt(idx),
+          obj = currentRecord.getChanges(),
+  		  insertBillAddress=false,
+  		  insertShipAddress=false,
+      	  runTime = AOC.config.Runtime;
+      
+      if(idx == 0){
   		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''&& currentRecord.getModified('oracleBilltoSiteNumber')==''){
   			insertBillAddress=true;
-  	  }
+  		}
   		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''&& currentRecord.getModified('oracleShiptoSiteNumber')==''){
   			insertShipAddress=true;
   		}
-		}
-		var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+      }
+      var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
       Ext.Ajax.request({
           method: 'PUT',
           jsonData: obj,
           url: applicationContext + '/rest/orderLines/bulkupdate',
           success: function(response, opts) {
-        	  AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
-             // Ext.Msg.alert('', 'Order line successfully updated');
+        	  //AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
+             Ext.Msg.alert('Success', 'Order line successfully updated');
               Ext.getBody().unmask();
               ctx.store.load();
           },

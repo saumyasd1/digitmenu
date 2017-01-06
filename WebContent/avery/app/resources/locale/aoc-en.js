@@ -355,7 +355,7 @@ Ext.define('AOC.lang.lit',{
     "orderReceivedStatus":'1',
     "orderError":'2',
     "orderPreProcessedStatus":'3',
-    //"waitingForCSRStatus":'4',//not in use in AOC-2A
+    "waitingForCSRStatus":'19',//not in use in AOC-2A
     //"salesOrderCreatedStatus":'5',
     "submitToOracleStatus=salesOrderGeneratedStatus":'6',
     "salesOrderSubmittedStatus":'7',
