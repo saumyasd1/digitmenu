@@ -97,7 +97,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   		}
   		
   		if(orderFlag){
-  			Ext.Msg.alert(AOCLit.warning, 'Please select Partner Data Structure.');
+  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
+  			Ext.getBody().unmask();
   		}
   		else{
 			var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
@@ -179,7 +180,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			record = e.record
 			grid = editor.grid,
 			obj = {
-				productLineId:record.get('dataStructureName'), 
+				productLineId:record.get('dataStructureNameId'), 
 				id:record.get('id'),
 				status:1,
 				fileContentType:record.get('contentType')
@@ -193,7 +194,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		
 		for(var i = 0; i < len; i++){
 			if(grid.emailGridRecordArray[i].id == record.get('id')){
-				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureName');
+				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureNameId');
 				grid.emailGridRecordArray[i].fileContentType = record.get('contentType');
 				return;
 			}
