@@ -66,10 +66,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					callout.destroy();
 					win.show();
 					me.runTime.setOrderEmailQueueId(id);
-					// me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
 					me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
-					//me.runTime.setAllowOrderLineEdit(true);
-					// var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 				},
 				viewOrder: function(cmp) {
 					var currentRecord = e.record,
