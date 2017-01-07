@@ -43,7 +43,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'shippingMethod', mapping:'shippingMethod',type: 'string'},
 	 		{name: 'specialInstruction', mapping:'specialInstruction',type: 'string'},
 	 		{name: 'orderReceivedDate', mapping:'orderReceivedDate',type: 'string'},
-	 		{name: 'soldTORBONumber', mapping:'soldTORBONumber',type: 'string'},
+	 		{name: 'soldToRBONumber', mapping:'soldToRBONumber',type: 'string'},
 	 		{name: 'oracleBillToSiteNumber', mapping:'oracleBilltoSiteNumber',type: 'string'},
 	 		{name: 'oracleShipToSiteNumber', mapping:'oracleShiptoSiteNumber',type: 'string'},
 	 		{name: 'retailerPO_CustomerJob', mapping:'retailerPO_CustomerJob',type: 'string'},
@@ -106,6 +106,9 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'moqdiffQty',type: 'string'},
 	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'},
 	 		{name:'fabricContent', type:'string'},
-	 		{name:'reviceOrder', type:'string'}
+	 		{name:'reviceOrder', type:'string'},
+	 		{name: 'variableDataValue', mapping:'variableDataValue', type:'string'},
+	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'}
+	 		
 	     ]
 });
