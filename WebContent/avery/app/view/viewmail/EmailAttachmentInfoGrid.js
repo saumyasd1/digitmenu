@@ -24,7 +24,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	        clicksToEdit: 1,
 	        listeners: {
                 beforeedit: function(e, editor){
-	                if (editor.grid.status == '5'){
+	                if (editor.grid.status == AOCLit.emailIdentifiedStatus){
 	                	return false;
 	                } 
                 }
@@ -66,7 +66,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
-						if(me.status == '5'){
+						if(me.status == AOCLit.emailIdentifiedStatus){
 							return record.get('dataStructureName');
 						}
 						
@@ -124,11 +124,11 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'status',
 					name: 'status',
 					renderer:function(value, record){
-						if(value == 8){
+						if(value == AOCLit.emailAttachmentInfoGridIdentifiedStatus){
 							return 'Identified';
-						}else if(value == 6){
+						}else if(value == AOCLit.emailAttachmentInfoGridUnIdentifiedStatus){
 							return 'Unidentified';
-						}else if(value == 7){
+						}else if(value == AOCLit.emailAttachmentInfoGridDisregardStatus){
 							return 'Disregard';
 						}
 						return '';
