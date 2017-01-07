@@ -33,6 +33,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineDetailMixIn;
+import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.service.OrderLineDetailService;
 import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
@@ -205,7 +206,7 @@ public class OrderLineDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(OrderLineDetail.class, OrderLineDetailMixIn.class);
+			mapper.addMixIn(OrderLine.class, OrderLineDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
 					.getInstance().getBean("orderLineDetailService");

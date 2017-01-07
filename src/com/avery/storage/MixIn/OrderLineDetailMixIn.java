@@ -1,6 +1,7 @@
 package com.avery.storage.MixIn;
 
 
+import java.util.List;
 import java.util.Set;
 
 import com.avery.storage.entities.OrderLine;
@@ -11,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class OrderLineDetailMixIn {
 	
-		@JsonIgnore
+		/*@JsonIgnore
 		public abstract OrderQueue getOrderQueueForOrderLine();
-		
-		@JsonIgnore
+		*/
+		/*@JsonIgnore
 		public abstract Set<OrderLineDetail> getOrderLineDetail(); 
-		
-		@JsonIgnore
+		*/
+		/*@JsonIgnore
 		public abstract OrderLine getVarOrderLine();
+		*/
+		@JsonIgnore
+		public abstract OrderQueue getVarOrderFileQueue();
+
+		@JsonIgnore
+		public abstract List<OrderLineDetail> getListOrderlineDetails();
 		
 }
