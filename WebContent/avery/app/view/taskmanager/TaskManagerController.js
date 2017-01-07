@@ -64,18 +64,6 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 						recordId:id
 					});
 					assignCsrWin.show();
-				},
-				disregard:function(){
-					currentRecord = e.record;
-					var id = currentRecord.get('id');
-					var win = Ext.create('AOC.view.taskmanager.DisregardEmailWindow');
-					callout.destroy();
-					win.show();
-					me.runTime.setOrderEmailQueueId(id);
-					// me.runTime.setOrderEmailQueueActiveRecord(currentRecord);
-					me.runTime.setOrderEmailQueueStatus(currentRecord.get('Status'));
-					//me.runTime.setAllowOrderLineEdit(true);
-					// var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 				}
             }
         });
@@ -113,8 +101,6 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             '<div style="width: 150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
             '</tpl>',
             '<div style="width: 150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>',
-            '</tpl>',
-            '<div style="width: 150px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="disregard"">Disregard</div>',
             '</tpl>'
         );
     }
