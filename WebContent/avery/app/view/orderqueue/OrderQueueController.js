@@ -229,7 +229,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 form=orderlinecontainer.lookupReference('form'),
                 salesOrderCount = currentRecord.get('salesOrderCount');
                 
-                if(status >= '19') {
+                if(status == AOCLit.waitingForCSRStatusOrderQueue) {
                 	validateButton.enable();
                 	bulkUpdateButton.enable();
                 	salesViewOrderbutton.disable();
