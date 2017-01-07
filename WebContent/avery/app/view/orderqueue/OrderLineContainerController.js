@@ -237,23 +237,30 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	 }
     },
     getUpdateScreen:function(){
-    	var me=this;
-    	 var viwport=Ext.ComponentQuery.query('#viewportitemid')[0];
-      	 var height=viwport.getHeight()-20;
-      	 var width=viwport.getWidth()-20;
-      	 var id=this.runTime.getOrderQueueId();
-      	 var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,store,win,innerGridType,comboValue='';
-      	 if(radioGroupValue=='2'){
-      		var comboField=this.lookupReference('variableFieldCombo');
-      		comboValue=comboField.getValue();
-      		if(comboValue=='' || comboValue==null){
+		var me = this,
+			viwport = Ext.ComponentQuery.query('#viewportitemid')[0],
+			height = viwport.getHeight()-20,
+			width = viwport.getWidth()-20,
+			id = me.runTime.getOrderQueueId(),
+			radioGroupValue = me.lookupReference('radioGroup').getValue().rb,
+			store,
+			win,
+			innerGridType,
+			comboValue = '';
+			
+		if(radioGroupValue == '2'){
+      		var comboField = this.lookupReference('variableFieldCombo'),
+				comboValue = comboField.getValue();
+				
+      		if(comboValue == '' || comboValue == null){
       			Ext.Msg.alert('', AOCLit.selectValueDrpMsg);
       			return false;
       		}
       		innerGridType='bulkUpdateVariableHeaderrGrid';
-      		height=height-180;
-      		width=width-240;
-      		store=Ext.create('AOC.store.OrderLineStore', {
+      		height = height - 180;
+      		width = width - 240;
+			
+      		store = Ext.create('AOC.store.OrderLineStore', {
       			model:'AOC.model.VariableHeaderModel',
     			proxy : {
     				type : 'rest',
@@ -264,7 +271,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			    }
     			}
     		}); 
-      	 }else{
+		}else{
       		store=Ext.create('AOC.store.OrderLineStore', {
     			proxy : {
     				type : 'rest',
@@ -273,29 +280,32 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			        type:'json', 
     			        rootProperty: 'orderLine'
     			    }
-    		}
+				}
     		});
-      		innerGridType='bulkupdateorderlinegrid';
-      	 }
-		   var win=Ext.create('AOC.view.base.BaseWindow',{
-			 	height:height,
-				width:width,
-				layout: 'fit',
-				draggable: false,
-				modal:true,
-				listeners:{ 
-			 	      close:function(obj,eOpts){
-			 	    	 var orderline=Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
-			 	    	     orderline.store.load();
-			 	}
-				},
-				items:[{
+      		innerGridType = 'bulkupdateorderlinegrid';
+		}
+		
+		var win=Ext.create('AOC.view.base.BaseWindow',{
+			height:height,
+			width:width,
+			layout: 'fit',
+			draggable: false,
+			modal:true,
+			listeners:{ 
+				close:function(obj, eOpts){
+					var orderline = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+					orderline.store.load();
+				}
+			},
+			items:[
+				{
 					xtype:innerGridType,
 					store:store,
 					variableColumnName:comboValue
-				}]
-		   });
-		   win.show();
+				}
+			]
+		});
+		win.show();
     },
     radioButtonClick:function(obj,newValue,oldValue){
     	var comboField=this.lookupReference('variableFieldCombo');

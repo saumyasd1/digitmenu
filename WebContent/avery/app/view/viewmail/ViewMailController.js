@@ -279,14 +279,14 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	
 	onEmailAttachmentGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		if(e.target.className=='emailAttachmentLink'){
-			this.downLoadFile(record.get('filePath'));
+			this.downLoadFile(record.get('filePath'), record.get('fileName'));
 		}
 	},
 	
-	downLoadFile:function(filePath){
+	downLoadFile:function(filePath, fileName){
 		var form = Ext.create('Ext.form.Panel', { 
 			standardSubmit: true,   
-			url : applicationContext+'/rest/orderattachements/download/'+filePath
+			url : applicationContext+'/rest/orderattachements/download/'+filePath +'/'+fileName
 		});
 		form.submit({
 			method : 'GET'
@@ -302,7 +302,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		
 		if(len > 0){
 			for(var i=0;i<len;i++){
-				me.downLoadFile(recordsArray[i].get('filePath'));
+				me.downLoadFile(recordsArray[i].get('filePath'),recordsArray[i].get('fileName'));
 			}
 		}else{
 			Ext.Msg.alert(AOCLit.warningTite, AOCLit.selectAttachmentFileMsg);

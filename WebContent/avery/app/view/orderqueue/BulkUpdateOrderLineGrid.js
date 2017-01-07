@@ -7,32 +7,33 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	emptyText: AOCLit.noContentTypeDispMsg,
 	runTime : AOC.config.Runtime,
 	reserveScrollbar:true,
-    initComponent : function(){
-	var me=this;
-	this.fieldArray = [];
-        Ext.apply(this,{
-            columns : this.buildColumns(),
+    initComponent: function(){
+    	var me=this;
+    	
+        Ext.apply(me,{
+            columns : me.buildColumns(),
 			columnLines:false,
-			layout:'fit',
 			selModel: {
-			       type: 'spreadsheet'
-			    },
-			    plugins: [{
+		       type: 'spreadsheet'
+		    },
+		    plugins: [
+	            {
 			        ptype: 'cellediting',
 			        clicksToEdit: 2
-			    },{
+			    },
+			    {
 			    	ptype: 'clipboard'
-			    }],
-			    listeners:{
-			    	scope:this,
-	            	cellclick:'onCellClickToView',
-			    	 'selectionchange':function( grid, selection, eOpts ){
-			    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
-			    	 }
-		        	}
+			    }
+		    ],
+		    listeners:{
+		    	scope:this,
+            	cellclick:'onCellClickToView',
+		    	 'selectionchange':function( grid, selection, eOpts ){
+		    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
+		    	 }
+        	}
         });
-        this.callParent(arguments);
-
+        me.callParent(arguments);
     },
     buildColumns : function(){
     	var me=this;
@@ -51,13 +52,25 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     text: AOCLit.roundQty,
                     dataIndex: 'roundQty',
                     width: 50,
-                    editor: 'numberfield'
+                    editor: 'numberfield',
+                    renderer:function(value, metadata, record){
+        				if(value){
+        					return Number(value)
+        				}
+        				return '';
+        			}
                 },
                 {
                     text: AOCLit.MOQDiffQty,
-                    dataIndex: 'moqDiffQty',
+                    dataIndex: 'moqdiffQty',
                     width: 55,
-                    editor: 'numberfield'
+                    editor: 'numberfield',
+                    renderer:function(value, metadata, record){
+        				if(value){
+        					return Number(value)
+        				}
+        				return '';
+        			}
                 },
                 {
                     text: 'Customer Ordered Qty.<font color=red>*</font>',
@@ -68,7 +81,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                         if(parseInt(value) > -1) {
                            return value;
                         } else {
-                        	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                        	if(record.get('status') == AOCLit.waitingForCSRStatus)
                         		meta.style = AOCLit.cellColor;
                         }
                     } 
@@ -78,8 +91,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     dataIndex: 'updateMOQ',
                     width: 50,
                     renderer:function(value, metadata,rec){
-                    	var checkMOQ=rec.data.moqValidationFlag.trim();
-                   	 if(rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F')
+                    	var checkMOQ = rec.data.moqValidationFlag ? rec.data.moqValidationFlag.trim()  :'';
+                    	
+                   	 if(rec.data.waiveMOQ==false && (checkMOQ && checkMOQ.substr(0,1)=='F'))
                    		return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
                    	 else
                    		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
@@ -96,10 +110,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     	store:[[true,'Y'],[false,'N']]
                     },
                     renderer:function(value, metadata,rec){
-                    	var v='N';
-                    	if(value)
-                    		v='Y';
-            				return '<div>'+v+'</div>';
+                    	var v = 'N';
+                    	if(value){
+                    		v = 'Y';
+                    	}
+        				return v;
                 }
                 },
                 {
@@ -116,19 +131,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid')
             },
 			renderer:function(v){
-				var store=Ext.data.StoreManager.lookup('orderfilequeueid');
-				var statusRecord=store.findRecord( 'code', v);
-				if(statusRecord.get('value')!='')
-					{
-					var va=statusRecord.get('value');
-				    return '<div><span data-qtip="'+va+'" />'+va+'</span></div>';
-					}
-				else 
-					return '';
+				return AOC.util.Helper.getSatus(v);
 			}
         },{
             text: 'PO#<font color=red>*</font>',
-            dataIndex: 'poNumber',
+            dataIndex: 'ponumber',
             width: 120,
             editor: 'textfield',
             renderer : function(value, meta,record ) {
@@ -179,9 +186,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:function(value, metadata,rec){
             	var v='N';
-            	if(value)
+            	if(value){
             		v='Y';
-    				return '<div>'+v+'</div>';
+            	}
+				return '<div>'+v+'</div>';
         }
         }, {
             text: AOCLit.shipToCustomer,
@@ -191,7 +199,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         },{
         	xtype:'gridcolumn',
             text: 'Bill to Site #<font color=red>*</font>',
-            dataIndex: 'oracleBilltoSiteNumber',
+            dataIndex: 'oracleBillToSiteNumber',
             width: 100,
             editor:'textfield',
 //            getEditor: function(record) {
@@ -207,7 +215,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         },{
             text: 'Ship to Site #<font color=red>*</font>',
-            dataIndex: 'oracleShiptoSiteNumber',
+            dataIndex: 'oracleShipToSiteNumber',
             width: 100,
             editor:'textfield',
 //            getEditor: function(record) {
@@ -392,7 +400,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             hidden:true
         }, {
             text: 'Sold To RBO#<font color=red>*</font>',
-            dataIndex: 'soldTORBONumber',
+            dataIndex: 'soldToRBONumber',
             width: 100,
             editor: 'textfield',
             renderer : function(value, meta,record) {
@@ -472,11 +480,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'datefield',
             renderer : function(value, meta,record) {
                 if(value=='' || value == null) {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatus){
                 		meta.style = AOCLit.cellColor;
+                	}
                 }
-                    else
-                    	return Ext.Date.format(value,'Y-m-d');
+                else{
+                	return Ext.Date.format(value,'Y-m-d');
+                }
             }
         }, {
             text:AOCLit.requestedDeliveryDate,
@@ -492,7 +502,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             format:AOCLit.dateFormat,
             width: 88,
             editor:{
-                	  xtype:'datefield'
+            	xtype:'datefield'
             }
         }, {
             text: AOCLit.freightTerm,
@@ -549,9 +559,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:function(value, metadata,rec){
             	var v='N';
-            	if(value)
+            	if(value){
             		v='Y';
-    				return '<div>'+v+'</div>';
+            	}
+			return v;
         }
         }, {
             text: AOCLit.artworkForReference,
@@ -564,9 +575,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:function(value, metadata,rec){
             	var v='N';
-            	if(value)
+            	if(value){
             		v='Y';
-    				return '<div>'+v+'</div>';
+            	}
+            	return v;
         }
         }, {
             text: AOCLit.variableDataBreakdown,
@@ -580,7 +592,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'textfield'
         }, {
             text: AOCLit.orderType,
-            dataIndex: 'ordertype',
+            dataIndex: 'orderType',
             width: 115,
             editor: {
                 xtype: 'combo',
@@ -592,12 +604,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         }, {
             text: AOCLit.orderBy,
-            dataIndex: 'orderby',
+            dataIndex: 'orderBy',
             width: 115,
             editor: 'textfield'
         }, {
             text: AOCLit.endCust,
-            dataIndex: 'endcustomer',
+            dataIndex: 'endCustomer',
             width: 115,
             editor: {
                 xtype: 'combo',
@@ -609,7 +621,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         }, {
             text: AOCLit.shippingOnlyNotes,
-            dataIndex: 'shippingonlynotes',
+            dataIndex: 'shippingOnlyNotes',
             width: 150,
             editor: 'textfield'
         }, {
@@ -632,7 +644,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         }, {
             text: AOCLit.shippingHold,
-            dataIndex: 'shippinghold',
+            dataIndex: 'shippingHold',
             width: 83,
             editor:{
             	xtype:'combo',
@@ -641,13 +653,14 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:function(value, metadata,rec){
             	var v='N';
-            	if(value)
+            	if(value){
             		v='Y';
-    				return '<div>'+v+'</div>';
+            	}
+				return v;
         }
         }, {
             text: AOCLit.productionHold,
-            dataIndex: 'productionhold',
+            dataIndex: 'productionHold',
             width: 77,
             editor:{
             	xtype:'combo',
@@ -656,13 +669,14 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:function(value, metadata,rec){
             	var v='N';
-            	if(value)
+            	if(value){
             		v='Y';
-    				return '<div>'+v+'</div>';
+            	}
+				return v;
         }
         }, {
             text: AOCLit.splitShipset,
-            dataIndex: 'splitshipset',
+            dataIndex: 'splitShipset',
             width: 81,
             editor: {
                 xtype: 'combo',

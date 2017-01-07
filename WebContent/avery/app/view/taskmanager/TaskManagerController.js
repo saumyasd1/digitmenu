@@ -23,6 +23,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 						panel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
 						form = panel.down('#viewmailformItemId');
 						
+					Helper.showHideEmailBodySubjectFields(form, currentRecord);
 					form.loadRecord(currentRecord);
                     store = Ext.create('AOC.store.ViewMailformStore',{
                         storeId: 'ViewMailformStoreId',
@@ -59,7 +60,25 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 									record.data.CSR = rec.name
 								}
 							});
-							taskManagerGrid.view.refresh();
+							var obj ={
+									status:3,
+									assignCSRName:rec.id  // after db implement need to change this param name
+								}
+								
+							assignCsrWin.mask('Please wait...');
+		    		    	Ext.Ajax.request({
+		    		    		method:'PUT',
+		    			        jsonData:Ext.JSON.encode(obj),
+		    		    		url : applicationContext+'/rest/taskmanager/assigncsr', // need to change this after db implementation
+		    				    success : function(response, opts) {
+	    					  		Ext.Msg.alert('Success','Order line successfully updated');
+	    					  		assignCsrWin.unmask();
+	    					  		taskManagerGrid.view.refresh();
+	    				        },
+	    				        failure: function(response, opts) {
+	    				        	Ext.getBody().unmask();
+								}
+							});
 						},
 						recordId:id
 					});
@@ -98,9 +117,9 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
+            '<div style="width:150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
             '</tpl>',
-            '<div style="width: 150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>',
+            '<div style="width:150px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>',
             '</tpl>'
         );
     }

@@ -11,7 +11,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 	
 	requires:[
         'AOC.store.AssignCSRStore',
-        'AOC.view.taskmanager.AssignCSRWindowController'
+        'AOC.view.taskmanager.AssignCSRController'
     ],
     layout:'form',
     defaults:{

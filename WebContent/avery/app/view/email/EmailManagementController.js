@@ -33,7 +33,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					}
 					currentRecord.data.PartnerName = partnerName.join('');
 					
-					me.showHideEmailBodySubjectFields(form, currentRecord);
+					Helper.showHideEmailBodySubjectFields(form, currentRecord);
 					form.loadRecord(currentRecord);
 					
 					store = Ext.create('AOC.store.ViewMailformStore',{
@@ -95,19 +95,6 @@ Ext.define('AOC.view.email.EmailManagementController', {
 			callout.relativeOffsets = [60, 5];
 		}
         callout.show();
-    },
-    
-    showHideEmailBodySubjectFields:function(form, currentRecord){
-    	var data = currentRecord.data,
-    		emailSubjectRBOMatchField = form.queryById('emailSubjectRBOMatch'),
-    		emailSubjectProductLineMatch = form.queryById('emailSubjectProductLineMatch'),
-    		emailBodyRBOMatch = form.queryById('emailBodyRBOMatch'),
-    		emailBodyProductLineMatch = form.queryById('emailBodyProductLineMatch');
-    	
-    	emailSubjectRBOMatchField[data.emailSubjectRBOMatch ? 'show':'hide']();
-    	emailSubjectProductLineMatch[data.emailSubjectProductLineMatch ? 'show':'hide']();
-    	emailBodyRBOMatch[data.emailBodyRBOMatch ? 'show':'hide']();
-    	emailBodyProductLineMatch[data.emailBodyProductLineMatch ? 'show':'hide']();
     },
     
     onAfterRenderEditCallout: function(cmp) {

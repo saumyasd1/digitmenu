@@ -1,4 +1,4 @@
-Ext.define('AOC.view.taskmanager.AssignCSRWindowController', {
+Ext.define('AOC.view.taskmanager.AssignCSRController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.assigncsrwindow',
     runTime: AOC.config.Runtime,
@@ -9,7 +9,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindowController', {
     		csrCombo = ref.csrCombo,
     		obj = {
     			name:csrCombo.getRawValue(),
-    			Id:csrCombo.getValue(),
+    			id:csrCombo.getValue(),
     			recordId:view.recordId
     		};
     	if(Ext.isFunction(view.callback)){

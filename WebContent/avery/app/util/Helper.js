@@ -293,5 +293,19 @@ Ext.define('AOC.util.Helper',{
 	notifyByMessage: function(obj) {
 		obj.down('#messageFieldItemId').setValue('').setVisible(true);
 		obj.down('#messageFieldItemId').setHidden('true');
-	}
+	},
+	
+	//(Amit Kumar) add showHideEMailBodySubjectField in ViewMailDetail from Email and TaskManager
+	showHideEmailBodySubjectFields:function(form, currentRecord){
+    	var data = currentRecord.data,
+    		emailSubjectRBOMatchField = form.queryById('emailSubjectRBOMatch'),
+    		emailSubjectProductLineMatch = form.queryById('emailSubjectProductLineMatch'),
+    		emailBodyRBOMatch = form.queryById('emailBodyRBOMatch'),
+    		emailBodyProductLineMatch = form.queryById('emailBodyProductLineMatch');
+    	
+    	emailSubjectRBOMatchField[data.emailSubjectRBOMatch ? 'show':'hide']();
+    	emailSubjectProductLineMatch[data.emailSubjectProductLineMatch ? 'show':'hide']();
+    	emailBodyRBOMatch[data.emailBodyRBOMatch ? 'show':'hide']();
+    	emailBodyProductLineMatch[data.emailBodyProductLineMatch ? 'show':'hide']();
+    },
 });
