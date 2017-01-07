@@ -1,5 +1,3 @@
-
-
 Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
@@ -43,7 +41,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -61,10 +59,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
-						this.mandatoryValidationFieldMissing = true;
-						return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
-					}
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+							this.mandatoryValidationFieldMissing = true;
+							return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+						}
 				}
 			}
 		}, 
@@ -79,7 +77,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.validationFieldMissing=true;
 						return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -97,7 +95,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.validationFieldMissing=true;
 						return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -115,7 +113,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing=true;
 						return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -133,7 +131,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
 						this.mandatoryValidationFieldMissing=true;
 						return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -153,7 +151,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -173,7 +171,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -193,7 +191,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
@@ -213,47 +211,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus){
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
-					}
-				}
-			}
-		},
-		/*New Field-5*/    
-		{
-			text: 'Recall',
-			//dataIndex: 'moqValidationFlag',
-			width: 50,
-			renderer:function(value, metadata,rec){
-				var moqValidationFlag=rec.data.moqvalidationFlag;
-				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1)=='S'){
-					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
-				}
-				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
-						this.mandatoryValidationFieldMissing=true;
-						return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
-					}
-				}
-			}
-		},
-		/*New Field-6*/    
-		{
-			text: 'Cancel',
-			//dataIndex: 'moqValidationFlag',
-			width: 50,
-			renderer:function(value, metadata,rec){
-				var moqValidationFlag=rec.data.moqValidationFlag;
-				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1)=='S'){
-					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
-				}
-				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatus && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
-						this.mandatoryValidationFieldMissing=true;
-						return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
 				}
 			}
@@ -290,7 +250,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer : function(value, meta,record) {
 				if(parseInt(value) > -1) {
 					if(this.showMandatoryValidationField){
-						if(record.get('status')==AOCLit.waitingForCSRStatus && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
+						if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
 							var moqValidationFlag = record.data.moqvalidationFlag  ? record.data.moqvalidationFlag : record.data.moqvalidationFlag.trim();
 							
 							if(moqValidationFlag.substr(0,1)=='F'){
@@ -300,7 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 				   return value;
 				} else {	
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -316,7 +276,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkMOQ=rec.data.moqvalidationFlag.trim();
 				var orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
 				var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
-				if(orderQueueStatus==AOCLit.waitingForCSRStatus && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
+				if(orderQueueStatus==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
 					return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
 				}
 				else{
@@ -364,7 +324,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value == '') {
-					if(record.get('status') == AOCLit.waitingForCSRStatus){
+					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing = true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -379,7 +339,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 88,
 			renderer : function(value, meta,record) {
 				if(value=='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -526,7 +486,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value =='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -631,7 +591,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value=='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -647,7 +607,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value == '') {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -747,7 +707,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value=='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -777,7 +737,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'datefield',
 			renderer : function(value, meta,record) {
 				if(value=='' || value == null) {
-					if(record.get('status')==AOCLit.waitingForCSRStatus){
+					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
