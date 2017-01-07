@@ -49,6 +49,13 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
+		if(queryMap.getFirst("id") != null){
+			String id=(String) queryMap.getFirst("id");
+			Long csrId = Long.parseLong(id);
+			criteria.add(Restrictions.eq("id", csrId));
+			System.out.println(csrId);
+			
+		}
 		
         entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("users", new LinkedHashSet(criteria.list()));
