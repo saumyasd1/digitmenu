@@ -1,6 +1,8 @@
 package com.avery.storage.dao.impl;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -450,12 +452,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		String mailBodyPath = "";
 		Session session = null;
 		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(OrderEmailQueue.class)
-				.add(Restrictions.eq("id", trackid))
+		Criteria criteria = session.createCriteria(OrderFileAttachment.class)
+				.createAlias("varOrderEmailQueue", "varOrderEmailQueue")
+				.add(Restrictions.eq("varOrderEmailQueue.id", trackid))
 				.setProjection(Projections.projectionList()
-						.add(Projections.property("mailBody"),"mailBody"));
+						.add(Projections.property("filePath"),"filePath"));
 		List list = criteria.list();
-		mailBodyPath = (String) list.get(0);
+		mailBodyPath = (String) list.get(0)+"/"+"CompleteEmail.pdf";
 		//System.out.println(mailBodyPath);
 		return mailBodyPath;
 	}
@@ -466,15 +469,14 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		String orderFilePath = "";
 		Session session = null;
 		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(OrderFileAttachment.class)
-				.createAlias("listOrderFileQueue", "orderfilequeue")
-				.add(Restrictions.eq("orderfilequeue.id", orderFileQueueId))
-				.setProjection(Projections.projectionList()
-						.add(Projections.property("filePath"),"filePath"));
-				//.setResultTransformer(Transformers.aliasToBean(OrderFileAttachment.class));
-		List list = criteria.list();
-		orderFilePath = (String) list.get(0);
-		//System.out.println(mailBodyPath);
+		String filePath = "";
+		String fileName = "";
+		OrderQueue orderQueue = (OrderQueue) session.get(OrderQueue.class,orderFileQueueId);
+		
+		OrderFileAttachment orderFileAttachment = orderQueue.getVarOrderFileAttachment();
+		filePath = orderFileAttachment.getFilePath();
+		fileName = orderFileAttachment.getFileName();
+		orderFilePath = filePath+File.separator+fileName;
 		return orderFilePath;
 	}
 }

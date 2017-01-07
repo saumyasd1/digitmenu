@@ -830,7 +830,7 @@ public class OrderQueue extends MainAbstractEntity{
 				throw new FileNotFoundException("The Order file is not available at location:\""+orderFilePath+"\".");
 			}
 				
-			String fileName = orderFilePath.substring(orderFilePath.lastIndexOf("/")+1);
+			String fileName = orderFilePath.substring(orderFilePath.lastIndexOf(File.separator)+1);
 			
 			return Response
 					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
