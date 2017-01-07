@@ -41,12 +41,12 @@ public abstract class OrderQueueMixIn {
 		@JsonIgnore
 		public abstract Date getCreatedDate(); //ignore CreatedDate from partner belongs to main abstract entity class
 		
-		@JsonIgnore
-		public abstract Date getLastModifiedDate(); //ignore LastModified Date from partner belongs to main abstract entity class
-		
-		@JsonIgnore
-		public abstract String getLastModifiedBy(); //ignore LastModifiedBy from partner belongs to main abstract entity class
-		
+//		@JsonIgnore
+//		public abstract Date getLastModifiedDate(); //ignore LastModified Date from partner belongs to main abstract entity class
+//		
+//		@JsonIgnore
+//		public abstract String getLastModifiedBy(); //ignore LastModifiedBy from partner belongs to main abstract entity class
+//		
 		@JsonIgnore
 		public abstract Blob getFileData();
 		
