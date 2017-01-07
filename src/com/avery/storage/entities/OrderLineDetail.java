@@ -59,10 +59,10 @@ public class OrderLineDetail extends MainAbstractEntity{
 	String SKUno;
 	@Column(name = "typeSetter", length = 50)
 	String typeSetter;
-	@Column(name = "fiberPercent")
-	int fiberPercent;
+	@Column(name = "fiberPercent",nullable=true)
+	Integer fiberPercent;
 	@Column(name = "sumOfFiberPercentage")
-	int sumOfFiberPercentage;
+	Integer sumOfFiberPercentage;
 	@Column(name = "mandatory", length = 100)
 	String mandatory;
 	@Column(name = "comment", length = 250)
@@ -103,19 +103,19 @@ public class OrderLineDetail extends MainAbstractEntity{
 		this.typeSetter = typeSetter;
 	}
 
-	public int getFiberPercent() {
+	public Integer getFiberPercent() {
 		return fiberPercent;
 	}
 
-	public void setFiberPercent(int fiberPercent) {
+	public void setFiberPercent(Integer fiberPercent) {
 		this.fiberPercent = fiberPercent;
 	}
 
-	public int getSumOfFiberPercentage() {
+	public Integer getSumOfFiberPercentage() {
 		return sumOfFiberPercentage;
 	}
 
-	public void setSumOfFiberPercentage(int sumOfFiberPercentage) {
+	public void setSumOfFiberPercentage(Integer sumOfFiberPercentage) {
 		this.sumOfFiberPercentage = sumOfFiberPercentage;
 	}
 
