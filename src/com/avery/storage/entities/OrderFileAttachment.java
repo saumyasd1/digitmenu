@@ -36,7 +36,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-//import com.avery.storage.MixIn.AdditionalFilesMixIn;
+import com.avery.storage.MixIn.AdditionalFilesMixIn;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.ProductLineMixIn;
@@ -523,6 +523,39 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			return rb.build();
 		}
 	    
+	    
+	    
+	    @GET
+		@Path("/additionalfiles/{orderid}")
+	    public Response getOrderFile(@Context UriInfo ui,
+	    @Context HttpHeaders hh,@PathParam("orderid") String orderid) {
+	    	Long orderFileQueueId = Long.parseLong(orderid);
+	    	Response.ResponseBuilder rb = null;
+	    	Map entitiesMap = new HashMap();
+	    	try {
+	    		ObjectMapper mapper = new ObjectMapper();
+				StringWriter writer = new StringWriter();
+				mapper.addMixIn(OrderFileAttachment.class, AdditionalFilesMixIn.class);
+				OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+						.getInstance().getBean("orderFileAttachmentService");
+				entitiesMap = orderFileAttachmentService.getAdditionalFilesList(orderFileQueueId);
+				if (entitiesMap == null || entitiesMap.isEmpty())
+					throw new Exception("Unable to find any data");
+				mapper.writeValue(writer, entitiesMap);
+				rb = Response.ok(writer.toString());
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				throw new WebApplicationException(Response
+						.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(ExceptionUtils.getRootCauseMessage(e))
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+	    	
+	    	return rb.build();
+	    }
+
+	    
 	    @GET
 		@Path("/download/{filePath : .+}")
 		@Produces(MediaType.MULTIPART_FORM_DATA)
@@ -533,7 +566,8 @@ public class OrderFileAttachment extends MainAbstractEntity {
 				
 				File file = new File(filePath);
 				if(!file.exists()){
-					throw new FileNotFoundException("The file is not available at location:\""+filePath+"\".");
+//					throw new FileNotFoundException("The file is not available at location:\""+filePath+"\".");
+					return Response.ok("The file is not available",MediaType.TEXT_PLAIN).build();
 				}
 					
 				String fileName = filePath.substring(filePath.lastIndexOf("/")+1);

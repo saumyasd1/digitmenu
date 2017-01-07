@@ -40,5 +40,11 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 		
 	}
 	
+	
+	public Map getAdditionalFilesList(long orderFileQueueId){
+		 
+		return getOrderFileAttachmentDao().getAdditionalFilesList(orderFileQueueId);
+	}
+	
 
 }
