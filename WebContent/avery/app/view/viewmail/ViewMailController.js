@@ -175,15 +175,16 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		    }
 		});
 	},
-	editEmailAttachmentGridColumn:function(editor, e){
+	editEmailAttachmentGridColumn:function(editor, context){
 		var me = this,
-			record = e.record
+			record = context.record
 			grid = editor.grid,
 			obj = {
 				productLineId:record.get('dataStructureNameId'), 
 				id:record.get('id'),
 				status:1,
-				fileContentType:record.get('contentType')
+				fileContentType:record.get('contentType'),
+				additionalDataFileKey:record.get('additionalDataFileKey')
 			},
 			len = grid.emailGridRecordArray.length;
 		
@@ -196,6 +197,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			if(grid.emailGridRecordArray[i].id == record.get('id')){
 				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureNameId');
 				grid.emailGridRecordArray[i].fileContentType = record.get('contentType');
+				additionalDataFileKey:record.get('additionalDataFileKey');
 				return;
 			}
 		}
@@ -220,9 +222,9 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			if(record.get('contentType') == 'Additional File'){
 				totalAdditionalFile++;
 			}
-			if(record.get('status') == '8'){
+			if(record.get('status') == AOCLit.emailAttachmentInfoGridIdentifiedStatus){
 				totalIdentifiedCount++;
-			}else if(record.get('status') == '6'){
+			}else if(record.get('status') == AOCLit.emailAttachmentInfoGridUnIdentifiedStatus){
 				totalUnidentifiedCount++;
 			}else{
 				totalDisregardCount++;
@@ -253,7 +255,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			me.enableDisableProcessBtn(true);
 		}
 		
-		if(gridView.status == '5'){
+		if(gridView.status == AOCLit.emailIdentifiedStatus){
 			saveBtn.setDisabled(true);
 			me.enableDisableProcessBtn(true);
 		}else{
@@ -305,7 +307,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 				me.downLoadFile(recordsArray[i].get('filePath'),recordsArray[i].get('fileName'));
 			}
 		}else{
-			Ext.Msg.alert(AOCLit.warningTite, AOCLit.selectAttachmentFileMsg);
+			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectAttachmentFileMsg);
 		}
 	}
 });

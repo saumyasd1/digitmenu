@@ -21,9 +21,14 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             		currentRecord = e.record;
 					var id = currentRecord.get('id'),
 						panel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
-						form = panel.down('#viewmailformItemId');
+						form = panel.down('#viewmailformItemId'),
+						viewMail = panel.down('#viewMailItemId');
 						
 					Helper.showHideEmailBodySubjectFields(form, currentRecord);
+					
+					viewMail.queryById('saveAttachment').hide();
+					viewMail.queryById('processOrderBtn').hide();
+					
 					form.loadRecord(currentRecord);
                     store = Ext.create('AOC.store.ViewMailformStore',{
                         storeId: 'ViewMailformStoreId',
@@ -39,10 +44,11 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
                     	}
                     });
                    
-					var viewmail = panel.down('#EmailAttachmentInfoGriditemId');
-					viewmail.bindStore(store);
+					var emailAttachmentGrid = panel.down('#EmailAttachmentInfoGriditemId');
+					emailAttachmentGrid.status = AOCLit.emailIdentifiedStatus;
+					emailAttachmentGrid.bindStore(store);
 					panel.getLayout().setActiveItem(1);
-					me.runTime.setActiveGrid(viewmail);
+					me.runTime.setActiveGrid(emailAttachmentGrid);
                     callout.destroy();
 				},
 				assignCSR:function(){
