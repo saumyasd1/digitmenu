@@ -72,7 +72,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'packingInstruction', mapping:'packingInstruction',type: 'string'},
 	 		{name: 'shippingInstructions', mapping:'shippingInstructions',type: 'string'},
 	 		{name: 'invoicelineInstruction', mapping:'invoicelineInstruction',type: 'string'},
-	 		{name: 'divisionforInterfaceERPORG', mapping:'divisionforInterfaceERPORG',type: 'string'},
+	 		{name: 'divisionForInterfaceERPORG', mapping:'divisionForInterfaceERPORG',type: 'string'},
 	 		{name: 'artworkhold', mapping:'artworkhold',type: 'boolean'},
 	 		{name: 'artworkworkattachment', mapping:'artworkworkattachment',type: 'boolean'},
 	 		{name: 'variableDataBreakdown', mapping:'variableDataBreakdown',type: 'string'},
