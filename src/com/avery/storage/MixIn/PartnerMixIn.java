@@ -29,12 +29,6 @@ public abstract class PartnerMixIn {
 	@JsonIgnore
 	public abstract Date getCreatedDate(); //ignore CreatedDate from partner belongs to main abstract entity class
 	
-//	@JsonIgnore
-//	public abstract Date getLastModifiedDate(); //ignore LastModified Date from partner belongs to main abstract entity class
-//	
-//	@JsonIgnore
-//	public abstract String getLastModifiedBy();
-//	
 	@JsonIgnore
 	public abstract Boolean isActive() ;
 	
