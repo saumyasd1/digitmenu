@@ -141,7 +141,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		/*New Field-1*/
 		{
 			text: 'Variable Data',
-	
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
 			renderer:function(value, metadata,rec){
@@ -172,7 +171,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
+						this.validationFieldMissing = true;
 						return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
 				}
@@ -201,7 +200,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		/*New Field-4*/    
 		{
 			text: 'Revise Order',
-			
 			dataIndex: 'reviseOrderFlag',
 			width: 65,
 			renderer:function(value, metadata,rec){
@@ -212,7 +210,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
+						this.validationFieldMissing = true;
 						return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
 				}
@@ -274,9 +272,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 50,
 			renderer:function(value, metadata,rec){
 				var checkMOQ=rec.data.moqvalidationFlag.trim();
-				var orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
 				var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
-				if(orderQueueStatus==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
+				if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
 					return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
 				}
 				else{
@@ -298,6 +295,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(value){
 					v ='Y';
 					return '<div>'+v+'</div>';
+				}
+				else{
+					return '<div>'+'N'+'</div>';
 				}
 			}
 		},
@@ -586,7 +586,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}, 
 		{
 			text: 'Sold To RBO#<font color=red>*</font>',
-			dataIndex: 'soldTORBONumber',
+			dataIndex: 'soldToRBONumber',
 			width: 100,
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
@@ -1325,7 +1325,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
     	
     	if(me.editGrid){
-    	if(orderQueueStatus >= AOCLit.waitingForCSRStatus){
+    	if(orderQueueStatus >= AOCLit.waitingForCSRStatusOrderQueue){
     		return [me.getRowExpander(), me.getOuterGridRowEditor()];
     	}else
     		return [me.getRowExpander(),{ptype: 'clipboard'}];
