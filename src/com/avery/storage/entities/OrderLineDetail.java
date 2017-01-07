@@ -205,7 +205,7 @@ public class OrderLineDetail extends MainAbstractEntity{
 			Long entityId = Long.parseLong(orderId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(OrderLine.class, OrderLineDetailMixIn.class);
+			mapper.addMixIn(OrderLineDetail.class, OrderLineDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
 					.getInstance().getBean("orderLineDetailService");
