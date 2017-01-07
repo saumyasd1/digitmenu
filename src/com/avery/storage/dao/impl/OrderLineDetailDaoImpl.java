@@ -195,9 +195,11 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 		List<OrderLineDetail> list=null;
 		try{
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(OrderLineDetail.class);
-			criteria.add(Restrictions.eq("orderQueueID", orderID.intValue()));
-			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
+			criteria = session.createCriteria(OrderLineDetail.class)
+					.createAlias("varOrderLine", "varOrderLine")
+					.createAlias("varOrderLine.varOrderFileQueue", "varOrderFileQueue");
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderID));
+			criteria.add(Restrictions.eq("variableFieldName", variablfieldename));
 			list= criteria.list();
 			return list;
 		}catch (WebApplicationException ex) {
