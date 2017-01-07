@@ -1,8 +1,13 @@
 package com.avery.storage.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -107,9 +113,76 @@ OrderFileAttachmentDao {
 	
 	
 	
-	
+	@Override
+	public Map getAdditionalFilesList(long orderFileQueueId){
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().openSession();
+			criteria = session.createCriteria(OrderLine.class);
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderFileQueueId));
+			ProjectionList projections = Projections.projectionList();
+			projections.add(Projections.property("account"), "account");
+			criteria.setProjection(projections);
+			List<String> list = criteria.list();
+			List uniqueList = getUniqueList(list);
+			Iterator itr = uniqueList.iterator();
+			Criteria crit = null;
+			List<OrderFileAttachment> resList = new ArrayList<OrderFileAttachment>();
+			while(itr.hasNext()){
+				Long ll = (Long) itr.next();
+				//System.out.println(ll);
+				crit = session.createCriteria(OrderFileAttachment.class);
+				ProjectionList proj = Projections.projectionList();
+				proj.add(Projections.property("id").as("id"));
+				proj.add(Projections.property("fileName").as("fileName"));
+				proj.add(Projections.property("filePath").as("filePath"));
+				crit.setProjection(proj);
+				crit.add(Restrictions.eq("id", ll));
+				crit.setResultTransformer(new AliasToBeanResultTransformer(OrderFileAttachment.class));
+				OrderFileAttachment orderFileAttachment = (OrderFileAttachment) crit.list().get(0);
+				resList.add(orderFileAttachment);
+			}
+			entitiesMap.put("additionalfiles", new LinkedHashSet(resList));
 
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id " + orderFileQueueId, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id " + orderFileQueueId, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return entitiesMap;
+	}
 
+	public List getUniqueList(List<String> list){
+		Set<Long> set= new HashSet<Long>();
+		for(int i=0;i<list.size();i++){
+			String str = list.get(i);
+			//System.out.println("---------------------"+str);
+			if(str.contains(",")){
+				String[] st = str.split(",");
+				for(int p=0;p<st.length;p++){
+					//System.out.println(Long.parseLong(st[p]));
+					set.add(Long.parseLong(st[p]));
+				}
+			}
+			else if(!str.equals(null) && !str.equals("")){
+				//System.out.println(Long.parseLong(str));
+				set.add(Long.parseLong(str));
+			}
+		}
+		//System.out.println(set.size());
+		List newList = new ArrayList(set);
+		
+		return newList;
+	}
 
 	
 }
