@@ -59,10 +59,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-							this.mandatoryValidationFieldMissing = true;
-							return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
-						}
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						this.mandatoryValidationFieldMissing = true;
+						return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					}
 				}
 			}
 		}, 
@@ -131,15 +131,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
 						this.mandatoryValidationFieldMissing=true;
-						return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+
 				}
 			}
 		},
 		/*New Field-1*/
-		{
+		//No need this column for now(Amit Kumar 8-1-2017)
+		/*{
 			text: 'Variable Data',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
@@ -150,17 +152,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
 				}
 			}
-		}, 
+		}, */
 		/*New Field-2*/
 		{
 			text: 'COO',
-			
 			dataIndex: 'cooTranslationFlag',
 			width: 65,
 			renderer:function(value, metadata,rec){
@@ -294,11 +295,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var v = 'N';
 				if(value){
 					v ='Y';
-					return '<div>'+v+'</div>';
 				}
-				else{
-					return '<div>'+'N'+'</div>';
-				}
+				return v;
 			}
 		},
 		{
@@ -373,12 +371,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'ATO Required',
 			dataIndex: 'atovalidationFlag',
 			width: 65,
-			renderer:function(v){
-				if(v=='Y'){
-					return '<div><span data-qtip="YES" />'+v+'</span></div>';
+			renderer:function(v, metaData){
+				if(v =='Y'){
+					metaData.tdAttr = 'data-qtip="YES"';
 				}else{ 
-					return '<div><span data-qtip="No" />'+v+'</span></div>';
+					metaData.tdAttr = 'data-qtip="No"';
 				}
+				return v;
 			}
 		},
 		{
@@ -392,18 +391,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			},
 			renderer:function(value, metadata,rec){
 				var v='N';
-				if(value)
+				if(value){
 					v='Y';
+				}
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
 				if(checkvalue.substr(0,1)=='S'){
-					return '<div>'+v+'</div>';
+					return v;
 				}
 				else{
 					if(this.showMandatoryValidationField){
 						metadata.style = AOCLit.mandatoryValidationCellColor;
-						return '<div>'+v+'</div>';
 					}
+					return v;
 				}
 			}	
 		},
@@ -607,7 +607,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, meta,record) {
 				if(value == '') {
-					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
@@ -644,7 +644,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -660,13 +660,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag') ? rec.get('htlsizePageValidationFlag').trim() : '';
-				if(htlSizePageValidationFlag.substr(0,1)=='S'){
-					return '<div>'+value+'</div>';
+				if(htlSizePageValidationFlag.substr(0, 1) == 'S'){
+					return value;
 				}
 				else{
-						if(this.showMandatoryValidationField)
+						if(this.showMandatoryValidationField){
 							metadata.style = AOCLit.mandatoryValidationCellColor;
-						return '<div>'+value+'</div>';
+						}
+						return value;
 				}
 			}
 		}, 
@@ -689,14 +690,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag') ? rec.get('htlSizePageValidationFlag').trim():'';
-				if(htlSizePageValidationFlag.substr(0,1)=='S'){
-					return '<div>'+value+'</div>';
+				if(htlSizePageValidationFlag.substr(0,1) == 'S'){
+					return value;
 				}
 				else{
-						if(this.showMandatoryValidationField){
-							metadata.style = mandatoryValidationCellColor;
-							return '<div>'+value+'</div>';
-						}
+					if(this.showMandatoryValidationField){
+						metadata.style = mandatoryValidationCellColor;
+					}
+					return value;
 				}
 			}
 		}, 
@@ -741,9 +742,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						this.mandatoryFieldMissing=true;
 						meta.style = AOCLit.cellColor;
 					}
+				}else{
+					return Ext.Date.format(value,'Y-m-d');
 				}
-					else
-						return Ext.Date.format(value,'Y-m-d');
 			} 
 		}, 
 		{
@@ -792,7 +793,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -823,7 +824,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -846,7 +847,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}, 
 		{
 			text: 'Division For Interface ERPORG',
-			dataIndex: 'divisionforInterfaceERPORG',
+			dataIndex: 'divisionForInterfaceERPORG',
 			width: 120,
 			editor: 'textfield'
 		}, 
@@ -860,11 +861,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
-				var v='N';
+				var v ='N';
 				if(value){
-					v='Y';
-					return '<div>'+v+'</div>';
+					v = 'Y';
 				}
+				return v;
 			}
 		}, 
 		{
@@ -877,10 +878,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
-				var v='N';
-				if(value)
-					v='Y';
-					return '<div>'+v+'</div>';
+				var v = 'N';
+				if(value){
+					v = 'Y';
+				}
+				return v;
 			}
 		}, 
 		{
@@ -923,7 +925,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -960,7 +962,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -1005,10 +1007,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
-				var v='N';
-				if(value)
-					v='Y';
-					return '<div>'+v+'</div>';
+				var v ='N';
+				if(value){
+					v = 'Y';
+				}
+				return v;
 			}
 		}, 
 		{
@@ -1022,9 +1025,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			},
 			renderer:function(value, metadata,rec){
 				var v='N';
-				if(value)
+				if(value){
 					v='Y';
-					return '<div>'+v+'</div>';
+				}
+				return v;
 			}
 		}, 
 		{
@@ -1055,7 +1059,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -1098,7 +1102,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							h.style = AOCLit.cellColor;
 					}
 				}
-				return '<div>'+v+'</div>';
+				return v;
 			}
 		}, 
 		{
@@ -1246,32 +1250,38 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     getInnerGridPlugin:function(){
         var grid=this;
-        var orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
-    	if(orderQueueStatus==AOCLit.waitingForCSRStatus && this.editGrid){
+        var orderLineStatus=AOC.config.Runtime.getOrderLineStatus();
+    	if(orderLineStatus == AOCLit.waitingForCSRStatusOrderLine && this.editGrid){
     		var rowEditor=Ext.create('AOC.view.ux.CustomRowEditing',{
     			clicksToEdit: 1,
                 saveAndNextBtn: true,
                 listeners:{
 					edit:function(editor, context, eOpts){
 						Ext.getBody().mask('Saving....');
-						var ctx = context,me=this,
-						idx = ctx.rowIdx,
-						currentRecord = ctx.store.getAt(idx);
-						var obj=currentRecord.getChanges( ) ;
-						obj.id=currentRecord.id;
+						var me = this,
+							ctx = context,
+							idx = ctx.rowIdx,
+							currentRecord = ctx.store.getAt(idx);
+						
+						var obj=currentRecord.getChanges();
+						
+						obj.id = currentRecord.id;
+						
 						var runTime = AOC.config.Runtime;
+						
 						var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+						
 						Ext.Ajax.request({
 							method:'PUT',
 							jsonData:obj,
 							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 							success : function(response, opts) {
-								AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-								//Ext.Msg.alert('','Order line Detail successfully updated');
+								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
+								Ext.Msg.alert('Success','Order line Detail successfully updated');
 								
 								Ext.getBody().unmask();
 								grid.store.load();
-								var data = grid.store.getData();
+								//var data = grid.store.getData();
 							},
 							failure: function(response, opts) {
 								Ext.getBody().unmask();
@@ -1280,7 +1290,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
                 },
                 'beforeEdit':function(editor,context){
-            		var flag=grid.getController().innerGridBeforeEditEvent(editor,context);
+            		var flag = grid.getController().innerGridBeforeEditEvent(editor,context);
             		return flag;
             	},
                 bulKUpdate: function(editor, context) {
@@ -1292,17 +1302,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     var ctx = this.context,
                         idx = ctx.rowIdx,
                         currentRecord = ctx.store.getAt(idx);
-                    var obj = currentRecord.getChanges();
                     
+                    var obj = currentRecord.getChanges();
                     var runTime = AOC.config.Runtime;
                     var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+                    
                     Ext.Ajax.request({
                         method: 'PUT',
                         jsonData: obj,
                         url: applicationContext + '/rest/orderlinedetails/variablebulkupdate/'+currentRecord.get('variablefieldname'),
                         success: function(response, opts) {
-                        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-                            //Ext.Msg.alert('', 'Order line Detail successfully updated');
+                        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
+                            Ext.Msg.alert('Success', 'Order line Detail successfully updated');
                             Ext.getBody().unmask();
                             
                          grid.store.load();

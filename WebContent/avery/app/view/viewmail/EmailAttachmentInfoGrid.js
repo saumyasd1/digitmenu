@@ -54,7 +54,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				},
 				{
 					text : 'Partner Data Structure',
-					flex :1.3,
+					flex :2,
 					dataIndex:'dataStructureNameId',
 					name: 'Partner Data Structure',
 					editor: {

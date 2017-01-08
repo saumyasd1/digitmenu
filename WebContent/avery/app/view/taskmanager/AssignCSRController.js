@@ -9,12 +9,12 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
     		csrCombo = ref.csrCombo,
     		obj = {
     			name:csrCombo.getRawValue(),
-    			id:csrCombo.getValue(),
+    			assignCSRId:csrCombo.getValue(),
     			recordId:view.recordId
     		};
+    	
     	if(Ext.isFunction(view.callback)){
     		view.callback.call(this, obj);
     	}
-    	view.close();
     }
 });

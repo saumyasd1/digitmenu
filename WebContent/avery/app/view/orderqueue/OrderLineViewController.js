@@ -270,16 +270,23 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}
     },
     innerGridBeforeEditEvent:function(context){
-    	if(!this.runTime.getAllowOrderLineEdit())
+    	if(!this.runTime.getAllowOrderLineEdit()){
     		return false;
-    	var record=context.record,grid=context.grid,
-    	level=record.get('level'),variablefieldname=record.get('variablefieldname').toLowerCase();
-    	if(variablefieldname==qtyVariableLabel || variablefieldname.indexOf(sizeVariableLabel)!=-1)
+    	}
+    	
+    	var record = context.record,
+    		grid = context.grid,
+    		level = record.get('level'),
+    		variablefieldname = record.get('variableFieldName').toLowerCase();
+    	
+    	if(variablefieldname == qtyVariableLabel || variablefieldname.indexOf(sizeVariableLabel)!=-1){
     		return false;
+    	}
     	if(level==AOCLit.fiberLevel){
     		grid.editingPlugin.editor.form.findField('fiberPercent').enable();
-    	}else
+    	}else{
     		grid.editingPlugin.editor.form.findField('fiberPercent').disable();
+    	}
     	return true;
     }
 })

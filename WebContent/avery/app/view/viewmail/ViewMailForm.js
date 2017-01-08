@@ -53,6 +53,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						name: 'id',
 						itemId: 'trackingId',
 						fieldLabel: 'Tracking ID#',
+						margin:'0 0 5 0',
 						labelWidth:180,
 						flex:1
 					},
@@ -90,6 +91,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						itemId: 'emailSubjectRBOMatch',
 						labelWidth:180,
 						fieldLabel: 'Subject RBO Match',
+						margin:'0 0 5 0',
 						reference:'emailSubjectRBOMatch',
 						flex:1
 					}, 
@@ -128,6 +130,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						itemId: 'emailBodyRBOMatch',
 						labelWidth:180,
 						fieldLabel: 'Body RBO Match',
+						margin:'0 0 5 0',
 						reference:'emailBodyRBOMatch',
 						flex:1
 					}, 

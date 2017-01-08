@@ -3,7 +3,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     alias: 'controller.taskManagerController',
     runTime : AOC.config.Runtime,
     requires:[
-        //'AOC.view.taskmanager.AssignCSRWindow'
+        'AOC.view.taskmanager.AssignCSRWindow'
     ],
     onClickMenu: function(obj, rowIndex, colIndex, item, e, record) {
         var me = this;
@@ -58,37 +58,27 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 					var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
 						callback:function(rec){
 							var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
-								taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId'),
-								store = taskManagerGrid.store;
+								taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId');
 							
-							store.each(function(record){
-								if(record.get('id') == rec.recordId){
-									record.data.CSR = rec.name
-								}
-							});
-							var obj ={
-									status:3,
-									assignCSRName:rec.id  // after db implement need to change this param name
-								}
-								
-							assignCsrWin.mask('Please wait...');
+							assignCsrWin.mask(AOCLit.pleaseWaitTitle);
 		    		    	Ext.Ajax.request({
-		    		    		method:'PUT',
-		    			        jsonData:Ext.JSON.encode(obj),
-		    		    		url : applicationContext+'/rest/taskmanager/assigncsr', // need to change this after db implementation
+		    		    		method:'GET',
+		    		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
 		    				    success : function(response, opts) {
-	    					  		Ext.Msg.alert('Success','Order line successfully updated');
-	    					  		assignCsrWin.unmask();
+		    				    	assignCsrWin.unmask();
+	    					  		Ext.Msg.alert('Success','CSR assigned successfully');
+	    					  		assignCsrWin.close();
 	    					  		taskManagerGrid.view.refresh();
 	    				        },
 	    				        failure: function(response, opts) {
-	    				        	Ext.getBody().unmask();
+	    				        	assignCsrWin.unmask();
 								}
 							});
 						},
 						recordId:id
 					});
 					assignCsrWin.show();
+					callout.destroy();
 				}
             }
         });

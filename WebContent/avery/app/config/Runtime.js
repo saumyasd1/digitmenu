@@ -13,6 +13,7 @@ Ext.define('AOC.config.Runtime',{
         salesOrderCount:0,
         hideSubmitToSystemButton:false,
         orderQueueStatus:null,
+        orderLineStatus:null,
         allowOrderLineEdit:true,
         openRow:[],
         user: {}

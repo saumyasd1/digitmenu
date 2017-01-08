@@ -357,10 +357,11 @@ Ext.define('AOC.lang.lit',{
     "orderPreProcessedStatus":'3',
     "waitingForCSRStatusOrderQueue":'19',
     "waitingForCSRStatusOrderLine":'20',
+    "SO_GeneratedStatusOrderLine":'21',
+    "unrecognizedEmailStatus":'4',
     //"salesOrderCreatedStatus":'5',
     "submitToOracleStatus=salesOrderGeneratedStatus":'6',
     "salesOrderSubmittedStatus":'7',
-    "cancelStatus":'4',
     "noAdditionDataStatus":'10',
     "submissionProcessRunningStatus":'11',
     "exportingProcessRunningStatus":'12',
@@ -383,5 +384,6 @@ Ext.define('AOC.lang.lit',{
     
     //added alert messages(AK)
     'selectAttachmentFileMsg':'Please select atleast one file to proceed.',
-    'warningTitle':'Warning'
+    'warningTitle':'Warning',
+    'pleaseWaitTitle':'Please wait...'
 });

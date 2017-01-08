@@ -217,20 +217,28 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         win.show();
     },
     onOrderLineStoreLoad:function(obj){
-    	 var status=this.runTime.getOrderQueueActiveRecord().get('Status');
-    	 if(status==AOCLit.waitingForCSRStatus && this.runTime.getAllowOrderLineEdit()){
-    		 var records=obj.queryBy(function(rec){
-    				status=rec.get('status');
-    				if(status==AOCLit.cancelStatus)
+    	 var  me = this,
+    	 	  status = this.runTime.getOrderQueueActiveRecord().get('Status');
+    	 
+    	 if(status == AOCLit.waitingForCSRStatusOrderQueue && this.runTime.getAllowOrderLineEdit()){
+    		 var records = obj.queryBy(function(rec){
+    				status = rec.get('status');
+    				me.runTime.setOrderLineStatus(status);
+    				if(status == AOCLit.cancelStatus){
     					return true;
+    				}
     			});
-    	    	var view=this.getView(),
-    			salesOrderbutton=view.lookupReference('salesOrderbutton'),
-    			validateButton=view.lookupReference('validateButton');
-    	    	if(obj.getTotalCount( )==records.length){
+    	    	var view = this.getView(),
+    				salesOrderbutton=view.lookupReference('salesOrderbutton'),
+    				salesViewOrderbutton=view.lookupReference('salesViewOrderbutton'),
+    				validateButton=view.lookupReference('validateButton');
+    	    	
+    	    	if(obj.getTotalCount() == records.length){
     	    		salesOrderbutton.disable();
     	    		validateButton.disable();
     	    	}else{
+    	    		//checks for OrderLineStatus is SOGenereate or greater than SoGenerated(21) then enable salesViewOrderbutton(Amit Kumar)
+    	    		(status >= AOCLit.SO_GeneratedStatusOrderLine) ?  salesViewOrderbutton.enable() : salesViewOrderbutton.disable();;
     	    		salesOrderbutton.enable();
     	    		validateButton.enable();
     	    	}

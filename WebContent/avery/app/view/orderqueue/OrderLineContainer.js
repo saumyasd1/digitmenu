@@ -93,12 +93,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					{
 						fieldLabel:'Partner',
 						value : record.get('PartnerName'),
-						flex:1.5
+						flex:1.3
 					},
 					{
 						fieldLabel : 'RBO',
 						value:record.get('RBOName'),
-						flex:1.5
+						flex:1.3
 					},
 					{
 						fieldLabel : 'Subject',
@@ -108,6 +108,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					{
 			            xtype:'checkboxfield',
 			            boxLabel  : 'Copy Data',
+						margin:'0 0 5 0',
 			            flex:0.5,
 						checked: false,
 						handler:function(cmp, checked){
