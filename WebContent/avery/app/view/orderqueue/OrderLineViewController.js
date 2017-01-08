@@ -288,5 +288,94 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		grid.editingPlugin.editor.form.findField('fiberPercent').disable();
     	}
     	return true;
-    }
-})
+    },
+    onerporgSelectChange:function(cmp,record){
+    	Ext.getBody().mask('Setting...');
+    	var currentRecord=cmp.ownerCt.context.record,view=this.getView(),me=this,systemId=0;
+    	var response = Ext.Ajax.request({
+			async: false,
+			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+me.runTime.getOrderLineCurrenProductLine()+'/'+record.get('id')
+		});
+		var jsonValue=Ext.decode(response.responseText),refs=view.refs;
+		if(jsonValue.length > 0){
+			
+			var obj=jsonValue[0];
+			systemId=obj.systemId;
+			me.attachCombo('freightTerms',systemId,record.get('id'),'freightTermscombo',obj.freightTerm,'freightTerms');
+			me.attachCombo('splitShipset',systemId,record.get('id'),'splitShipsetCombo',obj.splitShipSetBy,'splitShipset');
+			me.attachCombo('shippingMethod',systemId,record.get('id'),'shippingMethodCombo',obj.shippingMethod,'shippingMethod');
+			
+			me.attachCombo('EndCustomer',systemId,record.get('id'),'EndCustomerCombo',obj.shippingMethod,'EndCustomer');
+			me.attachCombo('Ordertype',systemId,record.get('id'),'OrdertypeCombo',obj.shippingMethod,'Ordertype');
+			me.attachCombo('APOType',systemId,record.get('id'),'APOTypeCombo',obj.shippingMethod,'APOType');
+			//EndCustomerCombo
+			//csrReferenceField
+			currentRecord.set('divisionForInterfaceERPORG',record.get('id'));
+			currentRecord.set('artworkhold',obj.artworkHold);
+			currentRecord.set('CSR',obj.csrName);
+			currentRecord.set('invoicelineInstruction',obj.invoiceNote);
+			currentRecord.set('manufacturingNotes',obj.manufacturingNotes);
+			currentRecord.set('packingInstruction',obj.packingInstruction);
+			currentRecord.set('shipmark',obj.shippingMark);
+			currentRecord.set('splitShipset',obj.splitShipSetBy);
+			currentRecord.set('variableDataBreakdown',obj.variableDataBreakdown);
+			currentRecord.set('shippingInstructions',obj.shippingInstruction);
+			currentRecord.set('shippingMethod',obj.shippingMethod);
+		}
+		Ext.getBody().unmask();
+    },
+	attachCombo:function(variableName,systemId,orgId,referenceValue,valueToBeSet,recordRef){
+		var variableFieldStore=AOC.util.Helper.loadDependendVariableComboStore(variableName,systemId,orgId),
+		view=this.getView(),
+		variableField=this.getView().lookupReference(referenceValue);
+		variableField.bindStore(variableFieldStore);
+		var index=variableFieldStore.find('variableFieldName',valueToBeSet);
+		if(index!=-1){
+			variableField.setValue(valueToBeSet);
+			currentRecord.set(recordRef,valueToBeSet);
+		}
+	},
+	comboColumnRenderer:function(v,h,l,k){
+		var view=this.getView();
+		if(!Ext.isEmpty(v)){
+			var store=h.column.config.editor.store;
+			if(store){
+				var index=store.find("variableFieldName",v);
+				if(index==-1){
+					view.invalidComboValid=true;
+					if(view.showInvalidCombo)
+						h.style = AOCLit.cellColor;
+				}
+			}else{
+				view.invalidComboValid=true;
+				if(view.showInvalidCombo)
+					h.style = AOCLit.cellColor;
+			}
+		}
+		return '<div>'+v+'</div>';
+	},
+	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
+		var view=this.getView();
+		if(!Ext.isEmpty(v)){
+			var store=h.column.config.editor.store;
+			if(store){
+				var index=store.find("id",v);
+				if(index==-1){
+					view.invalidComboValid=true;
+					if(view.showInvalidCombo)
+						h.style = AOCLit.cellColor;
+				}
+				else{
+					v=store.getAt(index).get('name');
+				}
+				
+			}else{
+				view.invalidComboValid=true;
+				if(view.showInvalidCombo)
+					h.style = AOCLit.cellColor;
+			}
+		}
+		return '<div>'+v+'</div>';
+	}
+    
+});
