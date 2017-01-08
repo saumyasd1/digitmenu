@@ -227,6 +227,12 @@ OrderEmailQueueDao {
 			OrderEmailQueue orderEmailQueueObj=null;
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			orderEmailQueueObj.setAssignCSR(csrId);
+			orderEmailQueueObj.setStatus("3");
+			String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
+			Query q = session.createQuery(s);
+			q.setString("value","6");
+			q.setLong("id",entityId);
+			q.executeUpdate();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while processing order", ex);
