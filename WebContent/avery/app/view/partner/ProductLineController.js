@@ -4,7 +4,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     runTime : AOC.config.Runtime,
     requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper','AOC.view.partner.SystemGrid','AOC.view.partner.OrgGrid'],
     SaveDetails:function(){
-		Ext.getBody().mask('Saving....');
+		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
 		var createproductline=this.getView();
 		var panel=createproductline.down('#listPanel');
@@ -456,7 +456,7 @@ if(!temp){
 		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
 	    },
 	    onSiteSelect:function(cmp){
-	    	Ext.getBody().mask('Loading....');
+	    	Ext.getBody().mask('Loading....').dom.style.zIndex = '99999';;
 	    	var value=cmp.getValue(),me=this;
 	    	Ext.Ajax.request( {
 				method: 'GET',
