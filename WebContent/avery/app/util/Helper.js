@@ -308,4 +308,28 @@ Ext.define('AOC.util.Helper',{
     	emailBodyRBOMatch[data.emailBodyRBOMatch ? 'show':'hide']();
     	emailBodyProductLineMatch[data.emailBodyProductLineMatch ? 'show':'hide']();
     },
+    
+    loadDependendVariableComboStore:function(variableName,systemId,OrgCode){
+		var store =  Ext.create('Ext.data.ArrayStore',{
+			fields : ['variableFieldName'],
+			proxy:{
+				type : 'memory'
+			}
+		});
+			var response = Ext.Ajax.request({
+				async: false,
+				url: applicationContext+'/rest/orderconfigurations/orgId/'+variableName+'/'+systemId+'/'+OrgCode
+			});
+			var jsonValue=Ext.decode(response.responseText);
+			var serviceStoreData = [];
+			if(jsonValue.length > 0){
+				Ext.Array.forEach(jsonValue,function(item){
+					var service = [item];
+					serviceStoreData.push(service);
+				});
+				store.loadRawData(serviceStoreData);
+			}
+			return store;
+		
+	}
 });
