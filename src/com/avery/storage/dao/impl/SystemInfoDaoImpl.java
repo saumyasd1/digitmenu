@@ -1,5 +1,7 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +14,14 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
 
@@ -31,10 +36,9 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 		Criteria criteria = null;
 		try{
 			session = getSessionFactory().getCurrentSession();;
-			criteria = session.createCriteria(SystemInfo.class);
-			Site site = new Site();
-			site.setId(siteId);
-			criteria.add(Restrictions.eq("site", site));
+			criteria = session.createCriteria(SystemInfo.class)
+					.createAlias("site", "site");
+			criteria.add(Restrictions.eq("site.id", siteId));
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
@@ -50,12 +54,36 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 		}
 		
 	}
+	
+	@Override
+	public Map getAllEntitiesList()
+			{
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(SystemInfo.class);
+
+		entitiesMap.put("system", new LinkedHashSet(criteria.list()));
+		
+		return entitiesMap;
+			}
+
+	@Override
+	public Long create(SystemInfo newInstance) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SystemInfo read(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
 }
