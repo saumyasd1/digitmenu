@@ -83,6 +83,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								itemId:'dataStructureName',
 								name: 'dataStructureName',
 								width: 300,
+								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
 								bind:'{dataStructureName}'
 							}
@@ -215,7 +216,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						name: 'email',
 						bind:'{email}',
 						fieldLabel:'Email ID',
-						regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+						regex: /^((([a-zA-Z0-9_\-\.*]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 						width : 455,
 						margin:'0 0 5 0',
 						labelSeparator:'',
