@@ -185,6 +185,27 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setColorCode(String colorCode) {
 		this.colorCode = colorCode;
 	}
+	@Transient
+	private Long partnerId;
+	
+	@Transient
+	private Long productLineId;
+	
+	public Long getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(Long partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	public Long getProductLineId() {
+		return productLineId;
+	}
+
+	public void setProductLineId(Long productLineId) {
+		this.productLineId = productLineId;
+	}
 
 	public String getPartnerName() {
 		return partnerName;
