@@ -245,6 +245,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			}
 			if(totalCount == totalIdentifiedCount || (totalIdentifiedCount > 0 && totalCount == (totalIdentifiedCount + totalDisregardCount))){
 				me.enableDisableProcessBtn(false);
+				gridView.isIdentifiedFlag = true;
 			}else{
 				gridView.isIdentifiedFlag = false;
 				me.enableDisableProcessBtn(true);
