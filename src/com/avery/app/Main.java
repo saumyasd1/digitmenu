@@ -9,7 +9,9 @@ import com.avery.app.config.SpringConfig;
 import com.avery.db.embedded.EmbeddedDatabaseFactory;
 import com.avery.logging.AppLogger;
 import com.avery.storage.entities.User;
+import com.avery.storage.service.CodeService;
 import com.avery.storage.service.UserService;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
 
 /**
@@ -45,6 +47,7 @@ public class Main {
 		// System.setErr(new PrintStream(new LoggingOutputStream(AppLogger
 		// .getSystemLogger(), "error"), true));
 		AppLogger.getSystemLogger().info("Application Initiated Successfully!");
+		
 	}
 
 	public void boot() throws Exception {
@@ -101,6 +104,10 @@ public class Main {
 		}else{
 			userService.create(averyUser);
 		}
+		
+		CodeService codeService = (CodeService) SpringConfig
+				.getInstance().getBean("codeService");
+		ApplicationUtils.statusCode=codeService.getStatusCodes();
 		
 	}
 

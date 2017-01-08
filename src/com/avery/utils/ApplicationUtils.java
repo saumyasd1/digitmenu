@@ -12,6 +12,7 @@ public class ApplicationUtils {
 
 	public static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     
+	public static HashMap<String, Map> statusCode;
 	public static HashMap<String,String> convertJSONtoMaps(String jsonStr) throws  IOException,Exception {
 		HashMap<String,String> map = new HashMap<String,String>();
 		try {
