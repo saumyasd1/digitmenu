@@ -16,7 +16,7 @@ Ext.define('AOC.model.EmailManagementModel',{
 		{name: 'CC', mapping:'ccMailId',type: 'string'},
 		{name:'comment', type:'string'},
 		{name:'subject', type:'string'},
-		{name:'listOrderFileAttachment'}
+		{name:'listOrderFileAttachment'},{name:'iconName'},{name:'colorCode'}
     ]
 });
 
