@@ -8,7 +8,7 @@ Ext.define('AOC.store.SiteStore', {
         url : applicationContext+'/rest/site',
         reader: {
             type: 'json',
-            rootProperty : 'site'
+            rootProperty : 'ArrayList'
         }
     }
 });
