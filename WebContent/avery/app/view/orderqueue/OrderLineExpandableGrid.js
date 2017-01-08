@@ -37,14 +37,15 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag;
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1) == 'S'){
+				if(checkvalue.substr(0,1) == 'T'){
 					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
-						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					
 				}
 			}
 		}, 
@@ -55,14 +56,15 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1) == 'S'){
+				if(checkvalue.substr(0,1) == 'T'){
 					return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
 					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
-						return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+bulkSampleValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					
 				}
 			}
 		}, 
@@ -73,7 +75,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var customerPOFlag=rec.data.customerPOFlag;
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1) == 'S'){
+				if(checkvalue.substr(0,1) == 'T'){
 					return '<div><img data-qtip=" '+customerPOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
@@ -91,7 +93,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1)=='S'){
+				if(checkvalue.substr(0,1)=='T'){
 					return '<div><img data-qtip=" '+duplicatePOFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
@@ -109,14 +111,15 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1)=='S'){
+				if(checkvalue.substr(0,1)=='T'){
 					return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing=true;
-						return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+htlSizePageValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					
 				}
 			}
 		}, 
@@ -127,7 +130,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
 				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1)=='S'){
+				if(checkvalue.substr(0,1)=='T'){
 					return '<div><img data-qtip=" '+moqValidationFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
 				}
 				else{
@@ -173,8 +176,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.validationFieldMissing = true;
-						return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+cooTranslationFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 				}
 			}
 		},
@@ -193,8 +196,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
-						return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+febricPercentageFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					
 				}
 			}
 		},
@@ -212,8 +216,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else{
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.validationFieldMissing = true;
-						return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
 					}
+					return '<div><img data-qtip=" '+reviseOrderFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
+					
 				}
 			}
 		},
@@ -396,7 +401,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
-				if(checkvalue.substr(0,1)=='S'){
+				if(checkvalue.substr(0,1)=='T'){
 					return v;
 				}
 				else{
@@ -660,7 +665,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag') ? rec.get('htlsizePageValidationFlag').trim() : '';
-				if(htlSizePageValidationFlag.substr(0, 1) == 'S'){
+				if(htlSizePageValidationFlag.substr(0, 1) == 'T'){
 					return value;
 				}
 				else{
@@ -690,7 +695,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag') ? rec.get('htlSizePageValidationFlag').trim():'';
-				if(htlSizePageValidationFlag.substr(0,1) == 'S'){
+				if(htlSizePageValidationFlag.substr(0,1) == 'T'){
 					return value;
 				}
 				else{
@@ -1194,12 +1199,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								dataIndex: 'variableFieldName',
 								width: 140,
 								renderer:function(v, metadata,rec){
-									var mandatory=rec.get('mandatory');
-									if(mandatory=='Y'){
+									var mandatory = rec.get('mandatory');
+									if(mandatory == 'Y'){
 										return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
 									}
 									else{
-										return '<div>'+ v +'</div>';
+										return v;
 									}
 								}
 							}, 
@@ -1212,14 +1217,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 									if(v){
 										var mandatory=rec.get('mandatory');
 										if(mandatory=='Y'){
-											if(v==''){
+											if(v == ''){
 												if(me.showMandatoryValidationField)
 													metadata.style = AOCLit.mandatoryValidationCellColor;
 											}
-											return '<div>'+ v +'</div>';
+											return v;
 										}
 										else{
-												return '<div>'+ v +'</div>';
+												return v;
 										}
 									}
 									return '';
@@ -1241,7 +1246,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						border: true,
 						plugins: me.getInnerGridPlugin(),
 						autoHeight: true,
-						//frame: false,
+						frame: false,
 						header: false
 					});
     		    }
@@ -1258,13 +1263,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 listeners:{
 					edit:function(editor, context, eOpts){
 						Ext.getBody().mask('Saving....');
-						var me = this,
-							ctx = context,
+						var ctx = context,
 							idx = ctx.rowIdx,
 							currentRecord = ctx.store.getAt(idx);
 						
-						var obj=currentRecord.getChanges();
-						
+						var obj = currentRecord.getChanges();
 						obj.id = currentRecord.id;
 						
 						var runTime = AOC.config.Runtime;
@@ -1280,7 +1283,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								Ext.Msg.alert('Success','Order line Detail successfully updated');
 								
 								Ext.getBody().unmask();
-								grid.store.load();
+								editor.grid.store.load();
 								//var data = grid.store.getData();
 							},
 							failure: function(response, opts) {
@@ -1289,17 +1292,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						});
 					}
                 },
-                'beforeEdit':function(editor,context){
-            		var flag = grid.getController().innerGridBeforeEditEvent(editor,context);
-            		return flag;
+                'beforeEdit':function(editor, context){
+            		return grid.getController().innerGridBeforeEditEvent(editor, context);
             	},
                 bulKUpdate: function(editor, context) {
 					Ext.getBody().mask('Saving....');
                     this.suspendEvent('edit');
                     this.completeEdit();
                     this.resumeEvent('edit');
+                    
                     var me = this;
-                    var ctx = this.context,
+                    var ctx = context,
                         idx = ctx.rowIdx,
                         currentRecord = ctx.store.getAt(idx);
                     

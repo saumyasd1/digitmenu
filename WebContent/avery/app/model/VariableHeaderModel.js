@@ -12,11 +12,11 @@ Ext.define('AOC.model.VariableHeaderModel',{
     		name : 'typesetter',
     		mapping : 'typesetter'
     	},{
-    		name : 'variablefieldname',
-    		mapping : 'variablefieldname'
+    		name : 'variableFieldName',
+    		mapping : 'variableFieldname'
     	},{
-    		name : 'variabledatavalue',
-    		mapping : 'variabledatavalue'
+    		name : 'variableDataValue',
+    		mapping : 'variableDataValue'
     	},{
     		name : 'fiberPercent',
     		mapping : 'fiberPercent'

@@ -60,8 +60,20 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 				locked: me.hasLockedHeader,
 				text:'#'
 			},
-			{ text: AOCLit.custPONumber, dataIndex: 'customerPONumber' , flex:1},
-			{ text: AOCLit.custItemNo, dataIndex: 'customerItemNumber' , flex:1},
+			{ text: AOCLit.custPONumber, dataIndex: 'customerPONumber' , flex:1,
+				renderer:function(v, meteData, record){
+					return record.get('varOrderLine') ? record.get('varOrderLine').customerPONumber : '';
+				}
+			},
+			{ 
+				text: AOCLit.custItemNo, 
+				dataIndex: 'customerItemNumber' , 
+				flex:1,
+				align:'right',
+				renderer:function(v, meteData, record){
+					return record.get('varOrderLine') ? record.get('varOrderLine').customerItemNumber : '';
+				}
+			},
 			{ text: me.variableColumnName, dataIndex: 'variableDataValue' ,flex:1, editor:{xtype:'textfield'}},
 			{ text: AOCLit.fiberContentPercent, dataIndex: 'fiberPercent' ,flex:1, editor:'textfield'}
 		];

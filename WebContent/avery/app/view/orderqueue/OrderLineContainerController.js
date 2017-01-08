@@ -21,25 +21,29 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     validateOrderLine:function(){
     	Ext.getBody().mask('Validating....');
-    	var id=this.runTime.getOrderQueueId(),me=this;
+    	var me = this,
+    		id=this.runTime.getOrderQueueId();
+    	
     	Ext.Ajax.request({
     		method:'GET',
-    		   url : applicationContext+'/rest/router/orderqueue/'+id,
-		        success : function(response, opts) {
-		        	var jsonValue=Ext.decode(response.responseText);
-		        	var status=jsonValue.status;
-		        	if(status=='success')
-		        		Ext.Msg.alert('',AOCLit.orderValidation);
-		        	else
-		        		Ext.Msg.alert('',validateErrorMsg);
-			  		Ext.getBody().unmask();
-			  		me.getView().store.load();
-		        },
-		        failure: function(response, opts) {
-		        	Ext.Msg.alert('',validateErrorMsg);
-		        	Ext.getBody().unmask();
-	          }
-    		  }); 
+    		url : applicationContext+'/rest/router/orderqueue/'+id,
+	        success : function(response, opts) {
+	        	var jsonValue=Ext.decode(response.responseText);
+	        	var status=jsonValue.status;
+	        	if(status=='success'){
+	        		Ext.Msg.alert('Success',AOCLit.orderValidation);
+	        	}
+	        	else{
+	        		Ext.Msg.alert('', AOCLit.validateErrorMsg);
+	        	}
+		  		Ext.getBody().unmask();
+		  		me.getView().store.load();
+	        },
+	        failure: function(response, opts) {
+	        	Ext.Msg.alert('Failure', AOCLit.validateErrorMsg);
+	        	Ext.getBody().unmask();
+	        }
+	    }); 
     },
     viewSalesOrder:function(){
     	Ext.getBody().mask('Loading....');

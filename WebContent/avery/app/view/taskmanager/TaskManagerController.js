@@ -68,7 +68,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 		    				    	assignCsrWin.unmask();
 	    					  		Ext.Msg.alert('Success','CSR assigned successfully');
 	    					  		assignCsrWin.close();
-	    					  		taskManagerGrid.view.refresh();
+	    					  		taskManagerGrid.store.load();
 	    				        },
 	    				        failure: function(response, opts) {
 	    				        	assignCsrWin.unmask();

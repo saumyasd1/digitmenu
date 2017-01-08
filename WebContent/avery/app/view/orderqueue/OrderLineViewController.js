@@ -282,7 +282,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	if(variablefieldname == qtyVariableLabel || variablefieldname.indexOf(sizeVariableLabel)!=-1){
     		return false;
     	}
-    	if(level==AOCLit.fiberLevel){
+    	if(level == AOCLit.fiberLevel){
     		grid.editingPlugin.editor.form.findField('fiberPercent').enable();
     	}else{
     		grid.editingPlugin.editor.form.findField('fiberPercent').disable();
