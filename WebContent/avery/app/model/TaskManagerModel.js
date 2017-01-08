@@ -8,7 +8,8 @@ Ext.define('AOC.model.TaskManagerModel',{
 		{name: 'ccMailId', mapping:'ccMailId',type: 'string'},
 		{name: 'assignCSR', mapping:'assignCSR',type: 'string'},
 		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
-		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'}
+		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'},
+		{name:'iconName'},{name:'colorCode'}
 		]
 });
 
