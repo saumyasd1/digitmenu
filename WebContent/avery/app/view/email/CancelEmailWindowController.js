@@ -9,7 +9,7 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
         me = this;
         var commentArea = this.getView().lookupReference('commentArea');
         var comment = commentArea.getValue().replace(/\n/g, '::');
-        var parameters = '{\"status\":\"' + cancelStatus + '\"';
+        var parameters = '{\"status\":\"' + AOCLit.unrecognizedEmailStatus + '\"';
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';
         }
