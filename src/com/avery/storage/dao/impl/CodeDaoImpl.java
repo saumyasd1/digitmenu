@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +16,12 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Code;
 import com.avery.storage.entities.OrderConfiguration;
+import com.avery.storage.service.CodeService;
 
 @Repository
 public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
@@ -54,6 +57,34 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+	}
+	
+	public HashMap<String, Map> getStatusCode(){
+		HashMap<String, Map> statusCode = new HashMap<>();
+		List<Code> codeList = null;
+		CodeService codeService;
+		try {
+			codeService = (CodeService) SpringConfig
+					.getInstance().getBean("codeService");
+			codeList = codeService.readAll();
+			for(Code code : codeList){
+				String iconName = code.getIconName();
+				String colorCode = code.getColorCode();
+				Map<String, String> statusValues = new HashMap<>();
+				
+				statusValues.put(iconName, colorCode);
+				
+				String codeIntegerValue = code.getCode();
+				statusCode.put(codeIntegerValue, statusValues);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return statusCode;
 	}
 
 }

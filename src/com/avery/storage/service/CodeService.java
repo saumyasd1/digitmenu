@@ -1,6 +1,8 @@
 package com.avery.storage.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,12 @@ public class CodeService extends GenericEntityService<Code, Long>{
 	@Transactional
 	public List<Code> readByType(String type) throws Exception {
 		return codeDao.readByType(type);
+	}
+	
+	@Transactional
+	public HashMap<String, Map> getStatusCodes(){
+		
+		return codeDao.getStatusCode();
 	}
 
 }
