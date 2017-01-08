@@ -78,7 +78,7 @@ OrderEmailQueueDao {
 		Session session=getSessionFactory().getCurrentSession();
 		Criteria criteria=null;
 		criteria = session.createCriteria(OrderEmailQueue.class);
-		criteria.add(Restrictions.eq("status", "1"));
+		criteria.add(Restrictions.eq("status", "4"));//Status Code for Unrecognized mails
 		entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
 	}
