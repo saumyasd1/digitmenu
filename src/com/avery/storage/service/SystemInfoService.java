@@ -1,6 +1,9 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,5 +34,9 @@ public class SystemInfoService extends GenericEntityService<SystemInfo, Long>{
 		
 	} 
 	
+	@Transactional
+	public Map getAllEntities(){
+			return getSystemInfoDao().getAllEntitiesList();
+	}
 
 }
