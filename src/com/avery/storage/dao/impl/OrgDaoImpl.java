@@ -60,31 +60,6 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		}
 	}
 	
-	@Override
-	public Map getAllEntitiesList()
-			{
-		Map entitiesMap = new HashMap();
-		Session session = null;
-		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(Org.class);
-				
-
-		entitiesMap.put("org", new LinkedHashSet(criteria.list()));
-		//entitiesMap.put("partner", criteria1.list());
-		return entitiesMap;
-			}
-
-	@Override
-	public Long create(Org newInstance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Org read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
