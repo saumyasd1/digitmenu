@@ -192,11 +192,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                me.runTime.setOrderQueueActiveRecord(currentRecord);
                me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
                me.runTime.setAllowOrderLineEdit(true);
-               
-               //var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-               
         	   Ext.getBody().mask('Loading...');
-        	   
+        	   var storeERPORG = Ext.create('Ext.data.Store', {
+        		   fields:['id','name'],
+                   proxy: {
+                       type: 'rest',
+                       url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
+                       reader: {
+                           type: 'json',
+                           rootProperty: 'data'
+                       }
+                   }
+               });
+        	   me.runTime.setStoreERPORG(storeERPORG);
                 var owner = me.getView().ownerCt;
                 var status=currentRecord.get('Status');
                 var store = Ext.create('AOC.store.OrderLineStore', {
@@ -210,7 +218,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                         }
                     }
                 });
-                
+                me.runTime.setOrderLineCurrenProductLine(currentRecord.get('productLineId'));
                 owner.insert({
                     xtype: 'orderlinecontainer',
                     flex: 1,
