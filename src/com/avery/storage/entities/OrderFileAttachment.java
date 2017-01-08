@@ -468,11 +468,6 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					int id=(int)fileAttachment.get("id");
 					OrderFileAttachment fileAttachementObj=orderFileAttachmentService.read((long)id);
 					int productLineId = (fileAttachment.get("productLineId")==null?0:(int)fileAttachment.get("productLineId"));
-					if(productLineId == 0){
-						ProductLine  productLineObj =new ProductLine();
-						productLineObj.setId(productLineId);
-						orderFileAttachmentService.update(fileAttachementObj);
-					}
 					if(productLineId!=0){
 						ProductLine  productLineObj =new ProductLine();
 						productLineObj.setId(productLineId);
