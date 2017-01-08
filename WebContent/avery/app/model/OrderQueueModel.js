@@ -110,6 +110,8 @@ Ext.define('AOC.model.OrderQueueModel',{
 	{ //this column need to be implemented for multiple attachments(window)
 	    name: 'orderFiles',
 	    type: 'string'
-	}
+	},
+	{name:'iconName'},
+	{name:'colorCode'}
     ]
 });
