@@ -86,7 +86,10 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				text :'Status',
 				sortable : true,
 				dataIndex:'status',
-				flex:0.5
+				flex:0.5,
+				renderer:function(v, metadata){
+					return Helper.getSatus(v);
+				}
 			},
 			{
 				text : 'Date-Time',
