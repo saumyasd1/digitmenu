@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -240,7 +241,7 @@ public class ProductLine extends MainAbstractEntity{
 	@JoinColumn(name = "partnerId")
 	private Partner varPartner;
 	@OneToMany(mappedBy="varProductLine",fetch=FetchType.LAZY)
-	private List<OrderSystemInfo> listOrderSystemInfo;
+	private Set<OrderSystemInfo> listOrderSystemInfo;
 	@Column(name = "email", length = 100)
 	private String email;
 	
@@ -368,11 +369,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.siteId = l;
 	}
 
-	public List<OrderSystemInfo> getListOrderSystemInfo() {
+	public Set<OrderSystemInfo> getListOrderSystemInfo() {
 		return listOrderSystemInfo;
 	}
 
-	public void setListOrderSystemInfo(List<OrderSystemInfo> listOrderSystemInfo) {
+	public void setListOrderSystemInfo(Set<OrderSystemInfo> listOrderSystemInfo) {
 		this.listOrderSystemInfo = listOrderSystemInfo;
 	}
 
@@ -1185,15 +1186,19 @@ public class ProductLine extends MainAbstractEntity{
 						.entity("Product Line entity with id \"" + id
 								+ "\" doesn't exist")
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			List<OrderSystemInfo> obj=productline.getListOrderSystemInfo();
+			Set<OrderSystemInfo> obj=productline.getListOrderSystemInfo();
+			int count=0;
 			if(obj.size()!=0){
-				OrderSystemInfo oSysInfoObj=obj.get(0);
-				SystemInfo sysInfoList=oSysInfoObj.getVarSystem();
-				if(sysInfoList!=null){
-					Site site=sysInfoList.getSite();
-					if(site!=null)
-						productline.setSiteId(site.getId());
+				for (OrderSystemInfo oSysInfoObj : obj) {
+					SystemInfo sysInfoList=oSysInfoObj.getVarSystem();
+					if(sysInfoList!=null){
+						Site site=sysInfoList.getSite();
+						if(site!=null)
+							productline.setSiteId(site.getId());
+					}
+					break;
 				}
+				
 				
 			}
 			mapper.writeValue(writer, productline);
@@ -1313,6 +1318,99 @@ public class ProductLine extends MainAbstractEntity{
 
 	}
 	
+	@GET
+	@Path("/uniquepartners")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllDistantPartners(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List list = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			list = productLineService.getAllDistantPartners();
+			if (list == null)
+				throw new Exception("Unable to find Partners");
+			mapper.writeValue(writer,list);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
 	
+	@GET
+	@Path("/rbo/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllRBOByPartner(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("id") String partnerId) {
+		Response.ResponseBuilder rb = null;
+		List list = null;
+		try {
+			int id=Integer.parseInt(partnerId);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			list = productLineService.getAllRBOByPartner(id);
+			if (list == null)
+				throw new Exception("Unable to find Partners");
+			mapper.writeValue(writer,list);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
+	
+//	@GET
+//	@Path("/getproductlines")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getProductLineBasedOnRbo(UriInfo ui, HttpHeaders hh, String data){
+//		Response.ResponseBuilder rb = null;
+//		List list = null;
+//		try {
+//			
+//			int id=Integer.parseInt("1");
+//			StringWriter writer = new StringWriter();
+//			ObjectMapper mapper = new ObjectMapper();
+//			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
+//			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//			ProductLineService productLineService = (ProductLineService) SpringConfig
+//					.getInstance().getBean("productLineService");
+//			list = productLineService.getAllRBOByPartner(id);
+//			if (list == null)
+//				throw new Exception("Unable to find Partners");
+//			mapper.writeValue(writer,list);
+//			rb = Response.ok(writer.toString());
+//		} catch (WebApplicationException ex) {
+//			throw ex;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new WebApplicationException(Response
+//					.status(Status.INTERNAL_SERVER_ERROR)
+//					.entity(ExceptionUtils.getRootCauseMessage(e))
+//					.type(MediaType.TEXT_PLAIN_TYPE).build());
+//		}
+//		return rb.build();
+//	}
 	
 }
