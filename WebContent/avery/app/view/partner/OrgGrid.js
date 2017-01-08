@@ -42,11 +42,23 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				            	valueField:'id',
 				            	listeners:{
 				            		'render':function(cmp){
-				            			var store=cmp.getStore();
+				            			var store=cmp.getStore(),
+				            			record=cmp.up('editor').context.record,
+				            			gridStore=me.getStore(),
+				            			index=gridStore.indexOf(record);
 				            	    	store.on('load',function(store) {
+				            	    		if(index==0)
 				            	    	      cmp.select(store.getAt(0).get('id'));
 				            	    	    });
 				            	    	store.load();
+				            		},
+				            		'change':function(cmp,newValue){
+				            			var gridStore=me.getStore();
+				            			var alreadyPresent=gridStore.find('orgCodeId',newValue);
+				            			if(alreadyPresent!=-1){
+				            				AOC.util.Helper.fadeoutMessage('Success','This Org is already selected. Please select another one');
+				            				return false;
+				            			}
 				            		}
 				            	}
 				            },
@@ -54,7 +66,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				            	if(Ext.isEmpty(value))
 				            		return '';
 				            	var record=me.orgStore.find('id',value);
-				            	return '<div>'+me.orgStore.getAt(record).get('name')+'</div>'
+				            	return '<div>'+me.orgStore.getAt(record).get('name')+'</div>';
 				            }
 			            },
 			            {
@@ -99,7 +111,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				                valueField: 'variableFieldName',
 				                editable:false,
 				                queryMode :'local',
-				                store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+				                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
 				            }
                         },
                         {
