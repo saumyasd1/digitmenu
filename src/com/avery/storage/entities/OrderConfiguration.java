@@ -41,9 +41,32 @@ public class OrderConfiguration extends MainAbstractEntity {
 	
 	private static final long serialVersionUID = -7583544833630759455L;
 
+	@Column(name = "SystemID", length = 50)
+    private Long systemId; 
+	
+	@Column(name = "OrgCodeID", length = 50)
+    private Long orgCodeId; 
+	
 	@Column(name = "PropertyName", length = 50)
     private String propertyName; 
 	
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
+	}
+
+	public Long getOrgCodeId() {
+		return orgCodeId;
+	}
+
+	public void setOrgCodeId(Long orgCodeId) {
+		this.orgCodeId = orgCodeId;
+	}
+
+
 	@Column(name = "PropertyValue", length = 1000)
     private String propertyValue;   
 	
@@ -279,4 +302,51 @@ public class OrderConfiguration extends MainAbstractEntity {
 	}
 	
 
+	@GET
+	@Path("/orgId/{variablename}/{sysid:[0-9]+}/{orgid:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getListByPropertyName(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("variablename") String variablfieldename, @PathParam("sysid")Long systemId, @PathParam("orgid")Long orgCodeId) {
+		Response.ResponseBuilder rb = null;
+		List<String> valuesList = new ArrayList<String>();
+		List<OrderConfiguration> propertyValues = null;
+		try{
+//			Long entityId = Long.parseLong(systemId);
+//			Long entitysecondId = Long.parseLong(orgCodeId);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			OrderConfigurationService orderConfigurationService = (OrderConfigurationService) SpringConfig
+					.getInstance().getBean("orderConfigurationService");
+			propertyValues = orderConfigurationService.readByPropertyName(variablfieldename,systemId,orgCodeId);
+			if (propertyValues == null)
+				throw new Exception("Unable to find values for propert name::"+variablfieldename);
+			
+			if(propertyValues.size() != 0){
+				
+				String properties = propertyValues.get(0).getPropertyValue();
+				String[] values = properties.split("\\|");
+				for(int i = 0; i < values.length; i++){
+					valuesList.add(values[i]);
+				}
+			}
+			
+			mapper.writeValue(writer, valuesList);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching values for propert name::"+variablfieldename, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching values for propert name::"+variablfieldename, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	
+	
 	}
