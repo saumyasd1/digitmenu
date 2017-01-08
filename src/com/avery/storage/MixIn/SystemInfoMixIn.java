@@ -3,8 +3,10 @@ package com.avery.storage.MixIn;
 import java.sql.Date;
 import java.util.List;
 
+import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Org;
+import com.avery.storage.entities.Site;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class SystemInfoMixIn {
@@ -28,7 +30,6 @@ public abstract class SystemInfoMixIn {
 	public abstract OrderSystemInfo getVarOrderSystemInfo();
 	
 	@JsonIgnore
-	public abstract List<Org> getOrgList();
-
+	public abstract Site getSite();
 
 }
