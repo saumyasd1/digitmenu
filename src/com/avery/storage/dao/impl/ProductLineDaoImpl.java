@@ -8,18 +8,20 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Query;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.OrgInfo;
 import com.avery.storage.entities.Partner;
@@ -202,6 +204,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 //		String attachmentFileOrderMatchSheet;
 		if(entity.isFileOrderMatchRequired()){
 			String fileOrderMatchLocation=entity.getFileOrderMatchLocation();
+			if(fileOrderMatchLocation!=null){
 			String[] fileOrderMatchLocationArray=fileOrderMatchLocation.split(";");
 			if(fileOrderMatchLocationArray!=null && fileOrderMatchLocationArray.length==3){
 				String[] fileOrderMatchSheetArray=fileOrderMatchLocationArray[0].split(":");
@@ -211,9 +214,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				String[] fileOrderMatchCellArray=fileOrderMatchLocationArray[2].split(":");
 				entity.setFileOrderMatchCell(fileOrderMatchCellArray[1]);
 			}
+			}
 		}
 		if(entity.isFileProductLineMatchRequired()){
 			String fileProductLineMatchLocation=entity.getFileProductLineMatchLocation();
+			if(fileProductLineMatchLocation!=null){
 			String[] fileProductLineMatchLocationArray=fileProductLineMatchLocation.split(";");
 			if(fileProductLineMatchLocationArray!=null && fileProductLineMatchLocationArray.length==3){
 				String[] fileProductlineSheetMatchArray=fileProductLineMatchLocationArray[0].split(":");
@@ -223,9 +228,12 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				String[] fileProductlineCellMatchArray=fileProductLineMatchLocationArray[2].split(":");
 				entity.setFileProductlineCellMatch(fileProductlineCellMatchArray[1]);
 			}
+			}
 		}
+		
 		if(entity.isFileRBOMatchRequired()){
 			String fileRBOMatchLocation=entity.getFileRBOMatchLocation();
+			if(fileRBOMatchLocation!=null){
 			String[] fileRBOMatchLocationArray=fileRBOMatchLocation.split(";");
 			if(fileRBOMatchLocationArray!=null && fileRBOMatchLocationArray.length==3){
 				String[] fileRBOSheetMatchArray=fileRBOMatchLocationArray[0].split(":");
@@ -236,8 +244,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				entity.setFileRBOCellMatch(fileRBOCellMatchArray[1]);
 			}
 		}
+		}
 		if(entity.isAttachmentFileProductlineMatchRequired()){
 			String attachmentFileProductlineMatchLocation=entity.getAttachmentFileProductlineMatchLocation();
+			if(attachmentFileProductlineMatchLocation!=null){
 			String[] attachmentFileProductlineMatchLocationArray=attachmentFileProductlineMatchLocation.split(";");
 			if(attachmentFileProductlineMatchLocationArray!=null && attachmentFileProductlineMatchLocationArray.length==3){
 				String[] attachmentFileProductlineMatchSheetArray=attachmentFileProductlineMatchLocationArray[0].split(":");
@@ -248,8 +258,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				entity.setAttachmentFileProductlineMatchCell(attachmentFileProductlineMatchCellArray[1]);
 			}
 		}
+		}
 		if(entity.isAttachmentFileOrderMatchRequired()){
 			String attachmentFileOrderMatch=entity.getAttachmentFileOrderMatchLocation();
+			if(attachmentFileOrderMatch!=null){
 			String[] attachmentFileOrderMatchLocationArray=attachmentFileOrderMatch.split(";");
 			if(attachmentFileOrderMatchLocationArray!=null && attachmentFileOrderMatchLocationArray.length==3){
 				String[] attachmentFileOrderMatchSheetArray=attachmentFileOrderMatchLocationArray[0].split(":");
@@ -259,6 +271,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				String[] attachmentFileOrderMatchCellArray=attachmentFileOrderMatchLocationArray[2].split(":");
 				entity.setAttachmentFileOrderMatchCell(attachmentFileOrderMatchCellArray[1]);
 			}
+		}
 		}
 		return entity;
 	}
@@ -440,7 +453,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileOrderMatch(fileOrderMatch);
 			pk.setFileOrderMatchRequired(false);
 		}else{
-			pk.setFileOrderMatchLocation("Sheet Name:"+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell:"+fileOrderMatchCell+";");
+			pk.setFileOrderMatchLocation("Sheet Name : "+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell : "+fileOrderMatchCell+";");
 			pk.setFileOrderMatchRequired(true);
 		}
 		String fileProductlineMatch=productLineMap.get("fileProductlineMatch")==null?"":(String)productLineMap.get("fileProductlineMatch");
@@ -450,7 +463,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileProductlineMatch(fileProductlineMatch);
 			pk.setFileProductLineMatchRequired(false);
 		}else{
-			pk.setFileProductLineMatchLocation("Sheet Name:"+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell:"+fileProductlineCellMatch+";");
+			pk.setFileProductLineMatchLocation("Sheet Name : "+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell : "+fileProductlineCellMatch+";");
 			pk.setFileProductLineMatchRequired(true);
 		}
 		String fileRBOMatch=productLineMap.get("fileRBOMatch")==null?"":(String)productLineMap.get("fileRBOMatch");
@@ -460,14 +473,14 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileRBOMatch(fileRBOMatch);
 			pk.setFileRBOMatchRequired(false);
 		}else{
-			pk.setFileRBOMatchLocation("Sheet Name:"+fileRBOSheetMatch+";Value:"+fileRBOMatch+";Cell:"+fileRBOCellMatch+";");
+			pk.setFileRBOMatchLocation("Sheet Name :"+fileRBOSheetMatch+";Value:"+fileRBOMatch+";Cell:"+fileRBOCellMatch+";");
 			pk.setFileRBOMatchRequired(true);
 		}
 		String attachmentFileProductlineMatchSheet=productLineMap.get("attachmentFileProductlineMatchSheet")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchSheet");
 		String attachmentFileProductlineMatch=productLineMap.get("attachmentFileProductlineMatch")==null?"":(String)productLineMap.get("attachmentFileProductlineMatch");
 		String attachmentFileProductlineMatchCell=productLineMap.get("attachmentFileProductlineMatchCell")==null?"":(String)productLineMap.get("attachmentFileProductlineMatchCell");
 		if(!(attachmentFileProductlineMatchCell.equals("") && attachmentFileProductlineMatchSheet.equals(""))){
-			pk.setAttachmentFileProductlineMatchLocation("Sheet Name :"+attachmentFileProductlineMatchSheet+";Value:"+attachmentFileProductlineMatch+";Cell:"+attachmentFileProductlineMatchCell+";");
+			pk.setAttachmentFileProductlineMatchLocation("Sheet Name : "+attachmentFileProductlineMatchSheet+";Value:"+attachmentFileProductlineMatch+";Cell : "+attachmentFileProductlineMatchCell+";");
 			pk.setAttachmentFileProductlineMatchRequired(true);
 		}
 		String attachmentFileOrderMatchCell=productLineMap.get("attachmentFileOrderMatchCell")==null?"":(String)productLineMap.get("attachmentFileOrderMatchCell");
@@ -477,10 +490,45 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setAttachmentFileOrderMatch(fileRBOMatch);
 			pk.setAttachmentFileOrderMatchRequired(false);
 		}else{
-			pk.setAttachmentFileOrderMatchLocation("Sheet Name :"+attachmentFileOrderMatchSheet+";Value:"+attachmentFileOrderMatch+";Cell:"+attachmentFileOrderMatchCell+";");
+			pk.setAttachmentFileOrderMatchLocation("Sheet Name : "+attachmentFileOrderMatchSheet+";Value:"+attachmentFileOrderMatch+";Cell : "+attachmentFileOrderMatchCell+";");
 			pk.setAttachmentFileOrderMatchRequired(true);
 		}
 		return pk;
+	}
+
+	@Override
+	public List getAllDistantPartners() throws Exception {
+		Session session= getSessionFactory().getCurrentSession();
+		Query query=session.createQuery("select distinct varPartner.id, varPartner.partnerName from ProductLine");  
+		List list=query.list();
+		return list;
+	}
+	
+	@Override
+	public List getAllRBOByPartner(int partnerId) throws Exception{
+		Session session=getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(ProductLine.class)
+				.createAlias("rbo", "rbo")
+				.setProjection(Projections.distinct(Projections.projectionList()
+					.add(Projections.property("rbo.id"),"id")
+					.add(Projections.property("rbo.rboName"),"rboName")));
+		criteria.add(Restrictions.eq("varPartner"+".id",partnerId));
+		return criteria.list();
+	}
+	
+	public List getAllProductLineByRBO(int partnerId,int rbo) throws Exception{
+		Session session=getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(ProductLine.class)
+				.setProjection(Projections.distinct(Projections.projectionList()
+					.add(Projections.property("productLineType"),"productLineType")
+					.add(Projections.property("productLineType"),"productLineType")));
+		Conjunction disCriteria = Restrictions.conjunction();
+		criteria.createAlias("varPartner", "varPartner");
+		criteria.createAlias("rbo", "rbo");
+		disCriteria.add(Restrictions.eq("varPartner.id",partnerId));
+		disCriteria.add(Restrictions.eq("rbo.id", rbo));
+		criteria.add(disCriteria);
+		return null;
 	}
 
 }
