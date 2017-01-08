@@ -9,5 +9,8 @@ import com.avery.storage.entities.Org;
 public interface OrgDao extends GenericDao<Org, Long>{
 	
 	public List<Org> readAllBySystemId(Long systemId);
+	
 	public Map getAllEntitiesList();
+	
+	public List<Org> getOrgByProductLineId(Long productLineId) throws Exception;
 }
