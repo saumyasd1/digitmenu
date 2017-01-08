@@ -1,7 +1,9 @@
 package com.avery.storage.MixIn;
 
 import java.sql.Date;
+import java.util.List;
 
+import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
