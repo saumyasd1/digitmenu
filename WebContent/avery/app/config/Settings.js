@@ -29,7 +29,7 @@ Ext.define('AOC.config.Settings',{
          cancel:'avery/resources/images/cancel.png',
          defaultUserImg:'avery/resources/images/defaultUser.png',
          clip:'avery/resources/images/clip.png',
-         EnableUpdateMoqFlag:'avery/resources/images/enable.png',
+         EnableUpdateMoqFlag:'avery/resources/images/cart.png',
          DisableUpdateMoqFlag:'avery/resources/images/disable.png',
          success:'avery/resources/images/success.jpg',
          invalid_field:'avery/resources/images/invalid_field.jpg',
