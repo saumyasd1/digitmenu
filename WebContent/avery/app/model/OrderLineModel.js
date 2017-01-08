@@ -108,7 +108,8 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name:'fabricContent', type:'string'},
 	 		{name:'reviceOrder', type:'string'},
 	 		{name: 'variableDataValue', mapping:'variableDataValue', type:'string'},
-	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'}
+	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'},
+	 		{name:'iconName'},{name:'colorCode'}
 	 		
 	     ]
 });
