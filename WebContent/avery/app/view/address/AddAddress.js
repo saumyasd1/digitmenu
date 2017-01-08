@@ -72,27 +72,64 @@ Ext.define('AOC.view.address.AddAddress',{
       		            width : 420,
       		            labelSeparator : ''
             		},
-                    items:[{
-                		xtype:'combo',
-                		name: 'system',
-                		fieldLabel:'System',
-                		//queryMode :'local',
-                        displayField: 'name',
-                        valueField: 'id',
-                        store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
-        	        	},
-	        		{
-	        			xtype:'combobox',
-	        			name: 'partner_id',
-	        			fieldLabel:AOCLit.partnerName,
-	        			displayField:'partnerName',
-						valueField:'id',
-					    store :'PartnerManagementStore',
-					    allowBlank: false,
-      		            listeners : {
-	                        blur : this.notifyByImage,
-	                        'focus' : 'HideMandatoryMessage'
-   	                     }
+                    items:[
+                           {
+                       xtype:'combo',
+                       name: 'site',
+                       fieldLabel:'Site',
+                       displayField: 'name',
+                       valueField: 'id',
+                       store:Ext.create('AOC.store.SiteStore'),
+                        listeners : {
+		                    select : 'onSiteSelect',
+  	                        'focus' : 'HideMandatoryMessage'
+		                    }
+                           },
+                          {
+                           		xtype:'combobox',
+                           		name: 'system',
+                           		fieldLabel:'System',
+                           		//queryMode :'local',
+                                   displayField: 'name',
+                                   reference:'systemName',
+                                   disabled:true,
+                                   valueField: 'id',
+                                 //  store: 'SiteStore',
+                                   store:Ext.create('AOC.store.SystemStore'),
+                                   listeners : {
+           		                    select : 'onSystemSelect',
+           		                //     blur : this.notifyByImage,
+           	                        'focus' : 'HideMandatoryMessage'
+           		          //          'focus' : 'HideMandatoryMessage'
+           	   	                     }
+                        	   
+                        	
+                        	   },
+                        	   {
+                        			xtype:'combo',
+                        			name: 'shippingMethod',
+                        			fieldLabel:AOCLit.shippingMethod,
+                        			queryMode :'local',
+                                    displayField: 'variableFieldName',
+                                    reference: 'shippingMethod',
+                                    valueField: 'variableFieldName',
+                                    disabled:true,
+                                    store: new Ext.data.JsonStore({
+                                    	//storeId:'ShippingMethodId',
+                                    	data:[],
+                                    	fields:['variableFieldName']
+                                    }),
+                                   
+                                    //valueField: 'id',
+//                                    store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+//                	        		
+                                    listeners : {
+                                  //  	  blur : this.notifyByImage,
+              	                        'focus' : 'HideMandatoryMessage'
+                                    //select : 'onOrgSelect'
+//                	          //          'focus' : 'HideMandatoryMessage'
+//                   	                     }
+                    	        	},
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -102,97 +139,6 @@ Ext.define('AOC.view.address.AddAddress',{
 		                    blur : this.notifyByImage,
 		                    'focus' : 'HideMandatoryMessage'
 	   	                     }
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'siteNumber',
-	        			fieldLabel:AOCLit.siteNumber,
-	        		    allowBlank: false,
-	      		        listeners : {
-		                    blur : this.notifyByImage,
-		                    'focus' : 'HideMandatoryMessage'
-	   	                     }
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'phone1',
-	        			fieldLabel:AOCLit.Phone1
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'address1',
-	        			fieldLabel:AOCLit.address1
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'address2',
-	        			fieldLabel:AOCLit.address2
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'address3',
-	        			fieldLabel:AOCLit.address3
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'address4',
-	        			fieldLabel:AOCLit.address4
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'country',
-	        			fieldLabel:AOCLit.Country
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'zip',
-	        			fieldLabel:AOCLit.Zip
-	        		}
-	        		]
-        		},
-        		{   xtype: 'fieldcontainer',
-                    layout: 'vbox',
-                    margin : '5 0 0 10',
-                    defaults:{
-            			labelAlign:'top',
-            			labelWidth : 150,
-      		            width : 420,
-      		            labelSeparator : ''
-      		           
-            		},
-                    items:[{
-            			xtype:'combobox',
-            			name: 'orgCode',
-            			fieldLabel:AOCLit.orgCode,
-            			allowBlank: false,
-        		        listeners : {
-    	                    blur : this.notifyByImage,
-    	                    'focus' : 'HideMandatoryMessage',
-    	                    'change':'onOrgChange'
-     	                     }
-    	        		},
-    	        	{
-        			xtype:'combo',
-        			name: 'shippingMethod',
-        			fieldLabel:AOCLit.shippingMethod,
-        			queryMode :'local',
-                    displayField: 'variableFieldName',
-                    valueField: 'variableFieldName',
-                    store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
-	        		},
-	        		{
-	        			xtype:'combo',
-	        			name: 'freightTerms',
-	        			fieldLabel:'Freight Terms',
-	        			queryMode :'local',
-	                    displayField: 'variableFieldName',
-	                    valueField: 'variableFieldName',
-	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
-	        		},
-	        		{
-	        			xtype:'textfield',
-	        			name: 'shippingInstructions',
-	        			fieldLabel:AOCLit.shippingInstructions
 	        		},
 	        		{
 	        			xtype:'combobox',
@@ -217,8 +163,123 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
+	        			name: 'address2',
+	        			fieldLabel:AOCLit.address2
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'address4',
+	        			fieldLabel:AOCLit.address4
+	        		},
+	        		{
+	        			xtype:'textfield',
 	        			name: 'city',
 	        			fieldLabel:AOCLit.City
+	        		
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'country',
+	        			fieldLabel:AOCLit.Country
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'email',
+	        			fieldLabel:AOCLit.Email,
+	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
+	        		}
+	        		]
+        		},
+        		{   xtype: 'fieldcontainer',
+                    layout: 'vbox',
+                    margin : '5 0 0 10',
+                    defaults:{
+            			labelAlign:'top',
+            			labelWidth : 150,
+      		            width : 420,
+      		            labelSeparator : ''
+      		           
+            		},
+                    items:[{
+	        			xtype:'combobox',
+	        			name: 'partner_id',
+	        			fieldLabel:AOCLit.partnerName,
+	        			displayField:'partnerName',
+						valueField:'id',
+						reference:'partnerName',
+					    store :'PartnerManagementStore',
+					    disabled:true,
+					    allowBlank: false,
+      		            listeners : {
+      		            //	 blur : this.notifyByImage,
+   	                   
+	                        'focus' : 'HideMandatoryMessage'
+   	                     }
+    	        		},
+    	        	{
+    	        			xtype:'combobox',
+                  			name: 'orgCode',
+                  			fieldLabel:AOCLit.orgCode,
+                  			 displayField: 'name',
+                  			 reference:'orgName',
+                               valueField: 'id',
+                               disabled:true,
+                             store:Ext.create('AOC.store.OrgStore'),
+              		        listeners : {
+          	                    select : 'onOrgSelect',
+          	                 'focus' : 'HideMandatoryMessage'
+          	                 
+              		        }
+                    },
+	        		{
+	        			xtype:'combo',
+	        			name: 'freightTerms',
+	        			fieldLabel:'Freight Terms',
+	        			queryMode :'local',
+	                    displayField: 'variableFieldName',
+	                    reference:'freightTerms',
+	                    valueField: 'variableFieldName',
+	                    disabled:true,
+	                    store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
+	                    		listeners : {
+	         		            //	 blur : this.notifyByImage,
+	      	                   
+	   	                        'focus' : 'HideMandatoryMessage'
+	      	                     }
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'shippingInstructions',
+	        			fieldLabel:AOCLit.shippingInstructions
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'siteNumber',
+	        			fieldLabel:AOCLit.siteNumber,
+	        		    allowBlank: false,
+	      		        listeners : {
+		                    blur : this.notifyByImage,
+		                    'focus' : 'HideMandatoryMessage'
+	   	                     }
+	        			
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'phone1',
+	        			fieldLabel:AOCLit.Phone1
+	        			
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'address1',
+	        			fieldLabel:AOCLit.address1
+	        			
+	        		},
+	        		{
+	        			xtype:'textfield',
+	        			name: 'address3',
+	        			fieldLabel:AOCLit.address3
+	        			
 	        		},
 	        		{
 	        			xtype:'textfield',
@@ -232,9 +293,9 @@ Ext.define('AOC.view.address.AddAddress',{
 	        		},
 	        		{
 	        			xtype:'textfield',
-	        			name: 'email',
-	        			fieldLabel:AOCLit.Email,
-	        			regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/
+	        			name: 'zip',
+	        			fieldLabel:AOCLit.Zip
+	        		
 	        		}
 	        		 ]
         		}
