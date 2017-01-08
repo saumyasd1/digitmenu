@@ -16,7 +16,9 @@ Ext.define('AOC.config.Runtime',{
         orderLineStatus:null,
         allowOrderLineEdit:true,
         openRow:[],
-        user: {}
+        user: {},
+        storeERPORG:null,
+        orderLineCurrenProductLine:0
     },
     constructor : function(config){
         this.initConfig(config);
