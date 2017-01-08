@@ -1,9 +1,13 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
@@ -17,8 +21,15 @@ public class SiteDaoImpl extends GenericDaoImpl<Site, Long> implements
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(Site.class);
+				
+
+		entitiesMap.put("site", new LinkedHashSet(criteria.list()));
+		//entitiesMap.put("partner", criteria1.list());
+		return entitiesMap;
 	}
 
 	
