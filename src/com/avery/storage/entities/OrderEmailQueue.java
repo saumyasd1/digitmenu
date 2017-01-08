@@ -586,4 +586,39 @@ public class OrderEmailQueue extends MainAbstractEntity{
   		}
 		return rb.build();
   	}
+    
+    @GET
+    @Path("/assigncsr/{id:[0-9]+}/{csrid}")
+    @Produces(MediaType.APPLICATION_JSON)
+  	public Response assignCsr(@Context UriInfo ui,
+  			@Context HttpHeaders hh, @PathParam("id") String orderEmailQueueId, 
+  									 @PathParam("csrid") String csrId) {
+  		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
+  		Response.ResponseBuilder rb = null;
+  		try {
+  			
+  			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+  			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
+  					.getInstance().getBean("orderEmailQueueService");
+  			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId);
+  			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+  		} catch (WebApplicationException ex) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", ex);
+  			throw ex;
+  		} catch (Exception e) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", e);
+  			throw new WebApplicationException(Response
+  					.status(Status.INTERNAL_SERVER_ERROR)
+  					.entity(ExceptionUtils.getRootCauseMessage(e))
+  					.type(MediaType.TEXT_PLAIN_TYPE).build());
+  		}
+		return rb.build();
+  	}
 }

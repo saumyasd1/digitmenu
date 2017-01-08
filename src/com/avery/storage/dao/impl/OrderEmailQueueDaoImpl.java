@@ -23,8 +23,6 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
-import com.avery.storage.entities.OrderFileAttachment;
-import com.avery.storage.entities.OrderQueue;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -206,6 +204,29 @@ OrderEmailQueueDao {
 			q.setString("value",status);
 			q.setLong("id",entityId);
 			q.executeUpdate();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while processing order", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
+	@Override
+	public void assignCsrValue(Long entityId, String csrId){
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			OrderEmailQueue orderEmailQueueObj=null;
+			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
+			orderEmailQueueObj.setAssignCSR(csrId);
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while processing order", ex);
