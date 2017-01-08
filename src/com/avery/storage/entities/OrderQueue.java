@@ -161,6 +161,30 @@ public class OrderQueue extends MainAbstractEntity{
 	private String productLineType;
 	@Transient
 	private String senderEmailId;
+	
+	@Transient
+	private String iconName;
+	
+	@Transient
+	private String colorCode;
+	
+	
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
 
 	public String getPartnerName() {
 		return partnerName;

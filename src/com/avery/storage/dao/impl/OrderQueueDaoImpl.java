@@ -31,6 +31,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
@@ -40,6 +41,7 @@ import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SalesOrder;
+import com.avery.storage.service.CodeService;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -148,7 +150,21 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			System.out.println(senderEmail);
 			
 		}
-		 entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
+		
+		List<OrderQueue> list = criteria.list();
+
+		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+		
+		for(OrderQueue orderQueue : list){
+			String status = orderQueue.getStatus();
+			Map<String, String> statusCodes = statusList.get(status);
+			String iconName = statusCodes.keySet().iterator().next();
+			String colorCode = statusCodes.values().iterator().next();
+			orderQueue.setIconName(iconName);
+			orderQueue.setColorCode(colorCode);
+
+		}
+		 entitiesMap.put("orders", new LinkedHashSet(list));
 		totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
         entitiesMap.put("totalCount", totalCount);
 		return entitiesMap;
