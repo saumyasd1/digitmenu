@@ -26,6 +26,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
 import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
@@ -41,6 +42,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		Criteria criteria=null;
         Criteria criteria_org = null;
         Criteria criteria_system = null;
+        Criteria criteria_site = null;
 		int totalCount=0;
 		String queryString=(String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
@@ -70,6 +72,16 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
 				criteria.add(disCriteria);
 			}
+			
+			String systemname=searchMap.get("address");
+			if(address!=null && !"".equals(address)){
+				Disjunction disCriteria = Restrictions.disjunction();
+				disCriteria.add(Restrictions.ilike("address1", address,MatchMode.ANYWHERE));
+				disCriteria.add(Restrictions.ilike("address2", address,MatchMode.ANYWHERE));
+				disCriteria.add(Restrictions.ilike("address3", address,MatchMode.ANYWHERE));
+				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
+				criteria.add(disCriteria);
+			}
 		}   
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		    criteria.addOrder(Order.desc("lastModifiedDate"));
@@ -84,14 +96,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		entitiesMap.put("totalCount", totalCount);
         entitiesMap.put("address", new LinkedHashSet(criteria.list()));
         
-       
-
-        criteria_org = session.createCriteria(Org.class);
-        entitiesMap.put("org", new LinkedHashSet(criteria_org.list()));
-
-        criteria_system = session.createCriteria(SystemInfo.class);
-        entitiesMap.put("system", new LinkedHashSet(criteria_system.list()));
-
+      
         return entitiesMap;
 	}
 
