@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -27,7 +29,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrgMixIn;
+import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.OrgService;
+import com.avery.storage.service.SystemInfoService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -48,20 +52,11 @@ public class Org extends MainAbstractEntity {
 	
 	@Column(name = "comment",length=250)
 	private String comment;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="systemId",nullable=false)
-	private SystemInfo system;
+	SystemInfo system;
 	
-	public Org() {}
-
-	public SystemInfo getSystem() {
-		return system;
-	}
-
-	public void setSystem(SystemInfo system) {
-		this.system = system;
-	}
 
 	public String getName() {
 		return name;
@@ -81,6 +76,39 @@ public class Org extends MainAbstractEntity {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		Map entitiesMap=null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
+			//mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			OrgService orgService = (OrgService) SpringConfig
+					.getInstance().getBean("orgService");
+			entitiesMap = orgService.getAllEntities();
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find any data");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
+	
+	
 	
 	@GET
 	@Path("/system/{id:[0-9]+}")
