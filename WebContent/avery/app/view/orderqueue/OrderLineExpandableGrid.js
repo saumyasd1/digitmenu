@@ -631,26 +631,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+				reference:'shippingMethodCombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Retailer PO/Customer Job',
@@ -780,56 +763,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
+				reference:'freightTermscombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'CSR',
 			dataIndex: 'csr',
 			width: 160,
 			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
-			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
+				xtype: 'textfield'
 			}
 		}, 
 		{
@@ -854,7 +797,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Division For Interface ERPORG',
 			dataIndex: 'divisionForInterfaceERPORG',
 			width: 120,
-			editor: 'textfield'
+			editor: {
+				xtype:'combo',
+				displayField:'name',
+				valueField:'id',
+				store:AOC.config.Runtime.getStoreERPORG(),
+				listeners:{
+					'select':'onerporgSelectChange'
+				}
+			},
+			'renderer':'divisionForInterfaceERPORGColumnRenderer'
 		}, 
 		{
 			text: 'Artwork Hold',
@@ -912,26 +864,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
+				reference:'OrdertypeCombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Order By',
@@ -949,26 +884,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
+				reference:'EndCustomerCombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Ship Mark',
@@ -1046,26 +964,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
+				reference:'splitShipsetCombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Agreement',
@@ -1089,26 +990,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
+				reference:'APOTypeCombo'
 			},
-			renderer:function(v,h,l,k){
-				if(v!=''){
-					var store=h.column.config.editor.store;
-					if(store){
-						var index=store.find("variableFieldName",v);
-						if(index==-1){
-							this.invalidComboValid=true;
-							if(this.showInvalidCombo)
-								h.style = AOCLit.cellColor;
-						}
-					}else{
-						this.invalidComboValid=true;
-						if(this.showInvalidCombo)
-							h.style = AOCLit.cellColor;
-					}
-				}
-				return v;
-			}
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Sent To Oracle Date',
