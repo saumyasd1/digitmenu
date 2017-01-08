@@ -116,7 +116,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			.add(Projections.property("lastModifiedBy"),"lastModifiedBy")
 			.add(Projections.property("lastModifiedDate"),"lastModifiedDate")
 			.add(Projections.property("rbo.rboName"),"rboName")
-			.add(Projections.property("varProductLine.productLineType"),"productLineType");
+			.add(Projections.property("varProductLine.productLineType"),"productLineType")
+			.add(Projections.property("partner.id"),"partnerId")
+					.add(Projections.property("varProductLine.id"),"productLineId");
 		
 		Criteria criteria= session.createCriteria(OrderQueue.class);//getCriteria(queryMap);
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
