@@ -2,7 +2,6 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +18,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -29,9 +27,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrgMixIn;
-import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.OrgService;
-import com.avery.storage.service.SystemInfoService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -52,11 +48,20 @@ public class Org extends MainAbstractEntity {
 	
 	@Column(name = "comment",length=250)
 	private String comment;
-
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	@JoinColumn(name="systemId",nullable=false)
-	SystemInfo system;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="systemId",nullable=false)
+	private SystemInfo system;
+	
+	public Org() {}
+
+	public SystemInfo getSystem() {
+		return system;
+	}
+
+	public void setSystem(SystemInfo system) {
+		this.system = system;
+	}
 
 	public String getName() {
 		return name;
@@ -126,6 +131,39 @@ public class Org extends MainAbstractEntity {
 			OrgService orgService = (OrgService) SpringConfig
 					.getInstance().getBean("orgService");
 			orgs = orgService.readAllBySystemId(entityId);
+			if (orgs == null)
+				throw new Exception("Unable to find Org.");
+			mapper.setDateFormat(ApplicationUtils.df);
+			mapper.writeValue(writer, orgs);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("/productline/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrgByProductLineId(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("id") String productline) {
+		Response.ResponseBuilder rb = null;
+		List<Org> orgs = null;
+		try{
+			Long productlineId = Long.parseLong(productline);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			OrgService orgService = (OrgService) SpringConfig
+					.getInstance().getBean("orgService");
+			orgs = orgService.getOrgByProductLineId(productlineId);
 			if (orgs == null)
 				throw new Exception("Unable to find Org.");
 			mapper.setDateFormat(ApplicationUtils.df);
