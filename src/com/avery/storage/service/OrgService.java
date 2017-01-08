@@ -31,10 +31,13 @@ public class OrgService extends GenericEntityService<Org, Long>{
 		return getOrgDao().readAllBySystemId(entityId);
 		
 	} 
-	
+
 	@Transactional
-	public Map getAllEntities(){
-			return getOrgDao().getAllEntitiesList();
+	public List<Org> getOrgByProductLineId(Long productLineId) throws Exception{
+		
+		return getOrgDao().getOrgByProductLineId(productLineId);
+		
 	}
+	
 
 }

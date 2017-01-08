@@ -11,5 +11,4 @@ import com.avery.storage.entities.SystemInfo;
 public interface SystemInfoDao extends GenericDao<SystemInfo, Long>{
 	
 	public List<SystemInfo> readAllBySiteId(Long siteId);
-	public Map getAllEntitiesList();
 }

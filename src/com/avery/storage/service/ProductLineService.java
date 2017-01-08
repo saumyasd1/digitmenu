@@ -1,5 +1,6 @@
 package com.avery.storage.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -55,5 +56,20 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 		
 		return getProductLineDao().update(productLineData,id);
 		
+	}
+	
+	@Transactional 
+	public List getAllDistantPartners() throws Exception{
+		return getProductLineDao().getAllDistantPartners();
+	}
+	
+	@Transactional
+	public List getAllRBOByPartner(int partnerId) throws Exception{
+		return getProductLineDao().getAllRBOByPartner(partnerId);
+	}
+	
+	@Transactional
+	public List getAllProductLineByRBO(int partnerId,int rbo) throws Exception{
+		return getProductLineDao().getAllProductLineByRBO(partnerId,rbo);
 	}
 }

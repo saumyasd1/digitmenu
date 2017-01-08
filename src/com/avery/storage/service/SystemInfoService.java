@@ -33,10 +33,5 @@ public class SystemInfoService extends GenericEntityService<SystemInfo, Long>{
 		return getSystemInfoDao().readAllBySiteId(entityId);
 		
 	} 
-	
-	@Transactional
-	public Map getAllEntities(){
-			return getSystemInfoDao().getAllEntitiesList();
-	}
 
 }

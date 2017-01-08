@@ -31,5 +31,8 @@ public abstract class SystemInfoMixIn {
 	
 	@JsonIgnore
 	public abstract Site getSite();
+	
+	@JsonIgnore
+	public abstract List<Org> getOrgList();
 
 }

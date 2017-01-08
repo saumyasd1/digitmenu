@@ -21,15 +21,7 @@ public class SiteDaoImpl extends GenericDaoImpl<Site, Long> implements
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
-		Map entitiesMap = new HashMap();
-		Session session = null;
-		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(Site.class);
-				
-
-		entitiesMap.put("site", new LinkedHashSet(criteria.list()));
-		//entitiesMap.put("partner", criteria1.list());
-		return entitiesMap;
+		return null;
 	}
 
 	

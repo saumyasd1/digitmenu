@@ -3,7 +3,6 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,25 +21,16 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.OrderLineMixIn;
-import com.avery.storage.MixIn.OrgMixIn;
-import com.avery.storage.MixIn.PartnerMixIn;
-import com.avery.storage.MixIn.ProductLineMixIn;
-import com.avery.storage.MixIn.SiteMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
-import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.SystemInfoService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,13 +55,12 @@ public class SystemInfo extends MainAbstractEntity{
 	private String comment;
 	
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="siteId",nullable=false)
-	 Site site;
+	private Site site;
 	
-	@OneToMany(mappedBy="system",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	@Fetch(value = FetchMode.SUBSELECT)
-    private List<Org> orgList;
+	@OneToMany(mappedBy="system",fetch=FetchType.LAZY)
+	private List<Org> orgList;
 	
 	public List<Org> getOrgList() {
 		return orgList;
@@ -111,38 +99,6 @@ public class SystemInfo extends MainAbstractEntity{
 		this.comment = comment;
 	}
 
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		Map entitiesMap=null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-		//	Long siteId = site.getId();
-			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
-			mapper.addMixIn(Org.class, OrgMixIn.class);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			SystemInfoService systemInfoService = (SystemInfoService) SpringConfig
-					.getInstance().getBean("systemInfoService");
-			entitiesMap = systemInfoService.getAllEntities();
-			if (entitiesMap == null || entitiesMap.isEmpty())
-				throw new Exception("Unable to find any data");
-			mapper.writeValue(writer, entitiesMap);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-
-	}
-	
 	
 	@GET
 	@Path("/site/{id:[0-9]+}")
@@ -156,7 +112,6 @@ public class SystemInfo extends MainAbstractEntity{
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
-			mapper.addMixIn(Org.class, OrgMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			SystemInfoService systemInfoService = (SystemInfoService) SpringConfig
 					.getInstance().getBean("systemInfoService");
