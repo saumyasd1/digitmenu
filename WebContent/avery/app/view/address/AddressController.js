@@ -277,6 +277,109 @@ Ext.define('AOC.view.address.AddressController', {
 	          });
 	      callout.show();   
 	  },
+	  onSiteSelect:function(combo, record){
+		  debugger
+		  var me = this,
+		      refs = me.getReferences(),
+		      org = refs.orgName,
+		      shippingMethod = refs.shippingMethod,
+		      freightTerms = refs.freightTerms,
+		  	  partner = refs.partnerName,
+		  	  system = refs.systemName,
+		  	  partnerStore = partner.store,
+		  	  systemStore = system.store,
+		  	  siteId = record.get('id');
+		  
+		 me.loadSystemStore(systemStore, siteId );
+		 partnerStore.clearFilter();
+		 partnerStore.filter('siteId', siteId);
+		 var form =me.getView();
+	     if(form !=null && !form.isResubmit){
+	    	 partner.reset();
+	    	 system.reset();
+	    	 org.reset();
+	    	 shippingMethod.reset();
+	    	 freightTerms.reset();
+	    	 shippingMethod.disable();
+	    	 freightTerms.disable();
+	    	 org.disable();
+	     }
+	     partner.bindStore(partnerStore);
+	     partner.enable();
+	     system.enable();
+	     
+	   
+	     system.bindStore(systemStore);
+	   
+	  },
+	  onSystemSelect:function(combo, record){
+		
+		  var refs = this.getReferences(),
+		  	  org = refs.orgName,
+		  	  store = org.store,
+		  	  systemId = record.get('id');
+		  var form =this.getView();
+		     if(form !=null && !form.isResubmit){
+		    	 org.reset();
+		    
+		     }
+		  
+		     org.enable();
+		  var proxy = new Ext.data.proxy.Rest({
+			    url: applicationContext+'/rest/org/system/'+combo.getValue(),
+			    appendId: true,
+			    reader      : {
+				    type : 'json',
+				    rootProperty: 'org',
+				    totalProperty : 'totalCount'
+				},
+				autoLoad:true
+			});
+		 
+		 
+		  store.setProxy(proxy);
+		  store.load();
+	  },
+	  loadSystemStore:function(systemStore, value){
+		  var proxy = new Ext.data.proxy.Rest({
+			    url: applicationContext+'/rest/system/site/'+ value,
+			    appendId: true,
+			    reader      : {
+				    type          : 'json',
+				    rootProperty          : 'system',
+				    totalProperty : 'totalCount'
+				},
+				autoLoad:true
+			});
+		  
+		  systemStore.setProxy(proxy);
+		  systemStore.load();
+	  },
+	  onOrgSelect:function(combo, record){
+		
+		  var me = this,
+		  	  refs = me.getReferences(),
+		      systemRefs = refs.systemName,
+		      shippingMethod = refs.shippingMethod,
+		      freightTerms = refs.freightTerms,
+		      freightStore = freightTerms.store,
+		  	  shippinStore = shippingMethod.store,
+		  	  systemId = systemRefs.getValue(),
+		  	  shipingUrl = 'ShippingMethod/'+systemId + '/'+ combo.getValue(),
+		  	  freightUrl  ='FreightTerms/'+systemId + '/'+ combo.getValue();
+		  
+		  me.loadShippingMethodStore(shippinStore, shipingUrl);
+		  me.loadShippingMethodStore(freightStore, freightUrl);
+		  var form =me.getView();
+		     if(form !=null && !form.isResubmit){
+		    	 shippingMethod.reset();
+		    	 freightTerms.reset();
+		     }
+		     
+		     shippingMethod.enable();
+		     freightTerms.enable();
+		   
+	  },
 	  onAfterRenderEditCallout : function(cmp){
 	        var me = this;
 	        cmp.el.on({
@@ -306,6 +409,27 @@ Ext.define('AOC.view.address.AddressController', {
 		this.runTime.setWindowInEditMode(false);
 		var grid=Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
 		grid.store.load();
+	},
+	
+	loadShippingMethodStore:function(store, url){
+		var response = Ext.Ajax.request({
+			async: false,
+			url: applicationContext+'/rest/orderconfigurations/orgId/'+url,
+		});
+		
+		var items = Ext.decode(response.responseText);
+		var jsonValue=Ext.decode(response.responseText);
+		var serviceStoreData = [];
+		
+		if(jsonValue.length > 0){
+			Ext.Array.forEach(jsonValue,function(item){
+				var service = [item];
+				serviceStoreData.push(service);
+			});
+			store.loadRawData(serviceStoreData);
+		}else{
+			store.removeAll();
+		}
 	},
 	deleteResource:function(record){
 		var ID=record.get('id');
