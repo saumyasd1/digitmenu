@@ -278,7 +278,6 @@ Ext.define('AOC.view.address.AddressController', {
 	      callout.show();   
 	  },
 	  onSiteSelect:function(combo, record){
-		  debugger
 		  var me = this,
 		      refs = me.getReferences(),
 		      org = refs.orgName,
@@ -307,8 +306,6 @@ Ext.define('AOC.view.address.AddressController', {
 	     partner.bindStore(partnerStore);
 	     partner.enable();
 	     system.enable();
-	     
-	   
 	     system.bindStore(systemStore);
 	   
 	  },
