@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,9 @@ public class OrgService extends GenericEntityService<Org, Long>{
 		
 	} 
 	
+	@Transactional
+	public Map getAllEntities(){
+			return getOrgDao().getAllEntitiesList();
+	}
 
 }
