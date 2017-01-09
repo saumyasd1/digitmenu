@@ -15,7 +15,7 @@ Ext.define('AOC.store.TaskManagerStore', {
 	},
 	sorters: [{
  		property:'lastModifiedDate',
- 		direction:'ASC'
+ 		direction:'DESC'
  			}]
 });
 
