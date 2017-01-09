@@ -18,7 +18,7 @@ Ext.define('AOC.store.EmailManagementStore', {
          direction: 'ASC'
  	},{
  		property:'lastModifiedDate',
- 		direction:'ASC'
+ 		direction:'DESC'
  	}]
      
 });
