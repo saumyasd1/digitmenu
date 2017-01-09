@@ -73,7 +73,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				 xtype:'viewmailform',
 				 reference:'webform',
 				 region:'north',
-				 height:150,
+				 height:155,
 				 scrollable:true,
 				 margin:'0 10 0 10',
 				 style:'border-top:solid 1px #cecece;'

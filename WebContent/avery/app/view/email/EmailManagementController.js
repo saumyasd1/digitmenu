@@ -85,11 +85,11 @@ Ext.define('AOC.view.email.EmailManagementController', {
   	    if(heightBelow<(callout.getHeight()+40)){
 			callout.calloutArrowLocation='bottom-left'; 
 			callout.relativePosition='b-t';
-			callout.relativeOffsets = [60, 0];
+			callout.relativeOffsets = [80, 0];
 		}else{
 			callout.calloutArrowLocation='top-left'; 
 			callout.relativePosition='t-b';
-			callout.relativeOffsets = [60, 5];
+			callout.relativeOffsets = [80, 5];
 		}
         callout.show();
     },
@@ -110,12 +110,11 @@ Ext.define('AOC.view.email.EmailManagementController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
+            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
             '</tpl>',
-            '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelMail">Cancel Email</div>',
+            	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
             '</tpl>',
-            '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
-            '</tpl>',
+        	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelMail">Move To TaskManager</div>',
             { 
 				isCancelOrderDisabled : function(v){
 					return (v.Status!=AOCLit.orderError);

@@ -2,7 +2,7 @@ Ext.define('AOC.store.EmailManagementStore', {
 	extend : 'Ext.data.Store',
 	model:'AOC.model.EmailManagementModel',
 	//autoLoad : true,
-	totalCount:'total',
+	totalCount:'totalCount',
 	pageSize:pageSize,
 	storeId:'EmailManagementStoreId',
 	proxy: {

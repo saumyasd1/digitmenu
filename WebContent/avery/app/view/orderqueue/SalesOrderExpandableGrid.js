@@ -21,8 +21,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			text: AOCLit.Status,
 			dataIndex: 'status',
 			width: 150,
-			renderer:function(v){
-				return AOC.util.Helper.getSatus(v);
+			renderer:function(v, metadata,rec){
+				return Helper.getSatus(rec);
 			}
 	    },
 		{

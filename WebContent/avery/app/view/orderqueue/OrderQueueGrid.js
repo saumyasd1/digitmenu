@@ -173,8 +173,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 					queryMode :'local',
 					store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('OrderQueue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 				},
-				renderer:function(v){
-					return AOC.util.Helper.getSatus(v);
+				renderer:function(v, metadata,rec){
+					return Helper.getSatus(rec);
 				}
 			},
 			{
@@ -298,6 +298,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				itemId:'pagingtoolbar',
 				store:me.store,
 				displayInfo:true,
+				pageSize:pageSize,
 				plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
 			}
 		];

@@ -126,8 +126,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				width:120,
 				dataIndex:'status',
 				flex:1,
-				renderer:function(v){
-					return AOC.util.Helper.getSatus(v);
+				renderer:function(v, metadata,rec){
+					return Helper.getSatus(rec);
 				}
 			},
 			{
@@ -211,8 +211,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 					html:AOCLit.advSearchTitle
 				},
 				listeners: {
-					el : {
-						click    : 'openAdvancedSearchWindow'	
+					el: {
+						click: 'openAdvancedSearchWindow'	
 					}
 				}
 			},
@@ -225,15 +225,16 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 		];
   	},
 	buildDockedItems : function(){
-     	var me=this;
+     	var me = this;
 		return [
  			{
-				xtype : 'pagingtoolbar',
-				dock : 'bottom',
-				ui : 'darktoolbar',
+				xtype: 'pagingtoolbar',
+				dock: 'bottom',
+				ui: 'darktoolbar',
 				itemId:'pagingtoolbar',
 				store:me.store,
 				displayInfo:true,
+				pageSize:pageSize,
 				plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
 			}
 		];

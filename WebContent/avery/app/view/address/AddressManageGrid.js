@@ -174,6 +174,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             ui : 'darktoolbar',
             itemId:'pagingtoolbar',
             displayInfo:true,
+			pageSize:pageSize,
             plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
             
         }];

@@ -36,7 +36,6 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 			clicksToEdit: 1
 		})
 	],
-	selType: 'checkboxmodel',
 	buildColumns : function(){
       	var me=this;
 		return [  
@@ -51,6 +50,29 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 						handler: 'onClickMenu'
 					}
 				]
+			},
+			{
+  		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+  	            width:40,
+  				dataIndex:'comment',
+  				menuDisabled :true,
+  				baseCls:'custom-action',
+  				renderer:function(value, metaData, rec){
+  					if(value){
+  						var comment = Ext.String.htmlEncode(value);
+  						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+						return '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />';
+  					}else{
+  						return '';
+					}
+  				} 
+			},
+			{  
+				text : 'Tracking #',
+				//width:120,
+				align: 'right',
+				dataIndex:'id',
+				flex:0.5
 			},
 			{
 				text :'CSR',
@@ -87,8 +109,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				sortable : true,
 				dataIndex:'status',
 				flex:0.5,
-				renderer:function(v, metadata){
-					return Helper.getSatus(v);
+				renderer:function(v, metadata,rec){
+					return Helper.getSatus(rec);
 				}
 			},
 			{
@@ -139,6 +161,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				itemId:'pagingtoolbar',
 				store:me.store,
 				displayInfo:true,
+				pageSize:pageSize,
 				plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
 			}
 		];

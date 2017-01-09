@@ -385,5 +385,6 @@ Ext.define('AOC.lang.lit',{
     //added alert messages(AK)
     'selectAttachmentFileMsg':'Please select atleast one file to proceed.',
     'warningTitle':'Warning',
-    'pleaseWaitTitle':'Please wait...'
+    'pleaseWaitTitle':'Please wait...',
+    'taskMangerContextType':'task_manager'
 });

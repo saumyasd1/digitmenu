@@ -164,6 +164,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             itemId:'pagingtoolbar',
             store:me.store,
             displayInfo:true,
+			pageSize:pageSize,
             plugins:Ext.create('Ext.ux.ProgressBarPager',{width:250})
             
         }];
