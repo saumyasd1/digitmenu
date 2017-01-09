@@ -84,8 +84,10 @@ OrderEmailQueueDao {
 				throw new Exception("No data found in the status table for status:: "+status);
 			String iconName = statusCodes.get("iconName");
 			String colorCode = statusCodes.get("colorCode");
+			String codeValue = statusCodes.get("codeValue");
 			orderQueue.setIconName(iconName);
 			orderQueue.setColorCode(colorCode);
+			orderQueue.setCodeValue(codeValue);
 
 		}
         entitiesMap.put("totalCount", totalCount);
@@ -117,8 +119,10 @@ OrderEmailQueueDao {
 					throw new Exception("No data found in the status table for status:: "+status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
 				orderQueue.setIconName(iconName);
 				orderQueue.setColorCode(colorCode);
+				orderQueue.setCodeValue(codeValue);
 
 			}
 		}

@@ -62,8 +62,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					throw new Exception("No data found in the status table for status:: "+status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
 				orderLine.setIconName(iconName);
 				orderLine.setColorCode(colorCode);
+				orderLine.setCodeValue(codeValue);
 
 			}
 			

@@ -58,8 +58,10 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 					throw new Exception("No data found in the status table for status:: "+status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
 				salesOrder.setIconName(iconName);
 				salesOrder.setColorCode(colorCode);
+				salesOrder.setCodeValue(codeValue);
 
 			}
 			

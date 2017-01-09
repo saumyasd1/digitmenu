@@ -74,11 +74,12 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 			for(Code code : codeList){
 				String iconName = code.getIconName();
 				String colorCode = code.getColorCode();
+				String codeValue = code.getValue();
 				Map<String, String> statusValues = new HashMap<>();
 				
 				statusValues.put("iconName", iconName);
 				statusValues.put("colorCode", colorCode);
-				
+				statusValues.put("codeValue", codeValue);
 				String codeIntegerValue = code.getCode();
 				statusCode.put(codeIntegerValue, statusValues);
 			}

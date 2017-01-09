@@ -317,6 +317,8 @@ public class OrderLine extends MainAbstractEntity{
 	@Transient
 	private String colorCode;
 	
+	@Transient
+	private String codeValue;
 	
 
 	public String getIconName() {
@@ -334,6 +336,15 @@ public class OrderLine extends MainAbstractEntity{
 	public void setColorCode(String colorCode) {
 		this.colorCode = colorCode;
 	}
+	
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
+	}
+
 	
 	
 	public String getAveryMOQ() {

@@ -168,6 +168,8 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private String colorCode;
 	
+	@Transient
+	private String codeValue;
 	
 
 	public String getIconName() {
@@ -185,6 +187,15 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setColorCode(String colorCode) {
 		this.colorCode = colorCode;
 	}
+	
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
+	}
+	
 	@Transient
 	private Long partnerId;
 	
