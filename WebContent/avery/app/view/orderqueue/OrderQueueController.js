@@ -418,7 +418,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	              '</tpl>',
 	              {
 	    		 isViewOrderDisabled:function(v){
-	    			 return (v.Status<19);
+	    			 return (v.Status<AOCLit.waitingForCSRStatusOrderQueue);
 	    		 },
 	    		 isViewSalesDisabled:function(v){
 		    	  return (v.salesOrderCount==0);
