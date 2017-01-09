@@ -145,29 +145,11 @@ Ext.define('AOC.util.Helper',{
             anchor : (anchor) ? anchor : 'top'
         });
     },
-    getSatus:function(v){
-    	if(v!==''){
-	    	var me=this,
-	    		store= Ext.data.StoreManager.lookup('codeid') == null ? me.getCodeStore('code') : Ext.data.StoreManager.lookup('codeid'),
-				statusRecord=store ? store.findRecord( 'code', v) : '',
-				va = statusRecord ? statusRecord.get('value') : '';
-	    	
-	    	if(v==orderReceivedStatus || v==orderPreProcessedStatus || v==salesOrderCreatedStatus || v==salesOrderGeneratedStatus || v==salesOrderSubmittedStatus || v==orderRead || v==booked)
-		   {
-	    		return '<div><img  src="' + AOC.config.Settings.buttonIcons.tick + '" /><font color=#009966>&nbsp&nbsp&nbsp'+va+'</font></div>';
-		   }
-			else if(v==waitingForCSRStatus || v==submissionProcessRunningStatus || v==exportingProcessRunningStatus || v==processingOrder)
-			{
-				 return '<div><img  src="' + AOC.config.Settings.buttonIcons.watch + '" /><font color=#EF4300>&nbsp&nbsp&nbsp'+va+'</font></div>';
-			}
-			else if( v==cancelStatus)
-			{
-			 return '<div><img  src="' + AOC.config.Settings.buttonIcons.cancel + '" /><font color=silver>&nbsp&nbsp&nbsp'+va+'</font></div>';
-			}
-			else
-				return '<div><img  src="' + AOC.config.Settings.buttonIcons.error + '" /><font color=red>&nbsp&nbsp&nbsp'+va+'</font</div>';
-    	}
-    	return '';
+    getSatus:function(obj){
+    	/*
+    	 * Implementing generic function for displaying colorCode and iconName on all screens
+    	 * */
+    	return '<img style="margin-right:3px;" src="' + AOC.config.Settings.buttonIcons[obj.data.iconName] + '" /><font color="' +obj.data.colorCode+'">'+obj.data.codeValue+'</font>';
     },
     setCookie:function(cname, cvalue, exdays) {
         var d = new Date();
