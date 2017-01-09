@@ -3,6 +3,7 @@ package com.avery.storage.dao.impl;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -67,8 +69,27 @@ OrderEmailQueueDao {
         criteria.setFirstResult((pageNO - 1) * pageSize);
         criteria.setMaxResults(pageSize);
 		}
+		
+		List<OrderEmailQueue> list = criteria.list();
+		//getting colorCode and iconName
+		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+		if(statusList==null)
+			throw new Exception("Unable to fetch Status List");
+		for(OrderEmailQueue orderQueue : list){
+			String status = orderQueue.getStatus();
+			if(status==null | status.equals(""))
+				throw new Exception("Unidentified value found for the status");
+			Map<String, String> statusCodes = statusList.get(status);
+			if(statusCodes==null)
+				throw new Exception("No data found in the status table for status:: "+status);
+			String iconName = statusCodes.get("iconName");
+			String colorCode = statusCodes.get("colorCode");
+			orderQueue.setIconName(iconName);
+			orderQueue.setColorCode(colorCode);
+
+		}
         entitiesMap.put("totalCount", totalCount);
-        entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
+        entitiesMap.put("emailqueue", new LinkedHashSet(list));
 		return entitiesMap;
 	}
 	
@@ -79,7 +100,41 @@ OrderEmailQueueDao {
 		Criteria criteria=null;
 		criteria = session.createCriteria(OrderEmailQueue.class);
 		criteria.add(Restrictions.eq("status", "4"));//Status Code for Unrecognized mails
-		entitiesMap.put("emailqueue", new LinkedHashSet(criteria.list()));
+		
+		
+		//getting colorCode and iconName
+		List<OrderEmailQueue> list = criteria.list();
+		try{
+			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+			if(statusList==null)
+				throw new Exception("Unable to fetch Status List");
+			for(OrderEmailQueue orderQueue : list){
+				String status = orderQueue.getStatus();
+				if(status==null | status.equals(""))
+					throw new Exception("Unidentified value found for the status");
+				Map<String, String> statusCodes = statusList.get(status);
+				if(statusCodes==null)
+					throw new Exception("No data found in the status table for status:: "+status);
+				String iconName = statusCodes.get("iconName");
+				String colorCode = statusCodes.get("colorCode");
+				orderQueue.setIconName(iconName);
+				orderQueue.setColorCode(colorCode);
+
+			}
+		}
+		catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching Unidentified emails " , ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching Unidentified Emails " , e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		entitiesMap.put("emailqueue", new LinkedHashSet(list));
 		return entitiesMap;
 	}
 

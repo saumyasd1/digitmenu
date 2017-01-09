@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.SalesOrder;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +42,28 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 			orderQueue.setId(orderID);
 			criteria = session.createCriteria(SalesOrder.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue", orderQueue));
-			return criteria.list();
+			List<SalesOrder> list = criteria.list();
+
+			
+			//getting colorCode and iconName
+			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+			if(statusList==null)
+				throw new Exception("Unable to fetch Status List");
+			for(SalesOrder salesOrder : list){
+				String status = salesOrder.getStatus();
+				if(status==null | status.equals(""))
+					throw new Exception("Unidentified value found for the statuscode");
+				Map<String, String> statusCodes = statusList.get(status);
+				if(statusCodes==null)
+					throw new Exception("No data found in the status table for status:: "+status);
+				String iconName = statusCodes.get("iconName");
+				String colorCode = statusCodes.get("colorCode");
+				salesOrder.setIconName(iconName);
+				salesOrder.setColorCode(colorCode);
+
+			}
+			
+			return list;
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error in fetching sales order for order queue id " + orderID, ex);

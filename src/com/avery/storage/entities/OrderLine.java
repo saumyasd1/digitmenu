@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -308,6 +309,33 @@ public class OrderLine extends MainAbstractEntity{
 	
 	@Column(name = "averySample", length = 50)
 	String averySample;
+	
+	//transient variables added for getting colorCode and iconName
+	@Transient
+	private String iconName;
+	
+	@Transient
+	private String colorCode;
+	
+	
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+	
+	
 	public String getAveryMOQ() {
 		return averyMOQ;
 	}

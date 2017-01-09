@@ -59,6 +59,8 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 		}
 	}
 	
+	
+	//Method for getting colorCode and iconName
 	public HashMap<String, Map> getStatusCode(){
 		HashMap<String, Map> statusCode = new HashMap<>();
 		List<Code> codeList = null;
@@ -67,19 +69,26 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 			codeService = (CodeService) SpringConfig
 					.getInstance().getBean("codeService");
 			codeList = codeService.readAll();
+			if(codeList==null)
+				throw new NullPointerException("No status codes found");
 			for(Code code : codeList){
 				String iconName = code.getIconName();
 				String colorCode = code.getColorCode();
 				Map<String, String> statusValues = new HashMap<>();
 				
-				statusValues.put(iconName, colorCode);
+				statusValues.put("iconName", iconName);
+				statusValues.put("colorCode", colorCode);
 				
 				String codeIntegerValue = code.getCode();
 				statusCode.put(codeIntegerValue, statusValues);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AppLogger.getSystemLogger().error(
+					"Error in fetching values for status codes", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
 		

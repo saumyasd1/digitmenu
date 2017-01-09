@@ -155,13 +155,19 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		
 		List<OrderQueue> list = criteria.list();
 
+		//getting colorCode and iconName
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
-		
+		if(statusList==null)
+			throw new Exception("Unable to fetch Status List");
 		for(OrderQueue orderQueue : list){
 			String status = orderQueue.getStatus();
+			if(status==null | status.equals(""))
+				throw new Exception("Unidentified value found for the statuscode");
 			Map<String, String> statusCodes = statusList.get(status);
-			String iconName = statusCodes.keySet().iterator().next();
-			String colorCode = statusCodes.values().iterator().next();
+			if(statusCodes==null)
+				throw new Exception("No data found in the status table for status:: "+status);
+			String iconName = statusCodes.get("iconName");
+			String colorCode = statusCodes.get("colorCode");
 			orderQueue.setIconName(iconName);
 			orderQueue.setColorCode(colorCode);
 

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -102,6 +103,32 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	
 	@OneToMany(mappedBy = "varOrderEmailQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
+	
+	
+	//transient variables added for getting colorCode and iconName
+	@Transient
+	private String iconName;
+	
+	@Transient
+	private String colorCode;
+	
+	
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
 	
 	
 	public String getProcessId() {
