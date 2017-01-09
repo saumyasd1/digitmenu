@@ -22,7 +22,7 @@ Ext.define('AOC.store.PartnerManagementStore', {
     },
     sorters: [{
  		property:'lastModifiedDate',
- 		direction:'ASC'
+ 		direction:'DESC'
  			}]
 });
 
