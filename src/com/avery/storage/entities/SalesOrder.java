@@ -188,7 +188,7 @@ public class SalesOrder extends MainAbstractEntity{
 	@Column(name = "oracleBillToSiteNumber", length = 100)
 	String oracleBillToSiteNumber;// 100
 	@Column(name = "oracleExportId")
-	int oracleExportId;
+	Integer oracleExportId;
 	@Column(name = "oracleItemNumber", length = 100)
 	String oracleItemNumber;// 100
 	@Column(name = "oracleShipToSiteNumber", length = 100)
@@ -924,12 +924,12 @@ public class SalesOrder extends MainAbstractEntity{
 	}
 
 
-	public int getOracleExportId() {
+	public Integer getOracleExportId() {
 		return oracleExportId;
 	}
 
 
-	public void setOracleExportId(int oracleExportId) {
+	public void setOracleExportId(Integer oracleExportId) {
 		this.oracleExportId = oracleExportId;
 	}
 
