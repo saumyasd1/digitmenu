@@ -23,7 +23,7 @@ Ext.define('AOC.config.Settings',{
          backIcon:'avery/resources/images/arrow-lef.svg',
          tick:'avery/resources/images/tick.svg',
          warning:'avery/resources/images/warning.svg',
-         watch:'avery/resources/images/watch1.png',
+         watch:'avery/resources/images/watch.png',
          report:'avery/resources/images/report.png',
          error:'avery/resources/images/error.png',
          cancel:'avery/resources/images/cancel.png',
@@ -48,7 +48,10 @@ Ext.define('AOC.config.Settings',{
          valid_field:'avery/resources/images/valid_field.png',
          advSearchIcon:'avery/resources/images/search.png',
          browseIcon:'avery/resources/images/browse.png',
-         mailIcon:'avery/resources/images/mail.png'
+         mailIcon:'avery/resources/images/mail.png',
+         mail:'avery/resources/images/mail.png',
+         
+         
          
     },
     constructor : function(config){
