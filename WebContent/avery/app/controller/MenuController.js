@@ -220,6 +220,11 @@ Ext.define('AOC.controller.MenuController', {
 				store.clearFilter(true);
 				store.load();	  
 				break;
+			case 'taskmanager':
+				var store = Ext.ComponentQuery.query('maincontainer taskManagergrid')[0].getStore();
+				store.clearFilter(true);
+				store.load();	  
+				break;
 			defaults :break;
 		}
 	},
