@@ -13,6 +13,6 @@ Ext.define('AOC.store.OrderQueueStore', {
 	},
 	sorters: [{
  		property:'lastModifiedDate',
- 		direction:'ASC'
+ 		direction:'DESC'
  			}]
 });
