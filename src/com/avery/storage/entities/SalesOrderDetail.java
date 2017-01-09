@@ -70,9 +70,9 @@ public class SalesOrderDetail extends MainAbstractEntity{
 	@Column(name="variableDataValue" , length=100)
 	String variableDataValue;
 	@Column(name="fiberPercent" )
-	int fiberPercent;
+	Integer fiberPercent;
 	@Column(name="sumOfFiberPercentage" )
-	int sumOfFiberPercentage ;
+	Integer sumOfFiberPercentage ;
 	@Column(name = "comment",length=250)
 	String comment;
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
@@ -213,28 +213,28 @@ public class SalesOrderDetail extends MainAbstractEntity{
 
 
 
-	public int getFiberPercent() {
+	public Integer getFiberPercent() {
 		return fiberPercent;
 	}
 
 
 
 
-	public void setFiberPercent(int fiberPercent) {
+	public void setFiberPercent(Integer fiberPercent) {
 		this.fiberPercent = fiberPercent;
 	}
 
 
 
 
-	public int getSumOfFiberPercentage() {
+	public Integer getSumOfFiberPercentage() {
 		return sumOfFiberPercentage;
 	}
 
 
 
 
-	public void setSumOfFiberPercentage(int sumOfFiberPercentage) {
+	public void setSumOfFiberPercentage(Integer sumOfFiberPercentage) {
 		this.sumOfFiberPercentage = sumOfFiberPercentage;
 	}
 
