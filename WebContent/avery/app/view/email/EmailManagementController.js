@@ -111,15 +111,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
         var me = this;
         return Ext.create('Ext.XTemplate',
             '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
-            '</tpl>',
-            	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
-            '</tpl>',
-        	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelMail">Move To TaskManager</div>',
-            { 
-				isCancelOrderDisabled : function(v){
-					return (v.Status!=AOCLit.orderError);
-				}
-            }
+            '<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
+        	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelMail">Move To TaskManager</div>'
+            
         );
     }
 });
