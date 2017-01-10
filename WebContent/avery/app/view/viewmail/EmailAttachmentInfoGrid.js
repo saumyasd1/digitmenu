@@ -144,8 +144,8 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					flex :1,
 					dataIndex:'status',
 					name: 'status',
-					renderer:function(value, record){
-						return Helper.getSatus(record);
+					renderer:function(value,metadata,rec){
+						return Helper.getSatus(rec);
 					}
 				}
 			]
