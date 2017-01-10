@@ -118,7 +118,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 				defaultType:'displayfield',
 				items: [
 					{
-						name: 'Email', //name:'mailBody'(DB column name)
+						name: 'Email Body', //name:'mailBody'(DB column name)
 						itemId: 'mailbody',
 						fieldLabel: 'Email Body',
 						labelWidth:150,
