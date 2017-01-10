@@ -353,17 +353,26 @@ Ext.define('AOC.lang.lit',{
     "noRBOconfigMsg":'No RBO configured for the selected Parter. Please select a differet partner to proceed further',
     
     //Status Code
-    "orderReceivedStatus":'1',
-    "orderError":'2',
-    "orderPreProcessedStatus":'3',
-    "waitingForCSRStatusOrderQueue":'19',
-    "waitingForCSRStatusOrderLine":'20',
-    "SO_GeneratedStatusOrderLine":'21',
+    //EmailQueue
+    "mailReceived":'1',
+    "identifyingMail":'2',
+    "unidentified":'3',
     "unrecognizedEmailStatus":'4',
+    "emailIdentifiedStatus":"5",
+    "emailAttachmentInfoGridUnIdentifiedStatus":"6",
+    "emailAttachmentInfoGridDisregardStatus":"7",
+    "emailAttachmentInfoGridIdentifiedStatus":"8",
+    "orderEmailProcessing":'9',
+    "orderEmailProcessed":'10',
+    //Adding codes according to new StatusCode so commenting older codes
+    //"orderReceivedStatus":'1',
+    //"orderError":'2',
+    //"orderPreProcessedStatus":'3',
+    "SO_GeneratedStatusOrderLine":'21',
     //"salesOrderCreatedStatus":'5',
     "submitToOracleStatus=salesOrderGeneratedStatus":'6',
-    "salesOrderSubmittedStatus":'7',
-    "noAdditionDataStatus":'10',
+    //"salesOrderSubmittedStatus":'7',
+    //"noAdditionDataStatus":'10',
     "submissionProcessRunningStatus":'11',
     "exportingProcessRunningStatus":'12',
     "errorInPreProcessing":'13',
@@ -374,14 +383,15 @@ Ext.define('AOC.lang.lit',{
     "disregardStatus":'18',
     "booked":'99',
     "oracleError":'98',
-    "emailIdentifiedStatus":"5",
-    "emailAttachmentInfoGridIdentifiedStatus":"8",
-    "emailAttachmentInfoGridUnIdentifiedStatus":"6",
-    "emailAttachmentInfoGridDisregardStatus":"7",
+    "waitingForCSRStatusOrderQueue":'19',
+    "waitingForCSRStatusOrderLine":'20',
+    
+    
     "fiberLevel":'FIBRE',
     "identifiedStatus":'5',
     "centerStyleDiv":'<div align="center"><b><font color=#006FDD>',
     "mandatoryValidationCellColor":'background-color:yellow',
+
     
     //added alert messages(AK)
     'selectAttachmentFileMsg':'Please select atleast one file to proceed.',
