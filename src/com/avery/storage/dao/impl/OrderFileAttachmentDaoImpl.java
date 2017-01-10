@@ -33,6 +33,7 @@ import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Partner;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -51,14 +52,34 @@ OrderFileAttachmentDao {
 			Map entitiesMap = new HashMap();
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
-			/*ProjectionList projections = Projections.projectionList();
-			projections.add(Projections.property("id"), "id");
-			projections.add(Projections.property("fileName"), "fileName");
-			criteria.setProjection(projections);
-			*/
-			criteria.setMaxResults(10);
+			/*
+			 * ProjectionList projections = Projections.projectionList();
+			 * projections.add(Projections.property("id"), "id");
+			 * projections.add(Projections.property("fileName"), "fileName");
+			 * criteria.setProjection(projections); criteria.setMaxResults(10);
+			 */
 			criteria.add(Restrictions.eq("varOrderEmailQueue.id", orderID));
-			return criteria.list();
+			List<OrderFileAttachment> list = criteria.list();
+			// getting colorCode, iconName and values as required at the GUI
+			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+			if (statusList == null)
+				throw new Exception("Unable to fetch Status List.");
+			for (OrderFileAttachment orderFileAttachment : list) {
+				String status = orderFileAttachment.getStatus();
+				if (status == null | status.equals(""))
+					throw new Exception("Unidentified value found for the status.");
+				Map<String, String> statusCodes = statusList.get(status);
+				if (statusCodes == null)
+					throw new Exception("No data found in the status table for status:: \"" + status + "\".");
+				String iconName = statusCodes.get("iconName");
+				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
+				orderFileAttachment.setIconName(iconName);
+				orderFileAttachment.setColorCode(colorCode);
+				orderFileAttachment.setCodeValue(codeValue);
+
+			}
+			return list;
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error in fetching order attachments for order id " + orderID, ex);
@@ -161,26 +182,25 @@ OrderFileAttachmentDao {
 		return entitiesMap;
 	}
 
-	public List getUniqueList(List<String> list){
-		Set<Long> set= new HashSet<Long>();
-		for(int i=0;i<list.size();i++){
+	public List getUniqueList(List<String> list) {
+		Set<Long> set = new HashSet<Long>();
+		for (int i = 0; i < list.size(); i++) {
 			String str = list.get(i);
-			//System.out.println("---------------------"+str);
-			if(str.contains(",")){
+			// System.out.println("---------------------"+str);
+			if (str.contains(",")) {
 				String[] st = str.split(",");
-				for(int p=0;p<st.length;p++){
-					//System.out.println(Long.parseLong(st[p]));
+				for (int p = 0; p < st.length; p++) {
+					// System.out.println(Long.parseLong(st[p]));
 					set.add(Long.parseLong(st[p]));
 				}
-			}
-			else if(!str.equals(null) && !str.equals("")){
-				//System.out.println(Long.parseLong(str));
+			} else if (!str.equals(null) && !str.equals("")) {
+				// System.out.println(Long.parseLong(str));
 				set.add(Long.parseLong(str));
 			}
 		}
-		//System.out.println(set.size());
+		// System.out.println(set.size());
 		List newList = new ArrayList(set);
-		
+
 		return newList;
 	}
 

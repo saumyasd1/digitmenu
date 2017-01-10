@@ -18,6 +18,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -43,6 +44,7 @@ OrderEmailQueueDao {
 		String queryString=(String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(OrderEmailQueue.class);
+		criteria.add(Restrictions.neOrIsNotNull("status", "4"));
 		String limit=(String)queryMap.getFirst("limit");
 		String pageNo=(String) queryMap.getFirst("page");
 		if(queryString!=null){
@@ -71,52 +73,74 @@ OrderEmailQueueDao {
 		}
 		
 		List<OrderEmailQueue> list = criteria.list();
-		//getting colorCode and iconName
+		// getting colorCode, iconName and values as required at the GUI
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
-		if(statusList==null)
-			throw new Exception("Unable to fetch Status List");
-		for(OrderEmailQueue orderQueue : list){
+		if (statusList == null)
+			throw new Exception("Unable to fetch Status List.");
+		for (OrderEmailQueue orderQueue : list) {
 			String status = orderQueue.getStatus();
-			if(status==null | status.equals(""))
-				throw new Exception("Unidentified value found for the status");
+			if (status == null | status.equals(""))
+				throw new Exception("Unidentified value found for the status.");
 			Map<String, String> statusCodes = statusList.get(status);
-			if(statusCodes==null)
-				throw new Exception("No data found in the status table for status:: "+status);
+			if (statusCodes == null)
+				throw new Exception("No data found in the status table for status:: \"" + status + "\".");
 			String iconName = statusCodes.get("iconName");
 			String colorCode = statusCodes.get("colorCode");
 			String codeValue = statusCodes.get("codeValue");
 			orderQueue.setIconName(iconName);
 			orderQueue.setColorCode(colorCode);
 			orderQueue.setCodeValue(codeValue);
+			
+			//orderqueue count added for the emailqueue screen "view order" button
+			long trackId = orderQueue.getId();
+			int orderQueueCount = getOrderQueueCountByTrackId(trackId);
+			orderQueue.setOrderQueueCount(orderQueueCount);
 
 		}
-        entitiesMap.put("totalCount", totalCount);
-        entitiesMap.put("emailqueue", new LinkedHashSet(list));
+		entitiesMap.put("totalCount", totalCount);
+		entitiesMap.put("emailqueue", new LinkedHashSet(list));
 		return entitiesMap;
 	}
 	
 	@Override
-	public Map getUnidentifiedEntities(){
+	public Map getUnidentifiedEntities(MultivaluedMap queryMap) throws Exception{
 		Map entitiesMap = new HashMap();
-		Session session=getSessionFactory().getCurrentSession();
-		Criteria criteria=null;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = null;
+		int totalCount = 0;
 		criteria = session.createCriteria(OrderEmailQueue.class);
-		criteria.add(Restrictions.eq("status", "4"));//Status Code for Unrecognized mails
+		criteria.add(Restrictions.eq("status", "4"));// Status Code for
+														// Unrecognized mails
+
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+
+		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+
+		String limit = (String) queryMap.getFirst("limit");
+		String pageNo = (String) queryMap.getFirst("page");
+
 		
-		
-		//getting colorCode and iconName
+		//Pagination added for taskmanager
+		String pageNumber = pageNo == null ? "" : pageNo;
+		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
+		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
+		if (pageNO != 0) {
+			criteria.setFirstResult((pageNO - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
+		}
+		// getting colorCode, iconName and values as required at the GUI
 		List<OrderEmailQueue> list = criteria.list();
-		try{
+		try {
 			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
-			if(statusList==null)
+			if (statusList == null)
 				throw new Exception("Unable to fetch Status List");
-			for(OrderEmailQueue orderQueue : list){
+			for (OrderEmailQueue orderQueue : list) {
 				String status = orderQueue.getStatus();
-				if(status==null | status.equals(""))
+				if (status == null | status.equals(""))
 					throw new Exception("Unidentified value found for the status");
 				Map<String, String> statusCodes = statusList.get(status);
-				if(statusCodes==null)
-					throw new Exception("No data found in the status table for status:: "+status);
+				if (statusCodes == null)
+					throw new Exception("No data found in the status table for status:: " + status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
 				String codeValue = statusCodes.get("codeValue");
@@ -125,20 +149,16 @@ OrderEmailQueueDao {
 				orderQueue.setCodeValue(codeValue);
 
 			}
-		}
-		catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching Unidentified emails " , ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching Unidentified emails ", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching Unidentified Emails " , e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching Unidentified Emails ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		entitiesMap.put("emailqueue", new LinkedHashSet(list));
+		entitiesMap.put("totalCount", totalCount);
 		return entitiesMap;
 	}
 
@@ -305,6 +325,27 @@ OrderEmailQueueDao {
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
+	}
+	
+	
+	// Getting orderqueue count to enable/disable "view order" button as
+	// required at the GUI
+	/**
+	 * @param trackId
+	 * @return orderQueue count
+	 */
+	public int getOrderQueueCountByTrackId(Long trackId) {
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrderQueue.class)
+				.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "varOrderEmailQueue")
+				.add(Restrictions.eq("varOrderEmailQueue.id", trackId));
+
+		criteria.setProjection(Projections.rowCount());
+		List results = criteria.list();
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return results == null || results.size() == 0 ? 0 : ((Long) results.get(0)).intValue();
 	}
 
 

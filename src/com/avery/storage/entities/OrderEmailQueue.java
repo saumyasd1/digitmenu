@@ -108,13 +108,15 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
-	
+
 	@Transient
 	private String colorCode;
-	
+
 	@Transient
 	private String codeValue;
 	
+	@Transient
+	private int orderQueueCount;
 
 	public String getIconName() {
 		return iconName;
@@ -131,13 +133,21 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	public void setColorCode(String colorCode) {
 		this.colorCode = colorCode;
 	}
-	
+
 	public String getCodeValue() {
 		return codeValue;
 	}
 
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
+	}
+
+	public int getOrderQueueCount() {
+		return orderQueueCount;
+	}
+
+	public void setOrderQueueCount(int orderQueueCount) {
+		this.orderQueueCount = orderQueueCount;
 	}
 
 	public String getProcessId() {
@@ -379,6 +389,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 		Response.ResponseBuilder rb = null;
 		Map<?,?> entitiesMap=null;
 		try {
+			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
@@ -386,7 +397,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
-			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus();
+			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
 			mapper.writeValue(writer, entitiesMap);
@@ -645,7 +656,7 @@ public class OrderEmailQueue extends MainAbstractEntity{
 			rb = Response.ok(writer.toString());
   		} catch (WebApplicationException ex) {
   			AppLogger.getSystemLogger().error(
-  					"Error while processing order", ex);
+  					"Error while processing Request", ex);
   			throw ex;
   		} catch (Exception e) {
   			AppLogger.getSystemLogger().error(

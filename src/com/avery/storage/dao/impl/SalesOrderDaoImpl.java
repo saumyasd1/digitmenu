@@ -32,11 +32,11 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 	SalesOrderDao {
 	
 	@Override
-	public List<SalesOrder> readAllByOrderID(Long orderID){
-		
+	public List<SalesOrder> readAllByOrderID(Long orderID) {
+
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			session = getSessionFactory().getCurrentSession();
 			OrderQueue orderQueue = new OrderQueue();
 			orderQueue.setId(orderID);
@@ -44,18 +44,17 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 			criteria.add(Restrictions.eq("varOrderFileQueue", orderQueue));
 			List<SalesOrder> list = criteria.list();
 
-			
-			//getting colorCode and iconName
+			// getting colorCode, iconName and values as required at the GUI
 			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
-			if(statusList==null)
+			if (statusList == null)
 				throw new Exception("Unable to fetch Status List");
-			for(SalesOrder salesOrder : list){
+			for (SalesOrder salesOrder : list) {
 				String status = salesOrder.getStatus();
-				if(status==null | status.equals(""))
+				if (status == null | status.equals(""))
 					throw new Exception("Unidentified value found for the statuscode");
 				Map<String, String> statusCodes = statusList.get(status);
-				if(statusCodes==null)
-					throw new Exception("No data found in the status table for status:: "+status);
+				if (statusCodes == null)
+					throw new Exception("No data found in the status table for status:: " + status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
 				String codeValue = statusCodes.get("codeValue");
@@ -64,21 +63,17 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 				salesOrder.setCodeValue(codeValue);
 
 			}
-			
+
 			return list;
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching sales order for order queue id " + orderID, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching sales order for order queue id " + orderID, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching sales order for order queue id " + orderID, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching sales order for order queue id " + orderID, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
+
 	}
 
 

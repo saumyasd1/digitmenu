@@ -60,23 +60,22 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 	}
 	
 	
-	//Method for getting colorCode and iconName
-	public HashMap<String, Map> getStatusCode(){
+	// Method for getting colorCode, iconName and value from statuscode table
+	public HashMap<String, Map> getStatusCode() {
 		HashMap<String, Map> statusCode = new HashMap<>();
 		List<Code> codeList = null;
 		CodeService codeService;
 		try {
-			codeService = (CodeService) SpringConfig
-					.getInstance().getBean("codeService");
+			codeService = (CodeService) SpringConfig.getInstance().getBean("codeService");
 			codeList = codeService.readAll();
-			if(codeList==null)
+			if (codeList == null)
 				throw new NullPointerException("No status codes found");
-			for(Code code : codeList){
+			for (Code code : codeList) {
 				String iconName = code.getIconName();
 				String colorCode = code.getColorCode();
 				String codeValue = code.getValue();
 				Map<String, String> statusValues = new HashMap<>();
-				
+
 				statusValues.put("iconName", iconName);
 				statusValues.put("colorCode", colorCode);
 				statusValues.put("codeValue", codeValue);
@@ -84,16 +83,11 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 				statusCode.put(codeIntegerValue, statusValues);
 			}
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching values for status codes", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching values for status codes", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
-		
-		
+
 		return statusCode;
 	}
 

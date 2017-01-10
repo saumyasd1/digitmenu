@@ -171,6 +171,9 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private String codeValue;
 	
+	@Transient
+	private String orderFileName;
+	
 
 	public String getIconName() {
 		return iconName;
@@ -195,7 +198,15 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
 	}
-	
+		
+	public String getOrderFileName() {
+		return orderFileName;
+	}
+
+	public void setOrderFileName(String orderFileName) {
+		this.orderFileName = orderFileName;
+	}
+
 	@Transient
 	private Long partnerId;
 	

@@ -2,6 +2,8 @@ package com.avery.storage.service;
 
 import java.util.Map;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +29,8 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 
 
 	@Transactional
-	public Map getWithUnidentifiedStatus(){
-		return getOrderEmailQueueDao().getUnidentifiedEntities();
+	public Map getWithUnidentifiedStatus(MultivaluedMap queryMap) throws Exception{
+		return getOrderEmailQueueDao().getUnidentifiedEntities(queryMap);
 	}
 	
 	@Transactional

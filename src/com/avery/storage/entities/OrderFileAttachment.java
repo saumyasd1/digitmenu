@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -96,8 +97,39 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varOrderFileAttachment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<OrderQueue> listOrderFileQueue = new ArrayList<OrderQueue>();
 
-	
-	
+	// transient variables added for getting colorCode, iconName and value
+	@Transient
+	private String iconName;
+
+	@Transient
+	private String colorCode;
+
+	@Transient
+	private String codeValue;
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
+	}
 
 	public String getFileName() {
 		return fileName;

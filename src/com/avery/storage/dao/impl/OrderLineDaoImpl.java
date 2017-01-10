@@ -48,18 +48,17 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			
 			List<OrderLine> list = criteria.list();
 			
-			
-			//getting colorCode and iconName
+			// getting colorCode, iconName and values as required at the GUI
 			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
-			if(statusList==null)
+			if (statusList == null)
 				throw new Exception("Unable to fetch Status List");
-			for(OrderLine orderLine : list){
+			for (OrderLine orderLine : list) {
 				String status = orderLine.getStatus();
-				if(status==null | status.equals(""))
-					throw new Exception("Unidentified value found for the statuscode::"+status);
+				if (status == null | status.equals(""))
+					throw new Exception("Unidentified value found for the statuscode::" + status);
 				Map<String, String> statusCodes = statusList.get(status);
-				if(statusCodes==null)
-					throw new Exception("No data found in the status table for status:: "+status);
+				if (statusCodes == null)
+					throw new Exception("No data found in the status table for status:: " + status);
 				String iconName = statusCodes.get("iconName");
 				String colorCode = statusCodes.get("colorCode");
 				String codeValue = statusCodes.get("codeValue");
@@ -68,19 +67,15 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.setCodeValue(codeValue);
 
 			}
-			
+
 			return list;
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order line for order queue id " + orderID, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order line for order queue id " + orderID, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order line for order queue id " + orderID, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching order line for order queue id " + orderID, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		
 	}
