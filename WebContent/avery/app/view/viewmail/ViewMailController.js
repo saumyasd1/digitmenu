@@ -59,22 +59,24 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
     },
     
     backButton:function() {
-	   var owner = this.getView().ownerCt;
-	   if(owner.itemId=='emailPanel'){  		   
-		   var panel=Ext.ComponentQuery.query('#emailPanel')[0];
-		   var emailManagement=panel.down('#EmailMangementitemId');
-	       panel.getLayout().setActiveItem(emailManagement);
-	       emailManagement.getView().refresh();
-	       emailManagement.getStore().load();
-	   }
-	   else if(owner.itemId=='taskManagerPanel'){  		   
-		   var panel=Ext.ComponentQuery.query('#taskManagerPanel')[0];
-		   var taskManager=panel.down('#TaskManagerGriditemId');
-	       panel.getLayout().setActiveItem(taskManager);
-	       taskManager.getView().refresh();	
-	       taskManager.getStore().load();
-	   }
-  	},
+    	var owner = this.getView().ownerCt,
+    		itemId = '#'+owner.itemId;
+    	
+    	if(owner.itemId=='emailPanel'){  		   
+    	   var panel=Ext.ComponentQuery.query('#emailPanel')[0];
+    	   var emailManagement=panel.down('#EmailMangementitemId');
+    	   panel.getLayout().setActiveItem(emailManagement);
+    	   emailManagement.getView().refresh();
+    	   emailManagement.getStore().load();
+    	}
+    	else if(owner.itemId=='taskManagerPanel'){  		   
+    	   var panel=Ext.ComponentQuery.query('#taskManagerPanel')[0];
+    	   var taskManager=panel.down('#TaskManagerGriditemId');
+    	   panel.getLayout().setActiveItem(taskManager);
+    	   taskManager.getView().refresh();	
+    	   taskManager.getStore().load();
+    	}
+    },
   	
   	onSaveBtnClicked:function(btn){	
   		Ext.getBody().mask('Saving....');
@@ -87,6 +89,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   		}
   		
   		var orderFlag = false,
+  			additionalDataFlag = false,
   			len = gridView.emailGridRecordArray.length;
   		
   		for(var i=0; i<len; i++){
@@ -94,10 +97,16 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			if(rec.fileContentType == 'Order' && !rec.productLineId){
   				orderFlag = true;
   			}
+  			if(rec.fileContentType == 'AdditionalData' && !rec.additionalDataFileKey && !rec.productLineId){
+  				additionalDataFlag = true;
+  			}
   		}
   		
   		if(orderFlag){
   			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
+  			Ext.getBody().unmask();
+  		}else if(additionalDataFlag){
+  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill AdditionalData File Key.');
   			Ext.getBody().unmask();
   		}
   		else{
@@ -243,11 +252,13 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			if(totalCount == totalIdentifiedCount){
 				gridView.isIdentifiedFlag = true;
 			}
+			//If all record are identified or identified+disregard then processorder btn will enabled
 			if(totalCount == totalIdentifiedCount || (totalIdentifiedCount > 0 && totalCount == (totalIdentifiedCount + totalDisregardCount))){
 				me.enableDisableProcessBtn(false);
 				gridView.isIdentifiedFlag = true;
 			}else{
 				gridView.isIdentifiedFlag = false;
+				//if all recrod are unindetified/Disregard then disable process order btn
 				me.enableDisableProcessBtn(true);
 			}
 		}else{
@@ -255,12 +266,17 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			saveBtn.setDisabled(true);
 			me.enableDisableProcessBtn(true);
 		}
-		
-		if(gridView.status == AOCLit.emailIdentifiedStatus){
+		//If status is identified then save and process order btn will disabled
+		if(gridView.status == AOCLit.emailIdentifiedStatus){ 
 			saveBtn.setDisabled(true);
 			me.enableDisableProcessBtn(true);
 		}else{
-			saveBtn.setDisabled(totalCount > 0 ? false : true);
+			//If emailQueue status is Unidentified or totalCount > 0 then save btn will enabled
+			if(gridView.status == AOCLit.emailUnidentifiedStatus && totalCount > 0){
+				saveBtn.setDisabled(false);
+			}else{
+				saveBtn.setDisabled(true);
+			}
 		}
 	},
 	

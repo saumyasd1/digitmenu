@@ -6,6 +6,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     reserveScrollbar:true,
     columnLines:true,
     isIdentifiedFlag:false,
+    emptyText: AOCLit.noContentTypeDispMsg,
     emailGridRecordArray:[],
     
     initComponent : function(){
@@ -24,9 +25,11 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	        clicksToEdit: 1,
 	        listeners: {
                 beforeedit: function(e, editor){
-	                if (editor.grid.status == AOCLit.emailIdentifiedStatus){
-	                	return false;
-	                } 
+                	//editing only enabled for emailQueue status is UnIndentified(3)
+	                if (editor.grid.status == AOCLit.emailUnidentifiedStatus){
+	                	return true;
+	                }
+	                return false;
                 }
 	        }
 	    }

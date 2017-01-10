@@ -26,8 +26,8 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					var id = currentRecord.get('id'),
 						form = Ext.ComponentQuery.query('#viewmailformItemId')[0],
 						panel = Ext.ComponentQuery.query('#emailPanel')[0],
-						viewmail = panel.down('#EmailAttachmentInfoGriditemId');
-					
+						emailAttachmentInfoGrid = panel.down('#EmailAttachmentInfoGriditemId');
+				
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
 						partnerName =[],
 						len = listOrderFileAttachment.length;
@@ -55,12 +55,12 @@ Ext.define('AOC.view.email.EmailManagementController', {
 						}
 					});
 					
-					viewmail.trackingId = id;
-					viewmail.status = currentRecord.get('status');
-					viewmail.bindStore(store); //Bind Store to viewmail grid
+					emailAttachmentInfoGrid.trackingId = id;
+					emailAttachmentInfoGrid.status = currentRecord.get('status');
+					emailAttachmentInfoGrid.bindStore(store); //Bind Store to viewmail grid
 					
 					panel.getLayout().setActiveItem(1);
-					me.runTime.setActiveGrid(viewmail);
+					me.runTime.setActiveGrid(emailAttachmentInfoGrid);
 					callout.destroy();
 				},
 				cancelMail:function(){

@@ -27,6 +27,7 @@ Ext.define('AOC.view.email.EmailManagement',{
 					},
 					{
 						xtype:'viewmail',
+						reference:'viewMailContainer',
 						itemId: 'viewMailItemId'
 					}
     			]

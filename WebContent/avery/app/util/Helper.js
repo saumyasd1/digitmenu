@@ -315,7 +315,7 @@ Ext.define('AOC.util.Helper',{
 		
 	},
 	
-	//(Amit Kumar)
+	//(Amit Kumar) add funcitons for check enable/disable and menu item style 
 	getEnableMenuItemStyle:function(){
 		return 'border-bottom: none !important;background: #FFFFFF;cursor:pointer;';
 	},
