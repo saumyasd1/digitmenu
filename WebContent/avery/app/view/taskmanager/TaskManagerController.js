@@ -21,16 +21,22 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             		currentRecord = e.record;
 					var id = currentRecord.get('id'),
 						panel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
+						taskManagerGrid = panel.queryById('TaskManagerGriditemId');
 						form = panel.down('#viewmailformItemId'),
 						viewMail = panel.down('#viewMailItemId');
 						
 					//(Amit Kumar)hide some fields from view mail from if user views from taskmanager
 					Helper.showHideEmailBodySubjectFields(form, currentRecord);
+					
 					viewMail.queryById('saveAttachment').hide();
 					viewMail.queryById('processOrderBtn').hide();
-					form.queryById('partnerName').hide();
+					viewMail.queryById('assignCSRBtn').show();
+					viewMail.currentRecordId = id;
+					viewMail.contextGrid = taskManagerGrid;
 					
+					form.queryById('partnerName').hide();
 					form.loadRecord(currentRecord);
+					
                     store = Ext.create('AOC.store.ViewMailformStore',{
                         storeId: 'ViewMailformStoreId',
                         totalCount: 'totalCount',
@@ -47,8 +53,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
                    
 					var emailAttachmentGrid = panel.down('#EmailAttachmentInfoGriditemId');
 					emailAttachmentGrid.status = AOCLit.emailIdentifiedStatus;
-					emailAttachmentGrid.contextName = AOCLit.taskMangerContextType;
 					emailAttachmentGrid.bindStore(store);
+					
 					//(AK)Hide some columns(PartnerDataStructure,FileContentType,FileConentMatch..) if user view mail from taskmanager
 					me.showHideEmailAttachmentGridColumns(emailAttachmentGrid);
 					
@@ -104,15 +110,14 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     },
     
     showHideEmailAttachmentGridColumns:function(emailAttachmentGrid){
-    	var contextName = emailAttachmentGrid.contextName,
-			columns = emailAttachmentGrid.columns;
+    	var columns = emailAttachmentGrid.columns;
 
-		columns[1][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
-		columns[2][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
-		columns[3][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
-		columns[5][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
-		columns[6][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
-		columns[7][contextName == AOCLit.taskMangerContextType ? 'hide': 'show']();
+		columns[1].hide();
+		columns[2].hide();
+		columns[3].hide();
+		columns[5].hide();
+		columns[6].hide();
+		columns[7].hide();
     },
     onAfterRenderEditCallout: function(cmp) {
         var me = this;

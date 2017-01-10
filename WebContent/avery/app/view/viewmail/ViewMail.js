@@ -51,6 +51,15 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			},
 			{
 			   xtype   : 'whitebutton',
+			   margin  : '0 10 0 10',
+			   text    : 'Assign CSR',
+			   reference:'assignCSRBtn',
+			   itemId  : 'assignCSRBtn',
+			   hidden:true,
+			   handler : 'onAssignCSRBtnClicked'
+			},
+			{
+			   xtype   : 'whitebutton',
 			   margin  : '0 10 0 0',
 			   itemId  : 'downloadAttachments',
 			   text    : 'Download Attachment(s)',

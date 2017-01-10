@@ -310,5 +310,34 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		}else{
 			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectAttachmentFileMsg);
 		}
+	},
+	//<debug>
+	//(Amit Kumar)Add assignCsrBtn functionality for taskmanager screen
+	//</debug>
+	onAssignCSRBtnClicked:function(btn){
+		var me = this,
+			view = me.getView(),
+			taskManagerGrid = view.contextGrid,
+			assignCsrWin = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
+				callback:function(rec){
+					assignCsrWin.mask(AOCLit.pleaseWaitTitle);
+			    	Ext.Ajax.request({
+			    		method:'GET',
+			    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
+					    success : function(response, opts) {
+					    	assignCsrWin.unmask();
+					  		Ext.Msg.alert('Success','CSR assigned successfully');
+					  		assignCsrWin.close();
+					  		me.backButton();
+					  		taskManagerGrid.store.load();
+				        },
+				        failure: function(response, opts) {
+				        	assignCsrWin.unmask();
+						}
+					});
+				},
+				recordId:view.currentRecordId
+			});
+		assignCsrWin.show();
 	}
 });

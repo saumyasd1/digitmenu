@@ -6,7 +6,6 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     reserveScrollbar:true,
     columnLines:true,
     isIdentifiedFlag:false,
-    contextName:'',
     emailGridRecordArray:[],
     
     initComponent : function(){

@@ -89,7 +89,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				dataIndex:'OrderSource',
 				menuDisabled  :true,
 				renderer:function(v,cell,record){
-					var href='data:text/plain;charset=utf-8,'+ encodeURIComponent(record.get('emailBody'));
 					var filename=record.get('emailQueueId');
 					if(v=='Email')
 						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
@@ -99,7 +98,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				}	
 			},
 			{   header: '<img src="' +  AOC.config.Settings.buttonIcons.attacheImageSrc + '" />',
-				//text : 'Order File',
 				width:40,
 				dataIndex:'OrderFile',
 				renderer:function(v,cell,record){
@@ -113,7 +111,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				header: '<img src="' + AOC.config.Settings.buttonIcons.clip + '" />',
-			   // text : 'Additional data',
 				width:40,
 				hideable: true,
 				dataIndex:'attachmentPresent',
@@ -122,7 +119,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 						return '<img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
 					}
 					else{
-						return ''
+						return '';
 					}
 				}
 			},

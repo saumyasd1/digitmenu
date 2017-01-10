@@ -38,15 +38,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		var me = this,
 			siteStore = Ext.data.StoreManager.lookup('siteId')== null ? Ext.create('AOC.store.SiteStore') : Ext.data.StoreManager.lookup('siteId'),
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
-			siteStore.load();
-			rboStore.load();
+		
+		siteStore.load();
+		rboStore.load();
+		
 		return [
 			{
 				xtype:'displayfield',
 				itemId:'titleItemId',
 				vale:'',
 				hidden:false,
-				margin : '5 0 0 220'
+				style:'margin: 0px auto;'
 			},
 			{
 				xtype:'displayfield',
@@ -61,11 +63,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype: 'fieldcontainer',
 						layout: 'column',
-						margin : '0 0 5 0',
+						margin : '10 0 5 0',
 						defaults:{
 							labelSeparator:'',
-							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-							labelAlign:'left',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.defaultLabelAlign,
 							labelWidth:150,
 							width:300
 						},	
@@ -86,6 +88,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
 								bind:'{dataStructureName}'
+							},
+							{
+								xtype:'combo',
+								itemId:'RItemId',
+								name: 'rboId',
+								reference:'rboId',
+								bind:'{rbo.id}',
+								fieldLabel:AOCLit.RBO,
+								allowBlank: false,
+								margin:'0 10 0 20',
+								store:rboStore,
+								displayField:'rboName',
+								valueField:'id',
+								blankText : 'RBO Name is required',
+								listeners : {
+									 blur : this.notifyByImage,
+									'focus' : 'HideMandatoryMessage'
+								}
 							}
 						]
 					},
@@ -95,29 +115,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						margin : '0 0 5 0',
 						defaults:{
 							labelSeparator:'',
-							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-							labelAlign:'left',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.defaultLabelAlign,
 							labelWidth:150,
-							width:300
+							width:455
 						},
-						items:[{
-								xtype:'combo',
-								itemId:'RItemId',
-								name: 'rboId',
-								reference:'rboId',
-								bind:'{rbo.id}',
-								fieldLabel:AOCLit.RBO,
-								allowBlank: false,
-								margin:'0 10 0 10',
-								store:rboStore,
-								displayField:'rboName',
-								valueField:'id',
-								blankText : 'RBO Name is required',
-								listeners : {
-									 blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
-								}
-							},
+						items:[
 							{
 								xtype:'combo',
 								itemId:'SiteId',
@@ -138,7 +141,25 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									'focus' : 'HideMandatoryMessage',
 									'change':'onSiteSelect'
 								}
-							}]
+							},
+							{
+								xtype:'textfield',
+								name: 'email',
+								bind:'{email}',
+								fieldLabel:'Email ID',
+								regex: /^((([a-zA-Z0-9_\-\.*]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+								width : 455,
+								margin:'0 0 0 10',
+								labelSeparator:'',
+								labelStyle:Settings.config.defaultFormLabelStyle,
+								labelAlign:Settings.form.defaultLabelAlign,
+								labelWidth:150,
+								listeners : {
+									 blur : this.notifyByImage,
+									'focus' : 'HideMandatoryMessage'
+								}
+							}
+						]
 					},
 					{
 						xtype:'fieldcontainer',
@@ -148,7 +169,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelAlign:'top',
 						margin : '0 0 0 0',
 						checkboArray:new Array(),
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+						labelStyle:Settings.config.defaultFormLabelStyle
 					},
 					{
 	        			xtype:'fieldcontainer',
@@ -156,12 +177,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	        			fieldLabel:'Product Line',
 	        			margin : '0 0 5 0',
 	        			labelSeparator:'',
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelWidth:150,
 	        			defaults:{
 							labelSeparator:'',
-							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-							labelAlign:'left',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.defaultLabelAlign,
 							labelWidth:150
 						},
 	        			items:[
@@ -206,36 +227,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							},
 							{
 								xtype:'hiddenfield',
-								reference:'productLineHidden',
+								reference:'productLineHidden'
 								//value:('{productLineType}'==null||'{productLineType}'=='')?'HTL':'{productLineType}'
 							}
 						]
 	        		},
-	        		{
-						xtype:'textfield',
-						name: 'email',
-						bind:'{email}',
-						fieldLabel:'Email ID',
-						regex: /^((([a-zA-Z0-9_\-\.*]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-						width : 455,
-						margin:'0 0 5 0',
-						labelSeparator:'',
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-						labelAlign:'left',
-						labelWidth:150,
-						listeners : {
-							 blur : this.notifyByImage,
-							'focus' : 'HideMandatoryMessage'
-						}
-					},
+	        		
 					{   
 						xtype: 'fieldcontainer',
 						layout: 'column',
 						margin : '0 0 5 0',
 						defaults:{
 							labelSeparator:'',
-							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-							labelAlign:'left',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.defaultLabelAlign,
 							labelWidth:150,
 							width:455
 						},
@@ -263,7 +268,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 								blankText : AOCLit.CSRReq,
-								margin:'0 10 0 10',
+								margin:'0 0 0 10',
 								listeners : {
 									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
@@ -279,8 +284,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelWidth:150,
 						margin : '0 0 5 0',
 						labelSeparator:'',
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-						labelAlign:'left',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.defaultLabelAlign,
 						name:'validation',
 						defaults:{
 							width:150
@@ -305,7 +310,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype: 'fieldcontainer',
 						fieldLabel: 'CSR Attention',
-						labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelSeparator:'',
 						labelAlign:'top',
 						defaults:{
@@ -348,7 +353,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						margin : '0 0 5 0',
 						name:'CSRAttention1',
 						defaults:{
-							labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+							labelStyle:Settings.config.defaultFormLabelStyle,
 							width:150
 						},
 						items: [
@@ -430,8 +435,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -461,8 +466,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -499,7 +504,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								name:'AdditionalData',
 								reference:'attachmentRequired',
 								fieldLabel:'Additional Data',
-								labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+								labelStyle:Settings.config.defaultFormLabelStyle,
 								labelSeparator:'',
 								labelWidth:150,
 								//bind:'{attachmentRequired}',
@@ -543,8 +548,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -576,8 +581,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -587,7 +592,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												itemId:'SchemaId',
 												name: 'schemaId',
 												bind:'{attachmentSchemaID_1}',
-												fieldLabel:'Schema ID',//?/
+												fieldLabel:'Schema ID'//?/
 											},
 											{
 												xtype:'textfield',
@@ -602,8 +607,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									{
 										xtype:'textfield',
 										itemId:'MatchType',
-										labelAlign:'left',
-										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+										labelStyle:Settings.config.defaultFormLabelStyle,
+										labelAlign:Settings.form.defaultLabelAlign,
 										name: 'matchType',
 										fieldLabel:'Match Type',//?/
 										bind:'{attachmentIdentifier_1}',
@@ -633,8 +638,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -690,8 +695,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:450
 										},
@@ -721,7 +726,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										fieldLabel:'Instruction',//?/
 										labelSeparator:'',
 										labelWidth : 150,
-										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+										labelStyle:Settings.config.defaultFormLabelStyle,
 										width : 450
 									}
 								]
@@ -745,8 +750,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},
@@ -781,8 +786,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},
@@ -817,8 +822,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},
@@ -869,8 +874,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},
@@ -901,8 +906,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},
@@ -937,8 +942,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin : '0 0 5 0',
 										defaults:{
 											labelSeparator:'',
-											labelAlign:'left',
-											labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
+											labelStyle:Settings.config.defaultFormLabelStyle,
+											labelAlign:Settings.form.defaultLabelAlign,
 											labelWidth:150,
 											width:300
 										},

@@ -1,5 +1,6 @@
 Ext.define('AOC.config.Settings',{
     singleton : true,
+    alternateClassName:['Settings'],
     config : {
         baseBackgroundColor : 'background-color:#F6F6F6',
         nameRegex : '^[^@#$%^&*(){}|!<>_+?[/\\\\`~=";:\\]]+$',
@@ -49,10 +50,7 @@ Ext.define('AOC.config.Settings',{
          advSearchIcon:'avery/resources/images/search.png',
          browseIcon:'avery/resources/images/browse.png',
          mailIcon:'avery/resources/images/mail.png',
-         mail:'avery/resources/images/mail.png',
-         
-         
-         
+         mail:'avery/resources/images/mail.png'
     },
     constructor : function(config){
             this.initConfig(config);
