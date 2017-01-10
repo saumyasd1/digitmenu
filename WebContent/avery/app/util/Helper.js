@@ -328,8 +328,8 @@ Ext.define('AOC.util.Helper',{
 		}
 		return true;
 	},
-	isEmailQueueViewOrderEnabled:function(status){
-		if(status == AOCLit.orderEmailProcessed){
+	isEmailQueueViewOrderEnabled:function(status,orderQueueCount){
+		if(status == AOCLit.orderEmailProcessed && orderQueueCount>0 ){
 			return true;
 		}
 		return false;
