@@ -280,7 +280,8 @@ Ext.define('AOC.lang.lit',{
     "disregardEmailText":'<b>Are you sure you want to disregard the Email? If yes, please enter the reason for futher reference:</b> ',
     "salesOrderCreationMsg":'Sales Order was successfully created',
     "orderCancelSuccessAlert":'Order cancelled successfully',
-    "emailCancelSuccessAlert":'Email cancelled successfully',
+    "emailMovedToTaskManagerSuccessAlert":'Email moved to Task Manager successfully',
+    "success":"Success",
     "emailDisregardSuccessAlert":'Email disregarded successfully',
     "orderLineMandatoryFieldMissingAlt":'One of the mandatory fields is empty. Please ensure that all mandatory fields are filled before proceeding.',
     //Partner
