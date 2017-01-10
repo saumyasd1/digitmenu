@@ -61,7 +61,8 @@ public class OrderLine extends MainAbstractEntity{
 	
 	private static final long serialVersionUID = 6740793676369214590L;
 	
-	
+	@Column(name = "additionalFileId", length = 100)
+	String additionalFileId;
 	@Column(name = "customerPONumber", length = 50)
 	String customerPONumber;
 	@Column(name = "orderedDate")
@@ -321,6 +322,14 @@ public class OrderLine extends MainAbstractEntity{
 	private String codeValue;
 	
 
+	public String getAdditionalFileId() {
+		return additionalFileId;
+	}
+
+	public void setAdditionalFileId(String additionalFileId) {
+		this.additionalFileId = additionalFileId;
+	}
+	
 	public String getIconName() {
 		return iconName;
 	}
