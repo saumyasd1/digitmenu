@@ -10,12 +10,13 @@ Ext.define('AOC.store.TaskManagerStore', {
 		url: applicationContext+'/rest/emailqueue/unidentified',
 		reader:{
 	        type:'json', 
-	        rootProperty:'emailqueue'
+	        rootProperty:'emailqueue',
+            totalProperty: 'totalCount'
 	    }
 	},
 	sorters: [{
  		property:'lastModifiedDate',
  		direction:'DESC'
- 			}]
+	}]
 });
 

@@ -53,35 +53,6 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					}
 				},
 				{
-					text : 'Partner Data Structure',
-					flex :2,
-					dataIndex:'dataStructureNameId',
-					name: 'Partner Data Structure',
-					editor: {
-						xtype:'combobox',
-						displayField:'dataStructureName',
-						valueField:'id',
-						queryMode :'local',
-						editable:false,
-						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
-					},
-					renderer:function(value, metaData, record){
-						if(me.status == AOCLit.emailIdentifiedStatus){
-							return record.get('dataStructureName');
-						}
-						
-						var editor = metaData.column.getEditor(record),    
-					    	storeRecord = editor.store.getById(value);
-						
-					    if(storeRecord) {       
-					        return storeRecord.data[editor.displayField];
-					    }
-					    else{         
-					        return null;
-					    }
-					}
-				}, 
-				{
 					text : 'File Content Type',
 					flex :1.3,
 					dataIndex:'contentType',
@@ -112,28 +83,41 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					} 
 				},
 				{
+					text : 'Partner Data Structure',
+					flex :2,
+					dataIndex:'dataStructureNameId',
+					name: 'Partner Data Structure',
+					editor: {
+						xtype:'combobox',
+						displayField:'dataStructureName',
+						valueField:'id',
+						queryMode :'local',
+						editable:false,
+						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
+					},
+					renderer:function(value, metaData, record){
+						if(me.status == AOCLit.emailIdentifiedStatus){
+							return record.get('dataStructureName');
+						}
+						
+						var editor = metaData.column.getEditor(record),    
+					    	storeRecord = editor.store.getById(value);
+						
+					    if(storeRecord) {       
+					        return storeRecord.data[editor.displayField];
+					    }
+					    else{         
+					        return null;
+					    }
+					}
+				}, 
+				{
 					text : 'Additional Data File Key',
 					flex :1.3,
 					dataIndex:'additionalDataFileKey',
 					name: 'additionalDataFileKey',
-					editor:'textfield'
+					editor:'textarea'
 				}, 
-				{
-					text : 'Status',
-					flex :1,
-					dataIndex:'status',
-					name: 'status',
-					renderer:function(value, record){
-						if(value == AOCLit.emailAttachmentInfoGridIdentifiedStatus){
-							return 'Identified';
-						}else if(value == AOCLit.emailAttachmentInfoGridUnIdentifiedStatus){
-							return 'Unidentified';
-						}else if(value == AOCLit.emailAttachmentInfoGridDisregardStatus){
-							return 'Disregard';
-						}
-						return '';
-					}
-				},
 				{
 					text : 'RBO Match',
 					flex :1,
@@ -151,6 +135,15 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					flex :1.2,
 					dataIndex:'fileContentMatch',
 					name: 'fileContentMatch'
+				},
+				{
+					text : 'Status',
+					flex :1,
+					dataIndex:'status',
+					name: 'status',
+					renderer:function(value, record){
+						return Helper.getSatus(record);
+					}
 				}
 			]
 		};
