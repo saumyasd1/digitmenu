@@ -8,7 +8,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 	titleAlign:'center',
 	constrainHeader:true,
 	constrain:true,
-	
+	modal:true,
 	requires:[
         'AOC.store.AssignCSRStore',
         'AOC.view.taskmanager.AssignCSRController'
