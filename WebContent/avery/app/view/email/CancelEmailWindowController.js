@@ -21,18 +21,8 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
             success: function(response, opts) {
                 var orderEmailQueueView= Ext.ComponentQuery.query('#emailPanel')[0];
                 var activeItem=orderEmailQueueView.getLayout().getActiveItem();
-                if(activeItem.xtype.indexOf('orderemailqueue')!=-1){
-                	var orderlineexpandablegrid = activeItem.down('grid'),
-	                validateButton = activeItem.lookupReference('validateButton'),
-	                cancelOrderButton=activeItem.lookupReference('cancelOrderButton');
-                	validateButton.disable();
-                	cancelOrderButton.disable();
-                	me.runTime.setAllowOrderLineEdit(false);
-                	orderlineexpandablegrid.store.load();
-                	Ext.Msg.alert('',orderCancelSuccessAlert);
-                }else{
-                	activeItem.getStore().load();
-                }
+                activeItem.getStore().load();
+                Ext.Msg.alert(AOCLit.success,AOCLit.emailMovedToTaskManagerSuccessAlert);
                 Ext.getBody().unmask();
                 me.getView().destroy();
             },
