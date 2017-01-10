@@ -90,11 +90,11 @@ Ext.define('AOC.view.email.EmailManagementController', {
   	    if(heightBelow<(callout.getHeight()+40)){
 			callout.calloutArrowLocation='bottom-left'; 
 			callout.relativePosition='b-t';
-			callout.relativeOffsets = [80, 0];
+			callout.relativeOffsets = [75, -5];
 		}else{
 			callout.calloutArrowLocation='top-left'; 
 			callout.relativePosition='t-b';
-			callout.relativeOffsets = [80, 5];
+			callout.relativeOffsets = [75, 5];
 		}
         callout.show();
     },
@@ -146,7 +146,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
         			return 'order-profile-menu-item';
         		},
         		getViewOrderEnableDisableClass:function(value){
-        			if(Helper.isEmailQueueViewOrderEnabled(value.status)){
+        			if(Helper.isEmailQueueViewOrderEnabled(value.status,value.orderQueueCount)){
         				return 'user-profile-menu-item';
         			}
         			return 'order-profile-menu-item';
