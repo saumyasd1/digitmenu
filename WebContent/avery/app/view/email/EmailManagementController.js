@@ -4,11 +4,16 @@ Ext.define('AOC.view.email.EmailManagementController', {
     runTime : AOC.config.Runtime,
     helper: AOC.util.Helper,
     requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
+    
+    init : function(){
+	     var me=this;
+	     me.menuTpl = me.buildMenuTpl();    
+    },
     onClickMenu: function(obj, rowIndex, colIndex, item, e, record) {
         var me = this;
         var callout = Ext.widget('callout', {
             cls: 'white more-menu-item-callout extra',
-            html: me.buildMenuTpl.apply("{}"),
+            html: me.menuTpl.apply(record.data),
             target: e.target,
             calloutArrowLocation: 'top-left',
             relativePosition: 't-b',
@@ -101,6 +106,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
             click: function(e, element) {
                 var el = Ext.get(element),
                     event = el.getAttribute('event');
+                
                 if (event && !el.hasCls('edit-menu-disabled')) { 
                     me.fireEvent(event);
                 }
@@ -110,10 +116,48 @@ Ext.define('AOC.view.email.EmailManagementController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
-            '<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrder"">View Order</div>',
-        	'<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelMail">Move To TaskManager</div>'
-            
+			'<div style="width:180px !important; {[this.getViewMailMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getViewMailEnableDisableClass(values)]}" event="viewMail"">View Mail</div>',
+            '<div style="width: 180px !important;{[this.getViewOrderMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getViewOrderEnableDisableClass(values)]}" event="viewOrder"> View Order </div>',
+        	'<div style="width: 180px !important;{[this.getMoveToTaskManagerMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getMoveToTaskManagerEnableDisableClass(values)]}" event="cancelMail"> Move To Task Manager</div>',
+        	{
+        		compiled:true,
+        		getViewMailMenuItemStyle:function(value){
+        			if(Helper.isEmailQueueViewMailEnabled(value.status)){
+        				return Helper.getEnableMenuItemStyle();
+        			}
+        			return Helper.getDisableMenuItemStyle();
+        		},
+        		getViewOrderMenuItemStyle:function(value){
+        			if(Helper.isEmailQueueViewOrderEnabled(value.status)){
+        				return Helper.getEnableMenuItemStyle();
+        			}
+        			return Helper.getDisableMenuItemStyle();
+        		},
+        		getMoveToTaskManagerMenuItemStyle:function(value){
+        			if(Helper.isEmailQueueMoveToTaskManagerEnabled(value.status)){
+        				return Helper.getEnableMenuItemStyle();
+        			}
+        			return Helper.getDisableMenuItemStyle();
+        		},
+        		getViewMailEnableDisableClass:function(value){
+        			if(Helper.isEmailQueueViewMailEnabled(value.status)){
+        				return 'user-profile-menu-item';
+        			}
+        			return 'order-profile-menu-item';
+        		},
+        		getViewOrderEnableDisableClass:function(value){
+        			if(Helper.isEmailQueueViewOrderEnabled(value.status)){
+        				return 'user-profile-menu-item';
+        			}
+        			return 'order-profile-menu-item';
+        		},
+        		getMoveToTaskManagerEnableDisableClass:function(value){
+        			if(Helper.isEmailQueueMoveToTaskManagerEnabled(value.status)){
+        				return 'user-profile-menu-item';
+        			}
+        			return 'order-profile-menu-item';
+        		}
+        	}
         );
     }
 });

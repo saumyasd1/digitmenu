@@ -313,5 +313,31 @@ Ext.define('AOC.util.Helper',{
 			}
 			return store;
 		
+	},
+	
+	//(Amit Kumar)
+	getEnableMenuItemStyle:function(){
+		return 'border-bottom: none !important;background: #FFFFFF;cursor:pointer;';
+	},
+	getDisableMenuItemStyle:function(){
+		return 'border-bottom: none !important;background: #FFFFFF;cursor:default;';
+	},
+	isEmailQueueViewMailEnabled:function(status){
+		if(status == AOCLit.unrecognizedEmailStatus){
+			return false;
+		}
+		return true;
+	},
+	isEmailQueueViewOrderEnabled:function(status){
+		if(status == AOCLit.orderEmailProcessed){
+			return true;
+		}
+		return false;
+	},
+	isEmailQueueMoveToTaskManagerEnabled:function(status){
+		if(status == AOCLit.emailUnidentifiedStatus){
+			return true;
+		}
+		return false;
 	}
 });

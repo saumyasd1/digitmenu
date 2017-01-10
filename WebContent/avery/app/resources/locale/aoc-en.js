@@ -354,9 +354,9 @@ Ext.define('AOC.lang.lit',{
     
     //Status Code
     //EmailQueue
-    "mailReceived":'1',
+    "emailMailReceived":'1',
     "identifyingMail":'2',
-    "unidentified":'3',
+    "emailUnidentifiedStatus":'3',
     "unrecognizedEmailStatus":'4',
     "emailIdentifiedStatus":"5",
     "emailAttachmentInfoGridUnIdentifiedStatus":"6",
