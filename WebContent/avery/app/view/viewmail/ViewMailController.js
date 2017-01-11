@@ -88,51 +88,45 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			gridView.focus();
   		}
   		
-  		var orderFlag = false,
-  			additionalDataFlag = false,
-  			len = gridView.emailGridRecordArray.length;
+  		var len = gridView.emailGridRecordArray.length;
   		
   		for(var i=0; i<len; i++){
   			var rec = gridView.emailGridRecordArray[i];
   			if(rec.fileContentType == 'Order' && !rec.productLineId){
-  				orderFlag = true;
+  				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
+  	  			Ext.getBody().unmask();
+  	  			return;
   			}
-  			if(rec.fileContentType == 'AdditionalData' && !rec.additionalDataFileKey && rec.productLineId){
-  				additionalDataFlag = true;
+  			if((rec.fileContentType == 'AdditionalData' && rec.additionalDataFileKey =="") && rec.productLineId){
+  				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
+  	  			Ext.getBody().unmask();
+  	  			return;
   			}
   		}
   		
-  		if(orderFlag){
-  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
-  			Ext.getBody().unmask();
-  		}else if(additionalDataFlag){
-  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
-  			Ext.getBody().unmask();
-  		}
-  		else{
-			var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
-	  		
-	  		Ext.Ajax.request({
-		        method: 'PUT',
-		        jsonData: parameters,
-		        url: applicationContext+'/rest/orderattachements/updateattachments',
-		        success: function(response, opts) {
-		           
-		        	gridView.emailGridRecordArray = [];
-		            Ext.getBody().unmask();
-		            me.verifyIdentifiedDisregardRecords();
-		            Ext.Msg.alert('Success', 'Current state saved successfully');
-		            gridView.store.load();
-		            
-		        },
-		        failure: function(response, opts) {
-		            var msg = response.responseText;
-		            msg = msg.replace("Exception:", " ");
-		            Ext.Msg.alert('Alert Message', msg);
-		            Ext.getBody().unmask();
-		        }
-		    });
-  		}
+		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});
+  		
+  		Ext.Ajax.request({
+	        method: 'PUT',
+	        jsonData: parameters,
+	        url: applicationContext+'/rest/orderattachements/updateattachments',
+	        success: function(response, opts) {
+	           
+	        	gridView.emailGridRecordArray = [];
+	            Ext.getBody().unmask();
+	            me.verifyIdentifiedDisregardRecords();
+	            Ext.Msg.alert('Success', 'Current state saved successfully');
+	            gridView.store.load();
+	            
+	        },
+	        failure: function(response, opts) {
+	            var msg = response.responseText;
+	            msg = msg.replace("Exception:", " ");
+	            Ext.Msg.alert('Alert Message', msg);
+	            Ext.getBody().unmask();
+	        }
+	    });
+  		
   	},
   	
   	onDataStructureChange:function(combobox, newValue, eOpts){
@@ -206,7 +200,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			if(grid.emailGridRecordArray[i].id == record.get('id')){
 				grid.emailGridRecordArray[i].productLineId = record.get('dataStructureNameId');
 				grid.emailGridRecordArray[i].fileContentType = record.get('contentType');
-				additionalDataFileKey:record.get('additionalDataFileKey');
+				grid.emailGridRecordArray[i].additionalDataFileKey = record.get('additionalDataFileKey');
 				return;
 			}
 		}
