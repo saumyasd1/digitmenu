@@ -57,7 +57,7 @@ public class Router {
 				.getString(PropertiesConstants.ADEPTIA_SERVER_USERNAME);
 		String password=PropertiesConfig
 				.getString(PropertiesConstants.ADEPTIA_SERVER_PASSWORD);
-		String url = adeptiaServerURL+"/adeptia/publishProviderByRest/AV_WSP_Validator_Process/profile?OrderFileQueueID="+orderId.intValue();
+		String url = adeptiaServerURL+"/adeptia/wsapi/1.1/validation?OrderFileQueueID="+orderId.intValue();
 		Response response = RestClient.invoke(
 				url,
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
@@ -78,7 +78,7 @@ public class Router {
 			String password=PropertiesConfig
 					.getString(PropertiesConstants.ADEPTIA_SERVER_PASSWORD);
 			//http://APDVADC283.na.averydennison.net:80/adeptia/publishProviderByRest/AV_Test_SalesOrder_Process/profile?FileQueueID=3
-			String url = adeptiaServerURL+"/adeptia/wsapi/1.1/validation?OrderFileQueueID="+orderId.intValue();
+			String url = adeptiaServerURL+"/adeptia/wsapi/1.1/profile?OrderFileQueueID="+orderId.intValue();
 			Response response = RestClient.invoke(
 					url,
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
