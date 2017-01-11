@@ -3,7 +3,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
     alias: 'controller.emailManagementController',
     runTime : AOC.config.Runtime,
     helper: AOC.util.Helper,
-    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
+    requires:['AOC.util.Helper'],
     
     init : function(){
 	     var me=this;
@@ -159,5 +159,40 @@ Ext.define('AOC.view.email.EmailManagementController', {
         		}
         	}
         );
+    },
+    getQuickSearchResults: function(cmp) {
+        var store = this.getView().store;
+        var value = cmp.getValue();
+        if (value != null && value != '') {
+            store.proxy.setFilterParam('query');
+            var parameters = '{"subject":"' + value + '"}';
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('query');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'query',
+                property: 'query',
+                value: parameters
+            });
+        }
+        cmp.orderedTriggers[0].show();
+    },
+    getSearchResults: function(cmp, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.getQuickSearchResults(cmp);
+        }
+    },
+    clearSearchResults: function(cmp) {
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        cmp.setValue('');
+        cmp.orderedTriggers[0].hide();
     }
 });
