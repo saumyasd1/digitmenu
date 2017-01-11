@@ -1,9 +1,10 @@
 Ext.define('AOC.view.email.EmailManagementGrid', {
 	extend : 'Ext.grid.Panel',
-	requires : ['AOC.util.Helper'],
+	requires : ['AOC.util.Helper','AOC.view.ux.CustomSearchField'],
 	controller:'emailManagementController',
 	itemId : 'EmailMangementitemId',
     alias : 'widget.emailmanagementgrid',
+    emptyText: AOCLit.emptyDataMsg,
     reserveScrollbar:true,
 	columnLines:false,
 	viewConfig : {
@@ -196,7 +197,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				searchCriteria:'',
 				store : Ext.data.StoreManager.lookup(me.store),
 				width: 200,
-				emptyText: "Search Email "
+				emptyText: "Search by Email Subject "
 			},
 			{
 					xtype :'tbspacer',
