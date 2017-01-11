@@ -4,6 +4,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	controller:'taskManagerController',
 	itemId : 'TaskManagerGriditemId',
     alias : 'widget.taskManagergrid',
+    emptyText: AOCLit.emptyDataMsg,
     reserveScrollbar:true,
 	columnLines:false,
 	store:Ext.create('AOC.store.TaskManagerStore', {
@@ -148,7 +149,38 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				itemId : 'TaskManagerTextId',
 				text:'TaskManager',
 				style:'color:#2c3e50;font-weight:bold;'
-			}          
+			},'->',
+			{
+				xtype: 'customsearchfield',
+				searchCriteria:'',
+				store : Ext.data.StoreManager.lookup(me.store),
+				width: 200,
+				emptyText: "Search by Email Subject"
+			},
+			{
+				xtype :'tbspacer',
+				width :10
+		    },
+			{
+				xtype: 'component',
+				itemId:'advancesearchbutton',
+				autoEl: {
+					tag: 'a',
+					href: '#',
+					html:AOCLit.advSearchTitle
+				},
+				listeners: {
+					el: {
+						click: 'openAdvancedSearchWindow'	
+					}
+				}
+			},
+			{
+				itemId: 'clearadvanedsearch',
+				hidden:true, 
+				handler : 'clearAdvancedSerach',
+				icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
+			}
 		];
 	},
 	buildDockedItems : function(){
