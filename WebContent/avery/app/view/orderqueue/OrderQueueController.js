@@ -12,8 +12,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     init : function(){
 	     var me=this;
-	 me.menuTpl=me.buildMenuTpl();    
-  },
+	     me.menuTpl=me.buildMenuTpl();    
+    },
     openAdvancedSearchWindow: function( e, t, eOpts) {
         var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
         if (!temp) {
@@ -388,50 +388,85 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	                }
 	            }
 	        });
-	    },
+	  },
 	  buildMenuTpl : function(){
-	    	  var me=this;
-	    	 return Ext.create('Ext.XTemplate',
-	    		  '<tpl if="this.isViewOrderDisabled(values)==false">',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewOrders">View Order Line</div>',
-	              '</tpl>',
-	              '<tpl if="this.isViewOrderDisabled(values)">',
-	    	      '<div style="width: 140px  !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">View Order Line</div>',
-	              '</tpl>',
-	              '<tpl if="this.isViewSalesDisabled(values)==false">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewSales">View Sales Order</div>',
-	              '</tpl>',
-	              '<tpl if="this.isViewSalesDisabled(values)">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">View Sales Order</div>',
-	              '</tpl>',
-	              '<tpl if="this.isReSubmitOrderDisabled(values)==false">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="reSubmitOrder">ReSubmit Order</div>',
-	              '</tpl>',
-	              '<tpl if="this.isReSubmitOrderDisabled(values)">',
-	              '<div style="width: 140px !important;border-bottom: none !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item">ReSubmit Order</div>',
-	              '</tpl>',
-	              '<tpl if="this.isCancelOrderDisabled(values)==false">',
-	              '<div style="width: 140px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item "  event="cancelOrder">Cancel Order</div>',
-	              '</tpl>',
-	              '<tpl if="this.isCancelOrderDisabled(values)">',
-	              '<div style="width: 140px !important;background: #FFFFFF;cursor:default;" class="user-profile-menu-callout order-profile-menu-item"">Cancel Order</div>',
-	              '</tpl>',
+		    var me=this;
+		    return Ext.create('Ext.XTemplate',
+    			  '<div style="width: 140px !important;{[this.getViewOrderLineStyle(values)]}" class="user-profile-menu-callout {[this.getViewOrderLineEnableDisableClass(values)]}" event="viewOrders">View Order Line</div>',
+    			  '<div style="width: 140px !important;{[this.getViewSalesOrderStyle(values)]}" class="user-profile-menu-callout {[this.getViewSalesOrderEnableDisableClass(values)]}" event="viewSales">View Sales Order</div>',
+    			  '<div style="width: 140px !important;{[this.getResubmitStyle(values)]}" class="user-profile-menu-callout {[this.getResubmitEnableDisableClass(values)]}" event="reSubmitOrder">ReSubmit Order</div>',
+    			  '<div style="width: 140px !important;{[this.getCancelOrderStyle(values)]}" class="user-profile-menu-callout {[this.getCancelOrderEnableDisableClass(values)]}" event="cancelOrder">Cancel Order</div>',
 	              {
-	    		 isViewOrderDisabled:function(v){
-	    			 return (v.Status<AOCLit.waitingForCSRStatusOrderQueue);
-	    		 },
-	    		 isViewSalesDisabled:function(v){
-		    	  return (v.salesOrderCount==0);
-	    		 },
-	    		 isReSubmitOrderDisabled:function(v){
-	    		 return (v.Status!=AOCLit.cancelStatus);
-	    		 },
-		         isCancelOrderDisabled : function(v){
-	    		 return (v.Status!=AOCLit.orderError);
-		         }
-	              }
-	          );
-	       },
+					isViewOrderBtnEnable:function(status){
+						if((status == AOCLit.waitingForCSRStatusOrderQueue) || (status == AOCLit.soGeneratedStatusOrderQueue) 
+								 || (status == AOCLit.soSubmittedStatusOrderQueue)
+								 	|| (status == AOCLit.bookedStatusOrderQueue)
+								 		|| (status == AOCLit.errorStatusOrderQueue)
+								 			|| (status == AOCLit.cancelStatusOrderQueue)){
+							return true;
+						}
+						return false;
+					},
+					isViewSalesOrderBtnEnable:function(status){
+						if(status  == AOCLit.soGeneratedStatusOrderQueue 
+		    					 || status == AOCLit.soSubmittedStatusOrderQueue
+		    					 	|| status == AOCLit.bookedStatusOrderQueue
+		    					 		|| status == AOCLit.errorStatusOrderQueue){
+							return true;
+						}
+						return false;
+					},
+					getViewOrderLineStyle:function(v){
+						if(this.isViewOrderBtnEnable(v.Status)){
+		    				 return Helper.getEnableMenuItemStyle();
+						}
+						return Helper.getDisableMenuItemStyle();
+					},
+					getViewSalesOrderStyle:function(v){
+						if(this.isViewSalesOrderBtnEnable(v.Status)){
+							return Helper.getEnableMenuItemStyle();
+						}
+						return Helper.getDisableMenuItemStyle();
+					},
+					getViewSalesOrderEnableDisableClass:function(v){
+						if(this.isViewSalesOrderBtnEnable(v.Status)){
+		    				 return 'user-profile-menu-item';
+						}
+						return 'order-profile-menu-item';
+					},
+					getResubmitStyle:function(v){
+						if(v.Status == AOCLit.cancelStatusOrderQueue){
+		    				 return Helper.getEnableMenuItemStyle();
+						}
+						return Helper.getDisableMenuItemStyle();
+					},
+					getViewOrderLineEnableDisableClass:function(v){
+						if(this.isViewOrderBtnEnable(v.Status)){
+		    				 return 'user-profile-menu-item';
+						}
+						return 'order-profile-menu-item';
+					},
+					getResubmitEnableDisableClass:function(v){
+						if(v.Status == AOCLit.cancelStatusOrderQueue){
+		    				 return 'user-profile-menu-item';
+						}
+						return 'order-profile-menu-item';
+					},
+					getCancelOrderStyle:function(v){
+						if(v.Status == AOCLit.waitingForCSRStatusOrderQueue){
+		    				 return Helper.getEnableMenuItemStyle();
+						}
+						return Helper.getDisableMenuItemStyle();
+					},
+					getCancelOrderEnableDisableClass:function(v){
+						if(v.Status == AOCLit.waitingForCSRStatusOrderQueue){
+		    				 return 'user-profile-menu-item';
+						}
+						return 'order-profile-menu-item';
+					}
+				}
+			);
+	},
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();

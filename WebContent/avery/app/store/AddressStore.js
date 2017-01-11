@@ -7,9 +7,9 @@ Ext.define('AOC.store.AddressStore', {
 	totalProperty:'total',
 	totalCount:'total',
 	storeId:'AddressStoreId',
+	pageSize:pageSize,
 	proxy: {
         type: 'rest',
-        //url : 'aoc/Partner/GET?action=getList',
         url         : applicationContext+'/rest/address',
         reader      : {
             type          : 'json',
