@@ -81,7 +81,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   	onSaveBtnClicked:function(btn){	
   		Ext.getBody().mask('Saving....');
   		var me = this,
-  			gridView = me.getView().down('#EmailAttachmentInfoGriditemId')
+  			gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
   			editorPlugin = gridView.editingPlugin;
   		
   		if(editorPlugin.editing){
@@ -97,7 +97,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			if(rec.fileContentType == 'Order' && !rec.productLineId){
   				orderFlag = true;
   			}
-  			if(rec.fileContentType == 'AdditionalData' && !rec.additionalDataFileKey && !rec.productLineId){
+  			if(rec.fileContentType == 'AdditionalData' && !rec.additionalDataFileKey && rec.productLineId){
   				additionalDataFlag = true;
   			}
   		}
@@ -106,7 +106,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
   			Ext.getBody().unmask();
   		}else if(additionalDataFlag){
-  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill AdditionalData File Key.');
+  			Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
   			Ext.getBody().unmask();
   		}
   		else{
