@@ -311,7 +311,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 59,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -328,7 +328,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 180,
 			editor: {
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				displayField:'value',
 				valueField:'code',
 				queryMode :'local',
@@ -395,7 +395,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'atovalidationFlag',
 			width: 65,
 			renderer:function(v, metaData){
-				if(v =='Y'){
+				if(v == 'Y'){
 					metaData.tdAttr = 'data-qtip="YES"';
 				}else{ 
 					metaData.tdAttr = 'data-qtip="No"';
@@ -409,7 +409,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 60,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -647,7 +647,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'shippingMethodCombo'
 			},
@@ -779,7 +779,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'freightTermscombo'
 			},
@@ -832,7 +832,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 84,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -849,7 +849,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 110,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -880,7 +880,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'OrdertypeCombo'
 			},
@@ -900,7 +900,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'EndCustomerCombo'
 			},
@@ -944,7 +944,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 83,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -961,7 +961,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 77,
 			editor:{
 				xtype:'combo',
-				editable:false,
+				//editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
 			renderer:function(value, metadata,rec){
@@ -980,7 +980,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'splitShipsetCombo'
 			},
@@ -1006,7 +1006,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'APOTypeCombo'
 			},

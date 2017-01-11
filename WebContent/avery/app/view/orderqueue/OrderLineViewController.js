@@ -211,63 +211,21 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		    }
 		});
     },
-    outerGridBeforeEditEvent:function(obj,context){
-    	if(!this.runTime.getAllowOrderLineEdit())
-    		return false;
-    	var record=context.record,grid=this.getView();
-		var store=grid.store;
-		var i=store.find('id',record.id);
-    	if(i==0){
-//    			grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').enable();
-    			grid.editingPlugin.editor.form.findField('billToContact').enable();
-    			grid.editingPlugin.editor.form.findField('billToAddress1').enable();
-    			grid.editingPlugin.editor.form.findField('billToAddress2').enable();
-    			grid.editingPlugin.editor.form.findField('billToAddress3').enable();
-    			grid.editingPlugin.editor.form.findField('billToCity').enable();
-    			grid.editingPlugin.editor.form.findField('billToCountry').enable();
-    			grid.editingPlugin.editor.form.findField('billToState').enable();
-    			grid.editingPlugin.editor.form.findField('billToZip').enable();
-    			grid.editingPlugin.editor.form.findField('billToEmail').enable();
-    			grid.editingPlugin.editor.form.findField('billToFax').enable();
-    			grid.editingPlugin.editor.form.findField('billToTelephone').enable();
-//    			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').enable();
-    			grid.editingPlugin.editor.form.findField('shipToContact').enable();
-    			grid.editingPlugin.editor.form.findField('shipToAddress1').enable();
-    			grid.editingPlugin.editor.form.findField('shipToAddress2').enable();
-    			grid.editingPlugin.editor.form.findField('shipToAddress3').enable();
-    			grid.editingPlugin.editor.form.findField('shipToCity').enable();
-    			grid.editingPlugin.editor.form.findField('shipToCountry').enable();
-    			grid.editingPlugin.editor.form.findField('shipToState').enable();
-    			grid.editingPlugin.editor.form.findField('shipToZip').enable();
-    			grid.editingPlugin.editor.form.findField('shipToEmail').enable();
-    			grid.editingPlugin.editor.form.findField('shipToFax').enable();
-    			grid.editingPlugin.editor.form.findField('shipToTelephone').enable();
-    	}else{
-//    		grid.editingPlugin.editor.form.findField('oracleBilltoSiteNumber').disable();
-			grid.editingPlugin.editor.form.findField('billToContact').disable();
-			grid.editingPlugin.editor.form.findField('billToAddress1').disable();
-			grid.editingPlugin.editor.form.findField('billToAddress2').disable();
-			grid.editingPlugin.editor.form.findField('billToAddress3').disable();
-			grid.editingPlugin.editor.form.findField('billToCity').disable();
-			grid.editingPlugin.editor.form.findField('billToCountry').disable();
-			grid.editingPlugin.editor.form.findField('billToState').disable();
-			grid.editingPlugin.editor.form.findField('billToZip').disable();
-			grid.editingPlugin.editor.form.findField('billToEmail').disable();
-			grid.editingPlugin.editor.form.findField('billToFax').disable();
-			grid.editingPlugin.editor.form.findField('billToTelephone').disable();
-//			grid.editingPlugin.editor.form.findField('oracleShiptoSiteNumber').disable();
-			grid.editingPlugin.editor.form.findField('shipToContact').disable();
-			grid.editingPlugin.editor.form.findField('shipToAddress1').disable();
-			grid.editingPlugin.editor.form.findField('shipToAddress2').disable();
-			grid.editingPlugin.editor.form.findField('shipToAddress3').disable();
-			grid.editingPlugin.editor.form.findField('shipToCity').disable();
-			grid.editingPlugin.editor.form.findField('shipToCountry').disable();
-			grid.editingPlugin.editor.form.findField('shipToState').disable();
-			grid.editingPlugin.editor.form.findField('shipToZip').disable();
-			grid.editingPlugin.editor.form.findField('shipToEmail').disable();
-			grid.editingPlugin.editor.form.findField('shipToFax').disable();
-			grid.editingPlugin.editor.form.findField('shipToTelephone').disable();
+    outerGridBeforeEditEvent:function(editor, context){
+    	var me = this,
+    		orderQueueStatus = me.runTime.getOrderQueueStatus(),
+    		rowIdx = context.rowIdx,
+    		currentRecord = context.store.getAt(rowIdx),
+    		currentRecordStatus = currentRecord.get('status');
+    	
+    	
+    	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
+    			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
+    				|| currentRecordStatus == AOCLit.mandatoryFieldMissingStatusOrderLine
+    					|| currentRecordStatus == AOCLit.noAdditionalDataFoundStatusOrderLine)){
+    		return true;
     	}
+    	return false;
     },
     innerGridBeforeEditEvent:function(context){
     	if(!this.runTime.getAllowOrderLineEdit()){

@@ -220,33 +220,99 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
     },
-    onOrderLineStoreLoad:function(obj){
-    	 var  me = this,
-    	 	  status = this.runTime.getOrderQueueActiveRecord().get('Status');
-    	 
-    	 if(status == AOCLit.waitingForCSRStatusOrderQueue && this.runTime.getAllowOrderLineEdit()){
-    		 var records = obj.queryBy(function(rec){
-    				status = rec.get('status');
-    				me.runTime.setOrderLineStatus(status);
-    				if(status == AOCLit.cancelStatus){
-    					return true;
-    				}
-    			});
-    	    	var view = this.getView(),
-    				salesOrderbutton=view.lookupReference('salesOrderbutton'),
-    				salesViewOrderbutton=view.lookupReference('salesViewOrderbutton'),
-    				validateButton=view.lookupReference('validateButton');
-    	    	
-    	    	if(obj.getTotalCount() == records.length){
-    	    		salesOrderbutton.disable();
-    	    		validateButton.disable();
-    	    	}else{
-    	    		//checks for OrderLineStatus is SOGenereate or greater than SoGenerated(21) then enable salesViewOrderbutton(Amit Kumar)
-    	    		(status >= AOCLit.SO_GeneratedStatusOrderLine) ?  salesViewOrderbutton.enable() : salesViewOrderbutton.disable();;
-    	    		salesOrderbutton.enable();
-    	    		validateButton.enable();
-    	    	}
-    	 }
+    onOrderLineStoreLoad:function(store){
+    	var view = this.getView(),
+			salesOrderbutton=view.lookupReference('salesOrderbutton'),
+			salesViewOrderbutton=view.lookupReference('salesViewOrderbutton'),
+			validateButton=view.lookupReference('validateButton'),
+			cancelOrderBtn = view.lookupReference('cancelOrderButton')
+			form = view.lookupReference('form'),
+			radioGroup = view.lookupReference('radioGroup'),
+			atovalidationFlagCount = 0,
+			
+			totalCount = store.getCount(),
+			soGeneratedCount = 0,
+			soSubmittedCount =0,
+			invalidInternalNoCount = 0,
+			internalItemNoMisCount =0,
+			orgCodeMisCount = 0,
+			frontEndSystemCount = 0,
+			
+			readyForAdditionalDataCount = 0,
+			readyForValidationCount = 0,
+			errorWhileReadingItemCount =0,
+			errorInValidationCount = 0,
+			cancelCount = 0,
+			readyForItemSpecCount = 0;
+    	
+    	store.each(function(rec){
+    		var status = rec.get('status');
+    		if(rec.get('atovalidationFlag') == 'F'){
+    			atovalidationFlagCount++;
+    		}
+    		switch (status){
+    			case AOCLit.soGenereatedStatusOrderLine : 
+    				soGeneratedCount++;
+    				break;
+    			case AOCLit.soSubmittedStatusOrderLine : 
+    				soSubmittedCount++;
+    				break;
+    			case AOCLit.invalidInternalNoStatusOrderLine : 
+    				invalidInternalNoCount++;
+    				break;
+    			case AOCLit.internalItemNoIsMissingStatusOrderLine : 
+    				internalItemNoMisCount++;
+    				break;
+    			case AOCLit.orgCodeIsMissingStatusOrderLine : 
+    				orgCodeMisCount++;
+    				break;
+    			case AOCLit.frontEndSystemIsMissingStatusOrderLine : 
+    				frontEndSystemCount++;
+    				break;
+    			case AOCLit.readyForItemSpecStatusOrderLine : 
+    				readyForItemSpecCount++;
+    				break;
+    			case AOCLit.readyForAdditionalDataFileParsingStatusOrderLine : 
+    				readyForAdditionalDataCount++;
+    				break;
+    			case AOCLit.readyForValidationStatusFlag : 
+    				readyForValidationCount++;
+    				break;
+    			case AOCLit.errorWhileReadingItemSpecStatusOrderLine : 
+    				errorWhileReadingItemCount++;
+    				break;
+    			case AOCLit.errorInValidationStatusOrderLine : 
+    				errorInValidationCount++;
+    				break;
+    			case AOCLit.cancelStatusOrderLine : 
+    				cancelCount++;
+    				break;
+    		}
+    	});
+    	
+    	if(soGeneratedCount == totalCount || soSubmittedCount == totalCount || invalidInternalNoCount == totalCount
+    			|| internalItemNoMisCount == totalCount || orgCodeMisCount == totalCount
+					|| frontEndSystemCount == totalCount || readyForItemSpecCount == totalCount
+						|| readyForAdditionalDataCount == totalCount || readyForValidationCount == totalCount
+							|| errorWhileReadingItemCount == totalCount || errorInValidationCount == totalCount
+								|| cancelCount == totalCount){
+    		
+    		salesOrderbutton.disable();
+    		salesViewOrderbutton.disable();
+    		validateButton.disable();
+    		form.disable();
+    		cancelOrderBtn.enable();
+    	}else{
+    		salesOrderbutton.enable();
+    		salesViewOrderbutton.enable();
+    		validateButton.enable();
+    		form.enable();
+    	}
+    	if(atovalidationFlagCount == totalCount){
+    		radioGroup.items.items[1].disable();
+    	}else{
+    		radioGroup.items.items[1].enable();
+    	}
     },
     getUpdateScreen:function(){
 		var me = this,

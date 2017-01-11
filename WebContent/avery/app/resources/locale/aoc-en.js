@@ -372,6 +372,25 @@ Ext.define('AOC.lang.lit',{
     bookedStatusOrderQueue:'41',
     errorStatusOrderQueue:'42',
     cancelStatusOrderQueue:'50',
+    
+    //Order Queue Line
+    waitingForCSRStatusOrderLine:'20',
+    mandatoryFieldMissingStatusOrderLine:'25',
+    noAdditionalDataFoundStatusOrderLine:'33',
+    
+    soGenereatedStatusOrderLine:'22',
+    soSubmittedStatusOrderLine:'24',
+    invalidInternalNoStatusOrderLine:'26',
+    internalItemNoIsMissingStatusOrderLine:'27',
+    orgCodeIsMissingStatusOrderLine:'28',
+    frontEndSystemIsMissingStatusOrderLine:'29',
+    readyForAdditionalDataFileParsingStatusOrderLine:'31',
+    readyForValidationStatusFlag:'17',
+	readyForItemSpecStatusOrderLine:'14',
+    errorWhileReadingItemSpecStatusOrderLine:'34',
+    errorInValidationStatusOrderLine:'35',
+    cancelStatusOrderLine:'51',
+    
     //Adding codes according to new StatusCode so commenting older codes
     //"orderReceivedStatus":'1',
     //"orderError":'2',
@@ -391,8 +410,6 @@ Ext.define('AOC.lang.lit',{
     "disregardStatus":'18',
     "booked":'99',
     "oracleError":'98',
-    "waitingForCSRStatusOrderLine":'20',
-    
     
     "fiberLevel":'FIBRE',
     "identifiedStatus":'5',

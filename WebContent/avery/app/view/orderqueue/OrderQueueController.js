@@ -237,21 +237,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 form=orderlinecontainer.lookupReference('form');
                 //salesOrderCount = currentRecord.get('salesOrderCount');
                 
-                if(status >= AOCLit.waitingForCSRStatusOrderQueue) {
-                	validateButton.enable();
-                	bulkUpdateButton.enable();
-                	salesViewOrderbutton.disable();
-                	salesOrderbutton.enable();
-                	cancelOrderButton.enable();
-           	        form.enable();
-                }else{
-                	validateButton.disable();
-                	bulkUpdateButton.disable();
-                	salesViewOrderbutton.enable();
-                	salesOrderbutton.disable();
-                	cancelOrderButton.disable();
-           	        form.disable();
-                }
+                var editableFlag = (status == AOCLit.waitingForCSRStatusOrderQueue);
+                
+                validateButton[editableFlag ? 'enable':'disable']();
+                bulkUpdateButton[editableFlag ? 'enable':'disable']();
+                salesOrderbutton[editableFlag ? 'enable':'disable']();
+                cancelOrderButton[editableFlag ? 'enable':'disable']();
+                salesViewOrderbutton[editableFlag ? 'disable':'enable']();
+                form[editableFlag ? 'enable':'disable']();
                 
                 /*if(salesOrderCount!=0){
                 	salesViewOrderbutton.enable();
