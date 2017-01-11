@@ -264,6 +264,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				emptyText: "Search Partner Name "
 			},
 			{
+				xtype :'tbspacer',
+				width :10
+		    },
+			{
 				xtype: 'component',
 				itemId:'advancesearchbutton',
 				autoEl: {
