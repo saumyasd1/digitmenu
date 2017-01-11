@@ -517,6 +517,10 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					if(!fileContentType.equals("")){ 
 						fileAttachementObj.setFileContentType(fileContentType);
 					}
+					String additionalDataFileKey =(fileAttachment.get("additionalDataFileKey")==null?"":(String)fileAttachment.get("additionalDataFileKey"));
+					if(!additionalDataFileKey.equals("")){ 
+						fileAttachementObj.setAdditionalDataFileKey(additionalDataFileKey);
+					}
 					//Changing status before updating above parameters
 					if(productLineId!=0 && fileContentType.equals("Disregard")){
 						fileAttachementObj.setStatus("7");//In statuscode table Disregard:7
