@@ -18,7 +18,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 			             	 me.down('pagingtoolbar').bindStore(obj.getStore());
 			             	  }
 			 },		
-        tbar: { height: 40,
+        tbar: { height: AOC.config.Settings.config.defaultTbarHeight,
     		    items : me.buildtbar()
               },
         dockedItems : this.buildDockedItems(),
