@@ -17,6 +17,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -55,11 +56,10 @@ OrderEmailQueueDao {
 				String eDate=searchMap.get("toDate");
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			
-			String orderEmailQueue=searchMap.get("orderEmailQueue");
-			if(orderEmailQueue!=null && !"".equals(orderEmailQueue)){
-				Disjunction disCriteria = Restrictions.disjunction();
-				criteria.add(disCriteria);
+			//Adding search map criteria and removing unnecessary code
+			String subject=searchMap.get("subject");
+			if(subject!=null && !"".equals(subject)){
+				criteria.add(Restrictions.ilike("subject", subject,MatchMode.ANYWHERE));
 			}
 		}   
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
@@ -109,16 +109,18 @@ OrderEmailQueueDao {
 		Criteria criteria = null;
 		int totalCount = 0;
 		criteria = session.createCriteria(OrderEmailQueue.class);
-		criteria.add(Restrictions.eq("status", "4"));// Status Code for
-														// Unrecognized mails
-
+		criteria.add(Restrictions.eq("status", "4"));// Status Code for Unrecognized mails
 		criteria.addOrder(Order.desc("lastModifiedDate"));
-
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
-
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
-
+		//Adding searchmap for task manager
+		String queryString=(String) queryMap.getFirst("query");
+		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+		String subject=searchMap.get("subject");
+		if(subject!=null && !"".equals(subject)){
+			criteria.add(Restrictions.ilike("subject", subject,MatchMode.ANYWHERE));
+		}
 		
 		//Pagination added for taskmanager
 		String pageNumber = pageNo == null ? "" : pageNo;
