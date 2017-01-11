@@ -11,7 +11,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:false,
-        tbar: { height: 40,
+        tbar: { height:AOC.config.Settings.config.defaultTbarHeight,
     		    items : me.buildtbar()
               },
         store:Ext.create('AOC.store.AddressStore', {
