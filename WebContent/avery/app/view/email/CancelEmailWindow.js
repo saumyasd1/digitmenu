@@ -7,7 +7,7 @@ Ext.define('AOC.view.email.CancelEmailWindow',{
 	header:false,
 	items:[{
 		xtype:'displayfield',
-		value:AOCLit.cancelEmailText,
+		value:AOCLit.moveToTaskManagerText,
 		margin:'10 10 10 10'
 	},{
 		xtype:'textareafield',
