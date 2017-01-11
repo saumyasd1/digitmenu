@@ -314,9 +314,15 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			len = recordsArray.length;
 		
 		if(len > 0){
-			for(var i=0;i<len;i++){
-				me.downLoadFile(recordsArray[i].get('filePath'),recordsArray[i].get('fileName'));
-			}
+			var interVal = setInterval(function(){
+				if(len >= 0 && recordsArray[len-1]){
+					me.downLoadFile(recordsArray[len-1].get('filePath'),recordsArray[len-1].get('fileName'));
+					len = len-1;
+				}else{
+					clearInterval(interVal);
+				}
+				
+			},1000);
 		}else{
 			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectAttachmentFileMsg);
 		}
