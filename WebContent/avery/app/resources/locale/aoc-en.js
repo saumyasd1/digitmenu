@@ -276,7 +276,7 @@ Ext.define('AOC.lang.lit',{
     "cancelSalesOrderText":'<b>Cancel Sales Order</b>',
     "salesOrdersumbitText": '<b>Submit Sales Order</b>',
     "cancelOrderText" :'<b>Are you sure you want to cancel the Order? If yes, please enter the reason for futher reference:</b> ',
-    "cancelEmailText" :'<b>Are you sure you want to cancel the Email? If yes, please enter the reason for futher reference:</b> ',
+    "moveToTaskManagerText" :'<b>Are you sure you want to move this email to task manager? If yes, please enter the reason for futher reference:</b> ',
     "disregardEmailText":'<b>Are you sure you want to disregard the Email? If yes, please enter the reason for futher reference:</b> ',
     "salesOrderCreationMsg":'Sales Order was successfully created',
     "orderCancelSuccessAlert":'Order cancelled successfully',
