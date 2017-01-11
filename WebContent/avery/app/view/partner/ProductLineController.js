@@ -569,27 +569,33 @@ if(!temp){
 	    		},{
 	    			xtype:'systemgrid',
 	    			store:systemStore,
+	    			style:'border:solid 1px #ccc;',
 	    			hidden:true,
 	    			reference:selectedSystemArray.name+'systemGrid'
 	    		},{
 	    			xtype:'fieldcontainer',
 	    			layout:'hbox',
+	    			margin:'1 0 0 0',
 	    			items:[{
 		    			xtype:'orggrid',
 		    			width:800,
 		    			store:orgOrderStore,
+		    			style:'border:solid 1px #ccc;',
 		    			orgStore:orgStore,
 		    			uniqueName:selectedSystemArray.name,
 		    			maxRecord:totalOrgConfigured,
 		    			hidden:true,
+		    			flex:1,
 		    			reference:selectedSystemArray.name+'orgGrid'
 		    		},{
 	    				xtype:'button',
 	    				margin:'40 0 0 20',
 	    				maxRecord:totalOrgConfigured,
 	    				text:'Plus',
+	    				//iconCls:'fa fa-plus',
 	    				reference:selectedSystemArray.name+'Plus',
 	    				hidden:true,
+	    				flex:0.5,
 	    				listeners:{
 	    					'click':function(cmp){
 	    						if(orgOrderStore.getCount()<totalOrgConfigured){

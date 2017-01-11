@@ -169,6 +169,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelAlign:'top',
 						margin : '0 0 0 0',
 						checkboArray:new Array(),
+						//layout:'vbox',
 						labelStyle:Settings.config.defaultFormLabelStyle
 					},
 					{
