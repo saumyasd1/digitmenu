@@ -364,6 +364,14 @@ Ext.define('AOC.lang.lit',{
     "emailAttachmentInfoGridIdentifiedStatus":"8",
     "orderEmailProcessing":'9',
     "orderEmailProcessed":'10',
+    
+    //Order Queue Status
+    waitingForCSRStatusOrderQueue:'19',
+    soGeneratedStatusOrderQueue:'21',
+    soSubmittedStatusOrderQueue:'23',
+    bookedStatusOrderQueue:'41',
+    errorStatusOrderQueue:'42',
+    cancelStatusOrderQueue:'50',
     //Adding codes according to new StatusCode so commenting older codes
     //"orderReceivedStatus":'1',
     //"orderError":'2',
@@ -383,7 +391,6 @@ Ext.define('AOC.lang.lit',{
     "disregardStatus":'18',
     "booked":'99',
     "oracleError":'98',
-    "waitingForCSRStatusOrderQueue":'19',
     "waitingForCSRStatusOrderLine":'20',
     
     
