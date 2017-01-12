@@ -3,6 +3,7 @@ Ext.define('AOC.model.EmailManagementModel',{
 	idProperty:null,
     fields: [
 	    {name: 'id', mapping:'id',type: 'int'},
+	    {name: 'assignCSR',mapping:'assignCSR',type:'string'},
 		{name: 'PartnerName', mapping:'partnerName',type: 'string'},
 		{name: 'RBO',mapping:'rboName',type:'string'},
 		{name: 'senderEmailId', mapping:'senderEmailId',type: 'string'},
