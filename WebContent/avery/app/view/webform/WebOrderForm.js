@@ -83,12 +83,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				emptyText:AOCLit.partnerName,
         				reference:'partnerCombo',
         				itemId:'partnerCombo',
-        				store:'PartnerManagementStore',
+        				store:Ext.create('AOC.store.UniquePartnerStore'),
         				valueField:'id',
         				name:'partnerName',
         				editable:false,
         				allowBlank : false,
-        				margin:'0 20 0 0',
+        				margin:'0 10 0 0',
         				flex:1,
         				displayField:'partnerName',
         				listeners:{
@@ -105,8 +105,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				displayField:'rboName',
         				name:'rboName',
         				flex:1,
-        				margin:'0 20 0 0',
-        				valueField:'rboName',
+        				margin:'0 10 0 0',
+        				valueField:'id',
         				allowBlank : false, 
         				disabled:true,
         				listeners:{
@@ -116,18 +116,18 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         			},
         			{
         				xtype:'combo',
-        				reference:'productLineCombo',
-        				itemId:'productLineCombo',
-        				displayField:'productLineType',
+        				reference:'dataStructureCombo',
+        				itemId:'dataStructureCombo',
+        				displayField:'dataStructureName',
         				valueField:'id',
         				editable:true,
         				flex:1,
-        				name:'productLineType',
+        				name:'dataStructureName',
         				emptyText:AOCLit.productLine,
         				allowBlank : false, 
         				disabled:true,
         				listeners:{
-        					'change':'onProductLineSelection',
+        					'change':'onDataStructureSelection',
         					'focus': 'notifyByMessage'
         				}
         			}]

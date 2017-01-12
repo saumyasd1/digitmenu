@@ -5,52 +5,27 @@ Ext.define('AOC.view.webform.WebFormController', {
     runTime : AOC.config.Runtime,
     onPartnerChange:function(obj,newValue){
     	var messageField=this.getView().down('#messageFieldItemId'),me=this;
-    	if(newValue!=null){
-    	var productLineCombo=this.lookupReference('productLineCombo'),rboCombo=this.lookupReference('rboCombo');
-    	var store=null;
-        var response = Ext.Ajax.request({
-            async: false,
-            url        : applicationContext+'/rest/productLines/partner/'+newValue+'?partnerId='+newValue
-        });
-      	var jsonValue=Ext.decode(response.responseText).productlines;
-    	var serviceStoreData = [];
-    	if(jsonValue.length>0){
-    	jsonValue.forEach(function(item){
-  		var service = item;
-  		serviceStoreData.push(service);
-  		
-  	});
-    	store =  Ext.create('Ext.data.Store',{
-    		fields:['id'],
-	            data : serviceStoreData
+    	var rboCombo=this.lookupReference('rboCombo'),
+    	dataStructureCombo=this.lookupReference('dataStructureCombo');
+    	if(!Ext.isEmpty(newValue)){
+	    	var store=null;
+	        var response = Ext.Ajax.request({
+	            async: false,
+	            url        : applicationContext+'/rest/productLines/rbo/'+newValue
+	        });
+	      	var jsonValue=Ext.decode(response.responseText);
+    	store =  Ext.create('Ext.data.ArrayStore',{
+    		fields:['id','rboName'],
+	            data : jsonValue
       });
-    	var uniqueValueArray1=store.collect('rboName');
-    	var serviceStoreData1= [];
-    	  if(uniqueValueArray1.length>0){
-    		 uniqueValueArray1.forEach(function(item){
-    			 var index=store.find('rboName',item);
-    			 var currentRecord=store.getAt(index);
-        	 serviceStoreData1.push(currentRecord);
-           });
-    	     var serviceStore =  Ext.create('Ext.data.Store',{
-     	   	 fields : ['rboName','id','productLineType'],	
-	         data : serviceStoreData1
-        });
-    	     
-    	     var form =me.getView();
-    	     if(form !=null && !form.isResubmit){
-    	    	 rboCombo.reset();
-    	    	 productLineCombo.reset();
-    	     }
-    	     rboCombo.bindStore(serviceStore);
+	    	 rboCombo.reset();
+	    	 dataStructureCombo.reset();
+	    	 dataStructureCombo.disable();
+    	     rboCombo.bindStore(store);
     	     rboCombo.enable();
-    	     productLineCombo.bindStore(store);
-    	     messageField.show();
-    	  }
     	}else{
-  		  messageField.setValue(AOCLit.noRBOconfigMsg);
-		  messageField.show();
-	  }
+	    	 dataStructureCombo.disable();
+	    	 rboCombo.disable();
     	}
     },
     SaveDetails:function(obj){
@@ -75,7 +50,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	    if(form.isValid()){
     	    	
     			form.submit({
-    				url: applicationContext+'/rest/orders/attachments/1',
+    				url: applicationContext+'/rest/emailqueue/createweborder',
     		        getParams: function(useModelValues) {
     		            var fieldParams = this.form.getValues(false,true,false,true);
     		            return Ext.apply({}, fieldParams);
@@ -278,59 +253,27 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    		Ext.getBody().unmask();
 	    	}
 	 },
-	 onProductLineSelection:function(obj,newValue){
-		 if(newValue !=null && newValue!=''){
-			 var attachmentinfostore =Ext.ComponentQuery.query('weborderview attachmentinfoGrid')[0].getStore();
-			 var store=obj.store;
-			 var record=store.getById(newValue),form=this.getView();
-			 var attachmentCount=form.attachmentCount;
-			 var orderSchemaType=record.get('orderSchemaType'),attachmentRequired=record.get('attachmentRequired');
-			 this.getView().lookupReference('subject').enable();
-			 this.getView().lookupReference('orderFileType').orderSchemaType=orderSchemaType;
-			 var currentAttachmentField=form.lookupReference('attachment'+attachmentCount);
-			 if(!attachmentRequired){
-				 if(currentAttachmentField)
-				    {
-					 currentAttachmentField.hide();
-					 if(attachmentinfostore.data.length=0){
-						 Ext.Msg.alert('',AOCLit.onProductLineChangeAlert);
-				 }
-					} 
-			 }
-			 else{
-				 if(currentAttachmentField)
-					 currentAttachmentField.show();
-			 }
-			 this.getView().lookupReference('emailBody').enable();
-			 this.getView().lookupReference('email').enable();
-			 this.getView().lookupReference('orderFileType').enable();
-			 currentAttachmentField.enable();
-		 }else{
-			 this.getView().lookupReference('subject').disable();
-			 this.getView().lookupReference('emailBody').disable();
-			 this.getView().lookupReference('email').disable();
-			 //this.getView().lookupReference('attachment1').disable();
-			 this.getView().lookupReference('orderFileType').disable();
-		 }
-		 
-	 },
 	 onRBOChange:function(obj,newValue){
+		 var dataStructureCombo=this.getView().lookupReference('dataStructureCombo'),
+		 partnerCombo=this.getView().lookupReference('partnerCombo'),
+		 partnerId=partnerCombo.getValue();
 		 if(newValue !=null && newValue!=''){
 			 Ext.getBody().mask('Loading....');
-			 var productLineCombo=this.getView().lookupReference('productLineCombo');
-			// productLineCombo.setValue('');
-			 var store=productLineCombo.store;
-			 store.clearFilter();
-			 store.filterBy(function(record){
-				 if(record.get('rboName')==newValue)
-					 return true;
-	   		});
-			 //productLineCombo.reset();
-			 productLineCombo.enable();
-			 var form =this.getView();
-    	     if(form !=null && !form.isResubmit){
-    	    	 productLineCombo.reset();
-    	     }
+			
+			 var response = Ext.Ajax.request({
+		            async: false,
+		            url        : applicationContext+'/rest/productLines/getdatastructures/'+partnerId+'/'+newValue
+		        });
+		      	var jsonValue=Ext.decode(response.responseText);
+	    	store =  Ext.create('Ext.data.Store',{
+	    		fields:['id','dataStructureName','attachmentRequired'],
+		            data : jsonValue
+	    	});
+	    	dataStructureCombo.bindStore(store);
+	    	dataStructureCombo.enable();
+	    	dataStructureCombo.reset();
+		 }else{
+		    	 dataStructureCombo.disable();
 		 }
 		 Ext.getBody().unmask();
 	 },
@@ -354,5 +297,18 @@ Ext.define('AOC.view.webform.WebFormController', {
         var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
         ordeQueueGrid.store.load();
         this.getView().destroy();
+     },
+     onDataStructureSelection:function(cmp,newValue){
+    	 if(!Ext.isEmpty(newValue)){
+    		 this.getView().lookupReference('emailBody').enable();
+			 this.getView().lookupReference('email').enable();
+			 this.getView().lookupReference('subject').enable();
+			 this.getView().lookupReference('orderFileType').enable();
+		 }else{
+			 this.getView().lookupReference('subject').disable();
+			 this.getView().lookupReference('emailBody').disable();
+			 this.getView().lookupReference('email').disable();
+			 this.getView().lookupReference('subject').disable();
+		 }
      }
 });
