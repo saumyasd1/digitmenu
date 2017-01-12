@@ -38,6 +38,9 @@ int pageSize=25;
 		.nestedGrid .x-grid-item, body{
 			color:#2c3e50 !important;
 		}
+		.hide-row-expander .custom-row-expander {
+		    visibility: hidden;
+		}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
