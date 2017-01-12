@@ -161,26 +161,14 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				xtype :'tbspacer',
 				width :10
 		    },
-			{
-				xtype: 'component',
-				itemId:'advancesearchbutton',
-				autoEl: {
-					tag: 'a',
-					href: '#',
-					html:AOCLit.advSearchTitle
-				},
-				listeners: {
-					el: {
-						click: 'openAdvancedSearchWindow'	
-					}
-				}
-			},
-			{
-				itemId: 'clearadvanedsearch',
-				hidden:true, 
-				handler : 'clearAdvancedSerach',
-				icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
-			}
+		    {
+				xtype:'button',
+				refrence:'advancesearchbutton',
+				text:AOCLit.advSearchText,
+				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconAlign: "right",
+				handler:'openAdvancedSearchWindow'
+			 }
 		];
 	},
 	buildDockedItems : function(){

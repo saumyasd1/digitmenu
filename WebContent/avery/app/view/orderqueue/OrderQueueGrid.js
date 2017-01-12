@@ -2,9 +2,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.orderqueuegrid',
     itemId:'OrderQueueGridItemId',
-	emptyText: AOCLit.noContentTypeDispMsg,
+	emptyText: AOCLit.emptyDataMsg,
 	controller: 'orderqueue',
-	requires:['Ext.form.action.StandardSubmit','Ext.grid.plugin.Clipboard'],
+	requires:['Ext.form.action.StandardSubmit','Ext.grid.plugin.Clipboard','AOC.view.ux.CustomSearchField'],
 	reserveScrollbar:true,
 	columnLines:false,
 	viewConfig : {
@@ -261,32 +261,20 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				store : Ext.data.StoreManager.lookup(me.store),
 				width: 200,
 				margin:'0 10 0 0',
-				emptyText: "Search Partner Name "
+				emptyText: "Search by Partner Name "
 			},
 			{
 				xtype :'tbspacer',
 				width :10
 		    },
-			{
-				xtype: 'component',
-				itemId:'advancesearchbutton',
-				autoEl: {
-					tag: 'a',
-					href: '#',
-					html:AOCLit.advSearchTitle
-				},
-				listeners: {
-					el : {
-						click: 'openAdvancedSearchWindow'
-					}
-				}
-			},
-			{
-				hidden:true, 
-				icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
-				itemId:'clearadvanedsearch',
-				handler:'clearAdvancedSerach'
-			}
+		    {
+				xtype:'button',
+				refrence:'advancesearchbutton',
+				text:AOCLit.advSearchText,
+				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconAlign: "right",
+				handler:'openAdvancedSearchWindow'
+			 }
 		];
 	},
     buildDockedItems : function(){

@@ -129,41 +129,20 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	            	message:'Showing all accounts with',
 	    			store : Ext.data.StoreManager.lookup(me.store),
 	    			width: 200,
-	    			emptyText: "Search Partner Name "
+	    			emptyText: "Search by Partner Name "
 				 },
 				 {
 	                	xtype :'tbspacer',
 	                	width :10
 	        		},
-	        		{
-	        		    xtype: 'component',
-	        		    itemId:'advancesearchbutton',
-	        		    autoEl: {
-	        		        tag: 'a',
-	        		        href: '#',
-	        		        html:AOCLit.advSearchTitle
-	        		    },
-	        		    listeners: {
-	        		    	 el : {
-	        		    		    click    : 'openAdvancedSearchWindow'
-	        		    		    
-	        		    	 }
-	        	            }
-	        		},
-//	            {
-//					xtype:'button',
-//					refrence:'advancesearchbutton',
-//					text:advSearchText,
-//					icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
-//					iconAlign: "right",
-//					handler:'openAdvancedSearchWindow'
-//				 },
-			{
-				hidden:true, 
-				itemId:'clearadvanedsearch',
-				handler:'clearAdvancedSerach',
-				icon: AOC.config.Settings.buttonIcons.clearSearchIcon
-			}
+	            {
+					xtype:'button',
+					refrence:'advancesearchbutton',
+					text:AOCLit.advSearchText,
+					icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+					iconAlign: "right",
+					handler:'openAdvancedSearchWindow'
+				 }
 		          ];
 	},
 	 buildDockedItems : function(){

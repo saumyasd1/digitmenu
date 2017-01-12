@@ -128,6 +128,12 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 					return me.tipRenderer(v, metaData);
 				}
 			},
+			{  
+				text : 'CSR Name',
+				width:120,
+				dataIndex:'assignCSR',
+				flex:1
+			},
 			{
 				text :'Received Date',
 				width:120,
@@ -192,25 +198,13 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 					width :10
 			},
 			{
-				xtype: 'component',
-				itemId:'advancesearchbutton',
-				autoEl: {
-					tag: 'a',
-					href: '#',
-					html:AOCLit.advSearchTitle
-				},
-				listeners: {
-					el: {
-						click: 'openAdvancedSearchWindow'	
-					}
-				}
-			},
-			{
-				itemId: 'clearadvanedsearch',
-				hidden:true, 
-				handler : 'clearAdvancedSerach',
-				icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
-			}
+				xtype:'button',
+				refrence:'advancesearchbutton',
+				text:AOCLit.advSearchText,
+				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconAlign: "right",
+				handler:'openAdvancedSearchWindow'
+			 }
 		];
   	},
 	buildDockedItems : function(){
