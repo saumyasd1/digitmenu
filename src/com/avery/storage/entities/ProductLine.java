@@ -64,7 +64,7 @@ public class ProductLine extends MainAbstractEntity{
 	private static final long serialVersionUID = -8487156716364715527L;
 
 	@Column(name = "active")
-	private boolean active;
+	private Boolean active;
 	
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchLocation", length = 100)
@@ -72,7 +72,7 @@ public class ProductLine extends MainAbstractEntity{
 	
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchRequired")
-	private boolean attachmentFileMatchRequired;
+	private Boolean attachmentFileMatchRequired;
 	
 	@Column(name = "attachmentFileNameExtension_1", length = 50)
 	private String attachmentFileNameExtension_1;// 50
@@ -95,11 +95,11 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "attachmentFileOrderMatchLocation", length = 100)
 	private String attachmentFileOrderMatchLocation;// 100
 	@Column(name = "attachmentFileOrderMatchRequired")
-	private boolean attachmentFileOrderMatchRequired;
+	private Boolean attachmentFileOrderMatchRequired;
 	@Column(name = "attachmentFileProductlineMatchLocation", length = 100)
 	private String attachmentFileProductlineMatchLocation;// 100
 	@Column(name = "attachmentFileProductlineMatchRequired")
-	private boolean attachmentFileProductlineMatchRequired;
+	private Boolean attachmentFileProductlineMatchRequired;
 	@Column(name = "attachmentFileRBOMatch", length = 100)
 	private String attachmentFileRBOMatch;// 100
 	@Column(name = "attachmentIdentifier_1", length = 50)
@@ -121,7 +121,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "attachmentProductlineMatch", length = 100)
 	String attachmentProductlineMatch;// 100
 	@Column(name = "attachmentRequired")
-	boolean attachmentRequired;
+	Boolean attachmentRequired;
 	@Column(name = "attachmentSchemaID_1", length = 50)
 	String attachmentSchemaID_1;// 50
 	@Column(name = "attachmentSchemaID_2", length = 50)
@@ -141,7 +141,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "comment", length = 250)
 	String comment;// 250
 	@Column(name = "controlData")
-	boolean controlData;
+	Boolean controlData;
 	@Column(name = "CSRPrimaryId", length = 250)
 	private String CSRPrimaryId;// 250
 	@Column(name = "CSRSecondaryId", length = 250)
@@ -151,55 +151,55 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "emailSubjectProductlineMatchLocation", length = 100)
 	String emailSubjectProductlineMatchLocation;
 	@Column(name = "emailSubjectProductlineMatchRequired")
-	boolean emailSubjectProductlineMatchRequired;
+	Boolean emailSubjectProductlineMatchRequired;
 	@Column(name = "emailSubjectRBOMatch",length=100)
 	String emailSubjectRBOMatch;
 	@Column(name = "emailSubjectRBOMatchLocation", length = 100)
 	String emailSubjectRBOMatchLocation;// 100
 	@Column(name = "emailSubjectRBOMatchRequired")
-	boolean emailSubjectRBOMatchRequired;
+	Boolean emailSubjectRBOMatchRequired;
 	@Column(name = "emailBodyProductLineMatch",length=100)
 	String  emailBodyProductLineMatch;	
 	@Column(name = "emailBodyProductlineMatchLocation",length=100)
 	String emailBodyProductlineMatchLocation;	
 	@Column(name = "emailBodyProductlineMatchRequired")
-	boolean emailBodyProductlineMatchRequired;	
+	Boolean emailBodyProductlineMatchRequired;	
 	@Column(name = "emailBodyRBOMatch",length=100)
 	String  emailBodyRBOMatch;
 	@Column(name = "emailBodyRBOMatchLocation",length=100)
 	String emailBodyRBOMatchLocation;	
 	@Column(name = "emailBodyRBOMatchRequired")
-	boolean emailBodyRBOMatchRequired;	
+	Boolean emailBodyRBOMatchRequired;	
 	@Column(name = "fileRBOMatchLocation",length=100)
 	String fileRBOMatchLocation;
 	@Column(name = "fileRBOMatchRequired")
-	boolean fileRBOMatchRequired;
+	Boolean fileRBOMatchRequired;
 	@Column(name = "factoryTransfer")
-	boolean factoryTransfer;
+	Boolean factoryTransfer;
 	@Column(name = "fileMatchLocation", length = 100)
 	String fileMatchLocation;// 100
 	@Column(name = "fileMatchRequired")
-	boolean fileMatchRequired;
+	Boolean fileMatchRequired;
 	@Column(name = "fileOrderMatch", length = 100)
 	String fileOrderMatch;// 100
 	@Column(name = "fileOrderMatchLocation", length = 100)
 	String fileOrderMatchLocation;// 100
 	@Column(name = "fileOrderMatchRequired")
-	boolean fileOrderMatchRequired;
+	Boolean fileOrderMatchRequired;
 	@Column(name = "fileProductlineMatch", length = 100)
 	String fileProductlineMatch;// 100
 	@Column(name = "fileProductLineMatchLocation", length = 100)
 	String fileProductLineMatchLocation;// 100
 	@Column(name = "fileProductLineMatchRequired")
-	boolean fileProductLineMatchRequired;
+	Boolean fileProductLineMatchRequired;
 	@Column(name = "fileRBOMatch", length = 100)
 	String fileRBOMatch;// 100
 	@Column(name = "invoicelineInstruction", length = 500)
 	String invoicelineInstruction;// 500
 	@Column(name = "LLKK")
-	boolean LLKK;
+	Boolean LLKK;
 	@Column(name = "localBilling")
-	boolean localBilling;
+	Boolean localBilling;
 	@Column(name = "miscCSRInstruction", length = 500)
 	String miscCSRInstruction;// 500
 	@Column(name = "orderFileNameExtension", length = 100)
@@ -213,7 +213,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "orderSchemaType", length = 50)
 	String orderSchemaType;// 50
 	@Column(name = "others")
-	private boolean others;// Others (pls specify)
+	private Boolean others;// Others (pls specify)
 	@Column(name = "preProcessPID", length = 50)
 	private String preProcessPID;// 50
 	@Column(name = "productLineType", length = 25)
@@ -221,19 +221,19 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "DataStructureName", length = 100)
 	private String dataStructureName;
 	@Column(name = "shipmentSample")
-	boolean shipmentSample;
+	private Boolean shipmentSample;
     @Column(name = "waiveMOA")
-    private boolean waiveMOA;
+    private Boolean waiveMOA;
 	@Column(name = "waiveMOQ")
-	private boolean waiveMOQ;
+	private Boolean waiveMOQ;
 	@Column(name = "localItem")
-	private boolean localItem;
+	private Boolean localItem;
 	@Column(name = "averyItem")
-	private boolean averyItem;	
+	private Boolean averyItem;	
 	@Column(name = "fiberpercentagecheck")
-	private boolean fiberpercentagecheck ;
+	private Boolean fiberpercentagecheck ;
 	@Column(name = "coocheck ")
-	private boolean coocheck  ;
+	private Boolean coocheck  ;
 	@Column(name = "customerItemIdentifierDescription",length=500)
 	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
@@ -389,11 +389,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.email = email;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -405,11 +405,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.attachmentFileMatchLocation = attachmentFileMatchLocation;
 	}
 
-	public boolean isAttachmentFileMatchRequired() {
+	public Boolean isAttachmentFileMatchRequired() {
 		return attachmentFileMatchRequired;
 	}
 
-	public void setAttachmentFileMatchRequired(boolean attachmentFileMatchRequired) {
+	public void setAttachmentFileMatchRequired(Boolean attachmentFileMatchRequired) {
 		this.attachmentFileMatchRequired = attachmentFileMatchRequired;
 	}
 
@@ -493,11 +493,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.attachmentFileOrderMatchLocation = attachmentFileOrderMatchLocation;
 	}
 
-	public boolean isAttachmentFileOrderMatchRequired() {
+	public Boolean isAttachmentFileOrderMatchRequired() {
 		return attachmentFileOrderMatchRequired;
 	}
 
-	public void setAttachmentFileOrderMatchRequired(boolean attachmentFileOrderMatchRequired) {
+	public void setAttachmentFileOrderMatchRequired(Boolean attachmentFileOrderMatchRequired) {
 		this.attachmentFileOrderMatchRequired = attachmentFileOrderMatchRequired;
 	}
 
@@ -509,11 +509,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.attachmentFileProductlineMatchLocation = attachmentFileProductlineMatchLocation;
 	}
 
-	public boolean isAttachmentFileProductlineMatchRequired() {
+	public Boolean isAttachmentFileProductlineMatchRequired() {
 		return attachmentFileProductlineMatchRequired;
 	}
 
-	public void setAttachmentFileProductlineMatchRequired(boolean attachmentFileProductlineMatchRequired) {
+	public void setAttachmentFileProductlineMatchRequired(Boolean attachmentFileProductlineMatchRequired) {
 		this.attachmentFileProductlineMatchRequired = attachmentFileProductlineMatchRequired;
 	}
 
@@ -597,11 +597,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.attachmentProductlineMatch = attachmentProductlineMatch;
 	}
 
-	public boolean isAttachmentRequired() {
+	public Boolean isAttachmentRequired() {
 		return attachmentRequired;
 	}
 
-	public void setAttachmentRequired(boolean attachmentRequired) {
+	public void setAttachmentRequired(Boolean attachmentRequired) {
 		this.attachmentRequired = attachmentRequired;
 	}
 
@@ -677,11 +677,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.comment = comment;
 	}
 
-	public boolean isControlData() {
+	public Boolean isControlData() {
 		return controlData;
 	}
 
-	public void setControlData(boolean controlData) {
+	public void setControlData(Boolean controlData) {
 		this.controlData = controlData;
 	}
 
@@ -717,11 +717,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.emailSubjectProductlineMatchLocation = emailSubjectProductlineMatchLocation;
 	}
 
-	public boolean isEmailSubjectProductlineMatchRequired() {
+	public Boolean isEmailSubjectProductlineMatchRequired() {
 		return emailSubjectProductlineMatchRequired;
 	}
 
-	public void setEmailSubjectProductlineMatchRequired(boolean emailSubjectProductlineMatchRequired) {
+	public void setEmailSubjectProductlineMatchRequired(Boolean emailSubjectProductlineMatchRequired) {
 		this.emailSubjectProductlineMatchRequired = emailSubjectProductlineMatchRequired;
 	}
 
@@ -741,11 +741,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.emailSubjectRBOMatchLocation = emailSubjectRBOMatchLocation;
 	}
 
-	public boolean isEmailSubjectRBOMatchRequired() {
+	public Boolean isEmailSubjectRBOMatchRequired() {
 		return emailSubjectRBOMatchRequired;
 	}
 
-	public void setEmailSubjectRBOMatchRequired(boolean emailSubjectRBOMatchRequired) {
+	public void setEmailSubjectRBOMatchRequired(Boolean emailSubjectRBOMatchRequired) {
 		this.emailSubjectRBOMatchRequired = emailSubjectRBOMatchRequired;
 	}
 
@@ -765,11 +765,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.emailBodyProductlineMatchLocation = emailBodyProductlineMatchLocation;
 	}
 
-	public boolean isEmailBodyProductlineMatchRequired() {
+	public Boolean isEmailBodyProductlineMatchRequired() {
 		return emailBodyProductlineMatchRequired;
 	}
 
-	public void setEmailBodyProductlineMatchRequired(boolean emailBodyProductlineMatchRequired) {
+	public void setEmailBodyProductlineMatchRequired(Boolean emailBodyProductlineMatchRequired) {
 		this.emailBodyProductlineMatchRequired = emailBodyProductlineMatchRequired;
 	}
 
@@ -789,11 +789,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.emailBodyRBOMatchLocation = emailBodyRBOMatchLocation;
 	}
 
-	public boolean isEmailBodyRBOMatchRequired() {
+	public Boolean isEmailBodyRBOMatchRequired() {
 		return emailBodyRBOMatchRequired;
 	}
 
-	public void setEmailBodyRBOMatchRequired(boolean emailBodyRBOMatchRequired) {
+	public void setEmailBodyRBOMatchRequired(Boolean emailBodyRBOMatchRequired) {
 		this.emailBodyRBOMatchRequired = emailBodyRBOMatchRequired;
 	}
 
@@ -805,19 +805,19 @@ public class ProductLine extends MainAbstractEntity{
 		this.fileRBOMatchLocation = fileRBOMatchLocation;
 	}
 
-	public boolean isFileRBOMatchRequired() {
+	public Boolean isFileRBOMatchRequired() {
 		return fileRBOMatchRequired;
 	}
 
-	public void setFileRBOMatchRequired(boolean fileRBOMatchRequired) {
+	public void setFileRBOMatchRequired(Boolean fileRBOMatchRequired) {
 		this.fileRBOMatchRequired = fileRBOMatchRequired;
 	}
 
-	public boolean isFactoryTransfer() {
+	public Boolean isFactoryTransfer() {
 		return factoryTransfer;
 	}
 
-	public void setFactoryTransfer(boolean factoryTransfer) {
+	public void setFactoryTransfer(Boolean factoryTransfer) {
 		this.factoryTransfer = factoryTransfer;
 	}
 
@@ -829,11 +829,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.fileMatchLocation = fileMatchLocation;
 	}
 
-	public boolean isFileMatchRequired() {
+	public Boolean isFileMatchRequired() {
 		return fileMatchRequired;
 	}
 
-	public void setFileMatchRequired(boolean fileMatchRequired) {
+	public void setFileMatchRequired(Boolean fileMatchRequired) {
 		this.fileMatchRequired = fileMatchRequired;
 	}
 
@@ -853,11 +853,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.fileOrderMatchLocation = fileOrderMatchLocation;
 	}
 
-	public boolean isFileOrderMatchRequired() {
+	public Boolean isFileOrderMatchRequired() {
 		return fileOrderMatchRequired;
 	}
 
-	public void setFileOrderMatchRequired(boolean fileOrderMatchRequired) {
+	public void setFileOrderMatchRequired(Boolean fileOrderMatchRequired) {
 		this.fileOrderMatchRequired = fileOrderMatchRequired;
 	}
 
@@ -877,11 +877,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.fileProductLineMatchLocation = fileProductLineMatchLocation;
 	}
 
-	public boolean isFileProductLineMatchRequired() {
+	public Boolean isFileProductLineMatchRequired() {
 		return fileProductLineMatchRequired;
 	}
 
-	public void setFileProductLineMatchRequired(boolean fileProductLineMatchRequired) {
+	public void setFileProductLineMatchRequired(Boolean fileProductLineMatchRequired) {
 		this.fileProductLineMatchRequired = fileProductLineMatchRequired;
 	}
 
@@ -901,19 +901,19 @@ public class ProductLine extends MainAbstractEntity{
 		this.invoicelineInstruction = invoicelineInstruction;
 	}
 
-	public boolean isLLKK() {
+	public Boolean isLLKK() {
 		return LLKK;
 	}
 
-	public void setLLKK(boolean lLKK) {
+	public void setLLKK(Boolean lLKK) {
 		LLKK = lLKK;
 	}
 
-	public boolean isLocalBilling() {
+	public Boolean isLocalBilling() {
 		return localBilling;
 	}
 
-	public void setLocalBilling(boolean localBilling) {
+	public void setLocalBilling(Boolean localBilling) {
 		this.localBilling = localBilling;
 	}
 
@@ -965,11 +965,11 @@ public class ProductLine extends MainAbstractEntity{
 		this.orderSchemaType = orderSchemaType;
 	}
 
-	public boolean isOthers() {
+	public Boolean isOthers() {
 		return others;
 	}
 
-	public void setOthers(boolean others) {
+	public void setOthers(Boolean others) {
 		this.others = others;
 	}
 
@@ -989,58 +989,58 @@ public class ProductLine extends MainAbstractEntity{
 		this.productLineType = productLineType;
 	}
 
-	public boolean isShipmentSample() {
+	public Boolean isShipmentSample() {
 		return shipmentSample;
 	}
 
-	public void setShipmentSample(boolean shipmentSample) {
+	public void setShipmentSample(Boolean shipmentSample) {
 		this.shipmentSample = shipmentSample;
 	}
 
-	public boolean isWaiveMOA() {
+	public Boolean isWaiveMOA() {
 		return waiveMOA;
 	}
 
-	public void setWaiveMOA(boolean waiveMOA) {
+	public void setWaiveMOA(Boolean waiveMOA) {
 		this.waiveMOA = waiveMOA;
 	}
 
-	public boolean isWaiveMOQ() {
+	public Boolean isWaiveMOQ() {
 		return waiveMOQ;
 	}
 
-	public void setWaiveMOQ(boolean waiveMOQ) {
+	public void setWaiveMOQ(Boolean waiveMOQ) {
 		this.waiveMOQ = waiveMOQ;
 	}
 
-	public boolean isLocalItem() {
+	public Boolean isLocalItem() {
 		return localItem;
 	}
 
-	public void setLocalItem(boolean localItem) {
+	public void setLocalItem(Boolean localItem) {
 		this.localItem = localItem;
 	}
 
-	public boolean isAveryItem() {
+	public Boolean isAveryItem() {
 		return averyItem;
 	}
 
-	public void setAveryItem(boolean averyItem) {
+	public void setAveryItem(Boolean averyItem) {
 		this.averyItem = averyItem;
 	}
-	public boolean isFiberpercentagecheck() {
+	public Boolean isFiberpercentagecheck() {
 		return fiberpercentagecheck;
 	}
 
-	public void setFiberpercentagecheck(boolean fiberpercentagecheck) {
+	public void setFiberpercentagecheck(Boolean fiberpercentagecheck) {
 		this.fiberpercentagecheck = fiberpercentagecheck;
 	}
 
-	public boolean isCoocheck() {
+	public Boolean isCoocheck() {
 		return coocheck;
 	}
 
-	public void setCoocheck(boolean coocheck) {
+	public void setCoocheck(Boolean coocheck) {
 		this.coocheck = coocheck;
 	}
 
