@@ -78,14 +78,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				name:'PartnerName',
 				menuDisabled :true,
 				sortable:false,
-				dataIndex:'',
-				flex:1,
-				renderer:function(val, metaData, record){
-					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
-						data = (listOrderFileAttachment && listOrderFileAttachment.length) > 0 ? listOrderFileAttachment[0] : {};
-					
-					return data.varProductLine && data.varProductLine.varPartner  ? data.varProductLine.varPartner.partnerName :'';
-				 }
+				dataIndex:'PartnerName',
+				flex:1
 			},
 			{
 				text : 'RBO',
@@ -93,12 +87,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				dataIndex:'RBO',
 				menuDisabled :true,
 				sortable:false,
-				flex:1,
-				renderer:function(val, metaData, record){
-					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
-						data = (listOrderFileAttachment && listOrderFileAttachment.length) > 0 ? listOrderFileAttachment[0] : {};
-					return (data.varProductLine && data.varProductLine.rbo)  ? data.varProductLine.rbo.rboName  :'';
-				}
+				flex:1
 			},
 			{
 				text : 'Sender Email Id',
