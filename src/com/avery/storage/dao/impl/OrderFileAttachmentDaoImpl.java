@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,9 +28,9 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderEmailQueue;
-import com.avery.storage.entities.OrderFileAttachment;
+importimport com.avery.storage.entities.Address;
+ com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Partner;
@@ -38,6 +39,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.avery.storage.entities.ProductLine;
+import com.avery.utils.ApplicationConstants;
 
 @Repository
 public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachment, Long> implements
@@ -204,5 +207,16 @@ OrderFileAttachmentDao {
 		return newList;
 	}
 
-	
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj){
+			OrderFileAttachment obj=new OrderFileAttachment();
+			obj.setVarOrderEmailQueue(orderEmailQueue);
+			obj.setFilePath(emailBody);
+			obj.setVarProductLine(productLineObj);
+			obj.setCreatedDate(new Date());
+			obj.setStatus(Applic	public List getUniqueList(List<String> list) {
+		Set<Long> set = new HashSet<Long>();
+		for (int i = 0; i < list.size(); i++) {
+			obj.setFileName(ApplicationConstants.EMAIL_FILE_NAME);
+			create(obj);
+	}
 }
