@@ -18,4 +18,16 @@ public interface ApplicationConstants {
 		
 		String BOOKED_STATUS_CODE="99";
 		
+		String NEW_WEB_ORDER_STATUS="5";
+		
+		String NEW_EMAIL_ORDER_STATUS="5";
+		
+		String DEFAULT_EMAILBODY_CONTENT_TYPE="order";
+		
+		String DEFAULT_ORDER_CONTENT_TYPE="Order";
+		
+		String DEFAULT_ADDITIONAL_CONTENT_TYPE="AdditionalData";
+		
+		String EMAIL_FILE_NAME="CompleteEmail";
+		
 }
