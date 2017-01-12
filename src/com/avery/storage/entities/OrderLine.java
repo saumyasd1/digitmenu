@@ -281,10 +281,6 @@ public class OrderLine extends MainAbstractEntity{
 	String account;
 	@Column(name = "shipVia", length = 100)
 	String shipVia;
-	@Column(name = "createdByName", length = 50)
-	String createdByName;
-	@Column(name = "lastModifiedByName", length = 50)
-	String lastModifiedByName;
 	@Column(name = "productLineType", length = 50)
 	String productLineType;
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
@@ -1274,22 +1270,6 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setShipVia(String shipVia) {
 		this.shipVia = shipVia;
-	}
-
-	public String getCreatedByName() {
-		return createdByName;
-	}
-
-	public void setCreatedByName(String createdByName) {
-		this.createdByName = createdByName;
-	}
-
-	public String getLastModifiedByName() {
-		return lastModifiedByName;
-	}
-
-	public void setLastModifiedByName(String lastModifiedByName) {
-		this.lastModifiedByName = lastModifiedByName;
 	}
 
 	public String getProductLineType() {
