@@ -216,13 +216,29 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		orderQueueStatus = me.runTime.getOrderQueueStatus(),
     		rowIdx = context.rowIdx,
     		currentRecord = context.store.getAt(rowIdx),
-    		currentRecordStatus = currentRecord.get('status');
-    	
+    		currentRecordStatus = currentRecord.get('status'),
+    		columns = editor.grid.columns,
+			len = columns.length;;
     	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
     				|| currentRecordStatus == AOCLit.mandatoryFieldMissingStatusOrderLine
     					|| currentRecordStatus == AOCLit.noAdditionalDataFoundStatusOrderLine)){
+    		
+    		for(var i = 0; i< len; i++){
+    			columns[i].getEditor().enable();
+    		}
+    		return true;
+    	}
+    	//if disable all fields except status field for current record status except above
+    	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue && context.field == 'status'){
+    		for(var i = 0; i< len; i++){
+    			if(columns[i].getEditor().dataIndex == 'status'){
+    				columns[i].getEditor().enable();
+    			}else{
+    				columns[i].getEditor().disable();
+    			}
+    		}
     		return true;
     	}
     	return false;

@@ -221,7 +221,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         win.show();
     },
     onOrderLineStoreLoad:function(store){
-    	var view = this.getView(),
+    	var me = this,
+    		view = me.getView(),
 			salesOrderbutton=view.lookupReference('salesOrderbutton'),
 			salesViewOrderbutton=view.lookupReference('salesViewOrderbutton'),
 			validateButton=view.lookupReference('validateButton'),
@@ -303,10 +304,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		form.disable();
     		cancelOrderBtn.enable();
     	}else{
-    		salesOrderbutton.enable();
-    		salesViewOrderbutton.enable();
-    		validateButton.enable();
-    		form.enable();
+    		var orderQueueStatus = me.runTime.getOrderQueueStatus();
+    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? salesOrderbutton.enable() : salesOrderbutton.disable();
+    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? salesViewOrderbutton.disable() : salesViewOrderbutton.enable();
+    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? validateButton.enable() : validateButton.disable();
+    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? form.enable() : form.disable();
     	}
     	if(atovalidationFlagCount == totalCount){
     		radioGroup.items.items[1].disable();

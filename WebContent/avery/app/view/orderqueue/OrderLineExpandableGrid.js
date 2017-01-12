@@ -359,14 +359,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode :'local',
 				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
 				 listeners:{
-				        afterrender:function(combo){
+			        afterrender:function(combo){
 				         var store = combo.store;
 				         //(Amit Kumar 12-01-2017)only waitingfor cs verification and cancel status will visible in combo
 				         store.filterBy(function(record){
 				          return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
 				         });
-				        }
-				       }
+			        }
+		       }
 			},
 			renderer:function(v, metadata,rec){
 				return Helper.getSatus(rec);
