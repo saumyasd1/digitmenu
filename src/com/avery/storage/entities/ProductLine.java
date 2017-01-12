@@ -230,6 +230,10 @@ public class ProductLine extends MainAbstractEntity{
 	private boolean localItem;
 	@Column(name = "averyItem")
 	private boolean averyItem;	
+	@Column(name = "fiberpercentagecheck")
+	private boolean fiberpercentagecheck ;
+	@Column(name = "coocheck ")
+	private boolean coocheck  ;
 	@Column(name = "customerItemIdentifierDescription",length=500)
 	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
@@ -1023,6 +1027,21 @@ public class ProductLine extends MainAbstractEntity{
 
 	public void setAveryItem(boolean averyItem) {
 		this.averyItem = averyItem;
+	}
+	public boolean isFiberpercentagecheck() {
+		return fiberpercentagecheck;
+	}
+
+	public void setFiberpercentagecheck(boolean fiberpercentagecheck) {
+		this.fiberpercentagecheck = fiberpercentagecheck;
+	}
+
+	public boolean isCoocheck() {
+		return coocheck;
+	}
+
+	public void setCoocheck(boolean coocheck) {
+		this.coocheck = coocheck;
 	}
 
 	public String getCustomerItemIdentifierDescription() {
