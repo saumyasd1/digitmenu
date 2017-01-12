@@ -27,16 +27,6 @@ Ext.define('AOC.view.email.EmailManagementController', {
 						form = Ext.ComponentQuery.query('#viewmailformItemId')[0],
 						panel = Ext.ComponentQuery.query('#emailPanel')[0],
 						emailAttachmentInfoGrid = panel.down('#EmailAttachmentInfoGriditemId');
-				
-					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
-						partnerName =[],
-						len = listOrderFileAttachment.length;
-				
-					for(var i=0;i<len;i++){
-						var data = listOrderFileAttachment[i];
-						data.varProductLine  ? partnerName.push(data.varProductLine.varPartner ? data.varProductLine.varPartner.partnerName  :'') :'';
-					}
-					currentRecord.data.PartnerName = partnerName.join('');
 					
 					Helper.showHideEmailBodySubjectFields(form, currentRecord);
 					form.loadRecord(currentRecord);
