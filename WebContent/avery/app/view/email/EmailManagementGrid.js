@@ -90,14 +90,13 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text : 'RBO',
 				width:120,
-				dataIndex:'',
+				dataIndex:'RBO',
 				menuDisabled :true,
 				sortable:false,
 				flex:1,
 				renderer:function(val, metaData, record){
 					var listOrderFileAttachment = record.get('listOrderFileAttachment'),
 						data = (listOrderFileAttachment && listOrderFileAttachment.length) > 0 ? listOrderFileAttachment[0] : {};
-					
 					return (data.varProductLine && data.varProductLine.rbo)  ? data.varProductLine.rbo.rboName  :'';
 				}
 			},
