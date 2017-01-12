@@ -14,13 +14,16 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -36,43 +39,67 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Repository
 public class OrderEmailQueueDaoImpl extends GenericDaoImpl<OrderEmailQueue, Long> implements
 OrderEmailQueueDao {
+	
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
-		Map entitiesMap =new HashMap();
-		Session session=null;
-		Criteria criteria=null;
-		int totalCount=0;
-		String queryString=(String) queryMap.getFirst("query");
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		Criteria criteria = null;
+		int totalCount = 0;
+		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
+
+		// Adding Projection to remove extra columns that are not required
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("id"), "id").add(Projections.property("senderEmailId"), "senderEmailId")
+				.add(Projections.property("subject"), "subject").add(Projections.property("toMailId"), "toMailId")
+				.add(Projections.property("status"), "status").add(Projections.property("ccMailId"), "ccMailId")
+				.add(Projections.property("receivedDate"), "receivedDate")
+				.add(Projections.property("readDate"), "readDate")
+				.add(Projections.property("acknowledgementDate"), "acknowledgementDate")
+				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
+
 		criteria = session.createCriteria(OrderEmailQueue.class);
 		criteria.add(Restrictions.neOrIsNotNull("status", "4"));
-		String limit=(String)queryMap.getFirst("limit");
-		String pageNo=(String) queryMap.getFirst("page");
-		if(queryString!=null){
-			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType=searchMap.get("datecriteriavalue");
-			if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
-				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
+
+		String limit = (String) queryMap.getFirst("limit");
+		String pageNo = (String) queryMap.getFirst("page");
+
+		if (queryString != null) {
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
+			String dateType = searchMap.get("datecriteriavalue");
+			if (dateType != null && !dateType.equals("")) {
+				String sDate = searchMap.get("fromDate");
+				String eDate = searchMap.get("toDate");
+				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			//Adding search map criteria and removing unnecessary code
-			String subject=searchMap.get("subject");
-			if(subject!=null && !"".equals(subject)){
-				criteria.add(Restrictions.ilike("subject", subject,MatchMode.ANYWHERE));
+
+			// Adding search map criteria and removing unnecessary code
+			String subject = searchMap.get("subject");
+			if (subject != null && !"".equals(subject)) {
+				criteria.add(Restrictions.ilike("subject", subject, MatchMode.ANYWHERE));
 			}
-		}   
-			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
-		    criteria.addOrder(Order.desc("lastModifiedDate"));
+		}
+
+		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+
+		
+		System.out.println("Total Count------>>"+criteria.list().size());
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
 		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
-		if(pageNO!=0){
-        criteria.setFirstResult((pageNO - 1) * pageSize);
-        criteria.setMaxResults(pageSize);
+		if (pageNO != 0) {
+			criteria.setFirstResult((pageNO - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
 		}
-		
+
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderEmailQueue.class));
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+
 		List<OrderEmailQueue> list = criteria.list();
+		
+		//System.out.println("TotalCount------------->"+list.size());
 		// getting colorCode, iconName and values as required at the GUI
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
 		if (statusList == null)
@@ -90,17 +117,26 @@ OrderEmailQueueDao {
 			orderQueue.setIconName(iconName);
 			orderQueue.setColorCode(colorCode);
 			orderQueue.setCodeValue(codeValue);
-			
-			//orderqueue count added for the emailqueue screen "view order" button
+
+			// orderqueue count added for the emailqueue screen "view order"
+			// button
 			long trackId = orderQueue.getId();
+			//System.out.println(trackId);
 			int orderQueueCount = getOrderQueueCountByTrackId(trackId);
 			orderQueue.setOrderQueueCount(orderQueueCount);
+			String partnerName = "";
+			partnerName = getPartnerNameByTrackId(trackId);
+			orderQueue.setPartnerName(partnerName);
+			String rboName = "";
+			rboName = getRboNameByTrackId(trackId);
+			orderQueue.setRboName(rboName);
 
 		}
 		entitiesMap.put("totalCount", totalCount);
 		entitiesMap.put("emailqueue", new LinkedHashSet(list));
 		return entitiesMap;
 	}
+	
 	
 	@Override
 	public Map getUnidentifiedEntities(MultivaluedMap queryMap) throws Exception{
@@ -348,6 +384,62 @@ OrderEmailQueueDao {
 		List results = criteria.list();
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return results == null || results.size() == 0 ? 0 : ((Long) results.get(0)).intValue();
+	}
+	
+	
+	// Getting partner name using the tracking id
+	/**
+	 * @param trackId
+	 * @return partner name
+	 */
+	public String getPartnerNameByTrackId(Long trackId) {
+		String partnerName = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		try {
+			Criteria criteria = session.createCriteria(OrderEmailQueue.class)
+					.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
+					.createAlias("listOrderFileAttachment.varProductLine", "varProductLine")
+					.createAlias("varProductLine.varPartner", "varPartner").add(Restrictions.eq("id", trackId))
+					.setProjection(Projections.property("varPartner.partnerName"));
+			List list = criteria.list();
+			if (list != null && list.get(0) != null && (String) list.get(0) != "") {
+				partnerName = (String) list.get(0);
+			}
+
+			return partnerName;
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		}
+
+	}
+	
+	// Getting rbo name using the tracking id
+	/**
+	 * @param trackId
+	 * @return rbo name
+	 */
+	public String getRboNameByTrackId(Long trackId) {
+		String rboName = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		try {
+			Criteria criteria = session.createCriteria(OrderEmailQueue.class)
+					.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
+					.createAlias("listOrderFileAttachment.varProductLine", "varProductLine")
+					.createAlias("varProductLine.varPartner", "varPartner").createAlias("varProductLine.rbo", "rbo")
+					.add(Restrictions.eq("id", trackId))
+					.setProjection(Projections.property("rbo.rboName").as("rboName"));
+			List list = criteria.list();
+			if (list != null && list.get(0) != null && (String) list.get(0) != "") {
+				rboName = (String) list.get(0);
+			}
+
+			return rboName;
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		}
+
 	}
 
 

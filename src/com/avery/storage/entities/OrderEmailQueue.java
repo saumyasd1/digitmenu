@@ -117,6 +117,14 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	
 	@Transient
 	private int orderQueueCount;
+	
+	
+	//Adding partnerName and rboName to remove extra data that is not required
+	@Transient
+	private String partnerName;
+	
+	@Transient
+	private String rboName;
 
 	public String getIconName() {
 		return iconName;
@@ -148,6 +156,22 @@ public class OrderEmailQueue extends MainAbstractEntity{
 
 	public void setOrderQueueCount(int orderQueueCount) {
 		this.orderQueueCount = orderQueueCount;
+	}
+	
+	public String getPartnerName() {
+		return partnerName;
+	}
+
+	public void setPartnerName(String partnerName) {
+		this.partnerName = partnerName;
+	}
+
+	public String getRboName() {
+		return rboName;
+	}
+
+	public void setRboName(String rboName) {
+		this.rboName = rboName;
 	}
 
 	public String getProcessId() {
