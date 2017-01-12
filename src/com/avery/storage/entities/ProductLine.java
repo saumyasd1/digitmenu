@@ -1121,6 +1121,7 @@ public class ProductLine extends MainAbstractEntity{
 		Long id;
 		Boolean valueExist=false;
 		Map<String,Object> responseMap=new HashMap<String,Object>();
+		responseMap.put("valueExist",valueExist);
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectMapper responseMapper = new ObjectMapper();
@@ -1129,11 +1130,13 @@ public class ProductLine extends MainAbstractEntity{
 					false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			ProductLine productline = mapper.readValue(data, ProductLine.class);
-			productline.setCreatedDate(new Date());
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productLineService.create(data);
-			responseMap.put("valueExist",false);
+			valueExist=productLineService.checkDuplicateValues(productline);
+			if(!valueExist){
+				productLineService.create(data);
+			}
+			responseMap.put("valueExist",valueExist);
 			responseMapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
@@ -1149,6 +1152,7 @@ public class ProductLine extends MainAbstractEntity{
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
 			String data) {
 		Response.ResponseBuilder rb = null;
+		boolean valueExist=false;
 		Map<String,Object> responseMap=new HashMap<String,Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -1158,9 +1162,14 @@ public class ProductLine extends MainAbstractEntity{
 					false);
 			// toggle this property value based on your input JSON data
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			ProductLine productline = mapper.readValue(data, ProductLine.class);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productLineService.update(data,Long.valueOf(id));
+			valueExist=productLineService.checkDuplicateValues(productline);
+			if(!valueExist){
+				productLineService.update(data,Long.valueOf(id));
+			}
+			responseMap.put("valueExist",valueExist);
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -1400,36 +1409,72 @@ public class ProductLine extends MainAbstractEntity{
 
 	}
 	
-//	@GET
-//	@Path("/getproductlines")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getProductLineBasedOnRbo(UriInfo ui, HttpHeaders hh, String data){
-//		Response.ResponseBuilder rb = null;
-//		List list = null;
-//		try {
-//			
-//			int id=Integer.parseInt("1");
-//			StringWriter writer = new StringWriter();
-//			ObjectMapper mapper = new ObjectMapper();
-//			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
-//			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-//			ProductLineService productLineService = (ProductLineService) SpringConfig
-//					.getInstance().getBean("productLineService");
-//			list = productLineService.getAllRBOByPartner(id);
-//			if (list == null)
-//				throw new Exception("Unable to find Partners");
-//			mapper.writeValue(writer,list);
-//			rb = Response.ok(writer.toString());
-//		} catch (WebApplicationException ex) {
-//			throw ex;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			throw new WebApplicationException(Response
-//					.status(Status.INTERNAL_SERVER_ERROR)
-//					.entity(ExceptionUtils.getRootCauseMessage(e))
-//					.type(MediaType.TEXT_PLAIN_TYPE).build());
-//		}
-//		return rb.build();
-//	}
+	@GET
+	@Path("/getproductlines/{partnerId:[0-9]+}/{rboid:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProductLineBasedOnRbo(@Context UriInfo ui, @Context HttpHeaders hh, 
+			@PathParam("partnerId") String partnerid,@PathParam("rboid") String rboid){
+		Response.ResponseBuilder rb = null;
+		List list = null;
+		try {
+			
+			int partnerId=Integer.parseInt(partnerid);
+			int rboId=Integer.parseInt(rboid);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			list = productLineService.getAllProductLineByRBO(partnerId,rboId);
+			if (list == null)
+				throw new Exception("Unable to find Partners");
+			mapper.writeValue(writer,list);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 	
+	
+	@GET
+	@Path("/getdatastructures/{partnerId:[0-9]+}/{rboid:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRelatedDataStructures(@Context UriInfo ui, @Context HttpHeaders hh, 
+			@PathParam("partnerId") String partnerid,@PathParam("rboid") String rboid){
+		Response.ResponseBuilder rb = null;
+		List list = null;
+		try {
+			
+			Long partnerId=Long.parseLong(partnerid);
+			Long rboId=Long.parseLong(rboid);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,PartnerDataStructureMixin.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			list = productLineService.getRelatedDataStructures(partnerId,rboId);
+			if (list == null)
+				throw new Exception("Unable to find Partners");
+			mapper.writeValue(writer,list);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 }
