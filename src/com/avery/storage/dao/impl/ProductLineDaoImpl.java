@@ -97,26 +97,20 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		int totalCount=0;
 		Boolean valueExist=false;
 		Partner partnerobj=null;
-		String partnerName="",rboName="",productLineType="";
+		String dataStructureName="";
 		Long id=productLine.getId();
-		List<ProductLine> productLineList = null;
 		//partnerobj=productLine.getPartner();
-		partnerName=partnerobj.getPartnerName();
+		dataStructureName=productLine.getDataStructureName();
 		//rboName=productLine.getRboName();
-		productLineType=productLine.getProductLineType();
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
 		Conjunction disCriteria = Restrictions.conjunction();
-		criteria.createAlias("varPartner", "partner");
-		disCriteria.add(Restrictions.eq("partner"+".partnerName",partnerName));
-		disCriteria.add(Restrictions.eq("rboName", rboName));
-		disCriteria.add(Restrictions.eq("productLineType", productLineType));
+		disCriteria.add(Restrictions.eq("dataStructureName",dataStructureName));
 		if(id!=0){
 			disCriteria.add(Restrictions.ne("id", id));
 		}
 		criteria.add(disCriteria);
-		productLineList= criteria.list();
-		totalCount=productLineList.size();
+		totalCount=criteria.list().size();
 		if(totalCount>0)
 			valueExist=true;
 		return valueExist;
@@ -367,7 +361,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		String legacyshiptocode=orgMap.get("shipToCode")==null?"":(String)orgMap.get("shipToCode");
 		org.setShipToCode(legacyshiptocode);
 		
-		org.setDefault(orgMap.get("default")==null?false:(Boolean)orgMap.get("default"));
+		org.setDefault(orgMap.get("isDefault")==null?false:(Boolean)orgMap.get("isDefault"));
 		
 		String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
 		org.setFreightTerm(freightterms);
@@ -436,6 +430,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		
 		org = updater.readValue(orgInfoData);
 		org.setLastModifiedDate(new Date());
+		org.setDefault(systemMap.get("isDefault")==null?false:(Boolean)systemMap.get("isDefault"));
 		session.update(org);
 		
 		
@@ -512,7 +507,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				.setProjection(Projections.distinct(Projections.projectionList()
 					.add(Projections.property("rbo.id"),"id")
 					.add(Projections.property("rbo.rboName"),"rboName")));
-		criteria.add(Restrictions.eq("varPartner"+".id",partnerId));
+		criteria.add(Restrictions.eq("varPartner"+".id",Long.valueOf(partnerId)));
 		return criteria.list();
 	}
 	
@@ -525,10 +520,20 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Conjunction disCriteria = Restrictions.conjunction();
 		criteria.createAlias("varPartner", "varPartner");
 		criteria.createAlias("rbo", "rbo");
-		disCriteria.add(Restrictions.eq("varPartner.id",partnerId));
-		disCriteria.add(Restrictions.eq("rbo.id", rbo));
+		disCriteria.add(Restrictions.eq("varPartner.id",Long.valueOf(partnerId)));
+		disCriteria.add(Restrictions.eq("rbo.id", Long.valueOf(rbo)));
 		criteria.add(disCriteria);
-		return null;
+		return criteria.list();
+	}
+	
+	public List getRelatedDataStructures(Long partnerId,Long rbo){
+		Session session=getSessionFactory().getCurrentSession();
+		Query query=session.createQuery("select new map(id as id, dataStructureName as dataStructureName,attachmentRequired as attachmentRequired) from ProductLine"+
+								" where varPartner.id=:partnerId and rbo.id=:rboId ");
+		query.setLong("partnerId", partnerId);
+		query.setLong("rboId", rbo);
+		List list=query.list();
+		return list;
 	}
 
 }
