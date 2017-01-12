@@ -91,7 +91,7 @@ Ext.define('AOC.lang.lit',{
     "fileMatchAdditional":'File Match - Additional Data File',
     "additionalDataMatch":'Additional Data Match',
     "advancedSearchWindowTitle":'Advanced Search',
-    "advSearchText":'Adv. Search',
+    "advSearchText":'Advanced Search',
     "fromDate": 'From Date',
     "toDate": 'To Date',
     "dateFormat":'Y-m-d',
