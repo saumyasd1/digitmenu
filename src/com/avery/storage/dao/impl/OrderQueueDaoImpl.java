@@ -96,7 +96,15 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		int totalCount = 0;
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
-
+		
+		//Adding search map criteria for OrderQueue Screen
+		Criteria criteria = session.createCriteria(OrderQueue.class);// getCriteria(queryMap);
+		String queryString=(String) queryMap.getFirst("query");
+		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+		String partnerName=searchMap.get("partnerName");
+		if(partnerName!=null && !"".equals(partnerName)){
+			criteria.add(Restrictions.ilike("partner.partnerName", partnerName,MatchMode.ANYWHERE));
+		}
 		// Following code adds partner name, rboname, productline and
 		// emailqueueid in the order queue
 		ProjectionList proj = Projections.projectionList();
@@ -119,7 +127,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		// getting filename of order file
 
-		Criteria criteria = session.createCriteria(OrderQueue.class);// getCriteria(queryMap);
+		
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
