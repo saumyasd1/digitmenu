@@ -131,7 +131,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{  
 				text : 'CSR Name',
 				width:120,
-				dataIndex:'assignCSR',
+				dataIndex:'csrName',
 				flex:1
 			},
 			{
