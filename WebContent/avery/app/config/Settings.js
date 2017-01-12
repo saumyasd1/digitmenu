@@ -50,7 +50,8 @@ Ext.define('AOC.config.Settings',{
          advSearchIcon:'avery/resources/images/search.png',
          browseIcon:'avery/resources/images/browse.png',
          mailIcon:'avery/resources/images/mail.png',
-         mail:'avery/resources/images/mail.png'
+         mail:'avery/resources/images/mail.png',
+         cross:'avery/resources/images/bullet_cross.png'
     },
     constructor : function(config){
             this.initConfig(config);
