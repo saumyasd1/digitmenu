@@ -251,6 +251,9 @@ Ext.define('AOC.lang.lit',{
     "lastmodifiedby":'Last Modified By',
     "lastmodifieddate":'Last Modified Date',
     
+    //Report
+    "emptyFilter":'<b>Please select all filters</b>',
+    
     //Sales Order
     "oracleExportID": 'OracleExportID',
     "Division":'Division',
