@@ -255,6 +255,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			'->',
 			{
+				 xtype       : 'button',
+		            icon : AOC.config.Settings.buttonIcons.report,
+					iconAlign : "left",
+		            reference      : 'report',
+		            margin      :'0 15 0 0',
+		            text:'Report',
+		           // ui:'blue',
+		            listeners:{
+		            	'click':'getReportView'
+		            }
+			},
+			{
 				xtype: 'customsearchfield',
 				searchCriteria:'',
 				message:'Showing all accounts with',
