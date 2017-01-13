@@ -175,5 +175,10 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
-    }
+    },
+    openAdvancedSearchWindow:function(){
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.TaskManagerAdvanceSearch');
+    	advanceSearchWin.show();
+    },
+    onSearchBtnClicked:function(btn){}
 });

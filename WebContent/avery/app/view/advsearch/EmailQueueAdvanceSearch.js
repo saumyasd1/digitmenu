@@ -8,8 +8,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 	
 	requires : ['Ext.window.MessageBox'],
 
-	style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-	padding:10,
+	bodyStyle: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
+	bodyPadding:10,
 	layout:'fit',
 	
 	height: 600,
@@ -37,7 +37,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						xtype:'tbtext',
 						itemId:'tittleItemId',
 						text:AOCLit.advancedSearchWindowTitle,
-						style:'margin:0px auto;color:#2f3338;font-size:15px;font-weight:bold;'
+						style:'text-align:center;color:#2f3338;font-size:15px;font-weight:bold;'
 					},	
 					{
 						xtype: 'fieldcontainer',
@@ -46,7 +46,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
@@ -73,7 +73,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
@@ -98,7 +98,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
@@ -110,16 +110,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 								valueField:'code',
 								queryMode :'local',
 								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
-							},
-							{
-								xtype : 'combo',
-								fieldLabel : AOCLit.productLine,
-								name:'ProductLineType',
-								itemId:'productLineComboItemId',
-								displayField:'productLineType',
-								valueField:'productLineType',
-								flex:1,
-								margin:'0 0 0 10'
 							}
 						]
 					},
@@ -130,7 +120,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
@@ -156,7 +146,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
@@ -182,7 +172,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						padding:'0 0 0 10',
 						labelSeparator:'',
 						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.defaultLabelAlign,
+						labelAlign:Settings.form.topLabelAlign,
 						items:[
 							{ boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
 							{ boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
@@ -196,7 +186,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign
+							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
 							{
