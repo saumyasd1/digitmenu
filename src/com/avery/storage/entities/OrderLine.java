@@ -304,8 +304,8 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "averyProductLineType", length = 50)
 	String averyProductLineType;
 	
-	@Column(name = "averySample", length = 50)
-	String averySample;
+	@Column(name = "averyBulk", length = 50)
+	String averyBulk;
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient
@@ -317,6 +317,13 @@ public class OrderLine extends MainAbstractEntity{
 	@Transient
 	private String codeValue;
 	
+	public String getAveryBulk() {
+		return averyBulk;
+	}
+
+	public void setAveryBulk(String averyBulk) {
+		this.averyBulk = averyBulk;
+	}
 
 	public String getAdditionalFileId() {
 		return additionalFileId;
@@ -390,14 +397,6 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setAveryProductLineType(String averyProductLineType) {
 		this.averyProductLineType = averyProductLineType;
-	}
-
-	public String getAverySample() {
-		return averySample;
-	}
-
-	public void setAverySample(String averySample) {
-		this.averySample = averySample;
 	}
 
 	public String getCustomerPONumber() {
