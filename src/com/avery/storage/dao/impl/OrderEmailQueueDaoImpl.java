@@ -56,6 +56,7 @@ OrderEmailQueueDao {
 				.add(Projections.property("status"), "status").add(Projections.property("ccMailId"), "ccMailId")
 				.add(Projections.property("receivedDate"), "receivedDate")
 				.add(Projections.property("readDate"), "readDate")
+				.add(Projections.property("comment"), "comment")
 				.add(Projections.property("acknowledgementDate"), "acknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
