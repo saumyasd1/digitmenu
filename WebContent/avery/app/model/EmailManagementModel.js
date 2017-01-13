@@ -3,7 +3,7 @@ Ext.define('AOC.model.EmailManagementModel',{
 	idProperty:null,
     fields: [
 	    {name: 'id', mapping:'id',type: 'int'},
-	    {name: 'csrName',mapping:'csrName',type:'string'},
+	    {name: 'assignCSR',mapping:'assignCSR',type:'string'},
 		{name: 'PartnerName', mapping:'partnerName',type: 'string'},
 		{name: 'RBO',mapping:'rboName',type:'string'},
 		{name: 'senderEmailId', mapping:'senderEmailId',type: 'string'},
@@ -15,7 +15,7 @@ Ext.define('AOC.model.EmailManagementModel',{
 		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
 		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'},
 		{name: 'CC', mapping:'ccMailId',type: 'string'},
-		{name:'comment', type:'string'},
+		{name:'comment',mapping:'comment', type:'string'},
 		{name:'subject', type:'string'},
 		{name:'listOrderFileAttachment'},{name:'iconName'},{name:'colorCode'},
 		{name:'Email Body',mapping:'mailBody'}
