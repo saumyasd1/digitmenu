@@ -74,8 +74,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     submitSalesOrder:function(){
     	Ext.getBody().mask('Loading...'); //show message on missing field
-    	var grid=this.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),store=grid.store,me=this,status;;
-    	//var grid=this.getView().down('#orderlineexpandablegridrowmodel'),store=grid.store,me=this,status;
+    	var me = this,
+    		grid = me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),
+    		store = grid.store,
+    		status;
+    	
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',AOCLit.orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
@@ -88,112 +91,84 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			Ext.getBody().unmask();
 			return false;
     	}
-    		var records=store.queryBy(function(rec){
-    			status=rec.get('status');
-    			if(status!=AOCLit.waitingForCSRStatus && status!=AOCLit.cancelStatus)
-    				return true;
-    		});
-    		if(records.length>0){
-    			Ext.Msg.alert('',AOCLit.changeOrderLineStatusAlert);
-    			Ext.getBody().unmask();
-    			return false;
-    		}
-    		if(grid.invalidComboValid){
-    			store.load();
-    			Ext.Msg.alert('',AOCLit.InvalidComboValueAlert);
-    			grid.showInvalidCombo=true;
-    			Ext.getBody().unmask();
-    			return false;
-    		}
+		var records=store.queryBy(function(rec){
+			status=rec.get('status');
+			if(status!=AOCLit.waitingForCSRStatusOrderLine && status!=AOCLit.cancelStatusOrderLine)
+				return true;
+		});
+		if(records.length>0){
+			Ext.Msg.alert('',AOCLit.changeOrderLineStatusAlert);
+			Ext.getBody().unmask();
+			return false;
+		}
+		if(grid.invalidComboValid){
+			store.load();
+			Ext.Msg.alert('',AOCLit.InvalidComboValueAlert);
+			grid.showInvalidCombo=true;
+			Ext.getBody().unmask();
+			return false;
+		}
+		
     	if(grid.validationFieldMissing){
-    		Ext.Msg.confirm('',AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
+    		Ext.Msg.confirm(AOCLit.warningTitle, AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
     			if (btn === 'yes') {
-    				var id=me.runTime.getOrderQueueId();
-    		    	Ext.Ajax.request({
-    		    		method:'GET',
-    		    		async:false,
-    		 		    url : applicationContext+'/rest/router/salesorder/'+id,
-    		 		    success : function(response, opts) {
-    		 		    	var jsonValue=Ext.decode(response.responseText);
-    				        	var status=jsonValue.status;
-    				        	if(status=='success'){
-    				        		proceed=false;
-    				        		var orderlinecontainer = me.getView(),
-    				        		grid=orderlinecontainer.down('grid');
-    				                validateButton = orderlinecontainer.lookupReference('validateButton'),
-    				                bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
-    				                salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
-    				                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
-    				                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-    				                form=orderlinecontainer.lookupReference('form');
-    			                	validateButton.disable();
-    			                	salesViewOrderbutton.enable();
-    			                	salesOrderbutton.disable();
-    			                	cancelOrderButton.disable();
-    			                	form.disable();
-    			                	me.runTime.setAllowOrderLineEdit(false);
-    			                	me.getView().store.load();
-    				        		Ext.Msg.alert('',AOCLit.salesOrderCreationMsg);
-    				        		Ext.getBody().unmask();
-    				        	}
-    				        	else{
-    				        		Ext.Msg.alert('',submitSalesOrderErrorMsg);
-    				        		proceed=false;
-    				        		Ext.getBody().unmask();
-    				        	}
-    			        },
-    			        failure: function(response, opts) {
-    			        	proceed=false;
-    			        	Ext.Msg.alert('',submitSalesOrderErrorMsg);
-    			        	Ext.getBody().unmask();
-    		          }
-    				});
+    				me.callSubmitSalesOrderReq();
     			}else
     				Ext.getBody().unmask();
     		});
     	}else{
-    		var id=me.runTime.getOrderQueueId();
-	    	Ext.Ajax.request({
-	    		method:'GET',
-	    		async:false,
-	 		    url : applicationContext+'/rest/router/salesorder/'+id,
-	 		    success : function(response, opts) {
-	 		    	var jsonValue=Ext.decode(response.responseText);
-			        	var status=jsonValue.status;
-			        	if(status=='success'){
-			        		proceed=false;
-			        		var orderlinecontainer = me.getView(),
-			        		grid=orderlinecontainer.down('grid');
-			                validateButton = orderlinecontainer.lookupReference('validateButton'),
-			                bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
-			                salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
-			                salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
-			                cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-			                form=orderlinecontainer.lookupReference('form');
-		                	validateButton.disable();
-		                	salesViewOrderbutton.enable();
-		                	salesOrderbutton.disable();
-		                	cancelOrderButton.disable();
-		                	form.disable();
-		                	me.runTime.setAllowOrderLineEdit(false);
-		                	me.getView().store.load();
-			        		Ext.Msg.alert('',AOCLit.salesOrderCreationMsg);
-			        		Ext.getBody().unmask();
-			        	}
-			        	else{
-			        	    Ext.Msg.alert('',AOCLit.validateErrorMsg);
-			        	    proceed=false;
-			        		Ext.getBody().unmask();
-			        	}
-		        },
-		        failure: function(response, opts) {
-		        	proceed=false;
-		        	Ext.Msg.alert('',AOCLit.validateErrorMsg);
-		        	Ext.getBody().unmask();
-	          }
-			});
+    		me.callSubmitSalesOrderReq();
     	}
     },
+    
+    callSubmitSalesOrderReq:function(){
+    	var me = this,
+    		id = me.runTime.getOrderQueueId();
+    	
+    	Ext.getBody().mask(AOCLit.pleaseWaitTitle); // show mask on body
+    	
+    	Ext.Ajax.request({
+    		method:'GET',
+    		async:false,
+ 		    url : applicationContext+'/rest/router/salesorder/'+id,
+ 		    success : function(response, opts) {
+ 		    	var jsonValue=Ext.decode(response.responseText),
+		        	status=jsonValue.status;
+ 		    	
+		        	if(status=='success'){
+		        		proceed=false;
+		        		var orderlinecontainer = me.getView(),
+			                validateButton = orderlinecontainer.lookupReference('validateButton'),
+			                bulkUpdateButton = orderlinecontainer.lookupReference('bulkUpdateButton'),
+			                salesViewOrderbutton = orderlinecontainer.lookupReference('salesViewOrderbutton'),
+			                salesOrderbutton = orderlinecontainer.lookupReference('salesOrderbutton'),
+			                cancelOrderButton = orderlinecontainer.lookupReference('cancelOrderButton'),
+			                form = orderlinecontainer.lookupReference('form');
+		        		
+	                	validateButton.disable();
+	                	salesViewOrderbutton.enable();
+	                	salesOrderbutton.disable();
+	                	cancelOrderButton.disable();
+	                	form.disable();
+	                	
+	                	me.runTime.setAllowOrderLineEdit(false);
+	                	Ext.getBody().unmask();
+		        		Ext.Msg.alert('', AOCLit.salesOrderCreationMsg);
+		        	}
+		        	else{
+		        		Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
+		        		proceed=false;
+		        		Ext.getBody().unmask();
+		        	}
+	        },
+	        failure: function(response, opts) {s
+	        	proceed=false;
+	        	Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
+	        	Ext.getBody().unmask();
+            }
+		});
+    },
+    
     updateOrderLinedetail:function(editor, context, eOpts){
     	var ctx = context,me=this,
         idx = ctx.rowIdx,
@@ -302,7 +277,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		salesViewOrderbutton.disable();
     		validateButton.disable();
     		form.disable();
-    		cancelOrderBtn.enable();
+    		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
     	}else{
     		var orderQueueStatus = me.runTime.getOrderQueueStatus();
     		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? salesOrderbutton.enable() : salesOrderbutton.disable();

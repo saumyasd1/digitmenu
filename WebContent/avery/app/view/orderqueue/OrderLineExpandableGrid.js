@@ -97,8 +97,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else if(checkvalue.substr(0,1) == 'F'){
 					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
 						this.validationFieldMissing=true;
-						return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 					}
+					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 				}
 				else{
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
@@ -117,13 +117,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(checkvalue.substr(0,1)=='T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
 				}
-				else if(checkvalue.substr(0,1)=='F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing=true;
-						return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
+				else if(checkvalue.substr(0,1) == 'F'){
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						this.validationFieldMissing=true; 
 					}
+					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 				}
 				else{
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						this.validationFieldMissing=true; 
+					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
 				}
 			}
@@ -140,8 +143,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(checkvalue.substr(0,1)=='T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
 				}
-				else if(checkvalue.substr(0,1)=='F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+				else if(checkvalue.substr(0,1) == 'F'){
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing=true;
 					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
@@ -167,11 +170,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else if(checkvalue.substr(0,1)=='F'){
 					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
 						this.mandatoryValidationFieldMissing=true;
+					}else if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='true' || rec.get('waiveMOQ')== true)){
+						this.validationFieldMissing=true;
 					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 
 				}
 				else{
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='true' || rec.get('waiveMOQ')== true)){
+						this.validationFieldMissing=true;
+					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
 				}
 			}
@@ -216,6 +224,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 				}
 				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+						this.validationFieldMissing = true;
+					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
 				}
 			}
@@ -223,7 +234,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		/*New Field-3*/    
 		{
 			text: 'Fabric Content',
-			
 			dataIndex: 'febricPercentageFlag',
 			width: 65,
 			renderer:function(value, metadata,rec){
@@ -235,11 +245,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
 				}
 				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryValidationFieldMissing = true;
 					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-					
 				}
 				else{
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
@@ -267,6 +276,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					
 				}
 				else{
+					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+						this.validationFieldMissing = true;
+					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
 				}
 			}
@@ -689,7 +701,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'shippingMethodCombo'
+				reference:'shippingMethodCombo',
+				store:Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 
@@ -748,19 +761,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: 'Contract #<font color="red">*</font>',
+			text: 'Contract #',
 			dataIndex: 'contractNumber',
 			width: 130,
 			editor: 'textfield',
 			renderer : function(value, metadata,record) {
-				if(value=='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
-					metadata.style = AOCLit.cellColor;
-				} else {
-					 return value;
-				}
+				return value;
 			}
 		}, 
 		{
@@ -821,7 +827,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'freightTermscombo'
+				reference:'freightTermscombo',
+				store:Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 
@@ -922,7 +929,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'OrdertypeCombo'
+				reference:'OrdertypeCombo',
+				store:Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 
@@ -942,7 +950,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'EndCustomerCombo'
+				reference:'EndCustomerCombo',
+				store:Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 
@@ -1022,7 +1031,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'splitShipsetCombo'
+				reference:'splitShipsetCombo',
+				store:Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 
@@ -1048,7 +1058,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'APOTypeCombo'
+				reference:'APOTypeCombo',
+				store:Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
 			},
 			renderer:'comboColumnRenderer'
 		}, 

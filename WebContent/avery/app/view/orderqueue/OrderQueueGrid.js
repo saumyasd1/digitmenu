@@ -83,24 +83,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 						}
 				}
 			},
-			{
-				text : '',
-				width:40,
-				dataIndex:'OrderSource',
-				menuDisabled  :true,
-				renderer:function(v,cell,record){
-					var filename=record.get('emailQueueId');
-					if(v=='Email')
-						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
-					else{
-						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.browseIcon + '" />';
-					}
-				}	
-			},
 			{   header: '<img src="' +  AOC.config.Settings.buttonIcons.attacheImageSrc + '" />',
 				width:40,
 				dataIndex:'OrderFile',
-				renderer:function(v,cell,record){
+				renderer:function(v, metadata, record){
+					var filename=record.get('orderFileName');
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '<font>"';
 					return '<img class="vieworderattachment" src="' + attacheImageSrc + '" />';
 					/*if(v.length!=0){
 						var fileName=v[0].fileName

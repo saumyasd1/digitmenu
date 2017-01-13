@@ -83,7 +83,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				emptyText:AOCLit.partnerName,
         				reference:'partnerCombo',
         				itemId:'partnerCombo',
-        				store:Ext.create('AOC.store.UniquePartnerStore'),
+        				//this store is not created and giving error
+        				//store:Ext.create('AOC.store.UniquePartnerStore'),
         				valueField:'id',
         				name:'partnerName',
         				editable:false,

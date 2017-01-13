@@ -326,7 +326,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					h.style = AOCLit.cellColor;
 			}
 		}
-		return '<div>'+v+'</div>';
+		return v;
 	},
 	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
 		var view=this.getView();

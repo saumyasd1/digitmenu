@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.OrderFileAttachmentDao;
-import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
-import com.avery.storage.entities.ProductLine;
 
 @Component
 public class OrderFileAttachmentService extends GenericEntityService<OrderFileAttachment, Long>{
@@ -44,14 +42,9 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 	
 	
 	public Map getAdditionalFilesList(long orderFileQueueId){
+		 
 		return getOrderFileAttachmentDao().getAdditionalFilesList(orderFileQueueId);
 	}
 	
-	
-	@Transactional
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj) throws Exception{
-		getOrderFileAttachmentDao().insertEmailBody(orderEmailQueue,emailBody,productLineObj);
-		
-	}
 
 }

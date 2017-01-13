@@ -63,10 +63,23 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 					}
   				} 
 			},
+//			{
+//				xtype:'actioncolumn',
+//				width:25,
+//				baseCls:'custom-action'
+//			},
 			{
-				xtype:'actioncolumn',
-				width:25,
-				baseCls:'custom-action'
+				text : '',
+				width:40,
+				dataIndex:'OrderSource',
+				menuDisabled  :true,
+				renderer:function(v, metadata, record){
+					if(v=='Email')
+						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
+					else{
+						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.browseIcon + '" />';
+					}
+				}	
 			},
 			{  
 				text : 'Tracking #',
