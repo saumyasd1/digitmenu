@@ -12,8 +12,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     init : function(){
 	     var me=this;
-	     me.menuTpl=me.buildMenuTpl();    
-    },
+	 me.menuTpl=me.buildMenuTpl();    
+  },
+  getReportView:function(obj){
+  	var win=Ext.create('AOC.view.base.BaseWindow',{
+  						items:[{
+  							xtype:'reportform'
+  						}]
+  	});
+  win.show();
+  },
     openAdvancedSearchWindow: function( e, t, eOpts) {
         var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
         if (!temp) {
