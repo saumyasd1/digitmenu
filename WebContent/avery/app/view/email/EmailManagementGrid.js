@@ -52,9 +52,12 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				baseCls:'custom-action',
   				renderer:function(value, metaData, rec){
   					if(value){
+  						var status = rec.get('status');
+  						if(status == AOCLit.emailUnidentifiedStatus){
   						var comment = Ext.String.htmlEncode(value);
   						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
 						return '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />';
+  						}
   					}else{
   						return '';
 					}
