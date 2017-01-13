@@ -45,7 +45,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 	        '->',
 			{
 				xtype:'whitebutton',
-				text:'Save',
+				text:'Assign',
 				handler:'onSaveBtnClicked'
 			}
 		];
