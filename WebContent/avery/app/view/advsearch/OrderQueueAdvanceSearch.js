@@ -1,255 +1,253 @@
 Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
-			extend : 'Ext.form.Panel',
-			alias : 'widget.orderqueueadvancesearch',
-			itemId : 'orderqueueadvancesearchID',
-			controller : 'orderqueue',
-			requires : ['Ext.window.MessageBox'],
-			border : false,
-			buttonAlign : 'right',
-			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [  
-			           {
-							xtype:'displayfield',
-							itemId:'tittleItemId',
-							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
-							margin:'5 0 0 200'
-                        },
-						{
-							xtype:'tbspacer',
-							height:2,
-							width:10
+	extend : 'AOC.view.base.BaseWindow',
+	alias : 'widget.orderqueueadvancesearchwin',
+	itemId : 'orderQueueAdvanceSearchWin',
+	
+	reference:'orderQueueAdvanceSearchWin',
+	controller : 'orderqueue',
+	
+	requires : ['Ext.window.MessageBox'],
+	//titleAlign:'center',
+
+	bodyStyle: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;padding:10px 10px 5px 10px;',
+	layout:'fit',
+	
+	height: 580,
+	width: 580,
+	draggable: false,
+    modal: true,
+    
+	initComponent:function(){
+		var me = this;
+		me.items = me.buildItems();
+		
+		me.callParent(arguments);
+	},
+	buildItems :function(){
+		var me = this;
+		return [
+		    {
+		    	xtype:'form',
+		        reference:'orderQueueAdvanceSearchForm',
+		        border:false,
+		        buttonAlign : 'right',
+		        buttons:me.getButtons(),
+		        items:[
+					{
+						xtype:'tbtext',
+						itemId:'tittleItemId',
+						text:AOCLit.advancedSearchWindowTitle,
+						style:'color:#2f3338;font-size:15px;font-weight:bold;text-align:center;'
+					},	
+					{
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-			         {
-							xtype:'displayfield',
-							itemId:'messageFieldItemId',
-							value:'',
-							hidden:true,
-							margin:'5 0 0 20'
-                     },
-						{
-							xtype:'tbspacer',
-							height:5,
-							width:30
+						items:[
+							{
+
+								xtype : 'textfield',
+								fieldLabel : AOCLit.partnerName,
+								name:'PartnerName',
+								flex:1,
+								selectOnTab : true
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.RBO,
+								name:'RBOName',
+								flex:1,
+								margin:'0 0 0 10'
+							}
+						]
+					},
+					{
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-			          {
-			            xtype: 'fieldcontainer',
-	                    layout: 'hbox',
-	                    margin : '5 0 0 20',
-	                    items:[{
-						
-							xtype : 'textfield',
-							fieldLabel : 'RBO',
-							name:'RBOName',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true
-					 	     },
-						{
-							xtype : 'tbspacer',
-							height:5,
-							width:30
+						items:[
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.Subject,
+								name:'Subject',
+								flex:1,
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.emailBody,
+								name:'EmailBody',
+								flex:1,
+								margin:'0 0 0 10'
+							}
+						]
+					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-						{
-							xtype : 'textfield',
-							fieldLabel : AOCLit.partnerName,
-							name:'PartnerName',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						}]
-			       },
-						{
-				           xtype: 'fieldcontainer',
-                           layout: 'hbox',
-                           margin : '5 0 0 20',
-                           items:[{
-							xtype : 'textfield',
-							fieldLabel : AOCLit.Subject,
-							name:'Subject',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						     },
-						{
-							xtype : 'tbspacer',
-							height:5,
-							width:30
+						items:[
+							{
+								xtype : 'combo',
+								fieldLabel : AOCLit.orderStatus,
+								name:'Status',
+								flex:1,
+								displayField:'value',
+								valueField:'code',
+								queryMode :'local',
+								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+							},
+							{
+								xtype : 'combo',
+								fieldLabel : AOCLit.productLine,
+								name:'ProductLineType',
+								itemId:'productLineComboItemId',
+								displayField:'productLineType',
+								valueField:'productLineType',
+								flex:1,
+								margin:'0 0 0 10'
+							}
+						]
+					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-						{
-							xtype : 'textfield',
-							fieldLabel : AOCLit.emailBody,
-							name:'EmailBody',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						}]
+						items:[
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.senderEmailID,
+								name:'SenderEmailID',
+								flex:1
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.orderTrackNo,
+								name:'id',
+								width:250,
+								flex:1,
+								margin:'0 0 0 10'
+							}
+						]
+					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-						{ 
-							xtype: 'fieldcontainer',
-	                        layout: 'hbox',
-	                        margin : '5 0 0 20',
-	                        items:[{
-							xtype : 'combo',
-							fieldLabel : AOCLit.orderStatus,
-							name:'Status',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top',
-							displayField:'value',
-							valueField:'code',
-							queryMode :'local',
-							store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
-						    },
-						{
-							xtype : 'tbspacer',
-							height:5,
-							width:30
-						},
-						{
-							xtype : 'combo',
-							fieldLabel : AOCLit.productLine,
-							name:'ProductLineType',
-							itemId:'productLineComboItemId',
-							displayField:'productLineType',
-							valueField:'productLineType',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						}]
-						},
-						{ 
-							xtype: 'fieldcontainer',
-	                        layout: 'hbox',
-	                        margin : '5 0 0 20',
-	                        items:[{
-							xtype : 'textfield',
-							fieldLabel : AOCLit.senderEmailID,
-							name:'SenderEmailID',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						    },
-						{
-							xtype : 'tbspacer',
-							height:5,
-							width:30
-						},
-						{
-							xtype : 'textfield',
-							fieldLabel : AOCLit.orderTrackNo,
-							name:'id',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						}]
-						},
-						{ 
-							xtype: 'fieldcontainer',
-	                        layout: 'hbox',
-	                        margin : '5 0 0 20',
-	                        items:[
-						   {
-							xtype : 'textfield',
-							fieldLabel : AOCLit.poNumber,
-							name:'ponumber',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top'
-						},
-						   {
-								xtype : 'tbspacer',
-								height:5,
-								width:30
+						items:[
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.poNumber,
+								name:'ponumber',
+								flex:1
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.CSRName,
 								name:'CSRName',
-								width:250,
-								labelSeparator : '',
-								labelAlign : 'top'
+								flex:1,
+								margin:'0 0 0 10'
 							}
-							]
-						},
-						{
-							xtype : 'tbspacer',
-							height:5,
-							width:30
-						},
-						{
-							xtype : 'radiogroup',
-							name: 'datecriteriavalue',
-							fieldLabel : '',
-							width:600,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							items:[
-						            { boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
-						            { boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
-						            ]
-						},
-						{
+						]
+					},	
+					{
+						xtype : 'radiogroup',
+						name: 'datecriteriavalue',
+						hideLabel :true,
+						//width:600,
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						items:[
+							{ boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
+							{ boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
+						]
+					},
+					{
 
-							xtype: 'fieldcontainer',
-	                        layout: 'hbox',
-	                        margin : '5 0 0 20',
-	                        items:[{
-							xtype : 'datefield',
-							name:'fromDate',
-							//value : Ext.Date.subtract (new Date(),Ext.Date.DAY,7),
-							reference:'fromDate',
-							fieldLabel : AOCLit.fromDate,
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							listeners : {
-							    render : function(datefield) {
-							        datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-							    }
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'datefield',
+								name:'fromDate',
+								reference:'fromDate',
+								fieldLabel : AOCLit.fromDate,
+								flex:1,
+								hidden:false,
+								allowBlank : true,
+								selectOnTab : true,
+								listeners : {
+									render : function(datefield) {
+										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+									}
+								}
+							},
+							{
+								xtype : 'datefield',
+								fieldLabel : AOCLit.toDate,
+								name:'toDate',
+								reference:'toDate',
+								//width:250,
+								flex:1,
+								margin:'0 0 0 10',
+								hidden:false,
+								allowBlank : true,
+								selectOnTab : true,
+								listeners : {
+									render : function(datefield) {
+										datefield.setValue(new Date());
+									}
+									//'focus': 'notifyByMessage'
+								}
 							}
-						},
-						{
-							xtype:'tbspacer',
-							height:5,
-							width:30
-						},
-						{
-							xtype : 'datefield',
-							fieldLabel : AOCLit.toDate,
-							name:'toDate',
-							reference:'toDate',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							listeners : {
-							    render : function(datefield) {
-							        datefield.setValue(new Date());
-							                },
-							     'focus': 'notifyByMessage'
-							        }
-						}]
-						}
-			],
-			buttons : [ {
-						text : 'Search',
-						disabled : false,
-						formBind : true,
-						success : true,
-						listeners : {
-							click  : 'getOrderBasedOnSearchParameters'
-						}
-				}],
-				initComponent : function() {
-				this.callParent(arguments);
+						]
+					}  
+		        ]
+		    }
+		]
+	},
+	getButtons:function(){ 
+		return [ 
+			{
+				text : 'Search',
+				disabled : false,
+				formBind : true,
+				success : true,
+				listeners : {
+					click  : 'onSearchBtnClicked'
 				}
-
+			}
+		]	
+	}
 });

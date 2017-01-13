@@ -184,5 +184,11 @@ Ext.define('AOC.view.email.EmailManagementController', {
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
-    }
+    },
+    
+    openAdvancedSearchWindow:function(){
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.EmailQueueAdvanceSearchWindow');
+    	advanceSearchWin.show();
+    },
+    onSearchBtnClicked:function(btn){}
 });

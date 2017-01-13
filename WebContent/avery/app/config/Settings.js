@@ -13,7 +13,8 @@ Ext.define('AOC.config.Settings',{
         defaultTbarHeight:50
     },
     form:{
-    	defaultLabelAlign:'left'
+    	defaultLabelAlign:'left',
+    	topLabelAlign:'top'
     },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',

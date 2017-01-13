@@ -421,7 +421,7 @@ Ext.define('AOC.controller.MenuController', {
 		helper.loadVariableComboStore('EndCustomer');
 		helper.loadVariableComboStore('SplitShipset');
 		helper.loadCodeStore('code');
-//		helper.loadCodeStore('orderfilequeue');
+		helper.loadCodeStore('orderfilequeue');
 		helper.loadCodeStore('orderline');
 	}  
 });  

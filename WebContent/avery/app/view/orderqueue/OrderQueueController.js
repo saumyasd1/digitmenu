@@ -15,82 +15,122 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	 me.menuTpl=me.buildMenuTpl();    
   },
   getReportView:function(obj){
-  	var win=Ext.create('AOC.view.base.BaseWindow',{
-  						items:[{
-  							xtype:'reportform'
-  						}]
-  	});
-  win.show();
+		var win=Ext.create('AOC.view.base.BaseWindow',{
+			items:[{
+				xtype:'reportform'
+			}]
+		});
+		win.show();
   },
-    openAdvancedSearchWindow: function( e, t, eOpts) {
-        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-        if (!temp) {
-            store = Ext.create('AOC.store.PartnerProductLineStore', {
-                storeId: 'PartnerProductLineStoreStoreId',
-                totalCount: 'total',
-                proxy: {
-                    type: 'rest',
-                    url: applicationContext + '/rest/productLines',
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'ArrayList',
-                        totalProperty: 'totalCount'
-                    }
-                },
-                listeners: {
-                    'load': function(store, records, options) {
-                        var uniqueValueArray = store.collect('productLineType');
-                        var serviceStoreData = [];
-                        if (uniqueValueArray.length > 0) {
-                            uniqueValueArray.forEach(function(item) {
-                                var service = [item];
-                                serviceStoreData.push(service);
-                            });
-                            var serviceStore = Ext.create('Ext.data.ArrayStore', {
-                                fields: ['productLineType'],
-                                data: serviceStoreData
-                            });
-                            temp.down('#productLineComboItemId').bindStore(serviceStore);
-                        }
-                    }
-                }
-            });
-
-            temp = Ext.create('AOC.view.base.BaseWindow', {
-                height: 600,
-                width: 580,
-                //title: advancedSearchWindowTitle,
-                itemId: 'orderqueueadvancesearchIDWindow',
-                layout: 'fit',
-                draggable: false,
-                modal: true,
-                store: store,
-                closeAction:'hide',
-                items: [{
-                    xtype: 'orderqueueadvancesearch'
-                }]
-            });
-        }
-        if (Ext.isIE || Ext.isGecko) {
-            browser = "IE";
-            var d = Ext.get(e.getTarget());
-            var width = temp.width; //width of advanced search panel
-           // box = this.getBox();
-            width = width - 25; //remove margin
-            x = d.getX();
-            y = d.getY();
-            temp.showAt();
-        } else if (Ext.isChrome || Ext.isSafari) {
-            browser = "Chrome";
-            var d = Ext.get(e.getTarget());
-            var width = temp.width;
-            width = width - 24;
-            x = d.getX();
-            y = d.getY();
-            temp.show();
-        }
-        return false;
-    },
+  
+  openAdvancedSearchWindow:function(btn){
+	  var advanceSearchWin = Ext.create('AOC.view.advsearch.OrderQueueAdvanceSearch');
+	  if(!advanceSearchWin.isVisible()){
+		  store = Ext.create('AOC.store.PartnerProductLineStore', {
+			    storeId: 'PartnerProductLineStoreStoreId',
+			    totalCount: 'total',
+			    proxy: {
+			        type: 'rest',
+			        url: applicationContext + '/rest/productLines',
+			        reader: {
+			            type: 'json',
+			            rootProperty: 'ArrayList',
+			            totalProperty: 'totalCount'
+			        }
+			    },
+			    listeners: {
+			        'load': function(store, records, options) {
+			            var uniqueValueArray = store.collect('productLineType');
+			            var serviceStoreData = [];
+			            if (uniqueValueArray.length > 0) {
+			                uniqueValueArray.forEach(function(item) {
+			                    var service = [item];
+			                    serviceStoreData.push(service);
+			                });
+			                var serviceStore = Ext.create('Ext.data.ArrayStore', {
+			                    fields: ['productLineType'],
+			                    data: serviceStoreData
+			                });
+			                advanceSearchWin.down('#productLineComboItemId').bindStore(serviceStore);
+			            }
+			        }
+			    }
+			});
+		  advanceSearchWin.show();
+	  }
+  },
+  onSearchBtnClicked:function(searchBtn){
+	  
+  },
+//    openAdvancedSearchWindow: function( e, t, eOpts) {
+//        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+//        if (!temp) {
+//            store = Ext.create('AOC.store.PartnerProductLineStore', {
+//                storeId: 'PartnerProductLineStoreStoreId',
+//                totalCount: 'total',
+//                proxy: {
+//                    type: 'rest',
+//                    url: applicationContext + '/rest/productLines',
+//                    reader: {
+//                        type: 'json',
+//                        rootProperty: 'ArrayList',
+//                        totalProperty: 'totalCount'
+//                    }
+//                },
+//                listeners: {
+//                    'load': function(store, records, options) {
+//                        var uniqueValueArray = store.collect('productLineType');
+//                        var serviceStoreData = [];
+//                        if (uniqueValueArray.length > 0) {
+//                            uniqueValueArray.forEach(function(item) {
+//                                var service = [item];
+//                                serviceStoreData.push(service);
+//                            });
+//                            var serviceStore = Ext.create('Ext.data.ArrayStore', {
+//                                fields: ['productLineType'],
+//                                data: serviceStoreData
+//                            });
+//                            temp.down('#productLineComboItemId').bindStore(serviceStore);
+//                        }
+//                    }
+//                }
+//            });
+//
+//            temp = Ext.create('AOC.view.base.BaseWindow', {
+//                height: 600,
+//                width: 580,
+//                //title: advancedSearchWindowTitle,
+//                itemId: 'orderqueueadvancesearchIDWindow',
+//                layout: 'fit',
+//                draggable: false,
+//                modal: true,
+//                store: store,
+//                closeAction:'hide',
+//                items: [{
+//                    xtype: 'orderqueueadvancesearch'
+//                }]
+//            });
+//        }
+//        if (Ext.isIE || Ext.isGecko) {
+//            browser = "IE";
+//            var d = Ext.get(e.getTarget());
+//            var width = temp.width; //width of advanced search panel
+//           // box = this.getBox();
+//            width = width - 25; //remove margin
+//            x = d.getX();
+//            y = d.getY();
+//            temp.showAt();
+//        } else if (Ext.isChrome || Ext.isSafari) {
+//            browser = "Chrome";
+//            var d = Ext.get(e.getTarget());
+//            var width = temp.width;
+//            width = width - 24;
+//            x = d.getX();
+//            y = d.getY();
+//            temp.show();
+//        }
+//        return false;
+//    },
     getOrderBasedOnSearchParameters: function(store) {
         var valueObj = this.getView().getForm().getValues(false, true);
         
