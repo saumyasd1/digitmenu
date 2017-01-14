@@ -46,6 +46,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				xtype:'actioncolumn',
 				menuDisabled  :true,
 				baseCls:'custom-action',
+				tooltip:'Menu Action',
 				items:[{
 				  icon: AOC.config.Settings.buttonIcons.menuIcon,
 				  handler:'onClickMenu'//'showMenu'
@@ -56,6 +57,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				width:40,
 				dataIndex:'Comments',
 				menuDisabled:true,
+				tooltip:'Comments',
 				baseCls:'custom-action',
 				renderer:function(value, metadata,rec){
 					if(value){
@@ -71,6 +73,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				 header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
 					width:40,
 					dataIndex:'error',
+					tooltip:'Error',
 					menuDisabled  :true,
 					baseCls:'custom-action',
 					renderer:function(value, metadata,rec){
@@ -86,6 +89,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			{   header: '<img src="' +  AOC.config.Settings.buttonIcons.attacheImageSrc + '" />',
 				width:40,
 				dataIndex:'OrderFile',
+				tooltip:'Order File',
 				renderer:function(v, metadata, record){
 					var filename=record.get('orderFileName');
 					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '<font>"';
@@ -101,6 +105,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				header: '<img src="' + AOC.config.Settings.buttonIcons.clip + '" />',
 				width:40,
 				hideable: true,
+				tooltip:'Additional File',
 				dataIndex:'attachmentPresent',
 				renderer:function(v,cell,record){
 					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.attacheImageSrc + '" />';

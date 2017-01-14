@@ -53,6 +53,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
               property: 'query',
               value: parameters
           });
+          view.contextGrid.lookupReference('clearAdvSearch').show();
       }
       view.close();
   },
