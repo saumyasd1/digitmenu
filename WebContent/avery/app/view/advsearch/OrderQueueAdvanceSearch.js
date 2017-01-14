@@ -173,7 +173,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelAlign:Settings.form.topLabelAlign,
 						items:[
-							{ boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
+							{ boxLabel: 'Created Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
 							{ boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
 						]
 					},

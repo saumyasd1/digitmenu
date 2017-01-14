@@ -185,6 +185,13 @@ Ext.define('AOC.view.email.EmailManagementController', {
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
     },
+    clearAdvancedSerach:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
+    },
     
     openAdvancedSearchWindow:function(){
     	var advanceSearchWin = Ext.create('AOC.view.advsearch.EmailQueueAdvanceSearch',{contextGrid:this.getView()});
@@ -217,6 +224,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
                 property: 'query',
                 value: parameters
             });
+            view.contextGrid.lookupReference('clearAdvSearch').show();
         }
         view.close();
     

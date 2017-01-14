@@ -56,75 +56,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
       }
       view.close();
   },
-//    openAdvancedSearchWindow: function( e, t, eOpts) {
-//        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-//        if (!temp) {
-//            store = Ext.create('AOC.store.PartnerProductLineStore', {
-//                storeId: 'PartnerProductLineStoreStoreId',
-//                totalCount: 'total',
-//                proxy: {
-//                    type: 'rest',
-//                    url: applicationContext + '/rest/productLines',
-//                    reader: {
-//                        type: 'json',
-//                        rootProperty: 'ArrayList',
-//                        totalProperty: 'totalCount'
-//                    }
-//                },
-//                listeners: {
-//                    'load': function(store, records, options) {
-//                        var uniqueValueArray = store.collect('productLineType');
-//                        var serviceStoreData = [];
-//                        if (uniqueValueArray.length > 0) {
-//                            uniqueValueArray.forEach(function(item) {
-//                                var service = [item];
-//                                serviceStoreData.push(service);
-//                            });
-//                            var serviceStore = Ext.create('Ext.data.ArrayStore', {
-//                                fields: ['productLineType'],
-//                                data: serviceStoreData
-//                            });
-//                            temp.down('#productLineComboItemId').bindStore(serviceStore);
-//                        }
-//                    }
-//                }
-//            });
-//
-//            temp = Ext.create('AOC.view.base.BaseWindow', {
-//                height: 600,
-//                width: 580,
-//                //title: advancedSearchWindowTitle,
-//                itemId: 'orderqueueadvancesearchIDWindow',
-//                layout: 'fit',
-//                draggable: false,
-//                modal: true,
-//                store: store,
-//                closeAction:'hide',
-//                items: [{
-//                    xtype: 'orderqueueadvancesearch'
-//                }]
-//            });
-//        }
-//        if (Ext.isIE || Ext.isGecko) {
-//            browser = "IE";
-//            var d = Ext.get(e.getTarget());
-//            var width = temp.width; //width of advanced search panel
-//           // box = this.getBox();
-//            width = width - 25; //remove margin
-//            x = d.getX();
-//            y = d.getY();
-//            temp.showAt();
-//        } else if (Ext.isChrome || Ext.isSafari) {
-//            browser = "Chrome";
-//            var d = Ext.get(e.getTarget());
-//            var width = temp.width;
-//            width = width - 24;
-//            x = d.getX();
-//            y = d.getY();
-//            temp.show();
-//        }
-//        return false;
-//    },
     getOrderBasedOnSearchParameters: function(store) {
         var valueObj = this.getView().getForm().getValues(false, true);
         
@@ -178,6 +109,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var temp = grid.down('#advancesearchbutton');
         if(temp)
         temp.enable();
+    },
+    clearAdvancedSerach:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
     },
     getQuickSearchResults: function(cmp) {
         var store = this.getView().store;

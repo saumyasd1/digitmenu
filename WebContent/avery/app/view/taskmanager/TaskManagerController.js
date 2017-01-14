@@ -176,6 +176,13 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
     },
+    clearAdvancedSerach:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
+    },
     openAdvancedSearchWindow:function(){
     	var advanceSearchWin = Ext.create('AOC.view.advsearch.TaskManagerAdvanceSearch',{contextGrid:this.getView()});
     	if(!advanceSearchWin.isVisible()){

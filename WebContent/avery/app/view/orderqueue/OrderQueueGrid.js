@@ -166,7 +166,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			{
 				text : AOCLit.processedDate,
 				width:98,
-				dataIndex:'receivedDate'
+				dataIndex:'createdDate'
 			},
 			{
 				text : AOCLit.senderEmailID,
@@ -275,7 +275,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
 				iconAlign: "right",
 				handler:'openAdvancedSearchWindow'
-			 }
+			 },
+			 {
+					hidden:true, 
+					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+					itemId:'clearadvanedsearch',
+					reference:'clearAdvSearch',
+					handler:'clearAdvancedSerach',
+					tooltip:'Clear Search'
+				}
+			 
 		];
 	},
     buildDockedItems : function(){

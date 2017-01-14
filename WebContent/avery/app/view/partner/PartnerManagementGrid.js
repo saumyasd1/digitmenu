@@ -122,7 +122,15 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		    				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
 		    				iconAlign: "right",
 		    				handler:'openAdvancedSearchWindow'
-		    			 }
+		    			 },
+		    			 {
+		 					hidden:true, 
+		 					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					itemId:'clearadvanedsearch',
+		 					reference:'clearAdvSearch',
+		 					handler:'clearAdvancedSerach',
+		 					tooltip:'Clear Search'
+		 				}
 		          ];
 	},
 	 buildDockedItems : function(){

@@ -307,6 +307,13 @@ Ext.define('AOC.view.partner.PartnerController', {
         var temp = grid.down('#advancesearchbutton');
         temp.enable();
     },
+    clearAdvancedSerach:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
+    },
     getQuickSearchResults: function(cmp) {
         var store = this.getView().store;
         var value = cmp.getValue();
