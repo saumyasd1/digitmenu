@@ -20,14 +20,18 @@ public interface ApplicationConstants {
 		
 		String NEW_WEB_ORDER_STATUS="5";
 		
-		String NEW_EMAIL_ORDER_STATUS="5";
+		String NEW_ATTACHMENT_STATUS="8";
 		
-		String DEFAULT_EMAILBODY_CONTENT_TYPE="order";
+		String DEFAULT_EMAILBODY_CONTENT_TYPE="Discard";
 		
 		String DEFAULT_ORDER_CONTENT_TYPE="Order";
 		
 		String DEFAULT_ADDITIONAL_CONTENT_TYPE="AdditionalData";
 		
 		String EMAIL_FILE_NAME="CompleteEmail";
+		
+		String DEFAULT_EMAIL_FILE_EXTENSION="pdf";
+		
+		String DEFAULT_USER_NAME="Adeptia";	
 		
 }
