@@ -13,6 +13,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	bodyPadding: '0 200 0 200',
 	requires: ['AOC.lang.lit'],
 	border:false,
+	attachmentFileNameExtension_1:null,
+	orderFileNameExtension:null,
 	attachmentCount:1,
 	isResubmit:false,
 	layout: {
@@ -22,15 +24,21 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	this.isResubmit=false;
     	var i=this.attachmentCount,currentAttachment,form=this;
     	for(var j=2;j<=i;j++){
-    		currentAttachment=form.lookupReference('attachment'+j);
+    		currentAttachment=form.lookupReference('attachment'+j),
+    		additionalDataFileKey=form.lookupReference('additionalDataFileKey'+j);
     		if(currentAttachment){
     			currentAttachment.destroy();
+    			if(additionalDataFileKey)
+    				additionalDataFileKey.destroy();
     		}
     	}
     	this.attachmentCount=1;
-    	currentAttachment=form.lookupReference('attachment1');
+    	currentAttachment=form.lookupReference('attachment1'),
+    	additionalDataFileKey1=form.lookupReference('additionalDataFileKey1');
     	if(currentAttachment)
     		currentAttachment.hide();
+	    	if(additionalDataFileKey1)
+	    		additionalDataFileKey1.hide();
     	else{
     		form.add({
        			xtype:'fileuploadfield',
@@ -48,7 +56,24 @@ Ext.define('AOC.view.webform.WebOrderForm',{
  		        listeners:{
     				 'change':'onAttachemnetChange'
     			 }
-		   });
+		   },{   
+	   			xtype:'textfield',
+				labelAlign:'right',
+				name: 'additionalDataFileKey1',
+				anchor:'100%',
+				reference: 'additionalDataFileKey1',
+				fieldLabel:'Additional DataFile Key',
+				itemId:'additionalDataFileKey1',
+				labelSeparator:'',
+				labelWidth : 200,
+	    		disabled:true,
+	    		hidden:true,
+	    		labelSeparator : '',
+	    		labelAlign:'right',
+	    		listeners:{
+					  'focus': 'notifyByMessage'
+				 }
+		});
     	}
         this.form.reset();
         this.lookupReference('email').setFieldStyle(AOC.lang.lit.hideImage);
@@ -237,6 +262,23 @@ Ext.define('AOC.view.webform.WebOrderForm',{
                     		listeners:{
      				 'change':'onAttachemnetChange',
      				  //blur : this.notifyByImage,
+     				  'focus': 'notifyByMessage'
+     			 }
+        		},{   
+        			xtype:'textfield',
+        			labelAlign:'right',
+        			name: 'additionalDataFileKey1',
+        			anchor:'100%',
+        			reference: 'additionalDataFileKey1',
+        			fieldLabel:'Additional DataFile Key',
+        			itemId:'additionalDataFileKey1',
+        			labelSeparator:'',
+        			labelWidth : 200,
+            		disabled:true,
+            		hidden:true,
+            		labelSeparator : '',
+            		labelAlign:'right',
+            		listeners:{
      				  'focus': 'notifyByMessage'
      			 }
         		},{
