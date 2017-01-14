@@ -20,15 +20,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
 		me.callParent(arguments);
 		this.mask(AOCLit.pleaseWaitTitle);
 		var	grid = me.lookupReference('attachmentGrid'),
-			store = Ext.create('AOC.store.ViewMailformStore',{
-				storeId: 'ViewMailformStoreId',
+			store = new Ext.data.JsonStore({
+				fields:['id','fileName', 'filePath'],
 				proxy : {
 					type : 'rest',
-					url : applicationContext+'/rest/orderattachements/order/'+ me.recordId,
+					url : applicationContext+'/rest/orderattachements/additionalfiles/'+ me.recordId,
 					reader:{
 						type:'json', 
-						rootProperty: 'viewmail',
-						totalProperty: 'totalCount'
+						rootProperty: 'additionalfiles',
 					}
 				}
 			});

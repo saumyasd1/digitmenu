@@ -38,6 +38,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
                 	me.runTime.setAllowOrderLineEdit(false);
                 	orderlineexpandablegrid.store.load();
                 	Ext.Msg.alert('',AOCLit.orderCancelSuccessAlert);
+                	orderQueueView.getLayout().setActiveItem(0);
                 }else{
                 	activeItem.getStore().load();
                 }
