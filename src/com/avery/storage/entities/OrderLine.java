@@ -62,230 +62,342 @@ public class OrderLine extends MainAbstractEntity{
 	private static final long serialVersionUID = 6740793676369214590L;
 	
 	@Column(name = "additionalFileId", length = 100)
-	String additionalFileId;
+	private String additionalFileId; 
+	
 	@Column(name = "customerPONumber", length = 50)
-	String customerPONumber;
+	private String customerPONumber;
+	
 	@Column(name = "orderedDate")
 	Date orderedDate;
+	
 	@Column(name = "partnerCustomerName", length = 250)
-	String partnerCustomerName;
+	private String partnerCustomerName;
+	
 	@Column(name = "bulk")
-	boolean bulk;
+	Boolean bulk;
+	
 	@Column(name = "partnerVendorName", length = 250)
-	String partnerVendorName;
+	private String partnerVendorName;
+	
 	@Column(name = "shipToCustomer", length = 250)
-	String shipToCustomer;
+	private String shipToCustomer;
+	
 	@Column(name = "shipToContact", length = 250)
-	String shipToContact;
+	private String shipToContact;
+	
 	@Column(name = "shipToAddress1", length = 250)
-	String shipToAddress1;
+	private String shipToAddress1; 
+	
 	@Column(name = "shipToAddress2", length = 250)
-	String shipToAddress2;
+	private String shipToAddress2;
+	
 	@Column(name = "shipToAddress3", length = 250)
-	String shipToAddress3;
+	private String shipToAddress3;
+	
 	@Column(name = "shipToCity", length = 100)
-	String shipToCity;
+	private String shipToCity;
+	
 	@Column(name = "shipToState", length = 100)
-	String shipToState;
+	private String shipToState;
+	
 	@Column(name = "shipToZip", length = 50)
-	String shipToZip;
+	private String shipToZip;
+	
 	@Column(name = "shipToCountry", length = 100)
-	String shipToCountry;
+	private String shipToCountry;
+	
 	@Column(name = "shipToTelephone", length = 50)
-	String shipToTelephone;
+	private String shipToTelephone;
+	
 	@Column(name = "shipToFax", length = 100)
-	String shipToFax;
+	private String shipToFax;
+	
 	@Column(name = "shipToEmail", length = 100)
-	String shipToEmail;
+	private String shipToEmail;
+	
 	@Column(name = "billToCustomer", length = 250)
-	String billToCustomer;
+	private String billToCustomer;
+	
 	@Column(name = "billToContact", length = 250)
-	String billToContact;
+	private String billToContact;
+	
 	@Column(name = "billToAddress1", length = 250)
-	String billToAddress1;
+	private String billToAddress1;
+	
 	@Column(name = "billToAddress2", length = 250)
-	String billToAddress2;
+	private String billToAddress2;
+	
 	@Column(name = "billToAddress3", length = 250)
-	String billToAddress3;
+	private String billToAddress3;
+	
 	@Column(name = "billToCity", length = 100)
-	String billToCity;
+	private String billToCity;
+	
 	@Column(name = "billToState", length = 100)
-	String billToState;
+	private String billToState;
+	
 	@Column(name = "billToZip", length = 50)
-	String billToZip;
+	private String billToZip;
+	
 	@Column(name = "billToCountry", length = 100)
-	String billToCountry;
+	private String billToCountry;
+	
 	@Column(name = "billToTelephone", length = 50)
-	String billToTelephone;
+	private String billToTelephone;
+	
 	@Column(name = "billToFax", length = 100)
-	String billToFax;
+	private String billToFax;
+	
 	@Column(name = "billToEmail", length = 100)
-	String billToEmail;
+	private String billToEmail;
+	
 	@Column(name = "requestedDevliveryDate")
 	Date requestedDevliveryDate;
+	
 	@Column(name = "shippingMethod", length = 50)
-	String shippingMethod;
+	private String shippingMethod;
+	
 	@Column(name = "specialInstruction", length = 500)
-	String specialInstruction;
+	private String specialInstruction;
+	
 	@Column(name = "orderReceivedDate")
 	Date orderReceivedDate;
+	
 	@Column(name = "soldToRBONumber", length = 50)
-	String soldToRBONumber;
+	private String soldToRBONumber;
+	
 	@Column(name = "oracleBillToSiteNumber", length = 50)
-	String oracleBillToSiteNumber;
+	private String oracleBillToSiteNumber;
+	
 	@Column(name = "oracleShipToSiteNumber", length = 50)
-	String oracleShipToSiteNumber;
+	private String oracleShipToSiteNumber; 
+	
 	@Column(name = "retailerPO_CustomerJob", length = 100)
-	String retailerPO_CustomerJob;
+	private String retailerPO_CustomerJob;
+	
 	@Column(name = "averyItemNumber", length = 50)
-	String averyItemNumber;
+	private String averyItemNumber;
+	
 	@Column(name = "customerItemNumber", length = 50)
-	String customerItemNumber;
+	private String customerItemNumber;
+	
 	@Column(name = "itemDescription", length = 50)
-	String itemDescription;
+	private String itemDescription;
+	
 	@Column(name = "customerColorCode", length = 50)
-	String customerColorCode;
+	private String customerColorCode;
+	
 	@Column(name = "customerColorDescription", length = 50)
-	String customerColorDescription;
+	private String customerColorDescription;
+	
 	@Column(name = "customerSize", length = 50)
-	String customerSize;
+	private String customerSize;
+	
 	@Column(name = "customerUnitPrice", length = 50)
-	String customerUnitPrice;
+	private String customerUnitPrice;
+	
 	@Column(name = "customerCost", length = 50)
-	String customerCost;
+	private String customerCost;
+	
 	@Column(name = "contractNumber", length = 50)
-	String contractNumber;
+	private String contractNumber;
+	
 	@Column(name = "styleNo", length = 50)
-	String styleNo;
+	private String styleNo;
+	
 	@Column(name = "customerItemNumber1", length = 50)
-	String customerItemNumber1;
+	private String customerItemNumber1;
+	
 	@Column(name = "customerItemNumber2", length = 50)
-	String customerItemNumber2;
+	private String customerItemNumber2;
+	
 	@Column(name = "customerSeason", length = 50)
-	String customerSeason;
+	private String customerSeason;
+	
 	@Column(name = "customerUOM", length = 50)
-	String customerUOM;
+	private String customerUOM;
+	
 	@Column(name = "customerOrderedQty", length = 50)
-	String customerOrderedQty;
+	private String customerOrderedQty;
+	
 	@Column(name = "calculatedOrderdedQty", length = 10)
-	String calculatedOrderdedQty;
+	private String calculatedOrderdedQty;
+	
 	@Column(name = "orderDate")
 	Date orderDate;
-	@Column(name = " customerRequestDate")
+	
+	@Column(name = "customerRequestDate")
 	Date customerRequestDate;
+	
 	@Column(name = "promiseDate")
 	Date promiseDate;
+	
 	@Column(name = "freightTerms", length = 50)
-	String freightTerms;
+	private String freightTerms;
+	
 	@Column(name = "csr", length = 50)
-	String csr;
+	private String csr;
+	
 	@Column(name = "packingInstruction", length = 500)
-	String packingInstruction;
+	private String packingInstruction;
+	
 	@Column(name = "shippingInstructions", length = 500)
-	String shippingInstructions;
+	private String shippingInstructions;
+	
 	@Column(name = "invoicelineInstruction", length = 500)
-	String invoicelineInstruction;
+	private String invoicelineInstruction;
+	
 	@Column(name = "divisionForInterfaceERPORG", length = 100)
-	String divisionForInterfaceERPORG;
+	private String divisionForInterfaceERPORG;
+	
 	@Column(name = "artWorkhold", length = 5)
-	String artWorkhold;
+	private String artWorkhold;
+	
 	@Column(name = "artworkAttachment", length = 5)
-	String artworkAttachment;
+	private String artworkAttachment;
+	
 	@Column(name = "variableDataBreakdown", length = 500)
-	String variableDataBreakdown;
+	private String variableDataBreakdown;
+	
 	@Column(name = "manufacturingNotes", length = 500)
-	String manufacturingNotes;
+	private String manufacturingNotes;
+	
 	@Column(name = "orderType", length = 50)
-	String orderType;
+	private String orderType;
+	
 	@Column(name = "orderBy", length = 50)
-	String orderBy;
+	private String orderBy;
+	
 	@Column(name = "endCustomer", length = 50)
-	String endCustomer;
+	private String endCustomer;
+	
 	@Column(name = "shippingOnlyNotes", length = 500)
-	String shippingOnlyNotes;
+	private String shippingOnlyNotes;
+	
 	@Column(name = "bankCharge", length = 10)
-	String bankCharge;
+	private String bankCharge;
+	
 	@Column(name = "freightCharge", length = 10)
-	String freightCharge;
+	private String freightCharge;
+	
 	@Column(name = "shippingHold", length = 50)
-	String shippingHold;
+	private String shippingHold;
+	
 	@Column(name = "productionHold", length = 5)
-	String productionHold;
+	private String productionHold;
+	
 	@Column(name = "splitShipset", length = 5)
-	String splitShipset;
+	private String splitShipset;
+	
 	@Column(name = "agreement", length = 50)
-	String agreement;
+	private String agreement;
+	
 	@Column(name = "modelSerialNumber", length = 50)
-	String modelSerialNumber;
+	private String modelSerialNumber;
+	
 	@Column(name = "waiveMOQ", length = 5)
-	String waiveMOQ;
+	private String waiveMOQ;
+	
 	@Column(name = "targetSystem", length = 50)
-	String targetSystem;
+	private String targetSystem;
+	
 	@Column(name = "APOType", length = 5)
-	String APOType;
+	private String APOType;
+	
 	@Column(name = "sentToOracleDate")
 	Date sentToOracleDate;
+	
 	@Column(name = "status", length = 100,nullable=false)
-	String status;
+	private String status;
+	
 	@Column(name="reviseOrderFlag",length=50)
-	String reviseOrderFlag;
+	private String reviseOrderFlag;
+	
 	@Column(name="cooTranslationFlag",length=50)
-	String cooTranslationFlag;
+	private String cooTranslationFlag;
+	
 	@Column(name="febricPercentageFlag",length=50)
-	String febricPercentageFlag;
+	private String febricPercentageFlag;
+	
 	@Column(name = "duplicatePOFlag",length=50)
-	String duplicatePOFlag;
+	private String duplicatePOFlag;
+	
 	@Column(name = "customerPOFlag",length=50)
-	String customerPOFlag;
+	private String customerPOFlag;
+	
 	@Column(name = "bulkSampleValidationFlag",length=50)
-	String bulkSampleValidationFlag;
+	private String bulkSampleValidationFlag;
+	
 	@Column(name = "MOQValidationFlag",length=50)
-	String MOQValidationFlag;
+	private String MOQValidationFlag;
+	
 	@Column(name = "ATOValidationFlag",length=50)
-	String ATOValidationFlag;
+	private String ATOValidationFlag;
+	
 	@Column(name = "mandatoryVariableDataFieldFlag",length=50)
-	String mandatoryVariableDataFieldFlag;
+	private String mandatoryVariableDataFieldFlag;
+	
 	@Column(name = "HTLSizePageValidationFlag",length=50)
-	String HTLSizePageValidationFlag;
+	private String HTLSizePageValidationFlag;
+	
 	@Column(name = "region", length = 100)
-	String region;
+	private String region;
+	
 	@Column(name = "PONumber", length = 100)
-	String PONumber;
+	private String PONumber;
+	
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+	
 	@Column(name = "roundQty", length = 100)
-	String roundQty;
+	private String roundQty;
+	
 	@Column(name = "MOQDiffQty", length = 100)
-	String MOQDiffQty;
+	private String MOQDiffQty;
+	
 	@Column(name = "updateMOQ", length = 100)
-	String updateMOQ;
+	private String updateMOQ;
+	
 	@Column(name = "customerNumber", length = 100)
-	String customerNumber;
+	private String customerNumber;
+	
 	@Column(name = "rushOrderCheck", length = 100)
-	String rushOrderCheck;
+	private String rushOrderCheck;
+	
 	@Column(name = "FOO", length = 100)
-	String FOO;
+	private String FOO;
+	
 	@Column(name = "sample", length = 100)
-	String sample;
+	private String sample;
+	
 	@Column(name = "qtyUnit", length = 100)
-	String qtyUnit;
+	private String qtyUnit;
+	
 	@Column(name = "remark", length = 100)
-	String remark;
+	private String remark;
+	
 	@Column(name = "pageSize", length = 100)
-	String pageSize;
+	private String pageSize;
+	
 	@Column(name = "fabricCode", length = 100)
-	String fabricCode;
+	private String fabricCode;
+	
 	@Column(name = "carrier", length = 100)
-	String carrier;
+	private String carrier;
+	
 	@Column(name = "account", length = 100)
-	String account;
+	private String account;
+	
 	@Column(name = "shipVia", length = 100)
-	String shipVia;
+	private String shipVia;
+	
 	@Column(name = "productLineType", length = 50)
-	String productLineType;
+	private String productLineType;
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="orderQueueId",nullable=false)
 	OrderQueue varOrderFileQueue;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
@@ -294,18 +406,22 @@ public class OrderLine extends MainAbstractEntity{
 //	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
 	/*Not in use currently*/
 	@Column(name = "averyMOQ", length = 50)
-	String averyMOQ;
+	private String averyMOQ;
+	
 	@Column(name = "averyRoundupQty", length = 50)
-	String averyRoundupQty;
+	private String averyRoundupQty;
+	
 	@Column(name = "averyATO", length = 50)
-	String averyATO;
+	private String averyATO;
+	
 	@Column(name = "averyRegion", length = 50)
-	String averyRegion;
+	private String averyRegion;
+	
 	@Column(name = "averyProductLineType", length = 50)
-	String averyProductLineType;
+	private String averyProductLineType;
 	
 	@Column(name = "averyBulk", length = 50)
-	String averyBulk;
+	private String averyBulk;
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient

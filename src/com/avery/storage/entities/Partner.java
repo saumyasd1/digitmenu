@@ -55,47 +55,66 @@ public class Partner extends MainAbstractEntity {
 	private static final long serialVersionUID = -8487156716364715527L;
 
 	@Column(name = "partnerName", length = 250)
-	String partnerName;
+	private String partnerName;
+	
 	@Column(name = "emailDomain", length = 100)
-	String emailDomain;
+	private String emailDomain;
+	
 	@Column(name = "emailId", length = 100)
-	String emailId;
+	private String emailId;
+	
 	@Column(name = "address1", length = 250)
-	String address1;
+	private String address1;
+	
 	@Column(name = "address2", length = 250)
-	String address2;
+	private String address2;
+	
 	@Column(name = "address3", length = 250)
-	String address3;
+	private String address3;
+	
 	@Column(name = "city", length = 250)
-	String city;
+	private String city;
+	
 	@Column(name = "state", length = 250)
-	String state;
+	private String state;
+	
 	@Column(name = "country", length = 250)
-	String country;
+	private String country;
+	
 	@Column(name = "phone", length = 250)
-	String phone;
+	private String phone;
+	
 	@Column(name = "alternatePhone", length = 250)
-	String alternatePhone;
+	private String alternatePhone;
+	
 	@Column(name = "fax", length = 250)
-	String fax;
+	private String fax;
+	
 	@Column(name = "contactPerson", length = 250)
-	String contactPerson;
+	private String contactPerson;
+	
 	@Column(name = "active")
-	boolean active;
+	private Boolean active;
+	
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+	
 	@Column(name = "siteId")
-	int siteId;
+	private Integer siteId;
+	
 	@Column(name="zip",length=50)
-	String zip;
+	private String zip;
+	
 	@Column(name = "orgCode", length = 50)
-	String orgCode;
+	private String orgCode;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ProductLine> varProductLine = new ArrayList<ProductLine>();
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
+
 
 	
 	public Partner(){
@@ -212,11 +231,11 @@ public class Partner extends MainAbstractEntity {
 		this.contactPerson = contactPerson;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -228,11 +247,11 @@ public class Partner extends MainAbstractEntity {
 		this.comment = comment;
 	}
 
-	public int getSiteId() {
+	public Integer getSiteId() {
 		return siteId;
 	}
 
-	public void setSiteId(int siteId) {
+	public void setSiteId(Integer siteId) {
 		this.siteId = siteId;
 	}
 

@@ -101,25 +101,32 @@ public class OrderQueue extends MainAbstractEntity{
 	private static final long serialVersionUID = -8487156716364715576L;
 	
 	@Column(name="pId",length=50)
-	 String pId;
+	private String pId;
+	
 	@Column(name="subject",length=50)
-	 String subject;
+	private String subject;
+	
 	@Column(name="submittedBy",length=50)
-	 String submittedBy;
+	private String submittedBy;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name="submittedDate")
 	 Date submittedDate;
+	
 	@Column(name="status",length=100)
-	 String status;
+	private String status;
+	
 	@Column(name="comment",length=250)
-	 String comment;
+	private String comment;
+	
 	@Column(name="poNumber",length=50)
-	 String poNumber;
+	private String poNumber;
+	
 	@Column(name="prevOrderQueueId")
-	 int prevOrderQueueId;
+	 Integer prevOrderQueueId;
+	
 	@Column(name="error",length=1000)
-	String error;
+	private String error;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name="feedbackAcknowledgementDate")
@@ -132,16 +139,20 @@ public class OrderQueue extends MainAbstractEntity{
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
 	ProductLine varProductLine;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="orderFileAttachmentId")
 	OrderFileAttachment varOrderFileAttachment;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderFileQueue",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLine> listOrderLine=new ArrayList<OrderLine>();
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderFileQueue",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
+	
 /*	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderFileQueue",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<AuditTrail> listAuditTrail=new ArrayList<AuditTrail>();*/
@@ -327,11 +338,11 @@ public class OrderQueue extends MainAbstractEntity{
 		this.poNumber = poNumber;
 	}
 
-	public int getPrevOrderQueueId() {
+	public Integer getPrevOrderQueueId() {
 		return prevOrderQueueId;
 	}
 
-	public void setPrevOrderQueueId(int prevOrderQueueId) {
+	public void setPrevOrderQueueId(Integer prevOrderQueueId) {
 		this.prevOrderQueueId = prevOrderQueueId;
 	}
 

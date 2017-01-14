@@ -15,135 +15,235 @@ public class LocalItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
-	long id;
+	private Long id;
+
 	@Column(name="system",length=500)
-	String system;
+	private String system;
+
 	@Column(name="site",length=50)
-	String site;
+	private String site;
+
 	@Column(name="partnerName",length=500)
-	String partnerName;
+	private String partnerName;
+
 	@Column(name="rboName",length=500)
-	String rboName;
+	private String rboName;
+
 	@Column(name="customerItemNO",length=250)
-	String customerItemNO;
+	private String customerItemNO;
+
 	@Column(name="identifier",length=255)
-	String identifier;
+	private String identifier;
+
 	@Column(name="identifierVariable",length=250)
-	String identifierVariable;
+	private String identifierVariable;
+
 	@Column(name="internalItemNo",length=250)
-	String internalItemNo;
+	private String internalItemNo;
+
 	@Column(name="cancelItem")
-	boolean cancelItem;
+	private Boolean cancelItem;
+
 	@Column(name="glid")
-	long glid;
+	private Long glid;
+
 	@Column(name="createdBy",length=50)
-	String createdBy;
+	private String createdBy;
+
 	@Column(name="createdDate")
-	Date createdDate;
+	private Date createdDate;
+
 	@Column(name="lastModifiedBy",length=50)
-	String lastModifiedBy;
+	private String lastModifiedBy;
+	
 	@Column(name="lastModifiedDate")
-	Date lastModifiedDate;
+	private Date lastModifiedDate;
 	
 	
 	
 	public LocalItem() {}
-	
 
-	public long getId() {
+
+
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
-	String getSystem() {
+
+	public String getSystem() {
 		return system;
 	}
-	void setSystem(String system) {
+
+
+
+	public void setSystem(String system) {
 		this.system = system;
 	}
-	String getSite() {
+
+
+
+	public String getSite() {
 		return site;
 	}
-	void setSite(String site) {
+
+
+
+	public void setSite(String site) {
 		this.site = site;
 	}
-	String getPartnerName() {
+
+
+
+	public String getPartnerName() {
 		return partnerName;
 	}
-	void setPartnerName(String partnerName) {
+
+
+
+	public void setPartnerName(String partnerName) {
 		this.partnerName = partnerName;
 	}
-	String getRboName() {
+
+
+
+	public String getRboName() {
 		return rboName;
 	}
-	void setRboName(String rboName) {
+
+
+
+	public void setRboName(String rboName) {
 		this.rboName = rboName;
 	}
-	String getCustomerItemNO() {
+
+
+
+	public String getCustomerItemNO() {
 		return customerItemNO;
 	}
-	void setCustomerItemNO(String customerItemNO) {
+
+
+
+	public void setCustomerItemNO(String customerItemNO) {
 		this.customerItemNO = customerItemNO;
 	}
-	String getIdentifier() {
+
+
+
+	public String getIdentifier() {
 		return identifier;
 	}
-	void setIdentifier(String identifier) {
+
+
+
+	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	String getIdentifierVariable() {
+
+
+
+	public String getIdentifierVariable() {
 		return identifierVariable;
 	}
-	void setIdentifierVariable(String identifierVariable) {
+
+
+
+	public void setIdentifierVariable(String identifierVariable) {
 		this.identifierVariable = identifierVariable;
 	}
-	String getInternalItemNo() {
+
+
+
+	public String getInternalItemNo() {
 		return internalItemNo;
 	}
-	void setInternalItemNo(String internalItemNo) {
+
+
+
+	public void setInternalItemNo(String internalItemNo) {
 		this.internalItemNo = internalItemNo;
 	}
-	boolean isCancelItem() {
+
+
+
+	public Boolean getCancelItem() {
 		return cancelItem;
 	}
-	void setCancelItem(boolean cancelItem) {
+
+
+
+	public void setCancelItem(Boolean cancelItem) {
 		this.cancelItem = cancelItem;
 	}
-	long getGlid() {
+
+
+
+	public Long getGlid() {
 		return glid;
 	}
-	void setGlid(long glid) {
+
+
+
+	public void setGlid(Long glid) {
 		this.glid = glid;
 	}
-	String getCreatedBy() {
+
+
+
+	public String getCreatedBy() {
 		return createdBy;
 	}
-	void setCreatedBy(String createdBy) {
+
+
+
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	Date getCreatedDate() {
+
+
+
+	public Date getCreatedDate() {
 		return createdDate;
 	}
-	void setCreatedDate(Date createdDate) {
+
+
+
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	String getLastModifiedBy() {
+
+
+
+	public String getLastModifiedBy() {
 		return lastModifiedBy;
 	}
-	void setLastModifiedBy(String lastModifiedBy) {
+
+
+
+	public void setLastModifiedBy(String lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
 	}
-	Date getLastModifiedDate() {
+
+
+
+	public Date getLastModifiedDate() {
 		return lastModifiedDate;
 	}
-	void setLastModifiedDate(Date lastModifiedDate) {
+
+
+
+	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
+	
+
 	
 	
 }

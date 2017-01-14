@@ -25,28 +25,39 @@ public class OrderSystemInfo extends MainAbstractEntity {
 	private static final long serialVersionUID = 4788222987397974679L;
 	@Column(name="artworkHold",length=5)
 	private String artworkHold;
+	
 	@Column(name="csrName",length=250)
 	private String csrName;
+	
 	@Column(name="manufacturingNotes",length=500)
 	private String manufacturingNotes;
+	
 	@Column(name="packingInstruction",length=500)
 	private String packingInstruction;
+	
 	@Column(name="shippingMark",length=500)
 	private String shippingMark;
+	
 	@Column(name="discountOffer")
 	private boolean discountOffer;
+	
 	@Column(name="invoiceNote",length=500)
 	private String invoiceNote;
+	
 	@Column(name="splitShipSetBy",length=5)
 	private String splitShipSetBy;
+	
 	@Column(name="variableDataBreakdown",length=500)
 	String variableDataBreakdown;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
 	private ProductLine varProductLine;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="systemId")
 	private SystemInfo varSystem;
+	
 	@OneToMany(mappedBy="varOrderSystemInfo",fetch=FetchType.EAGER)
 	private List<OrgInfo> listOrgInfo;
 	

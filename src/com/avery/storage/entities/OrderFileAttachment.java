@@ -60,39 +60,52 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	private static final long serialVersionUID = -5438437762230204443L;
 
 	@Column(name = "fileName", length = 250)
-	String fileName;
+	private String fileName;
+	
 	@Column(name = "fileExtension", length = 50)
-	String fileExtension;
+	private String fileExtension;
+	
 	@Column(name = "fileContentType", length = 100)
-	String fileContentType;
+	private String fileContentType;
+	
 	@Column(name = "fileData", length = 100)
-	String fileData;
+	private String fileData;
+	
 	@Column(name = "additionalDataFileKey", length = 100)
-	String additionalDataFileKey;
+	private String additionalDataFileKey;
+	
 	@Column(name = "filePath", length=250)
-	String filePath;
+	private String filePath;
+	
 	@Column(name = "status", length = 100)
-	String status;
+	private String status;
+	
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+	
 	@Column(name="error",length=50)
-	String error;
+	private String error;
+	
 	@Column(name="orderFileId")
-	int orderFileId;
+	Integer orderFileId;
 	
 	@Column(name="productLineMatch",length=100)
-	String productLineMatch;
+	private String productLineMatch;
+	
 	@Column(name="rboMatch",length=100)
-	String rboMatch;
+	private String rboMatch;
+	
 	@Column(name="fileContentMatch",length=100)
-	String fileContentMatch;
+	private String fileContentMatch;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "orderEmailQueueId")
 	OrderEmailQueue varOrderEmailQueue;
+	
 	@ManyToOne( fetch = FetchType.EAGER)
 	@JoinColumn(name = "productLineId")
 	ProductLine varProductLine;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varOrderFileAttachment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<OrderQueue> listOrderFileQueue = new ArrayList<OrderQueue>();
@@ -203,11 +216,11 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		this.error = error;
 	}
 
-	public int getOrderFileId() {
+	public Integer getOrderFileId() {
 		return orderFileId;
 	}
 
-	public void setOrderFileId(int orderFileId) {
+	public void setOrderFileId(Integer orderFileId) {
 		this.orderFileId = orderFileId;
 	}
 

@@ -46,54 +46,76 @@ public class Address extends MainAbstractEntity {
 		
 	}
 
-	private static final long serialVersionUID = 3208431286041487210L;
+private static final long serialVersionUID = 3208431286041487210L;
 	
 	@Column(name = "description", length = 500)
-	String description;
+	private String description;
+
 	@Column(name = "address1", length = 500)
-	String address1;
+	private String address1;
+
 	@Column(name = "address2", length = 500)
-	String address2;
+	private String address2;
+
 	@Column(name = "address3", length = 500)
-	String address3;
+	private String address3;
+
 	@Column(name = "address4", length = 500)
-	String address4;
+	private String address4;
+
 	@Column(name = "city", length = 250)
-	String city;
+	private String city;
+
 	@Column(name = "state", length = 250)
-	String state;
+	private String state;
+
 	@Column(name = "country", length = 250)
-	String country;
+	private String country;
+
 	@Column(name = "contact", length = 255)
-	String contact;
+	private String contact;
+
 	@Column(name = "email", length = 255)
-	String email;
+	private String email;
+
 	@Column(name = "fax", length = 255)
-	String fax;
+	private String fax;
+
 	@Column(name = "phone1", length = 255)
-	String phone1;
+	private String phone1;
+
 	@Column(name = "phone2", length = 255)
-	String phone2;
+	private String phone2;
+
 	@Column(name = "siteNumber",length=255)
-	String siteNumber;
+	private String siteNumber;
+
 	@Column(name = "siteType", length = 255)
-	String siteType;
+	private String siteType;
+
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+
 	@Column(name = "siteId")
-	int siteId;
+	private Integer siteId;
+
 	@Column(name="zip",length=250)
-	String zip;
+	private String zip;
+
 	@Column(name = "orgCodeId")
-	int orgCodeId;
+	private Integer orgCodeId;
+
 	@Column(name = "system")
-	int system;
+	private Integer system;
+
 	@Column(name = "freightTerm", length = 250)
-	String freightTerm;
+	private String freightTerm;
+
 	@Column(name = "shippingMethod", length = 255)
-	String shippingMethod;
+	private String shippingMethod;
+	
 	@Column(name = "shippingInstruction", length = 255)
-	String shippingInstruction;
+	private String shippingInstruction;
 	
 	
 	public String getDescription() {

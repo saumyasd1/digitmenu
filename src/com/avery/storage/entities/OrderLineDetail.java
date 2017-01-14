@@ -55,26 +55,36 @@ public class OrderLineDetail extends MainAbstractEntity{
 	private static final long serialVersionUID = 8615509397523320616L;
 
 	@Column(name = "level", length = 50)
-	String level;
+	private String level;
+	
 	@Column(name = "SKUno", length = 50)
-	String SKUno;
+	private String SKUno;
+	
 	@Column(name = "typeSetter", length = 50)
-	String typeSetter;
+	private String typeSetter;
+	
 	@Column(name = "fiberPercent",nullable=true)
-	Integer fiberPercent;
+	private Integer fiberPercent;
+	
 	@Column(name = "sumOfFiberPercentage")
-	Integer sumOfFiberPercentage;
+	private Integer sumOfFiberPercentage;
+	
 	@Column(name = "mandatory", length = 100)
-	String mandatory;
+	private String mandatory;
+	
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+	
 	@Column(name = "variableDataValue", length = 250)
-	String variableDataValue;
+	private String variableDataValue;
+	
 	@Column(name = "variableFieldName", length = 100)
-	String variableFieldName;
+	private String variableFieldName;
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="orderLineId")
-	OrderLine varOrderLine;
+	private OrderLine varOrderLine;
+	
 	
 	
 

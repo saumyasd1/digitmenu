@@ -49,27 +49,27 @@ public class User extends MainAbstractEntity {
 	private static final long serialVersionUID = 1833552362987121156L;
 
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
 	@Column(name = "firstName", length = 64)
-	String firstName;
+	private String firstName;
 	@Column(name = "lastName", length = 64)
-	String lastName;
+	private String lastName;
 	@Column(name = "email", length = 255)
-	String email;
+	private String email;
 	@Column(name = "gender", length = 6)
-	String gender;
+	private String gender;
 	@Column(name = "jobTitle", length = 64)
-	String jobTitle;
+	private String jobTitle;
 	@Column(name = "password", length = 255)
-	String password;
+	private String password;
 	@Column(name = "role", length = 20)
-	String role;
+	private String role;
 	@Column(name = "siteId")
-	int siteId;
+	Integer siteId;
 	@Column(name = "status")
-	int status;
+	Integer status;
 	@Column(name = "middleName", length = 64)
-	String middleName;
+	private String middleName;
 
 	public User() {
 
@@ -149,19 +149,19 @@ public class User extends MainAbstractEntity {
 		this.role = role;
 	}
 
-	public int getSiteId() {
+	public Integer getSiteId() {
 		return siteId;
 	}
 
-	public void setSiteId(int siteId) {
+	public void setSiteId(Integer siteId) {
 		this.siteId = siteId;
 	}
 
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

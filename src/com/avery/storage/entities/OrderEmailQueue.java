@@ -51,104 +51,92 @@ public class OrderEmailQueue extends MainAbstractEntity{
 	public OrderEmailQueue(){
 		
 	}
-	
-	private static final long serialVersionUID = 3208431286041487210L;
+private static final long serialVersionUID = 3208431286041487210L;
 	
 	
 	@Column(name = "processId", length = 100)
-	String processId;
+	private String processId;
+
 	@Column(name = "senderEmailId", length = 100)
-	String senderEmailId;
+	private String senderEmailId;
+
 	@Column(name = "subject", length = 250)
-	String subject;
+	private String subject;
+
 	@Column(name = "mailBody", length = 500)
-	String mailBody;
+	private String mailBody;
+
 	@Column(name = "orderMail")
-	boolean orderMail;
+	private Boolean orderMail;
+
 	@Column(name = "assignee", length = 100)
-	String assignee;
+	private String assignee;
+
 	@Column(name = "status", length = 100)
-	String status;
+	private String status;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "receivedDate")
-	Date receivedDate;
+	private Date receivedDate;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "readDate")
-	Date readDate;
+	private Date readDate;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "acknowledgementDate")
-	Date acknowledgementDate;
+	private Date acknowledgementDate;
+
 	@Column(name = "toMailId", length = 100)
-	String toMailId;
+	private String toMailId;
+
 	@Column(name = "ccMailId", length = 100)
-	String ccMailId;
+	private String ccMailId;
+
 	@Column(name = "assignCSR", length = 100)
-	String assignCSR;
+	private String assignCSR;
+
 	@Column(name = "comment", length = 250)
-	String comment;
+	private String comment;
+
 	@Column(name = "orderSource", length = 50)
-	String orderSource;
+	private String orderSource;
 	
 	@Column(name = "emailSubjectProductLineMatch", length = 100)
-	String emailSubjectProductLineMatch;
+	private String emailSubjectProductLineMatch;
+
 	@Column(name = "emailSubjectRBOMatch", length = 100)
-	String emailSubjectRBOMatch;
+	private String emailSubjectRBOMatch;
+
 	@Column(name = "emailBodyProductLineMatch", length = 100)
-	String emailBodyProductLineMatch;
+	private String emailBodyProductLineMatch;
+
 	@Column(name = "emailBodyRBOMatch", length = 100)
-	String emailBodyRBOMatch;
+	private String emailBodyRBOMatch;
 	
 	@OneToMany(mappedBy = "varOrderEmailQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
+	private List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
 	
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
-
+	
 	@Transient
 	private String colorCode;
-
+	
 	@Transient
 	private String codeValue;
-	
+
 	@Transient
 	private int orderQueueCount;
-	
-	
+
 	//Adding partnerName and rboName to remove extra data that is not required
 	@Transient
 	private String partnerName;
 	
 	@Transient
 	private String rboName;
-
-	public String getIconName() {
-		return iconName;
-	}
-
-	public void setIconName(String iconName) {
-		this.iconName = iconName;
-	}
-
-	public String getColorCode() {
-		return colorCode;
-	}
-
-	public void setColorCode(String colorCode) {
-		this.colorCode = colorCode;
-	}
-
-	public String getCodeValue() {
-		return codeValue;
-	}
-
-	public void setCodeValue(String codeValue) {
-		this.codeValue = codeValue;
-	}
 
 	public int getOrderQueueCount() {
 		return orderQueueCount;
@@ -172,6 +160,31 @@ public class OrderEmailQueue extends MainAbstractEntity{
 
 	public void setRboName(String rboName) {
 		this.rboName = rboName;
+	}
+	
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+	
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
 	}
 
 	public String getProcessId() {
