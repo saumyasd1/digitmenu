@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,7 +18,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -27,18 +27,13 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
+import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Repository
 public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachment, Long> implements
@@ -206,12 +201,21 @@ OrderFileAttachmentDao {
 
 		return newList;
 	}
-
-/*	@Override
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue, String emailBody, ProductLine productLineObj) {
-		// TODO Auto-generated method stub
-		
-	}*/
+	
+	@Override
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj){
+		OrderFileAttachment obj=new OrderFileAttachment();
+		obj.setVarOrderEmailQueue(orderEmailQueue);
+		obj.setFilePath(emailBody);
+		obj.setVarProductLine(productLineObj);
+		obj.setCreatedDate(new Date());
+		obj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+		obj.setFileContentType(ApplicationConstants.DEFAULT_EMAILBODY_CONTENT_TYPE);
+		obj.setFileName(ApplicationConstants.EMAIL_FILE_NAME);
+		obj.setCreatedBy(ApplicationConstants.DEFAULT_USER_NAME);
+		obj.setFileExtension(ApplicationConstants.DEFAULT_EMAIL_FILE_EXTENSION);
+		create(obj);
+}
 
 	
 }
