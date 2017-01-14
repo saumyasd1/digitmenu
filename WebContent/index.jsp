@@ -41,6 +41,14 @@ int pageSize=25;
 		.hide-row-expander .custom-row-expander {
 		    visibility: hidden;
 		}
+		.aoc-win .x-window-header-title-default{
+			font-weight:bold;
+		}
+		.aoc-win .x-window-header-default {
+		    border-width: 1px !important;
+		    padding: 9px;
+		    border-color: #ccc;
+		} 
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>

@@ -1,133 +1,128 @@
 Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
-			extend : 'Ext.form.Panel',
-			alias : 'widget.partneradvancesearch',
-			itemId : 'partneradvancesearchItemId',
-			requires : ['Ext.window.MessageBox'],
-			controller:'partnerMain',
-			border : false,
-			buttonAlign : 'right',
-			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [   {
-							xtype:'displayfield',
-							itemId:'tittleItemId',
-							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
-							margin:'5 0 0 80'
-			            },
-						{
-							xtype:'tbspacer',
-							height:2
-						},  
-                      {
-						xtype:'displayfield',
-						itemId:'messageFieldItemId',
-						value:'',
-						hidden:true,
-						margin:'5 0 0 10'
-                       },
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'textfield',
-							itemId: 'partnernamevalue',
-							fieldLabel : AOCLit.partnerName,
-							name:'partnerName',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners:{
-								focus: function () {
-									var val=this.getValue().replace(/^\s+|\s+$/g,"");
-									if(val=="")
-										this.setValue('');
+	extend : 'AOC.view.base.NewBaseWindow',
+	alias : 'widget.partneradvancesearchwin',
+	
+	itemId : 'partnerAdvanceSearch',
+	reference:'partnerAdvanceSearch',
+	controller : 'partnerMain',
+	requires : ['Ext.window.MessageBox'],
+	
+	layout:'fit',
+	width: 330,
+	title:AOCLit.advancedSearchWindowTitle,
+	
+	initComponent:function(){
+		var me = this;
+		me.items = me.buildItems();
+		me.callParent(arguments);
+	},
+	buildItems :function(){
+		var me = this;
+		return [
+		    {
+		    	xtype:'form',
+		        reference:'partnerAdvanceSearchForm',
+		        border:false,
+		        buttonAlign:'right',
+		        buttons:me.getButtons(),
+		        padding:'10 10 5 10',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:Settings.config.defaultFormLabelStyle,
+					labelAlign:Settings.form.topLabelAlign
+				},
+		        items:[
+					{
+						xtype : 'textfield',
+						itemId: 'partnernamevalue',
+						fieldLabel: AOCLit.partnerName,
+						name:'partnerName',
+						width:300,
+						selectOnTab : true,
+						tabIndex:1,
+						margin:'5 0 0 0',
+						listeners:{
+							focus: function () {
+								var val=this.getValue().replace(/^\s+|\s+$/g,"");
+								if(val == ''){
+									this.setValue('');
 								}
 							}
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'radiogroup',
-							itemId: 'partnerdatecriteriavalue',
-							fieldLabel : '',
-							name: 'datecriteriavalue',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							margin:'5 0 0 10',
-							items:[
-						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
-						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
-						            ]
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'datefield',
-							itemId: 'partnerfromdatecriteriavalue',
-							fieldLabel : AOCLit.fromDate,
-							name:'fromDate',
-							reference:'fromDate',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners : {
-							    render : function(datefield) {
-							        /// code to convert GMT String to date object
-							        datefield.setValue(new Date());
-							                }
-							        }
-							
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'datefield',
-							itemId: 'partnertodatecriteriavalue',
-							fieldLabel : AOCLit.toDate,
-							name:'toDate',
-							width:250,
-							reference:'toDate',
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							//value: Ext.util.Format.date(currentDateTime),
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners : {
-							    render : function(datefield) {
-							        /// code to convert GMT String to date object
-							        datefield.setValue(new Date());
-							                },
-						 'focus': 'notifyByMessage'
-							        }
 						}
-			],
+					},					
+					{
+						xtype : 'radiogroup',
+						itemId: 'partnerdatecriteriavalue',
+						fieldLabel : '',
+						name: 'datecriteriavalue',
+						flex:1,
+						margin:'5 0 0 0',
+						items:[
+							{ boxLabel: 'Creation Date', tabIndex:2, name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
+							{ boxLabel: 'Modified Date', tabIndex:3, name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
+						]
+					},
+					{
 
-			buttons : [ {
-						text : 'Search',
-						disabled : false,
-						formBind : true,
-						success : true,
-						handler : 'getPartnerBasedOnSearchParameters'
-						}],
-				initComponent : function() {
-				this.callParent(arguments);
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 10 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'datefield',
+								name:'fromDate',
+								reference:'fromDate',
+								fieldLabel : AOCLit.fromDate,
+								flex:1,
+								selectOnTab : true,
+								tabIndex:4,
+								value:new Date(),
+								listeners : {
+									render : function(datefield) {
+										//datefield.setValue(new Date());
+									}
+								}
+							},
+							{
+								xtype : 'datefield',
+								fieldLabel : AOCLit.toDate,
+								name:'toDate',
+								reference:'toDate',
+								tabIndex:5,
+								flex:1,
+								margin:'0 0 0 10',
+								hidden:false,
+								allowBlank : true,
+								selectOnTab : true,
+								listeners : {
+									render : function(datefield) {
+										datefield.setValue(new Date());
+									},
+									'focus': 'notifyByMessage'
+								}
+							}
+						]
+					}  
+		        ]
+		    }
+		]
+	},
+	getButtons :function(){
+		return [ 
+			{
+				text : 'Search',
+				disabled : false,
+				formBind : true,
+				success : true,
+				listeners : {
+					click  : 'onSearchBtnClicked'
 				}
-
+			}
+		]	
+	}
 });

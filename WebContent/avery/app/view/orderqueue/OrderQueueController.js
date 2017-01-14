@@ -524,5 +524,43 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	       panel.getLayout().setActiveItem(emailManagement);
 	       emailManagement.getView().refresh();
 	       emailManagement.getStore().load();
- }
+    },
+   
+    onAttachmentGridCellClick:function(view, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+		if(e.target.className=='emailAttachmentLink'){
+			this.downLoadFile(record.get('filePath'), record.get('fileName'));
+		}
+	},
+	
+	downLoadFile:function(filePath, fileName){
+		var form = Ext.create('Ext.form.Panel', { 
+			standardSubmit: true,   
+			url : applicationContext+'/rest/orderattachements/download/'+filePath +'/'+fileName
+		});
+		form.submit({
+			method : 'GET'
+		});
+	},
+	
+	onDownloadAttachmentBtnClick:function(){
+		var me = this,
+			refs = me.getReferences(),
+			gridView = refs.emailAttachmentInfoGrid,
+			recordsArray = gridView.getSelectionModel().getSelection(),
+			len = recordsArray.length;
+		
+		if(len > 0){
+			var interVal = setInterval(function(){
+				if(len >= 0 && recordsArray[len-1]){
+					me.downLoadFile(recordsArray[len-1].get('filePath'),recordsArray[len-1].get('fileName'));
+					len = len-1;
+				}else{
+					clearInterval(interVal);
+				}
+				
+			},1000);
+		}else{
+			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectAttachmentFileMsg);
+		}
+	}
 })

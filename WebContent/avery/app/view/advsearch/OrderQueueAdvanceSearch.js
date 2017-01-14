@@ -1,21 +1,15 @@
 Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
-	extend : 'AOC.view.base.BaseWindow',
+	extend : 'AOC.view.base.NewBaseWindow',
 	alias : 'widget.orderqueueadvancesearchwin',
 	itemId : 'orderQueueAdvanceSearchWin',
 	
 	reference:'orderQueueAdvanceSearchWin',
 	controller : 'orderqueue',
-	
 	requires : ['Ext.window.MessageBox'],
-	//titleAlign:'center',
-
-	bodyStyle: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;padding:10px 10px 5px 10px;',
-	layout:'fit',
 	
-	height: 580,
+	title:AOCLit.advancedSearchWindowTitle,
+	layout:'fit',
 	width: 580,
-	draggable: false,
-    modal: true,
     
 	initComponent:function(){
 		var me = this;
@@ -30,15 +24,10 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 		    	xtype:'form',
 		        reference:'orderQueueAdvanceSearchForm',
 		        border:false,
-		        buttonAlign : 'right',
+		        padding:'10 10 5 10',
+		        buttonAlign: 'right',
 		        buttons:me.getButtons(),
 		        items:[
-					{
-						xtype:'tbtext',
-						itemId:'tittleItemId',
-						text:AOCLit.advancedSearchWindowTitle,
-						style:'color:#2f3338;font-size:15px;font-weight:bold;text-align:center;'
-					},	
 					{
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
@@ -80,7 +69,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
-								flex:1,
+								flex:1
 							},
 							{
 								xtype : 'textfield',
@@ -178,8 +167,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						xtype : 'radiogroup',
 						name: 'datecriteriavalue',
 						hideLabel :true,
-						//width:600,
+						flex:1,
 						labelSeparator:'',
+						margin:'5 0 0 0',
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelAlign:Settings.form.topLabelAlign,
 						items:[
@@ -191,7 +181,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
-						margin : '5 0 0 0',
+						margin : '5 0 10 0',
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,

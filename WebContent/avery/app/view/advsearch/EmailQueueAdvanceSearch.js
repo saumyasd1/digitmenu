@@ -1,21 +1,15 @@
 Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
-	extend : 'AOC.view.base.BaseWindow',
+	extend : 'AOC.view.base.NewBaseWindow',
 	alias : 'widget.emailqueueadvancesearchwin',
 	itemId : 'emailQueueAdvanceSearchWin',
 	
 	reference:'emailQueueAdvanceSearchWin',
 	controller : 'emailManagementController',
-	
 	requires : ['Ext.window.MessageBox'],
 
-	bodyStyle: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-	bodyPadding:10,
 	layout:'fit',
-	
-	height: 600,
+	title:AOCLit.advancedSearchWindowTitle,
 	width: 580,
-	draggable: false,
-    modal: true,
     
 	initComponent:function(){
 		var me = this;
@@ -30,15 +24,10 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 		    	xtype:'form',
 		        reference:'emailQueueAdvanceSearchForm',
 		        border:false,
+		        padding:'10 10 5 10',
 		        buttonAlign : 'right',
 		        buttons:me.getButtons(),
 		        items:[
-					{
-						xtype:'tbtext',
-						itemId:'tittleItemId',
-						text:AOCLit.advancedSearchWindowTitle,
-						style:'text-align:center;color:#2f3338;font-size:15px;font-weight:bold;'
-					},	
 					{
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
@@ -133,7 +122,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.orderTrackNo,
 								name:'id',
-								width:250,
 								flex:1,
 								margin:'0 0 0 10'
 							}
@@ -169,7 +157,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						name: 'datecriteriavalue',
 						fieldLabel : '',
 						width:600,
-						padding:'0 0 0 10',
+						margin:'5 0 0 0',
 						labelSeparator:'',
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelAlign:Settings.form.topLabelAlign,
@@ -182,7 +170,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
-						margin : '5 0 0 0',
+						margin : '5 0 10 0',
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
@@ -192,17 +180,16 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 							{
 								xtype : 'datefield',
 								name:'fromDate',
-								//value : Ext.Date.subtract (new Date(),Ext.Date.DAY,7),
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
-								//width:250,
 								flex:1,
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+										//datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
 									}
 								}
 							},
@@ -211,7 +198,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								//width:250,
 								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,
@@ -221,7 +207,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 									render : function(datefield) {
 										datefield.setValue(new Date());
 									},
-									'focus': 'notifyByMessage'
+									//'focus': 'notifyByMessage'
 								}
 							}
 						]

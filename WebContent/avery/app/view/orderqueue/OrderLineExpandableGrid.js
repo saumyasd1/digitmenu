@@ -381,8 +381,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				         var store = combo.store;
 				         //(Amit Kumar 12-01-2017)only waitingfor cs verification and cancel status will visible in combo
 				         store.filterBy(function(record){
-				          return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
+				        	 return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
 				         });
+			        },
+			        select:'onStatusSelect',
+			        enable:function(combo){
+			        	combo.setValue(AOCLit.waitingForCSRStatusOrderLine);
 			        }
 		       }
 			},

@@ -350,6 +350,21 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			}
 		}
 		return '<div>'+v+'</div>';
+	},
+	
+	onStatusSelect:function(combo){
+		var value = combo.getValue(),
+			grid = this.getView(),
+			columns = grid.columns,
+			len = columns.length;
+		
+		for(var i = 0; i< len; i++){
+			if(value == AOCLit.waitingForCSRStatusOrderLine){
+				columns[i].getEditor().enable();
+			}else{
+				columns[i].getEditor().disable();
+			}
+		}
 	}
     
 });

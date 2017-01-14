@@ -81,42 +81,50 @@ Ext.define('AOC.view.address.AddressController', {
 				cmp.setValue('');
 				cmp.orderedTriggers[0].hide();
 		   },
-	openAdvancedSearchWindow:function(e, t, eOpts){
-		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-		 if(!temp){
-				 temp = Ext.create('Ext.window.Window',{
-						 	height:330,
-							width:560,
-							//title:advancedSearchWindowTitle,
-							itemId:'addressAdvancedSerachwindow',
-							layout: 'fit',
-							draggable: false,
-							modal:true,
-							closeAction:'hide',
-						 	items : [{  xtype : 'addressadvancesearch' }]
-					 });
-		         }
-					if (Ext.isIE || Ext.isGecko) {
-						browser = "IE";
-						 var d = Ext.get(e.getTarget());
-						 var width = temp.width;
-						 width=width-25; 
-						 x=d.getX();
-						 y=d.getY();
-						//box = this.getBox();
-	   	        		temp.showAt(x-width,y+26);
-					}
-					else if (Ext.isChrome || Ext.isSafari) {
-						 browser = "Chrome";
-						 var d = Ext.get(e.getTarget());
-						 var width = temp.width;
-						 width=width-24;
-						 x=d.getX();
-						 y=d.getY();
-	   	        		 temp.show();
-					}
-					return false;	
-	},
+		   
+   openAdvancedSearchWindow:function(){
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.AddressAdvanceSearch');
+    	if(!advanceSearchWin.isVisible()){
+    		advanceSearchWin.show();
+    	}
+    },
+    onSearchBtnClicked:function(btn){},
+//	openAdvancedSearchWindow:function(e, t, eOpts){
+//		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
+//		 if(!temp){
+//				 temp = Ext.create('Ext.window.Window',{
+//						 	height:330,
+//							width:560,
+//							//title:advancedSearchWindowTitle,
+//							itemId:'addressAdvancedSerachwindow',
+//							layout: 'fit',
+//							draggable: false,
+//							modal:true,
+//							closeAction:'hide',
+//						 	items : [{  xtype : 'addressadvancesearch' }]
+//					 });
+//		         }
+//					if (Ext.isIE || Ext.isGecko) {
+//						browser = "IE";
+//						 var d = Ext.get(e.getTarget());
+//						 var width = temp.width;
+//						 width=width-25; 
+//						 x=d.getX();
+//						 y=d.getY();
+//						//box = this.getBox();
+//	   	        		temp.showAt(x-width,y+26);
+//					}
+//					else if (Ext.isChrome || Ext.isSafari) {
+//						 browser = "Chrome";
+//						 var d = Ext.get(e.getTarget());
+//						 var width = temp.width;
+//						 width=width-24;
+//						 x=d.getX();
+//						 y=d.getY();
+//	   	        		 temp.show();
+//					}
+//					return false;	
+//	},
 	openAddAddressWindow:function(currentRecord,id){
 		var mode=this.runTime.getWindowInEditMode();
 		var win=Ext.ComponentQuery.query('#createaddressmanageItemId')[0];
@@ -411,7 +419,7 @@ Ext.define('AOC.view.address.AddressController', {
 	loadShippingMethodStore:function(store, url){
 		var response = Ext.Ajax.request({
 			async: false,
-			url: applicationContext+'/rest/orderconfigurations/orgId/'+url,
+			url: applicationContext+'/rest/orderconfigurations/orgId/'+url
 		});
 		
 		var items = Ext.decode(response.responseText);

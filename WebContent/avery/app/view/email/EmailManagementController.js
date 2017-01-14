@@ -188,7 +188,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
     
     openAdvancedSearchWindow:function(){
     	var advanceSearchWin = Ext.create('AOC.view.advsearch.EmailQueueAdvanceSearchWindow');
-    	advanceSearchWin.show();
+    	if(!advanceSearchWin.isVisible()){
+    		advanceSearchWin.show();
+    	}
     },
     onSearchBtnClicked:function(btn){}
 });

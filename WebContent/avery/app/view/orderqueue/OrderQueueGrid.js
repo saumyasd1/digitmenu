@@ -103,12 +103,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				hideable: true,
 				dataIndex:'attachmentPresent',
 				renderer:function(v,cell,record){
-					if(v){
+					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.attacheImageSrc + '" />';
+					/*if(v){
 						return '<img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
 					}
 					else{
 						return '';
-					}
+					}*/
 				}
 			},
 			{
@@ -303,11 +304,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			});
 		}
 		else if(e.target.className=='viewattachment'){
-			var list=record.get('attachmentFileList'),htmlString='';
-			for(var i=0;i<list.length;i++){
-				htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
-			}
-			td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
+			var id = record.get('id');
+			var attachmentWin = Ext.create('AOC.view.orderqueue.OrderQueueAttachmentWindow',{recordId: id});
+			attachmentWin.show();
+			
+//			var list=record.get('attachmentFileList'),htmlString='';
+//			for(var i=0;i<list.length;i++){
+//				htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
+//			}
+//			td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
 		}else if(e.target.className=='attachment'){
 			var id=e.target.accessKey;
 			var form = Ext.create('Ext.form.Panel', { 
