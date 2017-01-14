@@ -362,7 +362,11 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			if(value == AOCLit.waitingForCSRStatusOrderLine){
 				columns[i].getEditor().enable();
 			}else{
-				columns[i].getEditor().disable();
+				if(columns[i].getEditor().dataIndex == 'status'){
+    				columns[i].getEditor().enable();
+    			}else{
+    				columns[i].getEditor().disable();
+    			}
 			}
 		}
 	}

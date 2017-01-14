@@ -9,7 +9,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
             me = this;
         var commentArea = this.getView().lookupReference('commentArea');
         var comment = commentArea.getValue().replace(/\n/g, '::');
-        var parameters = '{\"status\":\"' + AOCLit.cancelStatusOrderLine + '\"';
+        var parameters = '{\"status\":\"' + AOCLit.cancelStatusOrderQueue + '\"';
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';
         }
@@ -37,7 +37,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
                 	form.disable();
                 	me.runTime.setAllowOrderLineEdit(false);
                 	orderlineexpandablegrid.store.load();
-                	Ext.Msg.alert('',orderCancelSuccessAlert);
+                	Ext.Msg.alert('',AOCLit.orderCancelSuccessAlert);
                 }else{
                 	activeItem.getStore().load();
                 }
