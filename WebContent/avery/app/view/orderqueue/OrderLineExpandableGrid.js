@@ -287,7 +287,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Round Qty',
 			dataIndex: 'roundQty',
 			width: 50,
-			editor: 'numberfield',
+			editor: {
+				xtype:'numberfield',
+				minValue:0
+			},
 			renderer:function(value, metadata, record){
 				if(value){
 					return Number(value)
@@ -299,7 +302,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'MOQDiff Qty',
 			dataIndex: 'moqdiffQty',
 			width: 55,
-			editor: 'numberfield',
+			editor: {
+				xtype:'numberfield',
+				minValue:0
+			},
 			renderer:function(value, metadata, record){
 				if(value){
 					return Number(value)
@@ -311,7 +317,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Customer Ordered Qty.<font color=red>*</font>',
 			dataIndex: 'customerOrderedQty',
 			width: 106,
-			editor: 'numberfield',
+			editor: {
+				xtype:'numberfield',
+				minValue:0
+			},
 			renderer : function(value, metadata, record) {
 				if(parseInt(value) > -1) {
 					if(this.showMandatoryValidationField){
