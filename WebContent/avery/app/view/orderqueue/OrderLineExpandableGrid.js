@@ -1168,11 +1168,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							{
 								text: "Variable Field Value",
 								dataIndex: 'variableDataValue',
-								width: 140,
+								width: 200,
 								editor: 'textfield',
+								resizable:false,
 								renderer:function(v, metadata,rec){
 									if(v){
 										var mandatory=rec.get('mandatory');
+										metadata.tdAttr ='data-qtip="'+ v +'"';
 										if(mandatory=='Y'){
 											if(v == ''){
 												if(me.showMandatoryValidationField)
@@ -1199,7 +1201,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							}
 						],
 						columnLines: false,
-						width: 793,
+						width: 850,
 						border: true,
 						plugins: me.getInnerGridPlugin(),
 						autoHeight: true,
@@ -1212,8 +1214,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     getInnerGridPlugin:function(){
         var grid=this;
-        var orderLineStatus=AOC.config.Runtime.getOrderLineStatus();
-    	if(orderLineStatus == AOCLit.waitingForCSRStatusOrderLine && this.editGrid){
+        var orderQueueStatus=AOC.config.Runtime.getOrderQueueStatus();
+    	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue && this.editGrid){
     		var rowEditor=Ext.create('AOC.view.ux.CustomRowEditing',{
     			clicksToEdit: 1,
                 saveAndNextBtn: true,
@@ -1237,10 +1239,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 							success : function(response, opts) {
 								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
+								grid.store.load();
 								Ext.Msg.alert('Success','Order line Detail successfully updated');
-								
 								Ext.getBody().unmask();
-								editor.grid.store.load();
 								//var data = grid.store.getData();
 							},
 							failure: function(response, opts) {

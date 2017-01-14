@@ -8,7 +8,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
 	layout:'fit',
 	width: 400,
 	height:400,
-	title:AOCLit.advancedSearchWindowTitle,
+	title:'Additional File Attachment',
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
@@ -29,7 +29,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
 						type:'json', 
 						rootProperty: 'additionalfiles',
 					}
-				}
+				},
+				autoLoad:true
 			});
 		
 		grid.bindStore(store);
