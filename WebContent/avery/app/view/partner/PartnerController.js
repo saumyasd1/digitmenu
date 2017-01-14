@@ -258,6 +258,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                 property: 'query',
                 value: parameters
             });
+            view.contextGrid.lookupReference('clearAdvSearch').show();
         }
         view.close();
     },
