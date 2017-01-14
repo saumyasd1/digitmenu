@@ -83,48 +83,41 @@ Ext.define('AOC.view.address.AddressController', {
 		   },
 		   
    openAdvancedSearchWindow:function(){
-    	var advanceSearchWin = Ext.create('AOC.view.advsearch.AddressAdvanceSearch');
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.AddressAdvanceSearch',{contextGrid:this.getView()});
     	if(!advanceSearchWin.isVisible()){
     		advanceSearchWin.show();
     	}
     },
-    onSearchBtnClicked:function(btn){},
-//	openAdvancedSearchWindow:function(e, t, eOpts){
-//		var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-//		 if(!temp){
-//				 temp = Ext.create('Ext.window.Window',{
-//						 	height:330,
-//							width:560,
-//							//title:advancedSearchWindowTitle,
-//							itemId:'addressAdvancedSerachwindow',
-//							layout: 'fit',
-//							draggable: false,
-//							modal:true,
-//							closeAction:'hide',
-//						 	items : [{  xtype : 'addressadvancesearch' }]
-//					 });
-//		         }
-//					if (Ext.isIE || Ext.isGecko) {
-//						browser = "IE";
-//						 var d = Ext.get(e.getTarget());
-//						 var width = temp.width;
-//						 width=width-25; 
-//						 x=d.getX();
-//						 y=d.getY();
-//						//box = this.getBox();
-//	   	        		temp.showAt(x-width,y+26);
-//					}
-//					else if (Ext.isChrome || Ext.isSafari) {
-//						 browser = "Chrome";
-//						 var d = Ext.get(e.getTarget());
-//						 var width = temp.width;
-//						 width=width-24;
-//						 x=d.getX();
-//						 y=d.getY();
-//	   	        		 temp.show();
-//					}
-//					return false;	
-//	},
+    onSearchBtnClicked:function(btn){
+
+
+    	  var view = this.getView(),
+    	  	  refs = view.getReferences(),
+    	  	  form = refs.addressAdvanceSearchForm.getForm(),
+    	  	  values = form.getValues();
+    	  	  store = view.contextGrid.store;
+    	  	  
+          if (values) {
+              store.proxy.setFilterParam('query');
+              
+              var parameters = Ext.JSON.encode(values);
+              
+              store.setRemoteFilter(true);
+              if (!store.proxy.hasOwnProperty('filterParam')) {
+                  store.proxy.setFilterParam('query');
+              }
+              store.proxy.encodeFilters = function(filters) {
+                  return filters[0].getValue();
+              };
+              store.filter({
+                  id: 'query',
+                  property: 'query',
+                  value: parameters
+              });
+          }
+          view.close();
+      
+    },
 	openAddAddressWindow:function(currentRecord,id){
 		var mode=this.runTime.getWindowInEditMode();
 		var win=Ext.ComponentQuery.query('#createaddressmanageItemId')[0];
