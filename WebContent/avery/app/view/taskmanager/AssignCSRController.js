@@ -12,7 +12,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
    		comboValue = csrCombo.getValue();
     	 if(comboValue){
 	    	Ext.Msg.show({
-	    	      title:'Process Order',
+	    	      title:'Assign CSR',
 	    	      message: 'Are you sure you want to move the email to task manager?',
 	    	      buttons: Ext.Msg.YESNO,
 	    	      icon: Ext.Msg.QUESTION,
