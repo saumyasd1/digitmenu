@@ -128,6 +128,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     		    	    	var AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId');
     		    	    	AttachmentInfoGriditemId.store.removeAll();
     		    	    	AttachmentInfoGriditemId.getView().refresh();
+    		    	    	me.getView().down('form').reset();
     		    	    	//me.getView().lookupReference('attachment1').show();
     		    	    	Ext.getBody().unmask();
     						},
@@ -144,43 +145,66 @@ Ext.define('AOC.view.webform.WebFormController', {
     		}
     },
     onAttachemnetChange:function(obj,value){
-    	if(value!=null && value!=''){
+    	if(!Ext.isEmpty(value)){
     	Ext.getBody().mask('Loading......');
-    	var form=this.getView();
+    	var form=this.getView(),view=this.getView();
 		   var value=value.substring(value.lastIndexOf("\\"));
 		    value=value.replace("\\"," ");
 		    var extension=value.substring(value.lastIndexOf(".")+1);
-		    	if(extension!='pdf'){
+		    var extension=value.substring(value.lastIndexOf(".")+1);
+		    if(!Ext.isEmpty(view.attachmentFileNameExtension_1)){
+		    	if(view.attachmentFileNameExtension_1.toLowerCase().indexOf(extension.toLowerCase())==-1){
 		    		obj.reset( );
-		    		Ext.Msg.alert('',AOCLit.uploadOnlyPdfFileAlert);
 		    		Ext.getBody().unmask();
+		    		Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
 		    		return false;
+		    	}else{
+		    		var count=obj.name.replace('attachment','');
+		 		   var i=parseInt(count)+1;
+		 		   form.add({
+		        			xtype:'fileuploadfield',
+		        			labelAlign:'right',
+		        			name: 'attachment'+i,
+		        			reference: 'attachment'+i,
+		        			fieldLabel:'Attachments',
+		        			labelSeparator:'',
+		        			allowBlank: true,
+		        			anchor:'100%',
+		        			labelWidth : 200,
+			  		        labelSeparator : '',
+			  		        labelAlign:'right',
+			  		        listeners:{
+			     				 'change':'onAttachemnetChange'
+			     			 }
+		 		   },{   
+	        			xtype:'textfield',
+	        			labelAlign:'right',
+	        			name: 'additionalDataFileKey'+i,
+	        			anchor:'100%',
+	        			reference: 'additionalDataFileKey'+i,
+	        			fieldLabel:'Additional DataFile Key',
+	        			itemId:'additionalDataFileKey'+i,
+	        			labelSeparator:'',
+	        			labelWidth : 200,
+	        			allowBlank: true,
+	            		labelSeparator : '',
+	            		labelAlign:'right',
+	            		listeners:{
+	     				  'focus': 'notifyByMessage'
+	     			 }
+	        		});
+		 		   form.attachmentCount++;
+		 		   var additionalDataFileKey=form.lookupReference('additionalDataFileKey'+count);
+		 		   this.insertFileInGrid(value,'Attachment',true,count,null,additionalDataFileKey.getValue());
+		 		   obj.hide();
+		 		  additionalDataFileKey.hide();
 		    	}
-		   var count=obj.name.replace('attachment','');
-		   var i=parseInt(count)+1;
-		   form.add({
-       			xtype:'fileuploadfield',
-       			labelAlign:'right',
-       			name: 'attachment'+i,
-       			reference: 'attachment'+i,
-       			fieldLabel:'Attachments',
-       			labelSeparator:'',
-       			allowBlank: true,
-       			anchor:'100%',
-       			labelWidth : 200,
- 		        labelSeparator : '',
- 		        labelAlign:'right',
- 		        listeners:{
-    				 'change':'onAttachemnetChange'
-    			 }
-		   });
-		   form.attachmentCount++;
-		   this.insertFileInGrid(value,'Attachment',true,count);
-		   obj.hide();
+		    }
+		   
 		   Ext.getBody().unmask();
     	}
 	 },
-	 insertFileInGrid:function(fileName,fileType,multiAllowed,i,id){
+	 insertFileInGrid:function(fileName,fileType,multiAllowed,i,id,additionalDataFileKey){
 		 var AttachmentInfoGriditemId=this.getView().nextSibling('#AttachmentInfoGriditemId');
 		 id = (Ext.isEmpty(id))?0:id;
 			var store=AttachmentInfoGriditemId.store;
@@ -193,7 +217,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 						 fileType : fileType,
 						 type:'new',
 						 internalId:i,
-						 fileId:id
+						 fileId:id,
+						 additionalDataFileKey:additionalDataFileKey
 					 } ]
 				});
 				AttachmentInfoGriditemId.bindStore(store);
@@ -209,38 +234,42 @@ Ext.define('AOC.view.webform.WebFormController', {
 						 fileType : fileType,
 						 type:'new',
 						 internalId:i,
-						 fileId:id
+						 fileId:id,
+						 additionalDataFileKey:additionalDataFileKey
 					 });
 			}
 	 },
 	 onOrderFileChange:function(obj,value){
-		 var value=value.substring(value.lastIndexOf("\\"));
+		 var value=value.substring(value.lastIndexOf("\\")),view=this.getView();
 		    value=value.replace("\\"," ");
-		    if(value!=null && value!=''){
+		    if(!Ext.isEmpty(value)){
 			    var extension=value.substring(value.lastIndexOf(".")+1);
-			    if(obj.orderSchemaType=='Excel'){
-			    	if(extension!='xls' && extension!='xlsx'){
+			    if(!Ext.isEmpty(view.orderFileNameExtension)){
+			    	if(view.orderFileNameExtension.toLowerCase().indexOf(extension.toLowerCase())==-1){
 			    		obj.reset( );
-			    		Ext.Msg.alert('',AOCLit.uploadOnlyExcelFileAlert);
+			    		Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
 			    		return false;
+			    	}else{
+			    		this.insertFileInGrid(value,'Order File Type',false,null);
 			    	}
 			    }
-			    this.insertFileInGrid(value,'Order File Type',false);
 		    }
 	 },
 	 onAttachmentGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 	    	if(e.target.className=='deleteClass'){
 	    		Ext.getBody().mask('Deleting...');
-	    		 var form=this.getView().down('form');
-	    		var internalId=record.get('internalId');
-	    		var fileType=record.get('fileType');
-	    		var fileField;
-	    		var AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId');
-    	    	       var store=AttachmentInfoGriditemId.store;
+	    		var form=this.getView().down('form'),
+		    		internalId=record.get('internalId'),
+		    		fileType=record.get('fileType'),
+		    		fileField,
+		    		AttachmentInfoGriditemId=this.getView().down('#AttachmentInfoGriditemId'),
+	    	    	store=AttachmentInfoGriditemId.store;
 	    		if(fileType=='Attachment'){
 	    			fileField=form.lookupReference('attachment'+internalId);
+	    			var additionalDataFileKey=form.lookupReference('additionalDataFileKey'+internalId);
 	    			if(fileField){
 	    				fileField.destroy();
+	    				additionalDataFileKey.destroy();
 	    			}
 	    		}
 	    		else{
@@ -299,16 +328,44 @@ Ext.define('AOC.view.webform.WebFormController', {
         this.getView().destroy();
      },
      onDataStructureSelection:function(cmp,newValue){
-    	 if(!Ext.isEmpty(newValue)){
-    		 this.getView().lookupReference('emailBody').enable();
-			 this.getView().lookupReference('email').enable();
-			 this.getView().lookupReference('subject').enable();
-			 this.getView().lookupReference('orderFileType').enable();
+    	 var store=cmp.getStore(),
+    	 	index=store.find('id',newValue),
+    	 	view=this.getView(),
+    	 	attachmentCount=view.attachmentCount,
+    	 	attachementField=this.getView().lookupReference('attachment'+attachmentCount),
+    	 	additionalDataFileKey=view.lookupReference('additionalDataFileKey'+attachmentCount);
+    	 if(!Ext.isEmpty(newValue) && index!=-1){
+    		 var record=store.getAt(index),
+    		 attachmentRequired=record.get('attachmentRequired');
+    		 view.orderFileNameExtension=record.get('orderFileNameExtension');
+    		 view.attachmentFileNameExtension_1=record.get('attachmentFileNameExtension_1');
+    		 if(attachmentRequired){
+    			 attachementField.show();
+    			 attachementField.enable();
+    			 attachementField.allowBlank=false;
+    			 additionalDataFileKey.show();
+    			 additionalDataFileKey.enable();
+    		 }else{
+    			 attachementField.hide();
+    			 attachementField.disable();
+    			 attachementField.allowBlank=true;
+    			 additionalDataFileKey.hide();
+    			 additionalDataFileKey.disable();
+    		 }
+    		 view.lookupReference('emailBody').enable();
+    		 view.lookupReference('email').enable();
+    		 view.lookupReference('subject').enable();
+    		 view.lookupReference('orderFileType').enable();
 		 }else{
-			 this.getView().lookupReference('subject').disable();
-			 this.getView().lookupReference('emailBody').disable();
-			 this.getView().lookupReference('email').disable();
-			 this.getView().lookupReference('subject').disable();
+			 view.lookupReference('subject').disable();
+			 view.lookupReference('emailBody').disable();
+			 view.lookupReference('email').disable();
+			 view.lookupReference('subject').disable();
+			 view.orderFileNameExtension=null;
+    		 view.attachmentFileNameExtension_1=null;
+			 attachementField.hide();
+			 attachementField.disable();
+			 attachementField.allowBlank=true;
 		 }
      }
 });
