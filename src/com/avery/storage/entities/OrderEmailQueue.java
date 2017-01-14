@@ -227,12 +227,12 @@ private static final long serialVersionUID = 3208431286041487210L;
 	}
 
 
-	public boolean isOrderMail() {
+	public Boolean isOrderMail() {
 		return orderMail;
 	}
 
 
-	public void setOrderMail(boolean orderMail) {
+	public void setOrderMail(Boolean orderMail) {
 		this.orderMail = orderMail;
 	}
 
