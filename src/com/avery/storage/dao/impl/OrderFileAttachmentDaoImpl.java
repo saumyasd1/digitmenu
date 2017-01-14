@@ -33,6 +33,7 @@ import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.ProductLine;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -144,15 +145,17 @@ OrderFileAttachmentDao {
 			criteria = session.createCriteria(OrderLine.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderFileQueueId));
 			ProjectionList projections = Projections.projectionList();
-			projections.add(Projections.property("account"), "account");
+			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
 			List<String> list = criteria.list();
+			if(list == null | list.size() == 0)
+				return entitiesMap;
 			List uniqueList = getUniqueList(list);
 			Iterator itr = uniqueList.iterator();
 			Criteria crit = null;
 			List<OrderFileAttachment> resList = new ArrayList<OrderFileAttachment>();
 			while(itr.hasNext()){
-				Long ll = (Long) itr.next();
+				Long orderFileAttachmentId = (Long) itr.next();
 				//System.out.println(ll);
 				crit = session.createCriteria(OrderFileAttachment.class);
 				ProjectionList proj = Projections.projectionList();
@@ -160,7 +163,7 @@ OrderFileAttachmentDao {
 				proj.add(Projections.property("fileName").as("fileName"));
 				proj.add(Projections.property("filePath").as("filePath"));
 				crit.setProjection(proj);
-				crit.add(Restrictions.eq("id", ll));
+				crit.add(Restrictions.eq("id", orderFileAttachmentId));
 				crit.setResultTransformer(new AliasToBeanResultTransformer(OrderFileAttachment.class));
 				OrderFileAttachment orderFileAttachment = (OrderFileAttachment) crit.list().get(0);
 				resList.add(orderFileAttachment);
@@ -203,6 +206,12 @@ OrderFileAttachmentDao {
 
 		return newList;
 	}
+
+/*	@Override
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue, String emailBody, ProductLine productLineObj) {
+		// TODO Auto-generated method stub
+		
+	}*/
 
 	
 }
