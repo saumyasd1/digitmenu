@@ -192,7 +192,7 @@ Ext.define('AOC.controller.MenuController', {
 				weborderview.down('form').reset();
 				weborderview.down('form').isResubmit = false;
 				weborderview.down('form').lookupReference('rboCombo').disable();
-				weborderview.down('form').lookupReference('productLineCombo').disable();
+//				weborderview.down('form').lookupReference('productLineCombo').disable();
 				weborderview.down('form').lookupReference('partnerCombo').getStore().load();
 				var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
 		    	attachmentInfoGriditemId.store.removeAll();
