@@ -121,6 +121,7 @@ Ext.define('AOC.view.address.AddressController', {
                   property: 'query',
                   value: parameters
               });
+              view.contextGrid.lookupReference('clearAdvSearch').show();
           }
           view.close();
       
