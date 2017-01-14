@@ -213,6 +213,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
                   property: 'query',
                   value: parameters
               });
+              view.contextGrid.lookupReference('clearAdvSearch').show();
           }
           view.close();
       
