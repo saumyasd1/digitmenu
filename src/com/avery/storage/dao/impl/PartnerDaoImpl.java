@@ -45,11 +45,11 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType=searchMap.get("datecriteriavalue");
-			/*if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
+			if(dateType!=null && !dateType.equals("")){
+				String sDate=searchMap.get("fromDate")+" 00:00:00";
+				String eDate=searchMap.get("toDate")+" 00:00:00";
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
-			}*/
+			}
 			String partnerName=searchMap.get("partnerName");
 			if(partnerName!=null && !"".equals(partnerName)){
 				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));

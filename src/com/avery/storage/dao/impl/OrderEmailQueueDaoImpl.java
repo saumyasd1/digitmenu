@@ -601,11 +601,11 @@ OrderEmailQueueDao {
 		if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType=searchMap.get("datecriteriavalue");
-			/*if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
+			if(dateType!=null && !dateType.equals("")){
+				String sDate=searchMap.get("fromDate")+" 00:00:00";
+				String eDate=searchMap.get("toDate")+" 00:00:00";
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
-			}*/
+			}
 			String partnerName=searchMap.get("PartnerName");
 			if(partnerName!=null && !"".equals(partnerName)){
 				//criteria.createAlias("partner", "partner");
