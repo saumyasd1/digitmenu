@@ -24,43 +24,37 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
   },
   
   openAdvancedSearchWindow:function(btn){
-	  var advanceSearchWin = Ext.create('AOC.view.advsearch.OrderQueueAdvanceSearch');
+	  var advanceSearchWin = Ext.create('AOC.view.advsearch.OrderQueueAdvanceSearch',{contextGrid:this.getView()});
 	  if(!advanceSearchWin.isVisible()){
-		  store = Ext.create('AOC.store.PartnerProductLineStore', {
-			    storeId: 'PartnerProductLineStoreStoreId',
-			    totalCount: 'total',
-			    proxy: {
-			        type: 'rest',
-			        url: applicationContext + '/rest/productLines',
-			        reader: {
-			            type: 'json',
-			            rootProperty: 'ArrayList',
-			            totalProperty: 'totalCount'
-			        }
-			    },
-			    listeners: {
-			        'load': function(store, records, options) {
-			            var uniqueValueArray = store.collect('productLineType');
-			            var serviceStoreData = [];
-			            if (uniqueValueArray.length > 0) {
-			                uniqueValueArray.forEach(function(item) {
-			                    var service = [item];
-			                    serviceStoreData.push(service);
-			                });
-			                var serviceStore = Ext.create('Ext.data.ArrayStore', {
-			                    fields: ['productLineType'],
-			                    data: serviceStoreData
-			                });
-			                advanceSearchWin.down('#productLineComboItemId').bindStore(serviceStore);
-			            }
-			        }
-			    }
-			});
 		  advanceSearchWin.show();
 	  }
   },
   onSearchBtnClicked:function(searchBtn){
-	  
+	  var view = this.getView(),
+	  	  refs = view.getReferences(),
+	  	  form = refs.orderQueueAdvanceSearchForm.getForm(),
+	  	  values = form.getValues();
+	  	  store = view.contextGrid.store;
+	  	  
+      if (values) {
+          store.proxy.setFilterParam('query');
+          
+          var parameters = Ext.JSON.encode(values);
+          
+          store.setRemoteFilter(true);
+          if (!store.proxy.hasOwnProperty('filterParam')) {
+              store.proxy.setFilterParam('query');
+          }
+          store.proxy.encodeFilters = function(filters) {
+              return filters[0].getValue();
+          };
+          store.filter({
+              id: 'query',
+              property: 'query',
+              value: parameters
+          });
+      }
+      view.close();
   },
 //    openAdvancedSearchWindow: function( e, t, eOpts) {
 //        var temp = Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];

@@ -234,6 +234,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
+				reference:'orderQueueSearchBtn',
 				listeners : {
 					click  : 'onSearchBtnClicked'
 				}
