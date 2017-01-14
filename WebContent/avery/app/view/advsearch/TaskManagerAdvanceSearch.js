@@ -103,33 +103,6 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 							},
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.orderTrackNo,
-								name:'id',
-								tabIndex:6,
-								flex:1,
-								margin:'0 0 0 10'
-							}
-						]
-					},
-					{ 
-						xtype: 'fieldcontainer',
-						layout: 'hbox',
-						margin : '5 0 0 0',
-						defaults:{
-							labelSeparator:'',
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
-						},
-						items:[
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.poNumber,
-								name:'ponumber',
-								flex:1,
-								tabIndex:7
-							},
-							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.CSRName,
 								name:'CSRName',
 								flex:1,
@@ -137,7 +110,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								margin:'0 0 0 10'
 							}
 						]
-					},	
+					},
 					{
 						xtype : 'radiogroup',
 						name: 'datecriteriavalue',
