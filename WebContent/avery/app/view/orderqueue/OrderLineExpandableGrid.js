@@ -424,17 +424,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'averyItemNumber',
 			width: 88,
 			renderer : function(value, metadata ,record) {
-				if(value=='') {
+				if(value == '') {
 					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						this.mandatoryFieldMissing = true;
 					}
 					metadata.style = AOCLit.cellColor;
 				} else {
-					if(value==AOCLit.averyItemNotFoundText || value==duplicateMappingLabel){
+					if(value == AOCLit.averyItemNotFoundText || value==duplicateMappingLabel){
 						metadata.style = AOCLit.cellColor;
 					}
-					return value;
 				}
+				return value;
 			}
 		}, 
 		{
