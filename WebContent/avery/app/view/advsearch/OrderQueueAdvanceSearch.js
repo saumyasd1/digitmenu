@@ -197,9 +197,10 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+										//datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
 									}
 								}
 							},
@@ -208,15 +209,15 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								//width:250,
 								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										datefield.setValue(new Date());
+										//datefield.setValue(new Date());
 									}
 									//'focus': 'notifyByMessage'
 								}
