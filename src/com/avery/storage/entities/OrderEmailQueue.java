@@ -1,11 +1,15 @@
 package com.avery.storage.entities;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +18,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -28,8 +34,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
@@ -37,6 +47,10 @@ import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
+import com.avery.storage.service.OrderFileAttachmentService;
+import com.avery.utils.ApplicationConstants;
+import com.avery.utils.DateUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -705,4 +719,117 @@ private static final long serialVersionUID = 3208431286041487210L;
   		}
 		return rb.build();
   	}
+    @POST
+    @Path("/createweborder")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+  	public Response createWebOrder(@Context UriInfo uriInfo,
+            @Context HttpHeaders hh, FormDataMultiPart formParams) {
+  		Response.ResponseBuilder rb = null;
+  		OrderEmailQueue orderemailQueueObj=new OrderEmailQueue();
+  		Long OrderEmailQueueId;
+  		String filePath;
+  		try {
+  			Date date = DateUtils.getDefaultCurrentDateTime();
+  			String emailid = formParams.getField("email").getValue();
+  			String emailBody = formParams.getField("emailBody").getValue();
+  			orderemailQueueObj.setSenderEmailId(emailid);
+  			String subject=formParams.getField("subject").getValue();
+  			orderemailQueueObj.setSubject(subject);
+  			orderemailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+  			orderemailQueueObj.setCreatedDate(date);
+  			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+  			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
+  					.getInstance().getBean("orderEmailQueueService");
+  			OrderEmailQueueId=orderEmailQueueService.create(orderemailQueueObj);
+  			OrderEmailQueue orderEmailQueue=new OrderEmailQueue(); 
+  			orderEmailQueue.setId(OrderEmailQueueId);
+  			String productLineId = formParams.getField("dataStructureName").getValue();
+  			ProductLine productLineObj=new ProductLine();
+  			productLineObj.setId(Long.parseLong(productLineId));
+  			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+  					.getInstance().getBean("orderFileAttachmentService");
+  			Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
+  			orderFileAttachmentService.insertEmailBody(orderEmailQueue, emailBody, productLineObj);
+  			String defaultFilePath = PropertiesConfig
+					.getString(PropertiesConstants.FILEATTACHMENT_PATH);
+  			 UUID uniqueUUId=UUID.randomUUID();
+  			String uniqueString=uniqueUUId.toString();
+  			filePath=defaultFilePath+File.separator+uniqueString;
+  			new File(filePath).mkdir();
+  			addAttachments(orderEmailQueue,productLineObj,fieldsByName,formParams,filePath);
+  			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+  		} catch (WebApplicationException ex) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", ex);
+  			throw ex;
+  		} catch (Exception e) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", e);
+  			throw new WebApplicationException(Response
+  					.status(Status.INTERNAL_SERVER_ERROR)
+  					.entity(ExceptionUtils.getRootCauseMessage(e))
+  					.type(MediaType.TEXT_PLAIN_TYPE).build());
+  		}
+		return rb.build();
+  	}
+    
+    private void addAttachments(OrderEmailQueue orderemailQueue,ProductLine productLineObj,
+    		Map<String, List<FormDataBodyPart>> fieldsByName,FormDataMultiPart formParams,String filePath) throws Exception{
+    		 String fileExtension = null,fileName,type;
+			String fileContentType = null,additionalDataFileKey=null;
+			Blob blob =null;InputStream stream=null;
+			OrderFileAttachment orderFileAttachment=null;
+			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+  					.getInstance().getBean("orderFileAttachmentService");
+			String count="0";
+		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
+		    String field = entry.getKey();
+		    FormDataBodyPart formdata = entry.getValue().get(0);
+				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
+					 stream = ((FormDataBodyPart) formParams
+							.getField(field)).getEntityAs(InputStream.class);
+					 fileName = ((FormDataBodyPart) formParams.getField(field))
+							.getContentDisposition().getFileName();
+					type = ((FormDataBodyPart) formParams.getField(field))
+							.getMediaType().toString();
+					
+					if(!type.equalsIgnoreCase(MediaType.TEXT_PLAIN)){
+					
+					fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+					
+					if (field.equalsIgnoreCase("orderFileType"))
+					{
+						fileContentType = ApplicationConstants.DEFAULT_ORDER_CONTENT_TYPE;
+						additionalDataFileKey=null;
+					} else {
+						count=field.replace("attachment", "");
+						//additionalDataFileKey
+						if(formParams.getField("additionalDataFileKey"+count)!=null)
+							additionalDataFileKey = formParams.getField("additionalDataFileKey"+count).getValue();
+						else
+							additionalDataFileKey=null;
+						fileContentType = ApplicationConstants.DEFAULT_ADDITIONAL_CONTENT_TYPE;
+					}
+					orderFileAttachment= new OrderFileAttachment();
+					File targetFile = new File(filePath+File.separator+fileName);
+				    FileUtils.copyInputStreamToFile(stream, targetFile);
+					orderFileAttachment.setFileName(fileName);
+					orderFileAttachment.setFileExtension(fileExtension);
+					orderFileAttachment.setFileContentType(fileContentType);
+					orderFileAttachment.setCreatedDate(new Date());
+					orderFileAttachment.setAdditionalDataFileKey(additionalDataFileKey);
+					orderFileAttachment.setVarProductLine(productLineObj);
+					orderFileAttachment.setVarOrderEmailQueue(orderemailQueue);
+					orderFileAttachment.setFilePath(filePath);
+					orderFileAttachment.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+					orderFileAttachmentService.create(orderFileAttachment);
+					}
+				}
+		    }
+		}
 }
