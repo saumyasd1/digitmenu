@@ -187,15 +187,6 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		session.enableFetchProfile( "single-entity" );
 		
 		ProductLine entity = (ProductLine) session.get(getType(), id);
-//		String fileProductlineSheetMatch;
-//		String fileProductlineCellMatch;
-//		String fileRBOSheetMatch;
-//		String fileRBOCellMatch;
-//		String attachmentFileProductlineMatchSheet;
-//		String attachmentFileProductlineMatch;
-//		String attachmentFileProductlineMatchCell;
-//		String attachmentFileOrderMatchCell;
-//		String attachmentFileOrderMatchSheet;
 		if(entity.isFileOrderMatchRequired()){
 			String fileOrderMatchLocation=entity.getFileOrderMatchLocation();
 			if(fileOrderMatchLocation!=null){
@@ -366,10 +357,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		String freightterms=orgMap.get("freightTerm")==null?"":(String)orgMap.get("freightTerm");
 		org.setFreightTerm(freightterms);
 		
-		String shippinginstructions=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
+		String shippinginstructions=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
 		org.setShippingInstruction(shippinginstructions);
 		
-		String shippingmethod=orgMap.get("shippingInstruction")==null?"":(String)orgMap.get("shippingInstruction");
+		String shippingmethod=orgMap.get("shippingMethod")==null?"":(String)orgMap.get("shippingMethod");
 		org.setShippingMethod(shippingmethod);
 		
 		org.setVarOrderSystemInfo(sys);
@@ -528,7 +519,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	
 	public List getRelatedDataStructures(Long partnerId,Long rbo){
 		Session session=getSessionFactory().getCurrentSession();
-		Query query=session.createQuery("select new map(id as id, dataStructureName as dataStructureName,attachmentRequired as attachmentRequired) from ProductLine"+
+		Query query=session.createQuery("select new map(id as id, dataStructureName as dataStructureName,attachmentRequired as attachmentRequired ,"+
+								"orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1,attachmentFileNameExtension_2 as attachmentFileNameExtension_2,attachmentFileNameExtension_3 as attachmentFileNameExtension_3,attachmentFileNameExtension_4 as attachmentFileNameExtension_4) from ProductLine "+
 								" where varPartner.id=:partnerId and rbo.id=:rboId ");
 		query.setLong("partnerId", partnerId);
 		query.setLong("rboId", rbo);
