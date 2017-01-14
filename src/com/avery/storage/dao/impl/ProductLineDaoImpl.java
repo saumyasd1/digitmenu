@@ -520,7 +520,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	public List getRelatedDataStructures(Long partnerId,Long rbo){
 		Session session=getSessionFactory().getCurrentSession();
 		Query query=session.createQuery("select new map(id as id, dataStructureName as dataStructureName,attachmentRequired as attachmentRequired ,"+
-								"orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1,attachmentFileNameExtension_2 as attachmentFileNameExtension_2,attachmentFileNameExtension_3 as attachmentFileNameExtension_3,attachmentFileNameExtension_4 as attachmentFileNameExtension_4) from ProductLine "+
+								"orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1) from ProductLine "+
 								" where varPartner.id=:partnerId and rbo.id=:rboId ");
 		query.setLong("partnerId", partnerId);
 		query.setLong("rboId", rbo);
