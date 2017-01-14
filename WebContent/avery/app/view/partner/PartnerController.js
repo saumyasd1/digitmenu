@@ -228,50 +228,39 @@ Ext.define('AOC.view.partner.PartnerController', {
         );
     },
     openAdvancedSearchWindow:function(){
-    	var advanceSearchWin = Ext.create('AOC.view.advsearch.PartnerAdvanceSearch');
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.PartnerAdvanceSearch',{contextGrid:this.getView()});
     	if(!advanceSearchWin.isVisible()){
     		advanceSearchWin.show();
     	}
     },
-    onSearchBtnClicked:function(btn){},
-//    openAdvancedSearchWindow: function(e, t, eOpts) {
-//
-//        var temp = Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
-//        if (!temp) {
-//
-//            temp = Ext.create('AOC.view.base.BaseWindow', {
-//                height: 390,
-//                width: 300,
-//                itemId: 'partneradvancesearchWindowItemId',
-//                layout: 'fit',
-//                draggable: false,
-//                modal: true,
-//                closeAction: 'hide',
-//                items: [{
-//                    xtype: 'partneradvancesearch'
-//                }]
-//            });
-//        }
-//        if (Ext.isIE || Ext.isGecko) {
-//            browser = "IE";
-//            var d = Ext.get(e.getTarget());
-//            var width = temp.width; //width of advanced search panel
-//            // box = this.getBox();
-//            width = width - 25; //remove margin
-//            x = d.getX();
-//            y = d.getY();
-//            temp.showAt(x - width, y + 26);
-//        } else if (Ext.isChrome || Ext.isSafari) {
-//            browser = "Chrome";
-//            var d = Ext.get(e.getTarget());
-//            var width = temp.width;
-//            width = width - 24;
-//            x = d.getX();
-//            y = d.getY();
-//            temp.show();
-//        }
-//        return false;
-//    },
+    onSearchBtnClicked:function(btn){
+
+  	  var view = this.getView(),
+  	  	  refs = view.getReferences(),
+  	  	  form = refs.partnerAdvanceSearchForm.getForm(),
+  	  	  values = form.getValues();
+  	  	  store = view.contextGrid.store;
+  	  	  
+        if (values) {
+            store.proxy.setFilterParam('query');
+            
+            var parameters = Ext.JSON.encode(values);
+            
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('query');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'query',
+                property: 'query',
+                value: parameters
+            });
+        }
+        view.close();
+    },
     getPartnerBasedOnSearchParameters: function() {
         var valueObj = this.getView().getForm().getValues(false, true);
         var FromDate = this.lookupReference('fromDate').getValue();

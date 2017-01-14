@@ -187,10 +187,38 @@ Ext.define('AOC.view.email.EmailManagementController', {
     },
     
     openAdvancedSearchWindow:function(){
-    	var advanceSearchWin = Ext.create('AOC.view.advsearch.EmailQueueAdvanceSearchWindow');
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.EmailQueueAdvanceSearch',{contextGrid:this.getView()});
     	if(!advanceSearchWin.isVisible()){
     		advanceSearchWin.show();
     	}
     },
-    onSearchBtnClicked:function(btn){}
+    onSearchBtnClicked:function(btn){
+
+  	  var view = this.getView(),
+  	  	  refs = view.getReferences(),
+  	  	  form = refs.emailQueueAdvanceSearchForm.getForm(),
+  	  	  values = form.getValues();
+  	  	  store = view.contextGrid.store;
+  	  	  
+        if (values) {
+            store.proxy.setFilterParam('query');
+            
+            var parameters = Ext.JSON.encode(values);
+            
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('query');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'query',
+                property: 'query',
+                value: parameters
+            });
+        }
+        view.close();
+    
+    }
 });

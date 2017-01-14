@@ -319,6 +319,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					view.invalidComboValid=true;
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
+				}else{
+					view.invalidComboValid=false;
 				}
 			}else{
 				view.invalidComboValid=true;

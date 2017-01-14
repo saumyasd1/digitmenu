@@ -1,4 +1,4 @@
-Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
+Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 	extend : 'AOC.view.base.NewBaseWindow',
 	alias : 'widget.emailqueueadvancesearchwin',
 	itemId : 'emailQueueAdvanceSearchWin',
