@@ -92,13 +92,13 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 						items:[
 							{
 								xtype : 'combo',
-								fieldLabel : AOCLit.orderStatus,
+								fieldLabel : AOCLit.emailStatus,
 								name:'Status',
 								flex:1,
 								displayField:'value',
 								valueField:'code',
 								queryMode :'local',
-								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId')
 							}
 						]
 					},
@@ -120,38 +120,13 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearchWindow', {
 							},
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.orderTrackNo,
-								name:'id',
-								flex:1,
-								margin:'0 0 0 10'
-							}
-						]
-					},
-					{ 
-						xtype: 'fieldcontainer',
-						layout: 'hbox',
-						margin : '5 0 0 0',
-						defaults:{
-							labelSeparator:'',
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
-						},
-						items:[
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.poNumber,
-								name:'ponumber',
-								flex:1
-							},
-							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.CSRName,
 								name:'CSRName',
 								flex:1,
 								margin:'0 0 0 10'
 							}
 						]
-					},	
+					},
 					{
 						xtype : 'radiogroup',
 						name: 'datecriteriavalue',
