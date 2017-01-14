@@ -102,13 +102,13 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							},
 							{
 								xtype : 'combo',
-								fieldLabel : AOCLit.productLine,
-								name:'ProductLineType',
-								itemId:'productLineComboItemId',
-								displayField:'productLineType',
-								valueField:'productLineType',
+								fieldLabel : AOCLit.partnerDataStructure,
+								displayField:'dataStructureName',
+								valueField:'id',
+								queryMode :'local',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 							}
 						]
 					},
