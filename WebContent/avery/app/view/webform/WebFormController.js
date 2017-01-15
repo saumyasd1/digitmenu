@@ -199,6 +199,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 		   obj.hide();
 		 		  additionalDataFileKey.hide();
 		    	}
+		    }else{
+			    	obj.reset( );
+			    	Ext.Msg.alert('','Attachment File Extension is not defined for this productline. Please configure the productline correctly before proceding.');
+		    		return false;
 		    }
 		   
 		   Ext.getBody().unmask();
@@ -252,6 +256,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 			    	}else{
 			    		this.insertFileInGrid(value,'Order File Type',false,null);
 			    	}
+			    }else{
+			    	obj.reset( );
+			    	Ext.Msg.alert('','Order File Extension is not defined for this productline. Please configure the productline correctly before proceding.');
+		    		return false;
 			    }
 		    }
 	 },
@@ -367,5 +375,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 attachementField.disable();
 			 attachementField.allowBlank=true;
 		 }
+     },
+     onAdditionalDataKeyCellChange:function(editor,context){
+    	 var view=this.getView(),
+    	 record=context.record,
+    	 internalId=record.get('internalId'),
+    	 additionalDataFileKey=view.down('#additionalDataFileKey'+internalId);
+    	 if(additionalDataFileKey)
+    		 additionalDataFileKey.setValue(context.value);
      }
 });
