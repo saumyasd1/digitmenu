@@ -108,6 +108,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				emptyText:AOCLit.partnerName,
         				reference:'partnerCombo',
         				itemId:'partnerCombo',
+        				isChangedForFirstTime:true,
         				store:Ext.create('AOC.store.UniquePartnerStore'),
         				valueField:'id',
         				name:'partnerName',
@@ -130,6 +131,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         				displayField:'rboName',
         				name:'rboName',
         				flex:1,
+        				isChangedForFirstTime:true,
         				margin:'0 10 0 0',
         				valueField:'id',
         				allowBlank : false, 
@@ -283,12 +285,27 @@ Ext.define('AOC.view.webform.WebOrderForm',{
      			 }
         		},{
      			     xtype:'hidden',
-     			     name:'oldOrderId'
+     			     name:'oldOrderId',
+     			     itemId:'oldOrderId'
      			     
      			 },
      			 {
      			     xtype:'hidden',
-     			     name:'oldFileIds'
+     			     name:'oldOrderFileId',
+     			     itemId:'oldOrderFileId',
+     			     value:0
+     			 },
+     			 {
+     			     xtype:'hidden',
+     			     name:'oldOrderFileDeleted',
+     			     itemId:'oldOrderFileDeleted',
+     			     value:false
+     			 },
+     			{
+     			     xtype:'hidden',
+     			     name:'oldEmailId',
+     			     itemId:'oldEmailId',
+     			     value:0
      			 }
                ]
         },
