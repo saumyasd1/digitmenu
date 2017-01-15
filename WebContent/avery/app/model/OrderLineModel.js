@@ -107,7 +107,12 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'},
 	 		{name:'fabricContent', type:'string'},
 	 		{name:'reviceOrder', type:'string'},
-	 		{name: 'variableDataValue', mapping:'variableDataValue', type:'string'},
+	 		{name: 'averyATO', mapping:'averyATO', type:'string'},
+	 		{name: 'averyBulk', mapping:'averyBulk', type:'string'},
+	 		{name: 'averyMOQ', mapping:'averyMOQ', type:'string'},
+	 		{name: 'averyProductLineType', mapping:'averyProductLineType', type:'string'},
+	 		{name: 'averyRegion', mapping:'averyRegion', type:'string'},
+	 		{name: 'averyRoundupQty', mapping:'averyRoundupQty', type:'string'},
 	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'},
 	 		{name:'iconName'},{name:'colorCode'}
 	 		

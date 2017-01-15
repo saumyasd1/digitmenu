@@ -123,7 +123,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     
     callSubmitSalesOrderReq:function(){
     	var me = this,
-    		id = me.runTime.getOrderQueueId();
+    		id = me.runTime.getOrderQueueId(),
+    		grid= me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem();
     	
     	Ext.getBody().mask(AOCLit.pleaseWaitTitle); // show mask on body
     	
@@ -153,9 +154,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	                	
 	                	me.runTime.setAllowOrderLineEdit(false);
 	                	Ext.getBody().unmask();
+	                	grid.store.load();
 		        		Ext.Msg.alert('', AOCLit.salesOrderCreationMsg);
 		        	}
 		        	else{
+		        		grid.store.load();
 		        		Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
 		        		proceed=false;
 		        		Ext.getBody().unmask();
@@ -207,19 +210,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			atovalidationFlagCount = 0,
 			
 			totalCount = store.getCount(),
-			soGeneratedCount = 0,
-			soSubmittedCount =0,
-			invalidInternalNoCount = 0,
-			internalItemNoMisCount =0,
-			orgCodeMisCount = 0,
-			frontEndSystemCount = 0,
-			
-			readyForAdditionalDataCount = 0,
-			readyForValidationCount = 0,
-			errorWhileReadingItemCount =0,
-			errorInValidationCount = 0,
-			cancelCount = 0,
-			readyForItemSpecCount = 0;
+			waitingForCSRStatusOrderLine = 0,
+			mandatoryFieldMissingStatusOrderLine = 0,
+			noAdditionalDataFoundStatusOrderLine = 0,
+			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
     	
     	store.each(function(rec){
     		var status = rec.get('status');
@@ -227,64 +221,69 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			atovalidationFlagCount++;
     		}
     		switch (status){
-    			case AOCLit.soGenereatedStatusOrderLine : 
-    				soGeneratedCount++;
+    			case AOCLit.waitingForCSRStatusOrderLine : 
+    				waitingForCSRStatusOrderLine++;
     				break;
-    			case AOCLit.soSubmittedStatusOrderLine : 
-    				soSubmittedCount++;
+    			case AOCLit.noAdditionalDataFoundStatusOrderLine : 
+    				noAdditionalDataFoundStatusOrderLine++;
     				break;
-    			case AOCLit.invalidInternalNoStatusOrderLine : 
-    				invalidInternalNoCount++;
+    			case AOCLit.mandatoryFieldMissingStatusOrderLine : 
+    				mandatoryFieldMissingStatusOrderLine++;
     				break;
-    			case AOCLit.internalItemNoIsMissingStatusOrderLine : 
-    				internalItemNoMisCount++;
-    				break;
-    			case AOCLit.orgCodeIsMissingStatusOrderLine : 
-    				orgCodeMisCount++;
-    				break;
-    			case AOCLit.frontEndSystemIsMissingStatusOrderLine : 
-    				frontEndSystemCount++;
-    				break;
-    			case AOCLit.readyForItemSpecStatusOrderLine : 
-    				readyForItemSpecCount++;
-    				break;
-    			case AOCLit.readyForAdditionalDataFileParsingStatusOrderLine : 
-    				readyForAdditionalDataCount++;
-    				break;
-    			case AOCLit.readyForValidationStatusFlag : 
-    				readyForValidationCount++;
-    				break;
-    			case AOCLit.errorWhileReadingItemSpecStatusOrderLine : 
-    				errorWhileReadingItemCount++;
-    				break;
-    			case AOCLit.errorInValidationStatusOrderLine : 
-    				errorInValidationCount++;
-    				break;
-    			case AOCLit.cancelStatusOrderLine : 
-    				cancelCount++;
-    				break;
+//    			case AOCLit.internalItemNoIsMissingStatusOrderLine : 
+//    				internalItemNoMisCount++;
+//    				break;
+//    			case AOCLit.orgCodeIsMissingStatusOrderLine : 
+//    				orgCodeMisCount++;
+//    				break;
+//    			case AOCLit.frontEndSystemIsMissingStatusOrderLine : 
+//    				frontEndSystemCount++;
+//    				break;
+//    			case AOCLit.readyForItemSpecStatusOrderLine : 
+//    				readyForItemSpecCount++;
+//    				break;
+//    			case AOCLit.readyForAdditionalDataFileParsingStatusOrderLine : 
+//    				readyForAdditionalDataCount++;
+//    				break;
+//    			case AOCLit.readyForValidationStatusFlag : 
+//    				readyForValidationCount++;
+//    				break;
+//    			case AOCLit.errorWhileReadingItemSpecStatusOrderLine : 
+//    				errorWhileReadingItemCount++;
+//    				break;
+//    			case AOCLit.errorInValidationStatusOrderLine : 
+//    				errorInValidationCount++;
+//    				break;
+//    			case AOCLit.cancelStatusOrderLine : 
+//    				cancelCount++;
+//    				break;
     		}
     	});
     	
-    	if(soGeneratedCount == totalCount || soSubmittedCount == totalCount || invalidInternalNoCount == totalCount
-    			|| internalItemNoMisCount == totalCount || orgCodeMisCount == totalCount
-					|| frontEndSystemCount == totalCount || readyForItemSpecCount == totalCount
-						|| readyForAdditionalDataCount == totalCount || readyForValidationCount == totalCount
-							|| errorWhileReadingItemCount == totalCount || errorInValidationCount == totalCount
-								|| cancelCount == totalCount){
+    	if(waitingForCSRStatusOrderLine > 0 || noAdditionalDataFoundStatusOrderLine > 0
+    			|| mandatoryFieldMissingStatusOrderLine > 0){
     		
-    		salesOrderbutton.disable();
+    		salesOrderbutton.enable();
     		salesViewOrderbutton.disable();
-    		validateButton.disable();
-    		form.disable();
+    		validateButton.enable();
+    		form.enable();
     		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
-    	}else{
-    		var orderQueueStatus = me.runTime.getOrderQueueStatus();
-    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? salesOrderbutton.enable() : salesOrderbutton.disable();
-    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? salesViewOrderbutton.disable() : salesViewOrderbutton.enable();
-    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? validateButton.enable() : validateButton.disable();
-    		orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue ? form.enable() : form.disable();
     	}
+    	else{
+    		if(orderQueueStatus == AOCLit.soGeneratedStatusOrderQueue || orderQueueStatus == AOCLit.soSubmittedStatusOrderQueue){
+    			salesOrderbutton.disable();
+        		salesViewOrderbutton.enable();
+        		validateButton.disable();
+        		form.disable();
+    		}else{
+    			salesOrderbutton.disable();
+        		salesViewOrderbutton.disable();
+        		validateButton.disable();
+        		form.disable();
+        		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
+    		}
+    	}
+    	
     	if(atovalidationFlagCount == totalCount){
     		radioGroup.items.items[1].disable();
     	}else{

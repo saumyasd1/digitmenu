@@ -30,6 +30,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			}
 		]
 	},
+	afterRender:function(){
+		this.callParent(arguments);
+		var grid = this.down('orderlineexpandablegrid');
+		grid.store.load();
+		
+	},
 	buildBbar:function(){
 		return [
 			{

@@ -43,7 +43,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+mandatoryVariableDataFieldFlag+'"';
+				//metadata.tdAttr = 'data-qtip="'+mandatoryVariableDataFieldFlag+'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
@@ -66,7 +66,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ bulkSampleValidationFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ bulkSampleValidationFlag +'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
@@ -89,7 +89,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var customerPOFlag=rec.data.customerPOFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ customerPOFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ customerPOFlag +'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -112,7 +112,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ duplicatePOFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ duplicatePOFlag +'"';
 				
 				if(checkvalue.substr(0,1)=='T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -138,7 +138,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ htlSizePageValidationFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ htlSizePageValidationFlag +'"';
 				
 				if(checkvalue.substr(0,1)=='T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -162,7 +162,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ moqValidationFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ moqValidationFlag +'"';
 				
 				if(checkvalue.substr(0,1)=='T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -212,7 +212,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var cooTranslationFlag= rec.data.cooTranslationFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ cooTranslationFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ cooTranslationFlag +'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -239,7 +239,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var febricPercentageFlag= rec.data.febricPercentageFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ febricPercentageFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ febricPercentageFlag +'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -263,7 +263,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata,rec){
 				var reviseOrderFlag= rec.data.reviseOrderFlag;
 				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+ reviseOrderFlag +'"';
+				//metadata.tdAttr = 'data-qtip="'+ reviseOrderFlag +'"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
@@ -287,10 +287,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Round Qty',
 			dataIndex: 'roundQty',
 			width: 50,
-			editor: {
-				xtype:'numberfield',
-				minValue:0
-			},
+//			editor: {
+//				xtype:'numberfield',
+//				minValue:0
+//			},
 			renderer:function(value, metadata, record){
 				if(value){
 					return Number(value)
@@ -302,10 +302,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'MOQDiff Qty',
 			dataIndex: 'moqdiffQty',
 			width: 55,
-			editor: {
-				xtype:'numberfield',
-				minValue:0
-			},
+//			editor: {
+//				xtype:'numberfield',
+//				minValue:0
+//			},
 			renderer:function(value, metadata, record){
 				if(value){
 					return Number(value)
@@ -793,7 +793,79 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'customerSeason',
 			width: 93,
 			editor: 'textfield'
+		},
+		{
+			text: 'Avery ATO',
+			dataIndex: 'averyATO',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
 		}, 
+		{
+			text: 'Avery Bulk',
+			dataIndex: 'averyBulk',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery MOQ',
+			dataIndex: 'averyMOQ',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery ProductLine Type',
+			dataIndex: 'averyProductLineType',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery Region',
+			dataIndex: 'averyRegion',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
+		{
+			text: 'Avery Roundup Qty',
+			dataIndex: 'averyRoundupQty',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
 		{
 			text: 'Ordered Date<font color=red>*</font>',
 			dataIndex: 'orderedDate',
@@ -1336,7 +1408,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		if(e.target.className=='EnableUpdateMoq'){
 			var Id=record.get('id'),
 				runTime = AOC.config.Runtime,
-				MoqDiffQty=record.get('moqDiffQty'),
+				MoqDiffQty=record.get('moqdiffQty'),
 				roundQty=record.get('roundQty'),
 				customerOrderedQty=record.get('customerOrderedQty');
 			

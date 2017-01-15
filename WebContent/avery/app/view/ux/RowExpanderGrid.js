@@ -40,7 +40,7 @@ Ext.define('AOC.view.ux.RowExpanderGrid', {
 	    },
 	   
 	    onExpand: function(rowNode, record, expandRow) {
-	    	this.grid.editingPlugin.cancelEdit();
+	    	this.grid.editingPlugin ? this.grid.editingPlugin.cancelEdit() : '';
 	    	var recordId = this.getRecordKey(record) ;
 	    	var id = record.get('id') ;
 	    	var openRowArray=AOC.config.Runtime.getOpenRow();

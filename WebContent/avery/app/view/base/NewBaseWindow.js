@@ -7,6 +7,9 @@ Ext.define('AOC.view.base.NewBaseWindow', {
     draggable: true,
     maximizable:false,
     ghost:false,
+
+	constrainHeader:true,
+	constrain:true,
     
     cls:'aoc-win',
     titleAlign:'center',

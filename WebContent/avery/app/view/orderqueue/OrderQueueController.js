@@ -478,7 +478,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	onDownloadAttachmentBtnClick:function(){
 		var me = this,
 			refs = me.getReferences(),
-			gridView = refs.emailAttachmentInfoGrid,
+			gridView = refs.attachmentGrid,
 			recordsArray = gridView.getSelectionModel().getSelection(),
 			len = recordsArray.length;
 		

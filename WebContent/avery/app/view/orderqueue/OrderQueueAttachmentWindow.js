@@ -76,7 +76,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
 				text : 'Download Attachments',
 				ui:'blue',
 				listeners : {
-					click  : 'onDownloadAttachmentBtnClicked'
+					click  : 'onDownloadAttachmentBtnClick'
 				}
 			}
 		]	

@@ -97,11 +97,11 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   	  			Ext.getBody().unmask();
   	  			return;
   			}
-  			if((rec.fileContentType == 'AdditionalData' && rec.additionalDataFileKey =="") && rec.productLineId){
-  				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
-  	  			Ext.getBody().unmask();
-  	  			return;
-  			}
+//  			if((rec.fileContentType == 'AdditionalData' && rec.additionalDataFileKey =="") && rec.productLineId){
+//  				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
+//  	  			Ext.getBody().unmask();
+//  	  			return;
+//  			}
   		}
   		
 		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});

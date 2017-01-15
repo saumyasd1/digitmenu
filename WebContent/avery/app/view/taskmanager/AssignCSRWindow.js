@@ -1,14 +1,9 @@
 Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
-	extend:'Ext.window.Window',
+	extend:'AOC.view.base.NewBaseWindow',
 	xtype:'assigncsrwindow',
 	width:350,
-	bodyPadding:10,
 	controller:'assigncsrwindow',
-	title:'<p style="font-size:14px;font-weight:bold;color:#2c3e50;">Assign CSR</p>',
-	titleAlign:'center',
-	constrainHeader:true,
-	constrain:true,
-	modal:true,
+	title:'Assign CSR',
 	requires:[
         'AOC.store.AssignCSRStore',
         'AOC.view.taskmanager.AssignCSRController'
@@ -18,7 +13,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 		labelWidth:100,
 		labelSeparator:'',
 		width:300,
-		labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;'
+		labelStyle:Settings.config.defaultFormLabelStyle
 	},
 	initComponent:function(){
 		this.items = this.buildItems();

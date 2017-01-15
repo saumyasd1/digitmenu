@@ -27,8 +27,28 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
                 beforeedit: function(e, editor){
                 	//editing only enabled for emailQueue status is UnIndentified(3)
 	                if (editor.grid.status == AOCLit.emailUnidentifiedStatus){
-	                	return true;
+	                	if(editor.field =='dataStructureNameId'){
+	                		//filter partner data structure for perticular attachment
+	     		                Ext.Ajax.request({
+	     		                	url:applicationContext + '/rest/productLines/datastructure/'+editor.record.get('id'),
+	     		                	success:function(response){
+	     		                		var json = JSON.parse(response.responseText);
+	     		                		if(json.dataStructures.length > 0){
+	     		                			editor.grid.columns[2].field.store.loadData(json.dataStructures);
+	     		                		}else{
+	     		                			editor.grid.columns[2].field.store.loadData([]);
+	     		                		}
+	     		                	},
+	     		                	failure:function(){
+	     		                		editor.grid.columns[2].field.store.loadData([]);
+	     		                	}
+	     		                });
+	     		                return true;
+	                	}else{
+	                		return true;
+	                	}
 	                }
+	               
 	                return false;
                 }
 	        }
@@ -96,7 +116,11 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						valueField:'id',
 						queryMode :'local',
 						editable:false,
-						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
+						store:new Ext.data.ArrayStore({
+							//data:[],
+							fields:['id', 'dataStructureName']
+						})
+						//store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
 						if(me.status == AOCLit.emailIdentifiedStatus){
