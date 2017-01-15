@@ -14,7 +14,8 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
 		    },
 			listeners:{
 				'cellclick':'onAttachmentGridCellClick',
-				'edit':'onAdditionalDataKeyCellChange'
+				'edit':'onAdditionalDataKeyCellChange',
+				'beforeedit':'beforeEditorShow'
 			}
         });
         this.callParent(arguments);
@@ -40,10 +41,7 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             data : '',
             dataIndex:'additionalDataFileKey',
             editor:{
-            	xtype:'textfield',
-            	listeners:{
-            		
-            	}
+            	xtype:'textfield'
             }
         },
         {
