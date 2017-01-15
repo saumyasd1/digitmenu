@@ -668,10 +668,13 @@ public class OrderQueue extends MainAbstractEntity{
 			Long orderFileId=0L;
 			if(orderfile!=null){
 				filePath=orderfile.getFilePath();
+				orderfile.setStatus(ApplicationConstants.ORDER_ATTACHMENT_CANCEL_STATUS);
+				orderFileAttachmentService.update(orderfile);
 				orderFileId=addAttachments(orderemailQueue,productLine,
 			    		fieldsByName,formParams,filePath);
 				if(!isOldOrderFileDeleted){
 					orderfile.setId(0);
+					orderfile.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 					orderFileId=orderFileAttachmentService.create(orderfile);
 				}
 				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine);
@@ -788,7 +791,6 @@ public class OrderQueue extends MainAbstractEntity{
 	public Response getEmailBody(@Context UriInfo ui,
 	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
 		Long orderQueueEntityId = Long.parseLong(orderid);
-		OrderQueue orderQueue=null;
 		String mailBodyFilePath = "";
 		try {
 			/*OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
