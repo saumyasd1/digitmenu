@@ -8,15 +8,20 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             columns : this.buildColumns(),
 			columnLines:true,
 			layout:'fit',
+			plugins: {
+		        ptype: 'cellediting',
+		        clicksToEdit: 1
+		    },
 			listeners:{
-				'cellclick':'onAttachmentGridCellClick'
+				'cellclick':'onAttachmentGridCellClick',
+				'edit':'onAdditionalDataKeyCellChange'
 			}
         });
         this.callParent(arguments);
     },
     buildColumns : function(){
         return {
-       defaults : {
+        	defaults : {
                 draggable : false,
                 sortable : false,
                 hideable :false,
@@ -30,17 +35,29 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
             dataIndex:'fileName'
         },
         {
+            text : 'Additional DataFile Key',
+            flex :1,
+            data : '',
+            dataIndex:'additionalDataFileKey',
+            editor:{
+            	xtype:'textfield',
+            	listeners:{
+            		
+            	}
+            }
+        },
+        {
             text : 'File Type',
             flex :1,
             data : '',
-	    dataIndex:'fileType'
+            dataIndex:'fileType'
         },
         {
             text : 'Delete',
             width :60,
             data : '',
             renderer:function(v,cell,record){
-		return '<div><img class="deleteClass" src="' +  AOC.config.Settings.buttonIcons.deleteImageSrc + '" /></div>';
+            	return '<div><img class="deleteClass" src="' +  AOC.config.Settings.buttonIcons.deleteImageSrc + '" /></div>';
         }
         }]};
     }
