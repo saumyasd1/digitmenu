@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -21,6 +23,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -46,76 +50,113 @@ public class Address extends MainAbstractEntity {
 		
 	}
 
-private static final long serialVersionUID = 3208431286041487210L;
+	private static final long serialVersionUID = 3208431286041487210L;
 	
 	@Column(name = "description", length = 500)
-	private String description;
-
+	String description;
 	@Column(name = "address1", length = 500)
-	private String address1;
-
+	String address1;
 	@Column(name = "address2", length = 500)
-	private String address2;
-
+	String address2;
 	@Column(name = "address3", length = 500)
-	private String address3;
-
+	String address3;
 	@Column(name = "address4", length = 500)
-	private String address4;
-
+	String address4;
 	@Column(name = "city", length = 250)
-	private String city;
-
+	String city;
 	@Column(name = "state", length = 250)
-	private String state;
-
+	String state;
 	@Column(name = "country", length = 250)
-	private String country;
-
+	String country;
 	@Column(name = "contact", length = 255)
-	private String contact;
-
+	String contact;
 	@Column(name = "email", length = 255)
-	private String email;
-
+	String email;
 	@Column(name = "fax", length = 255)
-	private String fax;
-
+	String fax;
 	@Column(name = "phone1", length = 255)
-	private String phone1;
-
+	String phone1;
 	@Column(name = "phone2", length = 255)
-	private String phone2;
-
+	String phone2;
 	@Column(name = "siteNumber",length=255)
-	private String siteNumber;
-
+	String siteNumber;
 	@Column(name = "siteType", length = 255)
-	private String siteType;
-
+	String siteType;
 	@Column(name = "comment", length = 250)
-	private String comment;
-
+	String comment;
 	@Column(name = "siteId")
-	private Integer siteId;
-
+	int siteId;
 	@Column(name="zip",length=250)
-	private String zip;
+	String zip;
+	@Column(name = "orgCode")
+	String orgCode;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="orgCodeId")
+	Org varOrgCode;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="partnerId")
+	Partner varPartner;
+	public Partner getVarPartner() {
+		return varPartner;
+	}
 
-	@Column(name = "orgCodeId")
-	private Integer orgCodeId;
+	public void setVarPartner(Partner varPartner) {
+		this.varPartner = varPartner;
+	}
+
+	@Transient
+	private String orgCodeName;
+	@Transient
+	private Long partnerId;
+	
+
+	public Long getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(Long partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	@Transient
+	private String partnerName;
+
+	public String getPartnerName() {
+		return partnerName;
+	}
+
+	public void setPartnerName(String partnerName) {
+		this.partnerName = partnerName;
+	}
+
+	public String getOrgCodeName() {
+		return orgCodeName;
+	}
+
+	public void setOrgCodeName(String orgCodeName) {
+		this.orgCodeName = orgCodeName;
+	}
+
+	
+
+	public Org getVarOrgCode() {
+		return varOrgCode;
+	}
+
+	public void setVarOrgCode(Org varOrgCode) {
+		this.varOrgCode = varOrgCode;
+	}
 
 	@Column(name = "system")
-	private Integer system;
-
+	int system;
 	@Column(name = "freightTerm", length = 250)
-	private String freightTerm;
-
+	String freightTerms;
 	@Column(name = "shippingMethod", length = 255)
-	private String shippingMethod;
-	
+	String shippingMethod;
 	@Column(name = "shippingInstruction", length = 255)
-	private String shippingInstruction;
+	String shippingInstructions;
 	
 	
 	public String getDescription() {
@@ -262,28 +303,39 @@ private static final long serialVersionUID = 3208431286041487210L;
 		this.zip = zip;
 	}
 
-	public int getOrgCodeId() {
-		return orgCodeId;
-	}
-
-	public void setOrgCodeId(int orgCodeId) {
-		this.orgCodeId = orgCodeId;
-	}
-
+	
 	public int getSystem() {
 		return system;
+	}
+
+	
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 
 	public void setSystem(int system) {
 		this.system = system;
 	}
 
-	public String getFreightTerm() {
-		return freightTerm;
+
+	public String getFreightTerms() {
+		return freightTerms;
 	}
 
-	public void setFreightTerm(String freightTerm) {
-		this.freightTerm = freightTerm;
+	public void setFreightTerms(String freightTerms) {
+		this.freightTerms = freightTerms;
+	}
+
+	public String getShippingInstructions() {
+		return shippingInstructions;
+	}
+
+	public void setShippingInstructions(String shippingInstructions) {
+		this.shippingInstructions = shippingInstructions;
 	}
 
 	public String getShippingMethod() {
@@ -294,13 +346,6 @@ private static final long serialVersionUID = 3208431286041487210L;
 		this.shippingMethod = shippingMethod;
 	}
 
-	public String getShippingInstruction() {
-		return shippingInstruction;
-	}
-
-	public void setShippingInstruction(String shippingInstruction) {
-		this.shippingInstruction = shippingInstruction;
-	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
