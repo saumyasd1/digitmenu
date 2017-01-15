@@ -22,7 +22,7 @@ public interface ApplicationConstants {
 		
 		String NEW_ATTACHMENT_STATUS="8";
 		
-		String DEFAULT_EMAILBODY_CONTENT_TYPE="Discard";
+		String DEFAULT_EMAILBODY_CONTENT_TYPE="Disregard";
 		
 		String DEFAULT_ORDER_CONTENT_TYPE="Order";
 		
@@ -33,5 +33,15 @@ public interface ApplicationConstants {
 		String DEFAULT_EMAIL_FILE_EXTENSION="pdf";
 		
 		String DEFAULT_USER_NAME="Adeptia";	
+		
+		String DEFAULT_CSR_ID="1";
+		
+		String DEFAULT_ORDERQUEUE_STATUS="11";
+		
+		String ORDER_QUEUE_CANCEL_STATUS="50";
+		
+		String ORDER_ATTACHMENT_CANCEL_STATUS="7";
+		
+		String EMAIL_ORDER_SOURCE="Web";
 		
 }
