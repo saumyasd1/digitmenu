@@ -36,6 +36,7 @@ import org.hibernate.annotations.FetchProfile;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.AdditionalFilesMixIn;
 import com.avery.storage.MixIn.OrderSystemInfoMixIn;
 import com.avery.storage.MixIn.OrgInfoMixin;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
@@ -44,6 +45,7 @@ import com.avery.storage.MixIn.ProductLineEditMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.RboMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
+import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.ProductLineService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -1477,4 +1479,41 @@ public class ProductLine extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
+	
+	/**
+	 * @param ui
+	 * @param hh
+	 * @param orderid
+	 * @return data structures list by matching the id's in the comment
+	 */
+	@GET
+	@Path("/datastructure/{orderid:[0-9]+}")
+    public Response getDataStructureBasedOnAttachmentId(@Context UriInfo ui,
+    @Context HttpHeaders hh,@PathParam("orderid") String orderid) {
+    	Long fileAttachmentId = Long.parseLong(orderid);
+    	Response.ResponseBuilder rb = null;
+    	Map entitiesMap = new HashMap();
+    	try {
+    		ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.addMixIn(OrderFileAttachment.class, AdditionalFilesMixIn.class);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			entitiesMap = productLineService.getDataStructure(fileAttachmentId);
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find any data");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+    	
+    	return rb.build();
+    }
+	
 }

@@ -151,6 +151,9 @@ private static final long serialVersionUID = 3208431286041487210L;
 	
 	@Transient
 	private String rboName;
+	
+	@Transient
+	private String csrName;
 
 	public int getOrderQueueCount() {
 		return orderQueueCount;
@@ -199,6 +202,14 @@ private static final long serialVersionUID = 3208431286041487210L;
 
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
+	}
+	
+	public String getCsrName() {
+		return csrName;
+	}
+
+	public void setCsrName(String csrName) {
+		this.csrName = csrName;
 	}
 
 	public String getProcessId() {

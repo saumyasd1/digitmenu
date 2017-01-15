@@ -77,4 +77,9 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 	public List getRelatedDataStructures(Long partnerId,Long rbo) throws Exception{
 		return getProductLineDao().getRelatedDataStructures(partnerId,rbo);
 	}
+	
+	@Transactional
+	public Map getDataStructure(Long fileAttachmentId) throws Exception{
+		return getProductLineDao().getDataStructureListBasedOnAttachmentId(fileAttachmentId);
+	}
 }
