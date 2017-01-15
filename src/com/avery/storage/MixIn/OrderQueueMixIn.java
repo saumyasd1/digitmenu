@@ -21,9 +21,6 @@ public abstract class OrderQueueMixIn {
 		public abstract Partner getPartnerObj(); 
 		
 		@JsonIgnore
-		public abstract String getRboID();
-		
-		@JsonIgnore
 		public abstract String getAddress(); //ignore address from partner
 		
 		@JsonIgnore
@@ -61,10 +58,7 @@ public abstract class OrderQueueMixIn {
 		
 		@JsonIgnore
 		public abstract int getOrderQueueCount();
-		
-		
-		@JsonIgnore
-		public abstract String getRboId();
+
 		
 		@JsonIgnore
 		public abstract String getCsrName();
