@@ -98,7 +98,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@Column(name="fileContentMatch",length=100)
 	private String fileContentMatch;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "orderEmailQueueId")
 	OrderEmailQueue varOrderEmailQueue;
 	
@@ -106,9 +106,8 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@JoinColumn(name = "productLineId")
 	ProductLine varProductLine;
 	
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy = "varOrderFileAttachment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<OrderQueue> listOrderFileQueue = new ArrayList<OrderQueue>();
+	@OneToMany(mappedBy = "varOrderFileAttachment", fetch = FetchType.LAZY)
+	List<OrderQueue> listOrderFileQueue;
 
 	// transient variables added for getting colorCode, iconName and value
 	@Transient
