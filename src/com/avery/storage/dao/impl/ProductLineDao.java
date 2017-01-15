@@ -28,4 +28,6 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 	public List getAllProductLineByRBO(int partnerId,int rbo) throws Exception;
 	
 	public List getRelatedDataStructures(Long partnerId,Long rbo) throws Exception;
+	
+	public Map getDataStructureListBasedOnAttachmentId(Long fileAttachmentId) throws Exception;
 }
