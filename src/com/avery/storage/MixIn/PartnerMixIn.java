@@ -35,5 +35,7 @@ public abstract class PartnerMixIn {
 	@JsonIgnore
 	public abstract List<SalesOrder> getListSalesOrderLine();	
 	
+	@JsonIgnore
+	public abstract List<Address> getAddressList();
 
 }
