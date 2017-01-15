@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,6 +26,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
@@ -54,6 +58,17 @@ public class Org extends MainAbstractEntity {
 	@JoinColumn(name="systemId",nullable=false)
 	private SystemInfo system;
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "varOrgCode", fetch = FetchType.LAZY)
+	List<Address> addressList = new ArrayList<Address>();
+	public List<Address> getAddressList() {
+		return addressList;
+	}
+
+	public void setAddressList(List<Address> addressList) {
+		this.addressList = addressList;
+	}
+
 	public Org() {}
 
 	public SystemInfo getSystem() {
