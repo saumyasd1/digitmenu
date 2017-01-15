@@ -400,5 +400,13 @@ Ext.define('AOC.view.webform.WebFormController', {
     	 additionalDataFileKey=view.down('#additionalDataFileKey'+internalId);
     	 if(additionalDataFileKey)
     		 additionalDataFileKey.setValue(context.value);
+     },
+     beforeEditorShow:function(editor,context){
+    	 var view=this.getView(),
+    	 record=context.record,
+    	 fileType=record.get('fileType');
+    	 if(fileType=='Order File Type'){
+    		 return false;
+    	 }
      }
 });
