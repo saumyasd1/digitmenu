@@ -35,6 +35,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.HibernateUtils;
@@ -42,6 +43,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+/**
+ * @author Vishal
+ *
+ */
 @Repository
 public class OrderEmailQueueDaoImpl extends GenericDaoImpl<OrderEmailQueue, Long> implements
 OrderEmailQueueDao {
@@ -280,6 +285,9 @@ OrderEmailQueueDao {
 			String rboName = "";
 			rboName = getRboNameByTrackId(trackId);
 			orderQueue.setRboName(rboName);
+			String csrName = "";
+			csrName = getCSRNameByTrackId(trackId);
+			orderQueue.setCsrName(csrName);
 
 		}
 		entitiesMap.put("totalCount", totalCount);
@@ -637,7 +645,7 @@ OrderEmailQueueDao {
 			}
 			String SenderEmailID=searchMap.get("SenderEmailID");
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
-				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("senderEmailId",SenderEmailID,MatchMode.ANYWHERE));
 			}
 		}
 		/*else{
@@ -651,6 +659,36 @@ OrderEmailQueueDao {
 		    //criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, endDate);
 		}*/
 		return criteria;
+	}
+	
+	/**Method to get csr name by track id
+	 * @param trackId
+	 * @return CSR Name
+	 */
+	public String getCSRNameByTrackId(Long trackId) {
+		String csrName = "";
+		String csrFirstName = "";
+		String csrLastName = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, trackId);
+		String csr = orderEmailQueue.getAssignCSR();
+		Long csrId = Long.parseLong(csr);
+		if(csrId==null)
+			return "";
+		try {
+			User user = (User) session.get(User.class, csrId);
+			if (user.getFirstName() != null && !"".equals(user.getFirstName())) {
+				csrName += user.getFirstName();
+			}
+			if (user.getLastName() != null && !"".equals(user.getLastName())) {
+				csrName += " "+user.getLastName();
+			}
+			return csrName;
+		} catch (Exception e) {
+			return "";
+		}
+
 	}
 
 
