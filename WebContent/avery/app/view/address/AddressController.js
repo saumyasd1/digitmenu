@@ -150,6 +150,7 @@ Ext.define('AOC.view.address.AddressController', {
 		var grid=Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
 		var panel=createaddress.down('#listPanel');
 		var valueObj='',form=this.getView().down('form');
+		var refs = this.getReferences();
 		var editMode=this.getView().editMode,url='';
 		var methodMode='';
 		var length=0;
@@ -167,13 +168,43 @@ Ext.define('AOC.view.address.AddressController', {
 		else{
 			url=applicationContext+'/rest/address';
 			valueObj=form.getValues(false,true,false,true);
+			var partnerCombo = refs.partnerName;
+			var orgCodeCombo = refs.orgName;
+			var siteCombo = refs.siteName;
+			var systemCombo = refs.systemName;
+			valueObj.orgName = orgCodeCombo.getRawValue();
+			valueObj.siteName = siteCombo.getRawValue();
+			valueObj.systemName = systemCombo.getRawValue();
+			var store = partnerCombo.store;
+			var orgStore = orgCodeCombo.store;
+			
+			orgStore.each(function(rec){
+				if(rec.get('id')==orgCodeCombo.getValue()){
+				valueObj.systemId = rec.get('systemId')	
+				}
+			});
+			store.each(function(rec){
+				if(rec.get('id') == partnerCombo.getValue()){
+					valueObj.address = rec.get('address')
+					valueObj.partnerName = rec.get('partnerName')
+					valueObj.contactPerson = rec.get('contactPerson')
+					valueObj.phone = rec.get('phone')
+					valueObj.active = rec.get('active')
+					valueObj.lastModifiedBy = rec.get('lastModifiedBy')
+					valueObj.lastModifiedDate = rec.get('lastModifiedDate')
+				}
+			});
+			
+			valueObj.orgName = orgCodeCombo.getRawValue();
 			methodMode='POST';
 			length=1;
 			//Msg='Address Added Successfully';
 			var Msg=AOCLit.addAddressMsg;
 			var parameters={
-					orgCode:valueObj.orgCode,
-					partnerName:valueObj.partnerName,
+					varOrgCode:{id:valueObj.orgCode,name:valueObj.orgName,system:{id:valueObj.system, name:valueObj.systemName, site:{id:valueObj.site,name:valueObj.siteName}}},
+      				orgName:valueObj.orgName,
+					system:valueObj.system,
+					siteId:valueObj.site,
 					siteNumber:valueObj.siteNumber,
 					description:valueObj.description,
 					address1:valueObj.address1,
@@ -194,8 +225,8 @@ Ext.define('AOC.view.address.AddressController', {
 					freightTerms:valueObj.freightTerms,
 					shippingInstructions:valueObj.shippingInstructions,
 					siteType:valueObj.siteType,
-					partner:{id:valueObj.partner_id}
-		    	}
+					varPartner:{id:valueObj.partner_id,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone}
+					}
 		}
 	
 		if(length>0){
@@ -292,18 +323,13 @@ Ext.define('AOC.view.address.AddressController', {
 		      org = refs.orgName,
 		      shippingMethod = refs.shippingMethod,
 		      freightTerms = refs.freightTerms,
-		  	  partner = refs.partnerName,
 		  	  system = refs.systemName,
-		  	  partnerStore = partner.store,
-		  	  systemStore = system.store,
+		    systemStore = system.store,
 		  	  siteId = record.get('id');
 		  
 		 me.loadSystemStore(systemStore, siteId );
-		 partnerStore.clearFilter();
-		 partnerStore.filter('siteId', siteId);
-		 var form =me.getView();
+	     var form =me.getView();
 	     if(form !=null && !form.isResubmit){
-	    	 partner.reset();
 	    	 system.reset();
 	    	 org.reset();
 	    	 shippingMethod.reset();
@@ -312,8 +338,6 @@ Ext.define('AOC.view.address.AddressController', {
 	    	 freightTerms.disable();
 	    	 org.disable();
 	     }
-	     partner.bindStore(partnerStore);
-	     partner.enable();
 	     system.enable();
 	     system.bindStore(systemStore);
 	   
@@ -420,7 +444,7 @@ Ext.define('AOC.view.address.AddressController', {
 	loadShippingMethodStore:function(store, url){
 		var response = Ext.Ajax.request({
 			async: false,
-			url: applicationContext+'/rest/orderconfigurations/orgId/'+url
+			url: applicationContext+'/rest/orderconfigurations/orgId/'+url,
 		});
 		
 		var items = Ext.decode(response.responseText);
