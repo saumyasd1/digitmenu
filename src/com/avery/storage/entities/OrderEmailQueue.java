@@ -748,6 +748,8 @@ private static final long serialVersionUID = 3208431286041487210L;
   			orderemailQueueObj.setSubject(subject);
   			orderemailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
   			orderemailQueueObj.setCreatedDate(date);
+  			orderemailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
+  			orderemailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
   			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
   			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
@@ -793,7 +795,7 @@ private static final long serialVersionUID = 3208431286041487210L;
     		Map<String, List<FormDataBodyPart>> fieldsByName,FormDataMultiPart formParams,String filePath) throws Exception{
     		 String fileExtension = null,fileName,type;
 			String fileContentType = null,additionalDataFileKey=null;
-			Blob blob =null;InputStream stream=null;
+			InputStream stream=null;
 			OrderFileAttachment orderFileAttachment=null;
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
   					.getInstance().getBean("orderFileAttachmentService");
