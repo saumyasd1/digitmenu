@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,8 +19,10 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
@@ -29,6 +32,7 @@ import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SystemInfo;
+import com.avery.storage.service.ProductLineService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -532,14 +536,69 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	public Map getDataStructureListBasedOnAttachmentId(Long fileAttachmentId) throws Exception {
 		Map entitiesMap = new HashMap();
 		List dataStructures = new ArrayList();
+		List<Long> productLineIds = new ArrayList<Long>();
+		List<ProductLine> productline = null;
 		Session session = null;
 		Criteria criteria = null;
-		String dataStructureList = "";
+		String comment = "";
 		session = getSessionFactory().getCurrentSession();
 		OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
 		orderFileAttachment = (OrderFileAttachment) session.get(OrderFileAttachment.class, fileAttachmentId);
-		dataStructureList = orderFileAttachment.getComment();
-		if (dataStructureList.contains(",")) {
+		comment = orderFileAttachment.getComment();
+		if(comment==null | "".equals(comment)){
+			Criteria crit = session.createCriteria(ProductLine.class)
+					.setProjection(Projections.projectionList()
+							.add(Projections.property("id"), "id")
+							.add(Projections.property("dataStructureName"), "dataStructureName"))
+					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
+					
+			entitiesMap.put("dataStructures", new LinkedHashSet(crit.list()));
+			return entitiesMap;
+		}
+		if(comment.contains(",")){
+			String[] st = comment.split(",");
+			for(int i=0;i<st.length;i++){
+				if(NumberUtils.isNumber(st[i])){
+					Long productlineid = Long.parseLong(st[i]);
+					productLineIds.add(productlineid);
+				}
+			}
+		}
+		else{
+			if(NumberUtils.isNumber(comment)){
+				Long productlineid = Long.parseLong(comment);
+				productLineIds.add(productlineid);
+			}
+		}
+		if(productLineIds.size()>0){
+			for(Long productLineId : productLineIds){
+				ProductLine productLine = new ProductLine();
+				productLine = (ProductLine) session.get(ProductLine.class, productLineId);
+				if (productLine == null)
+					throw new Exception("Unidentified productline id found :: \""+productLineId+"\".");
+				Map<String, String> dataStructureValue = new HashMap<>();
+				dataStructureValue.put("id", productLineId.toString());
+				dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
+				dataStructures.add(dataStructureValue);
+			}
+		}
+		else{
+			/*ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			productline = productLineService.readAll();
+			if (productline == null)
+				throw new Exception("Unable to find Product Line");*/
+			Criteria crit = session.createCriteria(ProductLine.class)
+					.setProjection(Projections.projectionList()
+							.add(Projections.property("id"), "id")
+							.add(Projections.property("dataStructureName"), "dataStructureName"))
+					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
+					
+			entitiesMap.put("dataStructures", new LinkedHashSet(crit.list()));
+			return entitiesMap;
+		}
+		
+		/*if (dataStructureList.contains(",")) {
 			String[] st = dataStructureList.split(",");
 			for (int p = 0; p < st.length; p++) {
 				String dataStructureName = "";
@@ -565,7 +624,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			dataStructureValue.put("id", productLineId.toString());
 			dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
 			dataStructures.add(dataStructureValue);
-		}
+		}*/
 
 		entitiesMap.put("dataStructures", dataStructures);
 
