@@ -1,23 +1,17 @@
 package com.avery.storage.entities;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.sql.rowset.serial.SerialBlob;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -44,18 +37,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Type;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -68,6 +55,7 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.ExcelUtils;
@@ -136,21 +124,21 @@ public class OrderQueue extends MainAbstractEntity{
 	@Column(name="acknowledgementDate")
 	Date acknowledgementDate;
 	
-	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="productLineId")
 	ProductLine varProductLine;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="orderFileAttachmentId")
 	OrderFileAttachment varOrderFileAttachment;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="varOrderFileQueue",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="varOrderFileQueue",fetch=FetchType.LAZY)
 	List<OrderLine> listOrderLine=new ArrayList<OrderLine>();
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="varOrderFileQueue",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="varOrderFileQueue",fetch=FetchType.LAZY)
 	List<SalesOrder> listSalesOrderLine=new ArrayList<SalesOrder>();
 	
 /*	@LazyCollection(LazyCollectionOption.FALSE)
@@ -185,6 +173,16 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private String orderFileName;
 	
+	@Transient
+	private long rboId;
+	
+	public long getRboId() {
+		return rboId;
+	}
+
+	public void setRboId(long rboId) {
+		this.rboId = rboId;
+	}
 
 	public String getIconName() {
 		return iconName;
@@ -625,7 +623,7 @@ public class OrderQueue extends MainAbstractEntity{
         try {
             return Response.ok(
                     processRequest(uriInfo.getQueryParameters(),
-                            uriInfo.getPathParameters(), formParams, hh))
+                            uriInfo.getPathParameters(), formParams, hh,orderid))
                     .build();
 
         }catch(WebApplicationException wae){
@@ -640,119 +638,63 @@ public class OrderQueue extends MainAbstractEntity{
     
 	public String processRequest(MultivaluedMap<String, String> queryMap,
 			MultivaluedMap<String, String> pathParamMap,
-			FormDataMultiPart formParams, HttpHeaders headers) throws Exception {
+			FormDataMultiPart formParams, HttpHeaders headers,String orderid) throws Exception {
 
-		Long partnerid = Long.parseLong(formParams.getField("partnerName").getValue());
 		String emailid = formParams.getField("email").getValue();
 		String emailBody = formParams.getField("emailBody").getValue();
 		String subjectline = formParams.getField("subject").getValue();
-		String productLineType = formParams.getField("productLineType").getValue();
-		String rboName = formParams.getField("rboName").getValue();
+		String productLineType = formParams.getField("dataStructureName").getValue();
 		String oldFileIds = (formParams.getField("oldFileIds")!=null)?formParams.getField("oldFileIds").getValue():null;
 		String oldOrderId= (formParams.getField("oldOrderId")!=null)?formParams.getField("oldOrderId").getValue():null;
 		Date date = DateUtils.getDefaultCurrentDateTime();
-		
-		
+		//oldOrderFileId
+		String oldOrderFileId = formParams.getField("oldOrderFileId").getValue();
+		String oldOrderFileDeleted= formParams.getField("oldOrderFileDeleted").getValue();
+		boolean isOldOrderFileDeleted=Boolean.parseBoolean(oldOrderFileDeleted==null || oldOrderFileDeleted.equals("")?"false":oldOrderFileDeleted);
+		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+				.getInstance().getBean("orderFileAttachmentService");
+		String emailQueueId = formParams.getField("oldEmailId").getValue();
+		OrderFileAttachment orderfile=null;
+		String filePath=null;
+		OrderEmailQueue orderemailQueue=new OrderEmailQueue();
+		orderemailQueue.setId(Long.parseLong(emailQueueId));
 		Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
 		Long productLineTypeId = Long.parseLong(productLineType);
 		OrderQueue orderQueue = new OrderQueue();
-		Partner partner = new Partner();
-		partner.setId(partnerid);
 		ProductLine productLine = new ProductLine();
 		productLine.setId(productLineTypeId);
-		//orderQueue.setPartner(partner);
-		//orderQueue.setSenderEmailID(emailid);
-		orderQueue.setSubject(subjectline);
-		//orderQueue.setRboName(rboName);
-		//orderQueue.setProductLine(productLine);
-		//orderQueue.setOrderSource("Web");
-		orderQueue.setCreatedDate(date);
-		orderQueue.setStatus("16");
-		//orderQueue.setEmailBody(emailBody);
-		//orderQueue.setReceivedDate(date);
-		if(oldOrderId!=null && !"".equals(oldOrderId)){
-		//orderQueue.setPrvOrderQueueID(Long.parseLong(oldOrderId));
-		}
-		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
-				.getInstance().getBean("orderQueueService");
-		
-		Long orderqueueid = orderQueueService.create(orderQueue);
-		
-		orderQueue.setId(orderqueueid);
-		
-	
-	    // Usually each value in fieldsByName will be a list of length 1.
-	    // Assuming each field in the form is a file, just loop through them.
-
-		FileOutputStream outstream = null;
-		String fileName = null;
-		String type = null;
-		OrderEmailQueue varOrderEmailQueue = null;
-		String fileExtension = null;
-		String fileContentType = null;
-		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
-				.getInstance().getBean("orderFileAttachmentService");
-		OrderFileAttachment orderFileAttachment=null;
-		Blob blob =null;InputStream stream=null;
-		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
-		    String field = entry.getKey();
-		    FormDataBodyPart formdata = entry.getValue().get(0);
-		    try {
-				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
-					 stream = ((FormDataBodyPart) formParams
-							.getField(field)).getEntityAs(InputStream.class);
-					 fileName = ((FormDataBodyPart) formParams.getField(field))
-							.getContentDisposition().getFileName();
-					type = ((FormDataBodyPart) formParams.getField(field))
-							.getMediaType().toString();
-					
-					if(!type.equalsIgnoreCase(MediaType.TEXT_PLAIN)){
-					
-					fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
-					
-					if (field.equalsIgnoreCase("orderFileType"))
-							{
-						fileContentType = "Order";
-					} else {
-						fileContentType = "AdditionalData";
-					}
-					orderFileAttachment= new OrderFileAttachment();
-					blob = new SerialBlob(IOUtils.toByteArray(stream));
-					//orderFileAttachment.setFileData(blob);
-					//orderFileAttachment.setOrderQueue(orderQueue);
-					//orderFileAttachment.setPartnerObj(partner);
-					//orderFileAttachment.setReceivedDate(date);
-					orderFileAttachment.setFileName(fileName);
-					orderFileAttachment.setFileExtension(fileExtension);
-					orderFileAttachment.setFileContentType(fileContentType);
-					orderFileAttachment.setCreatedDate(new Date());
-					orderFileAttachmentService.create(orderFileAttachment);
-					orderFileAttachment.setVarOrderEmailQueue(varOrderEmailQueue);
-					}
+		if(oldOrderFileId!=null && !oldOrderFileId.equals("")){
+			orderfile=orderFileAttachmentService.read(Long.parseLong(oldOrderFileId));
+			Long orderFileId=0L;
+			if(orderfile!=null){
+				filePath=orderfile.getFilePath();
+				orderFileId=addAttachments(orderemailQueue,productLine,
+			    		fieldsByName,formParams,filePath);
+				if(!isOldOrderFileDeleted){
+					orderfile.setId(0);
+					orderFileId=orderFileAttachmentService.create(orderfile);
 				}
-			}catch(WebApplicationException wae){
-				throw wae;
-			} catch (Exception e) {
-				e.printStackTrace();
-				// file is not available so execute process flow without file.
-			}finally{
-				if(outstream != null)
-					outstream.close();
+				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine);
+				OrderFileAttachment newOrderFileAttachment=new OrderFileAttachment();
+				newOrderFileAttachment.setId(orderFileId);
+				orderQueue.setSubject(subjectline);
+				orderQueue.setCreatedDate(date);
+				orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+				orderQueue.setVarOrderFileAttachment(newOrderFileAttachment);
+				orderQueue.setVarProductLine(productLine);
+				 Long prevOrderId=Long.parseLong(orderid);
+				orderQueue.setPrevOrderQueueId(Integer.parseInt(orderid));
+				OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+						.getInstance().getBean("orderQueueService");
+				
+				Long orderqueueid = orderQueueService.create(orderQueue);
+				orderQueue = orderQueueService.read(prevOrderId);
+				orderQueue.setStatus(ApplicationConstants.ORDER_QUEUE_CANCEL_STATUS);
+				orderQueueService.update(orderQueue);
+			}else{
+				//throw a error
 			}
 		}
-		if(oldFileIds!=null && !"".equals(oldFileIds)){
-		String []ids = oldFileIds.split(",");
-		for(String fileId:ids){
-			orderFileAttachment=orderFileAttachmentService.read(Long.parseLong(fileId));
-			orderFileAttachment.setId(0);
-			//orderFileAttachment.setOrderQueue(orderQueue);
-			//orderFileAttachment.setPartnerObj(partner);
-			orderFileAttachmentService.create(orderFileAttachment);
-		}
-		}
-		orderQueue = orderQueueService.read(orderqueueid);
-		orderQueue.setStatus("1");
-		orderQueueService.update(orderQueue);
 		return "{\"success\":true}";
 	}
 	
@@ -894,7 +836,6 @@ public class OrderQueue extends MainAbstractEntity{
 	public Response getOrderFile(@Context UriInfo ui,
 	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
 		Long orderFileQueueId = Long.parseLong(orderid);
-		OrderQueue orderQueue=null;
 		String orderFilePath = "";
 		try {
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
@@ -924,4 +865,64 @@ public class OrderQueue extends MainAbstractEntity{
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
+	
+	private Long addAttachments(OrderEmailQueue orderemailQueue,ProductLine productLineObj,
+    		Map<String, List<FormDataBodyPart>> fieldsByName,FormDataMultiPart formParams,String filePath) throws Exception{
+    		 String fileExtension = null,fileName,type;
+			String fileContentType = null,additionalDataFileKey=null;
+			InputStream stream=null;
+			OrderFileAttachment orderFileAttachment=null;
+			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+  					.getInstance().getBean("orderFileAttachmentService");
+			String count="0";
+			Long orderFileId=0L;
+		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
+		    String field = entry.getKey();
+		    FormDataBodyPart formdata = entry.getValue().get(0);
+				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
+					 stream = ((FormDataBodyPart) formParams
+							.getField(field)).getEntityAs(InputStream.class);
+					 fileName = ((FormDataBodyPart) formParams.getField(field))
+							.getContentDisposition().getFileName();
+					 type = ((FormDataBodyPart) formParams.getField(field))
+							.getMediaType().toString();
+					 if(fileName!=null)
+						 fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+					if(!type.equalsIgnoreCase(MediaType.TEXT_PLAIN) || "txt".equalsIgnoreCase(fileExtension)){
+					
+					
+					
+					if (field.equalsIgnoreCase("orderFileType"))
+					{
+						fileContentType = ApplicationConstants.DEFAULT_ORDER_CONTENT_TYPE;
+						additionalDataFileKey=null;
+					} else {
+						count=field.replace("attachment", "");
+						if(formParams.getField("additionalDataFileKey"+count)!=null)
+							additionalDataFileKey = formParams.getField("additionalDataFileKey"+count).getValue();
+						else
+							additionalDataFileKey=null;
+						fileContentType = ApplicationConstants.DEFAULT_ADDITIONAL_CONTENT_TYPE;
+					}
+					orderFileAttachment= new OrderFileAttachment();
+					File targetFile = new File(filePath+File.separator+fileName);
+				    FileUtils.copyInputStreamToFile(stream, targetFile);
+					orderFileAttachment.setFileName(fileName);
+					orderFileAttachment.setFileExtension(fileExtension);
+					orderFileAttachment.setFileContentType(fileContentType);
+					orderFileAttachment.setCreatedDate(new Date());
+					orderFileAttachment.setAdditionalDataFileKey(additionalDataFileKey);
+					orderFileAttachment.setVarProductLine(productLineObj);
+					orderFileAttachment.setVarOrderEmailQueue(orderemailQueue);
+					orderFileAttachment.setFilePath(filePath);
+					orderFileAttachment.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+					if (field.equalsIgnoreCase("orderFileType"))
+						orderFileId=orderFileAttachmentService.create(orderFileAttachment);
+					else 
+						orderFileAttachmentService.create(orderFileAttachment);
+					}
+				}
+		    }
+		return orderFileId;
+		}
 }
