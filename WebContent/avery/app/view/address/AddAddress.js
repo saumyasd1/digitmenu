@@ -78,6 +78,7 @@ Ext.define('AOC.view.address.AddAddress',{
                        name: 'site',
                        fieldLabel:'Site',
                        displayField: 'name',
+                       reference:'siteName',
                        valueField: 'id',
                        store:Ext.create('AOC.store.SiteStore'),
                         listeners : {
@@ -208,8 +209,7 @@ Ext.define('AOC.view.address.AddAddress',{
 						valueField:'id',
 						reference:'partnerName',
 					    store :'PartnerManagementStore',
-					    disabled:true,
-					    allowBlank: false,
+					  allowBlank: false,
       		            listeners : {
       		            //	 blur : this.notifyByImage,
    	                   
