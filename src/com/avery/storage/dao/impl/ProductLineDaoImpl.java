@@ -235,7 +235,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			}
 		}
 		}
-		if(entity.isAttachmentFileProductlineMatchRequired()){
+		boolean isAttachmentFileProductlineMatchRequired=entity.isAttachmentFileProductlineMatchRequired()==null?false:entity.isAttachmentFileProductlineMatchRequired();
+		if(isAttachmentFileProductlineMatchRequired){
 			String attachmentFileProductlineMatchLocation=entity.getAttachmentFileProductlineMatchLocation();
 			if(attachmentFileProductlineMatchLocation!=null){
 			String[] attachmentFileProductlineMatchLocationArray=attachmentFileProductlineMatchLocation.split(";");
