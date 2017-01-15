@@ -128,8 +128,8 @@ private static final long serialVersionUID = 3208431286041487210L;
 	@Column(name = "emailBodyRBOMatch", length = 100)
 	private String emailBodyRBOMatch;
 	
-	@OneToMany(mappedBy = "varOrderEmailQueue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<OrderFileAttachment> listOrderFileAttachment = new ArrayList<OrderFileAttachment>();
+	@OneToMany(mappedBy = "varOrderEmailQueue",  fetch = FetchType.EAGER)
+	private List<OrderFileAttachment> listOrderFileAttachment;
 	
 	
 	//transient variables added for getting colorCode and iconName
