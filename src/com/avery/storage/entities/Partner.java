@@ -114,9 +114,22 @@ public class Partner extends MainAbstractEntity {
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
-
-
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "varPartner", fetch = FetchType.LAZY)
+	List<Address> addressList = new ArrayList<Address>();
 	
+	public List<Address> getAddressList() {
+		return addressList;
+	}
+
+
+
+	public void setAddressList(List<Address> addressList) {
+		this.addressList = addressList;
+	}
+
+
+
 	public Partner(){
 		
 	}
@@ -231,11 +244,11 @@ public class Partner extends MainAbstractEntity {
 		this.contactPerson = contactPerson;
 	}
 
-	public Boolean isActive() {
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -247,11 +260,11 @@ public class Partner extends MainAbstractEntity {
 		this.comment = comment;
 	}
 
-	public Integer getSiteId() {
+	public int getSiteId() {
 		return siteId;
 	}
 
-	public void setSiteId(Integer siteId) {
+	public void setSiteId(int siteId) {
 		this.siteId = siteId;
 	}
 
