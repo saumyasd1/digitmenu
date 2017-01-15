@@ -18,8 +18,11 @@ Ext.define('AOC.view.webform.WebFormController', {
     		fields:['id','rboName'],
 	            data : jsonValue
       });
-	    	 rboCombo.reset();
-	    	 dataStructureCombo.reset();
+    		if(!this.getView().isResubmit || !obj.isChangedForFirstTime  ){
+    			rboCombo.reset();
+   	    	 	dataStructureCombo.reset();
+   	    	 	obj.isChangedForFirstTime=false;
+    		}
 	    	 dataStructureCombo.disable();
     	     rboCombo.bindStore(store);
     	     rboCombo.enable();
@@ -31,7 +34,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     SaveDetails:function(obj){
 	var me=this;
     	Ext.getBody().mask('Saving....');
-    	   var form = this.getView().down('form').getForm(),me=this;
+    	   var form = this.getView().down('form').getForm(),me=this,formView=this.getView().down('form');
     	   var store =Ext.ComponentQuery.query('weborderview attachmentinfoGrid')[0].getStore();
     	   var oldFileIds=[],odFileId=0;
     	  for(var i=0;i<store.getCount();i++){
@@ -48,11 +51,15 @@ Ext.define('AOC.view.webform.WebFormController', {
     	   var messageField=this.getView().down('#messageFieldItemId');
     	   form.setValues({"oldFileIds":oldFileIds});
     	    if(form.isValid()){
-    	    	
+    	    	var url='',oldOrderId=formView.down('#oldOrderId').getValue();
+    	    	if(me.getView().down('form').isResubmit)
+    	    		url=applicationContext+'/rest/orders/attachments/'+oldOrderId;
+    	    	else
+    	    		url=applicationContext+'/rest/emailqueue/createweborder';
     			form.submit({
-    				url: applicationContext+'/rest/emailqueue/createweborder',
+    				url: url,
     		        getParams: function(useModelValues) {
-    		            var fieldParams = this.form.getValues(false,true,false,true);
+    		            var fieldParams = this.form.getValues(false,false,false,true);
     		            return Ext.apply({}, fieldParams);
     		        },
     		        buildForm: function() {
@@ -156,7 +163,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    	if(view.attachmentFileNameExtension_1.toLowerCase().indexOf(extension.toLowerCase())==-1){
 		    		obj.reset( );
 		    		Ext.getBody().unmask();
-		    		Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
+		    		Ext.Msg.alert('','Please attach only ' +view.attachmentFileNameExtension_1 +' type of files');
 		    		return false;
 		    	}else{
 		    		var count=obj.name.replace('attachment','');
@@ -213,7 +220,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 id = (Ext.isEmpty(id))?0:id;
 			var store=AttachmentInfoGriditemId.store;
 			if(store.storeId!='WebformStoreId'){
-				var store = Ext.create('AOC.store.WebformStore',{
+				store = Ext.create('AOC.store.WebformStore',{
 					storeId:'WebformStoreId',
 					fields : [ 'fileName', 'fileType','fileId'],
 					 data : [{
@@ -244,7 +251,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 			}
 	 },
 	 onOrderFileChange:function(obj,value){
-		 var value=value.substring(value.lastIndexOf("\\")),view=this.getView();
+		    value=value.substring(value.lastIndexOf("\\"));
+		    var view=this.getView();
 		    value=value.replace("\\"," ");
 		    if(!Ext.isEmpty(value)){
 			    var extension=value.substring(value.lastIndexOf(".")+1);
@@ -254,6 +262,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 			    		Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
 			    		return false;
 			    	}else{
+			    		if(view.isResubmit){
+			    			view.down('#oldOrderFileDeleted').setValue(true);
+		    			}
 			    		this.insertFileInGrid(value,'Order File Type',false,null);
 			    	}
 			    }else{
@@ -282,6 +293,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    		}
 	    		else{
 	    			fileField=form.lookupReference('orderFileType');
+	    			if(form.isResubmit){
+	    				form.down('#oldOrderFileDeleted').setValue(true);
+	    			}
 	    			if(fileField)
 	    				fileField.reset( );
 	    		}
@@ -306,9 +320,12 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    		fields:['id','dataStructureName','attachmentRequired'],
 		            data : jsonValue
 	    	});
+	    	if(!this.getView().isResubmit || !obj.isChangedForFirstTime  ){
+	    		dataStructureCombo.reset();
+   	    	 	obj.isChangedForFirstTime=false;
+    		}
 	    	dataStructureCombo.bindStore(store);
 	    	dataStructureCombo.enable();
-	    	dataStructureCombo.reset();
 		 }else{
 		    	 dataStructureCombo.disable();
 		 }
