@@ -43,46 +43,20 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
         Criteria criteria_org = null;
         Criteria criteria_system = null;
         Criteria criteria_site = null;
-		int totalCount=0;
-		ProjectionList proj = Projections.projectionList();
-		proj.add(Projections.property("varOrgCode.name"), "orgCodeName")
-		.add(Projections.property("varPartner.partnerName"), "partnerName")
-		.add(Projections.property("varPartner.id"), "partnerId")
-		.add(Projections.property("address1"),"address1")
-		.add(Projections.property("address2"),"address2")
-		.add(Projections.property("address3"),"address3")
-		.add(Projections.property("address4"),"address4")
-		.add(Projections.property("siteNumber"),"siteNumber")
-		.add(Projections.property("contact"),"contact")
-		.add(Projections.property("phone1"),"phone1")
-		.add(Projections.property("fax"),"fax")
-		.add(Projections.property("email"),"email")
-		.add(Projections.property("siteType"),"siteType")
-		//.add(Projections.property("varSite.name"), "siteName")
-		.add(Projections.property("id"),"id");
-			
-		String queryString=(String) queryMap.getFirst("query");
-		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(Address.class);
-		criteria.createAlias("varOrgCode", "varOrgCode")
-		.createAlias("varPartner", "varPartner");
-		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Address.class));
-		List<Address> list = criteria.list();
-		String limit=(String)queryMap.getFirst("limit");
-		String pageNo=(String) queryMap.getFirst("page");
-		if(queryString!=null){
+        session = getSessionFactory().getCurrentSession();
+        criteria = session.createCriteria(Address.class);
+        String queryString=(String) queryMap.getFirst("query");
+        if(queryString!=null){
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
+				String sDate=searchMap.get("fromDate")+" 00:00:00";
+				String eDate=searchMap.get("toDate")+" 00:00:00";
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			String partnerName=searchMap.get("partnerName");
 			if(partnerName!=null && !"".equals(partnerName)){
-				criteria.createAlias("partner", "partner");
-	            criteria.add(Restrictions.ilike("partner"+".partnerName",partnerName,MatchMode.ANYWHERE));
-//				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
+	            criteria.add(Restrictions.ilike("varPartner.partnerName",partnerName,MatchMode.ANYWHERE));
 			}
 			String address=searchMap.get("address");
 			if(address!=null && !"".equals(address)){
@@ -103,7 +77,36 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
 				criteria.add(disCriteria);
 			}
-		}   
+		}
+        
+		int totalCount=0;
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("varOrgCode.name"), "orgCodeName")
+		.add(Projections.property("varPartner.partnerName"), "partnerName")
+		.add(Projections.property("varPartner.id"), "partnerId")
+		.add(Projections.property("address1"),"address1")
+		.add(Projections.property("address2"),"address2")
+		.add(Projections.property("address3"),"address3")
+		.add(Projections.property("address4"),"address4")
+		.add(Projections.property("siteNumber"),"siteNumber")
+		.add(Projections.property("contact"),"contact")
+		.add(Projections.property("phone1"),"phone1")
+		.add(Projections.property("fax"),"fax")
+		.add(Projections.property("email"),"email")
+		.add(Projections.property("siteType"),"siteType")
+		//.add(Projections.property("varSite.name"), "siteName")
+		.add(Projections.property("id"),"id");
+			
+		
+		
+		
+		criteria.createAlias("varOrgCode", "varOrgCode")
+				.createAlias("varPartner", "varPartner");
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Address.class));
+		List<Address> list = criteria.list();
+		String limit=(String)queryMap.getFirst("limit");
+		String pageNo=(String) queryMap.getFirst("page");
+		   
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		    criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
