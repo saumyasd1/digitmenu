@@ -546,86 +546,42 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		OrderFileAttachment orderFileAttachment = new OrderFileAttachment();
 		orderFileAttachment = (OrderFileAttachment) session.get(OrderFileAttachment.class, fileAttachmentId);
 		comment = orderFileAttachment.getComment();
-		if(comment==null | "".equals(comment)){
-			Criteria crit = session.createCriteria(ProductLine.class)
-					.setProjection(Projections.projectionList()
-							.add(Projections.property("id"), "id")
-							.add(Projections.property("dataStructureName"), "dataStructureName"))
-					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
-					
-			entitiesMap.put("dataStructures", new LinkedHashSet(crit.list()));
-			return entitiesMap;
-		}
-		if(comment.contains(",")){
+		if (comment == null)
+			comment = "";
+		if (comment.contains(",")) {
 			String[] st = comment.split(",");
-			for(int i=0;i<st.length;i++){
-				if(NumberUtils.isNumber(st[i])){
+			for (int i = 0; i < st.length; i++) {
+				if (NumberUtils.isNumber(st[i])) {
 					Long productlineid = Long.parseLong(st[i]);
 					productLineIds.add(productlineid);
 				}
 			}
-		}
-		else{
-			if(NumberUtils.isNumber(comment)){
+		} else {
+			if (NumberUtils.isNumber(comment)) {
 				Long productlineid = Long.parseLong(comment);
 				productLineIds.add(productlineid);
 			}
 		}
-		if(productLineIds.size()>0){
-			for(Long productLineId : productLineIds){
+		if (productLineIds.size() > 0) {
+			for (Long productLineId : productLineIds) {
 				ProductLine productLine = new ProductLine();
 				productLine = (ProductLine) session.get(ProductLine.class, productLineId);
-				if (productLine == null)
-					throw new Exception("Unidentified productline id found :: \""+productLineId+"\".");
-				Map<String, String> dataStructureValue = new HashMap<>();
-				dataStructureValue.put("id", productLineId.toString());
-				dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
-				dataStructures.add(dataStructureValue);
+				if (productLine != null) {
+					Map<String, String> dataStructureValue = new HashMap<>();
+					dataStructureValue.put("id", productLineId.toString());
+					dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
+					dataStructures.add(dataStructureValue);
+				}
 			}
-		}
-		else{
-			/*ProductLineService productLineService = (ProductLineService) SpringConfig
-					.getInstance().getBean("productLineService");
-			productline = productLineService.readAll();
-			if (productline == null)
-				throw new Exception("Unable to find Product Line");*/
+		} else {
 			Criteria crit = session.createCriteria(ProductLine.class)
-					.setProjection(Projections.projectionList()
-							.add(Projections.property("id"), "id")
+					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
 							.add(Projections.property("dataStructureName"), "dataStructureName"))
 					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
-					
+
 			entitiesMap.put("dataStructures", new LinkedHashSet(crit.list()));
 			return entitiesMap;
 		}
-		
-		/*if (dataStructureList.contains(",")) {
-			String[] st = dataStructureList.split(",");
-			for (int p = 0; p < st.length; p++) {
-				String dataStructureName = "";
-				Long productLineId = Long.parseLong(st[p]);
-				ProductLine productLine = new ProductLine();
-				productLine = (ProductLine) session.get(ProductLine.class, productLineId);
-				if (productLine == null)
-					throw new Exception("Unidentified productline id found");
-				Map<String, String> dataStructureValue = new HashMap<>();
-				dataStructureValue.put("id", productLineId.toString());
-				dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
-				dataStructures.add(dataStructureValue);
-
-			}
-		} else if (!dataStructureList.equals(null) && !dataStructureList.equals("")) {
-			String dataStructureName = "";
-			Long productLineId = Long.parseLong(dataStructureList);
-			ProductLine productLine = new ProductLine();
-			productLine = (ProductLine) session.get(ProductLine.class, productLineId);
-			if (productLine == null)
-				throw new Exception("Unidentified productline id found");
-			Map<String, String> dataStructureValue = new HashMap<>();
-			dataStructureValue.put("id", productLineId.toString());
-			dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
-			dataStructures.add(dataStructureValue);
-		}*/
 
 		entitiesMap.put("dataStructures", dataStructures);
 
