@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -40,6 +41,10 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 					.createAlias("varOrderLine", "varOrderLine")
 					.createAlias("varOrderLine.varOrderFileQueue", "varOrderFileQueue");
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderID));
+			criteria.add(Restrictions.conjunction()
+					.add(Restrictions.ne("variableFieldName", "SIZE"))
+					.add(Restrictions.ne("variableFieldName", "SIZE CHART"))
+					.add(Restrictions.ne("variableFieldName", "QTY")));
 			criteria.setProjection( Projections.projectionList()
 			        .add( Projections.distinct(Projections.property("variableFieldName")) ));
 			return criteria.list();
