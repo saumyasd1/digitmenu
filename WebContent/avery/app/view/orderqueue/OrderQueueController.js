@@ -123,7 +123,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var value = cmp.getValue();
         if (value != null && value != '') {
             store.proxy.setFilterParam('query');
-            var parameters = '{"partnerName":"' + value + '"}';
+            var parameters = '{"PartnerName":"' + value + '"}';
             store.setRemoteFilter(true);
             if (!store.proxy.hasOwnProperty('filterParam')) {
                 store.proxy.setFilterParam('query');
