@@ -164,7 +164,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										//datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
 									}
 								}
 							},
