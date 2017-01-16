@@ -13,11 +13,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         }
     },
     backButton:function(){
-    	var panel=this.getView().ownerCt;
-        panel.getLayout().setActiveItem(0);
-        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
+    	var orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
+    	//active orderqueue item
+    	orderQueueView.getLayout().setActiveItem(0);
+    	
+    	var ordeQueueGrid = orderQueueView.getLayout().activeItem;
         ordeQueueGrid.store.load();
-        this.getView().destroy();
     },
     validateOrderLine:function(){
     	Ext.getBody().mask('Validating....');
@@ -51,7 +52,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	salesOrderCount=this.runTime.getSalesOrderCount();
     	var proceed=true;
     	if(proceed){
-    		var currentRecord=this.runTime.getOrderQueueActiveRecord();
     	var owner=me.getView().ownerCt;
 		   var store=Ext.create('AOC.store.SalesOrderStore', {
 				proxy : {

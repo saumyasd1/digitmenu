@@ -17,10 +17,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 						collapsible :false,
 						itemId : 'orderQueueViewItemId1',
 						activeItem:0,
-		 				items:[{
-							xtype:'orderqueuegrid',
-						        flex:1
-						}]
+		 				items:[
+	 				       {
+	 				    	   xtype:'orderqueuegrid',
+	 				    	   reference:'orderQueueGrid'
+	 				       },
+	 				       {
+	 				    	   xtype:'orderlinecontainer',
+	 				    	   reference:'orderLineContainer'
+	 				       }
+ 				       ]
 					}]
 	 	});
 	 	this.callParent(arguments);

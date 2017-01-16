@@ -21,20 +21,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	 	me.callParent(arguments);
 	},
 	buildTbar:function(){
-		var record = AOC.config.Runtime.getOrderQueueActiveRecord();
 		return [
 			{
 				xtype:'tbtext',
 				style:AOC.config.Settings.config.tabHeaderTitleStyle,
-				text:'Order Line   (Order Track#:'+ record.get('id') + ')'
+				reference:'orderLineTitle'
 			}
 		]
-	},
-	afterRender:function(){
-		this.callParent(arguments);
-		var grid = this.down('orderlineexpandablegrid');
-		grid.store.load();
-		
 	},
 	buildBbar:function(){
 		return [
@@ -80,58 +73,63 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		]
 	},
 	buildItems:function(){
-		var me = this,
-			record = AOC.config.Runtime.getOrderQueueActiveRecord();
-			
+		var me = this;
 		return [
-			{
-				xtype:'fieldcontainer',
-				layout:'hbox',
-				margin:'0 10 0 10',
-				style:'border-top:solid 1px #cecece;padding:10px;',
-				defaults:{
-					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelSeparator:'',
-					xtype:'displayfield'
-				},
-				items:[
+	        {
+	        	xtype:'form',
+	        	reference:'orderLineForm',
+	        	border:false,
+	        	items:[
 					{
-						fieldLabel:'Partner',
-						value : record.get('PartnerName'),
-						flex:1.3
-					},
-					{
-						fieldLabel : 'RBO',
-						value:record.get('RBOName'),
-						flex:1.3
-					},
-					{
-						fieldLabel : 'Subject',
-						value:record.get('Subject'),
-						flex:2
-					},
-					{
-			            xtype:'checkboxfield',
-			            boxLabel  : 'Copy Data',
-						margin:'0 0 5 0',
-			            flex:0.5,
-						checked: false,
-						handler:function(cmp, checked){
-		                	var activeitme =(checked) ? 0 : 1;
-		                	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
-		                	if(record.get('Status') == 4 && AOC.config.Runtime.getAllowOrderLineEdit()){
-									if(!checked){
-									   me.lookupReference('form').enable();
-									}
-									else{ 
-									   me.lookupReference('form').disable();
-									}
+						xtype:'fieldcontainer',
+						layout:'hbox',
+						margin:'0 10 0 10',
+						style:'border-top:solid 1px #cecece;padding:10px;',
+						defaults:{
+							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+							labelSeparator:'',
+							xtype:'displayfield'
+						},
+						items:[
+							{
+								fieldLabel:'Partner',
+								name:'PartnerName',
+								flex:1.3
+							},
+							{
+								fieldLabel : 'RBO',
+								name:'RBOName',
+								flex:1.3
+							},
+							{
+								fieldLabel : 'Subject',
+								name:'Subject',
+								flex:2
+							},
+							{
+					            xtype:'checkboxfield',
+					            boxLabel  : 'Copy Data',
+								margin:'0 0 5 0',
+					            flex:0.5,
+								checked: false,
+								handler:function(cmp, checked){
+					            	//var activeitme =(checked) ? 0 : 1;
+//					            	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
+//					            	if(record.get('Status') == 4 && AOC.config.Runtime.getAllowOrderLineEdit()){
+//											if(!checked){
+//											   me.lookupReference('form').enable();
+//											}
+//											else{ 
+//											   me.lookupReference('form').disable();
+//											}
+//										}
 								}
-						}
-			        }
-				]
-			},
+					        }
+						]
+					}
+	        	]
+	        },
 			{
 				xtype:'fieldcontainer',
 				layout:'hbox',
@@ -208,7 +206,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					{
 						xtype:'orderlineexpandablegrid',
 						itemId: 'orderlineexpandablegridvv',
-						store:me.store,
 						selModel: {
 							type:'spreadsheet',
 							rowNumbererHeaderWidth:0
@@ -217,7 +214,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					{
 						xtype:'orderlineexpandablegrid',
 						itemId: 'orderlineexpandablegridrowmodel',
-						store:me.store,
 						editGrid:true,
 						selModel: {
 							type: 'rowmodel'

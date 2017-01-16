@@ -34,7 +34,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		}
         }
     },
-    
+    store:Ext.create('AOC.store.OrderLineStore', {storeId:'OrderLineStoreId'}),
     columns: [
 		{
 			text: 'ATO Mandatory',
