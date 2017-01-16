@@ -42,15 +42,6 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'Subject',
 		mapping : 'subject',
 		type: 'string'
-	}, {
-		name : 'subEmailBody',
-		mapping : 'subEmailBody',
-		type: 'string'
-	},
-	{
-		name : 'emailBody',
-		mapping : 'emailBody',
-		type: 'string'
 	},{
 		name : 'createdDate',
 		mapping : 'createdDate',
