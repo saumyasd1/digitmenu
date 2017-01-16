@@ -84,7 +84,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										//datefield.setValue(new Date());
+										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
 									}
 								}
 							},
