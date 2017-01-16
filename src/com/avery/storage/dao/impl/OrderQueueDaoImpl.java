@@ -373,7 +373,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
 				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
 			}
-			String OrderTrackingID=searchMap.get("emailQueueId");
+			String OrderTrackingID=searchMap.get("orderQueueId");
 			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
 				Long Id=Long.parseLong(OrderTrackingID);
 				Disjunction disCriteria = Restrictions.disjunction();
@@ -390,6 +390,14 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(assignCSR!=null && !"".equals(assignCSR)){
 				criteria.add(Restrictions.ilike("orderemailqueue.assignCSR",assignCSR,MatchMode.ANYWHERE));
 			}
+			
+			String emailQueueId=searchMap.get("emailQueueId");
+			if(emailQueueId!=null && !"".equals(emailQueueId)){
+				Long Id=Long.parseLong(emailQueueId);
+				criteria.add(Restrictions.eq("orderemailqueue.id",Id));
+			}
+			
+			
 		}
 		/*else{
 			 Date date = new Date();
