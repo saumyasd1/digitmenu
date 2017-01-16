@@ -13,7 +13,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
     	 if(comboValue){
 	    	Ext.Msg.show({
 	    	      title:'Assign CSR',
-	    	      message: 'Are you sure you want to move the email to task manager?',
+	    	      message: 'Are you sure you want to assign this mail to the CSR?',
 	    	      buttons: Ext.Msg.YESNO,
 	    	      icon: Ext.Msg.QUESTION,
 	    	      fn: function(btn) {
