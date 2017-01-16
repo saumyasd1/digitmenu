@@ -349,31 +349,31 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			//String[] status = Status.split(",");
 			criteria.add(Restrictions.ilike("status", Status));
 			}
-			String days=searchMap.get("days");
+			/*String days=searchMap.get("days");
 			if(days!=null && !"".equals(days)){
 			long lastDays= Long.parseLong(days);
 			Date endDate = new Date(System.currentTimeMillis());
 			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
 			//criteria.add(Restrictions.between("receivedDate", startDate, endDate));
-			}
-			String EmailBody=searchMap.get("EmailBody");
+			}*/
+			/*String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
 				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
 			}
 			String OrderSource=searchMap.get("OrderSource");
 			if(OrderSource!=null && !"".equals(OrderSource)){
 				criteria.add(Restrictions.eq("orderSource",OrderSource));
-			}
-			String ProductLineType=searchMap.get("ProductLineType");
-			if(ProductLineType!=null && !"".equals(ProductLineType)){
+			}*/
+			String partnerDataStructure=searchMap.get("partnerDataStructure");
+			if(partnerDataStructure!=null && !"".equals(partnerDataStructure)){
 				//criteria.createAlias("productLine", "productLine");
-				criteria.add(Restrictions.ilike("varProductLine.productLineType",ProductLineType,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("varProductLine.dataStructureName",partnerDataStructure,MatchMode.ANYWHERE));
 			}
 			String SenderEmailID=searchMap.get("SenderEmailID");
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
 				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
 			}
-			String OrderTrackingID=searchMap.get("id");
+			String OrderTrackingID=searchMap.get("emailQueueId");
 			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
 				Long Id=Long.parseLong(OrderTrackingID);
 				Disjunction disCriteria = Restrictions.disjunction();
@@ -384,6 +384,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String PONumber=searchMap.get("ponumber");
 			if(PONumber!=null && !"".equals(PONumber)){
 				criteria.add(Restrictions.ilike("poNumber",PONumber,MatchMode.ANYWHERE));
+			}
+			
+			String assignCSR=searchMap.get("assignCSR");
+			if(assignCSR!=null && !"".equals(assignCSR)){
+				criteria.add(Restrictions.ilike("orderemailqueue.assignCSR",assignCSR,MatchMode.ANYWHERE));
 			}
 		}
 		/*else{

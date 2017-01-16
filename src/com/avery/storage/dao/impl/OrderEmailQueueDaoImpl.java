@@ -152,17 +152,8 @@ OrderEmailQueueDao {
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap = new HashMap();
-		/*Session session = null;
-		Criteria criteria = null;*/
 		int totalCount = 0;
-		String queryString = (String) queryMap.getFirst("query");
-/*		session = getSessionFactory().getCurrentSession();
-*/		
 		Criteria criteria = getCriteria(queryMap);//session.createCriteria(OrderEmailQueue.class);
-
-		/*String partner = "gim";
-		criteria.add(Restrictions.ilike("partner.partnerName", partner,MatchMode.ANYWHERE));
-*/
 
 		// Adding Projection to remove extra columns that are not required
 		ProjectionList proj = Projections.projectionList();
@@ -178,14 +169,7 @@ OrderEmailQueueDao {
 				.add(Projections.property("acknowledgementDate"), "acknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
-				/*.add(Projections.property("partner.partnerName"), "partnerName")
-				.add(Projections.property("rbo.rboName"), "rboName");*/
-				
-		/*criteria.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
-				.createAlias("listOrderFileAttachment.varProductLine", "productLine")
-				.createAlias("productLine.varPartner", "partner")
-				.createAlias("productLine.rbo", "rbo");
-		*/
+		
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		
 		
@@ -195,23 +179,8 @@ OrderEmailQueueDao {
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
 
-		/*if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
-			String dateType = searchMap.get("datecriteriavalue");
-			if (dateType != null && !dateType.equals("")) {
-				String sDate = searchMap.get("fromDate");
-				String eDate = searchMap.get("toDate");
-				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
-			}
 
-			// Adding search map criteria and removing unnecessary code
-			String subject = searchMap.get("subject");
-			if (subject != null && !"".equals(subject)) {
-				criteria.add(Restrictions.ilike("subject", subject, MatchMode.ANYWHERE));
-			}
-		}*/
-
-		/*totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
+		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
@@ -219,41 +188,13 @@ OrderEmailQueueDao {
 		if (pageNO != 0) {
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
-		}*/
+		}
 
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderEmailQueue.class));
 		//criteria.addOrder(Order.desc("lastModifiedDate"));
 
 		List<OrderEmailQueue> list = criteria.list();
-		System.out.println(list.size());
-		LinkedHashSet<OrderEmailQueue> set = new LinkedHashSet();
-		set.addAll(list);
-		System.out.println(set.size());
-		list.clear();
-		list.addAll(set);
-		
-		if(list!=null && list.size()>0){
-			totalCount = list.size();
-		}
-		
-		String pageNumber = pageNo == null ? "" : pageNo;
-		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
-		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
-		
-		int firstResult = 0; 
-		int lastResult = pageSize;
-		
-		if (pageNO != 0) {
-			firstResult = (pageNO - 1) * pageSize;
-			lastResult = firstResult + pageSize;
-			if(lastResult > totalCount){
-				lastResult = totalCount;
-			}
-		}
-		
-		list = list.subList(firstResult, lastResult);
-
-		
+	
 		//System.out.println("TotalCount------------->"+list.size());
 		// getting colorCode, iconName and values as required at the GUI
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
@@ -303,11 +244,30 @@ OrderEmailQueueDao {
 		Criteria criteria = null;
 		*/int totalCount = 0;
 		Criteria criteria = getCriteria(queryMap);//session.createCriteria(OrderEmailQueue.class);
+		
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("id"), "id")
+				.add(Projections.property("senderEmailId"), "senderEmailId")
+				.add(Projections.property("subject"), "subject")
+				//.add(Projections.property("toMailId"), "toMailId")
+				.add(Projections.property("status"), "status")
+				.add(Projections.property("ccMailId"), "ccMailId")
+				.add(Projections.property("receivedDate"), "receivedDate")
+				.add(Projections.property("readDate"), "readDate")
+				.add(Projections.property("comment"), "comment")
+				.add(Projections.property("createdDate"), "createdDate")
+				//.add(Projections.property("acknowledgementDate"), "acknowledgementDate")
+				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
+		
+		
 		criteria.add(Restrictions.eq("status", "4"));// Status Code for Unrecognized mails
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
+		criteria.setProjection(proj)
+		.setResultTransformer(Transformers.aliasToBean(OrderEmailQueue.class));
 		//Adding searchmap for task manager
 		/*String queryString=(String) queryMap.getFirst("query");
 		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
@@ -343,6 +303,11 @@ OrderEmailQueueDao {
 				orderQueue.setIconName(iconName);
 				orderQueue.setColorCode(colorCode);
 				orderQueue.setCodeValue(codeValue);
+				
+				long trackId = orderQueue.getId();
+				String csrName = "";
+				csrName = getCSRNameByTrackId(trackId);
+				orderQueue.setCsrName(csrName);
 
 			}
 		} catch (WebApplicationException ex) {
@@ -644,13 +609,22 @@ OrderEmailQueueDao {
 			//String[] status = Status.split(",");
 			criteria.add(Restrictions.ilike("status", Status));
 			}
-			String EmailBody=searchMap.get("EmailBody");
+			/*String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
 				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
-			}
+			}*/
 			String SenderEmailID=searchMap.get("SenderEmailID");
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
 				criteria.add(Restrictions.ilike("senderEmailId",SenderEmailID,MatchMode.ANYWHERE));
+			}
+			String trackId=searchMap.get("id");
+			if(trackId!=null && !"".equals(trackId) && NumberUtils.isNumber(trackId)){
+				Long id = Long.parseLong(trackId);
+				criteria.add(Restrictions.eq("id",id));
+			}
+			String assignCSR=searchMap.get("assignCSR");
+			if(assignCSR!=null && !"".equals(assignCSR)){
+				criteria.add(Restrictions.ilike("assignCSR",assignCSR,MatchMode.ANYWHERE));
 			}
 		}
 		/*else{
