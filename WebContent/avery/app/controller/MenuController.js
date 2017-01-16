@@ -180,8 +180,11 @@ Ext.define('AOC.controller.MenuController', {
 	},
 	onClickMainMenu:function(cmp, rec){
 		var me=this,
-			xtype = rec.get('xtype');
+			xtype = rec.get('xtype'),
+			view = rec.get('view');
+		
 		me.selectCard(xtype);
+		
 		switch (xtype){
 			case 'homewrapper':
 				  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
@@ -200,32 +203,11 @@ Ext.define('AOC.controller.MenuController', {
 		    	weborderview.down('#backButtonimage').setVisible(false);
 		    	weborderview.updateHeaderLabel(newWebOrder);
 				break;
-			case 'orderqueueview':
-				var store=Ext.ComponentQuery.query('maincontainer orderqueuegrid')[0].getStore();
+			default :
+				var store = Ext.ComponentQuery.query(view)[0].getStore();
 				store.clearFilter(true);
 				store.load();	
 				break;
-			case 'emailmanagement':
-				var store = Ext.ComponentQuery.query('maincontainer emailmanagementgrid')[0].getStore();
-				store.clearFilter(true);
-				store.load();	
-				break;
-			case 'partnermanagement':
-				var store = Ext.ComponentQuery.query('maincontainer partnermanagementgrid')[0].getStore();
-				store.clearFilter(true);
-				store.load();	  
-				break;
-			case 'addressmanage':
-				var store = Ext.ComponentQuery.query('maincontainer addressmanagegrid')[0].getStore();
-				store.clearFilter(true);
-				store.load();	  
-				break;
-			case 'taskmanager':
-				var store = Ext.ComponentQuery.query('maincontainer taskManagergrid')[0].getStore();
-				store.clearFilter(true);
-				store.load();	  
-				break;
-			defaults :break;
 		}
 	},
 	selectCard:function(xtype){
