@@ -148,7 +148,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								tabIndex:11,
 								listeners : {
 									render : function(datefield) {
-										//datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
 									}
 								}
 							},
