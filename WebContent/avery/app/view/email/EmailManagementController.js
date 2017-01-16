@@ -118,7 +118,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
         			return Helper.getDisableMenuItemStyle();
         		},
         		getViewOrderMenuItemStyle:function(value){
-        			if(Helper.isEmailQueueViewOrderEnabled(value.status)){
+        			if(Helper.isEmailQueueViewOrderEnabled(value.status,value.orderQueueCount)){
         				return Helper.getEnableMenuItemStyle();
         			}
         			return Helper.getDisableMenuItemStyle();
@@ -151,24 +151,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
         );
     },
     getQuickSearchResults: function(cmp) {
-        var store = this.getView().store;
-        var value = cmp.getValue();
-        if (value != null && value != '') {
-            store.proxy.setFilterParam('query');
-            var parameters = '{"Subject":"' + value + '"}';
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
-            }
-            store.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            store.filter({
-                id: 'query',
-                property: 'query',
-                value: parameters
-            });
-        }
+    	var view = this.getView(),
+        value = cmp.getValue();
+        Helper.quickSearch(view,{Subject: value}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {
@@ -180,15 +165,13 @@ Ext.define('AOC.view.email.EmailManagementController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
-        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
     },
-    clearAdvancedSerach:function(btn){
+    clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
-        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },
@@ -200,33 +183,12 @@ Ext.define('AOC.view.email.EmailManagementController', {
     	}
     },
     onSearchBtnClicked:function(btn){
-
   	  var view = this.getView(),
   	  	  refs = view.getReferences(),
   	  	  form = refs.emailQueueAdvanceSearchForm.getForm(),
   	  	  values = form.getValues();
   	  	  store = view.contextGrid.store;
-  	  	  
-        if (values) {
-            store.proxy.setFilterParam('query');
-            
-            var parameters = Ext.JSON.encode(values);
-            
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
-            }
-            store.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            store.filter({
-                id: 'query',
-                property: 'query',
-                value: parameters
-            });
-            view.contextGrid.lookupReference('clearAdvSearch').show();
-        }
-        view.close();
+          Helper.advancedSearch(view,values);
     
     }
 });

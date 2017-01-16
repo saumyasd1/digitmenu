@@ -339,5 +339,23 @@ Ext.define('AOC.util.Helper',{
 			return true;
 		}
 		return false;
+	},
+	advancedSearch:function(view,values){
+		var store = view.contextGrid.store;
+		  if (values) {
+	            store.load({
+	            	params:{
+	            		query:Ext.JSON.encode(values)
+	        		}
+	            });
+	            view.contextGrid.lookupReference('clearAdvSearch').show();
+	        }
+	        view.close();
+	},
+	quickSearch:function(view,value){
+		var store = view.store;
+	 if (value != null && value != '') {
+	            store.load({params:{query:Ext.JSON.encode(value)}});
+	        }
 	}
 });

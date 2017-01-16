@@ -39,52 +39,21 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						},
 						items:[
 							{
-
 								xtype : 'textfield',
-								fieldLabel : AOCLit.partnerName,
-								name:'PartnerName',
-								flex:1,
-								selectOnTab : true,
-								tabIndex:1,
+								fieldLabel : 'Email Tracking #',
+								name:'id',
+								flex:1
 							},
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.RBO,
-								name:'RBOName',
-								flex:1,
-								tabIndex:2,
-								margin:'0 0 0 10'
-							}
-						]
-					},
-					{
-						xtype: 'fieldcontainer',
-						layout: 'hbox',
-						margin : '5 0 0 0',
-						defaults:{
-							labelSeparator:'',
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
-						},
-						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
 								flex:1,
-								tabIndex:3
-							},
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.emailBody,
-								name:'EmailBody',
-								flex:1,
-								tabIndex:4,
 								margin:'0 0 0 10'
 							}
 						]
 					},
-					{ 
+					{
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
 						margin : '5 0 0 0',
@@ -96,32 +65,24 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						items:[
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.senderEmailID,
-								name:'SenderEmailID',
+								fieldLabel : 'From',
+								name:'senderEmailId',
 								flex:1,
-								tabIndex:5
 							},
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.CSRName,
-								name:'CSRName',
+								xtype:'combo',
+								displayField:'firstName',
+								fieldLabel:'CSR',
+								reference:'csrCombo',
+								name:'assignCSR',
+								valueField:'id',
+								queryMode:'local',
+								store:Ext.create('AOC.store.AssignCSRStore'),
+								typeAhead:true,
+								triggerAction:'all',
 								flex:1,
-								tabIndex:8,
 								margin:'0 0 0 10'
 							}
-						]
-					},
-					{
-						xtype : 'radiogroup',
-						name: 'datecriteriavalue',
-						width:600,
-						margin:'5 0 0 0',
-						labelSeparator:'',
-						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.topLabelAlign,
-						items:[
-							{ boxLabel: 'Process Date', tabIndex:9, name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
-							{ boxLabel: 'Submitted Date', tabIndex:10, name: 'datecriteriavalue', inputValue: 'submittedDate' }
 						]
 					},
 					{

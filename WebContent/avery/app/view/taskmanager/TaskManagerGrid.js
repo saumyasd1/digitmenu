@@ -78,7 +78,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 			{
 				text :'CSR',
 				sortable : true,
-				dataIndex:'CSR',
+				dataIndex:'csrName',
 				flex:0.5
 			},
 			{
@@ -174,7 +174,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
 					itemId:'clearadvanedsearch',
 					reference:'clearAdvSearch',
-					handler:'clearAdvancedSerach',
+					handler:'clearAdvancedSearch',
 					tooltip:'Clear Search'
 				}
 		];

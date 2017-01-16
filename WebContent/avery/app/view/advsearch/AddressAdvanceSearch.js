@@ -58,17 +58,29 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						]
 					},				
 					{
-						xtype : 'radiogroup',
-						itemId: 'partnerdatecriteriavalue',
-						hideLabel : true,
-						name: 'datecriteriavalue',
-						flex:1,
-						labelSeparator : '',
-						labelAlign : 'top',
-						margin:'5 0 0 0',
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
 						items:[
-							{ boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
-							{ boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.siteType,
+								name:'siteType',
+								flex:1,
+								selectOnTab : true
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.siteNumber,
+								name:'siteNumber',
+								flex:1,
+								margin:'0 0 0 10'
+							}
 						]
 					},
 					{

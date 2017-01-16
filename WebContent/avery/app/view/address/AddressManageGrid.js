@@ -129,7 +129,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	            	message:'Showing all accounts with',
 	    			store : Ext.data.StoreManager.lookup(me.store),
 	    			width: 200,
-	    			emptyText: "Search by Partner Name "
+	    			emptyText: "Search by Site Number"
 				 },
 				 {
 	                	xtype :'tbspacer',
@@ -148,7 +148,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 						icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
 						itemId:'clearadvanedsearch',
 						reference:'clearAdvSearch',
-						handler:'clearAdvancedSerach',
+						handler:'clearAdvancedSearch',
 						tooltip:'Clear Search'
 					}
 		          ];

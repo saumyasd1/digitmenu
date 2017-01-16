@@ -51,18 +51,6 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						}
 					},					
 					{
-						xtype : 'radiogroup',
-						itemId: 'partnerdatecriteriavalue',
-						fieldLabel : '',
-						name: 'datecriteriavalue',
-						flex:1,
-						margin:'5 0 0 0',
-						items:[
-							{ boxLabel: 'Creation Date', tabIndex:2, name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
-							{ boxLabel: 'Modified Date', tabIndex:3, name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
-						]
-					},
-					{
 
 						xtype: 'fieldcontainer',
 						layout: 'hbox',

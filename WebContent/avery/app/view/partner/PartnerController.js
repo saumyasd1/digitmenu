@@ -234,106 +234,23 @@ Ext.define('AOC.view.partner.PartnerController', {
     	}
     },
     onSearchBtnClicked:function(btn){
-
-  	  var view = this.getView(),
-  	  	  refs = view.getReferences(),
-  	  	  form = refs.partnerAdvanceSearchForm.getForm(),
-  	  	  values = form.getValues();
-  	  	  store = view.contextGrid.store;
-  	  	  
-        if (values) {
-            store.proxy.setFilterParam('query');
-            
-            var parameters = Ext.JSON.encode(values);
-            
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
-            }
-            store.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            store.filter({
-                id: 'query',
-                property: 'query',
-                value: parameters
-            });
-            view.contextGrid.lookupReference('clearAdvSearch').show();
-        }
-        view.close();
+    	  var view = this.getView(),
+    	  	  refs = view.getReferences(),
+    	  	  form = refs.partnerAdvanceSearchForm.getForm(),
+    	  	  values = form.getValues();
+    	  	  store = view.contextGrid.store;
+              Helper.advancedSearch(view,values);
     },
-    getPartnerBasedOnSearchParameters: function() {
-        var valueObj = this.getView().getForm().getValues(false, true);
-        var FromDate = this.lookupReference('fromDate').getValue();
-        var ToDate = this.lookupReference('toDate').getValue();
-        if (FromDate <= ToDate) {
-            if (!valueObj.hasOwnProperty('datecriteriavalue'))
-                valueObj.datecriteriavalue = 'createdDate';
-            var parameters = Ext.JSON.encode(valueObj);
-            var grid = this.runTime.getActiveGrid();
-            var archievegrid = Ext.ComponentQuery.query('#partnerArchiveGrid')[0];
-            if (archievegrid != null) {
-                var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
-                var valueObj = (currentView.lookupReference('cmbformArchive')).getForm().getValues(false, true);
-                var grid = archievegrid;
-            }
-            var store = grid.store;
-            store.proxy.setFilterParam('query');
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
-            }
-            store.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            store.filter({
-                id: 'query',
-                property: 'query',
-                value: parameters
-            });
-            grid.down('#clearadvanedsearch').show();
-            this.getView().up('window').hide();
-        } else {
-            var partnersearch = Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
-            partnersearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);;
-        }
-    },
-    clearAdvancedSerach: function(widget) {
-        var temp = Ext.ComponentQuery.query('#partneradvancesearchWindowItemId')[0];
-        temp.destroy();
+    clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
-        store.clearFilter();
-        widget.setVisible(false);
-        var temp = grid.down('#advancesearchbutton');
-        temp.enable();
-    },
-    clearAdvancedSerach:function(btn){
-        var grid = this.getView();
-        var store = grid.store;
-        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },
     getQuickSearchResults: function(cmp) {
-        var store = this.getView().store;
-        var value = cmp.getValue();
-        if (value != null && value != '') {
-            store.proxy.setFilterParam('query');
-            var parameters = '{"partnerName":"' + value + '"}';
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
-            }
-            store.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            store.filter({
-                id: 'query',
-                property: 'query',
-                value: parameters
-            });
-        }
+    	var view = this.getView(),
+        value = cmp.getValue();
+        Helper.quickSearch(view,{PartnerName: value}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {
@@ -345,7 +262,6 @@ Ext.define('AOC.view.partner.PartnerController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
-        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();

@@ -3,77 +3,19 @@ Ext.define('AOC.view.address.AddressController', {
     alias: 'controller.addressMain',
     requires : ['AOC.view.orderqueue.SalesOrderExpandableGrid','AOC.view.advsearch.AddressAdvanceSearch','AOC.util.Helper'],
     runTime : AOC.config.Runtime,
-    getAddressBasedOnSearchParameters: function() {
-		 	var valueObj=this.getView().getForm().getValues(false,true);
-		 	var FromDate=this.lookupReference('fromDate').getValue();
-		 	var ToDate=this.lookupReference('toDate').getValue();
-		 	if(FromDate<=ToDate)
-		 		{
-	    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
-	    		valueObj.datecriteriavalue='createdDate';
-			var parameters=Ext.JSON.encode(valueObj);
-	    	var grid=this.runTime.getActiveGrid();
-	    	var store=grid.store;
-	        store.proxy.setFilterParam('query');
-	        store.setRemoteFilter(true);
-	        if (!store.proxy.hasOwnProperty('filterParam')) {
-	            store.proxy.setFilterParam('query');
-	        }
-	        store.proxy.encodeFilters = function(filters) {
-	            return filters[0].getValue();
-	        };
-	        store.filter({
-	        	id: 'query',
-	            property:'query',
-	            value:parameters
-	        });
-	        grid.down('#clearadvanedsearch').show();
-	        this.getView().up('window').hide();
-		 		}
-		 	 else
-		 		 {
-				    var addresssearch=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-				        addresssearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
-		 		 }
-		},
-		clearAdvancedSerach:function(widget){
-			 var temp=Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-			 temp.destroy();
-			 var grid=this.getView();
-			   	var store = grid.store;
-				store.clearFilter();
-				widget.setVisible(false);
-				var temp=grid.down('#advancesearchbutton');
-			    temp.enable();
-		},
-		clearAdvancedSerach:function(btn){
+    
+	clearAdvancedSearch:function(btn){
 	        var grid = this.getView();
 	        var store = grid.store;
-	        store.clearFilter();
 	        store.loadPage(1);
 	        btn.hide();
 	    },
 		getQuickSearchResults:function(cmp){
-			var store=this.getView().store;
-			   var value=cmp.getValue();
-			   if(value!=null && value!=''){
-		       store.proxy.setFilterParam('query');
-		       var parameters='{"partnerName":"'+value+'"}';
-		       store.setRemoteFilter(true);
-		       if (!store.proxy.hasOwnProperty('filterParam')) {
-		           store.proxy.setFilterParam('query');
-		       }
-		       store.proxy.encodeFilters = function(filters) {
-		           return filters[0].getValue();
-		       };
-		       store.filter({
-		    	   id: 'query',
-		           property:'query',
-		           value:parameters
-		       });
-			   }
-			   cmp.orderedTriggers[0].show();
-		},
+	    	var view = this.getView(),
+	        value = cmp.getValue();
+	        Helper.quickSearch(view,{SiteNumber: value}),
+	        cmp.orderedTriggers[0].show();
+	    },
 		   getSearchResults:function(cmp,e){
 			   var me=this;
 			   if (e.getKey() == e.ENTER) {
@@ -83,7 +25,6 @@ Ext.define('AOC.view.address.AddressController', {
 		   clearSearchResults:function(cmp){
 			   var grid=this.getView();
 			   	var store = grid.store;
-				store.clearFilter();
 				store.loadPage(1);
 				cmp.setValue('');
 				cmp.orderedTriggers[0].hide();

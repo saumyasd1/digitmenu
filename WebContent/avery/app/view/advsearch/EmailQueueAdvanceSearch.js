@@ -73,8 +73,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 							},
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.emailBody,
-								name:'EmailBody',
+								fieldLabel : 'Tracking #',
+								name:'id',
 								flex:1,
 								margin:'0 0 0 10'
 							}
@@ -119,26 +119,19 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								flex:1
 							},
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.CSRName,
-								name:'CSRName',
+								xtype:'combo',
+								displayField:'firstName',
+								fieldLabel:'CSR',
+								reference:'csrCombo',
+								name:'assignCSR',
+								valueField:'id',
+								queryMode:'local',
+								store:Ext.create('AOC.store.AssignCSRStore'),
+								typeAhead:true,
+								triggerAction:'all',
 								flex:1,
 								margin:'0 0 0 10'
 							}
-						]
-					},
-					{
-						xtype : 'radiogroup',
-						name: 'datecriteriavalue',
-						fieldLabel : '',
-						width:600,
-						margin:'5 0 0 0',
-						labelSeparator:'',
-						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.topLabelAlign,
-						items:[
-							{ boxLabel: 'Process Date', name: 'datecriteriavalue', inputValue: 'receivedDate', checked: true },
-							{ boxLabel: 'Submitted Date', name: 'datecriteriavalue', inputValue: 'submittedDate' }
 						]
 					},
 					{
