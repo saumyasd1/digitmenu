@@ -43,6 +43,7 @@ Ext.define('AOC.view.address.AddressController', {
     	  	  refs = view.getReferences(),
     	  	  form = refs.addressAdvanceSearchForm.getForm(),
     	  	  values = form.getValues();
+    	      values.datecriteriavalue = 'createdDate';
     	  	  store = view.contextGrid.store;
     	  	  
           if (values) {

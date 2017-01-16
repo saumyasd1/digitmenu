@@ -238,6 +238,7 @@ Ext.define('AOC.view.partner.PartnerController', {
     	  	  refs = view.getReferences(),
     	  	  form = refs.partnerAdvanceSearchForm.getForm(),
     	  	  values = form.getValues();
+    	  	  values.datecriteriavalue = 'createdDate';
     	  	  store = view.contextGrid.store;
               Helper.advancedSearch(view,values);
     },

@@ -28,6 +28,9 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
                 	//editing only enabled for emailQueue status is UnIndentified(3)
 	                if (editor.grid.status == AOCLit.emailUnidentifiedStatus){
 	                	if(editor.field =='dataStructureNameId'){
+	                		if(editor.record.data.contentType==''){
+	                			return false;
+	                		}
 	                		//filter partner data structure for perticular attachment
 	     		                Ext.Ajax.request({
 	     		                	url:applicationContext + '/rest/productLines/datastructure/'+editor.record.get('id'),
@@ -112,6 +115,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					name: 'Partner Data Structure',
 					editor: {
 						xtype:'combobox',
+						//disabled:true,
 						displayField:'dataStructureName',
 						valueField:'id',
 						queryMode :'local',

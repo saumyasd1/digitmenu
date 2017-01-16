@@ -177,6 +177,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
   	  	  refs = view.getReferences(),
   	  	  form = refs.taskManagerAdvanceSearchForm.getForm(),
   	  	  values = form.getValues();
+  	      values.datecriteriavalue = 'createdDate';
   	  	  store = view.contextGrid.store;
           Helper.advancedSearch(view,values);
     }

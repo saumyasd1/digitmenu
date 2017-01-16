@@ -92,16 +92,11 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   		
   		for(var i=0; i<len; i++){
   			var rec = gridView.emailGridRecordArray[i];
-  			if(rec.fileContentType == 'Order' && !rec.productLineId){
+  			if((rec.fileContentType == 'Order' && !rec.productLineId) || (rec.fileContentType == 'AdditionalData' && !rec.productLineId)){
   				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
   	  			Ext.getBody().unmask();
   	  			return;
   			}
-//  			if((rec.fileContentType == 'AdditionalData' && rec.additionalDataFileKey =="") && rec.productLineId){
-//  				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure and fill Additional Data File Key.');
-//  	  			Ext.getBody().unmask();
-//  	  			return;
-//  			}
   		}
   		
 		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray});

@@ -34,6 +34,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
   	  	  refs = view.getReferences(),
   	  	  form = refs.orderQueueAdvanceSearchForm.getForm(),
   	  	  values = form.getValues();
+  	  	  values.datecriteriavalue = 'createdDate';		
   	  	  store = view.contextGrid.store;
           Helper.advancedSearch(view,values);
   },
