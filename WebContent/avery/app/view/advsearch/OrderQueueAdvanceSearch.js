@@ -44,6 +44,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.partnerName,
 								name:'PartnerName',
 								flex:1,
+								tabIndex:1,
 								selectOnTab : true
 							},
 							{
@@ -51,6 +52,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.RBO,
 								name:'RBOName',
 								flex:1,
+								tabIndex:2,
 								margin:'0 0 0 10'
 							}
 						]
@@ -69,14 +71,16 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
-								flex:1
+								flex:1,
+								tabIndex:3
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : 'Email Tracking #',
 								name:'emailQueueId',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:4
 							}
 						]
 					},
@@ -98,6 +102,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								displayField:'value',
 								valueField:'code',
 								queryMode :'local',
+								tabIndex:5,
 								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
 							},
 							{
@@ -107,6 +112,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								valueField:'id',
 								queryMode :'local',
 								flex:1,
+								tabIndex:6,
 								margin:'0 0 0 10',
 								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 							}
@@ -126,7 +132,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
-								flex:1
+								flex:1,
+								tabIndex:7
 							},
 							{
 								xtype : 'textfield',
@@ -134,7 +141,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								name:'orderQueueId',
 								width:250,
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:8
 							}
 						]
 					},
@@ -152,7 +160,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.poNumber,
 								name:'ponumber',
-								flex:1
+								flex:1,
+								tabIndex:9,
 							},
 							{
 									xtype:'combo',
@@ -164,6 +173,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									queryMode:'local',
 									store:Ext.create('AOC.store.AssignCSRStore'),
 									typeAhead:true,
+									tabIndex:10,
 									triggerAction:'all',
 									flex:1,
 									margin:'0 0 0 10'
@@ -189,6 +199,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								flex:1,
 								hidden:false,
 								allowBlank : true,
+								tabIndex:11,
 								selectOnTab : true,
 								value:new Date(),
 								listeners : {
@@ -205,6 +216,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,
+								tabIndex:12,
 								allowBlank : true,
 								selectOnTab : true,
 								value:new Date(),

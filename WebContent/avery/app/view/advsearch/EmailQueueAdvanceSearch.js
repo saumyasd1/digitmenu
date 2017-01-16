@@ -44,14 +44,16 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.partnerName,
 								name:'PartnerName',
 								flex:1,
-								selectOnTab : true
+								selectOnTab : true,
+								tabIndex:1
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.RBO,
 								name:'RBOName',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:2
 							}
 						]
 					},
@@ -70,13 +72,15 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
 								flex:1,
+								tabIndex:3
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : 'Tracking #',
 								name:'id',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:4
 							}
 						]
 					},
@@ -98,6 +102,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								displayField:'value',
 								valueField:'code',
 								queryMode :'local',
+								tabIndex:5,
 								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId')
 							}
 						]
@@ -116,7 +121,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
-								flex:1
+								flex:1,
+								tabIndex:6
 							},
 							{
 								xtype:'combo',
@@ -130,6 +136,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								typeAhead:true,
 								triggerAction:'all',
 								flex:1,
+								tabIndex:7,
 								margin:'0 0 0 10'
 							}
 						]
@@ -154,6 +161,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								tabIndex:8,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
@@ -171,6 +179,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								tabIndex:9,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());

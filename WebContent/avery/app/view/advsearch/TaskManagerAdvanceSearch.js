@@ -42,14 +42,16 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : 'Email Tracking #',
 								name:'id',
-								flex:1
+								flex:1,
+								tabIndex:1
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:2
 							}
 						]
 					},
@@ -68,6 +70,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								fieldLabel : 'From',
 								name:'senderEmailId',
 								flex:1,
+								tabIndex:3
 							},
 							{
 								xtype:'combo',
@@ -81,6 +84,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								typeAhead:true,
 								triggerAction:'all',
 								flex:1,
+								tabIndex:4,
 								margin:'0 0 0 10'
 							}
 						]
@@ -106,7 +110,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								allowBlank : true,
 								selectOnTab : true,
 								value:new Date(),
-								tabIndex:11,
+								tabIndex:5,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
@@ -123,7 +127,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
-								tabIndex:12,
+								tabIndex:6,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());

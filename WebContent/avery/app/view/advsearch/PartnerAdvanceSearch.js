@@ -68,7 +68,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
 								selectOnTab : true,
-								tabIndex:4,
+								tabIndex:2,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
@@ -81,7 +81,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								tabIndex:5,
+								tabIndex:3,
 								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,

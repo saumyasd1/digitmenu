@@ -46,14 +46,16 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								fieldLabel : AOCLit.address,
 								name:'address',
 								flex:1,
-								selectOnTab : true
+								selectOnTab : true,
+								tabIndex:1
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.partnerName,
 								name:'partnerName',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:2
 							}
 						]
 					},				
@@ -72,14 +74,16 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								fieldLabel : AOCLit.siteType,
 								name:'siteType',
 								flex:1,
-								selectOnTab : true
+								selectOnTab : true,
+								tabIndex:3
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.siteNumber,
 								name:'siteNumber',
 								flex:1,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:4
 							}
 						]
 					},
@@ -101,6 +105,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
 								hidden:false,
+								tabIndex:5,
 								allowBlank : true,
 								selectOnTab : true,
 								listeners : {
@@ -115,6 +120,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								name:'toDate',
 								reference:'toDate',
 								flex:1,
+								tabIndex:6,
 								margin:'0 0 0 10',
 								selectOnTab : true,
 								value:new Date(),
