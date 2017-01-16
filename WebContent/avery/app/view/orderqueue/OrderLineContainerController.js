@@ -19,6 +19,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	
     	var ordeQueueGrid = orderQueueView.getLayout().activeItem;
         ordeQueueGrid.store.load();
+        this.getView().destroy();
     },
     validateOrderLine:function(){
     	Ext.getBody().mask('Validating....');
@@ -230,33 +231,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			case AOCLit.mandatoryFieldMissingStatusOrderLine : 
     				mandatoryFieldMissingStatusOrderLine++;
     				break;
-//    			case AOCLit.internalItemNoIsMissingStatusOrderLine : 
-//    				internalItemNoMisCount++;
-//    				break;
-//    			case AOCLit.orgCodeIsMissingStatusOrderLine : 
-//    				orgCodeMisCount++;
-//    				break;
-//    			case AOCLit.frontEndSystemIsMissingStatusOrderLine : 
-//    				frontEndSystemCount++;
-//    				break;
-//    			case AOCLit.readyForItemSpecStatusOrderLine : 
-//    				readyForItemSpecCount++;
-//    				break;
-//    			case AOCLit.readyForAdditionalDataFileParsingStatusOrderLine : 
-//    				readyForAdditionalDataCount++;
-//    				break;
-//    			case AOCLit.readyForValidationStatusFlag : 
-//    				readyForValidationCount++;
-//    				break;
-//    			case AOCLit.errorWhileReadingItemSpecStatusOrderLine : 
-//    				errorWhileReadingItemCount++;
-//    				break;
-//    			case AOCLit.errorInValidationStatusOrderLine : 
-//    				errorInValidationCount++;
-//    				break;
-//    			case AOCLit.cancelStatusOrderLine : 
-//    				cancelCount++;
-//    				break;
     		}
     	});
     	

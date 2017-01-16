@@ -68,13 +68,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	    orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId1')[0],
 			status = currentRecord.get('Status');
 	
-		//active orderline view
-		orderQueueView.getLayout().setActiveItem(1);
-	
+		orderQueueView.insert({
+			xtype: 'orderlinecontainer',
+			flex: 1
+		});
+		
 		var orderlinecontainer = orderQueueView.down('orderlinecontainer'),
 			orderLineForm = orderlinecontainer.lookupReference('orderLineForm').getForm(),
 			orderLineTitle = orderlinecontainer.lookupReference('orderLineTitle'),
 			grid = orderlinecontainer.down('orderlineexpandablegrid');
+		//active orderline view
+		orderQueueView.getLayout().setActiveItem(1);
 		
 		orderLineForm.setValues(currentRecord.data);//set order line form values
 		orderLineTitle.setText('Order Line   (Order Track#: '+ id + ')'); //set orderline title

@@ -21,10 +21,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 	 				       {
 	 				    	   xtype:'orderqueuegrid',
 	 				    	   reference:'orderQueueGrid'
-	 				       },
-	 				       {
-	 				    	   xtype:'orderlinecontainer',
-	 				    	   reference:'orderLineContainer'
 	 				       }
  				       ]
 					}]
