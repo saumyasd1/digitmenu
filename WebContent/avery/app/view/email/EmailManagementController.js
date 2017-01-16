@@ -155,7 +155,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
         var value = cmp.getValue();
         if (value != null && value != '') {
             store.proxy.setFilterParam('query');
-            var parameters = '{"subject":"' + value + '"}';
+            var parameters = '{"Subject":"' + value + '"}';
             store.setRemoteFilter(true);
             if (!store.proxy.hasOwnProperty('filterParam')) {
                 store.proxy.setFilterParam('query');
