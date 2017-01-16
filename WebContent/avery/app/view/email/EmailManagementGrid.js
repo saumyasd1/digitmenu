@@ -63,11 +63,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 					}
   				} 
 			},
-//			{
-//				xtype:'actioncolumn',
-//				width:25,
-//				baseCls:'custom-action'
-//			},
 			{
 				text : '',
 				width:40,
