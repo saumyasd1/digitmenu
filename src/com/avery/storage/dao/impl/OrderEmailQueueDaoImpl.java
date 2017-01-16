@@ -17,6 +17,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.NumberUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -607,6 +608,7 @@ OrderEmailQueueDao {
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(OrderEmailQueue.class);
 		if(queryString!=null){
+			int flag = 0;
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
@@ -614,21 +616,24 @@ OrderEmailQueueDao {
 				String eDate=searchMap.get("toDate")+" 00:00:00";
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			String partnerName=searchMap.get("PartnerName");
-			if(partnerName!=null && !"".equals(partnerName)){
-				//criteria.createAlias("partner", "partner");
-				criteria.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
-				.createAlias("listOrderFileAttachment.varProductLine", "productLine")
-				.createAlias("productLine.varPartner", "partner");
-				criteria.add(Restrictions.ilike("partner.partnerName",partnerName,MatchMode.ANYWHERE));
-			}
 			String RBOName=searchMap.get("RBOName");
 			if(RBOName!=null && !"".equals(RBOName)){
+				flag = 1;
 				criteria.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
 				.createAlias("listOrderFileAttachment.varProductLine", "productLine")
 				.createAlias("productLine.varPartner", "partner")
 				.createAlias("productLine.rbo", "rbo");
 				criteria.add(Restrictions.ilike("rbo.rboName",RBOName,MatchMode.ANYWHERE));
+			}
+
+			String partnerName=searchMap.get("PartnerName");
+			if(partnerName!=null && !"".equals(partnerName)){
+				if(flag==0){
+					criteria.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
+					.createAlias("listOrderFileAttachment.varProductLine", "productLine")
+					.createAlias("productLine.varPartner", "partner");
+				}
+				criteria.add(Restrictions.ilike("partner.partnerName",partnerName,MatchMode.ANYWHERE));
 			}
 			String Subject=searchMap.get("Subject");
 			if(Subject!=null && !"".equals(Subject)){
@@ -673,9 +678,9 @@ OrderEmailQueueDao {
 		session = getSessionFactory().getCurrentSession();
 		OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, trackId);
 		String csr = orderEmailQueue.getAssignCSR();
-		Long csrId = Long.parseLong(csr);
-		if(csrId==null)
+		if(csr==null | "".equals(csr) | !NumberUtils.isNumber(csr))
 			return "";
+		Long csrId = Long.parseLong(csr);
 		try {
 			User user = (User) session.get(User.class, csrId);
 			if (user.getFirstName() != null && !"".equals(user.getFirstName())) {
