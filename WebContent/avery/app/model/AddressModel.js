@@ -4,7 +4,7 @@ Ext.define('AOC.model.AddressModel',{
     fields: [
         {name: 'ID', mapping:'ID',type: 'string'},
         {name: 'partner_id', mapping:'partner.id',type: 'string'},
-		{name: 'orgCode', mapping:'orgCode',type: 'string'},
+		{name: 'orgCode', mapping:'orgCodeName',type: 'string'},
 		{name: 'site', mapping:'site',type: 'string'},
 		{name: 'system', mapping:'system',type: 'string'},
 		{name: 'partnerName', mapping:'partner.partnerName',type: 'string'},
