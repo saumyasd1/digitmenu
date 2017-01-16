@@ -119,15 +119,24 @@ Ext.define('AOC.controller.MenuController', {
 		if(xtype == 'orderqueueview'){
 			var store = this.getOrderQueueGrid().getStore(),
 				mainMenu = this.getMainMenu();
+
+			mainMenu.getSelectionModel().select(mainMenu.getStore().getAt(3), false, true);//select tab
+			this.getOrderQueueViewContainer().getLayout().setActiveItem(0);//set default item
 			
-			mainMenu.getSelectionModel().select(mainMenu.getStore().getAt(3), false, true);
-			this.getOrderQueueViewContainer().getLayout().setActiveItem(0);
-			store.load({
-				params:{emailQueueId : emailQueueId },
-				callback:function(records, oper, success){
-					console.log('loaded');
-				}
-			});
+			//filter order queue grid for respective emailqueue id
+			store.proxy.setFilterParam('emailQueueId');
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('emailQueueId');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'emailQueueId',
+                property: 'emailQueueId',
+                value: emailQueueId
+            });
 		}
 	},
 	onClickLogIn:function(cmp){
