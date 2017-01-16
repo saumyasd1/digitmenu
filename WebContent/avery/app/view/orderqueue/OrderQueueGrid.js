@@ -94,11 +94,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 					var filename=record.get('orderFileName');
 					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '<font>"';
 					return '<img class="vieworderattachment" src="' + attacheImageSrc + '" />';
-					/*if(v.length!=0){
-						var fileName=v[0].fileName
-						return '<div><img data-qtip="'+fileName+'"  class="vieworderattachment" src="' + attacheImageSrc + '" /></div>';
-					}else 
-						return '';*/
 				}
 			},
 			{
@@ -108,14 +103,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				tooltip:'Additional File',
 				dataIndex:'attachmentPresent',
 				renderer:function(v,cell,record){
-					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.attacheImageSrc + '" />';
-					/*if(v){
-						return '<img class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
-					}
-					else{
-						return '';
-					}*/
+					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
 				}
+			},
+			{
+				text : AOCLit.emailBody,
+				width:40,
+				renderer:function(v, metadata, record){
+						var emailBody = record.get('emailBody'); 
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(emailBody) + '<font>"';
+						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
+				}	
+			
 			},
 			{
 				text : AOCLit.TrackingNo,
@@ -190,19 +189,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				text : AOCLit.Subject,
 				width:150,
 				dataIndex:'Subject',
-				renderer:function(v,metadata){
-					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
-						return '<div>'+v+'</div>';
-					}else {
-						return '';
-					}
-				}
-			},
-			{
-				text : AOCLit.emailBody,
-				width:150,
-				dataIndex:'subEmailBody',
 				renderer:function(v,metadata){
 					if(v){
 						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
@@ -321,13 +307,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			var id = record.get('id');
 			var attachmentWin = Ext.create('AOC.view.orderqueue.OrderQueueAttachmentWindow',{recordId: id});
 			attachmentWin.show();
-			
-//			var list=record.get('attachmentFileList'),htmlString='';
-//			for(var i=0;i<list.length;i++){
-//				htmlString=htmlString+'<div><span accessKey="'+list[i].id+'" class="attachment">'+list[i].fileName+'</span></div>';
-//			}
-//			td.innerHTML='<div class="ParameterCls" style="cursor:pointer;color : #0085cf !important;">'+htmlString+'</div>';
-		}else if(e.target.className=='attachment'){
+		}
+		else if(e.target.className=='attachment'){
 			var id=e.target.accessKey;
 			var form = Ext.create('Ext.form.Panel', { 
 				standardSubmit: true,   
