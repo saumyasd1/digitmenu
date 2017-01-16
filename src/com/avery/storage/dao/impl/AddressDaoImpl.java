@@ -68,7 +68,17 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				criteria.add(disCriteria);
 			}
 			
-			String systemname=searchMap.get("address");
+			String siteType=searchMap.get("siteType");
+			if(siteType!=null && !"".equals(siteType)){
+	            criteria.add(Restrictions.ilike("siteType",siteType,MatchMode.ANYWHERE));
+			}
+			
+			String siteNumber=searchMap.get("siteNumber");
+			if(siteNumber!=null && !"".equals(siteNumber)){
+	            criteria.add(Restrictions.ilike("siteNumber",siteNumber,MatchMode.ANYWHERE));
+			}
+			
+			/*String systemname=searchMap.get("address");
 			if(address!=null && !"".equals(address)){
 				Disjunction disCriteria = Restrictions.disjunction();
 				disCriteria.add(Restrictions.ilike("address1", address,MatchMode.ANYWHERE));
@@ -76,7 +86,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				disCriteria.add(Restrictions.ilike("address3", address,MatchMode.ANYWHERE));
 				disCriteria.add(Restrictions.ilike("address4", address,MatchMode.ANYWHERE));
 				criteria.add(disCriteria);
-			}
+			}*/
 		}
         
 		int totalCount=0;
