@@ -35,8 +35,8 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 				layout: 'hbox',
 				defaults:{
 					labelSeparator:'',
-					labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
-					labelAlign:'left',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 					labelWidth:150
 				},
 				defaultType:'displayfield',

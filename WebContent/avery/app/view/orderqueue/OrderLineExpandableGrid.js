@@ -41,9 +41,25 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
 			renderer:function(value, metadata,rec){
-				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag;
-				var checkvalue = value ? value.trim()  :'';
-				metadata.tdAttr = 'data-qtip="'+mandatoryVariableDataFieldFlag+'"';
+				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag,
+					checkvalue = value ? value.trim()  :'',
+					listOrderlineDetails = rec.get('listOrderlineDetails'),
+					mandatoryVariableDataField = '';
+				
+				listOrderlineDetails.sort(function(a, b){
+					return (a.variableFieldName - b.variableFieldName);
+				});
+				
+				var len = listOrderlineDetails.length;
+				
+				for(var i = 0; i < len; i++){
+					if(listOrderlineDetails[i].mandatory == 'Y' && listOrderlineDetails[i].variableDataValue == ''){
+						mandatoryVariableDataField = listOrderlineDetails[i].variableFieldName +' are missing';
+						break;
+					}
+				}
+				
+				metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '<font>"';
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
@@ -432,18 +448,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 88
 			
 		},
-			{
-			text: 'Customer Name',
-			dataIndex: 'partnerCustomerName',
-			width: 126,
-			editor: 'textfield'
-		}, 
-		{
-			text: 'Vendor Name',
-			dataIndex: 'partnerVendorName',
-			width: 111,
-			editor: 'textfield'
-		}, 
 		{
 			text: 'ATO Required',
 			dataIndex: 'atovalidationFlag',
@@ -484,6 +488,90 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			}	
 		},
+		{
+			text: 'Avery ATO',
+			dataIndex: 'averyATO',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery Bulk',
+			dataIndex: 'averyBulk',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery MOQ',
+			dataIndex: 'averyMOQ',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery ProductLine Type',
+			dataIndex: 'averyProductLineType',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery Region',
+			dataIndex: 'averyRegion',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
+		{
+			text: 'Avery Roundup Qty',
+			dataIndex: 'averyRoundupQty',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
+		{
+			text: 'Customer Name',
+			dataIndex: 'partnerCustomerName',
+			width: 126,
+			editor: 'textfield'
+		}, 
+		{
+			text: 'Vendor Name',
+			dataIndex: 'partnerVendorName',
+			width: 111,
+			editor: 'textfield'
+		}, 
 		{
 			text: 'Ship To Customer',
 			dataIndex: 'shipToCustomer',
@@ -784,78 +872,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield'
 		},
 		{
-			text: 'Avery ATO',
-			dataIndex: 'averyATO',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		}, 
-		{
-			text: 'Avery Bulk',
-			dataIndex: 'averyBulk',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		}, 
-		{
-			text: 'Avery MOQ',
-			dataIndex: 'averyMOQ',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		}, 
-		{
-			text: 'Avery ProductLine Type',
-			dataIndex: 'averyProductLineType',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		}, 
-		{
-			text: 'Avery Region',
-			dataIndex: 'averyRegion',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		},
-		{
-			text: 'Avery Roundup Qty',
-			dataIndex: 'averyRoundupQty',
-			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
-		},
-		{
 			text: 'Ordered Date<font color=red>*</font>',
 			dataIndex: 'orderedDate',
 			width: 90,
@@ -1036,7 +1052,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield'
 		},
 		{
-			text: 'Additional Label item # change',
+			text: 'Additional Label item #',
 			dataIndex: 'additionallabelitemchange',
 			width: 150,
 			editor: 'textfield'
@@ -1177,19 +1193,33 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         this.callParent(arguments);
     },
     getRowExpander:function(){
-    	var me=this,
+    	var me = this,
 			rowExpander = new AOC.view.ux.RowExpanderGrid({
 				createComponent: function(view, record, htmlnode, index) {
-					var data=record.get('listOrderlineDetails'),
-						store = Ext.create('AOC.store.VariableHeaderStore', {
+					var data = record.get('listOrderlineDetails');
+					//filter nested grid record for show those record which have typeSetter or level value exist
+					function processData(data){
+						var len = data.length,
+							items = [];
+						
+						for(var i = 0; i < len; i++){
+							if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
+								items.push(data[i]);
+							}
+						}
+						return items;
+					}
+					var record = processData(data);
+					
+					var	store = Ext.create('AOC.store.VariableHeaderStore', {
 							autoLoad: true,
 							modal: 'AOC.model.VariableHeaderModel',
-							data : data,
+							data : record,
 							proxy: {
 								type: 'memory'
 							}
 						}),
-						sel=(me.editGrid) ? 'rowmodel' : 'spreadsheet';
+						sel = (me.editGrid) ? 'rowmodel' : 'spreadsheet';
 						
 					return Ext.create('Ext.grid.Panel',{
 						//nestedGridRefrence: 'listOrderlineDetails',

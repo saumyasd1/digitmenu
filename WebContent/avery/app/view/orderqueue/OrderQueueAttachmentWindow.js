@@ -27,7 +27,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
 					url : applicationContext+'/rest/orderattachements/additionalfiles/'+ me.recordId,
 					reader:{
 						type:'json', 
-						rootProperty: 'additionalfiles',
+						rootProperty: 'additionalfiles'
 					}
 				},
 				autoLoad:true

@@ -183,7 +183,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());
-									},
+									}
 									//'focus': 'notifyByMessage'
 								}
 							}
