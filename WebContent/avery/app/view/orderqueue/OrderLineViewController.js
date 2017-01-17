@@ -37,7 +37,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
 				Ext.Msg.alert('Success','Order line successfully updated');
 				Ext.getBody().unmask();
-				me.getView().store.load();
+				me.getView().store.load({params:{id:me.runTime.getOrderQueueId()}});
 			},
 			failure: function(response, opts) {
 				Ext.getBody().unmask();
@@ -61,12 +61,12 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
 			  		//Ext.Msg.alert('','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
-			  		me.getView().store.load();
+			  		me.getView().store.load({params:{id:me.runTime.getOrderQueueId()}});
 		        },
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();
-	          }
-    		  });
+		        }
+		  });
     },
     outerGridBulkUpdate:function(editorPlugin,editor,context){
     	Ext.Msg.show({
@@ -107,7 +107,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		              	  //AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
 		                   Ext.Msg.alert('Success', 'Order line successfully updated');
 		                    Ext.getBody().unmask();
-		                    ctx.store.load();
+		                    ctx.store.load({params:{id:runTime.getOrderQueueId()}});
 		                },
 		                failure: function(response, opts) {
 		                    Ext.getBody().unmask();

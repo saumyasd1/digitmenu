@@ -31,6 +31,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         	//hide rowexpander if perticular record has atovalidationFlag is False
         	if(record.get('atovalidationFlag') == 'F'){
     			return 'hide-row-expander';
+    		}else{
+	        	var data = record.get('listOrderlineDetails');
+				//filter nested grid record for show those record which have typeSetter or level value exist
+				function processData(data){
+					var len = data.length,
+						items = [];
+					
+					for(var i = 0; i < len; i++){
+						if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
+							items.push(data[i]);
+						}
+					}
+					return items;
+				}
+				var record = processData(data);
+				if(record.length == 0){
+					return 'hide-row-expander';
+				}
     		}
         }
     },
