@@ -12,7 +12,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'rboID', mapping:'rboID',type: 'string'},
 	 		{name: 'productLineType', mapping:'productLineType',type: 'string'},
 	 		{name: 'customerPONumber', mapping:'customerPONumber',type: 'string'},
-	 		{name: 'poNumber', mapping:'poNumber',type: 'string'},
+	 		{name: 'PONumber', mapping:'PONumber',type: 'string'},
 	 		{name: 'orderedDate', mapping:'orderedDate',type: 'date'},
 	 		{name: 'partnerCustomerName', mapping:'partnerCustomerName',type: 'string'},
 	 		{name: 'partnerVendorName', mapping:'partnerVendorName',type: 'string'},
