@@ -345,7 +345,7 @@ public class OrderLine extends MainAbstractEntity{
 	private String region;
 	
 	@Column(name = "PONumber", length = 100)
-	private String PONumber;
+	private String poNumber;
 	
 	@Column(name = "comment", length = 250)
 	private String comment;
@@ -1260,12 +1260,12 @@ public class OrderLine extends MainAbstractEntity{
 		this.region = region;
 	}
 
-	public String getPONumber() {
-		return PONumber;
+	public String getPoNumber() {
+		return poNumber;
 	}
 
-	public void setPONumber(String pONumber) {
-		PONumber = pONumber;
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
 	}
 
 	public String getComment() {
