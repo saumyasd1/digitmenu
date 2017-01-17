@@ -75,7 +75,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'fileName',
 					name: 'fileName',
 					renderer: function (value,metadata) {
-						metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(value) + '<font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + value + '<font>"';
 						return '<a class="emailAttachmentLink" href="#">'+ value +'</a>';
 					}
 				},

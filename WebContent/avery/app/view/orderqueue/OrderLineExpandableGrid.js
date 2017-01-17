@@ -428,7 +428,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		},
 		{
 			text: 'PO #<font color=red>*</font>',
-			dataIndex: 'PONumber',
+			dataIndex: 'poNumber',
 			width: 120,
 			editor: 'textfield',
 			renderer : function(value, metadata, record) {
