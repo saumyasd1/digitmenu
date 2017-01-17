@@ -367,11 +367,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String partnerDataStructure=searchMap.get("partnerDataStructure");
 			if(partnerDataStructure!=null && !"".equals(partnerDataStructure)){
 				//criteria.createAlias("productLine", "productLine");
-				criteria.add(Restrictions.ilike("varProductLine.dataStructureName",partnerDataStructure,MatchMode.ANYWHERE));
+				Long productLineId=Long.parseLong(partnerDataStructure);
+				criteria.add(Restrictions.eq("varProductLine.id",productLineId));
 			}
 			String SenderEmailID=searchMap.get("SenderEmailID");
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
-				criteria.add(Restrictions.ilike("senderEmailID",SenderEmailID,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("orderemailqueue.senderEmailId",SenderEmailID,MatchMode.ANYWHERE));
 			}
 			String OrderTrackingID=searchMap.get("orderQueueId");
 			if(OrderTrackingID!=null && !"".equals(OrderTrackingID)){
