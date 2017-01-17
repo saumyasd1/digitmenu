@@ -45,6 +45,9 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 					.add(Restrictions.ne("variableFieldName", "SIZE"))
 					.add(Restrictions.ne("variableFieldName", "SIZE CHART"))
 					.add(Restrictions.ne("variableFieldName", "QTY")));
+			criteria.add(Restrictions.disjunction()
+					.add(Restrictions.neOrIsNotNull("level", ""))
+					.add(Restrictions.neOrIsNotNull("typeSetter", "")));
 			criteria.setProjection( Projections.projectionList()
 			        .add( Projections.distinct(Projections.property("variableFieldName")) ));
 			return criteria.list();
