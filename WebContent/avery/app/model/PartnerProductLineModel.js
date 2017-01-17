@@ -3,6 +3,7 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 	idProperty:null,
     fields: [
         // set up the fields mapping into the xml doc
+        {name:'id',type:'string'},
 	    {name: 'partner.partnerName', mapping:'partner.partnerName',type: 'string'},
 		{name: 'rboName', mapping:'rbo.rboName',type: 'string'},
 		{name: 'rboId', mapping:'rbo.rboId',type: 'string'},
