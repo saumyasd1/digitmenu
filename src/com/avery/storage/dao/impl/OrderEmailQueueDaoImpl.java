@@ -168,7 +168,8 @@ OrderEmailQueueDao {
 				.add(Projections.property("comment"), "comment")
 				.add(Projections.property("acknowledgementDate"), "acknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
-				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate")
+				.add(Projections.property("orderSource"), "orderSource");
 		
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		
@@ -526,9 +527,10 @@ OrderEmailQueueDao {
 					.createAlias("varProductLine.varPartner", "varPartner").add(Restrictions.eq("id", trackId))
 					.setProjection(Projections.property("varPartner.partnerName"));
 			List list = criteria.list();
-			if (list != null && list.get(0) != null && (String) list.get(0) != "") {
+			partnerName = getCommaSeparatedUniqueValues(list);
+			/*if (list != null && list.get(0) != null && (String) list.get(0) != "") {
 				partnerName = (String) list.get(0);
-			}
+			}*/
 
 			return partnerName;
 		} catch (IndexOutOfBoundsException e) {
@@ -553,13 +555,14 @@ OrderEmailQueueDao {
 					.createAlias("varProductLine.varPartner", "varPartner").createAlias("varProductLine.rbo", "rbo")
 					.add(Restrictions.eq("id", trackId))
 					.setProjection(Projections.property("rbo.rboName").as("rboName"));
-			List list = criteria.list();
-			if (list != null && list.get(0) != null && (String) list.get(0) != "") {
-				rboName = (String) list.get(0);
-			}
-
+			List<String> list = criteria.list();
+			rboName = getCommaSeparatedUniqueValues(list);
+			
 			return rboName;
 		} catch (IndexOutOfBoundsException e) {
+			return "";
+		}
+		catch(Exception e){
 			return "";
 		}
 
@@ -668,6 +671,32 @@ OrderEmailQueueDao {
 			return "";
 		}
 
+	}
+	
+	/**
+	 * @param list
+	 * @return comma separated string of the unique items of the list
+	 */
+	public String getCommaSeparatedUniqueValues(List<String> list) {
+		String resultString = "";
+		if(list==null | list.size()==0)
+			return "";
+		try {
+			Set<String> set = new HashSet<String>();
+			set.addAll(list);
+
+			list.clear();
+			list.addAll(set);
+			if (list != null && list.size() > 0) {
+				for (String value : list) {
+					resultString += value + ", ";
+				}
+				resultString = resultString.substring(0, resultString.length() - 2);
+			}
+		} catch (Exception e) {
+			return "";
+		}
+		return resultString;
 	}
 
 
