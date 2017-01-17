@@ -162,7 +162,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.poNumber,
 								name:'ponumber',
 								flex:1,
-								tabIndex:9,
+								tabIndex:9
 							},
 							{
 									xtype:'combo',
