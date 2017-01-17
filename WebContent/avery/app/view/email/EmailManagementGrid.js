@@ -66,7 +66,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text : '',
 				width:40,
-				dataIndex:'OrderSource',
+				dataIndex:'orderSource',
 				menuDisabled  :true,
 				renderer:function(v, metadata, record){
 					if(v=='Email')
