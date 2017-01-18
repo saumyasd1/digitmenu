@@ -56,6 +56,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
   	            width:40,
   				dataIndex:'comment',
+  				tooltip:'Comments',
   				menuDisabled :true,
   				baseCls:'custom-action',
   				renderer:function(value, metaData, rec){

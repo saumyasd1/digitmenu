@@ -109,7 +109,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Search Partner Name "
+		    			emptyText: "Search by Partner Name "
 					 },
 					 {
 		                	xtype :'tbspacer',

@@ -103,7 +103,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				tooltip:'Additional File',
 				dataIndex:'attachmentPresent',
 				renderer:function(v,cell,record){
+					var fileCount = record.data.additionalFileCount;
+					if(fileCount>0){
 					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
+					}
+					else{
+						return '';
+					}
 				}
 			},
 			{
