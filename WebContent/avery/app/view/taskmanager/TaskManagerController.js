@@ -136,9 +136,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
         var me = this;
         return Ext.create('Ext.XTemplate',
             '<div style="width:150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
-            '</tpl>',
-            '<div style="width:150px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>',
-            '</tpl>'
+            '<div style="width:150px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>'
         );
     },
     getQuickSearchResults: function(cmp) {
