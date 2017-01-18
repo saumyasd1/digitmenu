@@ -176,6 +176,17 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private long rboId;
 	
+	@Transient
+	private int additionalFileCount;
+	
+	public int getAdditionalFileCount() {
+		return additionalFileCount;
+	}
+
+	public void setAdditionalFileCount(int additionalFileCount) {
+		this.additionalFileCount = additionalFileCount;
+	}
+	
 	public long getRboId() {
 		return rboId;
 	}

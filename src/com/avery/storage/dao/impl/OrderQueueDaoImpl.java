@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -182,6 +183,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			orderQueue.setIconName(iconName);
 			orderQueue.setColorCode(colorCode);
 			orderQueue.setCodeValue(codeValue);
+			
+			int additionalFileCount = 0;
+			Long orderQueueId = orderQueue.getId();
+			additionalFileCount = getAdditionalFileCount(orderQueueId);
+			orderQueue.setAdditionalFileCount(additionalFileCount);
 
 		}
 		entitiesMap.put("orders", new LinkedHashSet(list));
@@ -533,5 +539,40 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		fileName = orderFileAttachment.getFileName();
 		orderFilePath = filePath+File.separator+fileName;
 		return orderFilePath;
+	}
+	
+	/**
+	 * @param orderQueueId
+	 * @return additional file count for order queue
+	 */
+	public int getAdditionalFileCount(Long orderQueueId) {
+		int additionalFileCount = 0;
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSessionFactory().openSession();
+			criteria = session.createCriteria(OrderLine.class);
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderQueueId));
+			criteria.add(Restrictions.isNotNull("additionalFileId"));
+			ProjectionList projections = Projections.projectionList();
+			projections.add(Projections.property("additionalFileId"), "additionalFileId");
+			criteria.setProjection(projections);
+			List<String> list = criteria.list();
+			if (list == null | list.size() == 0)
+				return 0;
+			Set<Integer> set = new HashSet<Integer>();
+			for (int i = 0; i < list.size(); i++) {
+				String str = list.get(i);
+				String[] st = str.split(",");
+				for (int p = 0; p < st.length; p++) {
+					if (NumberUtils.isNumber(st[p])) {
+						set.add(Integer.parseInt(st[p]));
+					}
+				}
+			}
+			return set.size();
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }
