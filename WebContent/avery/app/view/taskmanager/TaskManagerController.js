@@ -154,6 +154,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
@@ -161,6 +162,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },

@@ -342,12 +342,26 @@ Ext.define('AOC.util.Helper',{
 	},
 	advancedSearch:function(view,values){
 		var store = view.contextGrid.store;
+		
 		  if (values) {
-	            store.load({
-	            	params:{
-	            		query:Ext.JSON.encode(values)
-	        		}
+			  store.proxy.setFilterParam('query');
+	            store.setRemoteFilter(true);
+	            if (!store.proxy.hasOwnProperty('filterParam')) {
+	                store.proxy.setFilterParam('query');
+	            }
+	            store.proxy.encodeFilters = function(filters) {
+	                return filters[0].getValue();
+	            };
+	            store.filter({
+	                id: 'query',
+	                property: 'query',
+	                value: Ext.JSON.encode(values)
 	            });
+//	            store.load({
+//	            	params:{
+//	            		query:Ext.JSON.encode(values)
+//	        		}
+//	            });
 	            view.contextGrid.lookupReference('clearAdvSearch').show();
 	        }
 	        view.close();

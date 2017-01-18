@@ -245,6 +245,7 @@ Ext.define('AOC.view.partner.PartnerController', {
     clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },
@@ -263,6 +264,7 @@ Ext.define('AOC.view.partner.PartnerController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();

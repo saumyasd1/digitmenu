@@ -7,6 +7,7 @@ Ext.define('AOC.view.address.AddressController', {
 	clearAdvancedSearch:function(btn){
 	        var grid = this.getView();
 	        var store = grid.store;
+	        store.clearFilter();
 	        store.loadPage(1);
 	        btn.hide();
 	    },
@@ -25,6 +26,7 @@ Ext.define('AOC.view.address.AddressController', {
 		   clearSearchResults:function(cmp){
 			   var grid=this.getView();
 			   	var store = grid.store;
+			   	store.clearFilter();
 				store.loadPage(1);
 				cmp.setValue('');
 				cmp.orderedTriggers[0].hide();

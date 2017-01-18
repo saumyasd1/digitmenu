@@ -165,6 +165,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
@@ -172,6 +173,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
     clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },

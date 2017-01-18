@@ -41,6 +41,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
   clearAdvancedSearch:function(btn){
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         btn.hide();
     },
@@ -59,6 +60,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;
+        store.clearFilter();
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
