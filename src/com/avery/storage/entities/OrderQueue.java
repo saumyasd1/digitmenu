@@ -149,6 +149,29 @@ public class OrderQueue extends MainAbstractEntity{
 	//Transient variables will not reflect in db
 	@Transient
 	private String partnerName;
+	@Transient
+	private String defaultSystem;
+	@Transient
+	private int siteId;
+	
+	
+	public String getDefaultSystem() {
+		return defaultSystem;
+	}
+
+	public void setDefaultSystem(String defaultSystem) {
+		this.defaultSystem = defaultSystem;
+	}
+
+	
+
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
 
 	@Transient
 	private long emailQueueId;
