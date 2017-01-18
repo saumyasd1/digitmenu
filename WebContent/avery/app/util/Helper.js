@@ -371,5 +371,13 @@ Ext.define('AOC.util.Helper',{
 	 if (value != null && value != '') {
 	            store.load({params:{query:Ext.JSON.encode(value)}});
 	        }
+	},
+	getDependendVariableComboStore:function(variableName,systemId,OrgCode){
+			var response = Ext.Ajax.request({
+				async: false,
+				url: applicationContext+'/rest/orderconfigurations/orgId/'+variableName+'/'+systemId+'/'+OrgCode
+			});
+			var jsonValue=Ext.decode(response.responseText);
+			return jsonValue;
 	}
 });
