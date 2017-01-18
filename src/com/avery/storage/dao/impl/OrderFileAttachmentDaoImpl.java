@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
@@ -139,6 +140,7 @@ OrderFileAttachmentDao {
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(OrderLine.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderFileQueueId));
+			criteria.add(Restrictions.isNotNull("additionalFileId"));
 			ProjectionList projections = Projections.projectionList();
 			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
@@ -180,23 +182,21 @@ OrderFileAttachmentDao {
 		return entitiesMap;
 	}
 
+	/**
+	 * @param list
+	 * @return list with unique elements
+	 */
 	public List getUniqueList(List<String> list) {
 		Set<Long> set = new HashSet<Long>();
 		for (int i = 0; i < list.size(); i++) {
 			String str = list.get(i);
-			// System.out.println("---------------------"+str);
-			if (str.contains(",")) {
-				String[] st = str.split(",");
-				for (int p = 0; p < st.length; p++) {
-					// System.out.println(Long.parseLong(st[p]));
+			String[] st = str.split(",");
+			for (int p = 0; p < st.length; p++) {
+				if (NumberUtils.isNumber(st[p])) {
 					set.add(Long.parseLong(st[p]));
 				}
-			} else if (!str.equals(null) && !str.equals("")) {
-				// System.out.println(Long.parseLong(str));
-				set.add(Long.parseLong(str));
 			}
 		}
-		// System.out.println(set.size());
 		List newList = new ArrayList(set);
 
 		return newList;
