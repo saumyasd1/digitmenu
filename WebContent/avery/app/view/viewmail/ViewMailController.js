@@ -78,7 +78,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
     	}
     },
   	
-  	onSaveBtnClicked:function(btn){	
+  	onSaveBtnClicked:function(btn){
   		Ext.getBody().mask('Saving....');
   		var me = this,
   			gridView = me.getView().down('#EmailAttachmentInfoGriditemId'),
@@ -256,7 +256,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			me.enableDisableProcessBtn(true);
 		}
 		//If status is identified then save and process order btn will disabled
-		if(gridView.status == AOCLit.emailIdentifiedStatus){ 
+		if(gridView.status == AOCLit.emailIdentifiedStatus || gridView.status == AOCLit.orderEmailProcessed){ 
 			saveBtn.setDisabled(true);
 			me.enableDisableProcessBtn(true);
 		}else{

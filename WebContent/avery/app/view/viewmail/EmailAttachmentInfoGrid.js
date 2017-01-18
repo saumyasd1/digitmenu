@@ -116,16 +116,11 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					name: 'Partner Data Structure',
 					editor: {
 						xtype:'combobox',
-						//disabled:true,
 						displayField:'dataStructureName',
 						valueField:'id',
 						queryMode :'local',
 						editable:false,
-						store:new Ext.data.ArrayStore({
-							//data:[],
-							fields:['id', 'dataStructureName']
-						})
-						//store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
+						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
 						if(me.status == AOCLit.emailIdentifiedStatus){
