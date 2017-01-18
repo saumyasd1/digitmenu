@@ -2,6 +2,8 @@ Ext.define('AOC.view.partner.SystemGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.systemgrid',
 	emptyText: AOCLit.emptyDataMsg,
+	showValidationError:false,
+	isSystemGridNotValid:false,
 	columnLines:true,
 	viewConfig: {
 		stripeRows : true,
@@ -14,7 +16,14 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			plugins: [{
 				ptype: 'cellediting',
 				clicksToEdit: 1
-			}]
+			}],
+			listeners:{
+				'afterrender':function(){
+					me.getView().on('beforerefresh',function(){
+			        	me.isSystemGridNotValid=false;
+			        });
+				}
+			}
 		});
        me.callParent(arguments);
 	},
@@ -29,6 +38,9 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				dataIndex:'csrName',
 				editor:{
 					xtype:'textfield'
+				},
+				renderer:function(value,metadata){
+					return me.validationRendered(value, metadata);
 				}
 			},
 			{
@@ -69,6 +81,9 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				flex:1.5,
 				editor:{
 					xtype:'textfield'
+				},
+				renderer:function(value,metadata){
+					return me.validationRendered(value, metadata);
 				}
 			},
 			{
@@ -115,5 +130,15 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				}
 			}
         ];
+    },
+    validationRendered:function(value,metadata){
+    	var me=this;
+    	if(Ext.isEmpty(value)){
+    		if(me.showValidationError){
+    			metadata.style = AOCLit.mandatoryValidationCellColor;
+    		}
+    		me.isSystemGridNotValid=true;
+    	}
+    	return value;
     }
 });
