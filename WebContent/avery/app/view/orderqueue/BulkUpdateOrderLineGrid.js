@@ -81,7 +81,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                         if(parseInt(value) > -1) {
                            return value;
                         } else {
-                        	if(record.get('status') == AOCLit.waitingForCSRStatus)
+                        	if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine)
                         		meta.style = AOCLit.cellColor;
                         }
                     } 
@@ -135,17 +135,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
         },{
             text: 'PO#<font color=red>*</font>',
-            dataIndex: 'ponumber',
+            dataIndex: 'poNumber',
             width: 120,
-            editor: 'textfield',
-            renderer : function(value, meta,record ) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
+            //editor: 'textfield',
+//            renderer : function(value, meta,record ) {
+//                if(value=='') {
+//                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
+//                		meta.style = AOCLit.cellColor;
+//                } else {
+//                	 return value;
+//                }
+//            }
         },
         {
             text: 'Avery Item#<font color=red>*</font>',
@@ -153,7 +153,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 88,
             renderer : function(value, meta,record) {
                 if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
                 		meta.style = AOCLit.cellColor;
                 } else {
                 	if(value==AOCLit.averyItemNotFoundText || value==AOCLit.duplicateMappingLabel)
@@ -207,7 +207,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 //            },
             renderer : function(value, meta,record) {
                 if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
                 		meta.style = AOCLit.cellColor;
                 } else {
                 	 return value;
@@ -223,7 +223,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 //            },
             renderer : function(value, meta,record) {
                 if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
                 		meta.style = AOCLit.cellColor;
                 } else {
                 	 return value;
@@ -405,7 +405,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'textfield',
             renderer : function(value, meta,record) {
                 if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
                 		meta.style = AOCLit.cellColor;
                 } else {
                 	 return value;
@@ -457,7 +457,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 if(value !='') {
                    return value;
                 } else {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus)
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
                 		meta.style = AOCLit.cellColor;
                 }
             }
@@ -480,7 +480,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'datefield',
             renderer : function(value, meta,record) {
                 if(value=='' || value == null) {
-                	if(record.get('status')==AOCLit.waitingForCSRStatus){
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
                 		meta.style = AOCLit.cellColor;
                 	}
                 }
@@ -723,22 +723,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         }
 		];
     },
-    dockedItems: [{
-        xtype: 'toolbar',
-        dock: 'top', 
-		height: 50,
-	    items : 
-	    	[
-			 {
-	              xtype:'displayfield',
-	              margin:'10 10 10 10',
-				  value:'<font size=5px>Bulk Update</font>'
-	         }
-			 ]
-},{
+    dockedItems: [ 
+{
         xtype: 'toolbar',
         dock: 'bottom', 
-		height: 60,
+		height: 50,
 		style: 'background-color: #FBFBFB;',
 	    items : 
 	    	['->',
@@ -746,14 +735,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 	              xtype:'button',
 				  text:AOCLit.undoChangesText,
 				  handler:'cancelChanges',
-				  width:65,
+				 // width:65,
 				  ui:'grey-plain'
 	         },
 			 {
 	              xtype:'button',
 				  text:'Save',
 				  handler:'saveOrderLine',
-				  width:65,
+				  margin:'0 10 10 0',
+				 // width:65,
 				  ui:'blue'
 	         }
 			 ]

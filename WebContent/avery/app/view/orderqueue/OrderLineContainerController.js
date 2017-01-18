@@ -266,9 +266,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     getUpdateScreen:function(){
 		var me = this,
+			refs = me.getReferences(),
+			orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
 			viwport = Ext.ComponentQuery.query('#viewportitemid')[0],
-			height = viwport.getHeight()-20,
-			width = viwport.getWidth()-20,
+			height = viwport.getHeight()-100,
+			width = viwport.getWidth()-100,
 			id = me.runTime.getOrderQueueId(),
 			radioGroupValue = me.lookupReference('radioGroup').getValue().rb,
 			store,
@@ -281,10 +283,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 				comboValue = comboField.getValue();
 				
       		if(comboValue == '' || comboValue == null){
-      			Ext.Msg.alert('', AOCLit.selectValueDrpMsg);
+      			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectValueDrpMsg);
       			return false;
       		}
-      		innerGridType='bulkUpdateVariableHeaderrGrid';
+      		innerGridType = 'bulkUpdateVariableHeaderrGrid';
       		height = height - 180;
       		width = width - 240;
 			
@@ -300,29 +302,20 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			}
     		}); 
 		}else{
-      		store=Ext.create('AOC.store.OrderLineStore', {
-    			proxy : {
-    				type : 'rest',
-    				url : applicationContext+'/rest/orderLines/order/'+id,
-    				reader:{
-    			        type:'json', 
-    			        rootProperty: 'orderLine'
-    			    }
-				}
-    		});
+			store = orderLineExpandableGrid.store;
       		innerGridType = 'bulkupdateorderlinegrid';
 		}
 		
-		var win=Ext.create('AOC.view.base.BaseWindow',{
+		var win=Ext.create('AOC.view.base.NewBaseWindow',{
 			height:height,
 			width:width,
 			layout: 'fit',
 			draggable: false,
-			modal:true,
+			title:'Bulk Update',
 			listeners:{ 
 				close:function(obj, eOpts){
-					var orderline = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
-					orderline.store.load();
+					var orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+					orderLineExpandableGrid.store.load({params:{id:id}});
 				}
 			},
 			items:[
