@@ -424,6 +424,9 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "averyBulk", length = 50)
 	private String averyBulk;
 	
+	@Column(name = "productionLine", length = 1000)
+	private String productionLine;
+	
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -440,6 +443,14 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setAveryBulk(String averyBulk) {
 		this.averyBulk = averyBulk;
+	}
+	
+	public String getProductionLine() {
+		return productionLine;
+	}
+
+	public void setProductionLine(String productionLine) {
+		this.productionLine = productionLine;
 	}
 
 	public String getAdditionalFileId() {

@@ -65,8 +65,9 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				} 
 			},
 			{
-				text : '',
-				width:40,
+				text : 'Order Source',
+				width:80,
+				align:'center',
 				dataIndex:'orderSource',
 				menuDisabled  :true,
 				renderer:function(v, metadata, record){

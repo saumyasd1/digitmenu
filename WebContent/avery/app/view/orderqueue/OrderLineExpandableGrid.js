@@ -1071,7 +1071,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield'
 		},
 		{
-			text: 'Additional Label item #',
+			text: 'Additional Label Internal item #',
 			dataIndex: 'additionallabelitemchange',
 			width: 150,
 			editor: 'textfield'
@@ -1358,9 +1358,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 							success : function(response, opts) {
 								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-								grid.store.load();
+								grid.store.load({params:{id:runTime.getOrderQueueId()}});
 								Ext.Msg.alert('Success','Order line Detail successfully updated');
 								Ext.getBody().unmask();
+								grid.view.refresh();
 								//var data = grid.store.getData();
 							},
 							failure: function(response, opts) {
@@ -1396,7 +1397,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                             Ext.Msg.alert('Success', 'Order line Detail successfully updated');
                             Ext.getBody().unmask();
                             
-                         grid.store.load();
+                            grid.store.load({params:{id:runTime.getOrderQueueId()}});
+                            grid.view.refresh();
                         },
                         failure: function(response, opts) {
                             Ext.getBody().unmask();

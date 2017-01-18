@@ -114,7 +114,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.emailBody,
-				width:40,
+				width:80,
+				align:'center',
 				renderer:function(v, metadata, record){
 						var emailBody = record.get('emailBody'); 
 						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(emailBody) + '<font>"';
@@ -124,13 +125,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.TrackingNo,
-				width:50,
+				width:80,
 				dataIndex:'TrackingId',
 				align: 'right'
 			},
 			{
 				text : AOCLit.orderTrackNo,
-				width:50,
+				width:80,
 				dataIndex:'id',
 				align: 'right'
 			},
@@ -211,21 +212,21 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.submittedDate,
-				width:105,
+				width:150,
 				dataIndex:'submittedDate'
 			},{
 				text :AOCLit.lastmodifiedby,
 				dataIndex:'lastModifiedBy',
-				width:105
+				width:150
 			},
 			{
 				text :AOCLit.lastmodifieddate,
 				dataIndex:'lastModifiedDate',
-				width:105
+				width:150
 			},
 			{
 				text : AOCLit.acknowledgeDate,
-				width:105,
+				width:150,
 				dataIndex:'acknowledgementDate'
 			}
 		];
