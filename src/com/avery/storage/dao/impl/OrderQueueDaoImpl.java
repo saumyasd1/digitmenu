@@ -124,7 +124,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate")
 				.add(Projections.property("rbo.rboName"), "rboName")
 				.add(Projections.property("varProductLine.productLineType"), "productLineType")
+				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
+				.add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		// getting filename of order file
