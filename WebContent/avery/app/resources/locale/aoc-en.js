@@ -427,5 +427,8 @@ Ext.define('AOC.lang.lit',{
     'selectAttachmentFileMsg':'Please select atleast one file to proceed.',
     'warningTitle':'Warning',
     'pleaseWaitTitle':'Please wait...',
-    'taskMangerContextType':'task_manager'
+    'taskMangerContextType':'task_manager',
+    
+    "fillMandatoryCellMsg": 'Please fill valid entry in the cell marked as yellow before proceeding',
+    "checkSystemChechBoxMsg": 'Please select at least one system before proceeding'
 });
