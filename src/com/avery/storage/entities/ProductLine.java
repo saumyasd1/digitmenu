@@ -1165,6 +1165,7 @@ public class ProductLine extends MainAbstractEntity{
 			// toggle this property value based on your input JSON data
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			ProductLine productline = mapper.readValue(data, ProductLine.class);
+			productline.setId(Long.valueOf(id));
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
 			valueExist=productLineService.checkDuplicateValues(productline);
