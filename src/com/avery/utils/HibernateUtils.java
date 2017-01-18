@@ -24,7 +24,7 @@ public class HibernateUtils {
 	 * @param cmpId
 	 * @return
 	 */
-	public static SimpleDateFormat sdfDate = new SimpleDateFormat("MM/dd/yyyy");
+	public static SimpleDateFormat sdfDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	public static int getAllRecordsCountWithCriteria(Criteria criteria)
 			throws Exception {
 		criteria.setProjection(Projections.rowCount());
