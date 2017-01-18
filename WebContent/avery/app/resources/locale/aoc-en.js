@@ -106,6 +106,8 @@ Ext.define('AOC.lang.lit',{
     "emailStatus":'Email Status',
     "partnerDataStructure":'Partner Data Structure',
     "senderEmailID": 'Sender Email ID',
+    "receiverEmailID":'Receiver Email ID',
+    "ccMailId":'CC Email ID',
     "orderTrackNo": 'Order track#',
     "orderSource": 'Order Source',
     "submittedBy": 'Submitted By',

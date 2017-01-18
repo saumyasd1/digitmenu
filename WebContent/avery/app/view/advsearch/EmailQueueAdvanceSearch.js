@@ -141,6 +141,34 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 							}
 						]
 					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.receiverEmailID,
+								name:'ReceiverEmailID',
+								flex:1,
+								tabIndex:8
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.ccMailId,
+								name:'ccMailId',
+								flex:1,
+								tabIndex:9,
+								margin:'0 0 0 10'
+							}
+							
+						]
+					},
 					{
 
 						xtype: 'fieldcontainer',
@@ -161,7 +189,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
-								tabIndex:8,
+								tabIndex:10,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
@@ -179,7 +207,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
-								tabIndex:9,
+								tabIndex:11,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());
@@ -199,8 +227,9 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 				text : 'Search',
 				disabled : false,
 				formBind : true,
-				success : true,
-				listeners : {
+				success  : true,
+				tabIndex : 12,
+				listeners: {
 					click  : 'onSearchBtnClicked'
 				}
 			}

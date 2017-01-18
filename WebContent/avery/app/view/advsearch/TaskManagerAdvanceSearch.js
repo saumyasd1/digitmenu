@@ -73,6 +73,26 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								tabIndex:3
 							},
 							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.senderEmailID,
+								name:'SenderEmailID',
+								flex:1,
+								tabIndex:4,
+								margin:'0 0 0 10'
+							}
+						]
+					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
 								xtype:'combo',
 								displayField:'firstName',
 								fieldLabel:'CSR',
@@ -83,9 +103,8 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								store:Ext.create('AOC.store.AssignCSRStore'),
 								typeAhead:true,
 								triggerAction:'all',
-								flex:1,
-								tabIndex:4,
-								margin:'0 0 0 10'
+								width:275,
+								tabIndex:5
 							}
 						]
 					},
@@ -148,6 +167,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
+				tabIndex:6,
 				listeners : {
 					click  : 'onSearchBtnClicked'
 				}

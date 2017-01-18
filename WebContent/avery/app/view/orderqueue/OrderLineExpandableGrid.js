@@ -481,13 +481,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		},
 		{
-			text: 'Bulk',
+			text: 'Bulk Order',
 			dataIndex: 'bulk',
 			width: 60,
 			editor:{
 				xtype:'combo',
 				editable:false,
-				store:[[true,'Y'],[false,'N']]
+				store:[['Y','Y'],['N','N']]
 			},
 			renderer:function(value, metadata,rec){
 				var v='N';
@@ -497,13 +497,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
 				if(checkvalue.substr(0,1)=='T'){
-					return v;
+					return value;
 				}
 				else{
 					if(this.showMandatoryValidationField){
 						metadata.style = AOCLit.mandatoryValidationCellColor;
 					}
-					return v;
+					return value;
 				}
 			}	
 		},
@@ -520,7 +520,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			} 
 		}, 
 		{
-			text: 'Avery Bulk',
+			text: 'Bulk Item',
 			dataIndex: 'averyBulk',
 			width: 93,
 			renderer : function(value, metadata,record) {
@@ -1182,6 +1182,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'Comment',
 			dataIndex: 'comment',
+			width: 100,
+			editor: 'textfield'
+		},
+		{
+			text: 'Production Line',
+			dataIndex: 'productionLine',
 			width: 100,
 			editor: 'textfield'
 		}
