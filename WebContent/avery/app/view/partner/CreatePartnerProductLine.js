@@ -449,7 +449,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												fieldLabel:'File Type',
 												store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
 												editable:false,
-												bind:'{orderFileNameExtension}'
+												bind:'{orderFileNameExtension}',
+												allowBlank:false
 											},
 											{
 												xtype:'textfield',
@@ -513,19 +514,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									{
 										 boxLabel : 'Yes',
 										 name : 'attachmentRequired',
-										 inputValue : 'true',
-//										 checked : true,
-										 id : 'yes'
+										 inputValue : true,
+										 checked:true
 									 }, 
 									 {
 										 boxLabel : 'No',
 										 name : 'attachmentRequired',
-										 inputValue :'false',
-										 id : 'no',
+										 inputValue :false,
 										 listeners: {
 											 change: function (field, newValue, oldValue) {
 												 field.up('form').down('#AdditionalData').setDisabled(newValue);
-												
+												 field.up('form').down('#attachmentFileNameExtension_1').allowBlank=newValue;
 											 }
 										 }
 									 }
@@ -559,11 +558,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'combo',
 												itemId:'FileType',
 												name: 'fileType',
+												allowBlank:false,
 												fieldLabel:'File Type',//?/
 												maxLength : '50',
 												store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
 												bind:'{attachmentFileNameExtension_1}',
 												editable:false,
+												itemId:'attachmentFileNameExtension_1',
 												enforceMaxLength: true
 											},
 											{
