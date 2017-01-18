@@ -1,10 +1,16 @@
 Ext.define('AOC.view.partner.OrgGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.orggrid',
+    controller:'orgcontroller',
+    referenceHolder:true,
+    requires:['AOC.view.ux.RadioModel'],
 	emptyText: AOCLit.emptyDataMsg,
+	showValidationError:false,
+	isOrgGridNotValid:false,
 	store:null,
+	systemId:0,
 	initComponent : function(){
-	var me=this;
+		var me=this;
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:true,
@@ -14,22 +20,32 @@ Ext.define('AOC.view.partner.OrgGrid', {
         },
         plugins: [{
 	        ptype: 'cellediting',
-	        clicksToEdit: 1
-	    }]
+	        clicksToEdit: 1,
+	        listeners:{
+	        	beforeedit:'OnBeforeEdit'
+	        }
+	    }],
+	    selModel: {
+	          selType: 'radiomodel'
+	      },
+	      listeners:{
+	    	  'afterrender':function(){
+	    		  var store=me.getStore(),
+	    		  index=store.find('isDefault',true);
+	    		  if(index!=-1){
+	    			  me.getSelectionModel().select(index);
+	    		  }
+				me.getView().on('beforerefresh',function(){
+		        	me.isOrgGridNotValid=false;
+		        });
+	    	  }
+	      }
     });
        this.callParent(arguments);
   },
   buildColumns : function(){
     	var me=this;
-        return [          
-        			    {  
-            	            text : 'Default',
-            	          	width:50,
-            	            dataIndex:'default',
-            	            renderer:function(value){
-            	            	return "<input type='radio' name="+me.uniqueName+"'default' "+ (value ? "checked='checked'":"")+ ">";
-            	            }
-               			},
+        return [    
                          {
 				        	text : 'Org',
 				          	width:120,
@@ -38,36 +54,15 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				            editor:{
 				            	xtype:'combo',
 				            	store:me.orgStore,
+				            	//reference:'orgCodeCombo',
 				            	displayField:'name',
 				            	valueField:'id',
 				            	listeners:{
-				            		'render':function(cmp){
-				            			var store=cmp.getStore(),
-				            			record=cmp.up('editor').context.record,
-				            			gridStore=me.getStore(),
-				            			index=gridStore.indexOf(record);
-				            	    	store.on('load',function(store) {
-				            	    		if(index==0)
-				            	    	      cmp.select(store.getAt(0).get('id'));
-				            	    	    });
-				            	    	store.load();
-				            		},
-				            		'change':function(cmp,newValue){
-				            			var gridStore=me.getStore();
-				            			var alreadyPresent=gridStore.find('orgCodeId',newValue);
-				            			if(alreadyPresent!=-1){
-				            				AOC.util.Helper.fadeoutMessage('Success','This Org is already selected. Please select another one');
-				            				return false;
-				            			}
-				            		}
+				            		'render':'onOrgeCodeComboRender',
+				            		'change':'onOrgeCodeComboChange'
 				            	}
 				            },
-				            renderer:function(value){
-				            	if(Ext.isEmpty(value))
-				            		return '';
-				            	var record=me.orgStore.find('id',value);
-				            	return '<div>'+me.orgStore.getAt(record).get('name')+'</div>';
-				            }
+				            renderer:'onOrgCodeCellRender'
 			            },
 			            {
 				        	text : 'Legacy Bill to Code',
@@ -97,9 +92,9 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				                displayField: 'variableFieldName',
 				                valueField: 'variableFieldName',
 				                editable:false,
-				                queryMode :'local',
-				                store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
-				            }
+				                queryMode :'local'
+				            },
+				            renderer:'validationRendered'
 			            },
                         {
 				            text : 'Shipping method',
@@ -110,13 +105,13 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				                displayField: 'variableFieldName',
 				                valueField: 'variableFieldName',
 				                editable:false,
-				                queryMode :'local',
-				                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
-				            }
+				                queryMode :'local'
+				            },
+				            'renderer':'validationRendered'
                         },
                         {
 				            text : 'Shipping Instructions',
-				            width:150,
+				            flex:1,
 				            dataIndex:'shippingInstruction',
 				            editor:{
 				            	xtype:'textfield'
@@ -124,4 +119,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
                         }
         ];
     }
+  
 });
+
+  
