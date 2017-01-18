@@ -7,21 +7,44 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
 		var createproductline=this.getView();
-		var panel=createproductline.down('#listPanel');
+		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
+		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
+			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
+			Ext.getBody().unmask();
+			return false;
+		}
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
-		valueObj='',valueObj2='',form=this.getView().down('form'),
-		AdvancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
+		valueObj='',valueObj2='',form=this.getView().down('form');
 		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
 		length=0,hiddenProductLineField=this.getView().lookupReference('productLineHidden'),productLineValue=hiddenProductLineField.getValue();
 		var systemcontainer=this.getView().lookupReference('systemcontainer'),
-		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore;
-		var orderSystemInfo=new Array();
+		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore,currentOrgGrid='',
+		currentSystemGrid='';
+		var orderSystemInfo=new Array(),isCheckBoxSelected=false;
 		for(var jj=0;jj<checkboArray.length;jj++){
 			currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
 			if(currentcheckBox && currentcheckBox.getValue()){
-				systemGridStore=me.getView().lookupReference(checkboArray[jj]+'systemGrid').getStore();
-				orgGridStore=me.getView().lookupReference(checkboArray[jj]+'orgGrid').getStore();
+				//renderer:'validationRendered'
+				isCheckBoxSelected=true;
+				currentSystemGrid=me.getView().lookupReference(checkboArray[jj]+'systemGrid');
+				systemGridStore=currentSystemGrid.getStore();
+				currentOrgGrid=me.getView().lookupReference(checkboArray[jj]+'orgGrid');
+				currentSystemGrid.showValidationError=true;
+				currentSystemGrid.getView().refresh();
+				if(currentSystemGrid.isSystemGridNotValid){
+					Ext.getBody().unmask();
+					createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryCellMsg).setVisible(true);
+					return false;
+				}
+				orgGridStore=currentOrgGrid.getStore();
 				var orgInfo=new Array(),currentStore;
+				currentOrgGrid.showValidationError=true;
+				currentOrgGrid.getView().refresh();
+				if(currentOrgGrid.isOrgGridNotValid){
+					Ext.getBody().unmask();
+					createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryCellMsg).setVisible(true);
+					return false;
+				}
 				for(var k=0;k<orgGridStore.getCount();k++){
 					currentStore=orgGridStore.getAt(k).data;
 					orgInfo.push(currentStore);
@@ -31,17 +54,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				
 			}
 		}
+		if(!isCheckBoxSelected){
+			Ext.getBody().unmask();
+			createproductline.down('#messageFieldItemId').setValue(AOCLit.checkSystemChechBoxMsg).setVisible(true);
+			return false;
+		}
 		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData(),
-		attachmentRequired=this.getView().lookupReference('attachmentRequired');
-		var attachmentRequired=attachmentRequired.getValue().attachmentRequired;
+		attachmentRequiredField=this.getView().lookupReference('attachmentRequired');
+		var attachmentRequired=attachmentRequiredField.getValue().attachmentRequired;
 		if(editMode){
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
 			methodMode='PUT';
 			valueObj=form.getValues(false,true,false,true);
-//			valueObj2=AdvancedPropertiesForm.getRecord().getChanges();
-//			var parameters=Ext.JSON.encode(valueObj);
-//			var parameters=Ext.JSON.encode(valueObj2);
 			length=Object.keys(valueObj).length;
 			Msg=AOCLit.updateProdLineMsg;
 			parameters={
@@ -102,7 +127,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			partner={id:Id,partnerName:partnerName};
 			url=applicationContext+'/rest/productLines';
 			valueObj=form.getValues(false,false,false,true);
-			valueObj2=AdvancedPropertiesForm.getValues(false,true,false,true);
+			valueObj2=advancedPropertiesForm.getValues(false,true,false,true);
 			methodMode='POST';
 			length=1;
 			Msg=AOCLit.addProdLineMsg;
@@ -155,8 +180,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					
 		    	};
 		}
-		
-			if(panel.getForm().isValid()){
 				Ext.Ajax.request( {
 					method: methodMode,
 				    jsonData : parameters,	
@@ -166,7 +189,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    		var valueExist=jsonString.valueExist;
 				    		if(valueExist){
 				    			Ext.getBody().unmask();
-				    			createproductline.lookupReference('rboName').focus();
+				    			createproductline.lookupReference('dataStructureName').focus();
 				    			createproductline.down('#messageFieldItemId').show();
 				    			createproductline.down('#messageFieldItemId').setValue(AOCLit.entryExistMsg);
 				    			return false;
@@ -186,10 +209,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		        	createproductline.destroy();
               }
       	});
-		}
-		else{
-				createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
-		}
 		this.runTime.setWindowInEditMode(false);
     },
 	CancelDetails:function()
@@ -483,17 +502,21 @@ if(!temp){
 			    			cmp.changedBefore=true;
 			    			var view=me.getView(),data=view.getViewModel().getData(),
 				    		listOrderSystemInfo=data.listOrderSystemInfo;
-				    		//this.getView().down('#SiteId').setValue(view.getViewModel().get('siteId'));
 				    		if(listOrderSystemInfo.length>0){
 				    			for(var i=0;i<listOrderSystemInfo.length;i++){
 				    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
 				    				checkBox=view.lookupReference(systemName);
-				    				checkBox.setValue(true);
+				    				checkBox.setValue(true),
+				    				orgGrid=view.lookupReference(systemName+'orgGrid');
 				    				var systemStore=Ext.data.StoreManager.lookup('systemStore'+system.id),orgStore=Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
 				    				systemStore.removeAll();
 				    				systemStore.add(listOrderSystemInfo[i]);
 				    				orgStore.removeAll();
 				    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
+					  	    		var index=orgStore.find('default',true);
+					  	    		  if(index!=-1){
+					  	    			orgGrid.getSelectionModel().select(index);
+					  	    		  }
 				    			}
 				    		}
 			    		}else{
@@ -533,19 +556,25 @@ if(!temp){
 	    		var orgOrderStore,data='';
 	    		if(totalOrgConfigured>0){
 	    			data={
-		    				'orgCodeId':jsonValue[0].id,'default':true,newRecord:true
+		    				'orgCodeId':jsonValue[0].id,'isDefault':true,newRecord:true
 	    			};
 	    		}
-	    			orgOrderStore=Ext.create('Ext.data.Store',{
+	    			orgOrderStore=Ext.create('Ext.data.Store',{//isDefault
 		    			fields:['id','name',{
 		    				name:'newRecord',defaultValue:false
+		    			},{
+		    				name:'isDefault',mapping:'default'
 		    			}],
 		    			storeId:'orgInfoStore'+selectedSystemArray.id,
 		    			data:[data]
 		    		});
+	    			if(totalOrgConfigured==0)
+	    				orgOrderStore.removeAll();
 	    		
 	    		return [{
 	    			xtype:'checkbox',
+	    			border:true,
+	    			margin : '0 0 0 0',
 	    			boxLabel  : selectedSystemArray.name,
 	    			reference  : selectedSystemArray.name,
                     name      :selectedSystemArray.name,
@@ -569,13 +598,15 @@ if(!temp){
 	    		},{
 	    			xtype:'systemgrid',
 	    			store:systemStore,
-	    			style:'border:solid 1px #ccc;',
+	    			border:true,
+	    			margin : '0 0 0 0',
 	    			hidden:true,
 	    			reference:selectedSystemArray.name+'systemGrid'
 	    		},{
 	    			xtype:'fieldcontainer',
 	    			layout:'hbox',
-	    			margin:'1 0 0 0',
+	    			border:true,
+	    			margin : '0 0 0 0',
 	    			items:[{
 		    			xtype:'orggrid',
 		    			width:800,
@@ -585,21 +616,20 @@ if(!temp){
 		    			uniqueName:selectedSystemArray.name,
 		    			maxRecord:totalOrgConfigured,
 		    			hidden:true,
-		    			flex:1,
+		    			systemId:selectedSystemArray.id,
 		    			reference:selectedSystemArray.name+'orgGrid'
 		    		},{
 	    				xtype:'button',
 	    				margin:'40 0 0 20',
 	    				maxRecord:totalOrgConfigured,
 	    				text:'Plus',
-	    				//iconCls:'fa fa-plus',
 	    				reference:selectedSystemArray.name+'Plus',
 	    				hidden:true,
 	    				flex:0.5,
 	    				listeners:{
 	    					'click':function(cmp){
 	    						if(orgOrderStore.getCount()<totalOrgConfigured){
-	    							orgOrderStore.add({orgCodeId:'',newRecord:true});
+	    							orgOrderStore.add({orgCodeId:'',newRecord:true,isDefault:false});
 	    							//orgOrderStore.commit();
 	    						}else{
 	    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
@@ -639,9 +669,20 @@ if(!temp){
 	    			combo.show();
 	    			productLineHidden.setValue(data.productLineType);
 	    		}
-	    		var attachmentRequiredF=this.getView().lookupReference('attachmentRequired');
-	    		attachmentRequiredF.setValue({attachmentRequired:data.attachmentRequired});
+	    		this.getView().lookupReference('attachmentRequired').setValue({
+	    			attachmentRequired : data.attachmentRequired
+                });
 //	    		radios.items.items[index].setValue(true/false);
+	    	},
+	    	getFormInvalidFields: function(form) {
+	    	    var invalidFields = [];
+	    	    Ext.suspendLayouts();
+	    	    form.getFields().filterBy(function(field) {
+	    	        if (field.validate()) return;
+	    	        invalidFields.push(field.getName());
+	    	    });
+	    	    Ext.resumeLayouts(true);
+	    	    return invalidFields;
 	    	}
 	    	
 });
