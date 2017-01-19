@@ -191,6 +191,17 @@ public class OrderQueue extends MainAbstractEntity{
 	private String colorCode;
 	
 	@Transient
+	private int orgCodeId;
+	
+	public int getOrgCodeId() {
+		return orgCodeId;
+	}
+
+	public void setOrgCodeId(int orgCodeId) {
+		this.orgCodeId = orgCodeId;
+	}
+
+	@Transient
 	private String codeValue;
 	
 	@Transient
