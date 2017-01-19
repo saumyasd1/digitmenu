@@ -447,9 +447,10 @@ Ext.override(Ext.grid.RowEditor, {
 
         // If we're showing ourselves, jump out
         // If the component we're showing doesn't contain the view
-        if (!Ext.isEmpty(c) && (c === me || !c.el.isAncestor(view.el))) {
-            return;
-        }
+        //(Amit Kumar) following if condition giving error so comment this for now
+//        if (!Ext.isEmpty(c) && (c === me || !c.el.isAncestor(view.el))) {
+//            return;
+//        }
 
         if (me.isVisible() && view.isVisible(true)) {
             me.reposition();
