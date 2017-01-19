@@ -447,7 +447,7 @@ Ext.override(Ext.grid.RowEditor, {
 
         // If we're showing ourselves, jump out
         // If the component we're showing doesn't contain the view
-        if (c && (c === me || !c.el.isAncestor(view.el))) {
+        if (!Ext.isEmpty(c) && (c === me || !c.el.isAncestor(view.el))) {
             return;
         }
 

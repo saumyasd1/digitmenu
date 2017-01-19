@@ -39,7 +39,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	        		Ext.Msg.alert('', AOCLit.validateErrorMsg);
 	        	}
 		  		Ext.getBody().unmask();
-		  		me.getView().store.load();
+		  		//Helper.loadOrderLineGridStore(me.getView().store, id);
 	        },
 	        failure: function(response, opts) {
 	        	Ext.Msg.alert('Failure', AOCLit.validateErrorMsg);
@@ -155,11 +155,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	                	
 	                	me.runTime.setAllowOrderLineEdit(false);
 	                	Ext.getBody().unmask();
-	                	grid.store.load({params:{id:id}});
+	                	Helper.loadOrderLineGridStore(grid.store, id);
 		        		Ext.Msg.alert('', AOCLit.salesOrderCreationMsg);
 		        	}
 		        	else{
-		        		grid.store.load({params:{id:id}});
+		        		Helper.loadOrderLineGridStore(grid.store, id);
 		        		Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
 		        		proceed=false;
 		        		Ext.getBody().unmask();
@@ -188,7 +188,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        success : function(response, opts) {
 			  		Ext.Msg.alert('',AOCLit.updateOrdLineDetailMsg);
 			  		Ext.getBody().unmask();
-			  		me.getView().store.load({params:{id:runTime.getOrderQueueId()}});
+			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
 		        },
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();

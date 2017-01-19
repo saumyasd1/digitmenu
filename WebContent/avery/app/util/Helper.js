@@ -379,5 +379,9 @@ Ext.define('AOC.util.Helper',{
 			});
 			var jsonValue=Ext.decode(response.responseText);
 			return jsonValue;
+	},
+	
+	loadOrderLineGridStore:function(store, id){
+		store.load({params:{ id: id }});
 	}
 });

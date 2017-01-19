@@ -41,7 +41,7 @@ Ext.define('AOC.config.Settings',{
          BackIcon:'avery/resources/images/backButton.png',
          commentIcon:'avery/resources/images/comment.png',
          attacheImageSrc:'avery/resources/images/attachmentImage.png',
-         deleteImageSrc:'avery/resources/images/delete.png',
+         deleteImageSrc:'avery/resources/images/trash.png',
          warningImageSrc:'avery/resources/images/warning.png',
          successImageSrc:'avery/resources/images/success.jpg',
          clearSearchIcon:'avery/resources/images/invalid_field.png',

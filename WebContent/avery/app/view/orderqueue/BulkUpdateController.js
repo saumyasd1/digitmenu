@@ -57,7 +57,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     				        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
     					  		Ext.Msg.alert('Success','Order line successfully updated');
     				        	Ext.getBody().unmask();
-    					  		me.getView().store.load({params:{id:me.runTime.getOrderQueueId()}});
+    				        	Helper.loadOrderLineGridStore(me.getView().store, me.runTime.getOrderQueueId());
+    					  		//me.getView().view.refresh();
     				        },
     				        failure: function(response, opts) {
     				        	Ext.getBody().unmask();
@@ -76,7 +77,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 				  if(me.getView().xtype == 'bulkUpdateVariableHeaderrGrid'){
 					  me.getView().getStore().load();
 				  }else{
-					  me.getView().getStore().load({params:{id:me.runTime.getOrderQueueId()}});
+					  Helper.loadOrderLineGridStore(me.getView().store, me.runTime.getOrderQueueId());
+					  //me.getView().getStore().load({params:{id:me.runTime.getOrderQueueId()}});
 				  }
 			  }
 		});

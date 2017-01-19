@@ -46,8 +46,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 					return items;
 				}
-				var record = processData(data);
-				if(record.length == 0){
+				var recordsArray = processData(data);
+				if(recordsArray.length == 0){
 					return 'hide-row-expander';
 				}
     		}
@@ -77,8 +77,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						break;
 					}
 				}
-				
-				metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '<font>"';
+				if(mandatoryVariableDataField){
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '<font>"';
+				}
 				
 				if(checkvalue.substr(0,1) == 'T'){
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
@@ -120,7 +121,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'Cust. PO#',
 			dataIndex: 'customerPOFlag',
-			width: 40,
+			width: 60,
 			renderer:function(value, metadata,rec){
 				var customerPOFlag=rec.data.customerPOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -143,7 +144,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'Dup. PO',
 			dataIndex: 'duplicatePOFlag',
-			width: 40,
+			width: 60,
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -169,7 +170,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'Size Page',
 			dataIndex: 'htlsizePageValidationFlag',
-			width: 40,
+			width: 60,
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
@@ -1221,121 +1222,147 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	var me = this,
 			rowExpander = new AOC.view.ux.RowExpanderGrid({
 				createComponent: function(view, record, htmlnode, index) {
-					var data = record.get('listOrderlineDetails');
-					//filter nested grid record for show those record which have typeSetter or level value exist
-					function processData(data){
-						var len = data.length,
-							items = [];
-						
-						for(var i = 0; i < len; i++){
-							if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
-								items.push(data[i]);
-							}
-						}
-						return items;
-					}
-					var record = processData(data);
-					
-					var	store = Ext.create('AOC.store.VariableHeaderStore', {
-							autoLoad: true,
-							modal: 'AOC.model.VariableHeaderModel',
-							data : record,
-							proxy: {
-								type: 'memory'
-							}
-						}),
-						sel = (me.editGrid) ? 'rowmodel' : 'spreadsheet';
-						
-					return Ext.create('Ext.grid.Panel',{
-						//nestedGridRefrence: 'listOrderlineDetails',
-						modal: 'AOC.model.VariableHeaderModel',
-						cls: 'nestedGrid',
-						store:store,
-						selModel: {
-							type:sel,
-							rowNumbererHeaderWidth:0
-		        	    },
-						columns: [
-							{
-							  xtype: 'rownumberer',
-							  text:'#'
-							}, 
-							{
-							  text: 'Level',
-							  dataIndex: 'level',
-							  menuDisabled:true,
-							  width: 100
-							}, 
-							{
-							  text: "SKU #",
-							  dataIndex: 'skuno',
-							  width: 100
-							}, 
-							{
-							  text: "TypeSetterCode",
-							  dataIndex: 'typeSetter',
-							  width: 130
-							}, 
-							{
-								text: "Variable Field Name",
-								dataIndex: 'variableFieldName',
-								width: 140,
-								renderer:function(v, metadata,rec){
-									var mandatory = rec.get('mandatory');
-									if(mandatory == 'Y'){
-										return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
-									}
-									else{
-										return v;
-									}
-								}
-							}, 
-							{
-								text: "Variable Field Value",
-								dataIndex: 'variableDataValue',
-								width: 200,
-								editor: 'textfield',
-								resizable:false,
-								renderer:function(v, metadata,rec){
-									if(v){
-										var mandatory=rec.get('mandatory');
-										metadata.tdAttr ='data-qtip="'+ v +'"';
-										if(mandatory=='Y'){
-											if(v == ''){
-												if(me.showMandatoryValidationField)
-													metadata.style = AOCLit.mandatoryValidationCellColor;
-											}
-											return v;
-										}
-										else{
-												return v;
-										}
-									}
-									return '';
-								}
-							}, 
-							{
-							  text: "Fiber Content Percentage",
-							  dataIndex: 'fiberPercent',
-							  xtype:'gridcolumn',
-							  width: 155,
-							  editor: {
-								  xtype:'textfield',
-								  disabled:true
-							  }
-							}
-						],
-						columnLines: false,
-						width: 850,
-						border: true,
-						plugins: me.getInnerGridPlugin(),
-						autoHeight: true,
-						frame: false,
-						header: false
-					});
+					return me.createInnerGrid(record);
+    		    },
+    		    onExpand: function(rowNode, record, expandRow) {
+    		    	this.grid.editingPlugin ? this.grid.editingPlugin.cancelEdit() : '';
+    		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bc after store load inner view destroyed
+    		    	if(Ext.isEmpty(expandRow.querySelector('.nestedGrid'))){
+    		            var view = this.grid.getView(),
+    		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode)),
+    		                targetRowbody = Ext.DomQuery.selectNode('div.x-grid-rowbody', expandRow);
+    		            
+    		            while(targetRowbody.hasChildNodes()) {
+    		                targetRowbody.removeChild(targetRowbody.lastChild);
+    		            }
+    		            newComponent.render( targetRowbody ) ;
+    		            newComponent.getEl().swallowEvent([
+                            'mousedown', 'mouseup', 'click',
+                            'contextmenu', 'mouseover', 'mouseout',
+                            'dblclick', 'mousemove'
+                        ]);
+    		        }
     		    }
 			});
     	return rowExpander;
+    },
+    createInnerGrid:function(record){
+    	var me = this,
+    		data = record.get('listOrderlineDetails');
+		//filter nested grid record for show those record which have typeSetter or level value exist
+		function processData(data){
+			var len = data.length,
+				items = [];
+			
+			for(var i = 0; i < len; i++){
+				if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
+					items.push(data[i]);
+				}
+			}
+			return items;
+		}
+		var record = processData(data);
+		
+		var	store = Ext.create('AOC.store.VariableHeaderStore', {
+				autoLoad: true,
+				modal: 'AOC.model.VariableHeaderModel',
+				data : record,
+				proxy: {
+					type: 'memory'
+				}	
+			}),
+			sel = (me.editGrid) ? 'rowmodel' : 'spreadsheet';
+			
+		return Ext.create('Ext.grid.Panel',{
+			modal: 'AOC.model.VariableHeaderModel',
+			cls: 'nestedGrid',
+			store:store,
+			selModel: {
+				type:sel,
+				rowNumbererHeaderWidth:0
+    	    },
+			columns: [
+				{
+				  xtype: 'rownumberer',
+				  text:'#',
+				  width:50
+				}, 
+				{
+				  text: 'Level',
+				  dataIndex: 'level',
+				  menuDisabled:true,
+				  flex:0.5
+				}, 
+				{
+				  text: "SKU #",
+				  dataIndex: 'skuno',
+				  flex:0.5
+				}, 
+				{
+				  text: "TypeSetterCode",
+				  dataIndex: 'typeSetter',
+				  flex:0.8
+				}, 
+				{
+					text: "Variable Field Name",
+					dataIndex: 'variableFieldName',
+					flex:2,
+					renderer:function(v, metadata,rec){
+						var mandatory = rec.get('mandatory');
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '<font>"';
+						if(mandatory == 'Y'){
+							return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
+						}
+						else{
+							return v;
+						}
+					}
+				}, 
+				{
+					text: "Variable Field Value",
+					dataIndex: 'variableDataValue',
+					flex:2,
+					editor: 'textfield',
+					resizable:false,
+					renderer:function(v, metadata,rec){
+						if(v){
+							var mandatory=rec.get('mandatory');
+							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '<font>"';
+							if(mandatory=='Y'){
+								if(v == ''){
+									if(me.showMandatoryValidationField)
+										metadata.style = AOCLit.mandatoryValidationCellColor;
+								}
+								return v;
+							}
+							else{
+									return v;
+							}
+						}
+						return '';
+					}
+				}, 
+				{
+				  text: "Fiber Content Percentage",
+				  dataIndex: 'fiberPercent',
+				  xtype:'gridcolumn',
+				  align:'center',
+				  flex:1,
+				  editor: {
+					  xtype:'textfield',
+					  disabled:true
+				  }
+				}
+			],
+			columnLines: false,
+			width: 1250,
+			border: true,
+			style:'border:solid 1px #ccc;',
+			plugins: me.getInnerGridPlugin(),
+			autoHeight: true,
+			frame: false,
+			header: false
+		});
     },
     getInnerGridPlugin:function(){
         var grid=this;
@@ -1364,11 +1391,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 							success : function(response, opts) {
 								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-								grid.store.load({params:{id:runTime.getOrderQueueId()}});
+								
 								Ext.Msg.alert('Success','Order line Detail successfully updated');
-								Ext.getBody().unmask();
+								Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
 								grid.view.refresh();
-								//var data = grid.store.getData();
+								Ext.getBody().unmask();
 							},
 							failure: function(response, opts) {
 								Ext.getBody().unmask();
@@ -1386,25 +1413,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     this.resumeEvent('edit');
                     
                     var me = this;
-                    var ctx = context,
+                    var ctx = me.context,
                         idx = ctx.rowIdx,
                         currentRecord = ctx.store.getAt(idx);
                     
                     var obj = currentRecord.getChanges();
                     var runTime = AOC.config.Runtime;
-                    var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+                    var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
                     
                     Ext.Ajax.request({
                         method: 'PUT',
                         jsonData: obj,
-                        url: applicationContext + '/rest/orderlinedetails/variablebulkupdate/'+currentRecord.get('variablefieldname'),
+                        url: applicationContext + '/rest/orderlinedetails/variablebulkupdate/'+currentRecord.get('variableFieldName'),
                         success: function(response, opts) {
                         	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
                             Ext.Msg.alert('Success', 'Order line Detail successfully updated');
-                            Ext.getBody().unmask();
-                            
-                            grid.store.load({params:{id:runTime.getOrderQueueId()}});
+                            Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
                             grid.view.refresh();
+                            Ext.getBody().unmask();
                         },
                         failure: function(response, opts) {
                             Ext.getBody().unmask();
