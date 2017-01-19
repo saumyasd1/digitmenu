@@ -125,19 +125,12 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								tabIndex:6
 							},
 							{
-								xtype:'combo',
-								displayField:'firstName',
-								fieldLabel:'CSR',
-								reference:'csrCombo',
-								name:'assignCSR',
-								valueField:'id',
-								queryMode:'local',
-								store:Ext.create('AOC.store.AssignCSRStore'),
-								typeAhead:true,
-								triggerAction:'all',
+								xtype : 'textfield',
+								fieldLabel : AOCLit.receiverEmailID,
+								name:'ReceiverEmailID',
 								flex:1,
-								tabIndex:7,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								tabIndex:7
 							}
 						]
 					},
@@ -153,15 +146,23 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						items:[
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.receiverEmailID,
-								name:'ReceiverEmailID',
+								fieldLabel : AOCLit.ccMailId,
+								name:'ccMailId',
 								flex:1,
 								tabIndex:8
 							},
+							,
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.ccMailId,
-								name:'ccMailId',
+								xtype:'combo',
+								displayField:'firstName',
+								fieldLabel:'CSR',
+								reference:'csrCombo',
+								name:'assignCSR',
+								valueField:'id',
+								queryMode:'local',
+								store:Ext.create('AOC.store.AssignCSRStore'),
+								typeAhead:true,
+								triggerAction:'all',
 								flex:1,
 								tabIndex:9,
 								margin:'0 0 0 10'

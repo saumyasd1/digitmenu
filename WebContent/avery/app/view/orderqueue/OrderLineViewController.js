@@ -98,7 +98,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		          			insertShipAddress=true;
 		          		}
 		              }
-		        	debugger;
 		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'"}';
 		            Ext.Ajax.request({
 		                method: 'PUT',
