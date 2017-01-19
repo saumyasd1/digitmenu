@@ -430,5 +430,6 @@ Ext.define('AOC.lang.lit',{
     'taskMangerContextType':'task_manager',
     
     "fillMandatoryCellMsg": 'Please fill valid entry in the cell marked as yellow before proceeding',
-    "checkSystemChechBoxMsg": 'Please select at least one system before proceeding'
+    "checkSystemChechBoxMsg": 'Please select at least one system before proceeding',
+    editingModeTitle:'Please save the changes first, then proceed.'
 });

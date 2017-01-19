@@ -74,48 +74,49 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	Ext.getBody().unmask();
     },
     submitSalesOrder:function(){
-    	Ext.getBody().mask('Loading...'); //show message on missing field
     	var me = this,
     		grid = me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),
     		store = grid.store,
     		status;
     	
+    	if(grid.editingPlugin.editing){
+    		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
+    		return;
+    	}
+    	
+    	//Ext.getBody().mask('Loading...'); //show message on missing field
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',AOCLit.orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
-			return false;
+			return;
 		}
     	if(grid.mandatoryValidationFieldMissing){
-    		store.load();
-			Ext.Msg.alert('',AOCLit.orderLineMandatoryValidationFieldMissingAlt);
+			Ext.Msg.alert('', AOCLit.orderLineMandatoryValidationFieldMissingAlt);
 			grid.showMandatoryValidationField=true;
-			Ext.getBody().unmask();
-			return false;
+			return;
     	}
 		var records=store.queryBy(function(rec){
 			status=rec.get('status');
-			if(status!=AOCLit.waitingForCSRStatusOrderLine && status!=AOCLit.cancelStatusOrderLine)
-				return true;
+			if(status!=AOCLit.waitingForCSRStatusOrderLine && status!=AOCLit.cancelStatusOrderLine){
+				return;
+			}
 		});
-		if(records.length>0){
-			Ext.Msg.alert('',AOCLit.changeOrderLineStatusAlert);
-			Ext.getBody().unmask();
-			return false;
+		
+		if(records.length > 0){
+			Ext.Msg.alert('', AOCLit.changeOrderLineStatusAlert);
+			return;
 		}
 		if(grid.invalidComboValid){
-			store.load();
-			Ext.Msg.alert('',AOCLit.InvalidComboValueAlert);
-			grid.showInvalidCombo=true;
-			Ext.getBody().unmask();
-			return false;
+			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
+			grid.showInvalidCombo = true;
+			return;
 		}
 		
     	if(grid.validationFieldMissing){
     		Ext.Msg.confirm(AOCLit.warningTitle, AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
     			if (btn === 'yes') {
     				me.callSubmitSalesOrderReq();
-    			}else
-    				Ext.getBody().unmask();
+    			}
     		});
     	}else{
     		me.callSubmitSalesOrderReq();
