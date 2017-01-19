@@ -15,6 +15,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -23,8 +24,10 @@ import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -86,7 +89,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	
 	@Override
-	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId){
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
@@ -117,9 +120,9 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.postUpdateOp();
 				if(i==0){
 					if(insertBillAddress)
-						insertBillAddress(orderLine);
+						insertBillAddress(orderLine,partnerId, systemId, siteId);
 					if(insertShipAddress)
-						insertShipAddress(orderLine);
+						insertShipAddress(orderLine,partnerId, systemId, siteId);
 				}
 			}
 		}catch (WebApplicationException ex) {
@@ -137,14 +140,16 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 
 	}
 
-	private void insertShipAddress(OrderLine orderLine){
+	private void insertShipAddress(OrderLine orderLine, String partnerId, String systemId, String siteId){
+		
 		String shipToAddress1=orderLine.getShipToAddress1();
 		String shipToAddress2=orderLine.getShipToAddress2();
 		String address=(shipToAddress2==null?"":shipToAddress2)+(shipToAddress1==null?"":shipToAddress1);
 		if(!address.equals("")){
 			Session session = getSessionFactory().getCurrentSession();
 			Address adrObj=new Address();
-			//adrObj.setSiteNumber(orderLine.getOracleShiptoSiteNumber());
+			OrderQueue orderqueue = new OrderQueue();
+			adrObj.setSiteNumber(orderLine.getOracleShipToSiteNumber());
 			adrObj.setAddress1(orderLine.getShipToAddress1());
 			adrObj.setAddress2(orderLine.getShipToAddress2());
 			adrObj.setAddress3(orderLine.getShipToAddress3());
@@ -155,31 +160,39 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setPhone1(orderLine.getShipToTelephone());
 			adrObj.setEmail(orderLine.getShipToEmail());
 			adrObj.setContact(orderLine.getShipToContact());
-			//adrObj.setShippingMethod(orderLine.getShippingMethod());
-			//adrObj.setFreightTerms(orderLine.getFreightTerms());
-			//adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			adrObj.setShippingMethod(orderLine.getShippingMethod());
+			adrObj.setFreightTerms(orderLine.getFreightTerms());
+			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
 			adrObj.setDescription("Inserted By Adeptia");
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
 			adrObj.setSiteType("S");
-			//adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+		    adrObj.setOrgCode(orderLine.getDivisionForInterfaceERPORG());
+		    //addObj.
 			Partner partnerObj=new Partner();
-			Long partnerId=0L;
-			/*if(orderLine.getPartnerID()!=null)
-				partnerId=Long.parseLong(orderLine.getPartnerID());
-			*/partnerObj.setId(partnerId);
-			//adrObj.setPartner(partnerObj);
+			Org orgObj=new Org();
+			int orgCodeId=1;
+			Long currentPartnerId=Long.parseLong(partnerId);
+			int currentSystemId=Integer.parseInt(systemId);
+			int currentSiteId=Integer.parseInt(siteId);
+			partnerObj.setId(currentPartnerId);
+			orgObj.setId(orgCodeId);
+			adrObj.setVarOrgCode(orgObj);
+			adrObj.setVarPartner(partnerObj);
+			adrObj.setSystem(currentSystemId);
+			adrObj.setSiteId(currentSiteId);
 			session.save(adrObj);
 		}
 	}
-	private void insertBillAddress(OrderLine orderLine){
+	private void insertBillAddress(OrderLine orderLine, String partnerId, String systemId, String siteId){
+		OrderQueue orderqueue = new OrderQueue();
 		String billToAddress1=orderLine.getBillToAddress1();
 		String billToAddress2=orderLine.getBillToAddress2();
 		String address=(billToAddress2==null?"":billToAddress2)+(billToAddress1==null?"":billToAddress1);
 		if(!address.equals("")){
 			Session session = getSessionFactory().getCurrentSession();
 			Address adrObj=new Address();
-			//adrObj.setSiteNumber(orderLine.getOracleBilltoSiteNumber());
+			adrObj.setSiteNumber(orderLine.getOracleBillToSiteNumber());
 			adrObj.setAddress1(billToAddress1);
 			adrObj.setAddress2(billToAddress2);
 			adrObj.setAddress3(orderLine.getBillToAddress3());
@@ -190,25 +203,31 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setPhone1(orderLine.getBillToTelephone());
 			adrObj.setEmail(orderLine.getBillToEmail());
 			adrObj.setContact(orderLine.getBillToContact());
-			//adrObj.setShippingMethod(orderLine.getShippingMethod());
-			//adrObj.setFreightTerms(orderLine.getFreightTerms());
-			//adrObj.setShippingInstructions(orderLine.getShippingInstructions());
+			adrObj.setShippingMethod(orderLine.getShippingMethod());
+			adrObj.setFreightTerms(orderLine.getFreightTerms());
+			adrObj.setShippingInstructions(orderLine.getShippingInstructions());
 			adrObj.setDescription("Inserted By Adeptia");
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
-			//adrObj.setOrgCode(orderLine.getDivisionforInterfaceERPORG());
+			adrObj.setOrgCode(orderLine.getDivisionForInterfaceERPORG());
 			adrObj.setSiteType("B");
 			Partner partnerObj=new Partner();
-			Long partnerId=0L;
-			/*if(orderLine.getPartnerID()!=null)
-				partnerId=Long.parseLong(orderLine.getPartnerID());
-			*/partnerObj.setId(partnerId);
-			//adrObj.setPartner(partnerObj);
+			Org orgObj=new Org();
+			int orgCodeId=1;
+     		Long currentPartnerId=Long.parseLong(partnerId);
+     		int currentSystemId=Integer.parseInt(systemId);
+			int currentSiteId=Integer.parseInt(siteId);
+			partnerObj.setId(currentPartnerId);
+			orgObj.setId(orgCodeId);
+			adrObj.setSystem(currentSystemId);
+			adrObj.setSiteId(currentSiteId);
+            adrObj.setVarOrgCode(orgObj);
+			adrObj.setVarPartner(partnerObj);
 			session.save(adrObj);
 		}
 	}
 	@Override
-	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId){
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId){
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
@@ -233,9 +252,9 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.postUpdateOp();
 				if(insertAddress){
 					if(insertBillAddress)
-						insertBillAddress(orderLine);
+						insertBillAddress(orderLine,partnerId, systemId, siteId);
 					if(insertShipAddress)
-						insertShipAddress(orderLine);
+						insertShipAddress(orderLine,partnerId, systemId, siteId);
 					insertAddress=false;
 				}
 			}
