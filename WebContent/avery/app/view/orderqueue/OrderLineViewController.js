@@ -230,8 +230,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					view.invalidComboValid=true;
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
-				}else{
-					view.invalidComboValid=false;
 				}
 			}else{
 				view.invalidComboValid=true;
@@ -252,10 +250,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
 				}
-				else{
-					v=store.getAt(index).get('name');
-				}
-				
 			}else{
 				view.invalidComboValid=true;
 				if(view.showInvalidCombo)
