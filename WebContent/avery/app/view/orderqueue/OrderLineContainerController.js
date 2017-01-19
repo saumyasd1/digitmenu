@@ -77,7 +77,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	var me = this,
     		grid = me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),
     		store = grid.store,
-    		status;
+    		status,
+    		id=this.runTime.getOrderQueueId();
     	
     	if(grid.editingPlugin.editing){
     		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
@@ -119,6 +120,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		if(grid.invalidComboValid){
 			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
 			grid.showInvalidCombo = true;
+			store.load({params:{id:id}});
 			return;
 		}
 		
