@@ -9,6 +9,6 @@ import com.avery.storage.entities.OrderLine;
 public interface OrderLineDao extends GenericDao<OrderLine, Long>{
 	
 	public List<OrderLine> readAllByOrderID(Long orderID);
-	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId);
-	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> insertAddress,Long orderQueueId, String partnerId, String systemId, String siteId);
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId, String orgCodeId);
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> insertAddress,Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId);
 }
