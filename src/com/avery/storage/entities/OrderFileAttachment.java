@@ -40,6 +40,7 @@ import com.avery.storage.MixIn.AdditionalFilesMixIn;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.ProductLineMixIn;
+import com.avery.storage.MixIn.ViewMailMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -418,6 +419,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
 			mapper.addMixIn(ProductLine.class, PartnerDataStructureMixin.class);//adding partnerDataStructureMixin for data population on attchmnt grid(Krishna varshney)
+			mapper.addMixIn(ProductLine.class, ViewMailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
