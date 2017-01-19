@@ -98,7 +98,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				header: '<img src="' + AOC.config.Settings.buttonIcons.clip + '" />',
-				width:40,
+				width:50,
 				hideable: true,
 				tooltip:'Additional File',
 				dataIndex:'attachmentPresent',

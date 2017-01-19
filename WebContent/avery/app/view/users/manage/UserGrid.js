@@ -11,7 +11,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:false,
-        tbar: { height: 40,
+        tbar: {height: AOC.config.Settings.config.defaultTbarHeight,
     		    items : me.buildtbar()
               },
         dockedItems : this.buildDockedItems(),
