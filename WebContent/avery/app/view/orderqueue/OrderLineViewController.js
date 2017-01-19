@@ -86,6 +86,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	
 		        	var ctx = editorPlugin.context,
 			            idx = ctx.rowIdx,
+			            rowIdx = ctx.rowIdx,
 			            currentRecord = ctx.store.getAt(idx),
 			            obj = currentRecord.getChanges(),
 			    		insertBillAddress=false,
@@ -93,7 +94,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			        	runTime = AOC.config.Runtime;
 		        	var partnerId = runTime.getCurrentOrderQueuePartnerId();
 		        	
-		        	if(idx == 0){
+		        	if(idx == rowIdx){
 		          		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!=''&& currentRecord.getModified('oracleBillToSiteNumber')==''){
 		          			insertBillAddress=true;
 		          		}
