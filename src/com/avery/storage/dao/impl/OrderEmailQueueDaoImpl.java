@@ -629,6 +629,10 @@ OrderEmailQueueDao {
 			if(assignCSR!=null && !"".equals(assignCSR)){
 				criteria.add(Restrictions.ilike("assignCSR",assignCSR,MatchMode.ANYWHERE));
 			}
+			String ccMailId=searchMap.get("ccMailId");
+			if(ccMailId!=null && !"".equals(ccMailId)){
+				criteria.add(Restrictions.ilike("ccMailId",ccMailId,MatchMode.ANYWHERE));
+			}
 		}
 		/*else{
 			 Date date = new Date();
