@@ -47,7 +47,7 @@ OrderFileAttachmentDao {
 		Criteria criteria = null;
 		try{
 			Map entitiesMap = new HashMap();
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
 			/*
 			 * ProjectionList projections = Projections.projectionList();
@@ -170,12 +170,10 @@ OrderFileAttachmentDao {
 			entitiesMap.put("additionalfiles", new LinkedHashSet(resList));
 
 		}catch (WebApplicationException ex) {
-			session.close();
 			AppLogger.getSystemLogger().error(
 					"Error in fetching order attachments for order id " + orderFileQueueId, ex);
 			throw ex;
 		} catch (Exception e) {
-			session.close();
 			AppLogger.getSystemLogger().error(
 					"Error in fetching order attachments for order id " + orderFileQueueId, e);
 			throw new WebApplicationException(Response
@@ -183,7 +181,9 @@ OrderFileAttachmentDao {
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		session.close();
+		finally{
+			session.close();
+		}
 		return entitiesMap;
 	}
 
