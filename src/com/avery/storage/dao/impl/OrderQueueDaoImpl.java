@@ -568,10 +568,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
 			List<String> list = criteria.list();
-			if (list == null | list.size() == 0){
-				session.close();
+			if (list == null | list.size() == 0)
 				return 0;
-			}
 			Set<Integer> set = new HashSet<Integer>();
 			for (int i = 0; i < list.size(); i++) {
 				String str = list.get(i);
@@ -582,11 +580,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					}
 				}
 			}
-			session.close();
 			return set.size();
 		} catch (Exception e) {
-			session.close();
 			return 0;
+		}
+		finally{
+			session.close();
 		}
 	}
 }
