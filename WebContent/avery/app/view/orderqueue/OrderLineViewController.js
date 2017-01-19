@@ -19,15 +19,15 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	obj.id = currentRecord.id;
     	
     	if(idx == 0){
-    		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!='' && currentRecord.getModified('oracleBilltoSiteNumber')==''){
+    		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!='' && currentRecord.getModified('oracleBillToSiteNumber')==''){
     			insertBillAddress=true;
     	  }
-    		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!='' && currentRecord.getModified('oracleShiptoSiteNumber')==''){
+    		if(currentRecord.isModified('oracleShipToSiteNumber') &&  currentRecord.get('oracleShipToSiteNumber')!=null && currentRecord.get('oracleShipToSiteNumber')!='' && currentRecord.getModified('oracleShipToSiteNumber')==''){
     			insertShipAddress=true;
     		}
 		}
     	
-		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'"}';
 		
 		Ext.Ajax.request({
 			method:'PUT',
@@ -88,17 +88,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			    		insertBillAddress=false,
 			    		insertShipAddress=false,
 			        	runTime = AOC.config.Runtime;
+		        	var partnerId = runTime.getCurrentOrderQueuePartnerId();
 		        	
 		        	if(idx == 0){
-		          		if(currentRecord.isModified('oracleBilltoSiteNumber') &&  currentRecord.get('oracleBilltoSiteNumber')!=null && currentRecord.get('oracleBilltoSiteNumber')!=''&& currentRecord.getModified('oracleBilltoSiteNumber')==''){
+		          		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!=''&& currentRecord.getModified('oracleBillToSiteNumber')==''){
 		          			insertBillAddress=true;
 		          		}
-		          		if(currentRecord.isModified('oracleShiptoSiteNumber') &&  currentRecord.get('oracleShiptoSiteNumber')!=null && currentRecord.get('oracleShiptoSiteNumber')!=''&& currentRecord.getModified('oracleShiptoSiteNumber')==''){
+		          		if(currentRecord.isModified('oracleShipToSiteNumber') &&  currentRecord.get('oracleShipToSiteNumber')!=null && currentRecord.get('oracleShipToSiteNumber')!=''&& currentRecord.getModified('oracleShipToSiteNumber')==''){
 		          			insertShipAddress=true;
 		          		}
 		              }
-		        	
-		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+		        	debugger;
+		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'"}';
 		            Ext.Ajax.request({
 		                method: 'PUT',
 		                jsonData: obj,
@@ -178,7 +179,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		});
 		var jsonValue=Ext.decode(response.responseText),refs=view.refs;
 		if(jsonValue.length > 0){
-			
+		
 			var obj=jsonValue[0];
 			systemId=obj.systemId;
 			me.attachCombo('freightTerms',systemId,record.get('id'),'freightTermscombo',obj.freightTerm,'freightTerms');
