@@ -10,6 +10,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var me = this,
     		ctx = context,
         	idx = ctx.rowIdx,
+        	rowIdx = ctx.rowIdx,
         	currentRecord = ctx.store.getAt(idx),
         	obj = currentRecord.getChanges(),
         	insertBillAddress = false,
@@ -18,7 +19,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	
     	obj.id = currentRecord.id;
     	
-    	if(idx == 0){
+    	if(idx == rowIdx){
     		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!='' && currentRecord.getModified('oracleBillToSiteNumber')==''){
     			insertBillAddress=true;
     	  }
@@ -27,7 +28,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		}
 		}
     	
-		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'"}';
+		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'"}';
 		
 		Ext.Ajax.request({
 			method:'PUT',
@@ -100,7 +101,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		          			insertShipAddress=true;
 		          		}
 		              }
-		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'"}';
+		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'"}';
 		            Ext.Ajax.request({
 		                method: 'PUT',
 		                jsonData: obj,
