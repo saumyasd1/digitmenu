@@ -8,6 +8,7 @@ Ext.define('AOC.config.Runtime',{
         currentOrderQueuePartnerId:null,
         currentOrderQueueDefaultSystem:null,
         currentOrderQueueSiteId:null,
+        currentOrderQueueOrgCodeId:null,
         orderEmailQueueId:null,
         attachmentQueueId:null,
         orderQueueActiveRecord:null,
