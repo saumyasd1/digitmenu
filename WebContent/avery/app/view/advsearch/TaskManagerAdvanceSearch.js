@@ -67,19 +67,19 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						items:[
 							{
 								xtype : 'textfield',
-								fieldLabel : 'From',
-								name:'senderEmailId',
+								fieldLabel : AOCLit.senderEmailID,
+								name:'SenderEmailID',
 								flex:1,
 								tabIndex:3
 							},
 							{
 								xtype : 'textfield',
-								fieldLabel : AOCLit.senderEmailID,
-								name:'SenderEmailID',
+								fieldLabel : AOCLit.receiverEmailID,
+								name:'ReceiverEmailID',
 								flex:1,
 								tabIndex:4,
 								margin:'0 0 0 10'
-							}
+							},
 						]
 					},
 					{ 
@@ -93,6 +93,12 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						},
 						items:[
 							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.ccMailId,
+								name:'ccMailId',
+								flex:1,
+								tabIndex:5
+							},{
 								xtype:'combo',
 								displayField:'firstName',
 								fieldLabel:'CSR',
@@ -104,7 +110,8 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								typeAhead:true,
 								triggerAction:'all',
 								width:275,
-								tabIndex:5
+								margin:'0 0 0 10',
+								tabIndex:6
 							}
 						]
 					},
@@ -129,7 +136,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								allowBlank : true,
 								selectOnTab : true,
 								value:new Date(),
-								tabIndex:5,
+								tabIndex:7,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
@@ -146,7 +153,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
-								tabIndex:6,
+								tabIndex:8,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());
@@ -167,7 +174,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
-				tabIndex:6,
+				tabIndex:9,
 				listeners : {
 					click  : 'onSearchBtnClicked'
 				}

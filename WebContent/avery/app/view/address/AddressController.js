@@ -237,6 +237,18 @@ Ext.define('AOC.view.address.AddressController', {
               }
 	          });
 	      callout.show();   
+	      var heightAbove = e.getY() - Ext.getBody().getScroll().top,
+	        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
+	  	    if(heightBelow<(callout.getHeight()+40)){
+	  		  callout.calloutArrowLocation='bottom-left'; 
+	  		  callout.relativePosition='b-t';
+	  		  callout.relativeOffsets = [55, 0];
+	  	  }else{
+	  		  callout.calloutArrowLocation='top-left'; 
+	  		  callout.relativePosition='t-b';
+	  		callout.relativeOffsets = [55, 5];
+	  	  }
+	        callout.show();
 	  },
 	  onSiteSelect:function(combo, record){
 		  var me = this,
