@@ -1635,6 +1635,7 @@ public class OrderLine extends MainAbstractEntity{
 		String partnerId=null;
 		String systemId=null;
 		String siteId=null;
+		String orgCodeId=null;
 		Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
 		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
@@ -1649,6 +1650,7 @@ public class OrderLine extends MainAbstractEntity{
 			partnerId=((String)jsonMap.get("partnerId"));
 			systemId=((String)jsonMap.get("systemId"));
 			siteId=((String)jsonMap.get("siteId"));
+			orgCodeId=((String)jsonMap.get("orgCodeId"));
 			jsonData=(String)jsonMap.get("data");
 			flagMap.put("insertBillAddress", insertBillAddress);
 			flagMap.put("insertShipAddress", insertShipAddress);
@@ -1656,13 +1658,13 @@ public class OrderLine extends MainAbstractEntity{
 			if(updateAll){
 				if((String)jsonMap.get("orderQueueId")!=null){
 					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
-					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId);
+					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId);
 				}else{
 					throw new Exception("Unable to update all records as the Order Queue Id is not present");
 				}
 			}
 			else
-				orderLineService.bulkUpdate(jsonData, flagMap, partnerId, systemId, siteId);
+				orderLineService.bulkUpdate(jsonData, flagMap, partnerId, systemId, siteId, orgCodeId);
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){
