@@ -113,10 +113,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		   
 					var id = currentRecord.get('id');
 		        	   var partnerId = currentRecord.get('partnerId');
+		        	//setting parameters at runtime   
 		               me.runTime.setOrderQueueId(id);
 		               me.runTime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
 		               me.runTime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
 		               me.runTime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
+		               me.runTime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
 		               me.runTime.setOrderQueueActiveRecord(currentRecord);
 					me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
 					me.runTime.setAllowOrderLineEdit(true);
