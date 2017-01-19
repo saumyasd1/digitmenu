@@ -130,6 +130,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("partner.id"), "partnerId")
 				.add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
+				.add(Projections.property("listOrgInfo.orgCodeId"), "orgCodeId")
+				
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		// getting filename of order file
 
@@ -137,6 +139,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+				.createAlias("varProductLine.listOrderSystemInfo", "listOrderSystemInfo")
+				.createAlias("listOrderSystemInfo.listOrgInfo", "listOrgInfo")
 				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo");
 
 		if (queryMap.getFirst("emailQueueId") != null) {
