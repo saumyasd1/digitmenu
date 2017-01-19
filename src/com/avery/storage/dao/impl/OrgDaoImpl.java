@@ -75,7 +75,7 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		ProductLine productLineObj=productLineService.read(productLineId);
 		Set<OrderSystemInfo> orderSystemInfoList=productLineObj.getListOrderSystemInfo();
 		Disjunction orConditions = Restrictions.disjunction();
-		Session session = getSessionFactory().getCurrentSession();;
+		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(Org.class);
 //		orConditions.add(Restrictions.in("id", entity2Data));
 //		orConditions.add(Restrictions.in("obj", entity3Data));

@@ -153,7 +153,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text :AOCLit.RBO,
-				width:80,
+				width:120,
 				dataIndex:'RBOName'
 			},
 			{

@@ -80,39 +80,34 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			},
 			{  
 				text : 'Tracking #',
-				width:120,
+				width:80,
 				align: 'right',
-				dataIndex:'id',
-				flex:1
+				dataIndex:'id'
 			},
 			{
 				text : 'Partner Name',
-				width:120,
+				width:150,
 				name:'PartnerName',
 				menuDisabled :true,
 				sortable:false,
-				dataIndex:'PartnerName',
-				flex:1
+				dataIndex:'PartnerName'
 			},
 			{
 				text : 'RBO',
-				width:120,
+				width:150,
 				dataIndex:'RBO',
 				menuDisabled :true,
-				sortable:false,
-				flex:1
+				sortable:false
 			},
 			{
 				text : 'Sender Email Id',
 				width:120,
-				dataIndex:'senderEmailId',
-				flex:1
+				dataIndex:'senderEmailId'
 			},
 			{
 				text :'Subject',
 				width:120,
 				dataIndex:'subject',
-				flex:1,
 				renderer:function(v, metadata){
 					return me.tipRenderer(v, metadata);
 				}
@@ -120,14 +115,12 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{
 				text :'Receiver Email Id',
 				width:120,
-				dataIndex:'Email',
-				flex:1
+				dataIndex:'Email'
 			},
 			{
 				text :'Status',
 				width:120,
 				dataIndex:'status',
-				flex:1,
 				renderer:function(v, metadata,rec){
 					return Helper.getSatus(rec);
 				}
@@ -136,7 +129,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				text :'CC',
 				width:120,
 				dataIndex:'CC',
-				flex:1,
 				renderer:function(v, metaData){
 					return me.tipRenderer(v, metaData);
 				}
@@ -144,38 +136,32 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{  
 				text : 'CSR Name',
 				width:120,
-				dataIndex:'csrName',
-				flex:1
+				dataIndex:'csrName'
 			},
 			{
 				text :'Received Date',
-				width:120,
-				dataIndex:'receivedDate',
-				flex:1
+				width:150,
+				dataIndex:'receivedDate'
 			},
 			{
 				text :'Read Date',
-				width:120,
-				dataIndex:'readDate',
-				flex:1
+				width:150,
+				dataIndex:'readDate'
 			},
 			{
 				text :'Acknowledged Date',
-				width:120,
-				dataIndex:'acknowledgementDate',
-				flex:1
+				width:150,
+				dataIndex:'acknowledgementDate'
 			},
 			{
 				text :'Last Modified By',
 				width:120,
-				dataIndex:'lastModifiedBy',
-				flex:1
+				dataIndex:'lastModifiedBy'
 			},
 			{
 				text :'Last Modified Date',
-				width:120,
-				dataIndex:'lastModifiedDate',
-				flex:1
+				width:150,
+				dataIndex:'lastModifiedDate'
 			}
 			
 		]
