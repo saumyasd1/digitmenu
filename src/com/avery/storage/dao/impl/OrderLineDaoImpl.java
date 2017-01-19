@@ -89,7 +89,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	
 	@Override
-	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId, String orgCodeId){
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
@@ -120,9 +120,9 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.postUpdateOp();
 				if(i==0){
 					if(insertBillAddress)
-						insertBillAddress(orderLine,partnerId, systemId, siteId);
+						insertBillAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 					if(insertShipAddress)
-						insertShipAddress(orderLine,partnerId, systemId, siteId);
+						insertShipAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 				}
 			}
 		}catch (WebApplicationException ex) {
@@ -140,7 +140,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 
 	}
 
-	private void insertShipAddress(OrderLine orderLine, String partnerId, String systemId, String siteId){
+	private void insertShipAddress(OrderLine orderLine, String partnerId, String systemId, String siteId, String orgCodeId){
 		
 		String shipToAddress1=orderLine.getShipToAddress1();
 		String shipToAddress2=orderLine.getShipToAddress2();
@@ -168,15 +168,14 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setCreatedDate(new Date());
 			adrObj.setSiteType("S");
 		    adrObj.setOrgCode(orderLine.getDivisionForInterfaceERPORG());
-		    //addObj.
-			Partner partnerObj=new Partner();
+		    Partner partnerObj=new Partner();
 			Org orgObj=new Org();
-			int orgCodeId=1;
 			Long currentPartnerId=Long.parseLong(partnerId);
 			int currentSystemId=Integer.parseInt(systemId);
 			int currentSiteId=Integer.parseInt(siteId);
+			Long currentOrgCodeId=Long.parseLong(orgCodeId);
 			partnerObj.setId(currentPartnerId);
-			orgObj.setId(orgCodeId);
+			orgObj.setId(currentOrgCodeId);
 			adrObj.setVarOrgCode(orgObj);
 			adrObj.setVarPartner(partnerObj);
 			adrObj.setSystem(currentSystemId);
@@ -184,7 +183,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			session.save(adrObj);
 		}
 	}
-	private void insertBillAddress(OrderLine orderLine, String partnerId, String systemId, String siteId){
+	private void insertBillAddress(OrderLine orderLine, String partnerId, String systemId, String siteId, String orgCodeId){
 		OrderQueue orderqueue = new OrderQueue();
 		String billToAddress1=orderLine.getBillToAddress1();
 		String billToAddress2=orderLine.getBillToAddress2();
@@ -213,12 +212,12 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setSiteType("B");
 			Partner partnerObj=new Partner();
 			Org orgObj=new Org();
-			int orgCodeId=1;
-     		Long currentPartnerId=Long.parseLong(partnerId);
+			Long currentPartnerId=Long.parseLong(partnerId);
      		int currentSystemId=Integer.parseInt(systemId);
 			int currentSiteId=Integer.parseInt(siteId);
+			Long currentOrgCodeId=Long.parseLong(orgCodeId);
 			partnerObj.setId(currentPartnerId);
-			orgObj.setId(orgCodeId);
+			orgObj.setId(currentOrgCodeId);
 			adrObj.setSystem(currentSystemId);
 			adrObj.setSiteId(currentSiteId);
             adrObj.setVarOrgCode(orgObj);
@@ -227,7 +226,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		}
 	}
 	@Override
-	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId){
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId){
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
@@ -252,9 +251,9 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.postUpdateOp();
 				if(insertAddress){
 					if(insertBillAddress)
-						insertBillAddress(orderLine,partnerId, systemId, siteId);
+						insertBillAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 					if(insertShipAddress)
-						insertShipAddress(orderLine,partnerId, systemId, siteId);
+						insertShipAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 					insertAddress=false;
 				}
 			}
