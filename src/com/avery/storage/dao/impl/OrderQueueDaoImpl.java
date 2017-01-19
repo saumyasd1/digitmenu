@@ -31,6 +31,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -90,6 +91,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	}
 
 	@Override
+	@Transactional
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap = new HashMap();
 		/*Session session = null;
@@ -523,6 +525,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		List list = criteria.list();
 		mailBodyPath = (String) list.get(0)+"/"+"CompleteEmail.pdf";
 		//System.out.println(mailBodyPath);
+		session.close();
 		return mailBodyPath;
 	}
 	
@@ -540,6 +543,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		filePath = orderFileAttachment.getFilePath();
 		fileName = orderFileAttachment.getFileName();
 		orderFilePath = filePath+File.separator+fileName;
+		session.close();
 		return orderFilePath;
 	}
 	
@@ -560,8 +564,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
 			List<String> list = criteria.list();
-			if (list == null | list.size() == 0)
+			if (list == null | list.size() == 0){
+				session.close();
 				return 0;
+			}
 			Set<Integer> set = new HashSet<Integer>();
 			for (int i = 0; i < list.size(); i++) {
 				String str = list.get(i);
@@ -572,8 +578,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					}
 				}
 			}
+			session.close();
 			return set.size();
 		} catch (Exception e) {
+			session.close();
 			return 0;
 		}
 	}
