@@ -529,7 +529,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		List list = criteria.list();
 		mailBodyPath = (String) list.get(0)+"/"+"CompleteEmail.pdf";
 		//System.out.println(mailBodyPath);
-		session.close();
 		return mailBodyPath;
 	}
 	
@@ -547,7 +546,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		filePath = orderFileAttachment.getFilePath();
 		fileName = orderFileAttachment.getFileName();
 		orderFilePath = filePath+File.separator+fileName;
-		session.close();
 		return orderFilePath;
 	}
 	
