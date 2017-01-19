@@ -50,7 +50,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     viewSalesOrder:function(){
     	Ext.getBody().mask('Loading....');
     	var id=this.runTime.getOrderQueueId(),me=this,
-    	salesOrderCount=this.runTime.getSalesOrderCount();
+    	//salesOrderCount=this.runTime.getSalesOrderCount();
     	var proceed=true;
     	if(proceed){
     	var owner=me.getView().ownerCt;
@@ -83,8 +83,18 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
     		return;
     	}
+    	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero then show warning and not submit sales order
+    	var isCustomerOrderQantityIsZero = false;
+    	store.each(function(record){
+    		if(record.get('customerOrderedQty') == '0'){
+    			isCustomerOrderQantityIsZero = true;
+    		}
+    	});
+    	if(isCustomerOrderQantityIsZero){
+    		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.customerOrderQtyNotZeroMessage);
+    		return;
+    	}
     	
-    	//Ext.getBody().mask('Loading...'); //show message on missing field
     	if(grid.mandatoryFieldMissing){
 			Ext.Msg.alert('',AOCLit.orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();

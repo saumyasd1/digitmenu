@@ -1257,6 +1257,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					items.push(data[i]);
 				}
 			}
+			
 			return items;
 		}
 		var record = processData(data);
@@ -1267,7 +1268,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				data : record,
 				proxy: {
 					type: 'memory'
-				}	
+				},
+				sorters: [
+		          {
+			   		  property:'skuno',
+			   		  direction:'ASC'
+		          }
+		       ]
 			}),
 			sel = (me.editGrid) ? 'rowmodel' : 'spreadsheet';
 			

@@ -431,5 +431,6 @@ Ext.define('AOC.lang.lit',{
     
     "fillMandatoryCellMsg": 'Please fill valid entry in the cell marked as yellow before proceeding',
     "checkSystemChechBoxMsg": 'Please select at least one system before proceeding',
-    editingModeTitle:'Please save the changes first, then proceed.'
+    editingModeTitle:'Please save the changes first, then proceed.',
+    customerOrderQtyNotZeroMessage:'Customer Order Qty can not be zero.'
 });
