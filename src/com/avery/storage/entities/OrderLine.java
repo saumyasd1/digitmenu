@@ -27,6 +27,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -434,6 +435,16 @@ public class OrderLine extends MainAbstractEntity{
 	@Transient
 	private String colorCode;
 	
+	@Transient
+	private Long partnerId;
+	public Long getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(Long partnerId) {
+		this.partnerId = partnerId;
+	}
+
 	@Transient
 	private String codeValue;
 	
@@ -1621,6 +1632,9 @@ public class OrderLine extends MainAbstractEntity{
 		boolean insertShipAddress=false;
 		boolean insertBillAddress=false;
 		boolean updateAll=true;
+		String partnerId=null;
+		String systemId=null;
+		String siteId=null;
 		Map<String,Boolean> flagMap=new HashMap<String,Boolean>();
 		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
@@ -1632,6 +1646,9 @@ public class OrderLine extends MainAbstractEntity{
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
 			insertShipAddress=Boolean.parseBoolean((String)jsonMap.get("insertShipAddress"));
 			insertBillAddress=Boolean.parseBoolean((String)jsonMap.get("insertBillAddress"));
+			partnerId=((String)jsonMap.get("partnerId"));
+			systemId=((String)jsonMap.get("systemId"));
+			siteId=((String)jsonMap.get("siteId"));
 			jsonData=(String)jsonMap.get("data");
 			flagMap.put("insertBillAddress", insertBillAddress);
 			flagMap.put("insertShipAddress", insertShipAddress);
@@ -1639,13 +1656,13 @@ public class OrderLine extends MainAbstractEntity{
 			if(updateAll){
 				if((String)jsonMap.get("orderQueueId")!=null){
 					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
-					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById);
+					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId);
 				}else{
 					throw new Exception("Unable to update all records as the Order Queue Id is not present");
 				}
 			}
 			else
-				orderLineService.bulkUpdate(jsonData, flagMap);
+				orderLineService.bulkUpdate(jsonData, flagMap, partnerId, systemId, siteId);
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){
