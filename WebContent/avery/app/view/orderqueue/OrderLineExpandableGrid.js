@@ -206,8 +206,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				else if(checkvalue.substr(0,1)=='F'){
 					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
 						this.mandatoryValidationFieldMissing=true;
-					}else if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='true' || rec.get('waiveMOQ')== true)){
-						this.validationFieldMissing=true;
 					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 
