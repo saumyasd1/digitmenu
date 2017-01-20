@@ -304,7 +304,7 @@ public class OrderLine extends MainAbstractEntity{
 	private String targetSystem;
 	
 	@Column(name = "APOType", length = 5)
-	private String APOType;
+	private String apoType;
 	
 	@Column(name = "sentToOracleDate")
 	Date sentToOracleDate;
@@ -1170,12 +1170,12 @@ public class OrderLine extends MainAbstractEntity{
 		this.targetSystem = targetSystem;
 	}
 
-	public String getAPOType() {
-		return APOType;
+	public String getApoType() {
+		return apoType;
 	}
 
-	public void setAPOType(String aPOType) {
-		APOType = aPOType;
+	public void setApoType(String apoType) {
+		this.apoType = apoType;
 	}
 
 	public Date getSentToOracleDate() {
