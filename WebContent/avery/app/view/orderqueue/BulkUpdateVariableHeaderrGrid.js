@@ -36,7 +36,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 		        }
         });
         this.callParent(arguments);
-        me.store.load(function(obj){
+        me.store.load({
+        	params:{variablename:me.variableColumnName},
+        	callback:function(obj){
         	var reader = me.store.proxy.reader;
 		    var showFiberPercentage = reader.createAccessor('showFiberPercentage')(reader.rawData);   
 		   // me.columns[2].editor.readOnly=showFiberPercentage;
@@ -46,7 +48,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 		    else{
 		    	me.columns[4].hide();
 			}
-	    });
+	    }
+        });
     },
     buildColumns : function(){
     	var me=this;
