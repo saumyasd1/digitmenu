@@ -79,7 +79,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'manufacturingNotes', mapping:'manufacturingNotes',type: 'string'},
 	 		{name: 'orderType', mapping:'ordertype',type: 'string'},
 	 		{name: 'orderBy', mapping:'orderby',type: 'string'},
-	 		{name: 'endCustomer', mapping:'endcustomer',type: 'string'},
+	 		{name: 'endCustomer', mapping:'endCustomer',type: 'string'},
 	 		{name: 'shippingOnlyNotes', mapping:'shippingonlynotes',type: 'string'},
 	 		{name: 'bankCharge', mapping:'bankCharge',type: 'number'},
 	 		{name: 'freightCharge', mapping:'freightCharge',type: 'number'},
