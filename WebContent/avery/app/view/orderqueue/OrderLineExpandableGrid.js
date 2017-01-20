@@ -944,8 +944,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'CSR',
 			dataIndex: 'csr',
 			width: 160,
-			editor: {
-				xtype: 'textfield'
+			editor:{
+				xtype:'combo',
+				displayField:'variableFieldName',
+				valueField:'variableFieldName',
+				queryMode:'local',
+				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
 			}
 		}, 
 		{
