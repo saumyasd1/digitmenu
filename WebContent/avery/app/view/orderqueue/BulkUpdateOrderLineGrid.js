@@ -449,18 +449,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 72,
             editor: 'textfield'
         }, {
-            text: 'Contract #<font color="red">*</font>',
+            text: 'Contract #',
             dataIndex: 'contractNumber',
             width: 130,
             editor: 'textfield',
-            renderer : function(value, meta,record) {
-                if(value !='') {
-                   return value;
-                } else {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                }
-            }
+            renderer : function(value, metadata,record) {
+				return value;
+			}
         }, {
             text: AOCLit.styleNo,
             dataIndex: 'styleNo',
@@ -720,7 +715,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'comment',
             width: 100,
             editor: 'textfield'
-        }
+        },
+        {
+			text: 'Production Line',
+			dataIndex: 'productionLine',
+			width: 100,
+			editor: 'textfield'
+		}
 		];
     },
     dockedItems: [ 

@@ -1348,6 +1348,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 									return v;
 							}
 						}
+						else{
+							var fieldName = rec.get('variableFieldName');
+							var fieldValue = rec.get('variableDataValue');
+							if((fieldName == 'SIZE' || fieldName == 'SIZE CHART' || fieldName == 'QTY') && fieldValue == ''){
+								metadata.style = AOCLit.cellColor;
+							}
+						}
 						return '';
 					}
 				}, 
