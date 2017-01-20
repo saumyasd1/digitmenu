@@ -34,6 +34,7 @@ import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.service.OrgService;
 import com.avery.utils.ApplicationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -143,6 +144,7 @@ public class Org extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			mapper.addMixIn(Org.class, OrgMixIn.class);
 			OrgService orgService = (OrgService) SpringConfig
 					.getInstance().getBean("orgService");

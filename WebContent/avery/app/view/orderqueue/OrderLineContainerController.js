@@ -87,7 +87,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false;
     	store.each(function(record){
-    		if(record.get('customerOrderedQty') == '0'){
+    		if(record.get('customerOrderedQty') == '0' && record.get('status')==AOCLit.cancelStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
     	});
@@ -307,7 +307,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
       			model:'AOC.model.VariableHeaderModel',
     			proxy : {
     				type : 'rest',
-    				url : applicationContext+'/rest/orderlinedetails/order/'+id+'/'+comboValue,
+    				url : applicationContext+'/rest/orderlinedetails/order/variable/'+id,
     				reader:{
     			        type:'json', 
     			        rootProperty: 'OrderLineDetail'

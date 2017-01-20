@@ -217,7 +217,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var index=variableFieldStore.find('variableFieldName',valueToBeSet);
 		if(index!=-1){
 			variableField.setValue(valueToBeSet);
-			currentRecord.set(recordRef,valueToBeSet);
+			variableFieldStore.getAt(1).set(recordRef,valueToBeSet);
 		}
 	},
 	comboColumnRenderer:function(v,h,l,k){
@@ -240,6 +240,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		return v;
 	},
 	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
+		var orgCodeName = '';
 		var view=this.getView();
 		if(!Ext.isEmpty(v)){
 			var store=h.column.config.editor.store;
@@ -250,13 +251,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
 				}
+				orgCodeName = store.getAt(index).get('name');
 			}else{
 				view.invalidComboValid=true;
 				if(view.showInvalidCombo)
 					h.style = AOCLit.cellColor;
 			}
 		}
-		return '<div>'+v+'</div>';
+		return orgCodeName;
 	},
 	
 	onStatusSelect:function(combo){
