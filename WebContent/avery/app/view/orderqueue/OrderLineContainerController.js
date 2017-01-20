@@ -49,7 +49,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     viewSalesOrder:function(){
     	Ext.getBody().mask('Loading....');
-    	var id=this.runTime.getOrderQueueId(),me=this,
+    	var id=this.runTime.getOrderQueueId(),me=this;
     	//salesOrderCount=this.runTime.getSalesOrderCount();
     	var proceed=true;
     	if(proceed){
