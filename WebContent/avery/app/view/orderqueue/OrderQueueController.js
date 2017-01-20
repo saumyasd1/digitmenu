@@ -136,7 +136,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 							}
 						}
 					});
-					storeERPORG.load();
 					me.runTime.setStoreERPORG(storeERPORG);
 					me.viewOrderLineScreen(currentRecord);
 					
