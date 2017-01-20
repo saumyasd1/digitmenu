@@ -68,7 +68,11 @@ Ext.define('AOC.controller.MenuController', {
 	    {
 	    	ref: 'orderQueueViewContainer',
     		selector:'viewport canwas maincontainer orderqueueview #orderQueueViewItemId1'
-	    }
+	    },
+	    {
+	        ref:'clearOrderQueueAdvSearch',
+	        selector:'viewport orderqueuegrid #clearadvanedsearch'
+	       }
 	],
 	menuInstructions : AOC.config.MenuInstructions,
 	runTime : AOC.config.Runtime,
@@ -124,6 +128,8 @@ Ext.define('AOC.controller.MenuController', {
 			this.getOrderQueueViewContainer().getLayout().setActiveItem(0);//set default item
 			
 			//filter order queue grid for respective emailqueue id
+			this.getClearOrderQueueAdvSearch().hide();
+			store.clearFilter(true);
 			store.proxy.setFilterParam('emailQueueId');
             store.setRemoteFilter(true);
             if (!store.proxy.hasOwnProperty('filterParam')) {
@@ -213,7 +219,11 @@ Ext.define('AOC.controller.MenuController', {
 		    	weborderview.updateHeaderLabel(newWebOrder);
 				break;
 			default :
-				var store = Ext.ComponentQuery.query(view)[0].getStore();
+				var gridView = Ext.ComponentQuery.query(view)[0],
+				     clearAdvSarchBtn = gridView.down('#clearadvanedsearch'),
+				     store = gridView.getStore();
+			   
+			    clearAdvSarchBtn.isVisible() ?  clearAdvSarchBtn.hide() : '';
 				store.clearFilter(true);
 				store.load();	
 				break;
