@@ -1,4 +1,4 @@
-Ext.define('AOC.view.orderqueue.OrgController', {
+Ext.define('AOC.view.partner.OrgController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orgcontroller',
     requires : ['AOC.util.Helper'],
