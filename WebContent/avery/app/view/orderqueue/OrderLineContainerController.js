@@ -151,6 +151,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        	status=jsonValue.status;
  		    	
 		        	if(status=='success'){
+		        		me.runTime.setOrderQueueStatus(AOCLit.soGeneratedStatusOrderQueue);
 		        		proceed=false;
 		        		var orderlinecontainer = me.getView(),
 			                validateButton = orderlinecontainer.lookupReference('validateButton'),

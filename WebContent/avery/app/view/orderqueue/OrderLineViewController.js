@@ -227,12 +227,16 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			if(store){
 				var index=store.find("variableFieldName",v);
 				if(index==-1){
-					view.invalidComboValid=true;
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						view.invalidComboValid=true;
+					}
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
 				}
 			}else{
-				view.invalidComboValid=true;
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					view.invalidComboValid=true;
+				}
 				if(view.showInvalidCombo)
 					h.style = AOCLit.cellColor;
 			}
@@ -241,19 +245,24 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	},
 	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
 		var orgCodeName = '';
-		var view=this.getView();
+		var view = this.getView();
 		if(!Ext.isEmpty(v)){
 			var store=h.column.config.editor.store;
 			if(store){
-				var index=store.find("id",v);
-				if(index==-1){
-					view.invalidComboValid=true;
+				var index = store.find("id",v);
+				if(index == -1){
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						view.invalidComboValid=true;
+					}
 					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
+				}else{
+					orgCodeName = store.getAt(index).get('name');
 				}
-				orgCodeName = store.getAt(index).get('name');
 			}else{
-				view.invalidComboValid=true;
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					view.invalidComboValid=true;
+				}
 				if(view.showInvalidCombo)
 					h.style = AOCLit.cellColor;
 			}
