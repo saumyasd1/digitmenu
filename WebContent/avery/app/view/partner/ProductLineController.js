@@ -9,12 +9,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var createproductline=this.getView();
 		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
 		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
+			var getFormInvalidFields=this.getFormInvalidFields(panel.getForm());
 			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
 			Ext.getBody().unmask();
 			return false;
 		}
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
-		valueObj='',valueObj2='',form=this.getView().down('form');
+		valueObj='',form=this.getView().down('form');
 		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
 		length=0,hiddenProductLineField=this.getView().lookupReference('productLineHidden'),productLineValue=hiddenProductLineField.getValue();
 		var systemcontainer=this.getView().lookupReference('systemcontainer'),
@@ -82,52 +83,17 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					LLKK:valueObj.LLKK,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue,
-					email:valueObj.email,
-					siteChanged:site.siteChanged,
-					emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
-					emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
-					emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
-					emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
-					fileRBOMatch:dataModel.fileRBOMatch,
-					fileProductlineMatch:dataModel.fileProductlineMatch,
-					fileOrderMatch:dataModel.fileOrderMatch,
-					orderFileNameExtension:dataModel.orderFileNameExtension,
-					orderFileNamePattern:dataModel.orderFileNamePattern,
-					orderMappingID:dataModel.orderMappingID,
-					orderSchemaID:dataModel.orderSchemaID,
-					attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
-					attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
-					attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
-					attachmentMappingID_1:dataModel.attachmentMappingID_1,
-					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
-					dataStructureName:dataModel.dataStructureName,
-					active:dataModel.active,
-					attachmentRequired:attachmentRequired,
-					fileOrderMatchCell:dataModel.fileOrderMatchCell,
-					fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
-					fileOrderMatch:dataModel.fileOrderMatch,
-					fileRBOCellMatch:dataModel.fileRBOCellMatch,
-					fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
-					attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
-					attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
-					attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
-					attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
-					attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
-					attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
-					fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
-					fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch
 					
+					siteChanged:site.siteChanged
 		    	};
 		}
 		else{
 			
 			Id=productline.partnerid;
 			partnerName=productline.partnerName;
-			var partner='';
 			partner={id:Id,partnerName:partnerName};
 			url=applicationContext+'/rest/productLines';
 			valueObj=form.getValues(false,false,false,true);
-			valueObj2=advancedPropertiesForm.getValues(false,true,false,true);
 			methodMode='POST';
 			length=1;
 			Msg=AOCLit.addProdLineMsg;
@@ -143,43 +109,60 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					localbilling:valueObj.localBilling,
 					llkk:valueObj.LLKK,
 					orderSystemInfo:orderSystemInfo,
-					productLineType:productLineValue,
-					email:valueObj.email,
-					emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
-					emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
-					emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
-					emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
-					fileRBOMatch:dataModel.fileRBOMatch,
-					fileProductlineMatch:dataModel.fileProductlineMatch,
-					fileOrderMatch:dataModel.fileOrderMatch,
-					orderFileNameExtension:dataModel.orderFileNameExtension,
-					orderFileNamePattern:dataModel.orderFileNamePattern,
-					orderMappingID:dataModel.orderMappingID,
-					orderSchemaID:dataModel.orderSchemaID,
-					attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
-					attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
-					attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
-					attachmentMappingID_1:dataModel.attachmentMappingID_1,
-					attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
-					dataStructureName:dataModel.dataStructureName,
-					active:dataModel.active,
-					attachmentRequired:attachmentRequired,
-					fileOrderMatchCell:dataModel.fileOrderMatchCell,
-					fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
-					fileOrderMatch:dataModel.fileOrderMatch,
-					fileRBOCellMatch:dataModel.fileRBOCellMatch,
-					fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
-					attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
-					attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
-					attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
-					attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
-					attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
-					attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
-					fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
-					fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch
-					
+					productLineType:productLineValue
 		    	};
 		}
+		var secondParam={
+				emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
+				email:valueObj.email,
+				emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
+				emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
+				emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
+				fileRBOMatch:dataModel.fileRBOMatch,
+				fileProductlineMatch:dataModel.fileProductlineMatch,
+				fileOrderMatch:dataModel.fileOrderMatch,
+				orderFileNameExtension:dataModel.orderFileNameExtension,
+				orderFileNamePattern:dataModel.orderFileNamePattern,
+				orderMappingID:dataModel.orderMappingID,
+				orderSchemaID:dataModel.orderSchemaID,
+				attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
+				attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
+				attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
+				attachmentMappingID_1:dataModel.attachmentMappingID_1,
+				attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
+				dataStructureName:dataModel.dataStructureName,
+				active:dataModel.active,
+				attachmentRequired:attachmentRequired,
+				fileOrderMatchCell:dataModel.fileOrderMatchCell,
+				fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
+				fileOrderMatch:dataModel.fileOrderMatch,
+				fileRBOCellMatch:dataModel.fileRBOCellMatch,
+				fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
+				attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
+				attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
+				attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
+				attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
+				attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
+				attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
+				fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
+				fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch,
+				attachmentFileNameExtension_2:dataModel.attachmentFileNameExtension_2,
+				attachmentFileNamePattern_2:dataModel.attachmentFileNamePattern_2,
+				attachmentSchemaID_2:dataModel.attachmentSchemaID_2,
+				attachmentMappingID_2:dataModel.attachmentMappingID_2,
+				attachmentIdentifier_2:dataModel.attachmentIdentifier_2,
+				attachmentFileNameExtension_3:dataModel.attachmentFileNameExtension_3,
+				attachmentFileNamePattern_3:dataModel.attachmentFileNamePattern_3,
+				attachmentSchemaID_3:dataModel.attachmentSchemaID_3,
+				attachmentMappingID_3:dataModel.attachmentMappingID_3,
+				attachmentIdentifier_3:dataModel.attachmentIdentifier_3,
+				attachmentFileNameExtension_4:dataModel.attachmentFileNameExtension_4,
+				attachmentFileNamePattern_4:dataModel.attachmentFileNamePattern_4,
+				attachmentSchemaID_4:dataModel.attachmentSchemaID_4,
+				attachmentMappingID_4:dataModel.attachmentMappingID_4,
+				attachmentIdentifier_4:dataModel.attachmentIdentifier_4,
+		};
+		Ext.merge(parameters,secondParam);
 				Ext.Ajax.request( {
 					method: methodMode,
 				    jsonData : parameters,	
@@ -197,7 +180,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    	Ext.getBody().unmask();
 				    	createproductline.destroy();
 				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
-			  			//Ext.Msg.alert('Alert Message',Msg);
 			  			productline.store.load();
 				  		
 		        },
@@ -271,9 +253,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				 	      			    }
 				 	      			});
 			 	      			}
-			 	      			//win.reset();
 			 	      			win.down('#titleItemId').setValue(AOCLit.editPartProdLine).setVisible(true);
-//			 	      			win.fireafterrender
 			 	      			win.show();
 				        },
 				        failure: function(response, opts) {
@@ -623,6 +603,7 @@ if(!temp){
 	    				margin:'40 0 0 20',
 	    				maxRecord:totalOrgConfigured,
 	    				text:'Plus',
+	    				ui:'white', 
 	    				reference:selectedSystemArray.name+'Plus',
 	    				hidden:true,
 	    				flex:0.5,
@@ -655,7 +636,7 @@ if(!temp){
 	    		hiddenProductLineField.setValue(value);
 	    	},
 	    	afterWindowRender:function(){
-	    		var view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
+	    		var me=this,view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
 	    		mixed=view.lookupReference('mixed'),
 	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
 	    		if(data.productLineType=='MIXED'){
@@ -672,7 +653,28 @@ if(!temp){
 	    		this.getView().lookupReference('attachmentRequired').setValue({
 	    			attachmentRequired : data.attachmentRequired
                 });
-//	    		radios.items.items[index].setValue(true/false);
+	    		if(view.editMode){
+	    			var count=AOCLit.maxAdditionalFieldAllowed,highestValuePresent=1;
+	    			for(var j=count;j>1;j--){
+	    				if(me.hasAdditionFieldData(j)){
+	    					highestValuePresent=j;
+	    					break;
+	    				}
+	    			}
+	    			if(parseInt(highestValuePresent)>1){
+	    				view.additionalFieldCount=highestValuePresent;
+	    				for(var jj=highestValuePresent;jj>1;jj--){
+	    					view.down('#AdditionalData').add(this.getAttachementContainer(jj));
+	    		    		if(jj==AOCLit.maxAdditionalFieldAllowed){
+	    		    			view.down('#addMoreAdditionalFieldButton').disable();
+	    		    		}
+		    			}
+	    			}
+	    			var viewmodel=view.getViewModel();
+	    			view.setViewModel(viewmodel);
+	    			view.down('#AdditionalData').updateLayout();
+	    		}
+	    		
 	    	},
 	    	getFormInvalidFields: function(form) {
 	    	    var invalidFields = [];
@@ -683,6 +685,119 @@ if(!temp){
 	    	    });
 	    	    Ext.resumeLayouts(true);
 	    	    return invalidFields;
-	    	}
+	    	},
+	    	getAttachementContainer:function(count){
+	    		var nameCount='',allowBlank=false;
+	    			if(parseInt(count)>1){
+	    				nameCount=count;
+	    				allowBlank=true;
+	    			}
+	    		return [{
+									xtype: 'fieldcontainer',
+									layout: 'column',
+									margin : '0 0 5 0',
+									defaults:{
+										labelSeparator:'',
+										labelStyle:Settings.config.defaultFormLabelStyle,
+										labelAlign:Settings.form.defaultLabelAlign,
+										labelWidth:150,
+										width:450
+									},
+									items:[
+										{
+											xtype:'combo',
+											itemId:'FileType'+count,
+											name: 'fileType'+count,
+											allowBlank:allowBlank,
+											fieldLabel:'File Type ' +nameCount,
+											maxLength : '50',
+											store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
+											bind:'{attachmentFileNameExtension_'+count+'}',
+											editable:false,
+											itemId:'attachmentFileNameExtension_'+count+'',
+											enforceMaxLength: true
+										},
+										{
+											xtype:'textfield',
+											itemId:'FileNamePattern'+count,
+											name: 'fileNamePattern'+count,
+											fieldLabel:'File Name Pattern '+nameCount,
+											margin:'0 0 0 10',
+											bind:'{attachmentFileNamePattern_'+count+'}'
+										}
+									]
+								},
+								{
+									xtype: 'fieldcontainer',
+									layout: 'column',
+									margin : '0 0 5 0',
+									defaults:{
+										labelSeparator:'',
+										labelStyle:Settings.config.defaultFormLabelStyle,
+										labelAlign:Settings.form.defaultLabelAlign,
+										labelWidth:150,
+										width:450
+									},
+									items:[
+										{
+											xtype:'textfield',
+											itemId:'SchemaId'+count,
+											name: 'schemaId'+count,
+											bind:'{attachmentSchemaID_'+count+'}',
+											fieldLabel:'Schema ID '+nameCount
+										},
+										{
+											xtype:'textfield',
+											itemId:'MappingId'+count,
+											name: 'mappingId'+count,
+											bind:'{attachmentMappingID_'+count+'}',
+											fieldLabel:'Mapping ID '+nameCount,
+											margin:'0 0 0 10'
+										}
+									]
+								},
+								{
+									xtype:'textfield',
+									itemId:'MatchType'+count,
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.defaultLabelAlign,
+									name: 'matchType'+count,
+									fieldLabel:'Match Type '+nameCount,
+									bind:'{attachmentIdentifier_'+count+'}',
+									labelSeparator:'',
+									labelWidth : 150,
+									width : 450
+								}]
+	    	},
+	    	addMoreAdditionalField:function(cmp){
+	    		var view=this.getView(),count=parseInt(view.additionalFieldCount)+1;
+	    		view.additionalFieldCount=count;
+	    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
+	    		if(count==AOCLit.maxAdditionalFieldAllowed){
+	    			cmp.disable();
+	    		}
+	    	},
+	    	onRequiredChange:function (field, newValue, oldValue) {
+	    		var view=this.getView();
+	    		view.down('#AdditionalData').setDisabled(newValue);
+	    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
+	    		view.down('#attachmentFileNameExtension_1').allowBlank=newValue;
+			 },
+			 hasAdditionFieldData:function(count){
+				 var data=this.getView().getViewModel().getData(),
+				 attachmentFileNameExtension='attachmentFileNameExtension_'+count,
+				 attachmentFileNamePattern_='attachmentFileNamePattern_'+count,
+				 attachmentSchemaID_='attachmentSchemaID_'+count,
+				 attachmentMappingID_='attachmentMappingID_'+count,
+				 attachmentIdentifier_='attachmentIdentifier_'+count;
+				 if(!Ext.isEmpty(data[attachmentFileNameExtension] ) ||
+						 !Ext.isEmpty(data[attachmentFileNamePattern_] ) ||
+						 	!Ext.isEmpty(data[attachmentSchemaID_] ) ||
+						 		!Ext.isEmpty(data[attachmentMappingID_] ) ||
+						 			!Ext.isEmpty(data[attachmentIdentifier_] )){
+					 return true;
+				 }
+				 return false;
+			 }
 	    	
 });
