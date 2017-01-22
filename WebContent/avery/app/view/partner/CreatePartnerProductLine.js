@@ -10,6 +10,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
     draggable:false,
     editMode:false,
     rec:null,
+    additionalFieldCount:1,
     productlineId:null,
     partnerid:null,
     partnerName:null,
@@ -499,6 +500,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						   },
 							   /*Start Additional Data*/
 						   {
+							xtype:'fieldcontainer',
+							layout:'hbox',
+							items:[{
 								xtype: 'radiogroup',
 								vertical: true,
 								width:300,
@@ -522,13 +526,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										 name : 'attachmentRequired',
 										 inputValue :false,
 										 listeners: {
-											 change: function (field, newValue, oldValue) {
-												 field.up('form').down('#AdditionalData').setDisabled(newValue);
-												 field.up('form').down('#attachmentFileNameExtension_1').allowBlank=newValue;
-											 }
+											 change: 'onRequiredChange'
 										 }
 									 }
 								 ]
+							},{
+								xtype:'button',
+								text:'Add Additional Field',
+								ui:'white', 
+								itemId:'addMoreAdditionalFieldButton',
+								handler:'addMoreAdditionalField'
+							}]
 						   },
 						   {	
 								xtype: 'form',
@@ -541,84 +549,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								collapsed :true,
 								titleCollapse: true,
 								width:'100%',
-								items:[ 
-									{
-										xtype: 'fieldcontainer',
-										layout: 'column',
-										margin : '0 0 5 0',
-										defaults:{
-											labelSeparator:'',
-											labelStyle:Settings.config.defaultFormLabelStyle,
-											labelAlign:Settings.form.defaultLabelAlign,
-											labelWidth:150,
-											width:450
-										},
-										items:[
-											{
-												xtype:'combo',
-												itemId:'FileType',
-												name: 'fileType',
-												allowBlank:false,
-												fieldLabel:'File Type',//?/
-												maxLength : '50',
-												store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
-												bind:'{attachmentFileNameExtension_1}',
-												editable:false,
-												itemId:'attachmentFileNameExtension_1',
-												enforceMaxLength: true
-											},
-											{
-												xtype:'textfield',
-												itemId:'FileNamePattern',
-												name: 'fileNamePattern',
-												fieldLabel:'File Name Pattern',//?/
-												margin:'0 0 0 10',
-												bind:'{attachmentFileNamePattern_1}'
-											}
-										]
-									},
-									{
-										xtype: 'fieldcontainer',
-										layout: 'column',
-										margin : '0 0 5 0',
-										defaults:{
-											labelSeparator:'',
-											labelStyle:Settings.config.defaultFormLabelStyle,
-											labelAlign:Settings.form.defaultLabelAlign,
-											labelWidth:150,
-											width:450
-										},
-										items:[
-											{
-												xtype:'textfield',
-												itemId:'SchemaId',
-												name: 'schemaId',
-												bind:'{attachmentSchemaID_1}',
-												fieldLabel:'Schema ID'//?/
-											},
-											{
-												xtype:'textfield',
-												itemId:'MappingId',
-												name: 'mappingId',
-												bind:'{attachmentMappingID_1}',
-												fieldLabel:'Mapping ID',//?/
-												margin:'0 0 0 10'
-											}
-										]
-									},
-									{
-										xtype:'textfield',
-										itemId:'MatchType',
-										labelStyle:Settings.config.defaultFormLabelStyle,
-										labelAlign:Settings.form.defaultLabelAlign,
-										name: 'matchType',
-										fieldLabel:'Match Type',//?/
-										bind:'{attachmentIdentifier_1}',
-										labelSeparator:'',
-										labelWidth : 150,
-										width : 450
-									}
-								]
+								items:me.getController().getAttachementContainer(1)
 						   },/*End Additional Data*/
 							   
 							   /*Start of Email subject match*/
