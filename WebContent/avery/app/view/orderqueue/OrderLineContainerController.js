@@ -84,10 +84,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
     		return;
     	}
-    	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero then show warning and not submit sales order
+    	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false;
     	store.each(function(record){
-    		if(record.get('customerOrderedQty') == '0' && record.get('status')==AOCLit.cancelStatusOrderLine){
+    		if(record.get('customerOrderedQty') == '0' && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
     	});
@@ -119,8 +119,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		}
 		if(grid.invalidComboValid){
 			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
-			//grid.showInvalidCombo = true;
-			//store.load({params:{id:id}});
 			return;
 		}
 		

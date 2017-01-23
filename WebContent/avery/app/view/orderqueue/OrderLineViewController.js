@@ -230,18 +230,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						view.invalidComboValid = true;
-						h.style = AOCLit.cellColor;
+						h.style = AOCLit.cellColor; // change cell color if value is not exist in store
 					}
-//					if(view.showInvalidCombo)
-//						h.style = AOCLit.cellColor;
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 					view.invalidComboValid = true;
-					h.style = AOCLit.cellColor;
+					h.style = AOCLit.cellColor; //change cell color if value is not exist in store
 				}
-//				if(view.showInvalidCombo)
-//					h.style = AOCLit.cellColor;
 			}
 		}
 		return v;
@@ -256,20 +252,16 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						view.invalidComboValid=true;
-						h.style = AOCLit.cellColor;
+						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 					}
-//					if(view.showInvalidCombo)
-//						h.style = AOCLit.cellColor;
 				}else{
 					orgCodeName = store.getAt(index).get('name');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 					view.invalidComboValid=true;
-					h.style = AOCLit.cellColor;
+					h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 				}
-//				if(view.showInvalidCombo)
-//					h.style = AOCLit.cellColor;
 			}
 		}
 		return orgCodeName;

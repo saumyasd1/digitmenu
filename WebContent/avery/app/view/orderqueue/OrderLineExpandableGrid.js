@@ -218,26 +218,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			}
 		},
-		/*New Field-1*/
-		//No need this column for now(Amit Kumar 8-1-2017)
-		/*{
-			text: 'Variable Data',
-			dataIndex: 'mandatoryVariableDataFieldFlag',
-			width: 65,
-			renderer:function(value, metadata,rec){
-				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag;
-				var checkvalue = value ? value.trim()  :'';
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.tick + '" /></div>';
-				}
-				else{
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
-						return '<div><img data-qtip=" '+mandatoryVariableDataFieldFlag+'" src="' + AOC.config.Settings.buttonIcons.warning + '" /></div>';
-					}
-				}
-			}
-		}, */
+		
 		/*New Field-2*/
 		{
 			text: 'COO',
@@ -349,6 +330,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			},
 			renderer : function(value, metadata, record) {
 				if(parseInt(value) > -1) {
+					if(value == '0'){
+						metadata.style = AOCLit.cellColor;
+					}
 					if(this.showMandatoryValidationField){
 						if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
 							var moqValidationFlag = record.data.moqvalidationFlag  ? record.data.moqvalidationFlag : record.data.moqvalidationFlag.trim();
