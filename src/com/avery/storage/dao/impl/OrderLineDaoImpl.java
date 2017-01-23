@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -24,8 +25,10 @@ import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -68,6 +71,14 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				orderLine.setIconName(iconName);
 				orderLine.setColorCode(colorCode);
 				orderLine.setCodeValue(codeValue);
+				//Getting target system name using the target system id
+				String targetSystem = orderLine.getTargetSystem();
+				if(targetSystem != null && NumberUtils.isNumber(targetSystem)){
+					Long orderSystemInfoId = Long.parseLong(targetSystem);
+					OrderSystemInfo orderSystemInfo = (OrderSystemInfo) session.get(OrderSystemInfo.class, orderSystemInfoId);
+					SystemInfo systemInfo = orderSystemInfo.getVarSystem();
+					orderLine.setTargetSystemName(systemInfo.getName());
+				}
 
 			}
 
