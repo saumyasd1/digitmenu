@@ -2,7 +2,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	extend : 'Ext.grid.Panel',
 	itemId : 'partnerproductlinegriditemId',
     alias : 'widget.partnerproductlinegrid',
-	requires:['AOC.view.advsearch.ProductLineAdvanceSearch'],
+	requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.view.ux.CustomSearchField'],
 	controller:'productlineMain',
 	emptyText: AOCLit.emptyDataMsg,
 	partnerid:null,
@@ -13,7 +13,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
         columns : this.buildColumns(),
 		columnLines:false,
         tbar: { 
-        		height: 40,
+        		height: AOC.config.Settings.config.defaultTbarHeight,
     		    items : me.buildtbar()
         },
         dockedItems : this.buildDockedItems(),
@@ -48,41 +48,36 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
                			},
                          {
 				        	text : 'RBO Name',
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'rboName',
-				            flex:1.5
+				            flex:1
 			            },
 			            {
 			            	text:'Data Structure Name',
-			            	width:120,
 			            	sortable:true,
-			            	dataIndex:'dataStructureName'
+			            	dataIndex:'dataStructureName',
+			            	flex:1
 			            },
 			            {
 				        	text : AOCLit.productLine,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'productLineType',
-				            flex:1.5
+				            flex:1
 			            },
 			            {
 				        	text : AOCLit.CSR,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'csrName',
-				            flex:1.5
+				            flex:1
 			            },
 			            {
 				        	text : AOCLit.packingInstruction,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'packingInstruction',
-				            flex:1.5
+				            flex:1
 			            },
                         {
 				            text : 'Split Ship Set',
-				            width:150,
 				            dataIndex:'splitShipSetBy',
 				            flex:1
                         }
@@ -125,33 +120,28 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		            	searchCriteria:'',
 		    			store : Ext.data.StoreManager.lookup(me.store),
 		    			width: 200,
-		    			emptyText: "Search Data Structure "
+		    			emptyText: "Search by ProductLine"
 					 },
 					 {
 		                	xtype :'tbspacer',
 		                	width :10
 		        		},
 		        		{
-		        		    xtype: 'component',
-		        		    itemId:'advancesearchbutton',
-		        		    autoEl: {
-		        		        tag: 'a',
-		        		        href: '#',
-		        		        html:AOCLit.advSearchTitle
-		        		    },
-		        		    listeners: {
-		        		    	 el : {
-		        		    		    click    : 'openAdvancedSearchWindow'
-		        		    		    
-		        		    	 }
-		        	            }
-		        		},
-					{
-						itemId: 'clearadvanedsearch',
-						hidden:true, 
-						handler : 'clearAdvancedSerach',
-						icon:  AOC.config.Settings.buttonIcons.clearSearchIcon
-					}
+		    				xtype:'button',
+		    				refrence:'advancesearchbutton',
+		    				text:AOCLit.advSearchText,
+		    				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+		    				iconAlign: "right",
+		    				handler:'openAdvancedSearchWindow'
+		    			 },
+		    			 {
+		 					hidden:true, 
+		 					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					itemId:'clearadvanedsearch',
+		 					reference:'clearAdvSearch',
+		 					handler:'clearAdvancedSearch',
+		 					tooltip:'Clear Search'
+		 				}
 		          ];
 	},
 	 buildDockedItems : function(){

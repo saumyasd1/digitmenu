@@ -325,7 +325,6 @@ Ext.define('AOC.lang.lit',{
     "partner_RBOProductLineID":'Partner_RBOProductLineID',
     "RBOID": 'RBOID',
     'RBOName': 'RBOName',
-    "productLineType": 'ProductLineType',
     "CSREmail": 'CSREmail',
     "orderEmailDomain": 'OrderEmailDomain',
     "packagingInstruction": 'PackingInstruction',

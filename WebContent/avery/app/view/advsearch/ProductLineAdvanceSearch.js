@@ -1,133 +1,119 @@
 Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
-			extend : 'Ext.form.Panel',
-			alias : 'widget.productlineadvancesearch',
-			itemId : 'productlinesearchItemId',
-			requires : ['Ext.window.MessageBox'],
-			controller:'productlineMain',
-			border : false,
-			buttonAlign : 'right',
-			style: 'background: #FFFFFF !important;border: 2px solid #FFFFFF;',
-			items : [    
-					    {
-							xtype:'displayfield',
-							itemId:'tittleItemId',
-							value:'<b><font size=3>'+AOCLit.advancedSearchWindowTitle+'</font></b>',
-							margin:'5 0 0 80'
-			            },
-						{
-							xtype:'tbspacer',
-							height:2
-						}, 
-			             {
-							xtype:'displayfield',
-							itemId:'messageFieldItemId',
-							value:'',
-							hidden:true,
-							margin:'5 0 0 10'
-	                       },
-						{
-							xtype:'tbspacer',
-							height:5
+	extend : 'AOC.view.base.NewBaseWindow',
+	alias : 'widget.productlineadvancesearchwin',
+	
+	itemId : 'productlineAdvanceSearch',
+	reference:'productlineAdvanceSearch',
+	controller : 'productlineMain',
+	requires : ['Ext.window.MessageBox'],
+	
+	layout:'fit',
+	width: 330,
+	title:AOCLit.advancedSearchWindowTitle,
+	
+	initComponent:function(){
+		var me = this;
+		me.items = me.buildItems();
+		me.callParent(arguments);
+	},
+	buildItems :function(){
+		var me = this;
+		return [
+		    {
+		    	xtype:'form',
+		        reference:'productlineAdvanceSearchForm',
+		        border:false,
+		        buttonAlign:'right',
+		        buttons:me.getButtons(),
+		        padding:'10 10 5 10',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:Settings.config.defaultFormLabelStyle,
+					labelAlign:Settings.form.topLabelAlign
+				},
+		        items:[
+					{
+						xtype : 'textfield',
+						itemId: 'productlinevalue',
+						fieldLabel : AOCLit.productLineType,
+						name:'productLineType',
+						width:300,
+						labelSeparator : '',
+						labelAlign : 'top',
+						allowBlank : true,
+						selectOnTab : true,
+						tabIndex:1,
+						margin:'5 0 0 0',
+						listeners:{
+							focus: function () {
+								var val=this.getValue().replace(/^\s+|\s+$/g,"");
+								if(val=="")
+									this.setValue('');
+							}
+						}
+					},				
+					{
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 10 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
 						},
-						{
-							xtype : 'textfield',
-							itemId: 'productlinevalue',
-							fieldLabel : AOCLit.partnerDataStructure,
-							name:'productLineType',
-							width:250,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners:{
-								focus: function () {
-									var val=this.getValue().replace(/^\s+|\s+$/g,"");
-									if(val=="")
-										this.setValue('');
+						items:[
+							{
+								xtype : 'datefield',
+								name:'fromDate',
+								reference:'fromDate',
+								fieldLabel : AOCLit.fromDate,
+								flex:1,
+								selectOnTab : true,
+								tabIndex:2,
+								value:new Date(),
+								listeners : {
+									render : function(datefield) {
+										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
+									}
+								}
+							},
+							{
+								xtype : 'datefield',
+								fieldLabel : AOCLit.toDate,
+								name:'toDate',
+								reference:'toDate',
+								tabIndex:3,
+								flex:1,
+								margin:'0 0 0 10',
+								hidden:false,
+								allowBlank : true,
+								selectOnTab : true,
+								listeners : {
+									render : function(datefield) {
+										datefield.setValue(new Date());
+									},
+									'focus': 'notifyByMessage'
 								}
 							}
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'radiogroup',
-							itemId: 'productlinedatecriteriavalue',
-							fieldLabel : '',
-							name: 'datecriteriavalue',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							margin:'5 0 0 10',
-							items:[
-						            { boxLabel: 'Creation Date', name: 'datecriteriavalue', inputValue: 'createdDate', checked: true },
-						            { boxLabel: 'Modified Date', name: 'datecriteriavalue', inputValue: 'lastModifiedDate' }
-						            ]
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'datefield',
-							itemId: 'productlinefromdatecriteriavalue',
-							fieldLabel : AOCLit.fromDate,
-							name:'fromDate',
-							reference:'fromDate',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners : {
-							    render : function(datefield) {
-							        /// code to convert GMT String to date object
-							        datefield.setValue(new Date());
-							                }
-							        }
-							
-						},
-						{
-							xtype:'tbspacer',
-							height:2
-						},
-						{
-							xtype : 'datefield',
-							itemId: 'productlinetodatecriteriavalue',
-							fieldLabel : AOCLit.toDate,
-							name:'toDate',
-							reference:'toDate',
-							width:250,
-							hidden:false,
-							labelSeparator : '',
-							labelAlign : 'top',
-							allowBlank : true,
-							//value: Ext.util.Format.date(currentDateTime),
-							selectOnTab : true,
-							margin:'5 0 0 10',
-							listeners : {
-							    render : function(datefield) {
-							        datefield.setValue(new Date());
-							                }
-							        },
-							        'focus': 'notifyByMessage'
-						}
-			],
-
-			buttons : [ {
-						text : 'Search',
-						disabled : false,
-						formBind : true,
-						success : true,
-						handler : 'getProductLineBasedOnSearch'
-				}],
-				initComponent : function() {
-				this.callParent(arguments);
+						]
+					}  
+		        ]
+		    }
+		]
+	},
+	getButtons :function(){
+		return [ 
+			{
+				text : 'Search',
+				disabled : false,
+				formBind : true,
+				success : true,
+				tabIndex:4,
+				listeners : {
+					click  : 'onSearchBtnClicked'
 				}
-
+			}
+		]	
+	}
 });
+

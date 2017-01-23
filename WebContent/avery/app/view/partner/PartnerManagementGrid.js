@@ -45,7 +45,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		        },
         			    {  
             	            text : AOCLit.partnerName,
-            	          	width:120,
             	            sortable : true,
             	            dataIndex:'partnerName',
             	            flex:0.5
@@ -53,21 +52,18 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
                			},
 			            {
 				        	text : AOCLit.address,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'address',
 				            flex:1
 			            },
 			            {
 				        	text : AOCLit.contactPerson,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'contactPerson',
 				            flex:0.5
 			            },
 			            {
 				        	text : AOCLit.Phone,
-				          	width:120,
 				            sortable : true,
 				            dataIndex:'phone',
 				            flex:0.5
@@ -80,7 +76,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 						{
 							text :AOCLit.lastmodifieddate,
 							dataIndex:'lastModifiedDate',
-							width:120
+							width:150
 						}
         ];
     },

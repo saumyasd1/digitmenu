@@ -71,8 +71,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType=searchMap.get("datecriteriavalue");
 			if(dateType!=null && !dateType.equals("")){
-				String sDate=searchMap.get("fromDate");
-				String eDate=searchMap.get("toDate");
+				String sDate=searchMap.get("fromDate")+" 00:00:00";
+				String eDate=searchMap.get("toDate")+" 00:00:00";
 				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			String productLineType=searchMap.get("productLineType");
