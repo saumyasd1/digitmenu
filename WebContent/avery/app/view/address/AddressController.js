@@ -81,14 +81,43 @@ Ext.define('AOC.view.address.AddressController', {
 			form.updateRecord();
 			methodMode='PUT';
 			valueObj=form.getRecord().getChanges() ;
-			
-			var partnerCombo = refs.partnerName;
+			if(valueObj.partnerId!=null){
+				var varPartner = valueObj.partnerId;
+				var partnerCombo = refs.partnerName;
+				var store = partnerCombo.store;
+				store.each(function(rec){
+					if(rec.get('id') == partnerCombo.getValue()){
+						valueObj.address = rec.get('address')
+						valueObj.partnerName = rec.get('partnerName')
+						valueObj.contactPerson = rec.get('contactPerson')
+						valueObj.phone = rec.get('phone')
+						valueObj.active = rec.get('active')
+						valueObj.lastModifiedBy = rec.get('lastModifiedBy')
+						valueObj.lastModifiedDate = rec.get('lastModifiedDate')
+					}
+				});
+				valueObj.varPartner={id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone};
+			}
+			if(valueObj.orgCodeId!=null){
+			var varOrgCode=valueObj.orgCodeId;
 			var orgCodeCombo = refs.orgName;
+			var orgStore = orgCodeCombo.store;
 			var siteCombo = refs.siteName;
 			var systemCombo = refs.systemName;
 			valueObj.orgName = orgCodeCombo.getRawValue();
 			valueObj.siteName = siteCombo.getRawValue();
 			valueObj.systemName = systemCombo.getRawValue();
+			
+			orgStore.each(function(rec){
+				if(rec.get('id')==orgCodeCombo.getValue()){
+				valueObj.systemId = rec.get('systemId')
+				}
+			});
+			valueObj.varOrgCode={id:valueObj.orgCodeId,name:valueObj.orgName,system:{id:valueObj.system, name:valueObj.systemName, site:{id:valueObj.siteId,name:valueObj.siteName}}};
+  			
+			}
+			
+			
 			
 			length=Object.keys(valueObj).length;
 			//Msg='Address Updated Successfully';
@@ -135,6 +164,7 @@ Ext.define('AOC.view.address.AddressController', {
       				orgName:valueObj.orgName,
 					system:valueObj.system,
 					siteId:valueObj.siteId,
+					partnerId:valueObj.partnerId,
 					siteNumber:valueObj.siteNumber,
 					description:valueObj.description,
 					address1:valueObj.address1,
