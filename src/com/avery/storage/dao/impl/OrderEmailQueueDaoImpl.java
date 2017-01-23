@@ -37,6 +37,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.User;
+import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.HibernateUtils;
@@ -174,7 +175,7 @@ OrderEmailQueueDao {
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		
 		
-		criteria.add(Restrictions.neOrIsNotNull("status", "4"));
+		criteria.add(Restrictions.neOrIsNotNull("status", ApplicationConstants.ORDEREMAILQUEUE_UNRECOGNIZED_STATUS));
 
 
 		String limit = (String) queryMap.getFirst("limit");
@@ -262,7 +263,7 @@ OrderEmailQueueDao {
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
 		
 		
-		criteria.add(Restrictions.eq("status", "4"));// Status Code for Unrecognized mails
+		criteria.add(Restrictions.eq("status", ApplicationConstants.ORDEREMAILQUEUE_UNRECOGNIZED_STATUS));// Status Code for Unrecognized mails
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		String limit = (String) queryMap.getFirst("limit");
@@ -350,9 +351,10 @@ OrderEmailQueueDao {
 			if(!"".equals(comment)){
 				commentString=",comment=:comment ";
 			}
-			String s = "update OrderEmailQueue set status=:value "+commentString+" where id =:id "; 
+			String s = "update OrderEmailQueue set status=:value "+commentString+",lastModifiedDate=:date where id =:id "; 
 			Query q = session.createQuery(s);
 			q.setString("value",status);
+			q.setTimestamp("date", new Date());//adding last modified date on cancel email
 			if(!"".equals(comment)){
 				q.setString("comment",comment);
 			}
@@ -468,10 +470,11 @@ OrderEmailQueueDao {
 			OrderEmailQueue orderEmailQueueObj=null;
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			orderEmailQueueObj.setAssignCSR(csrId);
-			orderEmailQueueObj.setStatus("3");
+			orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
+			orderEmailQueueObj.setLastModifiedDate(new Date());//last modified date added on assign csr click
 			String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
 			Query q = session.createQuery(s);
-			q.setString("value","6");
+			q.setString("value",ApplicationConstants.ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS);
 			q.setLong("id",entityId);
 			q.executeUpdate();
 		}catch (WebApplicationException ex) {
