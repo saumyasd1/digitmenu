@@ -448,6 +448,17 @@ public class OrderLine extends MainAbstractEntity{
 	@Transient
 	private String codeValue;
 	
+	@Transient
+	private String targetSystemName;
+
+	public String getTargetSystemName() {
+		return targetSystemName;
+	}
+
+	public void setTargetSystemName(String targetSystemName) {
+		this.targetSystemName = targetSystemName;
+	}
+	
 	public String getAveryBulk() {
 		return averyBulk;
 	}
