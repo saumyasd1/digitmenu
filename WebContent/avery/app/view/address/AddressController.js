@@ -131,10 +131,10 @@ Ext.define('AOC.view.address.AddressController', {
 			//Msg='Address Added Successfully';
 			var Msg=AOCLit.addAddressMsg;
 			var parameters={
-					varOrgCode:{id:valueObj.orgCode,name:valueObj.orgName,system:{id:valueObj.system, name:valueObj.systemName, site:{id:valueObj.site,name:valueObj.siteName}}},
+					varOrgCode:{id:valueObj.orgCodeId,name:valueObj.orgName,system:{id:valueObj.system, name:valueObj.systemName, site:{id:valueObj.siteId,name:valueObj.siteName}}},
       				orgName:valueObj.orgName,
 					system:valueObj.system,
-					siteId:valueObj.site,
+					siteId:valueObj.siteId,
 					siteNumber:valueObj.siteNumber,
 					description:valueObj.description,
 					address1:valueObj.address1,
@@ -155,7 +155,7 @@ Ext.define('AOC.view.address.AddressController', {
 					freightTerms:valueObj.freightTerms,
 					shippingInstructions:valueObj.shippingInstructions,
 					siteType:valueObj.siteType,
-					varPartner:{id:valueObj.partner_id,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone}
+					varPartner:{id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone}
 					}
 		}
 	
