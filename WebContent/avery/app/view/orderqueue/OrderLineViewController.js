@@ -222,23 +222,26 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	},
 	comboColumnRenderer:function(v,h,l,k){
 		var view=this.getView();
+		
 		if(!Ext.isEmpty(v)){
-			var store=h.column.config.editor.store;
+			var store = h.column.config.editor.store;
 			if(store){
-				var index=store.find("variableFieldName",v);
-				if(index==-1){
+				var index = store.find("variableFieldName",v);
+				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						view.invalidComboValid=true;
-					}
-					if(view.showInvalidCombo)
+						view.invalidComboValid = true;
 						h.style = AOCLit.cellColor;
+					}
+//					if(view.showInvalidCombo)
+//						h.style = AOCLit.cellColor;
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-					view.invalidComboValid=true;
-				}
-				if(view.showInvalidCombo)
+					view.invalidComboValid = true;
 					h.style = AOCLit.cellColor;
+				}
+//				if(view.showInvalidCombo)
+//					h.style = AOCLit.cellColor;
 			}
 		}
 		return v;
@@ -253,18 +256,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						view.invalidComboValid=true;
-					}
-					if(view.showInvalidCombo)
 						h.style = AOCLit.cellColor;
+					}
+//					if(view.showInvalidCombo)
+//						h.style = AOCLit.cellColor;
 				}else{
 					orgCodeName = store.getAt(index).get('name');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 					view.invalidComboValid=true;
-				}
-				if(view.showInvalidCombo)
 					h.style = AOCLit.cellColor;
+				}
+//				if(view.showInvalidCombo)
+//					h.style = AOCLit.cellColor;
 			}
 		}
 		return orgCodeName;

@@ -1519,7 +1519,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							Ext.getBody().unmask();
 							AOC.util.Helper.fadeoutMessage('Success',AOCLit.updatedCustomerQtyMsg);
 							//Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
-							grid.store.load();
+							Helper.loadOrderLineGridStore(grid.store, AOC.config.Runtime.getOrderQueueId());
 						},
 						failure: function(response, opts) {
 							 Ext.getBody().unmask();

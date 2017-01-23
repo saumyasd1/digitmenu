@@ -97,7 +97,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}
     	
     	if(grid.mandatoryFieldMissing){
-			Ext.Msg.alert('',AOCLit.orderLineMandatoryFieldMissingAlt);
+			Ext.Msg.alert('', AOCLit.orderLineMandatoryFieldMissingAlt);
 			Ext.getBody().unmask();
 			return;
 		}
@@ -119,8 +119,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		}
 		if(grid.invalidComboValid){
 			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
-			grid.showInvalidCombo = true;
-			store.load({params:{id:id}});
+			//grid.showInvalidCombo = true;
+			//store.load({params:{id:id}});
 			return;
 		}
 		
