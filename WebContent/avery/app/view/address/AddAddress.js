@@ -18,8 +18,30 @@ Ext.define('AOC.view.address.AddAddress',{
                 items:this.buildItem(),
                 listeners:{
             	'afterrender':function(obj){
-            	if(me.rec!=null){
+             	if(me.rec!=null){
+            		if(me.rec.data!=null){
+            		var partnerName = me.lookupReference('partnerName');
+            		partnerName.store.load();
+            		var siteName = me.lookupReference('siteName');
+            		var shippingMethod = me.lookupReference('shippingMethod');
+            		var freightTerms = me.lookupReference('freightTerms');
+            		var siteId = me.rec.get('siteId');
+            		var systemId = me.rec.get('system');
+            		siteName.store.load();
+            		var systemName = me.lookupReference('systemName');
+            		var systemStore = systemName.store;
+            		me.loadSystemStore(systemStore,siteId);
+            		var orgName = me.lookupReference('orgName');
+            		orgName.enable();
+            		systemName.enable();
+            		shippingMethod.enable();
+            		freightTerms.enable();
+            		var orgStore = orgName.store;
+            		me.loadOrgStore(orgStore,systemId);
             		me.down('form').loadRecord(me.rec);
+            		}else{
+            			me.down('form').loadRecord(me.rec);
+            		}
             	}
             }
             }
@@ -75,7 +97,7 @@ Ext.define('AOC.view.address.AddAddress',{
                     items:[
                            {
                        xtype:'combo',
-                       name: 'site',
+                       name: 'siteId',
                        fieldLabel:'Site',
                        displayField: 'name',
                        reference:'siteName',
@@ -203,7 +225,7 @@ Ext.define('AOC.view.address.AddAddress',{
             		},
                     items:[{
 	        			xtype:'combobox',
-	        			name: 'partner_id',
+	        			name: 'partnerId',
 	        			fieldLabel:AOCLit.partnerName,
 	        			displayField:'partnerName',
 						valueField:'id',
@@ -218,7 +240,7 @@ Ext.define('AOC.view.address.AddAddress',{
     	        		},
     	        	{
     	        			xtype:'combobox',
-                  			name: 'orgCode',
+                  			name: 'orgCodeId',
                   			fieldLabel:AOCLit.orgCode,
                   			 displayField: 'name',
                   			 reference:'orgName',
@@ -310,6 +332,36 @@ Ext.define('AOC.view.address.AddAddress',{
     	{ buttons:this.buildButtons()}
         	]
         },
+        loadSystemStore:function(systemStore, value){
+    		  var proxy = new Ext.data.proxy.Rest({
+    			    url: applicationContext+'/rest/system/site/'+ value,
+    			    appendId: true,
+    			    reader      : {
+    				    type          : 'json',
+    				    rootProperty          : 'system',
+    				    totalProperty : 'totalCount'
+    				},
+    				autoLoad:true
+    			});
+    		  
+    		  systemStore.setProxy(proxy);
+    		  systemStore.load();
+    	  },
+    	  loadOrgStore:function(orgStore, value){
+    		  var proxy = new Ext.data.proxy.Rest({
+    			    url: applicationContext+'/rest/org/system/'+ value,
+    			    appendId: true,
+    			    reader      : {
+    				    type          : 'json',
+    				    rootProperty          : 'org',
+    				    totalProperty : 'totalCount'
+    				},
+    				autoLoad:true
+    			});
+    		  
+    		  orgStore.setProxy(proxy);
+    		  orgStore.load();
+    	  },
 		   notifyByImage : function(config){
 		    	 if(config.isValid())
 		    		   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.successImageSrc+');background-repeat:no-repeat;background-position:right;');
