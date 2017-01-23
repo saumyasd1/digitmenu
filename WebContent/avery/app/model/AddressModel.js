@@ -3,9 +3,10 @@ Ext.define('AOC.model.AddressModel',{
 	idProperty:null,
     fields: [
         {name: 'ID', mapping:'ID',type: 'string'},
-        {name: 'partner_id', mapping:'partner.id',type: 'string'},
+        {name: 'partnerId', mapping:'partner.id',type: 'string'},
 		{name: 'orgCode', mapping:'orgCodeName',type: 'string'},
-		{name: 'site', mapping:'site',type: 'string'},
+		{name: 'orgCodeId', mapping:'orgCodeId',type: 'string'},
+		{name: 'siteId', mapping:'site',type: 'string'},
 		{name: 'system', mapping:'system',type: 'string'},
 		{name: 'partnerName', mapping:'partnerName',type: 'string'},
 		{name: 'billToSiteNumber', mapping:'billToSiteNumber',type: 'string'},
