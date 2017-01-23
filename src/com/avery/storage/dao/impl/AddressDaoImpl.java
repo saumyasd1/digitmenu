@@ -93,6 +93,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("varOrgCode.name"), "orgCodeName")
 		.add(Projections.property("varPartner.partnerName"), "partnerName")
+		.add(Projections.property("varOrgCode.id"), "orgCodeId")
 		.add(Projections.property("varPartner.id"), "partnerId")
 		.add(Projections.property("address1"),"address1")
 		.add(Projections.property("address2"),"address2")
@@ -104,7 +105,15 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		.add(Projections.property("fax"),"fax")
 		.add(Projections.property("email"),"email")
 		.add(Projections.property("siteType"),"siteType")
-		//.add(Projections.property("varSite.name"), "siteName")
+		.add(Projections.property("description"),"description")
+		.add(Projections.property("freightTerms"),"freightTerms")
+		.add(Projections.property("state"),"state")
+		.add(Projections.property("city"),"city")
+		.add(Projections.property("siteId"),"siteId")
+		.add(Projections.property("system"),"system")
+		.add(Projections.property("country"),"country")
+		.add(Projections.property("shippingMethod"),"shippingMethod")
+		.add(Projections.property("zip"),"zip")
 		.add(Projections.property("id"),"id");
 			
 		
