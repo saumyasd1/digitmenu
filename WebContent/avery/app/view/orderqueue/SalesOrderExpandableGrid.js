@@ -319,6 +319,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 				queryMode :'local',
 				store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
 			}
+		},
+		{
+			text: AOCLit.productionLine,
+			dataIndex: 'productionLine',
+			width: 100,
+			editor: 'textfield'
 		}
 	],
 	plugins: [

@@ -1189,7 +1189,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield'
 		},
 		{
-			text: 'Production Line',
+			text: AOCLit.productionLine,
 			dataIndex: 'productionLine',
 			width: 100,
 			editor: 'textfield'

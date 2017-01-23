@@ -40,9 +40,9 @@ public class OrgInfo extends MainAbstractEntity{
 	 */
 	private static final long serialVersionUID = -2757286170711042719L;
 	@Column(name="orgCodeId")
-	private int orgCodeId;
+	private Integer orgCodeId;
 	@Column(name="isDefault")
-	private boolean isDefault;
+	private Boolean isDefault;
 	@Column(name="billToCode",length=250)
 	private String billToCode;
 	@Column(name="shipToCode",length=250)
@@ -131,16 +131,16 @@ public class OrgInfo extends MainAbstractEntity{
 	public void setSystemId(Long systemId) {
 		this.systemId = systemId;
 	}
-	public  int getOrgCodeId() {
+	public  Integer getOrgCodeId() {
 		return orgCodeId;
 	}
-	public void setOrgCodeId(int orgCodeId) {
+	public void setOrgCodeId(Integer orgCodeId) {
 		this.orgCodeId = orgCodeId;
 	}
-	public boolean isDefault() {
+	public Boolean isDefault() {
 		return isDefault;
 	}
-	public void setDefault(boolean isDefault) {
+	public void setDefault(Boolean isDefault) {
 		this.isDefault = isDefault;
 	}
 	public String getBillToCode() {

@@ -3,7 +3,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	idProperty:null,
 	fields: [
 	         // set up the fields mapping into the xml doc
-	         {name: 'createdDate', mapping:'createdDate',type: 'string'},
+	        {name: 'createdDate', mapping:'createdDate',type: 'string'},
 	 		{name: 'createdBy', mapping:'createdBy',type: 'string'},
 	 		{name: 'lastModifiedDate', mapping:'lastModifiedDate',type: 'string'},
 	 		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
@@ -105,8 +105,8 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'roundQty', mapping:'roundQty',type: 'string'},
 	 		{name: 'moqdiffQty',type: 'string'},
 	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'},
-	 		{name:'fabricContent', type:'string'},
-	 		{name:'reviceOrder', type:'string'},
+	 		{name: 'fabricContent', type:'string'},
+	 		{name: 'reviceOrder', type:'string'},
 	 		{name: 'averyATO', mapping:'averyATO', type:'string'},
 	 		{name: 'averyBulk', mapping:'averyBulk', type:'string'},
 	 		{name: 'averyMOQ', mapping:'averyMOQ', type:'string'},
@@ -114,7 +114,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'averyRegion', mapping:'averyRegion', type:'string'},
 	 		{name: 'averyRoundupQty', mapping:'averyRoundupQty', type:'string'},
 	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'},
-	 		{name:'iconName'},{name:'colorCode'}
-	 		
+	 		{name: 'iconName'},{name:'colorCode'},
+	 		{name: 'productionLine',mapping:'productionLine',type:'string'}
 	     ]
 });

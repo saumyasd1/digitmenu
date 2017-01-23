@@ -51,6 +51,7 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'waiveMOQ', mapping:'waiveMOQ',type: 'string'},
 	 		{name: 'apoType', mapping:'apoType',type: 'string'},
 	 		{name: 'system_Status', mapping:'system_Status',type: 'string'},
-	 		{name:'listSalesOrderDetails'},{name:'iconName'},{name:'colorCode'}
+	 		{name:'listSalesOrderDetails'},{name:'iconName'},{name:'colorCode'},
+	 		{name: 'productionLine',mapping:'productionLine',type:'string'}
 	     ]
 });
