@@ -154,7 +154,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 							,
 							{
 								xtype:'combo',
-								displayField:'firstName',
+								displayField:'csrName',
 								fieldLabel:'CSR',
 								reference:'csrCombo',
 								name:'assignCSR',

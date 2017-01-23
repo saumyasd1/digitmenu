@@ -6,8 +6,7 @@ Ext.define('AOC.store.AssignCSRStore', {
 	storeId:'AssignCSRStore',
 	proxy:{
 		type:'ajax',
-//		url: 'avery/app/data/CSRData.json',
-		url: applicationContext+'/rest/users',
+		url: applicationContext+'/rest/users/csrlist',
 		reader:{
 	        type:'json', 
 	        rootProperty:'users' //temp name for now

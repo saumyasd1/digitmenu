@@ -24,7 +24,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 		return [
 			{
 				xtype:'combo',
-				displayField:'firstName',
+				displayField:'csrName',
 				fieldLabel:'CSR',
 				reference:'csrCombo',
 				name:'CSR',

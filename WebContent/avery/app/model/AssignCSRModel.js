@@ -2,7 +2,11 @@ Ext.define('AOC.model.AssignCSRModel',{
     extend: 'Ext.data.Model',
 	idProperty:null,
     fields: [
-        {name: 'firstName', type: 'string'},
+        {name: 'csrName', type: 'string',
+        	convert: function( v, record ) {
+ 		       return record.get( 'firstName' ) + ' ' + record.get( 'lastName' )
+ 		       }
+        },
         {name: 'id', type: 'string'}
     ]
 });

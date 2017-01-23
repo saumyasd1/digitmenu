@@ -100,7 +100,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								tabIndex:5
 							},{
 								xtype:'combo',
-								displayField:'firstName',
+								displayField:'csrName',
 								fieldLabel:'CSR',
 								reference:'csrCombo',
 								name:'assignCSR',
