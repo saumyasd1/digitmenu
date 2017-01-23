@@ -109,6 +109,26 @@ public class Address extends MainAbstractEntity {
 	@Transient
 	private String orgCodeName;
 	@Transient
+	private Long orgCodeId;
+	public Long getOrgCodeId() {
+		return orgCodeId;
+	}
+
+	public void setOrgCodeId(Long orgCodeId) {
+		this.orgCodeId = orgCodeId;
+	}
+
+	@Transient
+	private String siteName;
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+
+	@Transient
 	private Long partnerId;
 	
 
