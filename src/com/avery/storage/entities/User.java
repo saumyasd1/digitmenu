@@ -6,6 +6,7 @@ import static com.avery.utils.ApplicationConstants.PASSWORD;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -396,5 +397,36 @@ public class User extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+	}
+	
+	//Getting list of all users
+	@GET
+	@Path("/csrlist")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<User> csrList = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig
+					.getInstance().getBean("userService");
+			csrList = userService.readAll();
+			if (csrList == null || csrList.isEmpty())
+				throw new Exception("Unable to find csr");
+			mapper.writeValue(writer, csrList);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
 	}
 }
