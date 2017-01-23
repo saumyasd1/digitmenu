@@ -81,6 +81,15 @@ Ext.define('AOC.view.address.AddressController', {
 			form.updateRecord();
 			methodMode='PUT';
 			valueObj=form.getRecord().getChanges() ;
+			
+			var partnerCombo = refs.partnerName;
+			var orgCodeCombo = refs.orgName;
+			var siteCombo = refs.siteName;
+			var systemCombo = refs.systemName;
+			valueObj.orgName = orgCodeCombo.getRawValue();
+			valueObj.siteName = siteCombo.getRawValue();
+			valueObj.systemName = systemCombo.getRawValue();
+			
 			length=Object.keys(valueObj).length;
 			//Msg='Address Updated Successfully';
 			var Msg=AOCLit.updateAddressMsg;
