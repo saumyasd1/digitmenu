@@ -7,7 +7,7 @@ Ext.define('AOC.model.AddressModel',{
 		{name: 'orgCode', mapping:'orgCodeName',type: 'string'},
 		{name: 'site', mapping:'site',type: 'string'},
 		{name: 'system', mapping:'system',type: 'string'},
-		{name: 'partnerName', mapping:'partner.partnerName',type: 'string'},
+		{name: 'partnerName', mapping:'partnerName',type: 'string'},
 		{name: 'billToSiteNumber', mapping:'billToSiteNumber',type: 'string'},
 		{name: 'shipToSiteNumber', mapping:'shipToSiteNumber',type: 'string'},
 		{name: 'description', mapping:'description',type: 'string'},
