@@ -266,6 +266,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(orderQueueObj.getComment()!=null)
 				commentString=orderQueueObj.getComment().replace("::", "\n");
 			orderQueueObj.setComment(commentString);
+			orderQueueObj.setLastModifiedDate(new Date());//last modified date added
 			orderQueueObj.preUpdateOp();
 			session.update(orderQueueObj);
 			orderQueueObj.postUpdateOp();
@@ -277,7 +278,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			}
 			String s = "update OrderLine set status=:value "+commentString+" where orderQueueID=:id";
 			Query q = session.createQuery(s);
-			q.setString("value","51");
+			q.setString("value",ApplicationConstants.ORDERLINE_CANCEL_STATUS);
 			if(!"".equals(comment)){
 				q.setString("comment",comment);
 			}
