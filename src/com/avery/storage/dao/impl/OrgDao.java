@@ -11,4 +11,6 @@ public interface OrgDao extends GenericDao<Org, Long>{
 	public List<Org> readAllBySystemId(Long systemId);
 	
 	public List<Org> getOrgByProductLineId(Long productLineId) throws Exception;
+	
+	public List<Org> getOrgByOrderSystemInfoId(Long orderSystemInfoId) throws Exception;
 }

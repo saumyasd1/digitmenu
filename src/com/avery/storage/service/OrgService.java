@@ -39,5 +39,13 @@ public class OrgService extends GenericEntityService<Org, Long>{
 		
 	}
 	
+	
+	@Transactional
+	public List<Org> getOrgByOrderSystemInfoId(Long orderSystemInfoId) throws Exception{
+		
+		return getOrgDao().getOrgByOrderSystemInfoId(orderSystemInfoId);
+		
+	}
+	
 
 }

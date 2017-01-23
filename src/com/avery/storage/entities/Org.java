@@ -165,4 +165,38 @@ public class Org extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
+	
+	@GET
+	@Path("/ordersysteminfo/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrgByOrderSystemInfoId(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("id") String ordersysteminfo) {
+		Response.ResponseBuilder rb = null;
+		List<Org> orgs = null;
+		try{
+			Long orderSystemInfoId = Long.parseLong(ordersysteminfo);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			OrgService orgService = (OrgService) SpringConfig
+					.getInstance().getBean("orgService");
+			orgs = orgService.getOrgByOrderSystemInfoId(orderSystemInfoId);
+			if (orgs == null)
+				throw new Exception("Unable to find Org.");
+			mapper.setDateFormat(ApplicationUtils.df);
+			mapper.writeValue(writer, orgs);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 }

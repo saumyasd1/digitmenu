@@ -1,7 +1,8 @@
 package com.avery.storage.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,4 +94,29 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		return criteria.list();
 	}
 	
+	//Method added for gettting org list by ordersysteminfo id
+	@Override
+	public List<Org> getOrgByOrderSystemInfoId(Long orderSystemInfoId) throws Exception {
+
+		List list = new ArrayList();
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(OrgInfo.class);
+		criteria.createAlias("varOrderSystemInfo", "varOrderSystemInfo")
+				.add(Restrictions.eq("varOrderSystemInfo.id", orderSystemInfoId));
+
+		List<OrgInfo> orgInfoList = criteria.list();
+		Set<OrgInfo> set = new HashSet<OrgInfo>();
+		set.addAll(orgInfoList);
+		for (OrgInfo orgInfo : set) {
+			int orgCodeId = orgInfo.getOrgCodeId();
+
+			Org org = (Org) session.get(Org.class, Long.valueOf(orgCodeId));
+			HashMap<String, String> hashMap = new HashMap<String, String>();
+			hashMap.put("id", org.getId() + "");
+			hashMap.put("name", org.getName());
+			list.add(hashMap);
+		}
+		return list;
+	}
+
 }
