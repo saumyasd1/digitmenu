@@ -76,7 +76,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							},
 							{
 								xtype : 'textfield',
-								fieldLabel : 'Email Tracking #',
+								fieldLabel :AOCLit.TrackingNo,
 								name:'emailQueueId',
 								flex:1,
 								margin:'0 0 0 10',

@@ -325,6 +325,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			dataIndex: 'productionLine',
 			width: 100,
 			editor: 'textfield'
+		},
+		{
+			text: AOCLit.targetSystem,
+			dataIndex: 'targetSystemName',
+			width: 100,
+			editor: 'textfield'
 		}
 	],
 	plugins: [

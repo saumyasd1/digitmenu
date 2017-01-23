@@ -451,6 +451,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			
 		},
 		{
+			text: 'Customer Color Code',
+			dataIndex: 'customerColorCode',
+			width: 102,
+			editor: 'textfield'
+		}, 
+		{
+			text: 'Customer Color Description',
+			dataIndex: 'customerColorDescription',
+			width: 102,
+			editor: 'textfield'
+		},
+		{
 			text: 'ATO Required',
 			dataIndex: 'atovalidationFlag',
 			width: 65,
@@ -823,18 +835,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: 'Customer Color Code',
-			dataIndex: 'customerColorCode',
-			width: 102,
-			editor: 'textfield'
-		}, 
-		{
-			text: 'Customer Color Description',
-			dataIndex: 'customerColorDescription',
-			width: 102,
-			editor: 'textfield'
-		}, 
-		{
 			text: 'Customer Size',
 			dataIndex: 'customerSize',
 			width: 72,
@@ -1175,6 +1175,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.productionLine,
 			dataIndex: 'productionLine',
+			width: 100,
+			editor: 'textfield'
+		},
+		{
+			text: AOCLit.targetSystem,
+			dataIndex: 'targetSystemName',
 			width: 100,
 			editor: 'textfield'
 		}

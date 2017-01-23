@@ -108,7 +108,7 @@ Ext.define('AOC.lang.lit',{
     "senderEmailID": 'Sender Email ID',
     "receiverEmailID":'Receiver Email ID',
     "ccMailId":'CC Email ID',
-    "orderTrackNo": 'Order track#',
+    "orderTrackNo": 'Order Track #',
     "orderSource": 'Order Source',
     "submittedBy": 'Submitted By',
     "submittedDate": 'Submitted Date',
@@ -121,7 +121,7 @@ Ext.define('AOC.lang.lit',{
     "Error": 'Error',
     //order line and order line detail
     "fiberPercent": 'Fiber Percent',
-    "TrackingNo":'Tracking #',
+    "TrackingNo":'Email Track #',
     "sentToOracleDate":'Sent To Oracle Date',
     "lastModifiedBy": 'Last Modified By',
     "lastModifiedDate":'Last Modified Date',
@@ -133,7 +133,6 @@ Ext.define('AOC.lang.lit',{
     "custPONumber":'Customer PO Number',
     "PONumber": 'PO#',
     "processedDate":'Processed Date',
-    "orderTrackNo":'Order track#',
     "prvOrderTrackNo": 'Prv Order track#',
     "orderedDate": 'OrderedDate',
     "partnerCustName":'Partner Customer Name',
@@ -251,6 +250,7 @@ Ext.define('AOC.lang.lit',{
     "confirmBulkUpdateSave":'Are you Sure you want to make/save these changes?',
     "noRecordsToUpdateMessage":'There are no record(s) to update',
     "productionLine":'Production Line',
+    "targetSystem":'Target System',
     //Orderqueue
     "lastmodifiedby":'Last Modified By',
     "lastmodifieddate":'Last Modified Date',

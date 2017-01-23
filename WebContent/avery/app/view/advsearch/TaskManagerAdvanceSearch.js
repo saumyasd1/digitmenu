@@ -40,7 +40,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						items:[
 							{
 								xtype : 'textfield',
-								fieldLabel : 'Email Tracking #',
+								fieldLabel : AOCLit.TrackingNo,
 								name:'id',
 								flex:1,
 								tabIndex:1

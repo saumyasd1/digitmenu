@@ -70,7 +70,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   				} 
 			},
 			{  
-				text : 'Tracking #',
+				text : AOCLit.TrackingNo,
 				//width:120,
 				align: 'right',
 				dataIndex:'id',

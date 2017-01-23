@@ -115,6 +115,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'averyRoundupQty', mapping:'averyRoundupQty', type:'string'},
 	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'},
 	 		{name: 'iconName'},{name:'colorCode'},
-	 		{name: 'productionLine',mapping:'productionLine',type:'string'}
+	 		{name: 'productionLine',mapping:'productionLine',type:'string'},
+	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'}
 	     ]
 });

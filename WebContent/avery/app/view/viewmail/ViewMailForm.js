@@ -52,7 +52,7 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 					{
 						name: 'id',
 						itemId: 'trackingId',
-						fieldLabel: 'Tracking ID#',
+						fieldLabel: AOCLit.TrackingNo,
 						margin:'0 0 5 0',
 						labelWidth:180,
 						flex:1
