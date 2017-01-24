@@ -22,6 +22,8 @@ public interface ApplicationConstants {
 		
 		String NEW_ATTACHMENT_STATUS="8";
 		
+		String DEFAULT_WEBORDER_EMAILBODY_STATUS="7";
+		
 		String DEFAULT_EMAILBODY_CONTENT_TYPE="Disregard";
 		
 		String DEFAULT_ORDER_CONTENT_TYPE="Order";
