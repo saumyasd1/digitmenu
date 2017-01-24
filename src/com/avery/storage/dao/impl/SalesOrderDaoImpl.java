@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -19,7 +20,10 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.OrderSystemInfo;
+import com.avery.storage.entities.Org;
 import com.avery.storage.entities.SalesOrder;
+import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -61,6 +65,12 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 				salesOrder.setIconName(iconName);
 				salesOrder.setColorCode(colorCode);
 				salesOrder.setCodeValue(codeValue);
+				String divisionForInterfaceErporg = salesOrder.getDivisionForInterfaceErporg();
+				if(divisionForInterfaceErporg != null && NumberUtils.isNumber(divisionForInterfaceErporg)){
+					Long orgId = Long.parseLong(divisionForInterfaceErporg);
+					Org org = (Org) session.get(Org.class, orgId);
+					salesOrder.setDivisionForInterfaceErporgName(org.getName());
+				}
 
 			}
 

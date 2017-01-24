@@ -232,6 +232,8 @@ public class SalesOrder extends MainAbstractEntity{
 	@Transient
 	private String codeValue;
 	
+	@Transient
+	private String divisionForInterfaceErporgName;
 
 	public String getIconName() {
 		return iconName;
@@ -257,9 +259,13 @@ public class SalesOrder extends MainAbstractEntity{
 		this.codeValue = codeValue;
 	}
 
-	
-	
+	public String getDivisionForInterfaceErporgName() {
+		return divisionForInterfaceErporgName;
+	}
 
+	public void setDivisionForInterfaceErporgName(String divisionForInterfaceErporgName) {
+		this.divisionForInterfaceErporgName = divisionForInterfaceErporgName;
+	}
 
 	public SalesOrder(String division, String orderSource) {
 		division = division;
