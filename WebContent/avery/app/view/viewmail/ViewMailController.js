@@ -292,11 +292,18 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	},
 	
 	downLoadFile:function(filePath, fileName){
+		var filePath = filePath +'/'+fileName;
+		
+		
 		var form = Ext.create('Ext.form.Panel', { 
 			standardSubmit: true,   
-			url : applicationContext+'/rest/orderattachements/download/'+filePath +'/'+fileName
+			url : applicationContext+'/rest/orderattachements/download' ,
+			
 		});
 		form.submit({
+			getParams: function() {
+				return Ext.apply({}, {filePath:filePath});
+			},
 			method : 'GET'
 		});
 	},
