@@ -43,23 +43,6 @@
   left: 100%;
   margin-left: -32px;
 }
-.x-grid-row-editor-button:before {
-border-bottom-color: #d4d4d4;
-border-width: 14px;
-left: 100%;
-top: -28px;
-margin-left: -34px;
-}
-.x-grid-row-editor-buttons:after,
-.x-grid-row-editor-buttons:before {
-  bottom: 100%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
 .x-grid-row-editor-buttons {
   -webkit-border-top-right-radius: 1;
   -moz-border-radius-topright: 1;
