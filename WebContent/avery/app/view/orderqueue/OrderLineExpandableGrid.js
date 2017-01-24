@@ -886,12 +886,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'datefield',
 				listeners:{
 					'expand':function(editor){
-						editor.setMinValue(editor.minValue);
+						editor ? editor.setMinValue(editor.minValue) :'';
 					}
 				}
 			},
 			renderer:function(value, metadata, record){
-				metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
+				if(metadata.column.editor){
+					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
+				}
 				return value;
 			}
 		}, 
@@ -905,12 +907,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'datefield',
 				listeners:{
 					'expand':function(editor){
-						editor.setMinValue(editor.minValue);
+						editor ? editor.setMinValue(editor.minValue) :'';
 					}
 				}
 			},
 			renderer:function(value, metadata, record){
-				metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
+				if(metadata.column.editor){
+					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
+				}
 				return value;
 			}
 		}, 
