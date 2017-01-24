@@ -80,6 +80,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		store = grid.store,
     		status,
     		id=this.runTime.getOrderQueueId();
+    	
     	if(!me.isSalesOrderSubmittedFlag){
     		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.salesOrderWarning);
     		return ;
@@ -91,7 +92,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false;
     	store.each(function(record){
-    		if(record.get('customerOrderedQty') == '0' && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+    		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
     		
@@ -234,6 +235,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			noAdditionalDataFoundStatusOrderLine = 0,
 			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
     	
+    	var isSubmitSaleOrderFlag = true;
+    	
     	store.each(function(rec){
     		var status = rec.get('status');
     		if(rec.get('averyATO') == 'N'){
@@ -244,17 +247,20 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				waitingForCSRStatusOrderLine++;
     				break;
     			case AOCLit.noAdditionalDataFoundStatusOrderLine : 
+    				isSubmitSaleOrderFlag = false;
     				noAdditionalDataFoundStatusOrderLine++;
     				break;
-    			case AOCLit.mandatoryFieldMissingStatusOrderLine : 
+    			case AOCLit.mandatoryFieldMissingStatusOrderLine :
+    				isSubmitSaleOrderFlag = false;
     				mandatoryFieldMissingStatusOrderLine++;
     				break;
     			case AOCLit.cancelStatusOrderLine : 
     				cancelStatusOrderLine++;
     				break;
+    				default:isSubmitSaleOrderFlag = false;
     		}
     	});
-    	if( waitingForCSRStatusOrderLine != store.getCount() ||(waitingForCSRStatusOrderLine + cancelStatusOrderLine)!= store.getCount()){
+    	if(!isSubmitSaleOrderFlag){
     		this.isSalesOrderSubmittedFlag = false;
     	}
     	if(waitingForCSRStatusOrderLine > 0 || noAdditionalDataFoundStatusOrderLine > 0
