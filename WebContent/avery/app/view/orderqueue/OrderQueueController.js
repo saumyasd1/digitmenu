@@ -179,57 +179,77 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					me.runTime.setAllowOrderLineEdit(true);
 					var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 					me.getCancelOrderWindow(id);
+					callout.destroy();
 				},
 				reSubmitOrder:function(cmp){
-					var rec =e.record;
+					var rec = e.record;
 					var con=AOC.app.getController('MenuController');
 					con.selectCard('weborderview');
 					con.selectMenuItem('weborderview');
-					var weborderview=Ext.ComponentQuery.query('weborderview')[0];
-					var weborderform=weborderview.down('#weborderformItemId'),
-					attachmentinfoGrid=weborderview.down('#AttachmentInfoGriditemId');
-					weborderform.reset();
+					
+					var webOrderView=Ext.ComponentQuery.query('weborderview')[0],
+						refs = webOrderView.getReferences(),
+						weborderform = refs.webform,
+						attachmentinfoGrid = refs.webOrderAttachmentInfoGrid,
+						partnerCombo = refs.partnerCombo,
+						rboCombo = refs.rboCombo,
+						dataStructureCombo = refs.dataStructureCombo
+						emailField = refs.email,
+						subjectField = refs.subject,
+						emailBodyField = refs.emailBody;
+					
+					weborderform.resetFields();
 					attachmentinfoGrid.store.removeAll();
 					attachmentinfoGrid.getView().refresh();
-					var partnerId =(Ext.isEmpty(rec.get('partnerId')))?"":rec.get('partnerId'),
-					productLineId =(Ext.isEmpty(rec.get('productLineId')))?"":rec.get('productLineId'),
-					rboId =(Ext.isEmpty(rec.get('rboId')))?"":rec.get('rboId'),
-					senderEmailID =(Ext.isEmpty(rec.get('senderEmailId')))?"":rec.get('senderEmailId'),
-					subject =(Ext.isEmpty(rec.get('subject')))?"":rec.get('subject'),
-					emailBody =(Ext.isEmpty(rec.get('emailBody')))?"":rec.get('emailBody');
-					weborderview.down('form').lookupReference('partnerCombo').getStore().load(),
-					partnerCombo=weborderform.down('#partnerCombo'),
-					rboName=weborderform.down('#rboCombo');
+					
+					var partnerId = (Ext.isEmpty(rec.get('partnerId'))) ? '' : rec.get('partnerId'),
+						productLineId = (Ext.isEmpty(rec.get('productLineId'))) ? '' : rec.get('productLineId'),
+						rboId = (Ext.isEmpty(rec.get('rboId'))) ? '' : rec.get('rboId'),
+						senderEmailID = (Ext.isEmpty(rec.get('senderEmailId'))) ? '' : rec.get('senderEmailId'),
+						subject =(Ext.isEmpty(rec.get('subject'))) ? '' : rec.get('subject'),
+						emailBody =(Ext.isEmpty(rec.get('emailBody'))) ? '': rec.get('emailBody');
+					
+					webOrderView.rboId = rboId;
+					webOrderView.productLineId = productLineId;
+					
+					partnerCombo.getStore().load();
 					partnerCombo.setValue(partnerId);
-					rboName.setValue(rboId);
+					
+					//rboCombo.setValue(rboId);
 					partnerCombo.isChangedForFirstTime=true;
-					rboName.isChangedForFirstTime=true;
-					weborderform.down('#dataStructureCombo').setValue(productLineId);
-					weborderform.down('#email').setValue(senderEmailID);
-					weborderform.down('#subject').setValue(subject);
+					rboCombo.isChangedForFirstTime=true;
+					
+					//dataStructureCombo.setValue(productLineId);
+					emailField.setValue(senderEmailID);
+					subjectField.setValue(subject);
+					
 					var response = Ext.Ajax.request({
 						async: false,
 						url: applicationContext+'/rest/orderattachements/order/'+rec.get('emailQueueId')
 					});
-					var jsonValue=Ext.decode(response.responseText),
-					fileList=jsonValue.viewmail;
-					var controller=weborderform.getController(),currentFile=null;
+					var jsonValue = Ext.decode(response.responseText),
+						fileList = jsonValue.viewmail;
+					 
+					var controller=webOrderView.getController(),
+						currentFile = null;
+					
 					for(var i=0;i<fileList.length;i++){
 						var currentFile=fileList[i];
 						if(currentFile.fileContentType=='Disregard'){
-							weborderform.down('#emailBody').setValue(currentFile.filePath);
+							emailBodyField.setValue(currentFile.filePath);
 						}else if(currentFile.fileContentType=="Order"){
-							weborderview.down('#oldOrderFileId').setValue(currentFile.id);
-							weborderform.down('#orderFileType').setValue(currentFile.fileName);
+							webOrderView.down('#oldOrderFileId').setValue(currentFile.id);
+							webOrderView.down('#orderFileType').setValue(currentFile.fileName);
 							controller.insertFileInGrid(currentFile.fileName,'Order File Type',false,i+1,currentFile.id,null); 
 						}
 					 
 					}
-					weborderview.down('#oldEmailId').setValue(rec.get('emailQueueId'));
-					weborderview.down('#oldOrderId').setValue(rec.get('id'));
-					weborderview.down('#backButtonimage').setVisible(true);
-					weborderview.updateHeaderLabel(AOCLit.fixAndResubmitWebOredr);
+					webOrderView.down('#oldEmailId').setValue(rec.get('emailQueueId'));
+					webOrderView.down('#oldOrderId').setValue(rec.get('id'));
+					webOrderView.down('#backButtonimage').show();
+					webOrderView.updateHeaderLabel(AOCLit.fixAndResubmitWebOredr);
 					weborderform.isResubmit=true;
+					callout.destroy();
 				}
 			} 
 		});

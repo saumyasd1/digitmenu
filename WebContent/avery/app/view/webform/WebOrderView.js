@@ -1,105 +1,77 @@
 Ext.define('AOC.view.webform.WebOrderView', {
-	extend : 'Ext.Container',
+	extend : 'Ext.panel.Panel',
 	requires : ['AOC.view.base.BaseToolbar','AOC.view.webform.AttachmentInfoGrid','AOC.view.webform.WebOrderForm'],
 	alias : 'widget.weborderview',
 	controller:'webFormMain',
 	itemId : 'webOrderViewItemId',
+	layout:'border',
 	initComponent : function() {
-	    var me =this;
-		Ext.apply(this, {
-		    layout:'vbox',
- 		      items:[
- 		             {
- 	                    xtype   : 'container',
- 	                    width:'100%',
-	 	           style   : {
-	 	                	"background-color" : "#ffffff",
-	 	                	"padding"          : "10px 20px 10px 20px"
-	 	                    },
- 	                    height  : 40,
- 	                    layout:'hbox',
- 	                    items   : [{
-							xtype:'image',
-							width:40,
-							hidden:true,
-							itemId:'backButtonimage',
-							src:AOC.config.Settings.buttonIcons.backIcon,
-							autoEl: 'div',
-							cls:'orderline-back-button',
-							listeners:{
-								el:{
-									'click':'backButton'
-								}
-							}
-						},
- 	                               {
- 	                        xtype  : 'component',
- 	                         padding:'5 0 0 10',
- 	                        itemId:'weborderlabel',
- 	                        html   : '<div  style="color: #333f49;font: 300 13px/16px helvetica, arial, verdana, sans-serif;"><b>New Web Orders</b></div>'
- 	                      }]
- 	        	      },
- 	        	      {
- 	        		 xtype:'container',
- 	        		 width:'100%',
- 	        		 flex:1,
- 	        		 layout:'anchor',
- 	        		 autoScroll:true,
- 	        		 items:[
- 	        	      {
-				     xtype:'weborderform',
-				     anchor:'100%',
-				     reference:'webform'
-				},{
-				     xtype:'attachmentinfoGrid',
-				     //minHeight:80,
-				     margin:'0 200 10 200',
-				     anchor:'100%'
-    		             }]},
-    		             {
-    	 	                    xtype   : 'container',
-    	 	                    width:'100%',
-    	 	                    cls      : 'container-border',
-    	 	                    style   : {
-    	 	                	"background-color" : "#ffffff",
-    	 	                	"padding"          : "10px 20px 10px 20px"
-    	 	                    },
-    	 	                    height  : 50,
-    	 	                    items   : [{
-    	 	                   xtype   : 'component',
-    	 	                   flex    : 1,
-    	 	                   html   : '<div  >  </div>',
-    	 	                   cls	    : 'profile-info-header-text'
-    	 	                   },{
-    	 	                    xtype   : 'container',
-    	 	                   layout    : {
-    	 	                       type  : 'hbox',
-    	 	                       align : 'middle',
-    	 	                       pack  : 'end'
-    	 	                   },
-    	 	                   items   : [{
-    	 	                       xtype   : 'plainbutton',
-    	 	                       margin  : '0 0 0 10',
-    	 	                       itemId  : 'cancel',
-    	 	                       text    :AOCLit.Cancel,
-    	 	                       handler : 'CancelDetails'
-    	 	                   },{
-    	 	                       xtype   : 'whitebutton',
-    	 	                       margin  : '0 0 0 10',
-    	 	                       text    :AOCLit.Save,
-    	 	                       itemId  : 'save',
-    	 	                       handler:'SaveDetails'
-    	 	                   }
-    	 	                   ]
-    	 	                    }]
-    	 	        	      }
- 	        	      ]
-
-	 	});
-	 	this.callParent(arguments);
+	    var me = this;
+		me.items = me.buildItems();
+		me.tbar = {
+			height:AOC.config.Settings.config.defaultTbarHeight,
+			items :me.buildTBar()
+		}
+		me.bbar = me.buildBBar();
+		
+		me.callParent(arguments);
+	},
+	buildTBar:function(){
+		return [
+			{
+				xtype:'tbtext',
+				text:'New Web Orders',
+				itemId:'weborderlabel',
+				style:AOC.config.Settings.config.tabHeaderTitleStyle
+			}
+		]
+	},
+	buildBBar:function(){
+		return [
+			{
+				xtype:'whitebutton',
+				text:'Back',
+				itemId:'backButtonimage',
+				handler:'backButton',
+				hidden:true
+			},
+		    '->',
+			{
+			   xtype: 'plainbutton',
+			   itemId: 'cancel',
+			   text:AOCLit.Cancel,
+			   handler: 'onCancelBtnClick'
+			},
+			{
+			   xtype: 'whitebutton',
+			   margin: '0 10 0 10',
+			   text:AOCLit.Save,
+			   itemId: 'save',
+			   handler:'onSaveBtnClick'
+			}
+		]
+	},
+	buildItems:function(){
+		return [
+			{
+				xtype:'weborderform',
+				reference:'webform',
+				region:'center',
+				padding:10,
+				style:'border-top:solid 1px #cecece;background-color:#fff;',
+				scrollable:true
+			},
+			{
+				xtype:'attachmentinfoGrid',
+				reference:'webOrderAttachmentInfoGrid',
+				style:AOC.config.Settings.config.defaultBorderStyle,
+				region:'south',
+				height:200
+			}
+		]
 	},
 	updateHeaderLabel:function(label){
 	    var cmp = this.down('#weborderlabel');
-	    cmp.update('<div  style="color: #333f49;font: 300 13px/16px helvetica, arial, verdana, sans-serif;"><b>'+label+'</b></div>')
+	    cmp.setText(label);
 	}
 });

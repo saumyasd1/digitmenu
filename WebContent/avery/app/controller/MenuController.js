@@ -206,16 +206,19 @@ Ext.define('AOC.controller.MenuController', {
 				  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 				break;
 			case 'weborderview':
-				var weborderview = Ext.ComponentQuery.query('weborderview')[0];
-				weborderview.down('form').reset();
-				weborderview.down('form').isResubmit = false;
-				weborderview.down('form').lookupReference('rboCombo').disable();
-//				weborderview.down('form').lookupReference('productLineCombo').disable();
-				weborderview.down('form').lookupReference('partnerCombo').getStore().load();
-				var attachmentInfoGriditemId=Ext.ComponentQuery.query('attachmentinfoGrid')[0];
-		    	attachmentInfoGriditemId.store.removeAll();
-		    	attachmentInfoGriditemId.getView().refresh();
-		    	weborderview.down('#backButtonimage').setVisible(false);
+				var weborderview = Ext.ComponentQuery.query('weborderview')[0],
+				refs = weborderview.getReferences();
+			
+				var form = refs.webform;
+				form.resetFields();
+				form.isResubmit = false;
+				weborderview.lookupReference('rboCombo').disable();
+	//			weborderview.down('form').lookupReference('productLineCombo').disable();
+				weborderview.lookupReference('partnerCombo').getStore().load();
+				var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
+				attachmentInfoGrid.store.removeAll();
+				attachmentInfoGrid.getView().refresh();
+		    	weborderview.down('#backButtonimage').hide();
 		    	weborderview.updateHeaderLabel(newWebOrder);
 				break;
 			default :

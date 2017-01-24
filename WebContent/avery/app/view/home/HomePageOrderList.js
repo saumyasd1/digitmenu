@@ -6,28 +6,27 @@ Ext.define('AOC.view.home.HomePageOrderList', {
 	initComponent : function(){
 	var me=this;
 	Ext.apply(this,{
-        columns : this.buildColumns(),
-        colTpl      : me.buildColTpl(),
-        columnLines   : false,
+        columns: this.buildColumns(),
+        colTpl: me.buildColTpl(),
         store:'HomePageOders',
         columnLines:false,
         rowLines: false,
         viewConfig : {
 	            stripeRows : false,
 	            getRowClass: function(record,num) {
-	        	if(num==0){
-	        	    return 'light-black';
-	        	}
-	        	else{
-	                return (num%2==0)?'light-black':'black';
-	        	}
-                    }
+		        	if(num==0){
+		        	    return 'light-black';
+		        	}
+		        	else{
+		                return (num % 2 == 0)?'light-black':'black';
+		        	}
+                }
         },
         listeners:{
             cellclick:'homeGridCellClick'
         }
 	});
-       this.callParent(arguments);
+	this.callParent(arguments);
   },
   buildColumns : function(){
     	var me=this;
@@ -76,7 +75,7 @@ Ext.define('AOC.view.home.HomePageOrderList', {
         ]};
     },
     renderValue:function(v,meta,rec){
-	var style=(v>0)?'"cursor:pointer;"':'""';
+    	var style=(v>0)?'"cursor:pointer;"':'""';
         return '<div style='+style+' class="home-oder-grid-column-text">'+v+'</div>';
     },
     buildColTpl : function(){
