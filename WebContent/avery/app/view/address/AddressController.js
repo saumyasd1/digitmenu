@@ -96,7 +96,7 @@ Ext.define('AOC.view.address.AddressController', {
 						valueObj.lastModifiedDate = rec.get('lastModifiedDate')
 					}
 				});
-				valueObj.varPartner={id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone};
+				valueObj.varPartner={id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone,lastModifiedDate:valueObj.lastModifiedDate,lastModifiedBy:valueObj.lastModifiedBy};
 			}
 			if(valueObj.orgCodeId!=null){
 			var varOrgCode=valueObj.orgCodeId;
@@ -185,7 +185,7 @@ Ext.define('AOC.view.address.AddressController', {
 					freightTerms:valueObj.freightTerms,
 					shippingInstructions:valueObj.shippingInstructions,
 					siteType:valueObj.siteType,
-					varPartner:{id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone}
+					varPartner:{id:valueObj.partnerId,partnerName:valueObj.partnerName,address:valueObj.address,phone:valueObj.phone,lastModifiedDate:valueObj.lastModifiedDate,lastModifiedBy:valueObj.lastModifiedBy}
 					}
 		}
 	
