@@ -270,6 +270,13 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				}
 			}
 		}
+		else{
+
+			if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+				view.invalidComboValid = true;
+				h.style = AOCLit.cellColor; // change cell color if value is not exist in store
+			}
+		}
 		return orgCodeName;
 	},
 	
