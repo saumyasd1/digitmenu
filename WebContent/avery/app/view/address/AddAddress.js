@@ -152,7 +152,7 @@ Ext.define('AOC.view.address.AddAddress',{
                                     //select : 'onOrgSelect'
 //                	          //          'focus' : 'HideMandatoryMessage'
 //                   	                     }
-                    	        	},
+                    	        	}
 	        		},
 	        		{
 	        			xtype:'textfield',

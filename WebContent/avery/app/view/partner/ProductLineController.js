@@ -160,7 +160,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				attachmentFileNamePattern_4:dataModel.attachmentFileNamePattern_4,
 				attachmentSchemaID_4:dataModel.attachmentSchemaID_4,
 				attachmentMappingID_4:dataModel.attachmentMappingID_4,
-				attachmentIdentifier_4:dataModel.attachmentIdentifier_4,
+				attachmentIdentifier_4:dataModel.attachmentIdentifier_4
 		};
 		Ext.merge(parameters,secondParam);
 				Ext.Ajax.request( {

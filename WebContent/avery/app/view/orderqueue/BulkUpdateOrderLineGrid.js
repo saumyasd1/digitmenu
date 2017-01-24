@@ -136,16 +136,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         },{
             text: 'PO#<font color=red>*</font>',
             dataIndex: 'poNumber',
-            width: 120,
-            //editor: 'textfield',
-//            renderer : function(value, meta,record ) {
-//                if(value=='') {
-//                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-//                		meta.style = AOCLit.cellColor;
-//                } else {
-//                	 return value;
-//                }
-//            }
+            width: 120
         },
         {
             text: 'Avery Item#<font color=red>*</font>',

@@ -413,18 +413,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'PO #<font color=red>*</font>',
 			dataIndex: 'poNumber',
-			width: 120,
-			//editor: 'textfield',
-//			renderer : function(value, metadata, record) {
-//				if(value == '') {
-//					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-//						this.mandatoryFieldMissing = true;
-//					}
-//					metadata.style = AOCLit.cellColor;
-//				} else {
-//					 return value;
-//				}
-//			}
+			width: 120
 		},
 		{
 			text: 'Avery Item #<font color=red>*</font>',
@@ -1059,7 +1048,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		},
 		{
 			text: 'Additional Label Internal item #',
-			dataIndex: 'additionallabelitemchange',
+			dataIndex: 'additionallabelinternalchange',
 			width: 150,
 			editor: 'textfield'
 		}, 

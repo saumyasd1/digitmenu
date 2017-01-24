@@ -79,7 +79,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								flex:1,
 								tabIndex:4,
 								margin:'0 0 0 10'
-							},
+							}
 						]
 					},
 					{ 

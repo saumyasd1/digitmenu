@@ -226,7 +226,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		if(!Ext.isEmpty(v)){
 			var store = h.column.config.editor.store;
 			if(store){
-				var index = store.find("variableFieldName",v);
+				var index = store.find("variableFieldName",v,'',false,false,true);
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						view.invalidComboValid = true;

@@ -416,7 +416,7 @@ Ext.define('AOC.view.address.AddressController', {
 	loadShippingMethodStore:function(store, url){
 		var response = Ext.Ajax.request({
 			async: false,
-			url: applicationContext+'/rest/orderconfigurations/orgId/'+url,
+			url: applicationContext+'/rest/orderconfigurations/orgId/'+url
 		});
 		
 		var items = Ext.decode(response.responseText);
