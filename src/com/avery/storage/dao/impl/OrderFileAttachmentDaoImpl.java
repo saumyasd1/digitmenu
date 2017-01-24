@@ -214,7 +214,7 @@ OrderFileAttachmentDao {
 		obj.setFilePath(emailBody);
 		obj.setVarProductLine(productLineObj);
 		obj.setCreatedDate(new Date());
-		obj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+		obj.setStatus(ApplicationConstants.DEFAULT_WEBORDER_EMAILBODY_STATUS);
 		obj.setFileContentType(ApplicationConstants.DEFAULT_EMAILBODY_CONTENT_TYPE);
 		obj.setFileName(ApplicationConstants.EMAIL_FILE_NAME);
 		obj.setCreatedBy(ApplicationConstants.DEFAULT_USER_NAME);
