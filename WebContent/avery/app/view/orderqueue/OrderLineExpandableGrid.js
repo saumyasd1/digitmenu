@@ -894,7 +894,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(metadata.column.editor){
 					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
 				}
-				return value;
+				return Ext.Date.format(value,'Y-m-d');
 			}
 		}, 
 		{
@@ -915,7 +915,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(metadata.column.editor){
 					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
 				}
-				return value;
+				return Ext.Date.format(value,'Y-m-d');
 			}
 		}, 
 		{
