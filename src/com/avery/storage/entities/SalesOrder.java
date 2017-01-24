@@ -215,6 +215,9 @@ public class SalesOrder extends MainAbstractEntity{
 	@OneToMany(mappedBy = "varSalesOrderLine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<SalesOrderDetail> listSalesOrderDetails=new ArrayList<SalesOrderDetail>();
 	
+	@Column(name = "targetSystem", length = 100)
+	String targetSystem;
+	
 	public SalesOrder() {}
 	
 	
@@ -1033,6 +1036,13 @@ public class SalesOrder extends MainAbstractEntity{
 		this.listSalesOrderDetails = listSalesOrderDetails;
 	}
 
+	public String getTargetSystem() {
+		return targetSystem;
+	}
+
+	public void setTargetSystem(String targetSystem) {
+		this.targetSystem = targetSystem;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
