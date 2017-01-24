@@ -60,8 +60,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-			  		//Ext.Msg.alert('','Order line Detail successfully updated');
+		        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
+			  		Ext.Msg.alert('','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
 			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
 			  		me.getView().view.refresh();
@@ -238,6 +238,12 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					view.invalidComboValid = true;
 					h.style = AOCLit.cellColor; //change cell color if value is not exist in store
 				}
+			}
+		}
+		else{
+			if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+				view.invalidComboValid = true;
+				h.style = AOCLit.cellColor; // change cell color if value is not exist in store
 			}
 		}
 		return v;

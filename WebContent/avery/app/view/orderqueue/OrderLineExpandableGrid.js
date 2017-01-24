@@ -30,7 +30,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
         forceFit:true,
         getRowClass:function(record, rowIndex, rowParams, store){
         	//hide rowexpander if perticular record has atovalidationFlag is False
-        	if(record.get('atovalidationFlag') == 'F'){
+        	if(record.get('averyATO') == 'N'){
     			return 'hide-row-expander';
     		}else{
 	        	var data = record.get('listOrderlineDetails');
@@ -413,7 +413,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'PO #<font color=red>*</font>',
 			dataIndex: 'poNumber',
-			width: 120
+			width: 120,
+			renderer : function(value, metadata ,record) {
+				if(value == '') {
+					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						this.mandatoryFieldMissing = true;
+					}
+					metadata.style = AOCLit.cellColor;
+				} 
+				return value;
+			}
 		},
 		{
 			text: 'Avery Item #<font color=red>*</font>',
@@ -450,19 +459,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'customerColorDescription',
 			width: 102,
 			editor: 'textfield'
-		},
-		{
-			text: 'ATO Required',
-			dataIndex: 'atovalidationFlag',
-			width: 65,
-			renderer:function(v, metaData){
-				if(v == 'Y'){
-					metaData.tdAttr = 'data-qtip="YES"';
-				}else{ 
-					metaData.tdAttr = 'data-qtip="No"';
-				}
-				return v;
-			}
 		},
 		{
 			text: 'Bulk Order',
@@ -886,7 +882,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 102,
 			format:AOCLit.dateFormat,
 			xtype:'datecolumn',
-			editor: 'datefield'
+			editor: {
+				xtype:'datefield',
+				listeners:{
+					'expand':function(editor){
+						editor.field.minValue = editor.record.get('orderedDate');
+					}
+				}
+			}
 		}, 
 		{
 			text: 'Promise Date',
@@ -894,8 +897,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			xtype: 'datecolumn',   
 			format:AOCLit.dateFormat,
 			width: 88,
-			editor:{
-				xtype:'datefield'
+			editor: {
+				xtype:'datefield',
+				listeners:{
+					'expand':function(editor){
+						editor.field.minValue = editor.record.get('orderedDate');
+					}
+				}
 			}
 		}, 
 		{
@@ -923,7 +931,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField:'variableFieldName',
 				queryMode:'local',
 				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
-			}
+			},
+			renderer:'comboColumnRenderer'
 		}, 
 		{
 			text: 'Packing Instruction',

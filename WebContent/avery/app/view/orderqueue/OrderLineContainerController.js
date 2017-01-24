@@ -12,6 +12,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		}
         }
     },
+    isSalesOrderSubmittedFlag : true,
     backButton:function(){
     	var orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
     	//active orderqueue item
@@ -79,7 +80,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		store = grid.store,
     		status,
     		id=this.runTime.getOrderQueueId();
-    	
+    	if(!me.isSalesOrderSubmittedFlag){
+    		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.salesOrderWarning);
+    		return ;
+    	}
     	if(grid.editingPlugin.editing){
     		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
     		return;
@@ -90,6 +94,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		if(record.get('customerOrderedQty') == '0' && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
+    		
     	});
     	if(isCustomerOrderQantityIsZero){
     		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.customerOrderQtyNotZeroMessage);
@@ -225,12 +230,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			totalCount = store.getCount(),
 			waitingForCSRStatusOrderLine = 0,
 			mandatoryFieldMissingStatusOrderLine = 0,
+			cancelStatusOrderLine = 0,
 			noAdditionalDataFoundStatusOrderLine = 0,
 			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
     	
     	store.each(function(rec){
     		var status = rec.get('status');
-    		if(rec.get('atovalidationFlag') == 'F'){
+    		if(rec.get('averyATO') == 'N'){
     			atovalidationFlagCount++;
     		}
     		switch (status){
@@ -243,9 +249,14 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			case AOCLit.mandatoryFieldMissingStatusOrderLine : 
     				mandatoryFieldMissingStatusOrderLine++;
     				break;
+    			case AOCLit.cancelStatusOrderLine : 
+    				cancelStatusOrderLine++;
+    				break;
     		}
     	});
-    	
+    	if( waitingForCSRStatusOrderLine != store.getCount() ||(waitingForCSRStatusOrderLine + cancelStatusOrderLine)!= store.getCount()){
+    		this.isSalesOrderSubmittedFlag = false;
+    	}
     	if(waitingForCSRStatusOrderLine > 0 || noAdditionalDataFoundStatusOrderLine > 0
     			|| mandatoryFieldMissingStatusOrderLine > 0){
     		
@@ -354,8 +365,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        	if(jsonValue.length>0){
 		        	jsonValue.forEach(function(item){
                 		var service = [item];
-                		if(item.toLowerCase()!=AOCLit.qtyVariableLabel && item.toLowerCase().indexOf(AOCLit.sizeVariableLabel)==-1)
-                			serviceStoreData.push(service);
+                		//fixed bug#40 IT UAT Issue log(Amit Kumar),check only for SIZE,QTY,SIZE CHART
+                        if(item.toLowerCase() != AOCLit.qtyVariableLabel && item.toLowerCase() != AOCLit.sizeVariableLabel && item.toLowerCase() != 'size chart'){
+                         serviceStoreData.push(service);
+                        }
                 	});
 		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
                  	   		fields : ['variableFieldName'],	

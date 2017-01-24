@@ -96,7 +96,6 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'customerPOFlag', mapping:'customerPOFlag',type: 'string'},
 	 		{name: 'bulkSampleValidationFlag', mapping:'bulkSampleValidationFlag',type: 'string'},
 	 		{name: 'moqvalidationFlag', mapping:'moqvalidationFlag',type: 'string'},
-	 		{name: 'atovalidationFlag', type: 'string'},
 	 		{name: 'mandatoryVariableDataFieldFlag', mapping:'mandatoryVariableDataFieldFlag',type: 'string'},
 	 		{name: 'htlsizePageValidationFlag', mapping:'htlsizePageValidationFlag',type: 'string'},
 	 		{name: 'listOrderlineDetails', mapping:'listOrderlineDetails'},
@@ -116,6 +115,8 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'variableFieldName', mapping:'variableFieldName', type:'string'},
 	 		{name: 'iconName'},{name:'colorCode'},
 	 		{name: 'productionLine',mapping:'productionLine',type:'string'},
-	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'}
+	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'},
+	 		{name: 'shipmark', mapping:'shipmark', type:'string'},
+	 		{name: 'additionallabelinternalchange',mapping:'additionallabelinternalchange', type:'string'}
 	     ]
 });
