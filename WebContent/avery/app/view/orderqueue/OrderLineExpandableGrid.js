@@ -882,20 +882,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 102,
 			format:AOCLit.dateFormat,
 			xtype:'datecolumn',
-			editor: {
-				xtype:'datefield',
-				listeners:{
-					'expand':function(editor){
-						editor ? editor.setMinValue(editor.minValue) :'';
-					}
-				}
-			},
-			renderer:function(value, metadata, record){
-				if(metadata.column.editor){
-					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
-				}
-				return Ext.Date.format(value,'Y-m-d');
-			}
+			editor: 'datefield'
 		}, 
 		{
 			text: 'Promise Date',
@@ -903,20 +890,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			xtype: 'datecolumn',   
 			format:AOCLit.dateFormat,
 			width: 88,
-			editor: {
-				xtype:'datefield',
-				listeners:{
-					'expand':function(editor){
-						editor ? editor.setMinValue(editor.minValue) :'';
-					}
-				}
-			},
-			renderer:function(value, metadata, record){
-				if(metadata.column.editor){
-					metadata.column.editor.minValue = Ext.Date.format(record.get('orderedDate'), 'Y-m-d');
-				}
-				return Ext.Date.format(value,'Y-m-d');
-			}
+			editor:'datefield'
+			
 		}, 
 		{
 			text: 'Freight Terms',
