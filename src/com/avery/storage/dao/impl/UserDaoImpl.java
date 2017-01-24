@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,20 +9,31 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.User;
+import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 /**
 * 28 DEC -2015
 * 
@@ -136,5 +148,31 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			}
 		}
 		return criteria;
+	}
+	
+	@Override
+	public List<User> getSortedList(){
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(User.class, "u")
+					.setProjection(Projections.projectionList()
+							.add(Projections.property("id"), ("id"))
+							.add(Projections.property("firstName"), "firstName")
+							.add(Projections.property("lastName"), "lastName")
+							.add(Projections.property("middleName"), "middleName"))
+					.setResultTransformer(Transformers.aliasToBean(User.class));
+			criteria.addOrder(Order.asc("firstName"));
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return criteria.list();
 	}
 }

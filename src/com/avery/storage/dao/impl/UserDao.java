@@ -1,5 +1,7 @@
 package com.avery.storage.dao.impl;
 
+import java.util.List;
+
 import com.avery.storage.dao.GenericDao;
 import com.avery.storage.entities.User;
 /**
@@ -14,6 +16,8 @@ public interface UserDao extends GenericDao<User, Long>{
 	public User findUserByEmail(String email) throws Exception;
 	
 	public boolean checkDuplicateUser(User userObj) throws Exception;
+	
+	public List<User> getSortedList();
 
 }
 

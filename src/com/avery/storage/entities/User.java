@@ -412,7 +412,7 @@ public class User extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig
 					.getInstance().getBean("userService");
-			csrList = userService.readAll();
+			csrList = userService.getSortedList();
 			if (csrList == null || csrList.isEmpty())
 				throw new Exception("Unable to find csr");
 			mapper.writeValue(writer, csrList);

@@ -1,5 +1,7 @@
 package com.avery.storage.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +39,10 @@ public class UserService extends GenericEntityService<User, Long>{
 	@Transactional
 	public boolean checkDuplicateUser(User userObj) throws Exception{
 		return getUserDao().checkDuplicateUser(userObj);
+	}
+	
+	@Transactional
+	public List<User> getSortedList(){
+		return getUserDao().getSortedList();
 	}
 }
