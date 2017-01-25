@@ -4,6 +4,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -265,7 +267,7 @@ public class OrderConfiguration extends MainAbstractEntity {
 	public Response getListByPropertyName(@Context UriInfo ui,
 			@Context HttpHeaders hh, @PathParam("variablename") String variablfieldename) {
 		Response.ResponseBuilder rb = null;
-		List<String> valuesList = new ArrayList<String>();
+		Set<String> valuesList = new TreeSet<String>();
 		List<OrderConfiguration> propertyValues = null;
 		try{
 			StringWriter writer = new StringWriter();
