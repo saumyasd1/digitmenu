@@ -47,7 +47,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     		    			params = params + '@@@'+ Ext.encode(obj);
     		    		 });
 						 
-    		    	var obj ='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(params)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'"}';
+    		    	var obj ='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(params)+',"orderQueueId":"'+me.runTime.getOrderQueueId()+'","partnerId":"'+me.runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+me.runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+me.runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+me.runTime.getCurrentOrderQueueOrgCodeId()+'"}';
 					
     		    	Ext.Ajax.request({
     		    		method:'PUT',
