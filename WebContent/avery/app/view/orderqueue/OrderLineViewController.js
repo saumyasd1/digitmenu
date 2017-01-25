@@ -240,12 +240,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				}
 			}
 		}
-		else{
-			if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-				view.invalidComboValid = true;
-				h.style = AOCLit.cellColor; // change cell color if value is not exist in store
-			}
-		}
 		return v;
 	},
 	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
@@ -270,16 +264,26 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				}
 			}
 		}
-		else{
-
-			if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-				view.invalidComboValid = true;
-				h.style = AOCLit.cellColor; // change cell color if value is not exist in store
-			}
-		}
 		return orgCodeName;
 	},
-	
+	onComboExpand:function(field){
+		var me = this,
+			view = me.getView(),
+			editor = view.editingPlugin,
+			context = editor.context,
+			rowIdx = context.rowIdx,
+			store = context.store,
+			fieldName = context.field,
+			currentValue = field.getValue();
+		
+		var index = store.find("id", currentValue);
+		
+		if(index == -1){
+			field.setValue();
+			store.getAt(rowIdx).set(fieldName,'');
+			//context.record.commit();
+		}
+	},
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
 			grid = this.getView(),

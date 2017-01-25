@@ -159,7 +159,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 				        success: function(response, opts) {
 				            var jsonString = Ext.JSON.decode(response.responseText);
 				            Ext.getBody().unmask();
-				            AOC.util.Helper.fadeoutMessage('Success','Order Proccessed successfully');
+				            Ext.Msg.alert('Success','Order Proccessed successfully');
+				            //AOC.util.Helper.fadeoutMessage('Success','Order Proccessed successfully');
 				            me.backButton();
 				        },
 				        failure: function(response, opts) {
