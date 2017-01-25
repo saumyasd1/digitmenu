@@ -261,6 +261,17 @@ public class SalesOrder extends MainAbstractEntity{
 		this.codeValue = codeValue;
 	}
 
+	@Transient
+	private String targetSystemName;
+
+	public String getTargetSystemName() {
+		return targetSystemName;
+	}
+
+	public void setTargetSystemName(String targetSystemName) {
+		this.targetSystemName = targetSystemName;
+	}
+	
 	public String getDivisionForInterfaceErporgName() {
 		return divisionForInterfaceErporgName;
 	}
