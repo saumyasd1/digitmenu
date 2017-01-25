@@ -27,6 +27,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     columnLines: false,
     viewConfig : {
     	stripeRows : true,
+    	preserveScrollOnRefresh:true,
+    	preserveScrollOnReload:true,
         forceFit:true,
         getRowClass:function(record, rowIndex, rowParams, store){
         	//hide rowexpander if perticular record has atovalidationFlag is False
@@ -1150,7 +1152,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'APO Type',
 			dataIndex: 'apoType',
-			width: 47,
+			width: 55,
 			editor: {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
@@ -1518,8 +1520,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						url : applicationContext+'/rest/orderLines/bulkupdate',
 						success : function(response, opts) {
 							Ext.getBody().unmask();
-							AOC.util.Helper.fadeoutMessage('Success',AOCLit.updatedCustomerQtyMsg);
-							//Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+							//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updatedCustomerQtyMsg);
+							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
 							Helper.loadOrderLineGridStore(grid.store, AOC.config.Runtime.getOrderQueueId());
 						},
 						failure: function(response, opts) {

@@ -531,10 +531,15 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'textfield'
         }, {
             text: AOCLit.divisionforInterfaceERPORG,
-            dataIndex: 'divisionforInterfaceERPORG',
+            dataIndex: 'divisionForInterfaceERPORG',
             width: 120,
-            editor: 'combo',
-            store:this.runTime.getStoreERPORG()
+            editor:{
+                   xtype:'combo',
+   				   displayField:'name',
+   				   valueField:'id',
+                   store:AOC.config.Runtime.getStoreERPORG()
+            },
+            renderer:'divisionForInterfaceERPORGColumnRenderer'
         }, {
             text: AOCLit.artworkHold,
             dataIndex: 'artworkhold',
@@ -686,7 +691,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         }, {
             text: AOCLit.apoType,
             dataIndex: 'apoType',
-            width: 47,
+            width: 55,
             editor: {
                 xtype: 'combo',
                 displayField: 'variableFieldName',

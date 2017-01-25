@@ -114,10 +114,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
     		   success : function(response, opts) {
-		        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
-			  		//Ext.Msg.alert('','Order line successfully updated');
+		        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
+			  		Ext.Msg.alert('','Order line successfully updated');
 		          	Ext.getBody().unmask();
-			  		me.getView().store.load();
+			  		me.getView().store.load({params:{variablename:grid.variableColumnName}});
 		        },
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();
@@ -127,5 +127,18 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     		
     	});
     	}
-    }
-})
+    },
+    divisionForInterfaceERPORGColumnRenderer: function(v,h,l,k){
+		var orgCodeName = '';
+		if(!Ext.isEmpty(v)){
+			var store=h.column.config.editor.store;
+			if(store){
+				var index = store.find("id",v);
+				if(index > -1){
+					orgCodeName = store.getAt(index).get('name');
+				}
+			}
+		}
+		return orgCodeName;
+	}
+});
