@@ -965,7 +965,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}, 
 		{
 			text: 'Artwork Hold',
-			dataIndex: 'artworkhold',
+			dataIndex: 'artWorkhold',
 			width: 84,
 			editor:{
 				xtype:'combo',
@@ -981,8 +981,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: 'Artwork For Reference',//'Artwork Work Attachment',
-			dataIndex: 'artworkworkattachment',
+			text: AOCLit.artworkWorkAttachment,//'Artwork Work Attachment',
+			dataIndex: 'artworkAttachment',
 			width: 110,
 			editor:{
 				xtype:'combo',
@@ -1264,7 +1264,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		
 		var	store = Ext.create('AOC.store.VariableHeaderStore', {
 				autoLoad: true,
-				modal: 'AOC.model.VariableHeaderModel',
+				model: 'AOC.model.VariableHeaderModel',
 				data : record,
 				proxy: {
 					type: 'memory'
@@ -1364,6 +1364,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					  xtype:'textfield',
 					  disabled:true
 				  }
+				},
+				{
+					text:"Help Message",
+					dataIndex:'helpMessage',
+					flex:0.5
 				}
 			],
 			columnLines: false,
