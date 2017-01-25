@@ -129,7 +129,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		currentRecord = context.store.getAt(rowIdx),
     		currentRecordStatus = currentRecord.get('status'),
     		columns = editor.grid.columns,
-			len = columns.length;;
+			len = columns.length;
     	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
@@ -272,17 +272,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			editor = view.editingPlugin,
 			context = editor.context,
 			rowIdx = context.rowIdx,
-			store = context.store,
+			store = field.store,
 			fieldName = context.field,
 			currentValue = field.getValue();
 		
-		var index = store.find("id", currentValue);
+		var index = store.find("variableFieldName",currentValue,'',false,false,true);
 		
 		if(index == -1){
 			field.setValue();
 			store.getAt(rowIdx).set(fieldName,'');
 			//context.record.commit();
 		}
+		
 	},
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
