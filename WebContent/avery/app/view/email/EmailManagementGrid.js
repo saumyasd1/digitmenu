@@ -72,9 +72,9 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				menuDisabled  :true,
 				renderer:function(v, metadata, record){
 					if(v=='Email')
-						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
+						return '<img data-qtip="<font color=blue>Email</font>" class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
 					else{
-						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.browseIcon + '" />';
+						return '<i data-qtip="<font color=blue>Web</font>" style="font-size:16px; color:black"; class="fa fa-globe"></i>';
 					}
 				}	
 			},

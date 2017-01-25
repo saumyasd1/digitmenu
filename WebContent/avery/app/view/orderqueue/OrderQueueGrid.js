@@ -158,7 +158,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.productLine, 
-				width:80,
+				width:100,
 				dataIndex:'productLineType'
 			},
 			{
