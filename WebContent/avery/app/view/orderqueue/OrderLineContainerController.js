@@ -257,11 +257,14 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			case AOCLit.cancelStatusOrderLine : 
     				cancelStatusOrderLine++;
     				break;
-    				default:isSubmitSaleOrderFlag = false;
+				default:isSubmitSaleOrderFlag = false;
+					break;
     		}
     	});
     	if(!isSubmitSaleOrderFlag){
-    		this.isSalesOrderSubmittedFlag = false;
+    		me.isSalesOrderSubmittedFlag = false;
+    	}else{
+    		me.isSalesOrderSubmittedFlag = true;
     	}
     	if(waitingForCSRStatusOrderLine > 0 || noAdditionalDataFoundStatusOrderLine > 0
     			|| mandatoryFieldMissingStatusOrderLine > 0){
