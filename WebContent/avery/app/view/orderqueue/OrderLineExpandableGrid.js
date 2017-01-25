@@ -1313,7 +1313,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				{
 					text: "Variable Field Name",
 					dataIndex: 'variableFieldName',
-					flex:2,
+					flex:1.8,
 					renderer:function(v, metadata,rec){
 						var mandatory = rec.get('mandatory');
 						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '<font>"';
@@ -1370,7 +1370,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				{
 					text:"Help Message",
 					dataIndex:'helpMessage',
-					flex:0.5
+					flex:1
 				}
 			],
 			columnLines: false,
