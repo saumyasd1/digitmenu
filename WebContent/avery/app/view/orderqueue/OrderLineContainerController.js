@@ -233,8 +233,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			mandatoryFieldMissingStatusOrderLine = 0,
 			cancelStatusOrderLine = 0,
 			noAdditionalDataFoundStatusOrderLine = 0,
-			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus();
+			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus(),
+    		orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
     	
+    	orderLineExpandableGrid.invalidComboValid = false;
     	var isSubmitSaleOrderFlag = true;
     	
     	store.each(function(rec){
@@ -242,6 +244,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		if(rec.get('averyATO') == 'N'){
     			atovalidationFlagCount++;
     		}
+    		
     		switch (status){
     			case AOCLit.waitingForCSRStatusOrderLine : 
     				waitingForCSRStatusOrderLine++;
