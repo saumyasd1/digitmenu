@@ -82,14 +82,21 @@ public class OrderLineDetail extends MainAbstractEntity{
 	@Column(name = "variableFieldName", length = 100)
 	private String variableFieldName;
 	
+	@Column(name = "helpMessage")
+	private String helpMessage;
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="orderLineId")
 	private OrderLine varOrderLine;
 	
 	
-	
+	public String getHelpMessage() {
+		return helpMessage;
+	}
 
-	
+	public void setHelpMessage(String helpMessage) {
+		this.helpMessage = helpMessage;
+	}
 	
 	public String getLevel() {
 		return level;
