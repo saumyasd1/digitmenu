@@ -71,6 +71,13 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 					Org org = (Org) session.get(Org.class, orgId);
 					salesOrder.setDivisionForInterfaceErporgName(org.getName());
 				}
+				String targetSystem = salesOrder.getTargetSystem();
+				if(targetSystem != null && NumberUtils.isNumber(targetSystem)){
+					Long orderSystemInfoId = Long.parseLong(targetSystem);
+					OrderSystemInfo orderSystemInfo = (OrderSystemInfo) session.get(OrderSystemInfo.class, orderSystemInfoId);
+					SystemInfo systemInfo = orderSystemInfo.getVarSystem();
+					salesOrder.setTargetSystemName(systemInfo.getName());
+				}
 
 			}
 
