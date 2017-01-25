@@ -1,6 +1,6 @@
 Ext.define('AOC.model.VariableHeaderModel',{
     extend: 'Ext.data.Model',
-   fields: [
+    fields: [
             {
     		name : 'level',
     		mapping : 'level',
@@ -40,6 +40,10 @@ Ext.define('AOC.model.VariableHeaderModel',{
     	{
     		name : 'salesOrdercustomerItemNumber',
     		mapping : 'salesOrderForVariableData.customerItemNumber'
+    	},
+    	{
+    		name:'helpMessage',
+    		mapping:'helpMessage'
     	}
         ]
 });
