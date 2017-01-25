@@ -199,7 +199,9 @@ public class SalesOrder extends MainAbstractEntity{
 	String system_Status;
 	@Column(name = "status",length=2000)
 	String status;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Column(name = "productionLine", length = 1000)
+	private String productionLine;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "orderLineId")
 	OrderLine varOrderLine;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -1048,6 +1050,14 @@ public class SalesOrder extends MainAbstractEntity{
 
 	public void setTargetSystem(String targetSystem) {
 		this.targetSystem = targetSystem;
+	}
+	
+    public String getProductionLine() {
+		return productionLine;
+	}
+
+	public void setProductionLine(String productionLine) {
+		this.productionLine = productionLine;
 	}
 
 	@Override
