@@ -357,20 +357,15 @@ Ext.define('AOC.util.Helper',{
 	                property: 'query',
 	                value: Ext.JSON.encode(values)
 	            });
-//	            store.load({
-//	            	params:{
-//	            		query:Ext.JSON.encode(values)
-//	        		}
-//	            });
 	            view.contextGrid.lookupReference('clearAdvSearch').show();
 	        }
 	        view.close();
 	},
 	quickSearch:function(view,value){
 		var store = view.store;
-	 if (value != null && value != '') {
-	            store.load({params:{query:Ext.JSON.encode(value)}});
-	        }
+		if (value != null && value != '') {
+            store.load({params:{query:Ext.JSON.encode(value)}});
+        }
 	},
 	getDependendVariableComboStore:function(variableName,systemId,OrgCode){
 			var response = Ext.Ajax.request({
