@@ -62,7 +62,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'customerItemNumber2', mapping:'customerItemNumber2',type: 'string'},
 	 		{name: 'customerSeason', mapping:'customerSeason',type: 'string'},
 	 		{name: 'customerUOM', mapping:'customerUOM',type: 'string'},
-	 		{name: 'customerOrderedQty', mapping:'customerOrderedQty',type: 'string'},
+	 		{name: 'customerOrderedQty', mapping:'customerOrderedQty',type: 'int'},
 	 		{name: 'calculatedOrderdedQty', mapping:'calculatedOrderdedQty',type: 'string'},
 	 		{name: 'orderDate', mapping:'orderDate',type: 'string'},
 	 		{name: 'customerRequestDate', mapping:'customerRequestDate',type: 'string'},
