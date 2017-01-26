@@ -251,6 +251,7 @@ Ext.define('AOC.lang.lit',{
     "noRecordsToUpdateMessage":'There are no record(s) to update',
     "productionLine":'Production Line',
     "targetSystem":'Target System',
+    "additionalLabel":'Additional Label Internal Item #',
     //Orderqueue
     "lastmodifiedby":'Last Modified By',
     "lastmodifieddate":'Last Modified Date',

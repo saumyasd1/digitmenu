@@ -611,12 +611,18 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
             }
-        }, {
-            text: AOCLit.shippingOnlyNotes,
-            dataIndex: 'shippingOnlyNotes',
-            width: 150,
-            editor: 'textfield'
-        }, {
+        },{
+			text: 'Ship Mark',
+			dataIndex: 'shipMark',
+			width: 150,
+			editor: 'textfield'
+		},
+		{
+			text: AOCLit.additionalLabel,
+			dataIndex: 'additionalLabelInternalItem',
+			width: 150,
+			editor: 'textfield'
+		}, {
             text: AOCLit.bankCharge,
             dataIndex: 'bankCharge',
             width: 90,

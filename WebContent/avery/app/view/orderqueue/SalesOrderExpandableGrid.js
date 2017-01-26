@@ -256,7 +256,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			editor: 'textfield'
 		},
 		{
-			text: 'Additional Label Internal item #',
+			text: AOCLit.additionalLabel,
 			dataIndex: 'additionalLabelInternalItem',
 			width: 150,
 			editor: 'textfield'
