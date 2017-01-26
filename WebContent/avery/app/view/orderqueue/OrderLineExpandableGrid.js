@@ -1443,7 +1443,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     Ext.Ajax.request({
                         method: 'PUT',
                         jsonData: obj,
-                        url: applicationContext + '/rest/orderlinedetails/variablebulkupdate/'+currentRecord.get('variableFieldName'),
+                        params:{variablename:currentRecord.get('variableFieldName')},
+                        url: applicationContext + '/rest/orderlinedetails/bulkupdate/variable',
                         success: function(response, opts) {
                         	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
                             Ext.Msg.alert('Success', 'Order line Detail successfully updated');
