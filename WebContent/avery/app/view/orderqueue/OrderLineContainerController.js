@@ -187,7 +187,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		Ext.Msg.alert(AOCLit.warningTitle, grid.invalidComboColumn);
     		return;
     	}
-    	//grid.missingColumn = '';
     	
     	if(isCustomerOrderQantityIsZero){
     		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.customerOrderQtyNotZeroMessage);

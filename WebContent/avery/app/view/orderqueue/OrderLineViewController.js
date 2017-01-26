@@ -267,23 +267,24 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		}
 		return orgCodeName;
 	},
-	onComboExpand:function(field){
-		  var me = this,
-		   view = me.getView(),
-		   editor = view.editingPlugin,
-		   context = editor.context,
-		   rowIdx = context.rowIdx,
-		   fieldStore = field.store,
-		   fieldName = context.field,
-		   currentValue = field.getValue();
+	onComboFocus:function(field){
+		var me = this,
+		   	view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context,
+		   	rowIdx = context.rowIdx,
+		   	fieldStore = field.store,
+		   	fieldName = context.field,
+		   	currentValue = field.getValue();
 		  
-		  var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
+		var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
 		  
-		  if(index == -1){
-		   field.setValue('');
-		   context.store.getAt(rowIdx).set(fieldName,'');
-		  }
-	 },
+		if(index == -1){
+			field.setValue('');
+		  	context.store.getAt(rowIdx).set(fieldName,'');
+		  	return true;
+		}
+	},
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
 			grid = this.getView(),
