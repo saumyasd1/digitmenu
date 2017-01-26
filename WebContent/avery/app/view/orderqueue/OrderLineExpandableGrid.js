@@ -414,6 +414,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				        	 return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
 				         });
 			        },
+			        focus:function(combo){
+			        	var store = combo.store;
+			        	var index = store.find('code',combo.getValue());
+			        	if(index == -1){
+			        		combo.setValue('');
+			        	}
+			        },
 			        select:'onStatusSelect'
 		       }
 			},
