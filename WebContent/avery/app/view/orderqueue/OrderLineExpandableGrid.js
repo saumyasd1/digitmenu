@@ -58,6 +58,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     store:Ext.create('AOC.store.OrderLineStore', {storeId:'OrderLineStoreId'}),
     columns: [
 		{
+			  xtype: 'rownumberer',
+			  text:'#',
+			  width:50,
+			  align:'left'
+			},
+		{
 			text: 'ATO Mandatory',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
