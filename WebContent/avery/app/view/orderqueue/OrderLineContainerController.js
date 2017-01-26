@@ -84,9 +84,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			dataIndex = column.dataIndex,
     			headerText = column.text;
     		
+    		//checks for followng dropdown validation
     		if(dataIndex == 'csr' || dataIndex == 'freightTerms' 
     			|| dataIndex == 'shippingMethod' || dataIndex == 'apoType'
-    				|| dataIndex == 'orderType' || dataIndex == 'splitShipset'){
+    				|| dataIndex == 'orderType' || dataIndex == 'splitShipset' || dataIndex == 'endCustomer'){
     			
     			if(column.getEditor(rec)){
     				var fieldStore = column.getEditor(rec).store;
@@ -95,13 +96,29 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	    				if(index == -1){
 	    					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 	    						rowIdx++;
-	    						grid.invalidComboColumn = headerText +' value is not valid in '+ rowIdx +' row.Please correct the values before proceeding.';
+	    						grid.invalidComboColumn = headerText +' value is not valid in row '+ rowIdx +'.Please correct the value before proceeding.';
 	    						return false;
 	    					}
 	    				}
 	    			}
     			}
     		}
+    		if(dataIndex == 'divisionForInterfaceERPORG' ){
+    			if(column.getEditor(rec)){
+    				var fieldStore = column.getEditor(rec).store;
+	    			if(fieldStore && !Ext.isEmpty(rec.get(dataIndex))){
+	    				var index = fieldStore.find("id",rec.get(dataIndex),'',false,false,true);
+	    				if(index == -1){
+	    					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+	    						rowIdx++;
+	    						grid.invalidComboColumn = headerText +' value is not valid in row '+ rowIdx +'.Please correct the value before proceeding.';
+	    						return false;
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    		//checks for Mandatory column missing
     		if(dataIndex == 'oracleBillToSiteNumber' || dataIndex == 'soldToRBONumber' || dataIndex == 'oracleShipToSiteNumber'
     			|| dataIndex == 'orderedDate' || dataIndex == 'poNumber' || dataIndex == 'averyItemNumber'){
     			
@@ -122,6 +139,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 					}
     			}
     		}
+    		//checks for Mandatory Validation Column
     		if(dataIndex == 'mandatoryVariableDataFieldFlag' || dataIndex == 'bulkSampleValidationFlag' || dataIndex == 'htlsizePageValidationFlag'
     			|| dataIndex == 'moqvalidationFlag' || dataIndex == 'febricPercentageFlag'){
     			
@@ -134,17 +152,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 					}
     			}
     		}
-    		if(dataIndex == 'customerPOFlag' || dataIndex == 'duplicatePOFlag' || dataIndex == 'moqvalidationFlag'
-    			|| dataIndex == 'cooTranslationFlag' || dataIndex == 'reviseOrderFlag'){
-    			
-    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
-    			if(checkvalue.substr(0,1) == 'F' || checkvalue.substr(0,1) == 'W'){
-    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						grid.validationColumnMissing = true;
-						return false;
-					}
-    			}
-    		}
+    		
     	}
     },
     submitSalesOrder:function(){
@@ -212,6 +220,28 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 //			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
 //			return;
 //		}
+		store.each(function(record, index){
+			var columns = grid.columns,
+    			len = columns.length;
+    	
+	    	for(var i = 0; i < len; i++){
+	    		var column = columns[i],
+	    			dataIndex = column.dataIndex,
+	    			headerText = column.text;
+	    		
+				if(dataIndex == 'customerPOFlag' || dataIndex == 'duplicatePOFlag' || dataIndex == 'moqvalidationFlag'
+	    			|| dataIndex == 'cooTranslationFlag' || dataIndex == 'reviseOrderFlag'){
+	    			
+	    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
+	    			if(checkvalue.substr(0,1) == 'F' || checkvalue.substr(0,1) == 'W'){
+	    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+							grid.validationColumnMissing = true;
+							return false;
+						}
+	    			}
+	    		}
+	    	}
+    	});
 		
     	if(grid.validationColumnMissing){
     		Ext.Msg.confirm(AOCLit.warningTitle, AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
