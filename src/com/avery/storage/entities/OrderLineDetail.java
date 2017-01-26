@@ -280,9 +280,9 @@ public class OrderLineDetail extends MainAbstractEntity{
         }
     }
 	@PUT
-	@Path("/variablebulkupdate/{variablename}")
+	@Path("/bulkupdate/variable")
     public Response updateAllEntitiesByOrderId(@Context UriInfo ui,
-            @Context HttpHeaders hh, String data,@PathParam("variablename") String variablfieldename) {
+            @Context HttpHeaders hh, String data,@QueryParam("variablename") String variablfieldename) {
 		String jsonData="";
 		Long bulkUpdateAllById=0L;
 		Map<String,String> jsonMap=null;
