@@ -152,7 +152,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 					}
     			}
     		}
-    		
     	}
     },
     submitSalesOrder:function(){
@@ -220,7 +219,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 //			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
 //			return;
 //		}
-		store.each(function(record, index){
+		store.each(function(rec, index){
 			var columns = grid.columns,
     			len = columns.length;
     	
