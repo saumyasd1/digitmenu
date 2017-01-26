@@ -364,6 +364,11 @@ OrderEmailQueueDao {
 			}
 			q.setLong("id",entityId);
 			q.executeUpdate();
+			String s1 = "update OrderFileAttachment set comment=:comment where orderEmailQueueId =:id "; 
+			Query q1 = session.createQuery(s1);
+				q1.setString("comment","");
+			q1.setLong("id",entityId);
+			q1.executeUpdate();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing updating ", ex);
