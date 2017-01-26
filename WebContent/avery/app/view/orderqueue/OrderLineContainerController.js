@@ -74,12 +74,90 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}
     	Ext.getBody().unmask();
     },
+    validInvalidCombo:function(rec, rowIdx, grid){
+    	var orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
+    		columns = orderLineExpandableGrid.columns,
+    		len = columns.length;
+    	
+    	for(var i = 0; i < len; i++){
+    		var column = columns[i],
+    			dataIndex = column.dataIndex,
+    			headerText = column.text;
+    		
+    		if(dataIndex == 'csr' || dataIndex == 'freightTerms' 
+    			|| dataIndex == 'shippingMethod' || dataIndex == 'apoType'
+    				|| dataIndex == 'orderType' || dataIndex == 'splitShipset'){
+    			
+    			if(column.getEditor(rec)){
+    				var fieldStore = column.getEditor(rec).store;
+	    			if(fieldStore && !Ext.isEmpty(rec.get(dataIndex))){
+	    				var index = fieldStore.find("variableFieldName",rec.get(dataIndex),'',false,false,true);
+	    				if(index == -1){
+	    					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+	    						rowIdx++;
+	    						grid.invalidComboColumn = headerText +' value is not valid in '+ rowIdx +' row.Please correct the values before proceeding.';
+	    						return false;
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    		if(dataIndex == 'oracleBillToSiteNumber' || dataIndex == 'soldToRBONumber' || dataIndex == 'oracleShipToSiteNumber'
+    			|| dataIndex == 'orderedDate' || dataIndex == 'poNumber' || dataIndex == 'averyItemNumber'){
+    			
+    			if(column.getEditor(rec) && Ext.isEmpty(rec.get(dataIndex))){
+    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						rowIdx++;
+						grid.mandatoryColumnMissing = headerText +' field is empty in row '+ rowIdx +'.Please ensure the field is filled before proceeding.';
+						return false;
+					}
+    			}
+    		}
+    		if(dataIndex == 'customerOrderedQty'){
+    			if(!Ext.isEmpty(rec.get(dataIndex)) && rec.get(dataIndex) < 0){
+    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						rowIdx++;
+						grid.mandatoryColumnMissing = headerText +' field is empty in row '+ rowIdx +'.Please ensure the field is filled before proceeding.';
+						return false;
+					}
+    			}
+    		}
+    		if(dataIndex == 'mandatoryVariableDataFieldFlag' || dataIndex == 'bulkSampleValidationFlag' || dataIndex == 'htlsizePageValidationFlag'
+    			|| dataIndex == 'moqvalidationFlag' || dataIndex == 'febricPercentageFlag'){
+    			
+    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
+    			if(checkvalue.substr(0,1) == 'F'){
+    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						rowIdx++;
+						grid.mandatoryValidationColumnMissing = 'Mandatory validation has failed for '+ headerText +' field in row '+ rowIdx +'.Please resolve it before proceeding.';
+						return false;
+					}
+    			}
+    		}
+    		if(dataIndex == 'customerPOFlag' || dataIndex == 'duplicatePOFlag' || dataIndex == 'moqvalidationFlag'
+    			|| dataIndex == 'cooTranslationFlag' || dataIndex == 'reviseOrderFlag'){
+    			
+    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
+    			if(checkvalue.substr(0,1) == 'F' || checkvalue.substr(0,1) == 'W'){
+    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						grid.validationColumnMissing = true;
+						return false;
+					}
+    			}
+    		}
+    	}
+    },
     submitSalesOrder:function(){
     	var me = this,
     		grid = me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),
     		store = grid.store,
     		status,
     		id=this.runTime.getOrderQueueId();
+    	
+    	grid.invalidComboColumn = '';
+    	grid.mandatoryColumnMissing = '';
+    	grid.mandatoryValidationColumnMissing = '';
+    	grid.validationColumnMissing = false;
     	
     	if(!me.isSalesOrderSubmittedFlag){
     		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.salesOrderWarning);
@@ -91,12 +169,19 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false;
-    	store.each(function(record){
+    	store.each(function(record, index){
     		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
-    		
+    		return me.validInvalidCombo(record, index, grid);
     	});
+    	
+    	if(grid.invalidComboColumn){
+    		Ext.Msg.alert(AOCLit.warningTitle, grid.invalidComboColumn);
+    		return;
+    	}
+    	//grid.missingColumn = '';
+    	
     	if(isCustomerOrderQantityIsZero){
     		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.customerOrderQtyNotZeroMessage);
     		return;
@@ -107,8 +192,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			Ext.getBody().unmask();
 			return;
 		}
-    	if(grid.mandatoryValidationFieldMissing){
-			Ext.Msg.alert('', AOCLit.orderLineMandatoryValidationFieldMissingAlt);
+    	if(grid.mandatoryValidationColumnMissing){
+    		Ext.Msg.alert(AOCLit.warningTitle, grid.mandatoryValidationColumnMissing);
 			grid.showMandatoryValidationField=true;
 			return;
     	}
@@ -123,12 +208,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			Ext.Msg.alert('', AOCLit.changeOrderLineStatusAlert);
 			return;
 		}
-		if(grid.invalidComboValid){
-			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
-			return;
-		}
+//		if(grid.invalidComboValid){
+//			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
+//			return;
+//		}
 		
-    	if(grid.validationFieldMissing){
+    	if(grid.validationColumnMissing){
     		Ext.Msg.confirm(AOCLit.warningTitle, AOCLit.validateFieldFailedConfirmatonMsg,function(btn){
     			if (btn === 'yes') {
     				me.callSubmitSalesOrderReq();
