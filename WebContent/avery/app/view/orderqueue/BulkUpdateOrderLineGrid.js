@@ -542,7 +542,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             renderer:'divisionForInterfaceERPORGColumnRenderer'
         }, {
             text: AOCLit.artworkHold,
-            dataIndex: 'artworkhold',
+            dataIndex: 'artWorkhold',
             width: 84,
             editor:{
             	xtype:'combo',
@@ -557,8 +557,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			return v;
         }
         }, {
-            text: AOCLit.artworkForReference,
-            dataIndex: 'artworkworkattachment',
+            text: AOCLit.artworkWorkAttachment,
+            dataIndex: 'artworkAttachment',
             width: 110,
             editor:{
             	xtype:'combo',
