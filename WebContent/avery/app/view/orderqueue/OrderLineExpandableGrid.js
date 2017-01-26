@@ -60,7 +60,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			  xtype: 'rownumberer',
 			  text:'#',
-			  width:50,
+			  width:30,
 			  align:'left'
 			},
 		{
@@ -349,6 +349,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								metadata.style = AOCLit.mandatoryValidationCellColor;
 							}
 						}
+					}
+					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline){
+						metadata.style = AOCLit.cellColor;
 					}
 				   return value;
 				} else {	
@@ -933,6 +936,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode:'local',
 				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
 			    listeners:{
+			    	blur:function(combo,e){
+						Helper.clearCSRCombo(combo,e);
+					},
 			    	expand:'onComboExpand'
 			    }
 			},

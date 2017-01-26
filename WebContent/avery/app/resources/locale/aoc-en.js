@@ -397,6 +397,8 @@ Ext.define('AOC.lang.lit',{
     errorWhileReadingItemSpecStatusOrderLine:'34',
     errorInValidationStatusOrderLine:'35',
     cancelStatusOrderLine:'51',
+    customerQtyMismatchStatusOrderline:'52',
+    productLineMismatchStatusOrderline:'53',
     
     //Adding codes according to new StatusCode so commenting older codes
     //"orderReceivedStatus":'1',

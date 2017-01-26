@@ -111,7 +111,12 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								triggerAction:'all',
 								width:275,
 								margin:'0 0 0 10',
-								tabIndex:6
+								tabIndex:6,
+								listeners:{
+									blur:function(combo,e){
+										Helper.clearCSRCombo(combo,e);
+									}
+								}
 							}
 						]
 					},

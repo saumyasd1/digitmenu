@@ -134,7 +134,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
     				|| currentRecordStatus == AOCLit.mandatoryFieldMissingStatusOrderLine
-    					|| currentRecordStatus == AOCLit.noAdditionalDataFoundStatusOrderLine)){
+    					|| currentRecordStatus == AOCLit.noAdditionalDataFoundStatusOrderLine
+    						|| currentRecordStatus == AOCLit.customerQtyMismatchStatusOrderline)){
     		
     		for(var i = 0; i< len; i++){
     			columns[i].getEditor().enable();
@@ -267,24 +268,22 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		return orgCodeName;
 	},
 	onComboExpand:function(field){
-		var me = this,
-			view = me.getView(),
-			editor = view.editingPlugin,
-			context = editor.context,
-			rowIdx = context.rowIdx,
-			store = field.store,
-			fieldName = context.field,
-			currentValue = field.getValue();
-		
-		var index = store.find("variableFieldName",currentValue,'',false,false,true);
-		
-		if(index == -1){
-			field.setValue();
-			store.getAt(rowIdx).set(fieldName,'');
-			//context.record.commit();
-		}
-		
-	},
+		  var me = this,
+		   view = me.getView(),
+		   editor = view.editingPlugin,
+		   context = editor.context,
+		   rowIdx = context.rowIdx,
+		   fieldStore = field.store,
+		   fieldName = context.field,
+		   currentValue = field.getValue();
+		  
+		  var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
+		  
+		  if(index == -1){
+		   field.setValue('');
+		   context.store.getAt(rowIdx).set(fieldName,'');
+		  }
+	 },
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
 			grid = this.getView(),

@@ -177,7 +177,12 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									tabIndex:10,
 									triggerAction:'all',
 									flex:1,
-									margin:'0 0 0 10'
+									margin:'0 0 0 10',
+									listeners:{
+										blur:function(combo,e){
+											Helper.clearCSRCombo(combo,e);
+										}
+									}
 							}
 						]
 					},	

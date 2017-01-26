@@ -378,5 +378,12 @@ Ext.define('AOC.util.Helper',{
 	
 	loadOrderLineGridStore:function(store, id){
 		store.load({params:{ id: id }});
-	}
+	},
+	clearCSRCombo:function(combo,e){
+		var store = combo.store;
+		var index = store.find("csrName",combo.getRawValue(),'',false,false,true);
+		if(index == -1){
+			combo.setValue('');
+			}
+		}
 });
