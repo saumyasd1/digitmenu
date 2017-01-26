@@ -56,151 +56,156 @@ public class SalesOrder extends MainAbstractEntity{
 	private static final long serialVersionUID = -6121468415641006948L;
 
 	@Column(name = "division", length = 100)
-	String division;
+	private String division;
 	@Column(name = "orderSource", length = 100)
-	String orderSource;
+	private String orderSource;
 	@Column(name = "systemUniqueId", length = 100)
-	String systemUniqueId;
+	private String systemUniqueId;
 	@Column(name = "systemUniqueIdLineNo", length = 100)
-	String systemUniqueIdLineNo;
+	private String systemUniqueIdLineNo;
 	@Column(name = "soldToRboNumber", length = 100)
-	String soldToRboNumber;
+	private String soldToRboNumber;
 	@Column(name = "shippingMethod", length = 100)
-	String shippingMethod;
+	private String shippingMethod;
 	@Column(name = "customerPoNumber", length = 100)
-	String customerPoNumber;
+	private String customerPoNumber;
 	@Column(name = "retailerPo_CustomerJob", length = 100)
-	String retailerPo_CustomerJob;
+	private String retailerPo_CustomerJob;
 	@Column(name = "itemDescription", length = 100)
-	String itemDescription;
+	private String itemDescription;
 	@Column(name = "orderdedQty", length = 100)
-	String orderdedQty;
+	private String orderdedQty;
 	@Column(name = "dateOrdered")
-	Date dateOrdered;
+	private Date dateOrdered;
 	@Column(name = "customerRequestDate")
-	Date customerRequestDate;
+	private Date customerRequestDate;
 	@Column(name = "promiseDate")
-	Date promiseDate;
+	private Date promiseDate;
 	@Column(name = "freightTerms", length = 100)
-	String freightTerms;
+	private String freightTerms;
 	@Column(name = "csr", length = 100)
-	String csr;
+	private String csr;
 	@Column(name = "packingInstruction", length = 100)
-	String packingInstruction;
+	private String packingInstruction;
 	@Column(name = "shippingInstructions", length = 100)
-	String shippingInstructions;
+	private String shippingInstructions;
 	@Column(name = "invoiceLineInstruction", length = 100)
-	String invoiceLineInstruction;
+	private String invoiceLineInstruction;
 	@Column(name = "divisionForInterfaceErporg", length = 10)
-	String divisionForInterfaceErporg;
+	private String divisionForInterfaceErporg;
 	@Column(name = "billToContact", length = 100)
-	String billToContact;
+	private String billToContact;
 	@Column(name = "billToTel", length = 50)
-	String billToTel;
+	private String billToTel;
 	@Column(name = "billToFax", length = 50)
-	String billToFax;
+	private String billToFax;
 	@Column(name = "billToEmail", length = 50)
-	String billToEmail;
+	private String billToEmail;
 	@Column(name = "shipToContact", length = 50)
-	String shipToContact;
+	private String shipToContact;
 	@Column(name = "shipToTel", length = 50)
-	String shipToTel;
+	private String shipToTel;
 	@Column(name = "shipToFax", length = 50)
-	String shipToFax;
+	private String shipToFax;
 	@Column(name = "shipToEmail", length = 50)
-	String shipToEmail;
+	private String shipToEmail;
 	@Column(name = "artworkHold", length = 100)
-	String artworkHold;
+	private String artworkHold;
 	@Column(name = "artworkAttachment", length = 5)
-	String artworkAttachment;
+	private String artworkAttachment;
 	@Column(name = "variableDataBreakdown", length = 100)
-	String variableDataBreakdown;
+	private String variableDataBreakdown;
 	@Column(name = "manufacturingNotes", length = 100)
-	String manufacturingNotes;
+	private String manufacturingNotes;
 	@Column(name = "orderType", length = 100)
-	String orderType;
+	private String orderType;
 	@Column(name = "orderBy", length = 100)
-	String orderBy;
+	private String orderBy;
 	@Column(name = "endCustomer", length = 100)
-	String endCustomer;
+	private String endCustomer;
 	@Column(name = "shippingOnlyNotes", length = 100)
-	String shippingOnlyNotes;
+	private String shippingOnlyNotes;
 	@Column(name = "bankCharge", length = 100)
-	String bankCharge;
+	private String bankCharge;
 	@Column(name = "freightCharge", length = 100)
-	String freightCharge;
+	private String freightCharge;
 	@Column(name = "shippingHold", length = 100)
-	String shippingHold;
+	private String shippingHold;
 	@Column(name = "productionHold", length = 100)
-	String productionHold;
+	private String productionHold;
 	@Column(name = "splitShipSet", length = 100)
-	String splitShipSet;
+	private String splitShipSet;
 	@Column(name = "agreement", length = 100)
-	String agreement;
+	private String agreement;
 	@Column(name = "modelSerialNumber", length = 100)
-	String modelSerialNumber;
+	private String modelSerialNumber;
 	@Column(name = "waiveMOQ", length = 100)
-	String waiveMOQ;
+	private String waiveMOQ;
 	@Column(name = "apoType", length = 100)
-	String apoType;
+	private String apoType;
 	@Column(name = "atoValidationFlag",length=50)
-	String atoValidationFlag;
+	private String atoValidationFlag;
 	@Column(name = "bulkSampleValidationFlag",length=50)
-	String bulkSampleValidationFlag;// 250
+	private String bulkSampleValidationFlag;// 250
 	@Column(name = "comment", length = 250)
-	String comment;// 250
+	private String comment;// 250
 	@Column(name = "contractNumber", length = 50)
-	String contractNumber;// 50
+	private String contractNumber;// 50
 	@Column(name = "customerColorCode", length = 200)
-	String customerColorCode;// 200
+	private String customerColorCode;// 200
 	@Column(name = "customerColorDescription", length = 50)
-	String customerColorDescription;
+	private String customerColorDescription;
 	@Column(name = "customerCost", length = 50)
-	String customerCost;
+	private String customerCost;
 	@Column(name = "customerItemNumber", length = 50)
-	String customerItemNumber;
+	private String customerItemNumber;
 	@Column(name = "customerItemNumber1", length = 50)
-	String customerItemNumber1;
+	private String customerItemNumber1;
 	@Column(name = "customerItemNumber2", length = 50)
-	String customerItemNumber2;
+	private String customerItemNumber2;
 	@Column(name = "customerOrderedQty", length = 50)
-	String customerOrderedQty;
+	private String customerOrderedQty;
 	@Column(name = "customerPoFlag", length = 50)
-	String customerPoFlag;
+	private String customerPoFlag;
 	@Column(name = "customerSeason", length = 50)
-	String customerSeason;
+	private String customerSeason;
 	@Column(name = "customerSize", length = 50)
-	String customerSize;
+	private String customerSize;
 	@Column(name = "customerUnitPrice", length = 50)
-	String customerUnitPrice;
+	private String customerUnitPrice;
 	@Column(name = "customerUom", length = 50)
-	String customerUom;
+	private String customerUom;
 	@Column(name = "duplicatePoFlag",length=50)
-	String duplicatePOFlag;// 250
+	private String duplicatePOFlag;// 250
 	@Column(name = "grpedOlid", length = 1000)
-	String grpedOLID;// 1000
+	private String grpedOLID;// 1000
 	@Column(name = "htlSizePageValidationFlag",length=50)
-	String htlSizePageValidationFlag;// 250
+	private String htlSizePageValidationFlag;// 250
 	@Column(name = "mandatoryVariableDataFieldFlag", length = 50)
-	String mandatoryVariableDataFieldFlag;
+	private String mandatoryVariableDataFieldFlag;
 	@Column(name = "moqValidationFlag", length = 50)
-	String moqValidationFlag;
+	private String moqValidationFlag;
 	@Column(name = "oracleBillToSiteNumber", length = 100)
-	String oracleBillToSiteNumber;// 100
+	private String oracleBillToSiteNumber;// 100
 	@Column(name = "oracleExportId")
 	Integer oracleExportId;
 	@Column(name = "oracleItemNumber", length = 100)
-	String oracleItemNumber;// 100
+	private String oracleItemNumber;// 100
 	@Column(name = "oracleShipToSiteNumber", length = 100)
-	String oracleShipToSiteNumber;// 100
+	private String oracleShipToSiteNumber;// 100
 	@Column(name = "sentToOracleDate")
-	Date sentToOracleDate;
+	private Date sentToOracleDate;
 	@Column(name = "system_Status",length=2000)
-	String system_Status;
+	private String system_Status;
 	@Column(name = "status",length=2000)
-	String status;
+	private String status;
 	@Column(name = "productionLine", length = 1000)
-	private String productionLine;
+	private String productionLine; 
+	@Column(name = "shipMark")
+	private String shipMark;
+	@Column(name = "additionalLabelInternalItem")
+	private String additionalLabelInternalItem;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "orderLineId")
 	OrderLine varOrderLine;
@@ -1071,6 +1076,22 @@ public class SalesOrder extends MainAbstractEntity{
 		this.productionLine = productionLine;
 	}
 
+	public String getShipMark() {
+		return shipMark;
+	}
+
+	public void setShipMark(String shipMark) {
+		this.shipMark = shipMark;
+	}
+
+	public String getAdditionalLabelInternalItem() {
+		return additionalLabelInternalItem;
+	}
+
+	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
+		this.additionalLabelInternalItem = additionalLabelInternalItem;
+	}
+	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;

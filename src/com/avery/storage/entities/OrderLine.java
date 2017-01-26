@@ -393,6 +393,12 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "shipVia", length = 100)
 	private String shipVia;
 	
+	@Column(name = "shipMark")
+	private String shipMark;
+	
+	@Column(name = "additionalLabelInternalItem")
+	private String additionalLabelInternalItem;
+	
 	@Column(name = "productLineType", length = 50)
 	private String productLineType;
 	
@@ -1443,6 +1449,21 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setListOrderlineDetails(List<OrderLineDetail> listOrderlineDetails) {
 		this.listOrderlineDetails = listOrderlineDetails;
+	}
+	public String getShipMark() {
+		return shipMark;
+	}
+
+	public void setShipMark(String shipMark) {
+		this.shipMark = shipMark;
+	}
+
+	public String getAdditionalLabelInternalItem() {
+		return additionalLabelInternalItem;
+	}
+
+	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
+		this.additionalLabelInternalItem = additionalLabelInternalItem;
 	}
 //
 //	public List<SalesOrder> getListSalesOrderLine() {

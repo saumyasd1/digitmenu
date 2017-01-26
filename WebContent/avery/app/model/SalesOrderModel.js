@@ -53,6 +53,8 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'system_Status', mapping:'system_Status',type: 'string'},
 	 		{name:'listSalesOrderDetails'},{name:'iconName'},{name:'colorCode'},
 	 		{name: 'productionLine',mapping:'productionLine',type:'string'},
-	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'}
+	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'},
+	 		{name: 'shipMark', mapping:'shipMark', type:'string'},
+	 		{name: 'additionalLabelInternalItem',mapping:'additionalLabelInternalItem', type:'string'}
 	     ]
 });

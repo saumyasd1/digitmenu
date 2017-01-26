@@ -250,8 +250,15 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			}
 		}, 
 		{
-			text: AOCLit.shippingOnlyNotes,
-			dataIndex: 'shippingOnlyNotes',
+			text: 'Ship Mark',
+			dataIndex: 'shipMark',
+			width: 150,
+			editor: 'textfield'
+		},
+		{
+			text: 'Additional Label Internal item #',
+			dataIndex: 'additionalLabelInternalItem',
+			width: 150,
 			editor: 'textfield'
 		}, 
 		{

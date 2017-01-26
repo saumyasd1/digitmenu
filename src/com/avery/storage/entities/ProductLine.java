@@ -240,6 +240,8 @@ public class ProductLine extends MainAbstractEntity{
 	private String customerItemIdentifierDescription;
 	@Column(name = "defaultSystem",length=500)
 	private String defaultSystem;
+	@Column(name = "productLineMatchFlag",length=50)
+	private String productLineMatchFlag;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rboId")
 	private RBO rbo;
@@ -274,6 +276,15 @@ public class ProductLine extends MainAbstractEntity{
 	private transient String attachmentFileOrderMatchCell;
 	
 	private transient String attachmentFileOrderMatchSheet;
+	
+	public String getProductLineMatchFlag() {
+		return productLineMatchFlag;
+	}
+
+	public void setProductLineMatchFlag(String productLineMatchFlag) {
+		this.productLineMatchFlag = productLineMatchFlag;
+	}
+
 	
 	public String getFileOrderMatchSheet() {
 		return fileOrderMatchSheet;
