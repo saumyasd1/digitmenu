@@ -837,6 +837,8 @@ public class OrderQueue extends MainAbstractEntity{
 	@Context HttpHeaders hh,@PathParam("orderid") String orderid) {
 		Long orderQueueEntityId = Long.parseLong(orderid);
 		String mailBodyFilePath = "";
+		String fileName = "";
+		File file;
 		try {
 			/*OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
@@ -851,14 +853,20 @@ public class OrderQueue extends MainAbstractEntity{
 					.getInstance().getBean("orderQueueService");
 			mailBodyFilePath = orderQueueService.getMailBodyFilePathByTrackId(orderQueueEntityId);
 			if(mailBodyFilePath == null)
-				throw new NullPointerException("Mail Body not found in the database, returned null");
+				throw new Exception("Mail Body not found in the database, returned null");
 			System.out.println(orderid+" "+mailBodyFilePath);
-			File file = new File(mailBodyFilePath);
+			fileName = "CompleteEmail.html";
+			file = new File(mailBodyFilePath+File.separatorChar+fileName);
 			if(!file.exists()){
-				throw new FileNotFoundException("The Mail Body file is not available at location:\""+mailBodyFilePath+"\".");
+				fileName =  "CompleteEmail.pdf";
+				file = new File(mailBodyFilePath+File.separatorChar+fileName);
+				if(!file.exists()){
+					throw new Exception("The Mail Body file is not available at location:\""+mailBodyFilePath+"\".");
+				}
 			}
+			
 				
-			String fileName = mailBodyFilePath.substring(mailBodyFilePath.lastIndexOf("/")+1);
+			//String fileName = mailBodyFilePath.substring(mailBodyFilePath.lastIndexOf(File.separatorChar)+1);
 			
 			return Response
 					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
@@ -889,11 +897,11 @@ public class OrderQueue extends MainAbstractEntity{
 					.getInstance().getBean("orderQueueService");
 			orderFilePath = orderQueueService.getOrderFilePathByOrderFileQueueId(orderFileQueueId);
 			if(orderFilePath == null)
-				throw new NullPointerException("Order File not found in the database, returned null");
+				throw new Exception("Order File not found in the database, returned null");
 			System.out.println(orderid+" "+orderFilePath);
 			File file = new File(orderFilePath);
 			if(!file.exists()){
-				throw new FileNotFoundException("The Order file is not available at location:\""+orderFilePath+"\".");
+				throw new Exception("The Order file is not available at location:\""+orderFilePath+"\".");
 			}
 				
 			String fileName = orderFilePath.substring(orderFilePath.lastIndexOf(File.separator)+1);
