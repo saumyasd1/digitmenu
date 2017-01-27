@@ -313,13 +313,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		ProjectionList projectionList = Projections.projectionList();
-		//projectionList.add(Projections.property("receivedDate"), "receivedDate");
+		projectionList.add(Projections.property("createdDate"), "createdDate");
 		projectionList.add(Projections.property("id"), "id");
 		projectionList.add(Projections.property("status"), "status");
 		Date endDate = new Date(System.currentTimeMillis());
+		endDate.setHours(0);
+		endDate.setMinutes(0);
+		endDate.setSeconds(0);
 		Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
+		HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 		criteria.add(Restrictions.in("status", status));
-		//criteria.add(Restrictions.between("receivedDate", startDate, endDate));
+		//criteria.add(Restrictions.between("createdDate", startDate, endDate));
 		criteria.setProjection(projectionList);
 		criteria.setResultTransformer(Transformers
 				.aliasToBean(OrderQueue.class));
@@ -361,16 +365,16 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			
 			String Status=searchMap.get("Status");
 			if (Status != null && !"".equals(Status)) {
-			//String[] status = Status.split(",");
-			criteria.add(Restrictions.ilike("status", Status));
+			String[] status = Status.split(",");
+			criteria.add(Restrictions.in("status", status));
 			}
-			/*String days=searchMap.get("days");
+			String days=searchMap.get("days");
 			if(days!=null && !"".equals(days)){
 			long lastDays= Long.parseLong(days);
 			Date endDate = new Date(System.currentTimeMillis());
 			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
-			//criteria.add(Restrictions.between("receivedDate", startDate, endDate));
-			}*/
+			HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
+			}
 			/*String EmailBody=searchMap.get("EmailBody");
 			if(EmailBody!=null && !"".equals(EmailBody)){
 				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
@@ -521,16 +525,33 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	public String getMailBodyPath(long trackid){
 		String mailBodyPath = "";
 		Session session = null;
-		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(OrderFileAttachment.class)
-				.createAlias("varOrderEmailQueue", "varOrderEmailQueue")
-				.add(Restrictions.eq("varOrderEmailQueue.id", trackid))
-				.setProjection(Projections.projectionList()
-						.add(Projections.property("filePath"),"filePath"));
-		List list = criteria.list();
-		mailBodyPath = (String) list.get(0)+"/"+"CompleteEmail.pdf";
-		//System.out.println(mailBodyPath);
-		return mailBodyPath;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			Criteria criteria = session.createCriteria(OrderFileAttachment.class)
+					.createAlias("varOrderEmailQueue", "varOrderEmailQueue")
+					.add(Restrictions.eq("varOrderEmailQueue.id", trackid))
+					.setProjection(Projections.projectionList()
+							.add(Projections.property("filePath"),"filePath"));
+			List list = criteria.list();
+			String dir = "";
+			dir = (String) list.get(0);
+			mailBodyPath = dir+"/CompleteEmail.html";
+			File file = new File(mailBodyPath);
+			if(!file.exists()){
+				return dir+"/CompleteEmail.pdf";
+			}
+			//System.out.println(mailBodyPath);
+			return mailBodyPath;
+
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while fetching mailbody path", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while fetching mailbody path", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
 	}
 	
 	//get order file path method
