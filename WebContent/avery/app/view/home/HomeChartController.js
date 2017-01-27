@@ -40,27 +40,27 @@ Ext.define('AOC.view.home.HomeChartController', {
 	    return;
 	switch(rowIndex){
 	case 0:{
-	    status="1";
+	    status="11";
 	    break;
 	}
 	case 1:{
-	    status="4";
+	    status="19";
 	    break;
 	}
 	case 2:{
-	    status="7";
+	    status="23";
 	    break;
 	}
 	case 3:{
-	    status="99";
+	    status="41";
 	    break;
 	}
 	case 4:{
-	    status="2,98";
+	    status="42";
 	    break;
 	}
 	case 5:{
-	    status="1,4,7,99,2,98";
+	    status="11,19,23,41,42";
 	    break;
 	}
 	}
