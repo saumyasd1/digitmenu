@@ -119,7 +119,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						displayField:'dataStructureName',
 						valueField:'id',
 						queryMode :'local',
-						editable:false,
+						editable:true,
 						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
 					},
 					renderer:function(value, metaData, record){
