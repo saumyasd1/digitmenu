@@ -6,6 +6,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindow',{
 	width:370,
 	closable:false,
 	header:false,
+	modal:true,
 	items:[{
 		xtype:'displayfield',
 		value:cancelOrderText,

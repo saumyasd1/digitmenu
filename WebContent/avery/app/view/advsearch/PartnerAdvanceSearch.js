@@ -40,14 +40,10 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						width:300,
 						selectOnTab : true,
 						tabIndex:1,
+						enableKeyEvents:true,
 						margin:'5 0 0 0',
 						listeners:{
-							focus: function () {
-								var val=this.getValue().replace(/^\s+|\s+$/g,"");
-								if(val == ''){
-									this.setValue('');
-								}
-							}
+							specialkey:'getAdvancedSearchResults'
 						}
 					},					
 					{
@@ -67,13 +63,15 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
+								enableKeyEvents:true,
 								selectOnTab : true,
 								tabIndex:2,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
@@ -83,6 +81,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 								reference:'toDate',
 								tabIndex:3,
 								flex:1,
+								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								hidden:false,
 								allowBlank : true,
@@ -91,7 +90,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 									render : function(datefield) {
 										datefield.setValue(new Date());
 									},
-									'focus': 'notifyByMessage'
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -107,6 +106,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
+				enableKeyEvents:true,
 				listeners : {
 					click  : 'onSearchBtnClicked'
 				}

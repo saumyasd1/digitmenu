@@ -46,16 +46,24 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								fieldLabel : AOCLit.address,
 								name:'address',
 								flex:1,
+								enableKeyEvents:true,
 								selectOnTab : true,
-								tabIndex:1
+								tabIndex:1,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.partnerName,
 								name:'partnerName',
 								flex:1,
+								enableKeyEvents:true,
 								margin:'0 0 0 10',
-								tabIndex:2
+								tabIndex:2,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},				
@@ -75,7 +83,11 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								name:'siteType',
 								flex:1,
 								selectOnTab : true,
-								tabIndex:3
+								tabIndex:3,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -83,7 +95,11 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								name:'siteNumber',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:4
+								tabIndex:4,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -104,6 +120,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
+								enableKeyEvents:true,
 								hidden:false,
 								tabIndex:5,
 								allowBlank : true,
@@ -111,7 +128,8 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
@@ -121,6 +139,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								reference:'toDate',
 								flex:1,
 								tabIndex:6,
+								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								selectOnTab : true,
 								value:new Date(),
@@ -128,7 +147,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 									render : function(datefield) {
 										//datefield.setValue(new Date());
 									},
-									'focus': 'notifyByMessage'
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -144,8 +163,10 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
+				enableKeyEvents:true,
 				listeners : {
-					click  : 'onSearchBtnClicked'
+					click  : 'onSearchBtnClicked',
+					specialkey:'getAdvancedSearchResults'
 				}
 			}
 		]	

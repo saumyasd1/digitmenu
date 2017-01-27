@@ -45,7 +45,12 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								name:'PartnerName',
 								flex:1,
 								tabIndex:1,
-								selectOnTab : true
+								selectOnTab : true,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
+								
 							},
 							{
 								xtype : 'textfield',
@@ -53,7 +58,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								name:'RBOName',
 								flex:1,
 								tabIndex:2,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -72,7 +81,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
 								flex:1,
-								tabIndex:3
+								tabIndex:3,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -80,7 +93,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								name:'emailQueueId',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:4
+								tabIndex:4,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -103,7 +120,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								valueField:'code',
 								queryMode :'local',
 								tabIndex:5,
-								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid')
+								enableKeyEvents:true,
+								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
+										listeners:{
+											specialkey:'getAdvancedSearchResults'
+										}
 							},
 							{
 								xtype : 'combo',
@@ -114,8 +135,12 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								queryMode :'local',
 								flex:1,
 								tabIndex:6,
+								enableKeyEvents:true,
 								margin:'0 0 0 10',
-								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId')
+								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId'),
+										listeners:{
+											specialkey:'getAdvancedSearchResults'
+										}
 							}
 						]
 					},
@@ -134,7 +159,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
 								flex:1,
-								tabIndex:7
+								tabIndex:7,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -143,7 +172,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								width:250,
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:8
+								tabIndex:8,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -162,7 +195,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								fieldLabel : AOCLit.poNumber,
 								name:'ponumber',
 								flex:1,
-								tabIndex:9
+								tabIndex:9,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 									xtype:'combo',
@@ -177,11 +214,13 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									tabIndex:10,
 									triggerAction:'all',
 									flex:1,
+									enableKeyEvents:true,
 									margin:'0 0 0 10',
 									listeners:{
 										blur:function(combo,e){
 											Helper.clearCSRCombo(combo,e);
-										}
+										},
+										specialkey:'getAdvancedSearchResults'
 									}
 							}
 						]
@@ -206,12 +245,14 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								tabIndex:11,
+								enableKeyEvents:true,
 								selectOnTab : true,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
@@ -223,14 +264,14 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								margin:'0 0 0 10',
 								hidden:false,
 								tabIndex:12,
+								enableKeyEvents:true,
 								allowBlank : true,
 								selectOnTab : true,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
-										//datefield.setValue(new Date());
-									}
-									//'focus': 'notifyByMessage'
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -246,9 +287,11 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 				disabled : false,
 				formBind : true,
 				success : true,
+				enableKeyEvents:true,
 				reference:'orderQueueSearchBtn',
 				listeners : {
-					click  : 'onSearchBtnClicked'
+					click  : 'onSearchBtnClicked',
+					specialkey:'getAdvancedSearchResults'
 				}
 			}
 		]	

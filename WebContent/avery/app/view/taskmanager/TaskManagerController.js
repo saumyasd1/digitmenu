@@ -151,6 +151,12 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             me.getQuickSearchResults(cmp);
         }
     },
+    getAdvancedSearchResults: function(cmp, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearchBtnClicked();
+        }
+    },
     clearSearchResults: function(cmp) {
         var grid = this.getView();
         var store = grid.store;

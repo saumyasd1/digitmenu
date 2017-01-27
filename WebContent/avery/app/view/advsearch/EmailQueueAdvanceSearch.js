@@ -45,7 +45,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'PartnerName',
 								flex:1,
 								selectOnTab : true,
-								tabIndex:1
+								tabIndex:1,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -53,7 +57,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'RBOName',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:2
+								tabIndex:2,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -72,7 +80,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
 								flex:1,
-								tabIndex:3
+								tabIndex:3,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -80,7 +92,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'id',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:4
+								tabIndex:4,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -103,7 +119,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								valueField:'code',
 								queryMode :'local',
 								tabIndex:5,
-								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId')
+								enableKeyEvents:true,
+								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId'),
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -122,7 +142,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
 								flex:1,
-								tabIndex:6
+								tabIndex:6,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -130,7 +154,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'ReceiverEmailID',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:7
+								tabIndex:7,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -149,7 +177,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.ccMailId,
 								name:'ccMailId',
 								flex:1,
-								tabIndex:8
+								tabIndex:8,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							,
 							{
@@ -165,11 +197,13 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								triggerAction:'all',
 								flex:1,
 								tabIndex:9,
+								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								listeners:{
 									blur:function(combo,e){
 										Helper.clearCSRCombo(combo,e);
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 							
@@ -196,11 +230,13 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								allowBlank : true,
 								selectOnTab : true,
 								tabIndex:10,
+								enableKeyEvents:true,
 								value:new Date(),
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
@@ -211,14 +247,15 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,
+								enableKeyEvents:true,
 								allowBlank : true,
 								selectOnTab : true,
 								tabIndex:11,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());
-									}
-									//'focus': 'notifyByMessage'
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -235,8 +272,10 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 				formBind : true,
 				success  : true,
 				tabIndex : 12,
+				enableKeyEvents:true,
 				listeners: {
-					click  : 'onSearchBtnClicked'
+					click  : 'onSearchBtnClicked',
+					specialkey:'getAdvancedSearchResults'
 				}
 			}
 		]	

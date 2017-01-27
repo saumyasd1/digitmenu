@@ -31,6 +31,12 @@ Ext.define('AOC.view.address.AddressController', {
 				cmp.setValue('');
 				cmp.orderedTriggers[0].hide();
 		   },
+		   getAdvancedSearchResults: function(cmp, e) {
+		        var me = this;
+		        if (e.getKey() == e.ENTER) {
+		            me.onSearchBtnClicked();
+		        }
+		    },
 		   
    openAdvancedSearchWindow:function(){
     	var advanceSearchWin = Ext.create('AOC.view.advsearch.AddressAdvanceSearch',{contextGrid:this.getView()});

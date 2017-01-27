@@ -43,7 +43,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								fieldLabel : AOCLit.TrackingNo,
 								name:'id',
 								flex:1,
-								tabIndex:1
+								tabIndex:1,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -51,7 +55,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								name:'Subject',
 								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:2
+								tabIndex:2,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -70,7 +78,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
 								flex:1,
-								tabIndex:3
+								tabIndex:3,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'textfield',
@@ -78,7 +90,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								name:'ReceiverEmailID',
 								flex:1,
 								tabIndex:4,
-								margin:'0 0 0 10'
+								margin:'0 0 0 10',
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -97,7 +113,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								fieldLabel : AOCLit.ccMailId,
 								name:'ccMailId',
 								flex:1,
-								tabIndex:5
+								tabIndex:5,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},{
 								xtype:'combo',
 								displayField:'csrName',
@@ -111,11 +131,13 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								triggerAction:'all',
 								width:275,
 								margin:'0 0 0 10',
+								enableKeyEvents:true,
 								tabIndex:6,
 								listeners:{
 									blur:function(combo,e){
 										Helper.clearCSRCombo(combo,e);
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -142,10 +164,12 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								selectOnTab : true,
 								value:new Date(),
 								tabIndex:7,
+								enableKeyEvents:true,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
@@ -158,12 +182,13 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
+								enableKeyEvents:true,
 								tabIndex:8,
 								listeners : {
 									render : function(datefield) {
 										datefield.setValue(new Date());
-									}
-									//'focus': 'notifyByMessage'
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -180,8 +205,10 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 				formBind : true,
 				success : true,
 				tabIndex:9,
+				enableKeyEvents:true,
 				listeners : {
-					click  : 'onSearchBtnClicked'
+					click  : 'onSearchBtnClicked',
+					specialkey:'getAdvancedSearchResults'
 				}
 			}
 		]	

@@ -5,6 +5,7 @@ Ext.define('AOC.view.email.CancelEmailWindow',{
 	controller:'cancelEmail',
 	closable:false,
 	header:false,
+	modal:true,
 	items:[{
 		xtype:'displayfield',
 		value:AOCLit.moveToTaskManagerText,
