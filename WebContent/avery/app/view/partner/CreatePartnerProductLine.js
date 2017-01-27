@@ -1,12 +1,11 @@
 Ext.define('AOC.view.partner.CreatePartnerProductLine',{
-	extend:'AOC.view.base.BaseWindow',
+	extend:'AOC.view.base.NewBaseWindow',
 	alias:'widget.createpartnerproductline',
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 10,
-	width: 1000,
-	height:550,
-    modal:true,
+	width: 990,
+	height:580,
     draggable:false,
     editMode:false,
     rec:null,
@@ -19,6 +18,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		this.items = this.buildItems();
 		this.buttons = this.buildButtons();
 		this.callParent(arguments);
+	},
+	layout:{
+		type:'anchor',
+		stretch:'max'
+		//pack:'center'
 	},
 	listeners:{
 		'afterrender':'afterWindowRender'
@@ -46,19 +50,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return [
 			{
 				xtype:'displayfield',
-				itemId:'titleItemId',
-				vale:'',
-				hidden:false,
-				style:'margin: 0px auto;'
-			},
-			{
-				xtype:'displayfield',
 				itemId:'messageFieldItemId',
-				hidden:true
+				hidden:true,
+				anchor:'100%',
 			},
 			{
 				xtype:'form',
 				itemId:'listPanel',
+				scrollable:true,
+				anchor:'100%',
 				border:false,
 				items:[
 					{
@@ -86,6 +86,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								itemId:'dataStructureName',
 								name: 'dataStructureName',
 								width: 300,
+								margin:'0 0 0 10',
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
 								bind:'{dataStructureName}'
@@ -98,7 +99,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								bind:'{rbo.id}',
 								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
-								margin:'0 10 0 20',
+								margin:'0 0 0 10',
 								store:rboStore,
 								displayField:'rboName',
 								valueField:'id',
@@ -170,7 +171,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelAlign:'top',
 						margin : '0 0 0 0',
 						checkboArray:new Array(),
-						//layout:'vbox',
+						layout:'anchor',
 						labelStyle:Settings.config.defaultFormLabelStyle
 					},
 					{
@@ -388,6 +389,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
                         value: 0,
                         labelSeparator:'',
                         labelAlign:'top',
+                        labelStyle:Settings.config.defaultFormLabelStyle,
                         labelWidth : 200,
       		            width : 30,
       		            height:60,
@@ -407,9 +409,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				animCollapse: false,
 				collapsible: true,
 				collapsed :true,
+				anchor:'100%',
 				title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">Advanced Properties</p>',
 				titleCollapse: true,
-				style:'border:solid 1px #ccc;padding:5px;',
+				style:'border:solid 1px #ccc;padding:5px;width:100%;',
 				layout:'vbox',
 				items:[ 
 					{

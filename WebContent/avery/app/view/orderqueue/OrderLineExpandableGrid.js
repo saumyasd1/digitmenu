@@ -29,6 +29,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	stripeRows : true,
     	preserveScrollOnRefresh:true,
     	preserveScrollOnReload:true,
+		enableTextSelection : true,
         forceFit:true,
         getRowClass:function(record, rowIndex, rowParams, store){
         	//hide rowexpander if perticular record has atovalidationFlag is False

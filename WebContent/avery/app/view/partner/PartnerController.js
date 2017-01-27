@@ -82,9 +82,8 @@ Ext.define('AOC.view.partner.PartnerController', {
         var win = Ext.ComponentQuery.query("#createpartnerItemId")[0];
         if (!win) {
             win = Ext.create('AOC.view.partner.CreatePartner', {
-                modal: true
+            	title:AOCLit.addPartner
             });
-            win.down('#titleItemId').setValue(AOCLit.addPartner).setVisible(true);
             win.show();
         }
     },
@@ -108,11 +107,11 @@ Ext.define('AOC.view.partner.PartnerController', {
                         var id = data.id;
                         var partnerName = data.get('PartnerName');
                         win = Ext.create('AOC.view.partner.CreatePartner', {
-                            modal: true,
                             editMode: true,
                             rec: data,
                             partnerId: id,
                             partnerName: partnerName,
+                            title:AOCLit.editPartner,
                             listeners: {
                                 'close': function(panel, eOpts) {
                                     Ext.getBody().unmask();
@@ -120,7 +119,6 @@ Ext.define('AOC.view.partner.PartnerController', {
                                 }
                             }
                         });
-                        win.down('#titleItemId').setValue(AOCLit.editPartner).setVisible(true);
                         win.show();
                     }
                     callout.destroy();

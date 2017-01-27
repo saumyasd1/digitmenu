@@ -193,68 +193,64 @@ Ext.define('AOC.view.productline.ProductLineController', {
       	});
 		this.runTime.setWindowInEditMode(false);
     },
-	CancelDetails:function()
-	{       
-		    Ext.getBody().unmask();
-			this.getView().destroy();
-			this.runTime.setWindowInEditMode(false);
-			this.runTime.getActiveGrid().store.load();
+	CancelDetails:function(){       
+	    Ext.getBody().unmask();
+		this.getView().destroy();
+		this.runTime.setWindowInEditMode(false);
+		this.runTime.getActiveGrid().store.load();
 	},
 	createproductline:function(){
-		var viewModel=Ext.create('Ext.app.ViewModel',{
+		var viewModel=Ext.create('Ext.app.ViewModel',{});
+		
+		var win = Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+			viewModel:viewModel,
+			partnerName:this.getView().partnerName,
+			title:AOCLit.addPartProdLine
 		});
-			win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-				modal:true,
-				viewModel:viewModel,
-				partnerName:this.getView().partnerName
-			});
-			win.down('#titleItemId').setValue(AOCLit.addPartProdLine).setVisible(true);
-			win.show();
-       
+		win.show();
 	},
 	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
-	      var me=this;
+	      var me = this;
 	      var callout = Ext.widget('callout', {
-	          cls                  : 'white more-menu-item-callout extra',
-	          html                 : me.buildMenuTpl.apply("{}"),
-	          target               : e.target,
-	          calloutArrowLocation : 'top-left',
-	          relativePosition     : 't-b',
-	          relativeOffsets      : [52,23],
-	          dismissDelay         : 0,
-	          listeners            : {
+	          cls: 'white more-menu-item-callout extra',
+	          html: me.buildMenuTpl.apply("{}"),
+	          target: e.target,
+	          calloutArrowLocation: 'top-left',
+	          relativePosition: 't-b',
+	          relativeOffsets: [52,23],
+	          dismissDelay: 0,
+	          listeners: {
                 afterrender : me.onAfterRenderEditCallout,
                 edit: function(cmp){
-                	
- 	      				var data=e.record;
- 	      				 var id=data.id;
+      				var data = e.record,
+      					id=data.id;
+      				
  	      			 Ext.Ajax.request({
-							method:'GET',
-							url:applicationContext+'/rest/productLines/'+id,
-							success : function(response, opts) {
-								var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
-								var viewModel=Ext.create('Ext.app.ViewModel',{
-									data:jsonString
-								});
-								var win=Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
-			 	      			if(!win){
-									win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-				 	      				modal:true,
-				 	      				partnerName:me.getView().partnerName,
-				 	      			    editMode:true,
-				 	      			    viewModel:viewModel,
-				 	      			    rec:jsonString,
-				 	      			    productlineId:id,
-				 	      			    listeners: {
-						     	        	'close':function( panel, eOpts ) {
-						     	        		 Ext.getBody().unmask();
-						     	        		 win.destroy();
-						     	            }
-				 	      			    }
-				 	      			});
-			 	      			}
-			 	      			win.down('#titleItemId').setValue(AOCLit.editPartProdLine).setVisible(true);
-			 	      			win.show();
+						method:'GET',
+						url:applicationContext+'/rest/productLines/'+id,
+						success : function(response, opts) {
+							var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
+							var viewModel=Ext.create('Ext.app.ViewModel',{
+								data:jsonString
+							});
+							var win = Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
+		 	      			if(!win){
+								win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+			 	      				partnerName:me.getView().partnerName,
+			 	      			    editMode:true,
+			 	      			    viewModel:viewModel,
+			 	      			    title:AOCLit.editPartProdLine,
+			 	      			    rec:jsonString,
+			 	      			    productlineId:id,
+			 	      			    listeners: {
+					     	        	'close':function( panel, eOpts ) {
+					     	        		 Ext.getBody().unmask();
+					     	        		 win.destroy();
+					     	            }
+			 	      			    }
+			 	      			});
+		 	      			}
+		 	      			win.show();
 				        },
 				        failure: function(response, opts) {
 				        	AOC.util.Helper.fadeoutMessage('Failure','Error while trying to fetch partner data structure information from the server.');
@@ -289,7 +285,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
                 	callout.destroy();
                 }
             }
-	          });
+	      });
 	      callout.show();
 	      var heightAbove = e.getY() - Ext.getBody().getScroll().top,
 	        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
@@ -327,8 +323,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	              '</tpl>'
 	          );
 	       },
-  backButton:function()
-  {
+	  backButton:function() {
 		   var panel=Ext.ComponentQuery.query('#partnerPanel')[0];
 	       var partnerMangement=panel.down('#PartnerMangementitemId');
 	       panel.getLayout().setActiveItem(partnerMangement);
@@ -486,6 +481,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			xtype:'checkbox',
 	    			border:true,
 	    			margin : '0 0 0 0',
+	    			anchor:'100%',
 	    			boxLabel  : selectedSystemArray.name,
 	    			reference  : selectedSystemArray.name,
                     name      :selectedSystemArray.name,
@@ -506,49 +502,56 @@ Ext.define('AOC.view.productline.ProductLineController', {
                     		}
                     	}
                     }
-	    		},{
+	    		},
+	    		{
 	    			xtype:'systemgrid',
 	    			store:systemStore,
 	    			border:true,
 	    			margin : '0 0 0 0',
+	    			style:'border:solid 1px #ccc;',
 	    			hidden:true,
+	    			anchor:'100%',
 	    			reference:selectedSystemArray.name+'systemGrid'
-	    		},{
+	    		},
+	    		{
 	    			xtype:'fieldcontainer',
 	    			layout:'hbox',
-	    			border:true,
-	    			margin : '0 0 0 0',
-	    			items:[{
-		    			xtype:'orggrid',
-		    			width:800,
-		    			store:orgOrderStore,
-		    			style:'border:solid 1px #ccc;',
-		    			orgStore:orgStore,
-		    			uniqueName:selectedSystemArray.name,
-		    			maxRecord:totalOrgConfigured,
-		    			hidden:true,
-		    			systemId:selectedSystemArray.id,
-		    			reference:selectedSystemArray.name+'orgGrid'
-		    		},{
-	    				xtype:'button',
-	    				margin:'40 0 0 20',
-	    				maxRecord:totalOrgConfigured,
-	    				text:'Plus',
-	    				ui:'white', 
-	    				reference:selectedSystemArray.name+'Plus',
-	    				hidden:true,
-	    				flex:0.5,
-	    				listeners:{
-	    					'click':function(cmp){
-	    						if(orgOrderStore.getCount()<totalOrgConfigured){
-	    							orgOrderStore.add({orgCodeId:'',newRecord:true,isDefault:false});
-	    							//orgOrderStore.commit();
-	    						}else{
-	    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
-	    						}
-	    					}
-	    				}
-	    			}]
+	    			border:false,
+	    			anchor:'100%',
+	    			margin : '1 0 0 0',
+	    			items:[
+    			       {
+			    			xtype:'orggrid',
+			    			flex:1,
+			    			store:orgOrderStore,
+			    			style:'border:solid 1px #ccc;',
+			    			orgStore:orgStore,
+			    			uniqueName:selectedSystemArray.name,
+			    			maxRecord:totalOrgConfigured,
+			    			hidden:true,
+			    			systemId:selectedSystemArray.id,
+			    			reference:selectedSystemArray.name+'orgGrid'
+    			       },
+    			       {
+		    				xtype:'button',
+		    				margin:'45 0 0 5',
+		    				maxRecord:totalOrgConfigured,
+		    				text:'+ Org',
+		    				ui:'white',
+		    				reference:selectedSystemArray.name+'Plus',
+		    				hidden:true,
+		    				listeners:{
+		    					click:function(cmp, pressed){
+		    						if(orgOrderStore.getCount() < totalOrgConfigured){
+		    							orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
+		    							//orgOrderStore.commit();
+		    						}else{
+		    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
+		    						}
+		    					}
+		    				}
+		    			}
+			        ]
 	    		}]
 	    	},
 	    	onProductLineChange:function(cmp,newValue){

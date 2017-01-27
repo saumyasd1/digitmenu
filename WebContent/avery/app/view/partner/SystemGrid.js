@@ -81,9 +81,6 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				flex:1.5,
 				editor:{
 					xtype:'textfield'
-				},
-				renderer:function(value,metadata){
-					return me.validationRendered(value, metadata);
 				}
 			},
 			{
