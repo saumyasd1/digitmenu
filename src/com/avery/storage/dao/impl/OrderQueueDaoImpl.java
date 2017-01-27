@@ -535,13 +535,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			List list = criteria.list();
 			String dir = "";
 			dir = (String) list.get(0);
-			mailBodyPath = dir+"/CompleteEmail.html";
+			/*mailBodyPath = dir+File.separatorChar+"CompleteEmail.html";
 			File file = new File(mailBodyPath);
 			if(!file.exists()){
-				return dir+"/CompleteEmail.pdf";
-			}
+				return dir+File.separatorChar+"CompleteEmail.pdf";
+			}*/
 			//System.out.println(mailBodyPath);
-			return mailBodyPath;
+			return dir;
 
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error("Error while fetching mailbody path", ex);
