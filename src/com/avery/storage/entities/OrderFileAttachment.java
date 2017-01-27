@@ -3,6 +3,10 @@ package com.avery.storage.entities;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -609,18 +613,22 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			OrderFileAttachment orderFileAttachment = null;
 			try{
 				
+				filePath = URLDecoder.decode(filePath, "UTF-8");
+				
 				File file = new File(filePath);
 				if(!file.exists()){
 //					throw new FileNotFoundException("The file is not available at location:\""+filePath+"\".");
 					return Response.ok("The file is not available",MediaType.TEXT_PLAIN).build();
 				}
-					
+				
 				String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
 				
+				//String fileName = URLEncoder.encode(filePath.substring(filePath.lastIndexOf("/")+1), "UTF-8");
+				//fileName = URLDecoder.decode(fileName, "ISO8859_1");
 				
 				return Response
 			            .ok(file, MediaType.APPLICATION_OCTET_STREAM)
-			            .header("content-disposition","attachment; filename = " + fileName)
+			            .header("content-disposition","attachment; filename=\""+getEncoded(fileName)+"\"")
 			            .build();
 			} catch (WebApplicationException ex) {
 				throw ex;
@@ -634,6 +642,9 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			//return rb.build();
 		}
 	
-
+	    public String getEncoded(String fileName) throws URISyntaxException{
+	    	URI uri = new URI(null, null, fileName, null);
+	    	 return uri.toASCIIString();
+	    }
 	    
 }
