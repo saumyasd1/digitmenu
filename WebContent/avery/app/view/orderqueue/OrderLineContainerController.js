@@ -405,7 +405,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
         		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
     		}
     	}
-    	
+    	if(cancelStatusOrderLine==store.getCount()){
+    		salesOrderbutton.disable();
+    		salesViewOrderbutton.disable();
+    		validateButton.disable();
+    		form.disable();
+    		cancelOrderBtn.disable();
+    	}
     	if(atovalidationFlagCount == totalCount){
     		radioGroup.items.items[1].disable();
     	}else{
