@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,12 +45,11 @@ public class OrderTrend {
 
 	private static Map<String, String> statusMap = new HashMap<String, String>();
 	static {
-		statusMap.put("1", "received");
-		statusMap.put("4", "waitingCR");
-		statusMap.put("7", "waitingSR");
-		statusMap.put("99", "success");
-		statusMap.put("98", "failed");
-		statusMap.put("2", "failed");
+		statusMap.put("11", "received");
+		statusMap.put("19", "waitingCR");
+		statusMap.put("23", "waitingSR");
+		statusMap.put("41", "success");
+		statusMap.put("42", "failed");
 	}
 
 	@GET
@@ -182,11 +183,11 @@ public class OrderTrend {
 		Map<String, Object> toatalCount = buildMap("Total Count");
 		list.add(toatalCount);
 		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
-		myMap.put("1", recievedMap);
-		myMap.put("4", waitinCRMap);
-		myMap.put("7", waitinSRMap);
-		myMap.put("99", successMap);
-		myMap.put("98", failedMap);
+		myMap.put("11", recievedMap);
+		myMap.put("19", waitinCRMap);
+		myMap.put("23", waitinSRMap);
+		myMap.put("41", successMap);
+		myMap.put("42", failedMap);
 		buildMapData(set, 1, myMap);
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
@@ -206,8 +207,15 @@ public class OrderTrend {
 	static void buildMapData(Set<OrderQueue> set, int days,
 			Map<String, Map<String, Object>> myMap) {
 		Date endDate = new Date();
+		endDate.setHours(0);
+		endDate.setMinutes(0);
+		endDate.setSeconds(0);
 		Date startDate = DateUtils.getPreviousDate(endDate, days);
-		Date recieveDate = null;
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(endDate); 
+		c.add(Calendar.DATE, 1);
+		endDate = c.getTime();
+		Date createdDate = null;
 		String status;
 		String key = "";
 		switch (days) {
@@ -230,40 +238,44 @@ public class OrderTrend {
 		}
 		Map<String, Object> m = null;
 		for (OrderQueue orderQueue : set) {
-//			recieveDate = orderQueue.getReceivedDate();
-			if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
+			createdDate = orderQueue.getCreatedDate();
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(createdDate);
+			Date ddd = cal.getTime();
+			
+			if (ddd.before(endDate) && ddd.after(startDate)) {
 				status = orderQueue.getStatus();
 				switch (status) {
-				case "1": {
+				case "11": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}
-				case "4": {
+				case "19": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}
-				case "7": {
+				case "23": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}
-				case "98": {
+				case "41": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}
-				case "99": {
+				case "42": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}
-				case "2": {
-					m = myMap.get("98");
+				/*case "2": {
+					m = myMap.get("41");
 					m.put(key, (int) m.get(key) + 1);
 					break;
-				}
+				}*/
 				}
 			}
 		}
