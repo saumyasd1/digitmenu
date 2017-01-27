@@ -1181,7 +1181,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'APOTypeCombo',
 				store:Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
 				listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'};
+						store.insert(0,new Ext.data.Record(obj));
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
