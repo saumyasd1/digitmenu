@@ -413,7 +413,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		});
 		form.submit({
 			getParams: function() {
-				return Ext.apply({}, {filePath:filePath});
+				return Ext.apply({}, {filePath:encodeURIComponent(filePath)});
 			},
 			method : 'GET'
 		});

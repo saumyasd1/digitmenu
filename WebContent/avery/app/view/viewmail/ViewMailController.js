@@ -303,7 +303,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		});
 		form.submit({
 			getParams: function() {
-				return Ext.apply({}, {filePath:filePath});
+				return Ext.apply({}, {filePath:encodeURIComponent(filePath)});
 			},
 			method : 'GET'
 		});
