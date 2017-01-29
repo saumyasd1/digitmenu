@@ -93,8 +93,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					valueField: 'variableFieldName',
 					editable:false,
 					queryMode :'local'
-				},
-				renderer:'validationRendered'
+				}
 			},
 			{
 				text : 'Shipping method',
@@ -106,8 +105,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					valueField: 'variableFieldName',
 					editable:false,
 					queryMode :'local'
-				},
-				'renderer':'validationRendered'
+				}
 			},
 			{
 				text : 'Shipping Instructions',
@@ -116,6 +114,21 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				editor:{
 					xtype:'textfield'
 				}
+			},{
+				xtype:'actioncolumn',
+				text:'',
+				width:30,
+				glyphColor:'red',
+				glyph:'xf056@FontAwesome',
+				menuDisabled  :true,
+				baseCls:'custom-action',
+				handler: function(grid, rowIndex, colIndex) {
+					 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
+						if(btn=='yes'){
+							grid.getStore().removeAt(rowIndex);
+						} 
+					 });
+			    }
 			}
         ];
     }
