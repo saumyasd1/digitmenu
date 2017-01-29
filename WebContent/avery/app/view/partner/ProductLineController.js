@@ -41,11 +41,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				var orgInfo=new Array(),currentStore;
 				currentOrgGrid.showValidationError=true;
 				currentOrgGrid.getView().refresh();
-				if(currentOrgGrid.isOrgGridNotValid){
-					Ext.getBody().unmask();
-					createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryCellMsg).setVisible(true);
-					return false;
-				}
 				for(var k=0;k<orgGridStore.getCount();k++){
 					currentStore=orgGridStore.getAt(k).data;
 					orgInfo.push(currentStore);
