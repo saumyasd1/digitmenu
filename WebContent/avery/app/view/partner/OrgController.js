@@ -3,24 +3,9 @@ Ext.define('AOC.view.partner.OrgController', {
     alias: 'controller.orgcontroller',
     requires : ['AOC.util.Helper'],
     runTime : AOC.config.Runtime,
-    onOrgChange:function(cmp,newValue){
-    	Ext.getBody().mask('Setting...');
-    	var view=this.getView(),me=this,systemId=view.systemId;
-		//me.attachCombo('freightTerms',systemId,newValue,'freightTermscombo',obj.freightTerm,'freightTerms');
-		//me.attachCombo('shippingMethod',systemId,record.get('id'),'shippingMethodCombo',obj.shippingMethod,'shippingMethod');
-    },
-	attachCombo:function(variableName,systemId,orgId,referenceValue){
-		var variableFieldStore=AOC.util.Helper.loadDependendVariableComboStore(variableName,systemId,orgId),
-		variableField=this.getView().lookupReference(referenceValue);
-		variableField.bindStore(variableFieldStore);
-	},
     onOrgCodeCellRender:function(value,metadata){
     	var me=this.getView();
     	if(Ext.isEmpty(value)){
-    		if(me.showValidationError){
-    			metadata.style = AOCLit.mandatoryValidationCellColor;
-    		}
-    		me.isOrgGridNotValid=true;
     		return '';
     	}
     	me.isOrgGridNotValid=false;
@@ -37,7 +22,7 @@ Ext.define('AOC.view.partner.OrgController', {
     	store.on('load',function(store) {
     		if(index==0)
     	      cmp.select(store.getAt(0).get('id'));
-    	    });
+    	});
     	store.load();
 	},
 	onOrgeCodeComboChange:function(cmp,newValue){
@@ -68,17 +53,14 @@ Ext.define('AOC.view.partner.OrgController', {
 			  if(Ext.isEmpty(freightTermsData)){
 				  freightTermsData=AOC.util.Helper.getDependendVariableComboStore('freightTerms',grid.systemId,orgCodeId);
 				  record.set('freightTermsData',freightTermsData);
-				  grid.columns[3].getEditor().bindStore(freightTermsData);
-			  }else{
-				  grid.columns[3].getEditor().bindStore(freightTermsData);
-			  } 
+				  
+			  }
+			  grid.columns[3].getEditor().bindStore(freightTermsData);
 			  if(Ext.isEmpty(shippingMethodData)){
 				  shippingMethodData=AOC.util.Helper.getDependendVariableComboStore('shippingMethod',grid.systemId,orgCodeId);
 				  record.set('shippingMethodData',shippingMethodData);
+			  }
 				  grid.columns[4].getEditor().bindStore(shippingMethodData);
-			  }else{
-				  grid.columns[4].getEditor().bindStore(shippingMethodData);
-			  } 
 		  }
 			  
 	},
