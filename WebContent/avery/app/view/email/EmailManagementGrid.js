@@ -190,7 +190,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				searchCriteria:'',
 				store : Ext.data.StoreManager.lookup(me.store),
 				width: 200,
-				emptyText: "Search by Email Subject "
+				emptyText: "Search by Email Track # "
 			},
 			{
 					xtype :'tbspacer',

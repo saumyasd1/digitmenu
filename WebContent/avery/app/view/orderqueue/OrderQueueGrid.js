@@ -260,7 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				store : Ext.data.StoreManager.lookup(me.store),
 				width: 200,
 				margin:'0 10 0 0',
-				emptyText: "Search by Partner Name "
+				emptyText: "Search by Order Track #"
 			},
 			{
 				xtype :'tbspacer',

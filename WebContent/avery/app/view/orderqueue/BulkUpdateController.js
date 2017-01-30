@@ -130,15 +130,43 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     },
     divisionForInterfaceERPORGColumnRenderer: function(v,h,l,k){
 		var orgCodeName = '';
+		var view = this.getView();
 		if(!Ext.isEmpty(v)){
 			var store=h.column.config.editor.store;
 			if(store){
 				var index = store.find("id",v);
-				if(index > -1){
+				if(index == -1){
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
+					}
+				}else{
 					orgCodeName = store.getAt(index).get('name');
+				}
+			}else{
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 				}
 			}
 		}
 		return orgCodeName;
-	}
+	},
+	comboColumnRenderer:function(v,h,l,k){
+		var view=this.getView();
+		if(!Ext.isEmpty(v)){
+			var store = h.column.config.editor.store;
+			if(store){
+				var index = store.find("variableFieldName",v,'',false,false,true);
+				if(index == -1){
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						h.style = AOCLit.cellColor; // change cell color if value is not exist in store
+					}
+				}
+			}else{
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					h.style = AOCLit.cellColor; //change cell color if value is not exist in store
+				}
+			}
+		}
+		return v;
+	},
 });

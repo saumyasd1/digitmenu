@@ -153,7 +153,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
     getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
         value = cmp.getValue();
-        Helper.quickSearch(view,{Subject: value}),
+        Helper.quickSearch(view,{id: value}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {

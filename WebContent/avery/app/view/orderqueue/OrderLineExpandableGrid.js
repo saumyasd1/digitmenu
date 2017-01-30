@@ -201,7 +201,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: 'MOQ',
+			text: 'MOQ/Round up',
 			dataIndex: 'moqvalidationFlag',
 			width: 50,
 			renderer:function(value, metadata,rec){
@@ -407,7 +407,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				valueField:'code',
 				queryMode :'local',
 				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
-				 listeners:{
+				listeners:{
 			        afterrender:function(combo){
 				         var store = combo.store;
 				         //(Amit Kumar 12-01-2017)only waitingfor cs verification and cancel status will visible in combo
@@ -432,16 +432,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'PO #<font color=red>*</font>',
 			dataIndex: 'poNumber',
-			width: 120,
-			renderer : function(value, metadata ,record) {
-				if(value == '') {
-					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing = true;
-					}
-					metadata.style = AOCLit.cellColor;
-				} 
-				return value;
-			}
+			width: 120
 		},
 		{
 			text: 'Avery Item #<font color=red>*</font>',

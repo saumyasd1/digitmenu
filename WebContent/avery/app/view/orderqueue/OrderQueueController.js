@@ -48,7 +48,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
         value = cmp.getValue();
-        Helper.quickSearch(view,{PartnerName: value}),
+        Helper.quickSearch(view,{orderQueueId: value}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {
