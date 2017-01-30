@@ -39,7 +39,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'billToCountry', mapping:'billToCountry',type: 'string'},
 	 		{name: 'billToTelephone', mapping:'billToTelephone',type: 'string'},
 	 		{name: 'billToFax', mapping:'billToFax',type: 'string'},
-	 		{name: 'requestedDevliveryDate', mapping:'requestedDevliveryDate',type: 'date'},
+	 		{name: 'requestedDeliveryDate', mapping:'requestedDeliveryDate',type: 'date'},
 	 		{name: 'shippingMethod', mapping:'shippingMethod',type: 'string'},
 	 		{name: 'specialInstruction', mapping:'specialInstruction',type: 'string'},
 	 		{name: 'orderReceivedDate', mapping:'orderReceivedDate',type: 'string'},

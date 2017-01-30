@@ -169,4 +169,42 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		}
 		return v;
 	},
+	onSelectStatusBulk: function(combo){
+		var value = combo.getValue(),
+		grid = this.getView(),
+		columns = grid.columns,
+		len = columns.length;
+	
+	for(var i = 0; i< len; i++){
+		if(value == AOCLit.waitingForCSRStatusOrderLine){
+			columns[i].getEditor() ? columns[i].getEditor().enable() : '';
+		}else{
+			if(columns[i].getEditor()){
+				if(columns[i].getEditor().dataIndex == 'status'){
+					columns[i].getEditor().enable();
+				}else{
+					columns[i].getEditor().disable();
+				}
+			}
+		}
+	}
+},
+onComboFocus:function(field){
+		var me = this,
+	   	view = me.getView(),
+	   	editor = view.editingPlugin,
+	   	context = editor.context,
+	   	rowIdx = context.rowIdx,
+	   	fieldStore = field.store,
+	   	fieldName = context.field,
+	   	currentValue = field.getValue();
+	if(!Ext.isEmpty(context.record.get(fieldName))){
+		var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
+		if(index == -1){
+			field.setValue('');
+		  	context.store.getAt(rowIdx).set(fieldName,'');
+		  	return true;
+		}
+	  }
+}
 });

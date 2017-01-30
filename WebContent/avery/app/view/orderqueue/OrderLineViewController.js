@@ -276,14 +276,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   	fieldStore = field.store,
 		   	fieldName = context.field,
 		   	currentValue = field.getValue();
-		  
-		var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
-		  
-		if(index == -1){
-			field.setValue('');
-		  	context.store.getAt(rowIdx).set(fieldName,'');
-		  	return true;
-		}
+		if(!Ext.isEmpty(context.record.get(fieldName))){
+			var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
+			if(index == -1){
+				field.setValue('');
+			  	context.store.getAt(rowIdx).set(fieldName,'');
+			  	return true;
+			}
+		  }
 	},
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
@@ -301,6 +301,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     				columns[i].getEditor().disable();
     			}
 			}
+		}
+	},
+	onSelectDate: function(df){
+		var view = this.getView(),
+	   	editor = view.editingPlugin,
+	   	context = editor.context,
+		fieldName = context.field,
+		orderDate = context.record.get('orderedDate');
+		if(orderDate > df.getValue()){
+			Ext.Msg.alert('Warning',fieldName + ' can not be less than Ordered date ');
+			df.setValue(orderDate);
 		}
 	}
     

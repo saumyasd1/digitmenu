@@ -155,7 +155,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			        	if(index == -1){
 			        		combo.setValue('');
 			        	}
-			        }
+			        },
+			        select:'onSelectStatusBulk'
 		       }		
             },
 			renderer:function(v, metadata, rec){
@@ -444,7 +445,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 queryMode :'local',
                 editable:false,
-                store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
+                store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {
@@ -537,16 +541,24 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 102,
             format:AOCLit.dateFormat,
             xtype:'datecolumn',
-            editor: 'datefield'
+            editor: {
+				xtype:'datefield',
+				listeners:{
+					'select':'onSelectDate'
+				}
+			}
         }, {
             text: AOCLit.promiseDate,
             dataIndex: 'promiseDate',
             xtype: 'datecolumn',   
             format:AOCLit.dateFormat,
             width: 88,
-            editor:{
-            	xtype:'datefield'
-            }
+            editor: {
+				xtype:'datefield',
+				listeners:{
+					'select':'onSelectDate'
+				}
+			}
         }, {
             text: AOCLit.freightTerm,
             dataIndex: 'freightTerms',
@@ -557,7 +569,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
+                store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {
@@ -570,7 +585,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
+                store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {
@@ -651,7 +669,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
+                store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {
@@ -669,7 +690,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
+                store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         },{
@@ -743,7 +767,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
+                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {
@@ -766,7 +793,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 valueField: 'variableFieldName',
                 editable:false,
                 queryMode :'local',
-                store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
+                store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
+        		listeners:{
+					focus:'onComboFocus'
+			    }
             },
             renderer:'comboColumnRenderer'
         }, {

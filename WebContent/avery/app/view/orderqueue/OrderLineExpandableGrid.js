@@ -351,7 +351,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							}
 						}
 					}
-					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline){
+					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline || record.get('status')==AOCLit.errorInCustomerOrderQtyStatusOrderLine ){
 						metadata.style = AOCLit.cellColor;
 					}
 				   return value;
@@ -891,11 +891,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}, 
 		{
 			text: 'Requested Delivery Date',
-			dataIndex: 'requestedDevliveryDate',
+			dataIndex: 'requestedDeliveryDate',
 			width: 102,
 			format:AOCLit.dateFormat,
 			xtype:'datecolumn',
-			editor: 'datefield'
+			editor: {
+				xtype:'datefield',
+				listeners:{
+					'select':'onSelectDate'
+				}
+			}
 		}, 
 		{
 			text: 'Promise Date',
@@ -903,8 +908,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			xtype: 'datecolumn',   
 			format:AOCLit.dateFormat,
 			width: 88,
-			editor:'datefield'
-			
+			editor: {
+				xtype:'datefield',
+				listeners:{
+					'select':'onSelectDate'
+				}
+			}			
 		}, 
 		{
 			text: 'Freight Terms',
@@ -935,9 +944,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode:'local',
 				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
 			    listeners:{
-			    	blur:function(combo,e){
-						Helper.clearCSRCombo(combo,e);
-					},
 					focus:'onComboFocus'
 			    }
 			},

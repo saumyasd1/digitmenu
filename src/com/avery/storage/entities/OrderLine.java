@@ -154,7 +154,7 @@ public class OrderLine extends MainAbstractEntity{
 	private String billToEmail;
 	
 	@Column(name = "requestedDevliveryDate")
-	Date requestedDevliveryDate;
+	Date requestedDeliveryDate;
 	
 	@Column(name = "shippingMethod", length = 50)
 	private String shippingMethod;
@@ -787,13 +787,6 @@ public class OrderLine extends MainAbstractEntity{
 		this.billToEmail = billToEmail;
 	}
 
-	public Date getRequestedDevliveryDate() {
-		return requestedDevliveryDate;
-	}
-
-	public void setRequestedDevliveryDate(Date requestedDevliveryDate) {
-		this.requestedDevliveryDate = requestedDevliveryDate;
-	}
 
 	public String getShippingMethod() {
 		return shippingMethod;
@@ -989,6 +982,14 @@ public class OrderLine extends MainAbstractEntity{
 
 	public Date getCustomerRequestDate() {
 		return customerRequestDate;
+	}
+
+	public Date getRequestedDeliveryDate() {
+		return requestedDeliveryDate;
+	}
+
+	public void setRequestedDeliveryDate(Date requestedDeliveryDate) {
+		this.requestedDeliveryDate = requestedDeliveryDate;
 	}
 
 	public void setCustomerRequestDate(Date customerRequestDate) {

@@ -399,6 +399,7 @@ Ext.define('AOC.lang.lit',{
     cancelStatusOrderLine:'51',
     customerQtyMismatchStatusOrderline:'52',
     productLineMismatchStatusOrderline:'53',
+    errorInCustomerOrderQtyStatusOrderLine:'54',
     
     //Adding codes according to new StatusCode so commenting older codes
     //"orderReceivedStatus":'1',
