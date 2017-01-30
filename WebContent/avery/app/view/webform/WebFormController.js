@@ -6,7 +6,13 @@ Ext.define('AOC.view.webform.WebFormController', {
     onPartnerChange:function(obj, newValue){
     	var me = this,
 			rboCombo = me.lookupReference('rboCombo'),
-			dataStructureCombo = me.lookupReference('dataStructureCombo');
+			dataStructureCombo = me.lookupReference('dataStructureCombo'),
+    	    email = me.lookupReference('email'),
+    	    subject = me.lookupReference('subject'),
+    	    emailBody = me.lookupReference('emailBody'),
+    	    orderFileType = me.lookupReference('orderFileType'),
+    	    attachment1 = me.lookupReference('attachment1'),
+    	    additionalDataFileKey1 = me.lookupReference('additionalDataFileKey1');
 			
     	if(!Ext.isEmpty(newValue)){
 	    	var store = null;
@@ -22,6 +28,12 @@ Ext.define('AOC.view.webform.WebFormController', {
     		if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
     			rboCombo.reset();
    	    	 	dataStructureCombo.reset();
+   	    	 	email.reset();
+   	    	 	subject.reset();
+   	    	 	emailBody.reset();
+   	    	 	orderFileType.reset();
+   	    	    attachment1.reset();
+   	    	    additionalDataFileKey1.reset();
    	    	 	obj.isChangedForFirstTime=false;
     		}
 			dataStructureCombo.disable();
