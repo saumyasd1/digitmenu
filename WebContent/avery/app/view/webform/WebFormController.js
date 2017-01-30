@@ -26,12 +26,19 @@ Ext.define('AOC.view.webform.WebFormController', {
 				data: jsonValue
 			});
     		if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
+    			var refs = this.getReferences(),
+    			webOrderFormView = refs.webform,
+    			form = webOrderFormView.getForm(),
+    			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
     			rboCombo.reset();
    	    	 	dataStructureCombo.reset();
    	    	 	email.reset();
    	    	 	subject.reset();
    	    	 	emailBody.reset();
    	    	 	orderFileType.reset();
+   	    	 	webOrderAttachmentInfoGrid.store.removeAll();
+   	    	 	webOrderAttachmentInfoGrid.getView().refresh();
+   	    	 	orderFileType.setDisabled(true);
    	    	    attachment1.reset();
    	    	    additionalDataFileKey1.reset();
    	    	 	obj.isChangedForFirstTime=false;
