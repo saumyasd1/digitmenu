@@ -537,7 +537,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             }
         }, {
             text:AOCLit.requestedDeliveryDate,
-            dataIndex: 'requestedDevliveryDate',
+            dataIndex: 'requestedDeliveryDate',
             width: 102,
             format:AOCLit.dateFormat,
             xtype:'datecolumn',

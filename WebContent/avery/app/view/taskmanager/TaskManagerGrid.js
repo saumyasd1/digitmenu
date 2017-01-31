@@ -74,7 +74,10 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				//width:120,
 				align: 'right',
 				dataIndex:'id',
-				flex:0.5
+				flex:0.5,
+				renderer:function(v, metadata, record){
+					return 'E# '+ v;
+				}
 			},
 			{
 				text :'CSR',

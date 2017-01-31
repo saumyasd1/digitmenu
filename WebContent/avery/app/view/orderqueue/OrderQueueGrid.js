@@ -127,13 +127,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				text : AOCLit.TrackingNo,
 				width:80,
 				dataIndex:'TrackingId',
-				align: 'right'
+				align: 'right',
+				renderer:function(v, metadata, record){
+					return 'E# '+ v;
+				}
 			},
 			{
 				text : AOCLit.orderTrackNo,
 				width:80,
 				dataIndex:'id',
-				align: 'right'
+				align: 'right',
+				renderer:function(v, metadata, record){
+					return 'O# '+ v;
+				}
 			},
 			{
 				text : AOCLit.prvOrderTrackNo,
