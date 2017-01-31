@@ -244,11 +244,11 @@ public class Partner extends MainAbstractEntity {
 		this.contactPerson = contactPerson;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -260,11 +260,11 @@ public class Partner extends MainAbstractEntity {
 		this.comment = comment;
 	}
 
-	public int getSiteId() {
+	public Integer getSiteId() {
 		return siteId;
 	}
 
-	public void setSiteId(int siteId) {
+	public void setSiteId(Integer siteId) {
 		this.siteId = siteId;
 	}
 
