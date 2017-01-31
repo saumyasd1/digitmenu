@@ -99,7 +99,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   			}
   		}
   		
-		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray,emailQueueId:gridView.trackingId});
+		var parameters = Ext.JSON.encode({json:gridView.emailGridRecordArray,emailQueueId:gridView.trackingId.toString()});
   		
   		Ext.Ajax.request({
 	        method: 'PUT',
