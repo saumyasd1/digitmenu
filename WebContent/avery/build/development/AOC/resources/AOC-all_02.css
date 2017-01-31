@@ -1,3 +1,7 @@
+/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Toast.scss */
+.x-toast-light .x-tool-img {
+  background-color: white; }
+
 /* line 25, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Toast.scss */
 .x-toast-light {
   background-image: url(images/window/toast/fader.png); }

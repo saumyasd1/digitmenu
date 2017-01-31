@@ -276,6 +276,12 @@
   font-size: 2;
   color: red; }
 
+/* line 59, ../../../../sass/etc/all.scss */
+.x-action-col-glyph {
+  font-size: 16px;
+  line-height: 16px;
+  width: 20px; }
+
 /* including package AOC */
 /* including package aoc */
 /** @class Ext.view.BoundList */
@@ -26268,8 +26274,4 @@ tr.x-grid-subtable-row {
 /* Custom styling */
 /* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Toast.scss */
 .x-toast-light .x-window-header {
-  background-color: white; }
-
-/* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Toast.scss */
-.x-toast-light .x-tool-img {
   background-color: white; }
