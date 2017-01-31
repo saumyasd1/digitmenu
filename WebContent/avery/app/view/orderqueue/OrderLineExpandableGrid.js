@@ -1215,8 +1215,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.targetSystem,
 			dataIndex: 'targetSystemName',
-			width: 100,
-			editor: 'textfield'
+			width: 100
 		}
 	],
 	editGrid:true,

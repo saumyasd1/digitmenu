@@ -817,6 +817,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			dataIndex: 'productionLine',
 			width: 100,
 			editor: 'textfield'
+		},
+		{
+			text: AOCLit.targetSystem,
+			dataIndex: 'targetSystemName',
+			width: 100
 		}
 		];
     },

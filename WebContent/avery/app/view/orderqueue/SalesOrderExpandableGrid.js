@@ -39,266 +39,187 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		},
 		{
 			text: AOCLit.Division,
-			dataIndex: 'division',
-			editor: 'textfield'
+			dataIndex: 'division'
 		}, 
 		{
 			text: AOCLit.orderSource,
-			dataIndex: 'orderSource',
-			editor: 'textfield'
+			dataIndex: 'orderSource'
 		}, 
 		{
 			text: AOCLit.SOLDTORBONumber,
 			dataIndex: 'soldToRboNumber',
-			editor: 'textfield',
 			align:'right'
 		}, 
 		{
 			text: AOCLit.oracleBilltoSiteNumber,
 			dataIndex: 'oracleBillToSiteNumber',
-			editor: 'textfield',
 			align:'right'
 		}, 
 		{
 			text: AOCLit.oracleShiptoSiteNumber,
-			dataIndex: 'oracleShipToSiteNumber',
-			editor: 'textfield'
+			dataIndex: 'oracleShipToSiteNumber'
 		}, 
 		{
 			text: AOCLit.shippingMethod,
 			dataIndex: 'shippingMethod',
-			width: 170,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId')
-			}
+			width: 170
 		}, 
 		{
 			text: 'Customer PO #',
-			dataIndex: 'customerPoNumber',
-			editor: 'textfield'
+			dataIndex: 'customerPoNumber'
 		}, 
 		{
 			text: 'Retailer PoCustomer job',
-			dataIndex: 'retailerPo_CustomerJob',
-			editor: 'textfield'
+			dataIndex: 'retailerPo_CustomerJob'
 		}, 
 		{
 			text: AOCLit.oracleItemNo,
-			dataIndex: 'oracleItemNumber',
-			editor: 'textfield'
+			dataIndex: 'oracleItemNumber'
 		}, 
 		{
 			text: AOCLit.custItemNo,
 			dataIndex: 'customerItemNumber',
-			align:'right',
-			editor: 'textfield'
+			align:'right'
 		}, 
 		{
 			text: AOCLit.itemDesc,
-			dataIndex: 'itemDescription',
-			editor: 'textfield'
+			dataIndex: 'itemDescription'
 		}, 
 		{
 			text:AOCLit.orderdedQty,
-			dataIndex: 'customerOrderedQty',
-			editor: 'textfield'
+			dataIndex: 'customerOrderedQty'
 		}, 
 		{
 			text: AOCLit.dateOrdered,
-			dataIndex: 'dateOrdered',
-			editor: 'textfield'
+			dataIndex: 'dateOrdered'
 		}, 
 		{
 			text: AOCLit.custRequestDate,
-			dataIndex: 'customerRequestDate',
-			editor: 'textfield'
+			dataIndex: 'customerRequestDate'
 		}, 
 		{
 			text: AOCLit.promiseDate,
 			dataIndex: 'promiseDate',
-			align:'right',
-			editor: 'textfield'
+			align:'right'
 		}, 
 		{
 			text: AOCLit.freightTerm,
-			dataIndex: 'freightTerms',
-			editor: 'textfield'
+			dataIndex: 'freightTerms'
 		}, 
 		{
 			text: AOCLit.CSR,
 			dataIndex: 'csr',
-			width: 160,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId')
-			}
+			width: 160
 		}, 
 		{
 			text: AOCLit.packingInstruction,
-			dataIndex: 'packingInstruction',
-			editor: 'textfield'
+			dataIndex: 'packingInstruction'
 		}, 
 		{
 			text: AOCLit.shippingInstructions,
-			dataIndex: 'shippingInstructions',
-			editor: 'textfield'
+			dataIndex: 'shippingInstructions'
 		}, 
 		{
 			text: AOCLit.invoiceLineInstruction,
-			dataIndex: 'invoiceLineInstruction',
-			editor: 'textfield'
+			dataIndex: 'invoiceLineInstruction'
 		}, 
 		{
 			text: AOCLit.divisionforInterfaceERPORG,
-			dataIndex: 'divisionForInterfaceErporg',
-			editor: 'textfield'
+			dataIndex: 'divisionForInterfaceErporg'
 		}, 
 		{
 			text: AOCLit.billContact,
-			dataIndex: 'billToContact',
-			editor: 'textfield'
+			dataIndex: 'billToContact'
 		}, 
 		{
 			text: AOCLit.billToTelephone,
-			dataIndex: 'billToTel',
-			editor: 'textfield'
+			dataIndex: 'billToTel'
 		}, 
 		{
 			text: AOCLit.billToFax,
-			dataIndex: 'billToFax',
-			editor: 'textfield'
+			dataIndex: 'billToFax'
 		}, 
 		{
 			text: AOCLit.billToEmail,
-			dataIndex: 'billToEmail',
-			editor: 'textfield'
+			dataIndex: 'billToEmail'
 		}, 
 		{
 			text: AOCLit.shipContact,
-			dataIndex: 'shipToContact',
-			editor: 'textfield'
+			dataIndex: 'shipToContact'
 		}, 
 		{
 			text: AOCLit.shipToTelephone,
-			dataIndex: 'shipToTel',
-			editor: 'textfield'
+			dataIndex: 'shipToTel'
 		}, 
 		{
 			text: AOCLit.shipToFax,
-			dataIndex: 'shipToFax',
-			editor: 'textfield'
+			dataIndex: 'shipToFax'
 		}, 
 		{
 			text: AOCLit.shipToEmail,
-			dataIndex: 'shipToEmail',
-			editor: 'textfield'
+			dataIndex: 'shipToEmail'
 		}, 
 		{
 			text: AOCLit.artworkHold,
-			dataIndex: 'artworkHold',
-			editor: 'checkbox'
+			dataIndex: 'artworkHold'
 		}, 
 		{
 			text:AOCLit.artworkWorkAttachment,
-			dataIndex: 'artworkAttachment',
-			editor: 'checkbox'
+			dataIndex: 'artworkAttachment'
 		}, 
 		{
 			text:AOCLit.variableDataBreakdown,
-			dataIndex: 'variableDataBreakdown',
-			editor: 'textfield'
+			dataIndex: 'variableDataBreakdown'
 		}, 
 		{
 			text: AOCLit.manufacturingNotes,
-			dataIndex: 'manufacturingNotes',
-			editor: 'textfield'
+			dataIndex: 'manufacturingNotes'
 		}, 
 		{
 			text: AOCLit.orderType,
 			dataIndex: 'orderType',
-			width: 180,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId')
-			}
+			width: 180
 		}, 
 		{
 			text: AOCLit.orderBy,
-			dataIndex: 'orderBy',
-			editor: 'textfield'
+			dataIndex: 'orderBy'
 		}, 
 		{
 			text: AOCLit.endCust,
 			dataIndex: 'endCustomer',
-			width: 180,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId')
-			}
+			width: 180
 		}, 
 		{
 			text: 'Ship Mark',
 			dataIndex: 'shipMark',
-			width: 150,
-			editor: 'textfield'
+			width: 150
 		},
 		{
 			text: AOCLit.additionalLabel,
 			dataIndex: 'additionalLabelInternalItem',
-			width: 150,
-			editor: 'textfield'
+			width: 150
 		}, 
 		{
 			text: AOCLit.bankCharge,
-			dataIndex: 'bankCharge',
-			editor: 'textfield'
+			dataIndex: 'bankCharge'
 		}, 
 		{
 			text:AOCLit.freightCharge,
 			dataIndex: 'freightCharge',
-			width: 160,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId')
-			}
+			width: 160
 		}, 
 		{
 			text: AOCLit.shippingHold,
-			dataIndex: 'shippingHold',
-			editor: 'checkbox'
+			dataIndex: 'shippingHold'
 		}, 
 		{
 			text: AOCLit.productionHold,
-			dataIndex: 'productionHold',
-			editor: 'checkbox'
+			dataIndex: 'productionHold'
 		}, 
 		{
 			text: AOCLit.splitShipset,
 			dataIndex: 'splitShipSet',
-			width: 180,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
-			}
+			width: 180
 		}, 
 		{
 			text: AOCLit.agreement,
@@ -312,32 +233,22 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		}, 
 		{
 			text: AOCLit.waiveMOQ,
-			dataIndex: 'waiveMOQ',
-			editor: 'checkbox'
+			dataIndex: 'waiveMOQ'
 		}, 
 		{
 			text: AOCLit.apoType,
 			dataIndex: 'apoType',
-			width: 180,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				queryMode :'local',
-				store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId')
-			}
+			width: 180
 		},
 		{
 			text: AOCLit.productionLine,
 			dataIndex: 'productionLine',
-			width: 100,
-			editor: 'textfield'
+			width: 100
 		},
 		{
 			text: AOCLit.targetSystem,
 			dataIndex: 'targetSystemName',
-			width: 100,
-			editor: 'textfield'
+			width: 100
 		}
 	],
 	plugins: [
@@ -417,44 +328,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 		{
 			ptype: 'clipboard'
 		}
-//    , {
-//        ptype: 'rowediting',
-//        clicksToEdit: 1,
-//        saveAndNextBtn: true,
-//        controller: 'salesorder',
-//        listeners: {
-//            'edit': 'updateSalesOrder'
-//        },
-//        bulKUpdate: function(editor, context) {
-//            this.suspendEvent('edit');
-//            this.completeEdit();
-//            this.resumeEvent('edit');
-//            var me = this;
-//            var ctx = this.context,
-//                idx = ctx.rowIdx,
-//                currentRecord = ctx.store.getAt(idx);
-//            var obj = currentRecord.getChanges();
-//            var runTime = AOC.config.Runtime;
-//            var obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
-//            Ext.Ajax.request({
-//                method: 'PUT',
-//                jsonData: obj,
-//                url: applicationContext + '/rest/salesorders/bulkupdate',
-//                success: function(response, opts) {
-//                    Ext.Msg.alert('', 'Sales Order successfully updated');
-//                    Ext.getBody().unmask();
-//                    me.getView().store.load();
-//                },
-//                failure: function(response, opts) {
-//                    Ext.getBody().unmask();
-//                }
-//            });
-//
-//        }
-//
-//    }
     ],
-   
     tbar: {
         height: AOC.config.Settings.config.defaultTbarHeight,
         items: [
