@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -221,6 +222,50 @@ OrderFileAttachmentDao {
 		obj.setFileExtension(ApplicationConstants.DEFAULT_EMAIL_FILE_EXTENSION);
 		create(obj);
 }
+	
+	@Override
+	public void checkDisregardMail(Long entityId){
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, entityId);
+			criteria = session.createCriteria(OrderFileAttachment.class)
+					.add(Restrictions.eq("varOrderEmailQueue", orderEmailQueue))
+					.add(Restrictions.neOrIsNotNull("fileContentType", "Disregard"));
+			List list = criteria.list();
+			if(list.size() ==0 | list == null){
+				String s = "update OrderEmailQueue set status=:status where id =:id "; 
+				Query q = session.createQuery(s);
+				q.setString("status",ApplicationConstants.ORDEREMAILQUEUE_DISREGARDED_STATUS);
+				q.setLong("id",entityId);
+				q.executeUpdate();
+				System.out.println("All Disregard");
+			}
+			else{
+				if(!orderEmailQueue.getStatus().equals(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS)){
+					String s = "update OrderEmailQueue set status=:status where id =:id "; 
+					Query q = session.createQuery(s);
+					q.setString("status",ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
+					q.setLong("id",entityId);
+					q.executeUpdate();
+				}
+				System.out.println("Not All Disregard");
+			}
+			
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id ");
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id ");
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 
 	
 }

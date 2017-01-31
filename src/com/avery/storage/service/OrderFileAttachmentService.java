@@ -54,5 +54,10 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 		
 	}
 	
-
+	@Transactional
+	public void checkDisregardMail(Long entityId){
+		 
+		getOrderFileAttachmentDao().checkDisregardMail(entityId);
+	}
+	
 }

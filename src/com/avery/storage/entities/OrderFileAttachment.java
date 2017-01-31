@@ -512,6 +512,8 @@ public class OrderFileAttachment extends MainAbstractEntity {
 				OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 						.getInstance().getBean("orderFileAttachmentService");
 				jsonMap=ApplicationUtils.convertJSONtoObjectMaps(data);
+				String emailQueueId = "";
+				emailQueueId = (String) jsonMap.get("emailQueueId");
 				jsonData=(List<Map<String,Object>>)jsonMap.get("json");
 				for(int i=0;i<jsonData.size();i++){
 					Map<String,Object> fileAttachment=(Map<String,Object>)jsonData.get(i);
@@ -551,6 +553,8 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					}
 					
 					orderFileAttachmentService.update(fileAttachementObj);
+					Long entityId = Long.parseLong(emailQueueId);
+					orderFileAttachmentService.checkDisregardMail(entityId);
 				}
 				Map entitiesMap = new HashMap();
 				StringWriter writer = new StringWriter();
