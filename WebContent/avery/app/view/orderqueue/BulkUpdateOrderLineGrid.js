@@ -476,13 +476,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         }, {
             text: AOCLit.customerColorCode,
             dataIndex: 'customerColorCode',
-            width: 102,
-            editor: 'textfield'
+            width: 102
         }, {
             text: AOCLit.customerColorDescription,
             dataIndex: 'customerColorDescription',
-            width: 102,
-            editor: 'textfield'
+            width: 102
         }, {
             text:AOCLit.customerSize,
             dataIndex: 'customerSize',
