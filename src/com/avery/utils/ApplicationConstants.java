@@ -50,6 +50,8 @@ public interface ApplicationConstants {
 		
 		String ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS="6";
 		
+		String ORDEREMAILQUEUE_DISREGARDED_STATUS="55";
+		
 		String ORDER_ATTACHMENT_CANCEL_STATUS="7";
 		
 		String EMAIL_ORDER_SOURCE="Web";
