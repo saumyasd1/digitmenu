@@ -425,6 +425,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 			else{
 				if(form.isResubmit){
 					form.down('#oldOrderFileDeleted').setValue(true);
+					additionalDataFileKey.hide();
+					attachmentFileField.hide();
 				}
 				if(attachmentFileField){
 					attachmentFileField.reset();
