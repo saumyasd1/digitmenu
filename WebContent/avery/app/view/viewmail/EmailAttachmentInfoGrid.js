@@ -26,7 +26,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	        listeners: {
                 beforeedit: function(e, editor){
                 	//editing only enabled for emailQueue status is UnIndentified(3)
-	                if (editor.grid.status == AOCLit.emailUnidentifiedStatus){
+	                if (editor.grid.status == AOCLit.emailUnidentifiedStatus || editor.grid.status == AOCLit.emailDisregardedStatus ){
 	                	if(editor.field =='dataStructureNameId'){
 	                		if(editor.record.data.contentType==''){
 	                			return false;
