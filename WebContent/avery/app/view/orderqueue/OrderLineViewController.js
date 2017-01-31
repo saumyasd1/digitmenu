@@ -131,6 +131,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		columns = editor.grid.columns,
 			len = columns.length;
     	
+    	grid.lastScrollLeftPosition = grid.view.el.dom.scrollLeft;
+    	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
     				|| currentRecordStatus == AOCLit.mandatoryFieldMissingStatusOrderLine
@@ -165,7 +167,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		level = record.get('level'),
     		variablefieldname = record.get('variableFieldName').toLowerCase();
     	
-    	if(variablefieldname == 'qty' || variablefieldname == 'size' || variablefieldname == 'size chart'){
+    	if(variablefieldname == 'size' || variablefieldname == 'size chart'){
     		return false;
     	}
     	if(level == AOCLit.fiberLevel){

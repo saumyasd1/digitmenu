@@ -201,16 +201,16 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				flex:1,
 				itemId:'orderlineexpandablegridcard',
 				style:AOC.config.Settings.config.defaultBorderStyle,
-				activeItem:1,
+				activeItem:0,
 				items:[
-					{
-						xtype:'orderlineexpandablegrid',
-						itemId: 'orderlineexpandablegridvv',
-						selModel: {
-							type:'spreadsheet',
-							rowNumbererHeaderWidth:0
-						}
-					},
+//					{
+//						xtype:'orderlineexpandablegrid',
+//						itemId: 'orderlineexpandablegridvv',
+//						selModel: {
+//							type:'spreadsheet',
+//							rowNumbererHeaderWidth:0
+//						}
+//					},
 					{
 						xtype:'orderlineexpandablegrid',
 						itemId: 'orderlineexpandablegridrowmodel',

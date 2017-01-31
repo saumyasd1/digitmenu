@@ -1,7 +1,7 @@
 Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
-    itemId: 'orderlineexpandablegrid',
+    //itemId: 'orderlineexpandablegrid',
     requires: [
 		'Ext.grid.Panel', 
 		'AOC.view.ux.RowExpanderGrid', 
@@ -461,14 +461,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: 'Customer Color Code',
 			dataIndex: 'customerColorCode',
-			width: 102,
-			editor: 'textfield'
+			width: 102
 		}, 
 		{
 			text: 'Customer Color Description',
 			dataIndex: 'customerColorDescription',
-			width: 102,
-			editor: 'textfield'
+			width: 102
 		},
 		{
 			text: 'Bulk Order',
@@ -1252,6 +1250,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				createComponent: function(view, record, htmlnode, index) {
 					return me.createInnerGrid(record);
     		    },
+    		    pluginId: 'orderLineRowExpander',
     		    onExpand: function(rowNode, record, expandRow) {
     		    	this.grid.editingPlugin ? this.grid.editingPlugin.cancelEdit() : '';
     		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bc after store load inner view destroyed
@@ -1276,7 +1275,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     createInnerGrid:function(record){
     	var me = this,
-    		data = record.get('listOrderlineDetails');
+    		data = record.get('listOrderlineDetails'),
+    		recordId = record.get('id');
 		//filter nested grid record for show those record which have typeSetter or level value exist
 		function processData(data){
 			var len = data.length,
@@ -1312,6 +1312,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			modal: 'AOC.model.VariableHeaderModel',
 			cls: 'nestedGrid',
 			store:store,
+			recordId:recordId,
 			selModel: {
 				type:sel,
 				rowNumbererHeaderWidth:0
@@ -1423,7 +1424,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						Ext.getBody().mask('Saving....');
 						var ctx = context,
 							idx = ctx.rowIdx,
-							currentRecord = ctx.store.getAt(idx);
+							currentRecord = ctx.store.getAt(idx),
+							nestedGrid = editor.grid;
 						
 						var obj = currentRecord.getChanges();
 						obj.id = currentRecord.id;
@@ -1440,6 +1442,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
 								
 								Ext.Msg.alert('Success','Order line Detail successfully updated');
+								grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
 								Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
 								grid.view.refresh();
 								Ext.getBody().unmask();
@@ -1462,7 +1465,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                     var me = this;
                     var ctx = me.context,
                         idx = ctx.rowIdx,
-                        currentRecord = ctx.store.getAt(idx);
+                        currentRecord = ctx.store.getAt(idx),
+						nestedGrid = ctx.grid;
                     
                     var obj = currentRecord.getChanges();
                     var runTime = AOC.config.Runtime;
@@ -1476,6 +1480,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                         success: function(response, opts) {
                         	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
                             Ext.Msg.alert('Success', 'Order line Detail successfully updated');
+                            grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
                             Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
                             grid.view.refresh();
                             Ext.getBody().unmask();

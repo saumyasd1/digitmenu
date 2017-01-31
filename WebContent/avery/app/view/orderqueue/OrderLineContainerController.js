@@ -75,7 +75,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	Ext.getBody().unmask();
     },
     validInvalidCombo:function(rec, rowIdx, grid){
-    	var orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
+    	var orderLineExpandableGrid = this.getView().queryById('orderlineexpandablegridrowmodel'),//Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
     		columns = orderLineExpandableGrid.columns,
     		len = columns.length;
     	
@@ -285,6 +285,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	                	form.disable();
 	                	
 	                	me.runTime.setAllowOrderLineEdit(false);
+	                	grid.openedRecordIndex = '';
 	                	Ext.getBody().unmask();
 	                	Helper.loadOrderLineGridStore(grid.store, id);
 		        		Ext.Msg.alert('', AOCLit.salesOrderCreationMsg);
@@ -318,6 +319,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
 			  		Ext.Msg.alert('',AOCLit.updateOrdLineDetailMsg);
+			  		grid.openedRecordIndex ='';
 			  		Ext.getBody().unmask();
 			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
 		        },
@@ -347,15 +349,19 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			cancelStatusOrderLine = 0,
 			noAdditionalDataFoundStatusOrderLine = 0,
 			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus(),
-    		orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+    		orderLineExpandableGrid = this.getView().queryById('orderlineexpandablegridrowmodel');
     	
     	orderLineExpandableGrid.invalidComboValid = false;
     	var isSubmitSaleOrderFlag = true;
     	
-    	store.each(function(rec){
+    	store.each(function(rec, index){
     		var status = rec.get('status');
     		if(rec.get('averyATO') == 'N'){
     			atovalidationFlagCount++;
+    		}
+    		if(!Ext.isEmpty(orderLineExpandableGrid.openedRecordIndex) && (orderLineExpandableGrid.openedRecordIndex == index)){
+    			var expander = orderLineExpandableGrid.getPlugin('orderLineRowExpander');
+    			expander.toggleRow(index, orderLineExpandableGrid.store.getAt(index));
     		}
     		
     		switch (status){
@@ -421,7 +427,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     getUpdateScreen:function(){
 		var me = this,
 			refs = me.getReferences(),
-			orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
+			orderLineExpandableGrid = me.getView().queryById('orderlineexpandablegridrowmodel'),//Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
 			viwport = Ext.ComponentQuery.query('#viewportitemid')[0],
 			height = viwport.getHeight()-100,
 			width = viwport.getWidth()-100,
@@ -468,7 +474,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			title:'Bulk Update',
 			listeners:{ 
 				close:function(obj, eOpts){
-					var orderLineExpandableGrid = Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+					var orderLineExpandableGrid = me.getView().queryById('orderlineexpandablegridrowmodel');//Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
+					orderLineExpandableGrid.openedRecordIndex = '';
 					orderLineExpandableGrid.store.load({params:{id:id}});
 				}
 			},
