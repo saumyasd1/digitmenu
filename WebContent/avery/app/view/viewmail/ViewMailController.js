@@ -262,7 +262,7 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 			me.enableDisableProcessBtn(true);
 		}else{
 			//If emailQueue status is Unidentified or totalCount > 0 then save btn will enabled
-			if(gridView.status == AOCLit.emailUnidentifiedStatus && totalCount > 0){
+			if(gridView.status == AOCLit.emailUnidentifiedStatus || gridView.status == AOCLit.emailDisregardedStatus && totalCount > 0){
 				saveBtn.setDisabled(false);
 			}else{
 				saveBtn.setDisabled(true);

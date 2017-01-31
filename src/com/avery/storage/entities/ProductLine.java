@@ -75,7 +75,13 @@ public class ProductLine extends MainAbstractEntity{
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchRequired")
 	private Boolean attachmentFileMatchRequired;
+	@Column(name = "factoryMOQCheck")
+	private Boolean factoryMOQCheck;
 	
+	@Column(name = "factoryMOQValue", length = 100)
+	private String factoryMOQValue;
+	@Column(name = "assignCSRName")
+	private String assignCSRName;
 	@Column(name = "attachmentFileNameExtension_1", length = 50)
 	private String attachmentFileNameExtension_1;// 50
 	@Column(name = "attachmentFileNameExtension_2", length = 50)
@@ -276,6 +282,30 @@ public class ProductLine extends MainAbstractEntity{
 	private transient String attachmentFileOrderMatchCell;
 	
 	private transient String attachmentFileOrderMatchSheet;
+	
+	public String getAssignCSRName() {
+		return assignCSRName;
+	}
+
+	public void setAssignCSRName(String assignCSRName) {
+		this.assignCSRName = assignCSRName;
+	}
+	
+	public Boolean getFactoryMOQCheck() {
+		return factoryMOQCheck;
+	}
+
+	public void setFactoryMOQCheck(Boolean factoryMOQCheck) {
+		this.factoryMOQCheck = factoryMOQCheck;
+	}
+
+	public String getFactoryMOQValue() {
+		return factoryMOQValue;
+	}
+
+	public void setFactoryMOQValue(String factoryMOQValue) {
+		this.factoryMOQValue = factoryMOQValue;
+	}
 	
 	public String getProductLineMatchFlag() {
 		return productLineMatchFlag;
