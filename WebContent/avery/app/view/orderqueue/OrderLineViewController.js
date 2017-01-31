@@ -131,7 +131,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		columns = editor.grid.columns,
 			len = columns.length;
     	
-    	grid.lastScrollLeftPosition = grid.view.el.dom.scrollLeft;
+    	editor.grid.lastScrollLeftPosition = editor.grid.view.el.dom.scrollLeft;
     	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
