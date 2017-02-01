@@ -48,8 +48,8 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	}
 		
 	@Transactional
-	public List getAllEntitiesListForDailyReport() throws Exception{
-		return getOrderQueueDao().getAllEntitiesListForDailyReport();
+	public List getAllEntitiesListForDailyReport(MultivaluedMap queryMap) throws Exception{
+		return getOrderQueueDao().getAllEntitiesListForDailyReport(queryMap);
 	}
 	
 	@Transactional
