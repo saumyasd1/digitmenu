@@ -19,7 +19,7 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	
 	public List getAllEntitiesListWithCriteria(MultivaluedMap queryMap) throws Exception;
 	
-	public List getAllEntitiesListForDailyReport() throws Exception;
+	public List getAllEntitiesListForDailyReport(MultivaluedMap queryMap) throws Exception;
 	
 	public List getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception;
 	
