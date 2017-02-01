@@ -3,6 +3,25 @@ Ext.define('AOC.view.webform.WebFormController', {
     alias: 'controller.webFormMain',
   
     runTime : AOC.config.Runtime,
+    hideAndDestroyAttachmentField:function(){
+    	var me = this,
+    		refs = me.getReferences(),
+    		form = refs.webform,
+    		i = form.attachmentCount,
+    		currentAttachment;
+    		
+    	for(var j=2;j<=i;j++){
+    		currentAttachment=form.queryById('attachment'+j),
+    		additionalDataFileKey=form.queryById('additionalDataFileKey'+j);
+    		if(currentAttachment){
+    			currentAttachment.destroy();
+    			if(additionalDataFileKey){
+    				additionalDataFileKey.destroy();
+				}
+    		}
+    	}
+    	form.attachmentCount = 1;
+    },
     onPartnerChange:function(obj, newValue){
     	var me = this,
 			rboCombo = me.lookupReference('rboCombo'),
@@ -25,11 +44,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 				fields:['id','rboName'],
 				data: jsonValue
 			});
+			
     		if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
     			var refs = this.getReferences(),
-    			webOrderFormView = refs.webform,
-    			form = webOrderFormView.getForm(),
-    			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
+	    			webOrderFormView = refs.webform,
+	    			form = webOrderFormView.getForm(),
+	    			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
+    			
     			rboCombo.reset();
    	    	 	dataStructureCombo.reset();
    	    	 	email.reset();
@@ -39,10 +60,15 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	 	webOrderAttachmentInfoGrid.store.removeAll();
    	    	 	webOrderAttachmentInfoGrid.getView().refresh();
    	    	 	orderFileType.setDisabled(true);
+   	    	 	
+   	    	 	attachment1.hide();
+   	    	 	additionalDataFileKey1.hide();
    	    	    attachment1.reset();
    	    	    additionalDataFileKey1.reset();
    	    	 	obj.isChangedForFirstTime=false;
+   	    	 	me.hideAndDestroyAttachmentField();
     		}
+    		
 			dataStructureCombo.disable();
 			rboCombo.bindStore(store);
 			
@@ -93,37 +119,41 @@ Ext.define('AOC.view.webform.WebFormController', {
 			store = cmp.getStore(),
 			index = store.find('id', newValue),
 			view = me.getView(),
-			attachmentCount = view.attachmentCount,
+			//attachmentCount = view.attachmentCount,
 			attachementField = me.lookupReference('attachment1'),
 			additionalDataFileKey = me.lookupReference('additionalDataFileKey1');
 			
-		if(!Ext.isEmpty(newValue) && index != -1){
-			var record = store.getAt(index),
-				attachmentRequired = record.get('attachmentRequired');
-				
-			view.orderFileNameExtension = record.get('orderFileNameExtension');
-			view.attachmentFileNameExtension_1 = record.get('attachmentFileNameExtension_1');
-			
-			attachementField[attachmentRequired ? 'show' : 'hide']();
-			attachementField[attachmentRequired ? 'enable' : 'disable']();
-			attachementField.allowBlank = attachmentRequired ? false : true;
-			additionalDataFileKey[attachmentRequired ? 'show' : 'hide']();
-			additionalDataFileKey[attachmentRequired ? 'enable' : 'disable']();
-		 
-			view.lookupReference('emailBody').enable();
-			view.lookupReference('email').enable();
-			view.lookupReference('subject').enable();
-			view.lookupReference('orderFileType').enable();
-		 }else{
-			view.lookupReference('subject').disable();
-			view.lookupReference('emailBody').disable();
-			view.lookupReference('email').disable();
-			view.lookupReference('subject').disable();
-			view.orderFileNameExtension=null;
-			view.attachmentFileNameExtension_1=null;
-			attachementField.hide();
-			attachementField.disable();
-			attachementField.allowBlank = true;
+		if(attachementField){
+			if(!Ext.isEmpty(newValue) && index != -1){
+				var record = store.getAt(index),
+					attachmentRequired = record.get('attachmentRequired');
+					
+				view.orderFileNameExtension = record.get('orderFileNameExtension');
+				view.attachmentFileNameExtension_1 = record.get('attachmentFileNameExtension_1');
+				if(attachmentRequired){
+					me.hideAndDestroyAttachmentField();
+				}
+				attachementField[attachmentRequired ? 'show' : 'hide']();
+				attachementField[attachmentRequired ? 'enable' : 'disable']();
+				attachementField.allowBlank = attachmentRequired ? false : true;
+				additionalDataFileKey[attachmentRequired ? 'show' : 'hide']();
+				additionalDataFileKey[attachmentRequired ? 'enable' : 'disable']();
+			 
+				view.lookupReference('emailBody').enable();
+				view.lookupReference('email').enable();
+				view.lookupReference('subject').enable();
+				view.lookupReference('orderFileType').enable();
+			 }else{
+				view.lookupReference('subject').disable();
+				view.lookupReference('emailBody').disable();
+				view.lookupReference('email').disable();
+				view.lookupReference('subject').disable();
+				view.orderFileNameExtension=null;
+				view.attachmentFileNameExtension_1=null;
+				attachementField.hide();
+				attachementField.disable();
+				attachementField.allowBlank = true;
+			}
 		}
 	},
 
@@ -260,9 +290,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				scope : this,
 				success : function(form,action){
 					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
-					webOrderFormView.resetFormFields();
-					webOrderAttachmentInfoGrid.store.removeAll();
-					webOrderAttachmentInfoGrid.getView().refresh();
+					Helper.resetWebOrderForm(me.getView());
 					orderFileType.setDisabled(true);
 					Ext.getBody().unmask();
 				},
@@ -414,9 +442,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 				attachmentFileField,
 				webOrderAttachmentInfoGrid = view.lookupReference('webOrderAttachmentInfoGrid'),
 				store=webOrderAttachmentInfoGrid.store;
+				attachmentFileField = view.lookupReference('attachment'+internalId);
 				
 			if(fileType == 'Attachment'){
-				attachmentFileField = view.lookupReference('attachment'+internalId);
 				var additionalDataFileKey = view.lookupReference('additionalDataFileKey'+internalId);
 				if(attachmentFileField){
 					attachmentFileField.destroy();
@@ -466,13 +494,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 		var view = this.getView(),
 			record = context.record,
 			internalId = record.get('internalId'),
-			attachmentField = view.lookupReference('attachmentField'), 
-			additionalDataFileKey = view.lookupReference('additionalDataFileKeyField');
+			attachmentField = view.lookupReference('attachment'+internalId), 
+			additionalDataFileKey = view.lookupReference('additionalDataFileKey'+internalId);
 		
-		context.record.commit()
+		//context.record.commit();
 		if(additionalDataFileKey){
 			additionalDataFileKey.setValue(context.value);
-			attachmentField.setValue(record.get('fileName'));
+			//attachmentField.setValue(record.get('fileName'));
 		}
 	},
 	beforeEditorShow:function(editor,context){

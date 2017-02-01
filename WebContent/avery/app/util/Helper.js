@@ -401,6 +401,19 @@ Ext.define('AOC.util.Helper',{
 		var index = store.find("csrName",combo.getRawValue(),'',false,false,true);
 		if(index == -1){
 			combo.setValue('');
-			}
 		}
+	},
+	
+	resetWebOrderForm:function(webOrderView){
+		var refs = webOrderView.getReferences(),
+			form = refs.webform;
+		
+		form.resetFormFields();
+		form.isResubmit = false;
+		webOrderView.lookupReference('rboCombo').disable();
+		webOrderView.lookupReference('partnerCombo').getStore().load();
+		var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
+		attachmentInfoGrid.store.removeAll();
+		attachmentInfoGrid.getView().refresh();
+	}
 });

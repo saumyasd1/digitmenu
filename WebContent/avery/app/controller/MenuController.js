@@ -206,20 +206,10 @@ Ext.define('AOC.controller.MenuController', {
 				  //chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 				break;
 			case 'weborderview':
-				var weborderview = Ext.ComponentQuery.query('weborderview')[0],
-				refs = weborderview.getReferences();
-			
-				var form = refs.webform;
-				form.resetFormFields();
-				form.isResubmit = false;
-				weborderview.lookupReference('rboCombo').disable();
-	//			weborderview.down('form').lookupReference('productLineCombo').disable();
-				weborderview.lookupReference('partnerCombo').getStore().load();
-				var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
-				attachmentInfoGrid.store.removeAll();
-				attachmentInfoGrid.getView().refresh();
-		    	weborderview.down('#backButtonimage').hide();
-		    	weborderview.updateHeaderLabel(newWebOrder);
+				var webOrderView = Ext.ComponentQuery.query('weborderview')[0];
+				Helper.resetWebOrderForm(webOrderView);
+				webOrderView.down('#backButtonimage').hide();
+				webOrderView.updateHeaderLabel(newWebOrder);
 				break;
 			default :
 				var gridView = Ext.ComponentQuery.query(view)[0],
