@@ -204,7 +204,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'combo',
 								name: 'productLineTypeCombo',
-								hiddenName:'productLineType',
 								fieldLabel:AOCLit.productLine,
 								labelWidth:100,
 								allowBlank: true,
