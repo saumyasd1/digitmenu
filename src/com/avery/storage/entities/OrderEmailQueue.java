@@ -750,6 +750,8 @@ private static final long serialVersionUID = 3208431286041487210L;
   			orderemailQueueObj.setCreatedDate(date);
   			orderemailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
   			orderemailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
+  			orderemailQueueObj.setMailBody(emailBody);
+  			orderemailQueueObj.setOrderMail(false);
   			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
   			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
@@ -763,7 +765,7 @@ private static final long serialVersionUID = 3208431286041487210L;
   			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
   					.getInstance().getBean("orderFileAttachmentService");
   			Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
-  			orderFileAttachmentService.insertEmailBody(orderEmailQueue, emailBody, productLineObj);
+  			//orderFileAttachmentService.insertEmailBody(orderEmailQueue, emailBody, productLineObj);
   			String defaultFilePath = PropertiesConfig
 					.getString(PropertiesConstants.FILEATTACHMENT_PATH);
   			 UUID uniqueUUId=UUID.randomUUID();
