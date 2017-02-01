@@ -42,12 +42,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	this.attachmentCount=1;
     	currentAttachment = form.lookupReference('attachment1'),
     	additionalDataFileKey1 = form.lookupReference('additionalDataFileKey1');
-    	if(currentAttachment)
+    	if(currentAttachment){
     		currentAttachment.hide();
 	    	if(additionalDataFileKey1){
 	    		additionalDataFileKey1.hide();
 			}
-    	else{
+    	}else{
     		form.add(
 				{
 					xtype:'fieldcontainer',
