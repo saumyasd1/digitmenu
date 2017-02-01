@@ -774,9 +774,10 @@ public class OrderQueue extends MainAbstractEntity{
 	@Context HttpHeaders hh) {
 		List<OrderQueue> orderQueue = null;
 		try {
+			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
-			orderQueue = orderQueueService.getAllEntitiesListForDailyReport();
+			orderQueue = orderQueueService.getAllEntitiesListForDailyReport(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue);
