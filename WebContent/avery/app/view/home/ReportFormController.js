@@ -45,49 +45,45 @@ Ext.define('AOC.view.home.ReportFormController', {
     	}
     },
     
-    
     onPartnerChange:function(obj,newValue){
-    	var me=this;
-    	if(newValue!=null){
-    	var productLineCombo=this.lookupReference('productLineCombo'),rboCombo=this.lookupReference('rboName');
-    	var store=null;
-        var response = Ext.Ajax.request({
-            async: false,
-            url        : applicationContext+'/rest/productLines/partner/'+newValue+'?partnerId='+newValue
-        });
-      	var jsonValue=Ext.decode(response.responseText).productlines;
-    	var serviceStoreData = [];
-    	if(jsonValue.length>0){
-    	jsonValue.forEach(function(item){
-  		var service = item;
-  		serviceStoreData.push(service);
-  		
-  	});
-    	store =  Ext.create('Ext.data.Store',{
-    		fields:['id'],
-            data : serviceStoreData
-      });
-    	var uniqueValueArray1=store.collect('rbo');
-    	var serviceStoreData1= [];
-    	  if(uniqueValueArray1.length>0){
-//    		 uniqueValueArray1.forEach(function(item){
-//    			 var index=store.find('rboName',item);
-//    			 var currentRecord=store.getAt(index);
-//        	 serviceStoreData1.push(currentRecord);
-//           });
-    	     var serviceStore = Ext.create('Ext.data.Store',{
-		     	   	 fields : ['rboName','id','productLineType'],	
-			         data : uniqueValueArray1
-		        });
-    	    // serviceStore.insert(0,new Ext.data.Record({id:'all', rboName:'SelectAll'}));
-    	     var form =me.getView();
-    	     if(form !=null && !form.isResubmit){
-    	    	 rboCombo.reset();
-    	     }
-    	     rboCombo.bindStore(serviceStore);
-    	     rboCombo.enable();
-    	  }
-    	}
+    	var me = this;
+    	
+    	if(newValue != null){
+	    	var productLineCombo = me.lookupReference('productLineCombo'),
+	    		rboCombo = me.lookupReference('rboName');
+	    	
+	        var response = Ext.Ajax.request({
+	            async: false,
+	            url:applicationContext+'/rest/productLines/partner/'+newValue+'?partnerId='+newValue
+	        });
+	        
+	      	var jsonValue = Ext.decode(response.responseText).productlines,
+	      		serviceStoreData = [];
+	      	
+	    	if(jsonValue.length>0){
+	    		jsonValue.forEach(function(item){
+	    			var service = item;
+	    			serviceStoreData.push(service);
+	    		});
+	    		
+		    	var store =  Ext.create('Ext.data.Store',{
+		    		fields:['id'],
+		            data : serviceStoreData
+		    	});
+		    	
+		    	var uniqueValueArray1 = store.collect('rbo'),
+		    		serviceStoreData1= [];
+		    	
+		    	serviceStoreData1.push({id:'all', rboName:'Select All'});
+		    	if(uniqueValueArray1.length>0){
+		    		var rboStore = rboCombo.store;
+		    		
+		    		 uniqueValueArray1.forEach(function(item){
+			        	 serviceStoreData1.push(item);
+		    		 });
+		    		 rboStore.loadData(serviceStoreData1);
+		    	}
+	    	}
     	}
     }
 })

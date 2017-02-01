@@ -1,7 +1,7 @@
 Ext.define('AOC.view.home.HomeChartController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.homechartcontroller',
-    requires:['AOC.view.home.ReportForm'],
+    //requires:['AOC.view.home.ReportForm'],
     runTime: AOC.config.Runtime,
     changeDateRange:function(cmp,rec){
     var me=this;
@@ -25,12 +25,12 @@ Ext.define('AOC.view.home.HomeChartController', {
 	}
     },
     getReportView:function(obj){
-    	var win=Ext.create('AOC.view.base.BaseWindow',{
-    						items:[{
-    							xtype:'reportform'
-    						}]
-    	});
-    win.show();
+//    	var win=Ext.create('AOC.view.base.BaseWindow',{
+//    						items:[{
+//    							xtype:'reportform'
+//    						}]
+//    	});
+//    win.show();
     },
     homeGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 	var endDate=new Date();
