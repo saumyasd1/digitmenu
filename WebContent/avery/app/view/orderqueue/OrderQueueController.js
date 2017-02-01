@@ -190,10 +190,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 				},
 				reSubmitOrder:function(cmp){
 					var rec = e.record;
+					var orderInMailBody=(Ext.isEmpty(rec.get('orderInMailBody'))) ? false : rec.get('orderInMailBody');
+					if(orderInMailBody){
+						Ext.Msg.alert('', AOCLit.resubmitNotPermissible);
+						return false;
+					}
 					var con=AOC.app.getController('MenuController');
 					con.selectCard('weborderview');
 					con.selectMenuItem('weborderview');
-					
 					var webOrderView=Ext.ComponentQuery.query('weborderview')[0],
 						refs = webOrderView.getReferences(),
 						weborderform = refs.webform,
@@ -208,14 +212,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					weborderform.resetFormFields();
 					attachmentinfoGrid.store.removeAll();
 					attachmentinfoGrid.getView().refresh();
-					
 					var partnerId = (Ext.isEmpty(rec.get('partnerId'))) ? '' : rec.get('partnerId'),
 						productLineId = (Ext.isEmpty(rec.get('productLineId'))) ? '' : rec.get('productLineId'),
 						rboId = (Ext.isEmpty(rec.get('rboId'))) ? '' : rec.get('rboId'),
 						senderEmailID = (Ext.isEmpty(rec.get('senderEmailId'))) ? '' : rec.get('senderEmailId'),
 						subject =(Ext.isEmpty(rec.get('subject'))) ? '' : rec.get('subject'),
-						emailBody =(Ext.isEmpty(rec.get('emailBody'))) ? '': rec.get('emailBody');
-					
+								mailBody =(Ext.isEmpty(rec.get('mailBody'))) ? '': rec.get('mailBody');
+					emailBodyField.setValue(mailBody);
 					webOrderView.rboId = rboId;
 					webOrderView.productLineId = productLineId;
 					
@@ -242,9 +245,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					
 					for(var i=0;i<fileList.length;i++){
 						var currentFile=fileList[i];
-						if(currentFile.fileContentType=='Disregard'){
-							emailBodyField.setValue(currentFile.filePath);
-						}else if(currentFile.fileContentType=="Order"){
+						if(currentFile.fileContentType=="Order"){
 							webOrderView.down('#oldOrderFileId').setValue(currentFile.id);
 							webOrderView.down('#orderFileType').setValue(currentFile.fileName);
 							controller.insertFileInGrid(currentFile.fileName,'Order File Type',false,i+1,currentFile.id,null); 
