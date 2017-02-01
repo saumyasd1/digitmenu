@@ -47,9 +47,11 @@ Ext.define('AOC.view.home.ReportForm',{
 						labelAlign:'top',
 						margin:'0 20 0 0',
 						flex:1,
+						allowBlank : false,
 						reference:'rboName',
 						displayField:'rboName',
 						valueField:'id',
+						disabled:true,
 						emptyText:'Select RBO',
 						queryMode:'local',
 						store:Ext.create('Ext.data.Store',{
@@ -64,6 +66,8 @@ Ext.define('AOC.view.home.ReportForm',{
 						flex:1,
 						margin:'0 10 0 0',
 						reference:'status',
+						allowBlank : false,
+						disabled:true,
 						displayField:'value',
 						valueField:'code',
 						queryMode :'local',
@@ -72,9 +76,11 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    listeners:{
 	                    	afterrender:function(field){
 	                    		var store = field.store,
-	                    			obj ={code:'all',value:'Select All'};
-	                    		
-	                    		store.insert(0,new Ext.data.Record(obj));
+	                    			obj ={code:'all',value:'Select All'},
+	                    			index=store.find("code",'all','',false,false,true);
+	                    		if(index == -1){
+	                    			store.insert(0,new Ext.data.Record(obj));
+	                    		}
 	                    	}
 	                    }
 					}
@@ -107,7 +113,7 @@ Ext.define('AOC.view.home.ReportForm',{
 			{
 				xtype: 'fieldcontainer',
 				layout: 'hbox',
-				margin : '5 0 0 10',
+				margin : '5 0 10 10',
 				defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -134,6 +140,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						fieldLabel : 'To Date ',
 						reference:'toDate',
 						width:250,
+						margin:'0 0 0 10',
 						hidden:true,
 						allowBlank : true,
 						selectOnTab : true,
@@ -151,6 +158,7 @@ Ext.define('AOC.view.home.ReportForm',{
     buttons:[
          {
 	    	text:'Get Report',
+	    	formBind:true,
 	    	listeners:{
 	    		'click':'getReport'
 	    	}
