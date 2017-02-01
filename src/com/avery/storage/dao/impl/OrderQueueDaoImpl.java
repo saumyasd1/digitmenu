@@ -135,7 +135,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName")
 			.add(Projections.property("orderemailqueue.mailBody"),"mailBody")
-			.add(Projections.property("varProductLine.orderInMailBody"), "orderInMailBody");
+			.add(Projections.property("varProductLine.orderInMailBody"), "orderInMailBody")
+			.add(Projections.property("rbo.id"), "rboId");
 		// getting filename of order file
 
 		
