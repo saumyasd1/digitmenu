@@ -1,6 +1,11 @@
 Ext.define('AOC.view.webform.WebOrderView', {
 	extend : 'Ext.panel.Panel',
-	requires : ['AOC.view.base.BaseToolbar','AOC.view.webform.AttachmentInfoGrid','AOC.view.webform.WebOrderForm'],
+	requires : [
+       'AOC.view.base.BaseToolbar',
+       'AOC.view.webform.AttachmentInfoGrid',
+       'AOC.view.webform.WebOrderForm',
+       'AOC.view.webform.WebFormController'
+	],
 	alias : 'widget.weborderview',
 	controller:'webFormMain',
 	itemId : 'webOrderViewItemId',

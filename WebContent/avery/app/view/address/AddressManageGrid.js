@@ -2,7 +2,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	extend : 'Ext.grid.Panel',
 	itemId : 'AddressManageGriditemId',
     alias : 'widget.addressmanagegrid',
-    requires:['AOC.view.ux.CustomSearchField'],
+    requires:['AOC.view.ux.CustomSearchField','AOC.view.address.AddressController'],
     controller:'addressMain',
 	emptyText:AOCLit.emptyDataMsg,
 	recordBeingEdit:null,

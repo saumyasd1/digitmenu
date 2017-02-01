@@ -6,6 +6,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
     alias : 'widget.taskManagergrid',
     emptyText: AOCLit.emptyDataMsg,
     reserveScrollbar:true,
+    requires:['AOC.store.TaskManagerStore','AOC.view.taskmanager.TaskManagerController'],
 	columnLines:false,
 	store:Ext.create('AOC.store.TaskManagerStore', {
 		storeId:'TaskManagerStoreId'

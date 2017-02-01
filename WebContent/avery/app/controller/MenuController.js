@@ -210,7 +210,7 @@ Ext.define('AOC.controller.MenuController', {
 				refs = weborderview.getReferences();
 			
 				var form = refs.webform;
-				form.resetFields();
+				form.resetFormFields();
 				form.isResubmit = false;
 				weborderview.lookupReference('rboCombo').disable();
 	//			weborderview.down('form').lookupReference('productLineCombo').disable();
@@ -414,7 +414,7 @@ Ext.define('AOC.controller.MenuController', {
 		cmp.getSelectionModel().select(rec);
 	},
 	loadStores:function(){
-		Ext.getStore('OrderCharts').load();
+		//Ext.getStore('OrderCharts').load();
 		Ext.getStore('HomePageOders').load();
 		var helper=AOC.util.Helper;
 		helper.loadVariableComboStore('FreightTerms');

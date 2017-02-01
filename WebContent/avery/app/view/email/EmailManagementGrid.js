@@ -5,6 +5,10 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	itemId : 'EmailMangementitemId',
     alias : 'widget.emailmanagementgrid',
     emptyText: AOCLit.emptyDataMsg,
+    requires:[
+          'AOC.view.email.EmailManagementController',
+          'Ext.ux.ProgressBarPager'
+    ],
     reserveScrollbar:true,
 	columnLines:false,
 	viewConfig : {

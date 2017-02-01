@@ -1,6 +1,6 @@
 Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 	extend : 'AOC.view.base.NewBaseWindow',
-	alias : 'widget.partneradvancesearchwin',
+	alias : 'widget.addressadvancesearchwin',
 	itemId : 'addressAdvanceSearchWin',
 	reference:'addressAdvanceSearchWin',
 	controller : 'addressMain',

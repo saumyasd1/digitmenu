@@ -12,13 +12,17 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	itemId:'weborderformItemId',
 	//controller:'webFormMain',
 	bodyPadding: '10',
-	requires: ['AOC.lang.lit'],
+	requires: [
+	    'AOC.lang.lit',
+	    'AOC.store.UniquePartnerStore'
+	],
 	border:false,
 	attachmentFileNameExtension_1:null,
 	orderFileNameExtension:null,
 	attachmentCount:1,
 	maxAttachmentCount:4,
 	isResubmit:false,
+	requires:['AOC.store.WebformStore'],
 	
 	defaults:{
 		labelSeparator:'',
@@ -26,12 +30,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 		labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 		labelWidth:150
 	},
-    resetFields: function() {
+    resetFormFields: function() {
     	this.isResubmit=false;
     	var i=this.attachmentCount,currentAttachment,form=this;
     	for(var j=2;j<=i;j++){
-    		currentAttachment=form.lookupReference('attachment'+j),
-    		additionalDataFileKey=form.lookupReference('additionalDataFileKey'+j);
+    		currentAttachment=this.queryById('attachment'+j),
+    		additionalDataFileKey=this.queryById('additionalDataFileKey'+j);
     		if(currentAttachment){
     			currentAttachment.destroy();
     			if(additionalDataFileKey){
@@ -40,8 +44,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     		}
     	}
     	this.attachmentCount=1;
-    	currentAttachment = form.lookupReference('attachment1'),
-    	additionalDataFileKey1 = form.lookupReference('additionalDataFileKey1');
+    	currentAttachment = this.queryById('attachment1'),
+    	additionalDataFileKey1 = this.queryById('additionalDataFileKey1');
     	if(currentAttachment){
     		currentAttachment.hide();
 	    	if(additionalDataFileKey1){

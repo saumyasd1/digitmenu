@@ -1,6 +1,10 @@
 Ext.define('AOC.view.email.EmailManagement',{
 	extend : 'Ext.Container',
-	requires : ['AOC.view.base.BaseToolbar','AOC.view.email.EmailManagementGrid'],
+	requires : [
+         'AOC.view.base.BaseToolbar',
+         'AOC.view.email.EmailManagementGrid',
+         'AOC.view.viewmail.ViewMail'
+	],
 	alias : 'widget.emailmanagement',
 	itemId : 'emailmanagementitemId',
 	layout :'fit', 

@@ -2,7 +2,11 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	extend : 'Ext.grid.Panel',
 	itemId : 'partnerproductlinegriditemId',
     alias : 'widget.partnerproductlinegrid',
-	requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.view.ux.CustomSearchField'],
+	requires:[
+          'AOC.view.advsearch.ProductLineAdvanceSearch',
+          'AOC.view.ux.CustomSearchField',
+          'AOC.view.productline.ProductLineController'
+	],
 	controller:'productlineMain',
 	emptyText: AOCLit.emptyDataMsg,
 	partnerid:null,

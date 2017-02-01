@@ -1,8 +1,16 @@
 Ext.define('AOC.view.archive.ArchiveManage', {
 	extend : 'Ext.Container',
-	requires : ['AOC.view.base.BaseToolbar', 'AOC.view.archive.OrderFileQueueArchiveGrid', 'AOC.view.archive.OrderLineArchiveGrid', 
-		'AOC.view.archive.OrderLineDetailArchiveGrid', 'AOC.view.archive.PartnerArchiveGrid', 
-		'AOC.view.archive.ProductLineArchiveGrid','AOC.view.archive.SalesOrderArchiveGrid','AOC.view.archive.SalesOrderDetailArchiveGrid'],
+	requires : [
+	     'AOC.view.base.BaseToolbar', 
+	     'AOC.view.archive.OrderFileQueueArchiveGrid', 
+	     'AOC.view.archive.OrderLineArchiveGrid', 
+	     'AOC.view.archive.OrderLineDetailArchiveGrid', 
+	     'AOC.view.archive.PartnerArchiveGrid', 
+	     'AOC.view.archive.ProductLineArchiveGrid',
+	     'AOC.view.archive.SalesOrderArchiveGrid',
+	     'AOC.view.archive.SalesOrderDetailArchiveGrid',
+	     'AOC.view.archive.ArchiveController'
+	],
 	alias : 'widget.archivemanage',
 	itemId : 'archivemanageitemId',
 	controller : 'archiveMain',

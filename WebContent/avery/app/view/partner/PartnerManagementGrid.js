@@ -1,6 +1,11 @@
 Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	extend : 'Ext.grid.Panel',
-	requires : ['AOC.view.partner.PartnerProductLineGrid','AOC.view.ux.CustomSearchField','AOC.util.Helper'],
+	requires : [
+	       'AOC.view.partner.PartnerProductLineGrid',
+	       'AOC.view.ux.CustomSearchField',
+	       'AOC.util.Helper',
+	       'AOC.view.partner.PartnerController'
+	],
 	controller:'partnerMain',
 	itemId : 'PartnerMangementitemId',
     alias : 'widget.partnermanagementgrid',

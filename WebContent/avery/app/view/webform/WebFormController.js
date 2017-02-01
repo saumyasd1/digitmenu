@@ -260,7 +260,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				scope : this,
 				success : function(form,action){
 					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
-					webOrderFormView.resetFields();
+					webOrderFormView.resetFormFields();
 					webOrderAttachmentInfoGrid.store.removeAll();
 					webOrderAttachmentInfoGrid.getView().refresh();
 					orderFileType.setDisabled(true);
@@ -317,6 +317,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 									name: 'attachment'+i,
 									reference: 'attachment'+i,
 									fieldLabel:'Attachments',
+									itemId:'attachment'+i,
 									allowBlank: true,
 									flex:1.8,
 									scope:me,
@@ -444,7 +445,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			webOrderForm = refs.webform,
 			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
 			
-		webOrderForm.resetFields();
+		webOrderForm.resetFormFields();
 		webOrderAttachmentInfoGrid.store.removeAll();
 		webOrderAttachmentInfoGrid.getView().refresh();
 		var messageField = this.getView().down('#messageFieldItemId');

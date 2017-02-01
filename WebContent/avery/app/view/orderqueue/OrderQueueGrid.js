@@ -4,7 +4,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     itemId:'OrderQueueGridItemId',
 	emptyText: AOCLit.emptyDataMsg,
 	controller: 'orderqueue',
-	requires:['Ext.form.action.StandardSubmit','Ext.grid.plugin.Clipboard','AOC.view.ux.CustomSearchField'],
+	requires:[
+          'Ext.form.action.StandardSubmit',
+          'Ext.grid.plugin.Clipboard',
+          'AOC.view.ux.CustomSearchField',
+          'AOC.view.orderqueue.OrderQueueController'
+    ],
 	reserveScrollbar:true,
 	columnLines:false,
 	viewConfig : {
