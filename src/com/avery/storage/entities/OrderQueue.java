@@ -200,6 +200,15 @@ public class OrderQueue extends MainAbstractEntity{
 	public void setOrgCodeId(int orgCodeId) {
 		this.orgCodeId = orgCodeId;
 	}
+	@Transient
+	private String orderSource;
+	public String getOrderSource() {
+		return orderSource;
+	}
+
+	public void setOrderSource(String orderSource) {
+		this.orderSource = orderSource;
+	}
 
 	@Transient
 	private String codeValue;
@@ -212,7 +221,18 @@ public class OrderQueue extends MainAbstractEntity{
 	
 	@Transient
 	private int additionalFileCount;
+	@Transient
+	private Date receivedDate;
 	
+	
+	public Date getReceivedDate() {
+		return receivedDate;
+	}
+
+	public void setReceivedDate(Date receivedDate) {
+		this.receivedDate = receivedDate;
+	}
+
 	public int getAdditionalFileCount() {
 		return additionalFileCount;
 	}
@@ -722,7 +742,7 @@ public class OrderQueue extends MainAbstractEntity{
 					orderfile.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 					orderFileId=orderFileAttachmentService.create(orderfile);
 				}
-				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine);
+				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine, filePath);
 				OrderFileAttachment newOrderFileAttachment=new OrderFileAttachment();
 				newOrderFileAttachment.setId(orderFileId);
 				orderQueue.setSubject(subjectline);
