@@ -174,6 +174,8 @@ Ext.define('AOC.lang.lit',{
     "selectTableMsg": '<center><font size=2>No data to display,Please Select Table</font></center>',
     "emptyDataMsg":'<div align=center> No data to display.</div>',
     "noContentTypeDispMsg": '<div align=center> No content type(s) to display.</div>',
+    //Report
+    "emptyFilter":'<b>Please select all filters</b>',
     //Bulk Update
     "roundQty": 'Round Qty',
     "MOQDiffQty":'MOQDiff Qty',
