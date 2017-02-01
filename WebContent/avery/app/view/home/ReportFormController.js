@@ -65,21 +65,21 @@ Ext.define('AOC.view.home.ReportFormController', {
   	});
     	store =  Ext.create('Ext.data.Store',{
     		fields:['id'],
-	            data : serviceStoreData
+            data : serviceStoreData
       });
-    	var uniqueValueArray1=store.collect('rboName');
+    	var uniqueValueArray1=store.collect('rbo');
     	var serviceStoreData1= [];
     	  if(uniqueValueArray1.length>0){
-    		 uniqueValueArray1.forEach(function(item){
-    			 var index=store.find('rboName',item);
-    			 var currentRecord=store.getAt(index);
-        	 serviceStoreData1.push(currentRecord);
-           });
-    	     var serviceStore =  Ext.create('Ext.data.Store',{
-     	   	 fields : ['rboName','id','productLineType'],	
-	         data : serviceStoreData1
-        });
-    	     
+//    		 uniqueValueArray1.forEach(function(item){
+//    			 var index=store.find('rboName',item);
+//    			 var currentRecord=store.getAt(index);
+//        	 serviceStoreData1.push(currentRecord);
+//           });
+    	     var serviceStore = Ext.create('Ext.data.Store',{
+		     	   	 fields : ['rboName','id','productLineType'],	
+			         data : uniqueValueArray1
+		        });
+    	    // serviceStore.insert(0,new Ext.data.Record({id:'all', rboName:'SelectAll'}));
     	     var form =me.getView();
     	     if(form !=null && !form.isResubmit){
     	    	 rboCombo.reset();

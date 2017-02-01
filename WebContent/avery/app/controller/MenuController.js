@@ -202,8 +202,8 @@ Ext.define('AOC.controller.MenuController', {
 		
 		switch (xtype){
 			case 'homewrapper':
-				  var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
-				  chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
+				 // var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
+				  //chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 				break;
 			case 'weborderview':
 				var weborderview = Ext.ComponentQuery.query('weborderview')[0],

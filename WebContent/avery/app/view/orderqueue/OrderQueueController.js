@@ -15,7 +15,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	 me.menuTpl=me.buildMenuTpl();    
   },
   getReportView:function(obj){
-		var win=Ext.create('AOC.view.base.BaseWindow',{
+		var win=Ext.create('AOC.view.base.NewBaseWindow',{
+			title:'Report',
 			items:[{
 				xtype:'reportform'
 			}]
@@ -318,7 +319,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					if((status == AOCLit.waitingForCSRStatusOrderQueue) || (status == AOCLit.soGeneratedStatusOrderQueue) 
 							 || (status == AOCLit.soSubmittedStatusOrderQueue)
 								|| (status == AOCLit.bookedStatusOrderQueue)
-									|| (status == AOCLit.errorStatusOrderQueue)
+									|| (status == AOCLit.errorStatusOrderQueue) || (status == AOCLit.oracleErrorStatusOrderQueue)
 										|| (status == AOCLit.cancelStatusOrderQueue)){
 						return true;
 					}
@@ -328,7 +329,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					if(status  == AOCLit.soGeneratedStatusOrderQueue 
 							 || status == AOCLit.soSubmittedStatusOrderQueue
 								|| status == AOCLit.bookedStatusOrderQueue
-									|| status == AOCLit.errorStatusOrderQueue){
+									|| status == AOCLit.errorStatusOrderQueue || status == AOCLit.oracleErrorStatusOrderQueue){
 						return true;
 					}
 					return false;
@@ -376,7 +377,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					return Helper.getDisableMenuItemStyle();
 				},
 				getCancelOrderEnableDisableClass:function(v){
-					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue || v.Status == AOCLit.errorStatusOrderQueue){
+					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue || v.Status == AOCLit.errorStatusOrderQueue || v.status == AOCLit.oracleErrorStatusOrderQueue){
 						 return 'user-profile-menu-item';
 					}
 					return 'order-profile-menu-item';

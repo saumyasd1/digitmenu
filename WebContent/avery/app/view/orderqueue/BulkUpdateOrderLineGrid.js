@@ -19,7 +19,23 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 		    plugins: [
 	            {
 			        ptype: 'cellediting',
-			        clicksToEdit: 2
+			        clicksToEdit: 2,
+			        beforeEdit:function(editor){
+			        	var me = this,
+				    		currentRecord = editor.record,
+				    		currentRecordStatus = currentRecord.get('status');
+			        	
+			        	if(currentRecordStatus != AOCLit.cancelStatusOrderLine){
+			        		editor.column.getEditor(currentRecord).enable();
+			        		return true;
+			        	}else{
+			        		if(editor.field == 'status'){
+			        			editor.column.getEditor(currentRecord).enable();
+			        			return true;
+			        		}
+			        	}
+			        	return false;
+			        }
 			    },
 			    {
 			    	ptype: 'clipboard'
@@ -89,7 +105,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     								metadata.style = AOCLit.mandatoryValidationCellColor;
     							}
     						}
-	    					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline){
+	    					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline || record.get('status')==AOCLit.errorInCustomerOrderQtyStatusOrderLine){
 	    						metadata.style = AOCLit.cellColor;
 	    					}
 	    					return value;
@@ -186,16 +202,14 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'customerItemNumber',
             width: 88
         },{
-            text: AOCLit.custName,
-            dataIndex: 'partnerCustomerName',
-            width: 126,
-            editor: 'textfield'
+            text: AOCLit.customerColorCode,
+            dataIndex: 'customerColorCode',
+            width: 102
         }, {
-            text: AOCLit.vendorName,
-            dataIndex: 'partnerVendorName',
-            width: 111,
-            editor: 'textfield'
-        }, {
+            text: AOCLit.customerColorDescription,
+            dataIndex: 'customerColorDescription',
+            width: 102
+        },{
             text: AOCLit.Bulk,
             dataIndex: 'bulk',
             width: 50,
@@ -205,54 +219,104 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	store:[['Y','Y'],['N','N']]
             },
             renderer:function(value, metadata,rec){
-				var v='N';
-				if(value){
-					v='Y';
-				}
+				
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
 				if(checkvalue.substr(0,1)=='T'){
 					return value;
 				}
 				else{
-					if(this.showMandatoryValidationField){
-						metadata.style = AOCLit.mandatoryValidationCellColor;
-					}
 					return value;
 				}
 			}
+        }, 
+        {
+			text: 'Avery ATO',
+			dataIndex: 'averyATO',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Bulk Item',
+			dataIndex: 'averyBulk',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery MOQ',
+			dataIndex: 'averyMOQ',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery ProductLine Type',
+			dataIndex: 'averyProductLineType',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		}, 
+		{
+			text: 'Avery Region',
+			dataIndex: 'averyRegion',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
+		{
+			text: 'Avery Roundup Qty',
+			dataIndex: 'averyRoundupQty',
+			width: 93,
+			renderer : function(value, metadata,record) {
+				if(value == '' || value == null) {
+					metadata.style = AOCLit.cellColor;
+					return value;
+				}
+				return value;
+			} 
+		},
+        {
+            text: AOCLit.custName,
+            dataIndex: 'partnerCustomerName',
+            width: 126,
+            editor: 'textfield'
         }, {
+            text: AOCLit.vendorName,
+            dataIndex: 'partnerVendorName',
+            width: 111,
+            editor: 'textfield'
+        },  {
             text: AOCLit.shipToCustomer,
             dataIndex: 'shipToCustomer',
             width: 170,
             editor: 'textfield'
-        },{
-        	xtype:'gridcolumn',
-            text: 'Bill to Site #<font color=red>*</font>',
-            dataIndex: 'oracleBillToSiteNumber',
-            width: 100,
-            editor:'textfield',
-            renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
-        },{
-            text: 'Ship to Site #<font color=red>*</font>',
-            dataIndex: 'oracleShipToSiteNumber',
-            width: 100,
-            editor:'textfield',
-            renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
         },{
             text: AOCLit.shipContact,
             dataIndex: 'shipToContact',
@@ -329,6 +393,20 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 130,
             getEditor: function(record) {
             	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            }
+        },{
+        	xtype:'gridcolumn',
+            text: 'Bill to Site #<font color=red>*</font>',
+            dataIndex: 'oracleBillToSiteNumber',
+            width: 100,
+            editor:'textfield',
+            renderer : function(value, meta,record) {
+                if(value=='') {
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
+                		meta.style = AOCLit.cellColor;
+                } else {
+                	 return value;
+                }
             }
         }, {
             text: AOCLit.billToCustomer,
@@ -435,7 +513,20 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 	 return value;
                 }
             }
-        },   {
+        },  {
+            text: 'Ship to Site #<font color=red>*</font>',
+            dataIndex: 'oracleShipToSiteNumber',
+            width: 100,
+            editor:'textfield',
+            renderer : function(value, meta,record) {
+                if(value=='') {
+                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
+                		meta.style = AOCLit.cellColor;
+                } else {
+                	 return value;
+                }
+            }
+        }, {
             text: AOCLit.shippingMethod,
             dataIndex: 'shippingMethod',
             width: 170,
@@ -467,20 +558,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					return value;
 				}
 				else{
-					if(this.showMandatoryValidationField){
+					//if(this.showMandatoryValidationField){
 						metadata.style = AOCLit.mandatoryValidationCellColor;
-					}
+					//}
 					return value;
 				}
 			}
-        }, {
-            text: AOCLit.customerColorCode,
-            dataIndex: 'customerColorCode',
-            width: 102
-        }, {
-            text: AOCLit.customerColorDescription,
-            dataIndex: 'customerColorDescription',
-            width: 102
         }, {
             text:AOCLit.customerSize,
             dataIndex: 'customerSize',
@@ -492,9 +575,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					return value;
 				}
 				else{
-					if(this.showMandatoryValidationField){
+					//if(this.showMandatoryValidationField){
 						metadata.style = mandatoryValidationCellColor;
-					}
+					//}
 					return value;
 				}
 			}
@@ -502,10 +585,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             text: 'Contract #',
             dataIndex: 'contractNumber',
             width: 130,
-            editor: 'textfield',
-            renderer : function(value, metadata,record) {
-				return value;
-			}
+            editor: 'textfield'
         }, {
             text: AOCLit.styleNo,
             dataIndex: 'styleNo',
@@ -525,9 +605,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'datefield',
             renderer : function(value, meta,record) {
                 if(value=='' || value == null) {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-                		meta.style = AOCLit.cellColor;
-                	}
+                	meta.style = AOCLit.cellColor;
                 }
                 else{
                 	return Ext.Date.format(value,'Y-m-d');
@@ -793,7 +871,18 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'};
+						store.insert(0,new Ext.data.Record(obj));
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'

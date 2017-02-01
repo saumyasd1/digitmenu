@@ -379,6 +379,7 @@ Ext.define('AOC.lang.lit',{
     bookedStatusOrderQueue:'41',
     errorStatusOrderQueue:'42',
     cancelStatusOrderQueue:'50',
+    oracleErrorStatusOrderQueue :'56',
     
     //Order Queue Line
     waitingForCSRStatusOrderLine:'20',

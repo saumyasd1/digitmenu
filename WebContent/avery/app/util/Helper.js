@@ -72,20 +72,37 @@ Ext.define('AOC.util.Helper',{
 	},
 	BulkUpdate:function(grid, selection, eOpts){
 		if(selection.startCell){
-			var store=grid.store;
-			var intialCell=selection.startCell;
+			var store = grid.store;
+			var intialCell = selection.startCell;
 			if(intialCell!=null){
-				var dataindex=intialCell.column.dataIndex;
-				var value=intialCell.record.get(dataindex);
-				var initialrowIdx=intialCell.rowIdx;
-				var lastrowIdx=selection.endCell.rowIdx;
-				var start=initialrowIdx,end=lastrowIdx;
-				if(lastrowIdx<initialrowIdx){
-					start=lastrowIdx-1;
-					end=initialrowIdx-1;
+				var dataindex=intialCell.column.dataIndex,
+					value=intialCell.record.get(dataindex),
+					initialrowIdx=intialCell.rowIdx,
+					lastrowIdx=selection.endCell.rowIdx,
+					start=initialrowIdx,
+					end=lastrowIdx;
+					//columnSortable = intialCell.column.sortable;
+				
+				intialCell.column.sortable = false;
+				if(lastrowIdx < initialrowIdx){
+					start = lastrowIdx;
+					end = initialrowIdx;
+					//start=lastrowIdx-1;
+					//end=initialrowIdx-1;
 				}
-				for(var i=(start+1);i<=end;i++){
-				  store.getAt(i).set(dataindex,value);
+				for(var i= start;i <= end; i++){
+					store.getAt(i).set(dataindex, value);
+					//For Status field change code value
+					if(dataindex == 'status'){
+						if(value == AOCLit.cancelStatusOrderLine){
+							store.getAt(i).set('iconName', 'cancel');
+							store.getAt(i).set('colorCode', '#808080');
+						}else{
+							store.getAt(i).set('iconName', 'warning');
+							store.getAt(i).set('colorCode', '#FF0000');
+						}
+						store.getAt(i).set('codeValue', intialCell.record.get('codeValue'));
+					}
 				}
 			}
 		}

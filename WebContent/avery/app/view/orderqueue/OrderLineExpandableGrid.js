@@ -478,19 +478,25 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[['Y','Y'],['N','N']]
 			},
 			renderer:function(value, metadata,rec){
-				var v='N';
-				if(value){
-					v='Y';
-				}
-				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
-				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
-				if(checkvalue.substr(0,1)=='T'){
-					return value;
-				}
-				else{
-					if(this.showMandatoryValidationField){
-						metadata.style = AOCLit.mandatoryValidationCellColor;
+//				var v='N';
+//				if(value){
+//					v='Y';
+//				}
+				if(!Ext.isEmpty(value)){
+					var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
+					var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
+					if(checkvalue.substr(0,1)=='T'){
+						return value;
 					}
+					else{
+	//					if(this.showMandatoryValidationField){
+	//						metadata.style = AOCLit.mandatoryValidationCellColor;
+	//					}
+						metadata.style = AOCLit.mandatoryValidationCellColor;
+						return value;
+					}
+				}else{
+					metadata.style = AOCLit.cellColor;
 					return value;
 				}
 			}	

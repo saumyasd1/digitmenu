@@ -171,24 +171,38 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	},
 	onSelectStatusBulk: function(combo){
 		var value = combo.getValue(),
-		grid = this.getView(),
-		columns = grid.columns,
-		len = columns.length;
-	
-	for(var i = 0; i< len; i++){
-		if(value == AOCLit.waitingForCSRStatusOrderLine){
-			columns[i].getEditor() ? columns[i].getEditor().enable() : '';
+			grid = this.getView(),
+			columns = grid.columns,
+			len = columns.length,
+			store = grid.store,
+			context = grid.editingPlugin.context
+			rowIdx = context.rowIdx;
+		
+		store.getAt(rowIdx).set(context.field, value);
+		store.getAt(rowIdx).set('codeValue', combo.getRawValue());
+		
+		if(value == AOCLit.cancelStatusOrderLine){
+			store.getAt(rowIdx).set('iconName', 'cancel');
+			store.getAt(rowIdx).set('colorCode', '#808080');
 		}else{
-			if(columns[i].getEditor()){
-				if(columns[i].getEditor().dataIndex == 'status'){
-					columns[i].getEditor().enable();
-				}else{
-					columns[i].getEditor().disable();
+			store.getAt(rowIdx).set('iconName', 'warning');
+			store.getAt(rowIdx).set('colorCode', '#FF0000');
+		}
+		
+		for(var i = 0; i< len; i++){
+			if(value == AOCLit.waitingForCSRStatusOrderLine){
+				columns[i].getEditor(store.getAt(rowIdx)) ? columns[i].getEditor(store.getAt(rowIdx)).enable() : '';
+			}else{
+				if(columns[i].getEditor(store.getAt(rowIdx))){
+					if(columns[i].getEditor(store.getAt(rowIdx)).dataIndex == 'status'){
+						columns[i].getEditor(store.getAt(rowIdx)).enable();
+					}else{
+						columns[i].getEditor(store.getAt(rowIdx)).disable();
+					}
 				}
 			}
 		}
-	}
-},
+	},
 	onComboFocus:function(field){
 			var me = this,
 		   	view = me.getView(),

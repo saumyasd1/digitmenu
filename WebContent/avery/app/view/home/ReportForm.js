@@ -49,7 +49,14 @@ Ext.define('AOC.view.home.ReportForm',{
             	reference:'rboName',
             	displayField:'rboName',
             	valueField:'id',
-            	emptyText:'Select RBO'
+            	emptyText:'Select RBO',
+            	listeners:{
+            		focus:function(combo){
+            			var store = combo.store,
+						obj = {id:'all', rboName:'Select All'};
+            			store.insert(0,new Ext.data.Record(obj));
+            		}
+            	}
                 },{
                 	xtype : 'combo',
 					name:'Status',

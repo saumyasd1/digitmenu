@@ -120,7 +120,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		}
     		//checks for Mandatory column missing
     		if(dataIndex == 'oracleBillToSiteNumber' || dataIndex == 'soldToRBONumber' || dataIndex == 'oracleShipToSiteNumber'
-    			|| dataIndex == 'orderedDate' || dataIndex == 'poNumber' || dataIndex == 'averyItemNumber'){
+    			|| dataIndex == 'orderedDate' || dataIndex == 'poNumber' || dataIndex == 'averyItemNumber' || dataIndex == 'bulk'){
     			
     			if(column.getEditor(rec) && Ext.isEmpty(rec.get(dataIndex))){
     				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
@@ -462,7 +462,9 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			}
     		}); 
 		}else{
-			store = orderLineExpandableGrid.store;
+			store=Ext.create('AOC.store.OrderLineStore');
+			store.load({params:{id:id}});
+			//store = orderLineExpandableGrid.store;
       		innerGridType = 'bulkupdateorderlinegrid';
 		}
 		
