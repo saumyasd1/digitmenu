@@ -116,6 +116,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
 				.add(Projections.property("partner.partnerName"), "partnerName").add(Projections.property("id"), "id")
 				.add(Projections.property("orderemailqueue.subject"), "subject")
+				.add(Projections.property("orderemailqueue.orderSource"),"orderSource")
 				.add(Projections.property("comment"), "comment").add(Projections.property("error"), "error")
 				.add(Projections.property("poNumber"), "poNumber")
 				.add(Projections.property("prevOrderQueueId"), "prevOrderQueueId")
@@ -442,27 +443,204 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	}
 	
 	@Override
-	public List<OrderQueue> getAllEntitiesListForDailyReport() throws Exception{
-		Criteria criteria= getDailyReportCriteria();
+	public List<OrderQueue> getAllEntitiesListForDailyReport(MultivaluedMap queryMap) throws Exception{
+		Criteria criteria= getDailyReportCriteria(queryMap);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
 		return list;
 	}
 	
-	public Criteria getDailyReportCriteria() throws Exception{
+	public Criteria getDailyReportCriteria(MultivaluedMap queryMap) throws Exception{
 		Session session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+		.add(Projections.property("orderemailqueue.receivedDate"),"receivedDate")
+		 .add(Projections.property("orderemailqueue.senderEmailId"),"senderEmailId")
+		    .add(Projections.property("orderemailqueue.orderSource"),"orderSource")
+			.add(Projections.property("partner.partnerName"),"partnerName")
+			.add(Projections.property("id"),"id")
+			.add(Projections.property("orderemailqueue.subject"),"subject")
+			.add(Projections.property("comment"),"comment")
+			.add(Projections.property("error"),"error")
+			.add(Projections.property("poNumber"),"poNumber")
+			.add(Projections.property("prevOrderQueueId"),"prevOrderQueueId")
+			.add(Projections.property("status"),"status")
+			.add(Projections.property("subject"),"subject")
+			.add(Projections.property("submittedBy"),"submittedBy")
+			.add(Projections.property("submittedDate"),"submittedDate")
+			.add(Projections.property("feedbackAcknowledgementDate"),"feedbackAcknowledgementDate")
+			.add(Projections.property("lastModifiedBy"),"lastModifiedBy")
+			.add(Projections.property("lastModifiedDate"),"lastModifiedDate")
+			.add(Projections.property("rbo.rboName"),"rboName")
+			.add(Projections.property("varProductLine.productLineType"),"productLineType")
+			.add(Projections.property("partner.id"),"partnerId")
+					.add(Projections.property("varProductLine.id"),"productLineId")
+					.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		Criteria criteria=session.createCriteria(OrderQueue.class);
-	    Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy");
+		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+		.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+		.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+		.createAlias("varProductLine.varPartner", "partner")
+		.createAlias("varProductLine.rbo", "rbo")
+		.setProjection(proj)	
+		.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
+	    Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy"+" 00:00:00");
 	    String strDate = HibernateUtils.sdfDate.format(now);
-	    //criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, strDate);
-		return criteria;
+	   criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "orderemailqueue.receivedDate", strDate, strDate);
+	  
+		if(queryMap.getFirst("emailQueueId") != null){
+			String emailQueueId=(String) queryMap.getFirst("emailQueueId");
+			Long queueId = Long.parseLong(emailQueueId);
+			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
+			System.out.println(queueId);
+			
+		}
+		if(queryMap.getFirst("senderEmailId") != null){
+			String senderEmailId=(String) queryMap.getFirst("senderEmailId");
+			String senderEmail = senderEmailId;
+			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
+			System.out.println(senderEmail);
+			
+		}
+		if(queryMap.getFirst("receivedDate") != null){
+			Date receivedDate=(Date) queryMap.getFirst("receivedDate");
+			Date receivedEmailDate = receivedDate;
+			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
+			System.out.println(receivedEmailDate);
+			
+		}
+	   
+	   
+	   
+	   List<OrderQueue> list = criteria.list();
+
+		
+		
+		
+		String queryString=(String) queryMap.getFirst("query");
+		session = getSessionFactory().getCurrentSession();
+		if(queryString!=null){
+			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+			String dateType=searchMap.get("datecriteriavalue");
+			
+			if(dateType!=null && !"".equals(dateType)){
+				String partner=searchMap.get("PartnerName");
+				String partnerName = partner;
+			criteria.add(Restrictions.ilike("partner.partnerName",partnerName,MatchMode.EXACT));
+			}
+			String PartnerName=searchMap.get("partnerName");
+			if(PartnerName!=null && !"".equals(PartnerName)){
+				criteria.add(Restrictions.ilike("partner.partnerName",PartnerName,MatchMode.ANYWHERE));
+			}
+			if(dateType!=null && !"".equals(dateType)){
+				String rbo=searchMap.get("RBOName");
+				String[] rboName = rbo.split(",");
+				criteria.add(Restrictions.in("rbo.rboName",rboName));
+			}
+			if(dateType!=null && !"".equals(dateType)){
+				String status=searchMap.get("Status");
+				String[] statusCode = status.split(",");
+		criteria.add(Restrictions.in("status",statusCode));
+	}
+
+		}
+			return criteria;
 	}
 	
 	public Criteria getOpenReportCriteria(MultivaluedMap queryMap) throws Exception{
-		Criteria criteria=getCriteria(queryMap);
-		//criteria.add(Restrictions.ne("status",ApplicationConstants.CANCEL_STATUS_CODE));
-		//criteria.add(Restrictions.ne("status",ApplicationConstants.BOOKED_STATUS_CODE));
-		return criteria;
+		Session session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("orderemailqueue.id"),"emailQueueId")
+		.add(Projections.property("orderemailqueue.receivedDate"),"receivedDate")
+		    .add(Projections.property("orderemailqueue.senderEmailId"),"senderEmailId")
+		    .add(Projections.property("orderemailqueue.orderSource"),"orderSource")
+			.add(Projections.property("partner.partnerName"),"partnerName")
+			.add(Projections.property("id"),"id")
+			.add(Projections.property("orderemailqueue.subject"),"subject")
+			.add(Projections.property("comment"),"comment")
+			.add(Projections.property("error"),"error")
+			.add(Projections.property("poNumber"),"poNumber")
+			.add(Projections.property("prevOrderQueueId"),"prevOrderQueueId")
+			.add(Projections.property("status"),"status")
+			.add(Projections.property("subject"),"subject")
+			.add(Projections.property("submittedBy"),"submittedBy")
+			.add(Projections.property("submittedDate"),"submittedDate")
+			.add(Projections.property("feedbackAcknowledgementDate"),"feedbackAcknowledgementDate")
+			.add(Projections.property("lastModifiedBy"),"lastModifiedBy")
+			.add(Projections.property("lastModifiedDate"),"lastModifiedDate")
+			.add(Projections.property("rbo.rboName"),"rboName")
+			.add(Projections.property("varProductLine.productLineType"),"productLineType")
+			.add(Projections.property("partner.id"),"partnerId")
+					.add(Projections.property("varProductLine.id"),"productLineId")
+					.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
+		Criteria criteria=session.createCriteria(OrderQueue.class);
+		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+		.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+		.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+					.createAlias("varProductLine.varPartner", "partner")
+					.createAlias("varProductLine.rbo", "rbo")
+					.setProjection(proj)	
+					.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
+		
+		if(queryMap.getFirst("emailQueueId") != null){
+			String emailQueueId=(String) queryMap.getFirst("emailQueueId");
+			Long queueId = Long.parseLong(emailQueueId);
+			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
+			System.out.println(queueId);
+			
+		}
+		if(queryMap.getFirst("senderEmailId") != null){
+			String senderEmailId=(String) queryMap.getFirst("senderEmailId");
+			String senderEmail = senderEmailId;
+			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
+			System.out.println(senderEmail);
+			
+		}
+		if(queryMap.getFirst("receivedDate") != null){
+			Date receivedDate=(Date) queryMap.getFirst("receivedDate");
+			Date receivedEmailDate = receivedDate;
+			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
+			System.out.println(receivedEmailDate);
+			
+		}
+		
+      List<OrderQueue> list = criteria.list();
+
+		
+		
+		
+		String queryString=(String) queryMap.getFirst("query");
+		session = getSessionFactory().getCurrentSession();
+		if(queryString!=null){
+			Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+			String dateType=searchMap.get("datecriteriavalue");
+			if(dateType!=null && !dateType.equals("")){
+				String sDate=searchMap.get("fromDate");
+				String eDate=searchMap.get("toDate");
+				criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
+			}
+			if(dateType!=null && !"".equals(dateType)){
+				String partner=searchMap.get("PartnerName");
+				String partnerName = partner;
+			criteria.add(Restrictions.ilike("partner.partnerName",partnerName,MatchMode.EXACT));
+			}
+			String PartnerName=searchMap.get("partnerName");
+			if(PartnerName!=null && !"".equals(PartnerName)){
+				criteria.add(Restrictions.ilike("partner.partnerName",PartnerName,MatchMode.ANYWHERE));
+			}
+			if(dateType!=null && !"".equals(dateType)){
+				String rbo=searchMap.get("RBOName");
+				String[] rboName = rbo.split(",");
+				criteria.add(Restrictions.in("rbo.rboName",rboName));
+			}
+			if(dateType!=null && !"".equals(dateType)){
+				String status=searchMap.get("Status");
+				String[] statusCode = status.split(",");
+				criteria.add(Restrictions.in("status",statusCode));
+			}
+
+		}
+			return criteria;
 	}
 	
 	@Override
