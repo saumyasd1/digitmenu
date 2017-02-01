@@ -259,6 +259,17 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "email", length = 100)
 	private String email;
 	
+	@Column(name="OrderInEmailBody")
+	private Boolean orderInEmailBody;
+	
+	public Boolean getOrderInEmailBody() {
+		return orderInEmailBody;
+	}
+
+	public void setOrderInEmailBody(Boolean orderInEmailBody) {
+		this.orderInEmailBody = orderInEmailBody;
+	}
+
 	private transient long siteId;
 	
 	private transient String fileOrderMatchSheet;
