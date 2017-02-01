@@ -1,5 +1,9 @@
 package com.avery.storage.dao.impl;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,7 +103,7 @@ OrderFileAttachmentDao {
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
 			ProjectionList projections = Projections.projectionList();
 			projections.add(Projections.property("fileData"), "fileData");
@@ -209,63 +213,83 @@ OrderFileAttachmentDao {
 	}
 	
 	@Override
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj){
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj, String filePath){
 		OrderFileAttachment obj=new OrderFileAttachment();
 		obj.setVarOrderEmailQueue(orderEmailQueue);
-		obj.setFilePath(emailBody);
+		obj.setFilePath(filePath);
 		obj.setVarProductLine(productLineObj);
 		obj.setCreatedDate(new Date());
 		obj.setStatus(ApplicationConstants.DEFAULT_WEBORDER_EMAILBODY_STATUS);
 		obj.setFileContentType(ApplicationConstants.DEFAULT_EMAILBODY_CONTENT_TYPE);
-		obj.setFileName(ApplicationConstants.EMAIL_FILE_NAME);
+		obj.setFileName("CompleteEmail.html");
 		obj.setCreatedBy(ApplicationConstants.DEFAULT_USER_NAME);
 		obj.setFileExtension(ApplicationConstants.DEFAULT_EMAIL_FILE_EXTENSION);
 		create(obj);
+		createHTMLFile(emailBody, filePath);
 }
-	
+	//Method for updating emailqueue status to disregard if all the corresponding attachments are disregard
 	@Override
-	public void checkDisregardMail(Long entityId){
+	public void checkDisregardMail(Long entityId) {
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			session = getSessionFactory().getCurrentSession();
 			OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, entityId);
 			criteria = session.createCriteria(OrderFileAttachment.class)
 					.add(Restrictions.eq("varOrderEmailQueue", orderEmailQueue))
 					.add(Restrictions.neOrIsNotNull("fileContentType", "Disregard"));
 			List list = criteria.list();
-			if(list.size() ==0 | list == null){
-				String s = "update OrderEmailQueue set status=:status where id =:id "; 
+			if (list.size() == 0 | list == null) {
+				String s = "update OrderEmailQueue set status=:status where id =:id ";
 				Query q = session.createQuery(s);
-				q.setString("status",ApplicationConstants.ORDEREMAILQUEUE_DISREGARDED_STATUS);
-				q.setLong("id",entityId);
+				q.setString("status", ApplicationConstants.ORDEREMAILQUEUE_DISREGARDED_STATUS);
+				q.setLong("id", entityId);
 				q.executeUpdate();
 				System.out.println("All Disregard");
-			}
-			else{
-				if(!orderEmailQueue.getStatus().equals(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS)){
-					String s = "update OrderEmailQueue set status=:status where id =:id "; 
+			} else {
+				if (!orderEmailQueue.getStatus().equals(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS)) {
+					String s = "update OrderEmailQueue set status=:status where id =:id ";
 					Query q = session.createQuery(s);
-					q.setString("status",ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
-					q.setLong("id",entityId);
+					q.setString("status", ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
+					q.setLong("id", entityId);
 					q.executeUpdate();
 				}
 				System.out.println("Not All Disregard");
 			}
-			
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id ");
+
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id ");
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id ");
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id ");
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-
+	
+	/**Method for creating html file from string
+	 * @param emailBody
+	 * @param filePath
+	 */
+	private void createHTMLFile(String emailBody, String filePath) {
+		FileWriter fWriter = null;
+		BufferedWriter writer = null;
+		try {
+			fWriter = new FileWriter(filePath + File.separator + "CompleteEmail.html");
+			writer = new BufferedWriter(fWriter);
+			writer.write("<html>" + emailBody + "</html>");
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
+	}
 	
 }

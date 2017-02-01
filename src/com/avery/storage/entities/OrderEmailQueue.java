@@ -772,6 +772,7 @@ private static final long serialVersionUID = 3208431286041487210L;
   			String uniqueString=uniqueUUId.toString();
   			filePath=defaultFilePath+File.separator+uniqueString;
   			new File(filePath).mkdir();
+  			orderFileAttachmentService.insertEmailBody(orderEmailQueue, emailBody, productLineObj, filePath);
   			addAttachments(orderEmailQueue,productLineObj,fieldsByName,formParams,filePath);
   			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();

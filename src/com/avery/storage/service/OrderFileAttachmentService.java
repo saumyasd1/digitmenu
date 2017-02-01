@@ -49,8 +49,8 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 	}
 	
 	@Transactional
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj) throws Exception{
-		getOrderFileAttachmentDao().insertEmailBody(orderEmailQueue,emailBody,productLineObj);
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj, String filePath) throws Exception{
+		getOrderFileAttachmentDao().insertEmailBody(orderEmailQueue,emailBody,productLineObj, filePath);
 		
 	}
 	

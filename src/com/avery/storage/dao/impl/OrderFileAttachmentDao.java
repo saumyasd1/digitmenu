@@ -16,7 +16,7 @@ public interface OrderFileAttachmentDao extends GenericDao<OrderFileAttachment, 
 	
 	public Map getAdditionalFilesList(long orderFileQueueId);
 	
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj);
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj, String filePath);
 
 	public void checkDisregardMail(Long entityId);
 }
