@@ -36,8 +36,8 @@ public class HibernateUtils {
 	}
 	
 	public static Criteria getCriteriaBasedOnDate(Criteria criteria,String dateType,String sDate,String eDate) throws ParseException{
-		Date startDate = sdfDate.parse(sDate);
-		Date endDate = sdfDate.parse(eDate);
+		Date startDate = sdfDate.parse(sDate + " "+ "00:00:00");
+		Date endDate = sdfDate.parse(eDate + " "+ "00:00:00");
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(endDate); 
 		c.add(Calendar.DATE, 1);
