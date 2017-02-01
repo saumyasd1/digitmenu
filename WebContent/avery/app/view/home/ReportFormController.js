@@ -3,36 +3,58 @@ Ext.define('AOC.view.home.ReportFormController', {
     alias: 'controller.reportcontroller',
     runTime: AOC.config.Runtime,
     getReport:function(){
-    	//debugger;
     	var view=this.getView(),url='';
+    	var reportForm=view.getForm();
+    	if(reportForm.isValid()){
     	var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,query='',obj='';
+    	obj={datecriteriavalue:'orderemailqueue.receivedDate'};
      	 if(radioGroupValue=='dailyReport'){
      		 url=applicationContext + '/rest/orders/download/dailyreport';
      	 }else{
      		url=applicationContext + '/rest/orders/download/openreport';
-     		obj={datecriteriavalue:'receivedDate'};
      		obj.fromDate=this.lookupReference('fromDate').getSubmitValue();
      		obj.toDate=this.lookupReference('toDate').getSubmitValue();
-     	 
-//     		 obj.PartnerName=this.lookupReference('partner').getDisplayValue();
-//         	 obj.RBOName=this.lookupReference('rboName').getDisplayValue();
-//         	 obj.Status=this.lookupReference('status').getDisplayValue();
      	 } 
-     	
-//     	 obj.PatnerName=this.lookupReference('id').getValue();
-//     	 obj.RBO=this.lookupReference('id').getValue();
-//     	 obj.Status=this.lookupReference('code').getValue();
-     	 query=Ext.JSON.encode(obj);
-       
+     	var rboCombo =this.lookupReference('rboName'),
+		rboStore = rboCombo.store,
+		rboName = [];
+	
+	rboStore.each(function(rec){
+		if(rec.get('id') != 'all'){
+			rboName.push(rec.get('rboName'));
+		}
+	});
+	
+	var statusCombo =this.lookupReference('status'),
+	statusStore = statusCombo.store,
+	statusCode =[];
+	if(statusCombo.getValue() == 'all'){
+		statusStore.each(function(rec){
+			if(rec.get('code') != 'all'){
+				statusCode.push(rec.get('code'));
+			}
+		});
+	}else{
+		statusCode.push(statusCombo.getValue());
+	}
+	
+	obj.PartnerName=this.lookupReference('partner').getDisplayValue();
+	obj.RBOName=rboName.join(',');
+	obj.Status=statusCode.join(',');
+	query=Ext.JSON.encode(obj);
+	
      	var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
             url : url
             
         });
-        form.submit({
+     	form.submit({
         	method : 'GET',
         	params:{query:query}
         });
+    	}else{
+    		 Ext.MessageBox.alert('', AOCLit.emptyFilter);
+    	}
     },
     onRadioButtonChange:function(obj){
     	var value=obj.getValue().rb;
@@ -47,7 +69,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     
     onPartnerChange:function(obj,newValue){
     	var me = this;
-    	
+    	var statusCombo =this.lookupReference('status');
     	if(newValue != null){
 	    	var productLineCombo = me.lookupReference('productLineCombo'),
 	    		rboCombo = me.lookupReference('rboName');
@@ -84,6 +106,12 @@ Ext.define('AOC.view.home.ReportFormController', {
 		    		 rboStore.loadData(serviceStoreData1);
 		    	}
 	    	}
+	    	rboCombo.enable();
+	    	statusCombo.enable();
+    	}
+    	if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
+    		rboCombo.reset();
+    		statusCombo.reset();
     	}
     }
 })
