@@ -205,7 +205,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 						subjectField = refs.subject,
 						emailBodyField = refs.emailBody;
 					
-					weborderform.resetFields();
+					weborderform.resetFormFields();
 					attachmentinfoGrid.store.removeAll();
 					attachmentinfoGrid.getView().refresh();
 					
