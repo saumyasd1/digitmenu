@@ -81,7 +81,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			{  
 				text : AOCLit.TrackingNo,
 				width:80,
-				align: 'right',
+				align: 'left',
 				dataIndex:'id',
 				renderer:function(v, metadata, record){
 					return 'E# '+ v;
