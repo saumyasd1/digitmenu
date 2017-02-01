@@ -52,7 +52,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				xtype:'displayfield',
 				itemId:'messageFieldItemId',
 				hidden:true,
-				anchor:'100%',
+				anchor:'100%'
 			},
 			{
 				xtype:'form',
@@ -204,12 +204,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'combo',
 								name: 'productLineTypeCombo',
+								hiddenName:'productLineType',
 								fieldLabel:AOCLit.productLine,
 								labelWidth:100,
 								allowBlank: true,
 								reference:'productLineTypeCombo',
 //								hidden:'{productLineType}'=='MIXED'?true:false,
 								width : 220,
+								bind:'{productLineType}',
 								margin:' 0 10 0 10',
 								store:[['HTL','HTL'],['PFL','PFL'],['WVL','WVL']],
 								value:'HTL',
