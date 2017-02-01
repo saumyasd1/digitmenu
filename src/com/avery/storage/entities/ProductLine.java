@@ -259,15 +259,15 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "email", length = 100)
 	private String email;
 	
-	@Column(name="OrderInEmailBody")
-	private Boolean orderInEmailBody;
+	@Column(name="orderInMailBody")
+	private Boolean orderInMailBody;
 	
-	public Boolean getOrderInEmailBody() {
-		return orderInEmailBody;
+	public Boolean getOrderInMailBody() {
+		return orderInMailBody;
 	}
 
-	public void setOrderInEmailBody(Boolean orderInEmailBody) {
-		this.orderInEmailBody = orderInEmailBody;
+	public void setOrderInMailBody(Boolean orderInMailBody) {
+		this.orderInMailBody = orderInMailBody;
 	}
 
 	private transient long siteId;

@@ -491,7 +491,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	@Override
 	public List getAllDistantPartners() throws Exception {
 		Session session= getSessionFactory().getCurrentSession();
-		Query query=session.createQuery("select distinct varPartner.id, varPartner.partnerName from ProductLine where orderInEmailBody<> true");  
+		Query query=session.createQuery("select distinct varPartner.id, varPartner.partnerName from ProductLine where orderInMailBody<> true");  
 		List list=query.list();
 		return list;
 	}
@@ -506,7 +506,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 					.add(Projections.property("rbo.rboName"),"rboName")));
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("varPartner"+".id",Long.valueOf(partnerId)));
-		disCriteria.add(Restrictions.ne("orderInEmailBody", true));
+		disCriteria.add(Restrictions.ne("orderInMailBody", true));
 		criteria.add(disCriteria);
 		return criteria.list();
 	}
@@ -522,7 +522,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		criteria.createAlias("rbo", "rbo");
 		disCriteria.add(Restrictions.eq("varPartner.id",Long.valueOf(partnerId)));
 		disCriteria.add(Restrictions.eq("rbo.id", Long.valueOf(rbo)));
-		disCriteria.add(Restrictions.ne("orderInEmailBody", true));
+		disCriteria.add(Restrictions.ne("orderInMailBody", true));
 		criteria.add(disCriteria);
 		return criteria.list();
 	}
