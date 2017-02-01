@@ -752,6 +752,9 @@ private static final long serialVersionUID = 3208431286041487210L;
   			orderemailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
   			orderemailQueueObj.setMailBody(emailBody);
   			orderemailQueueObj.setOrderMail(false);
+  			Date now=new Date();
+  			orderemailQueueObj.setReceivedDate(now);
+  			orderemailQueueObj.setCreatedDate(now);
   			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
   			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
