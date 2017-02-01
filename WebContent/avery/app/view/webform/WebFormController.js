@@ -340,19 +340,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 								labelWidth:150
 							},
 							items:[
-								{
-									xtype:'fileuploadfield',
-									name: 'attachment'+i,
-									reference: 'attachment'+i,
-									fieldLabel:'Attachments',
-									itemId:'attachment'+i,
-									allowBlank: true,
-									flex:1.8,
-									scope:me,
-									listeners:{
-										'change':'onAttachmentChange'
-									}
-								},
 								{   
 									xtype:'textfield',
 									name: 'additionalDataFileKey'+i,
@@ -361,10 +348,23 @@ Ext.define('AOC.view.webform.WebFormController', {
 									itemId:'additionalDataFileKey'+i,
 									flex:1.8,
 									scope:me,
-									margin:'0 0 0 10',
 									listeners:{
 										'focus': 'notifyByMessage'
 									 }
+								},
+								{
+									xtype:'fileuploadfield',
+									name: 'attachment'+i,
+									reference: 'attachment'+i,
+									fieldLabel:'Attachments',
+									itemId:'attachment'+i,
+									allowBlank: true,
+									flex:1.8,
+									margin:'0 0 0 10',
+									scope:me,
+									listeners:{
+										'change':'onAttachmentChange'
+									}
 								},
 								{
 									xtype:'box',

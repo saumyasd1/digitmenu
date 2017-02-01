@@ -65,18 +65,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						labelWidth:150
 					},
 					items:[
-						{
-							xtype:'fileuploadfield',
-							name: 'attachment1',
-							reference: 'attachment1',
-							fieldLabel:'Attachments',
-							allowBlank: true,
-							flex:1.8,
-							hidden:true,
-							listeners:{
-								'change':'onAttachmentChange'
-							}
-						},
 						{   
 							xtype:'textfield',
 							name: 'additionalDataFileKey1',
@@ -85,11 +73,23 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							itemId:'additionalDataFileKey1',
 							flex:1.8,
 							disabled:true,
-							margin:'0 0 0 10',
 							hidden:true,
 							listeners:{
 								'focus': 'notifyByMessage'
 							 }
+						},
+						{
+							xtype:'fileuploadfield',
+							name: 'attachment1',
+							reference: 'attachment1',
+							fieldLabel:'Attachments',
+							allowBlank: true,
+							flex:1.8,
+							margin:'0 0 0 10',
+							hidden:true,
+							listeners:{
+								'change':'onAttachmentChange'
+							}
 						},
 						{
 							xtype:'box',
@@ -319,9 +319,23 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				},
 				items:[
 					{   
+						xtype:'textfield',
+						name: 'additionalDataFileKey1',
+						flex:1.8,
+						reference: 'additionalDataFileKey1',
+						fieldLabel:'Additional DataFile Key',
+						itemId:'additionalDataFileKey1',
+						disabled:true,
+						hidden:true,
+						listeners:{
+							'focus': 'notifyByMessage'
+						}
+					},
+					{   
 						xtype:'fileuploadfield',
 						name: 'attachment1',
 						flex:1.8,
+						margin:'0 0 0 10',
 						reference: 'attachment1',
 						fieldLabel:'Attachments',
 						itemId:'attachment1',
@@ -332,20 +346,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							'change':'onAttachmentChange',
 							//blur : this.notifyByImage,
 							//'focus': 'notifyByMessage'
-						}
-					},
-					{   
-						xtype:'textfield',
-						name: 'additionalDataFileKey1',
-						flex:1.8,
-						reference: 'additionalDataFileKey1',
-						fieldLabel:'Additional DataFile Key',
-						itemId:'additionalDataFileKey1',
-						margin:'0 0 0 10',
-						disabled:true,
-						hidden:true,
-						listeners:{
-							'focus': 'notifyByMessage'
 						}
 					},
 					{

@@ -38,6 +38,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
 				Ext.Msg.alert('Success','Order line successfully updated');
 				Ext.getBody().unmask();
+				me.getView().openedRecordIndex ='';
 				Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
 		  		me.getView().view.refresh();
 			},
@@ -71,7 +72,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        }
 		  });
     },
-    outerGridBulkUpdate:function(editorPlugin,editor,context){
+    outerGridBulkUpdate:function(editorPlugin, editor, context){
     	Ext.Msg.show({
 		    title:'Update All',
 		    message: 'Are you sure, you want to update for all?',
@@ -111,6 +112,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		              	  //AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
 		                   Ext.Msg.alert('Success', 'Order line successfully updated');
 		                    Ext.getBody().unmask();
+		                    ctx.grid.openedRecordIndex ='';
 		                    Helper.loadOrderLineGridStore(ctx.store, runTime.getOrderQueueId());
 		                    ctx.view.refresh();
 		                },

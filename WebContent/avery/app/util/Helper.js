@@ -415,5 +415,7 @@ Ext.define('AOC.util.Helper',{
 		var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
 		attachmentInfoGrid.store.removeAll();
 		attachmentInfoGrid.getView().refresh();
+		webOrderView.lookupReference('orderFileType').setDisabled(true);
+		
 	}
 });
