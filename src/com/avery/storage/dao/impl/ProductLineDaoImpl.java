@@ -531,9 +531,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Session session=getSessionFactory().getCurrentSession();
 		Query query=session.createQuery("select new map(id as id, dataStructureName as dataStructureName,attachmentRequired as attachmentRequired ,"+
 								"orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1) from ProductLine "+
-								" where varPartner.id=:partnerId and rbo.id=:rboId ");
+								" where varPartner.id=:partnerId and rbo.id=:rboId and orderInMailBody!=:orderInMailBody");
 		query.setLong("partnerId", partnerId);
 		query.setLong("rboId", rbo);
+		query.setBoolean("orderInMailBody", true);
 		List list=query.list();
 		return list;
 	}
