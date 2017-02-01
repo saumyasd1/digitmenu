@@ -44,8 +44,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				fields:['id','rboName'],
 				data: jsonValue
 			});
-			
-    		if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
+    		if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
     			var refs = this.getReferences(),
 	    			webOrderFormView = refs.webform,
 	    			form = webOrderFormView.getForm(),
@@ -100,7 +99,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				data : jsonValue
 	    	});
 			
-	    	if(!this.getView().isResubmit || !obj.isChangedForFirstTime  ){
+	    	if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime  ){
 	    		dataStructureCombo.reset();
    	    	 	obj.isChangedForFirstTime=false;
     		}
@@ -169,7 +168,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 					Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
 					return false;
 				}else{
-					if(view.isResubmit){
+					if(view.down('#weborderformItemId').isResubmit){
 						view.down('#oldOrderFileDeleted').setValue(true);
 					}
 					this.insertFileInGrid(value,'Order File Type',false,null);
