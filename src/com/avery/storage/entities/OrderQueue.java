@@ -53,6 +53,7 @@ import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.CodeService;
+import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationConstants;
@@ -193,6 +194,28 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private int orgCodeId;
 	
+	@Transient
+	private String mailBody;
+	
+	@Transient
+	private Boolean orderInMailBody;
+	
+	public Boolean getOrderInMailBody() {
+		return orderInMailBody;
+	}
+
+	public void setOrderInMailBody(Boolean orderInMailBody) {
+		this.orderInMailBody = orderInMailBody;
+	}
+
+	public String getMailBody() {
+		return mailBody;
+	}
+
+	public void setMailBody(String mailBody) {
+		this.mailBody = mailBody;
+	}
+
 	public int getOrgCodeId() {
 		return orgCodeId;
 	}
@@ -721,8 +744,19 @@ public class OrderQueue extends MainAbstractEntity{
 		String emailQueueId = formParams.getField("oldEmailId").getValue();
 		OrderFileAttachment orderfile=null;
 		String filePath=null;
-		OrderEmailQueue orderemailQueue=new OrderEmailQueue();
-		orderemailQueue.setId(Long.parseLong(emailQueueId));
+		
+		//creating new orderemailqueue object fro new order
+		OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
+				.getInstance().getBean("orderEmailQueueService");
+		OrderEmailQueue orderemailQueue=orderEmailQueueService.read(Long.parseLong(emailQueueId));
+		orderemailQueue.setMailBody(emailBody);
+		Date now=new Date();
+		orderemailQueue.setReceivedDate(now);
+		orderemailQueue.setCreatedDate(now);
+		orderemailQueue.setId(0);
+		Long orderEmailQueueId=orderEmailQueueService.create(orderemailQueue);
+		orderemailQueue.setId(orderEmailQueueId);
+		
 		Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
 		Long productLineTypeId = Long.parseLong(productLineType);
 		OrderQueue orderQueue = new OrderQueue();
@@ -739,7 +773,9 @@ public class OrderQueue extends MainAbstractEntity{
 			    		fieldsByName,formParams,filePath);
 				if(!isOldOrderFileDeleted){
 					orderfile.setId(0);
+					orderfile.setCreatedDate(now);
 					orderfile.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+					orderfile.setVarOrderEmailQueue(orderemailQueue);
 					orderFileId=orderFileAttachmentService.create(orderfile);
 				}
 				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine, filePath);
