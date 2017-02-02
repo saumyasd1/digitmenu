@@ -44,7 +44,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				fields:['id','rboName'],
 				data: jsonValue
 			});
-    		if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
+    	//	if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
     			var refs = this.getReferences(),
 	    			webOrderFormView = refs.webform,
 	    			form = webOrderFormView.getForm(),
@@ -66,13 +66,16 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	    additionalDataFileKey1.reset();
    	    	 	obj.isChangedForFirstTime=false;
    	    	 	me.hideAndDestroyAttachmentField();
-    		}
+    	//	}
     		
 			dataStructureCombo.disable();
 			rboCombo.bindStore(store);
 			
 			if(me.getView().rboId){
-				rboCombo.setValue(me.getView().rboId);
+				var index = store.find('id',me.getView().rboId);
+				if(index != -1){
+					rboCombo.setValue(me.getView().rboId);
+				}
 			}
 			rboCombo.enable();
     	}else{
@@ -106,7 +109,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    	dataStructureCombo.bindStore(store);
 	    	dataStructureCombo.enable();
 	    	if(me.getView().productLineId){
-	    		dataStructureCombo.setValue(me.getView().productLineId);
+	    		var index = store.find('id',me.getView().productLineId);
+				if(index != -1){
+					dataStructureCombo.setValue(me.getView().productLineId);
+				}
 			}
 		 }else{
 			 dataStructureCombo.disable();
