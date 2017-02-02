@@ -317,6 +317,12 @@ Ext.override(Ext.grid.RowEditor, {
                 me.repositionIfVisible();
             }
         }
+        var editingPlugin = this.editingPlugin,
+        	grid = editingPlugin ? editingPlugin.grid : '';
+        
+        if(grid && !Ext.isEmpty(grid.lastScrollLeftPosition)){
+        	grid.view.el.dom.scrollLeft = grid.lastScrollLeftPosition;
+        }
     },
 
     onColumnHide: function(column) {

@@ -3,6 +3,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	requires : [],
 	alias : 'widget.orderlinecontainer',
 	controller:'orderlinecontainer',
+	requires:[
+	     'AOC.view.orderqueue.OrderLineContainerController',
+	     'AOC.view.orderqueue.OrderLineExpandableGrid'
+	],
 	layout: {
 		type: 'vbox',
 		align: 'stretch'

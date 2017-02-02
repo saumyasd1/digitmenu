@@ -131,10 +131,19 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			}
     		}
     		if(dataIndex == 'customerOrderedQty'){
-    			if(!Ext.isEmpty(rec.get(dataIndex)) && rec.get(dataIndex) < 0){
+    			if(!Ext.isEmpty(rec.get(dataIndex)) && rec.get(dataIndex) <= 0){
     				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 						rowIdx++;
 						grid.mandatoryColumnMissing = headerText +' field is empty in row '+ rowIdx +'.Please ensure the field is filled before proceeding.';
+						return false;
+					}
+    			}
+    		}
+    		if(dataIndex == 'requestedDeliveryDate' || dataIndex == 'promiseDate'){
+    			if(!Ext.isEmpty(rec.get(dataIndex))){
+    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get(dataIndex) < rec.get('orderedDate'))){
+						rowIdx++;
+						grid.mandatoryColumnMissing = headerText +' can not be less than Ordered date in row '+ rowIdx +'.Please correct before proceeding.';
 						return false;
 					}
     			}
@@ -183,21 +192,24 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		return me.validInvalidCombo(record, index, grid);
     	});
     	
+    	//For Invalid Combo 
     	if(grid.invalidComboColumn){
     		Ext.Msg.alert(AOCLit.warningTitle, grid.invalidComboColumn);
     		return;
     	}
     	
+    	//If customer order qty is zero
     	if(isCustomerOrderQantityIsZero){
-    		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.customerOrderQtyNotZeroMessage);
+    		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.customerOrderQtyNotZeroMessage);
     		return;
     	}
     	
-    	if(grid.mandatoryFieldMissing){
-			Ext.Msg.alert('', AOCLit.orderLineMandatoryFieldMissingAlt);
-			Ext.getBody().unmask();
+    	//if mandatoryColumn Missing
+    	if(grid.mandatoryColumnMissing){
+    		Ext.Msg.alert(AOCLit.warningTitle, grid.mandatoryColumnMissing);
 			return;
 		}
+    	//if mandatoryValidation Missing
     	if(grid.mandatoryValidationColumnMissing){
     		Ext.Msg.alert(AOCLit.warningTitle, grid.mandatoryValidationColumnMissing);
 			grid.showMandatoryValidationField=true;
@@ -214,10 +226,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			Ext.Msg.alert('', AOCLit.changeOrderLineStatusAlert);
 			return;
 		}
-//		if(grid.invalidComboValid){
-//			Ext.Msg.alert('', AOCLit.InvalidComboValueAlert);
-//			return;
-//		}
+		
 		store.each(function(rec, index){
 			var columns = grid.columns,
     			len = columns.length;
