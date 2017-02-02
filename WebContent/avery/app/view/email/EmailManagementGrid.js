@@ -177,8 +177,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	
 	tipRenderer:function(v, metaData){
 		if(v){
-			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlDecode(v) + '</font>"';
-			return Ext.String.htmlDecode(v);
+			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '</font>"';
+			return Ext.String.htmlEncode(v);
 		}else {
 			return '';
 		}

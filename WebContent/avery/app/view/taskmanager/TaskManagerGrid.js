@@ -139,7 +139,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	},
 	tipRenderer:function(v, metaData){
 		if(v){
-			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+			metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '</font>"';
 			return Ext.String.htmlEncode(v);
 		}else {
 			return '';
