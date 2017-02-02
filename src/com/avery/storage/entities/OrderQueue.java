@@ -756,6 +756,7 @@ public class OrderQueue extends MainAbstractEntity{
 		orderemailQueue.setCreatedDate(now);
 		orderemailQueue.setLastModifiedDate(now);//added last modified date in the orderemailqueue table
 		orderemailQueue.setSubject(subjectline);//added subject
+		orderemailQueue.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);//resubmit order will be treated as a web order
 		orderemailQueue.setId(0);
 		Long orderEmailQueueId=orderEmailQueueService.create(orderemailQueue);
 		orderemailQueue.setId(orderEmailQueueId);
