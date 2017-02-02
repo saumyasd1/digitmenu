@@ -286,12 +286,23 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			if(index == -1){
 				field.setValue('');
 			  	context.store.getAt(rowIdx).set(fieldName,'');
-			  	if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
-					context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
-		        }
-			  	return true;
+			  
 			}
 		  }
+		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+        }
+	},
+	onFocusEnter:function(field, e){
+		var me = this,
+		   	view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context;
+		
+		context.grid.lastScrollLeftPosition = context.grid.view.el.dom.scrollLeft;
+		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+        }
 	},
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),

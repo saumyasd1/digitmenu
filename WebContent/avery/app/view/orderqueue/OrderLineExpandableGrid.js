@@ -964,7 +964,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'none','', false, false, true);
+						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -994,7 +995,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'none','', false, false, true);
+						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -1040,7 +1042,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					'select':'onerporgSelectChange'
 				}
 			},
-			'renderer':'divisionForInterfaceERPORGColumnRenderer'
+			renderer:'divisionForInterfaceERPORGColumnRenderer'
 		}, 
 		{
 			text: 'Artwork Hold',
@@ -1337,7 +1339,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				     me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 				    },
 				cellclick:'onCellClickToView',
-				'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+				'beforecelldblclick':function(view, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 					me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 					if(cellIndex==0){
 						return false;
@@ -1345,7 +1347,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			}
 		});
-		
         me.store.on('beforeload',function(){
         	me.mandatoryFieldMissing=false;
         	me.mandatoryValidationFieldMissing=false;
