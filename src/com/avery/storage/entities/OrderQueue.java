@@ -749,12 +749,12 @@ public class OrderQueue extends MainAbstractEntity{
 		OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 				.getInstance().getBean("orderEmailQueueService");
 		OrderEmailQueue orderemailQueue=orderEmailQueueService.read(Long.parseLong(emailQueueId));
-		orderemailQueue.setMailBody(emailBody);
+		//orderemailQueue.setMailBody(emailBody); /*value not required in mailbody column as html file is being created*/
 		Date now=new Date();
 		orderemailQueue.setReceivedDate(now);
 		orderemailQueue.setCreatedDate(now);
-		orderemailQueue.setLastModifiedDate(now);
-		orderemailQueue.setSubject(subjectline);
+		orderemailQueue.setLastModifiedDate(now);//added last modified date in the orderemailqueue table
+		orderemailQueue.setSubject(subjectline);//added subject
 		orderemailQueue.setId(0);
 		Long orderEmailQueueId=orderEmailQueueService.create(orderemailQueue);
 		orderemailQueue.setId(orderEmailQueueId);

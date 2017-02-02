@@ -750,7 +750,7 @@ private static final long serialVersionUID = 3208431286041487210L;
   			orderemailQueueObj.setCreatedDate(date);
   			orderemailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
   			orderemailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
-  			orderemailQueueObj.setMailBody(emailBody);
+  			//orderemailQueueObj.setMailBody(emailBody); /*value not required in mailbody column as html file is being created*/
   			orderemailQueueObj.setOrderMail(false);
   			Date now=new Date();
   			orderemailQueueObj.setReceivedDate(now);
