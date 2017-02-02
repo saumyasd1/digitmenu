@@ -753,6 +753,8 @@ public class OrderQueue extends MainAbstractEntity{
 		Date now=new Date();
 		orderemailQueue.setReceivedDate(now);
 		orderemailQueue.setCreatedDate(now);
+		orderemailQueue.setLastModifiedDate(now);
+		orderemailQueue.setSubject(subjectline);
 		orderemailQueue.setId(0);
 		Long orderEmailQueueId=orderEmailQueueService.create(orderemailQueue);
 		orderemailQueue.setId(orderEmailQueueId);
@@ -781,7 +783,7 @@ public class OrderQueue extends MainAbstractEntity{
 				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine, filePath);
 				OrderFileAttachment newOrderFileAttachment=new OrderFileAttachment();
 				newOrderFileAttachment.setId(orderFileId);
-				orderQueue.setSubject(subjectline);
+				//orderQueue.setSubject(subjectline);
 				orderQueue.setCreatedDate(date);
 				orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
 				orderQueue.setVarOrderFileAttachment(newOrderFileAttachment);
