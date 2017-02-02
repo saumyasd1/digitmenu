@@ -97,7 +97,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				tooltip:'Order File',
 				renderer:function(v, metadata, record){
 					var filename=record.get('orderFileName');
-					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '<font>"';
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '</font>"';
 					return '<img class="vieworderattachment" src="' + attacheImageSrc + '" />';
 				}
 			},
@@ -123,7 +123,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				align:'center',
 				renderer:function(v, metadata, record){
 						var emailBody = record.get('emailBody'); 
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(emailBody) + '<font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(emailBody) + '</font>"';
 						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
 				}	
 			
@@ -196,7 +196,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				dataIndex:'SenderEmailID',
 				renderer:function(v,metadata){
 					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '</font>"';
 						return '<div>'+v+'</div>';
 					}else {
 						return '';
@@ -209,7 +209,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				dataIndex:'Subject',
 				renderer:function(v,metadata){
 					if(v){
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '<font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '</font>"';
 						return '<div>'+v+'</div>';
 					}else {
 						return '';
