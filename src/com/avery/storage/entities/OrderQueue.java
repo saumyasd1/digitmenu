@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -730,7 +731,7 @@ public class OrderQueue extends MainAbstractEntity{
 
 		String emailid = formParams.getField("email").getValue();
 		String emailBody = formParams.getField("emailBody").getValue();
-		String subjectline = formParams.getField("subject").getValue();
+		String subjectline = StringEscapeUtils.unescapeHtml(formParams.getField("subject").getValue());//decoding subject
 		String productLineType = formParams.getField("dataStructureName").getValue();
 		String oldFileIds = (formParams.getField("oldFileIds")!=null)?formParams.getField("oldFileIds").getValue():null;
 		String oldOrderId= (formParams.getField("oldOrderId")!=null)?formParams.getField("oldOrderId").getValue():null;

@@ -35,6 +35,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -744,7 +745,7 @@ private static final long serialVersionUID = 3208431286041487210L;
   			String emailid = formParams.getField("email").getValue();
   			String emailBody = formParams.getField("emailBody").getValue();
   			orderemailQueueObj.setSenderEmailId(emailid);
-  			String subject=formParams.getField("subject").getValue();
+  			String subject=StringEscapeUtils.unescapeHtml(formParams.getField("subject").getValue());//decoding chinese subject
   			orderemailQueueObj.setSubject(subject);
   			orderemailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
   			orderemailQueueObj.setCreatedDate(date);
