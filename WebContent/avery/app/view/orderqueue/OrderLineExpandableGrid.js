@@ -807,7 +807,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'shippingMethodCombo',
 				store:Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
 				listeners:{
-			    	focus:'onComboFocus'
+			    	focus:'onComboFocus',
+			    	afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -904,7 +918,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					'select':'onSelectDate'
 				}
-			}
+			},
+			renderer:function(v, metadata, record){
+			    if(!Ext.isEmpty(v) && v < record.get('orderedDate') && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+			     metadata.style = AOCLit.cellColor;
+			     return Ext.Date.format(v, AOCLit.dateFormat);
+			    }
+			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+			   }
 		}, 
 		{
 			text: 'Promise Date',
@@ -917,7 +938,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					'select':'onSelectDate'
 				}
-			}			
+			},
+			renderer:function(v, metadata, record){
+			    if(!Ext.isEmpty(v) && v < record.get('orderedDate') && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+			     metadata.style = AOCLit.cellColor;
+			     return Ext.Date.format(v, AOCLit.dateFormat);
+			    }
+			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+			   }
 		}, 
 		{
 			text: 'Freight Terms',
@@ -932,7 +960,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'freightTermscombo',
 				store:Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
 				listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -948,7 +990,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode:'local',
 				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
 			    listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -1045,7 +1101,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'OrdertypeCombo',
 				store:Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
 				listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -1069,7 +1139,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'EndCustomerCombo',
 				store:Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
 				listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -1153,7 +1237,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				reference:'splitShipsetCombo',
 				store:Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
 				listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -1185,16 +1283,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'};
-						store.insert(0,new Ext.data.Record(obj));
-					},
-					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
-					}
+					      var store = combo.store,
+					       obj = {variableFieldName:'None'},
+					       index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					     },
+					     select:function(combo){
+					      var value = combo.getValue();
+					      if(value == 'None'){
+					       combo.setValue('');
+					      }
+					     }
 			    }
 			},
 			renderer:'comboColumnRenderer'
@@ -1232,8 +1333,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		    plugins: me.getOuterGridPlugin(),
 	        listeners:{
 				scope:this,
+				beforecellclick:function(view, td, cellIndex, record, tr, rowIdx, e){
+				     me.lastScrollLeftPosition = view.el.dom.scrollLeft;
+				    },
 				cellclick:'onCellClickToView',
 				'beforecelldblclick':function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+					me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 					if(cellIndex==0){
 						return false;
 					}
@@ -1368,6 +1473,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					renderer:function(v, metadata,rec){
 						if(v){
 							var mandatory=rec.get('mandatory');
+							
 							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '<font>"';
 							if(mandatory=='Y'){
 								if(v == ''){
@@ -1520,9 +1626,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		var rowEditor=Ext.create('AOC.view.ux.CustomRowEditing',{
 			clicksToEdit: 2,
 			autoCancel:false,
-			controller: 'orderline',
 			saveAndNextBtn: true,
-			controller: 'orderline',
 			listeners: {
 				'edit': 'updateOrderLine',
 				'beforeEdit':'outerGridBeforeEditEvent'

@@ -538,7 +538,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 editable:false,
                 store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -647,7 +661,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -663,7 +691,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -747,7 +789,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -768,7 +824,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -845,7 +915,21 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 queryMode :'local',
                 store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
         		listeners:{
-					focus:'onComboFocus'
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						var store = combo.store,
+							obj = {variableFieldName:'None'},
+						index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					},
+					select:function(combo){
+						var value = combo.getValue();
+						if(value == 'None'){
+							combo.setValue('');
+						}
+					}
 			    }
             },
             renderer:'comboColumnRenderer'
@@ -873,16 +957,19 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'};
-						store.insert(0,new Ext.data.Record(obj));
-					},
-					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
-					}
+					      var store = combo.store,
+					       obj = {variableFieldName:'None'},
+					       index = store.find('variableFieldName', 'none','', false, false, true);
+					      if(index == -1){
+					       store.insert(0,new Ext.data.Record(obj));
+					      }
+					     },
+					     select:function(combo){
+					      var value = combo.getValue();
+					      if(value == 'None'){
+					       combo.setValue('');
+					      }
+					     }
 			    }
             },
             renderer:'comboColumnRenderer'
