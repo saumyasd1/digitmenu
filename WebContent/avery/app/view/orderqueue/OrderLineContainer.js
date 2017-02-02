@@ -112,19 +112,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					            boxLabel  : 'Copy Data',
 								margin:'0 0 5 0',
 					            flex:0.5,
-								checked: false,
-								handler:function(cmp, checked){
-					            	//var activeitme =(checked) ? 0 : 1;
-//					            	cmp.up('orderlinecontainer').down('#orderlineexpandablegridcard').getLayout().setActiveItem(activeitme);
-//					            	if(record.get('Status') == 4 && AOC.config.Runtime.getAllowOrderLineEdit()){
-//											if(!checked){
-//											   me.lookupReference('form').enable();
-//											}
-//											else{ 
-//											   me.lookupReference('form').disable();
-//											}
-//										}
-								}
+					            hidden:true,
+								checked: false
 					        }
 						]
 					}
