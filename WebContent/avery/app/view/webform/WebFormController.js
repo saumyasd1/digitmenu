@@ -44,7 +44,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				fields:['id','rboName'],
 				data: jsonValue
 			});
-    	//	if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
+    		if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
     			var refs = this.getReferences(),
 	    			webOrderFormView = refs.webform,
 	    			form = webOrderFormView.getForm(),
@@ -66,7 +66,7 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	    additionalDataFileKey1.reset();
    	    	 	obj.isChangedForFirstTime=false;
    	    	 	me.hideAndDestroyAttachmentField();
-    	//	}
+    		}
     		
 			dataStructureCombo.disable();
 			rboCombo.bindStore(store);
@@ -75,6 +75,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 				var index = store.find('id',me.getView().rboId);
 				if(index != -1){
 					rboCombo.setValue(me.getView().rboId);
+				}else{
+					rboCombo.setValue('');
 				}
 			}
 			rboCombo.enable();
@@ -112,6 +114,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    		var index = store.find('id',me.getView().productLineId);
 				if(index != -1){
 					dataStructureCombo.setValue(me.getView().productLineId);
+				}else{
+					dataStructureCombo.setValue('');
 				}
 			}
 		 }else{
