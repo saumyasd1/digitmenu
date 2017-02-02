@@ -416,6 +416,8 @@ Ext.define('AOC.util.Helper',{
 		attachmentInfoGrid.store.removeAll();
 		attachmentInfoGrid.getView().refresh();
 		webOrderView.lookupReference('orderFileType').setDisabled(true);
+		webOrderView.rboId = '';
+		webOrderView.productLineId = '';
 		
 	}
 });
