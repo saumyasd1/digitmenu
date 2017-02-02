@@ -443,5 +443,5 @@ Ext.define('AOC.lang.lit',{
     "salesOrderWarning":'Please cancel order lines which are having status other than Waiting for CSR to proceed further',
     customerOrderQtyNotZeroMessage:'Customer Order Qty can not be zero.',
     "maxAdditionalFieldAllowed":4,
-    "resubmitNotPermissible":'Resumbit not allowed'
+    "resubmitNotPermissible":'Resumbit not allowed via web order'
 });
