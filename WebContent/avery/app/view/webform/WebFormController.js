@@ -67,7 +67,7 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	 	obj.isChangedForFirstTime=false;
    	    	 	me.hideAndDestroyAttachmentField();
     		}
-    		
+    		emailBody.reset();
 			dataStructureCombo.disable();
 			rboCombo.bindStore(store);
 			
