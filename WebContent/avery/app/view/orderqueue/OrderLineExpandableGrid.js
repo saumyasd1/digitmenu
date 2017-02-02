@@ -87,7 +87,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 				}
 				if(mandatoryVariableDataField){
-					metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '<font>"';
+					metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '</font>"';
 				}
 				
 				if(checkvalue.substr(0,1) == 'T'){
@@ -1456,7 +1456,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					flex:1.8,
 					renderer:function(v, metadata,rec){
 						var mandatory = rec.get('mandatory');
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '<font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>"';
 						if(mandatory == 'Y'){
 							return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
 						}
@@ -1475,7 +1475,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						if(v){
 							var mandatory=rec.get('mandatory');
 							
-							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '<font>"';
+							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
 							if(mandatory=='Y'){
 								if(v == ''){
 									if(me.showMandatoryValidationField)
