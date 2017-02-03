@@ -30,6 +30,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -42,14 +43,29 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  */
 @Path("ordertrend")
 public class OrderTrend {
+	
+	static HashMap<String, Map> statusList = ApplicationUtils.statusCode;
 
 	private static Map<String, String> statusMap = new HashMap<String, String>();
 	static {
-		statusMap.put("11", "received");
+		/*statusMap.put("11", "received");
 		statusMap.put("19", "waitingCR");
 		statusMap.put("23", "waitingSR");
 		statusMap.put("41", "success");
-		statusMap.put("42", "failed");
+		statusMap.put("42", "failed");*/
+		statusMap.put("11", "received");
+		statusMap.put("12", "parsingOrderFile");
+		statusMap.put("13", "readyForItemSpec");
+		statusMap.put("15", "processingItemSpec");
+		statusMap.put("16", "readyForValidation");
+		statusMap.put("18", "validating");
+		statusMap.put("19", "waitingCR");
+		statusMap.put("21", "soGenerated");
+		statusMap.put("23", "soSubmitted");
+		statusMap.put("41", "booked");
+		statusMap.put("42", "error");
+		statusMap.put("50", "cancel");
+		statusMap.put("56", "orderError");
 	}
 
 	@GET
@@ -170,7 +186,7 @@ public class OrderTrend {
 				.getInstance().getBean("orderQueueService");
 		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet());
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-		Map<String, Object> recievedMap = buildMap("Received");
+		/*Map<String, Object> recievedMap = buildMap("Received");
 		list.add(recievedMap);
 		Map<String, Object> waitinCRMap = buildMap("Waiting CS Review");
 		list.add(waitinCRMap);
@@ -181,13 +197,54 @@ public class OrderTrend {
 		Map<String, Object> failedMap = buildMap("Failed");
 		list.add(failedMap);
 		Map<String, Object> toatalCount = buildMap("Total Count");
+		list.add(toatalCount);*/
+		Map<String, Object> recievedMap = buildMap("Order Received", "11");
+		list.add(recievedMap);
+		Map<String, Object> parsingOrderFileMap = buildMap("Parsing Order File", "12");
+		list.add(parsingOrderFileMap);
+		Map<String, Object> readyForItemSpecMap = buildMap("Ready For Item Spec", "13");
+		list.add(readyForItemSpecMap);
+		Map<String, Object> processingItemSpecMap = buildMap("Processing Item Spec", "15");
+		list.add(processingItemSpecMap);
+		Map<String, Object> readyForValidationMap = buildMap("Ready For Validation", "16");
+		list.add(readyForValidationMap);
+		Map<String, Object> validatingMap = buildMap("Validating", "18");
+		list.add(validatingMap);
+		Map<String, Object> waitingCRMap = buildMap("Waiting For CS Verification", "19");
+		list.add(waitingCRMap);
+		Map<String, Object> soGeneratedMap = buildMap("SO Generated", "21");
+		list.add(soGeneratedMap);
+		Map<String, Object> soSubmittedMap = buildMap("SO Submitted", "23");
+		list.add(soSubmittedMap);
+		Map<String, Object> bookedMap = buildMap("Booked", "41");
+		list.add(bookedMap);
+		Map<String, Object> errorMap = buildMap("Error", "42");
+		list.add(errorMap);
+		Map<String, Object> cancelMap = buildMap("Cancel", "50");
+		list.add(cancelMap);
+		Map<String, Object> orderErrorMap = buildMap("Order Error", "56");
+		list.add(orderErrorMap);
+		Map<String, Object> toatalCount = buildMapForTotalCount("Total Count");
 		list.add(toatalCount);
 		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
-		myMap.put("11", recievedMap);
+		/*myMap.put("11", recievedMap);
 		myMap.put("19", waitinCRMap);
 		myMap.put("23", waitinSRMap);
 		myMap.put("41", successMap);
-		myMap.put("42", failedMap);
+		myMap.put("42", failedMap);*/
+		myMap.put("11", recievedMap);
+		myMap.put("12", parsingOrderFileMap);
+		myMap.put("13", readyForItemSpecMap);
+		myMap.put("15", processingItemSpecMap);
+		myMap.put("16", readyForValidationMap);
+		myMap.put("18", validatingMap);
+		myMap.put("19", waitingCRMap);
+		myMap.put("21", soGeneratedMap);
+		myMap.put("23", soSubmittedMap);
+		myMap.put("41", bookedMap);
+		myMap.put("42", errorMap);
+		myMap.put("50", cancelMap);
+		myMap.put("56", orderErrorMap);
 		buildMapData(set, 1, myMap);
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
@@ -196,7 +253,7 @@ public class OrderTrend {
 		for(String key:myMap.keySet()){
 			m=myMap.get(key);
 		  for(String type:m.keySet()){
-			  if(!type.equals("orderType")){
+			  if(!type.equals("orderType") && !type.equals("colorCode")){
 				  toatalCount.put(type, (int) toatalCount.get(type) + (int) m.get(type));  
 			  }
 		  }
@@ -246,7 +303,7 @@ public class OrderTrend {
 			if (ddd.before(endDate) && ddd.after(startDate)) {
 				status = orderQueue.getStatus();
 				switch (status) {
-				case "11": {
+				/*case "11": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
@@ -270,18 +327,95 @@ public class OrderTrend {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
 					break;
-				}
+				}*/
 				/*case "2": {
 					m = myMap.get("41");
 					m.put(key, (int) m.get(key) + 1);
 					break;
 				}*/
+				case "11": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "12": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "13": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "15": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "16": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "18": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "19": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "21": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "23": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "41": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "42": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "50": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "56": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
 				}
 			}
 		}
 	}
 
-	static Map<String, Object> buildMap(String type) {
+	static Map<String, Object> buildMap(String type, String status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> statusCodes = statusList.get(status);
+		map.put("orderType", type);
+		map.put("lastOneDay", 0);
+		map.put("lastWeek", 0);
+		map.put("lastTwoWeek", 0);
+		map.put("lastMonth", 0);
+		map.put("colorCode", statusCodes.get("colorCode"));
+		return map;
+	}
+	
+	static Map<String, Object> buildMapForTotalCount(String type) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderType", type);
 		map.put("lastOneDay", 0);
