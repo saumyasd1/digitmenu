@@ -478,10 +478,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[['Y','Y'],['N','N']]
 			},
 			renderer:function(value, metadata,rec){
-//				var v='N';
-//				if(value){
-//					v='Y';
-//				}
 				if(!Ext.isEmpty(value)){
 					var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 					var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
@@ -489,9 +485,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						return value;
 					}
 					else{
-	//					if(this.showMandatoryValidationField){
-	//						metadata.style = AOCLit.mandatoryValidationCellColor;
-	//					}
 						metadata.style = AOCLit.mandatoryValidationCellColor;
 						return value;
 					}
@@ -811,7 +804,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			    	afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+						index = store.find('variableFieldName', 'None','', false, false, true);
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -964,7 +957,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
 						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
@@ -995,7 +988,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
 						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
@@ -1107,9 +1100,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -1145,7 +1139,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -1243,9 +1238,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -1287,17 +1283,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					afterrender:function(combo){
 					      var store = combo.store,
 					       obj = {variableFieldName:'None'},
-					       index = store.find('variableFieldName', 'none','', false, false, true);
+					       index = store.find('variableFieldName', 'None','', false, false, true);
+					      
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
-					     },
-					     select:function(combo){
+				     },
+				     select:function(combo){
 					      var value = combo.getValue();
 					      if(value == 'None'){
-					       combo.setValue('');
+					    	  combo.setValue('');
 					      }
-					     }
+				     }
 			    }
 			},
 			renderer:'comboColumnRenderer'

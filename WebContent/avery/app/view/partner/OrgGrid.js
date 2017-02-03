@@ -92,7 +92,14 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					displayField: 'variableFieldName',
 					valueField: 'variableFieldName',
 					editable:false,
-					queryMode :'local'
+					queryMode :'local',
+					listeners:{
+						select:function(field){
+							if(field.getValue() == 'None'){
+								field.setValue('');
+							}
+						}
+					}
 				}
 			},
 			{
@@ -104,7 +111,14 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					displayField: 'variableFieldName',
 					valueField: 'variableFieldName',
 					editable:false,
-					queryMode :'local'
+					queryMode :'local',
+					listeners:{
+						select:function(field){
+							if(field.getValue() == 'None'){
+								field.setValue('');
+							}
+						}
+					}
 				}
 			},
 			{

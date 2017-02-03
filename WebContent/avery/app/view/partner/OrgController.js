@@ -26,6 +26,10 @@ Ext.define('AOC.view.partner.OrgController', {
     	store.load();
 	},
 	onOrgeCodeComboChange:function(cmp,newValue){
+		if(cmp.getValue() == 'None'){
+			cmp.setValue('');
+			return;
+		}
 //		Ext.getBody().mask()
 		var view=this.getView();
 		if(!Ext.isEmpty(newValue)){
@@ -39,10 +43,12 @@ Ext.define('AOC.view.partner.OrgController', {
 		var record=cmp.ownerCt.context.record;
 		var freightTermsData=AOC.util.Helper.getDependendVariableComboStore('freightTerms',view.systemId,newValue);
 		record.set('freightTermsData',freightTermsData);
-		view.columns[3].getEditor().bindStore(freightTermsData);
+		var frieghtTermTempArray = ['None'].concat(freightTermsData);
+		view.columns[3].getEditor().bindStore(frieghtTermTempArray);
 		var shippingMethodData=AOC.util.Helper.getDependendVariableComboStore('shippingMethod',view.systemId,newValue);
 		record.set('shippingMethodData',shippingMethodData);
-		view.columns[4].getEditor().bindStore(freightTermsData);
+		var shippingMethodDataArray = ['None'].concat(shippingMethodData);
+		view.columns[4].getEditor().bindStore(shippingMethodDataArray);
 		}
 	},
 	OnBeforeEdit:function(editor,context){
@@ -55,12 +61,15 @@ Ext.define('AOC.view.partner.OrgController', {
 				  record.set('freightTermsData',freightTermsData);
 				  
 			  }
-			  grid.columns[3].getEditor().bindStore(freightTermsData);
+			  var frieghtTermTempArray = ['None'].concat(freightTermsData);
+			  grid.columns[3].getEditor().bindStore(frieghtTermTempArray);
 			  if(Ext.isEmpty(shippingMethodData)){
 				  shippingMethodData=AOC.util.Helper.getDependendVariableComboStore('shippingMethod',grid.systemId,orgCodeId);
 				  record.set('shippingMethodData',shippingMethodData);
 			  }
-				  grid.columns[4].getEditor().bindStore(shippingMethodData);
+			  var shippingMethodDataArray = ['None'].concat(shippingMethodData);
+			  
+			  grid.columns[4].getEditor().bindStore(shippingMethodDataArray);
 		  }
 			  
 	},

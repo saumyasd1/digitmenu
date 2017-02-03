@@ -2,7 +2,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.productlineMain',
     runTime : AOC.config.Runtime,
-    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper','AOC.view.partner.SystemGrid','AOC.view.partner.OrgGrid'],
+    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
     SaveDetails:function(){
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
@@ -445,6 +445,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			storeId:'orgStore'+selectedSystemArray.id,
 	    			data:jsonValue
 		      	});
+		      	
+				var index = orgStore.find('id','none','', false, false, true),
+					obj = {id:'none',name:'None'};
+			
+				if(index == -1){
+					orgStore.insert(0,new Ext.data.Record(obj));
+				}
 	    		var systemStore=Ext.create('Ext.data.Store',{
 	    			fields:['id','name',{
 	    				name:'newRecord',defaultValue:false

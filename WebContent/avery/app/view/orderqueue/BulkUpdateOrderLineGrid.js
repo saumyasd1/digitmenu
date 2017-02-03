@@ -542,9 +542,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -665,9 +666,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -695,9 +697,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -793,7 +796,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -828,7 +832,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
 					       store.insert(0,new Ext.data.Record(obj));
 					      }
@@ -919,9 +924,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 						var store = combo.store,
 							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'none','', false, false, true);
+							index = store.find('variableFieldName', 'None','', false, false, true);
+						
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					},
 					select:function(combo){
@@ -959,15 +965,16 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					afterrender:function(combo){
 					      var store = combo.store,
 					       obj = {variableFieldName:'None'},
-					       index = store.find('variableFieldName', 'none','', false, false, true);
+					       index = store.find('variableFieldName', 'None','', false, false, true);
+					      
 					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
+					    	  store.insert(0,new Ext.data.Record(obj));
 					      }
 					     },
 					     select:function(combo){
 					      var value = combo.getValue();
 					      if(value == 'None'){
-					       combo.setValue('');
+					    	  combo.setValue('');
 					      }
 					     }
 			    }

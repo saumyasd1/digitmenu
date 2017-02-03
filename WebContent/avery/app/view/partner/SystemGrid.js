@@ -94,7 +94,23 @@ Ext.define('AOC.view.partner.SystemGrid', {
 					valueField: 'variableFieldName',
 					editable:false,
 					queryMode :'local',
-					store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId')
+					store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
+					listeners:{
+						afterrender:function(field){
+							var store = field.store
+								index = store.find('variableFieldName','None','', false, false, true),
+								obj = {variableFieldName:'None'};
+							
+							if(index == -1){
+								store.insert(0,new Ext.data.Record(obj));
+							}
+						},
+						select:function(field){
+							if(field.getValue() == 'None'){
+								field.setValue('');
+							}
+						}
+					}
 				}
 			},
 			{
