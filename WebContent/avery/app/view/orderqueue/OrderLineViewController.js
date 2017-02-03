@@ -329,7 +329,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			fieldName = context.column.text,
 			orderDate = context.record.get('orderedDate');
 		
-		if(orderDate > df.getValue()){
+		if(new Date(Ext.util.Format.dateRenderer()(orderDate)) > new Date(Ext.util.Format.dateRenderer()(df.getValue()))){
 			Ext.Msg.alert('Warning',fieldName + ' can not be less than Ordered date ');
 			df.setValue(orderDate);
 		}

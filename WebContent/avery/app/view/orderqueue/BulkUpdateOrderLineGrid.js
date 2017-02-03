@@ -634,10 +634,19 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             xtype:'datecolumn',
             editor: {
 				xtype:'datefield',
+				editable:false,
 				listeners:{
 					'select':'onSelectDate'
 				}
-			}
+			},
+			renderer:function(v, metadata, record){
+			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
+			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+			     metadata.style = AOCLit.cellColor;
+			     return Ext.Date.format(v, AOCLit.dateFormat);
+			    }
+			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+		   }
         }, {
             text: AOCLit.promiseDate,
             dataIndex: 'promiseDate',
@@ -646,10 +655,19 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 88,
             editor: {
 				xtype:'datefield',
+				editable:false,
 				listeners:{
 					'select':'onSelectDate'
 				}
-			}
+			},
+			renderer:function(v, metadata, record){
+			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
+			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+			     metadata.style = AOCLit.cellColor;
+			     return Ext.Date.format(v, AOCLit.dateFormat);
+			    }
+			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+		   }
         }, {
             text: AOCLit.freightTerm,
             dataIndex: 'freightTerms',
