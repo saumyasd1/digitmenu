@@ -253,7 +253,7 @@ public class OrderTrend {
 		for(String key:myMap.keySet()){
 			m=myMap.get(key);
 		  for(String type:m.keySet()){
-			  if(!type.equals("orderType") && !type.equals("colorCode")){
+			  if(!type.equals("orderType") && !type.equals("colorCode") && !type.equals("statusCode")){
 				  toatalCount.put(type, (int) toatalCount.get(type) + (int) m.get(type));  
 			  }
 		  }
@@ -412,6 +412,7 @@ public class OrderTrend {
 		map.put("lastTwoWeek", 0);
 		map.put("lastMonth", 0);
 		map.put("colorCode", statusCodes.get("colorCode"));
+		map.put("statusCode", status);
 		return map;
 	}
 	
