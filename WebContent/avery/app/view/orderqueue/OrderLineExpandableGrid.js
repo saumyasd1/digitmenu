@@ -242,15 +242,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
 				}
 				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing = true;
-					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
 				}
 				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing = true;
-					}
 					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
 				}
 			}

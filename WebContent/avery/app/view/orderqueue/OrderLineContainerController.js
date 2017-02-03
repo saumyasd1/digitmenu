@@ -150,7 +150,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		}
     		//checks for Mandatory Validation Column
     		if(dataIndex == 'mandatoryVariableDataFieldFlag' || dataIndex == 'bulkSampleValidationFlag' || dataIndex == 'htlsizePageValidationFlag'
-    			|| dataIndex == 'moqvalidationFlag' || dataIndex == 'febricPercentageFlag'){
+    			|| dataIndex == 'moqvalidationFlag' || dataIndex == 'febricPercentageFlag' || dataIndex == 'cooTranslationFlag'){
     			
     			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
     			if(checkvalue.substr(0,1) == 'F'){
@@ -237,10 +237,19 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	    			headerText = column.text;
 	    		
 				if(dataIndex == 'customerPOFlag' || dataIndex == 'duplicatePOFlag' || dataIndex == 'moqvalidationFlag'
-	    			|| dataIndex == 'cooTranslationFlag' || dataIndex == 'reviseOrderFlag'){
+	    			|| dataIndex == 'reviseOrderFlag'){
 	    			
 	    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
 	    			if(checkvalue.substr(0,1) == 'F' || checkvalue.substr(0,1) == 'W'){
+	    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+							grid.validationColumnMissing = true;
+							return false;
+						}
+	    			}
+	    		}
+				if(dataIndex == 'cooTranslationFlag'){
+	    			var checkvalue = rec.get(dataIndex) ? rec.get(dataIndex).trim() : '';
+	    			if(checkvalue.substr(0,1) == 'W'){
 	    				if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 							grid.validationColumnMissing = true;
 							return false;
