@@ -56,4 +56,8 @@ public interface ApplicationConstants {
 		
 		String EMAIL_ORDER_SOURCE="Web";
 		
+		String TEST_NOTIFICATION_EMAILID="TESTNOTIFICATION@averydennison.com";
+		
+		String TEST_NOTIFICATION_PASSWORD="y5FRAhad03";
+		
 }
