@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -18,5 +19,7 @@ public interface OrderEmailQueueDao extends GenericDao<OrderEmailQueue, Long>{
 	public void identifyEmail(String data, Long entityId);
 	
 	public void assignCsrValue(Long entityId, String csrId);
+	
+	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate);
 
 }

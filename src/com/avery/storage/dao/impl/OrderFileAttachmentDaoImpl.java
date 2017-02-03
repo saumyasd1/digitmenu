@@ -275,9 +275,10 @@ OrderFileAttachmentDao {
 		FileWriter fWriter = null;
 		BufferedWriter writer = null;
 		try {
+			emailBody = emailBody.replaceAll("\n", "</br>");
 			fWriter = new FileWriter(filePath + File.separator + "CompleteEmail.html");
 			writer = new BufferedWriter(fWriter);
-			writer.write("<html>" + emailBody + "</html>");
+			writer.write("<html>\n" + emailBody + "\n</html>");
 			writer.newLine();
 		} catch (IOException e) {
 			e.printStackTrace();

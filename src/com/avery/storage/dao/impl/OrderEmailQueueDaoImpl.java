@@ -714,6 +714,32 @@ OrderEmailQueueDao {
 		}
 		return resultString;
 	}
+	
+	@Override
+	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate){
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			/*String s = "update OrderEmailQueue set acknowledgementDate=:value where id =:id "; 
+			Query q = session.createQuery(s);
+			q.setDate("value",acknowledgementDate);
+			q.setLong("id",entityId);
+			q.executeUpdate();*/
+			OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, entityId);
+			orderEmailQueue.setAcknowledgementDate(acknowledgementDate);
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while updating acknowledgement date", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while updating acknowledgement date", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 
 
 }

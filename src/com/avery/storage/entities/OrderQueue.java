@@ -931,7 +931,7 @@ public class OrderQueue extends MainAbstractEntity{
 			
 			return Response
 					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-		            .header("content-disposition","attachment; filename = "+fileName)
+		            .header("content-disposition","attachment; filename = \""+fileName+"\"")
 		            .build();
 		} catch (WebApplicationException ex) {
 			throw ex;
