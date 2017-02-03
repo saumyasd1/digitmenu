@@ -123,7 +123,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				align:'center',
 				renderer:function(v, metadata, record){
 						var emailBody = record.get('emailBody'); 
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(emailBody) + '</font>"';
+						metadata.tdAttr = 'data-qtip="<font color=blue>CompleteEmail.html</font>"';
 						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
 				}	
 			
