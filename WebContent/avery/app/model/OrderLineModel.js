@@ -50,7 +50,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'averyItemNumber', mapping:'averyItemNumber',type: 'string'},
 	 		{name: 'oracleItemNumber', mapping:'oracleItemNumber',type: 'string'},
 	 		{name: 'customerItemNumber', mapping:'customerItemNumber',type: 'string'},
-	 		{name: 'itemDescription', mapping:'pageSize',type: 'string'},
+	 		{name: 'pageSize', mapping:'pageSize',type: 'string'},
 	 		{name: 'customerColorCode', mapping:'customerColorCode',type: 'string'},
 	 		{name: 'customerColorDescription', mapping:'customerColorDescription',type: 'string'},
 	 		{name: 'customerSize', mapping:'customerSize',type: 'string'},

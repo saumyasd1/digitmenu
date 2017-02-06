@@ -821,7 +821,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}, 
 		{
 			text: 'ITEM Desc/Size Page',
-			dataIndex: 'itemDescription',
+			dataIndex: 'pageSize',
 			width: 102,
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
