@@ -416,7 +416,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
     	}
     	else{
-    		if(orderQueueStatus == AOCLit.soGeneratedStatusOrderQueue || orderQueueStatus == AOCLit.soSubmittedStatusOrderQueue){
+    		if(orderQueueStatus == AOCLit.soGeneratedStatusOrderQueue || orderQueueStatus == AOCLit.soSubmittedStatusOrderQueue || orderQueueStatus == AOCLit.oracleErrorStatusOrderQueue){
     			salesOrderbutton.disable();
         		salesViewOrderbutton.enable();
         		validateButton.disable();
