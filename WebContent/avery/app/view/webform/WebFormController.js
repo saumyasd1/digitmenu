@@ -59,11 +59,12 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	 	webOrderAttachmentInfoGrid.store.removeAll();
    	    	 	webOrderAttachmentInfoGrid.getView().refresh();
    	    	 	orderFileType.setDisabled(true);
-   	    	 	
-   	    	 	attachment1.hide();
-   	    	 	additionalDataFileKey1.hide();
-   	    	    attachment1.reset();
-   	    	    additionalDataFileKey1.reset();
+   	    	 	if(attachment1){
+	   	    	 	attachment1.hide();
+	   	    	 	additionalDataFileKey1.hide();
+	   	    	    attachment1.reset();
+	   	    	    additionalDataFileKey1.reset();
+   	    	 	}
    	    	 	obj.isChangedForFirstTime=false;
    	    	 	me.hideAndDestroyAttachmentField();
     		}
@@ -446,6 +447,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			Ext.getBody().mask('Deleting...');
 			var view = this.getView(),
 				form = view.lookupReference('webform'),
+				orderFileType = view.lookupReference('orderFileType'),
 				internalId=record.get('internalId'),
 				fileType=record.get('fileType'),
 				attachmentFileField,
@@ -468,6 +470,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				if(attachmentFileField){
 					attachmentFileField.reset();
 				}
+				orderFileType.reset();
 			}
 			store.remove(record);
 			webOrderAttachmentInfoGrid.getView().refresh();
