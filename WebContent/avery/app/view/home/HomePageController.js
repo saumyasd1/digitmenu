@@ -77,16 +77,16 @@ Ext.define('AOC.view.home.HomePageController', {
 		switch(value){
 			case 0 :
 				if(me.refreshinterval){
-					clearIterval(me.refreshinterval);
+					clearInterval(me.refreshinterval);
 				}
 					break;
-			case 5 : var sec = 5*60;
+			case 5 : var sec = 5*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
-			case 10 : var sec = 10*60;
+			case 10 : var sec = 10*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
-			case 15 : var sec = 15*60;
+			case 15 : var sec = 15*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
 		}
@@ -95,7 +95,7 @@ Ext.define('AOC.view.home.HomePageController', {
 	refreshGridByInterval:function(secs){
 		var me = this;
 		if(me.refreshinterval){
-			clearIterval(me.refreshinterval);
+			clearInterval(me.refreshinterval);
 		}
 		me.refreshinterval = setInterval(function(){
 			me.onRefreshClick();
