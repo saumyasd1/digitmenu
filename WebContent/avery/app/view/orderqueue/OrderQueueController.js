@@ -377,7 +377,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					return Helper.getDisableMenuItemStyle();
 				},
 				getCancelOrderEnableDisableClass:function(v){
-					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue || v.Status == AOCLit.errorStatusOrderQueue || v.status == AOCLit.oracleErrorStatusOrderQueue){
+					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue || v.Status == AOCLit.errorStatusOrderQueue){
 						 return 'user-profile-menu-item';
 					}
 					return 'order-profile-menu-item';
