@@ -46,7 +46,7 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderConfiguration.class);
 			criteria.add(Restrictions.eq("propertyName", propertyName));
 			return criteria.list();

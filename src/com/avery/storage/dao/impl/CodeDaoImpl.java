@@ -41,7 +41,7 @@ public class CodeDaoImpl extends GenericDaoImpl<Code, Long> implements
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(Code.class);
 			criteria.add(Restrictions.eq("type", type));
 			return criteria.list();

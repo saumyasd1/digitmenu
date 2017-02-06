@@ -33,7 +33,7 @@ public class SalesOrderDetailDaoImpl extends GenericDaoImpl<SalesOrderDetail, Lo
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SalesOrderDetail.class);
 			criteria.add(Restrictions.eq("processQueueID", orderID.intValue()));
 			criteria.setProjection( Projections.projectionList()
@@ -62,7 +62,7 @@ public class SalesOrderDetailDaoImpl extends GenericDaoImpl<SalesOrderDetail, Lo
 		List<SalesOrderDetail> list=null;
 		Boolean showFiberPercentage=false;
 		try{
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SalesOrderDetail.class);
 			criteria.add(Restrictions.eq("processQueueID", orderID.intValue()));
 			criteria.add(Restrictions.eq("variablefieldname", variablfieldename));
