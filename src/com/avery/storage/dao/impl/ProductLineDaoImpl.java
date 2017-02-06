@@ -582,6 +582,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			Criteria crit = session.createCriteria(ProductLine.class)
 					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
 							.add(Projections.property("dataStructureName"), "dataStructureName"))
+					.addOrder(Order.asc("dataStructureName"))
 					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
 
 			entitiesMap.put("dataStructures", new LinkedHashSet(crit.list()));
