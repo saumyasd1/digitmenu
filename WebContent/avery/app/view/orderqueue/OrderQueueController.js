@@ -2,8 +2,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.orderqueue',
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 
-               'AOC.view.advsearch.OrderQueueAdvanceSearch', 
-               'AOC.view.orderqueue.OrderLineContainer'],
+               'AOC.view.advsearch.OrderQueueAdvanceSearch'],
     runTime: AOC.config.Runtime,
     getOrdersBasedOnSearchParameters: function() {
         var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {storeId:'OrderQueueId'});
