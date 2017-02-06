@@ -7,8 +7,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	requires:[
           'Ext.form.action.StandardSubmit',
           'Ext.grid.plugin.Clipboard',
-          'AOC.view.ux.CustomSearchField',
-          'AOC.view.orderqueue.OrderQueueController'
+          'AOC.view.ux.CustomSearchField'
     ],
 	reserveScrollbar:true,
 	columnLines:false,
