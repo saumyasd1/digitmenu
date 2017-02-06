@@ -376,6 +376,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(days!=null && !"".equals(days)){
 			long lastDays= Long.parseLong(days);
 			Date endDate = new Date(System.currentTimeMillis());
+			endDate.setHours(0);
+			endDate.setMinutes(0);
+			endDate.setSeconds(0);
 			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
 			HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 			}
