@@ -80,13 +80,13 @@ Ext.define('AOC.view.home.HomePageController', {
 					clearIterval(me.refreshinterval);
 				}
 					break;
-			case 5 : var sec = 5*60;
+			case 5 : var sec = 5*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
-			case 10 : var sec = 10*60;
+			case 10 : var sec = 10*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
-			case 15 : var sec = 15*60;
+			case 15 : var sec = 15*60*1000;
 				me.refreshGridByInterval(sec);
 				break;
 		}
