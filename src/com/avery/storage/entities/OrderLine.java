@@ -434,6 +434,10 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "productionLine", length = 1000)
 	private String productionLine;
 	
+	@Column(name = "orderFileOrderType", length = 50)
+	private String orderFileOrderType;
+	
+	
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -456,6 +460,14 @@ public class OrderLine extends MainAbstractEntity{
 	
 	@Transient
 	private String targetSystemName;
+	
+	public String getOrderFileOrderType() {
+		return orderFileOrderType;
+	}
+
+	public void setOrderFileOrderType(String orderFileOrderType) {
+		this.orderFileOrderType = orderFileOrderType;
+	}
 
 	public String getTargetSystemName() {
 		return targetSystemName;
