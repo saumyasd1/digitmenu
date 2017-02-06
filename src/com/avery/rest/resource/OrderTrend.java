@@ -65,7 +65,7 @@ public class OrderTrend {
 		statusMap.put("41", "booked");
 		statusMap.put("42", "error");
 		statusMap.put("50", "cancel");
-		statusMap.put("56", "orderError");
+		statusMap.put("56", "oracleError");
 	}
 
 	@GET
@@ -222,8 +222,8 @@ public class OrderTrend {
 		list.add(errorMap);
 		Map<String, Object> cancelMap = buildMap("Cancel", "50");
 		list.add(cancelMap);
-		Map<String, Object> orderErrorMap = buildMap("Order Error", "56");
-		list.add(orderErrorMap);
+		Map<String, Object> oracleErrorMap = buildMap("Oracle Error", "56");
+		list.add(oracleErrorMap);
 		Map<String, Object> toatalCount = buildMapForTotalCount("Total Count");
 		list.add(toatalCount);
 		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
@@ -244,7 +244,7 @@ public class OrderTrend {
 		myMap.put("41", bookedMap);
 		myMap.put("42", errorMap);
 		myMap.put("50", cancelMap);
-		myMap.put("56", orderErrorMap);
+		myMap.put("56", oracleErrorMap);
 		buildMapData(set, 1, myMap);
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
