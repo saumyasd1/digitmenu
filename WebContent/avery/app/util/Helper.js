@@ -11,7 +11,8 @@ Ext.define('AOC.util.Helper',{
 		ordderColorMap.add('Waiting System Response','#25B3EE');
 		ordderColorMap.add('Successful','#09CF86');
 		ordderColorMap.add('Failed','#FF0000');
-		this.orderColorMap=ordderColorMap;
+		
+		this.orderColorMap = ordderColorMap;
     },
 	getSwitchButtonHtml: function(event, status, cssClass){
 		var switchBorder='',
@@ -419,5 +420,10 @@ Ext.define('AOC.util.Helper',{
 		webOrderView.rboId = '';
 		webOrderView.productLineId = '';
 		
+	},
+	changeScreen:function(screenName){
+		var con = AOC.app.getController('MenuController');
+        con.selectCard(screenName);
+        con.selectMenuItem(screenName);
 	}
 });

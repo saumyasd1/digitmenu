@@ -1,7 +1,7 @@
 Ext.define('AOC.view.home.Wrapper', {
 	extend : 'Ext.Container',
 	alias : 'widget.homewrapper',
-	requires:['AOC.view.home.HomePageOrderList'],
+	//requires:['AOC.view.home.HomePageOrderList'],
 	layout: {
         type: 'fit'
     },
@@ -14,7 +14,7 @@ Ext.define('AOC.view.home.Wrapper', {
 	buildItems:function(){
 	    return [
             {
-	    	xtype:'homepageorderlist'
+            	xtype:'orderqueuestatuslist'
             }
         ]
 	}

@@ -49,6 +49,20 @@ int pageSize=25;
 		    padding: 9px;
 		    border-color: #ccc;
 		} 
+		.x-btn.aoc-btn{
+			border-width:0px;
+			background-image: none !important;
+			color:#2c3e50;
+			background-color:#fff;
+		}
+		.aoc-btn:hover{
+		    color:#ccc;
+		}
+		.aoc-btn .aoc-icon{
+			font-size:16px;
+			width:16px !important;
+			height:16px;
+		}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
