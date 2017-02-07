@@ -151,7 +151,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 			{
 				xtype : 'tbtext',
 				itemId : 'TaskManagerTextId',
-				text:'TaskManager',
+				text:'Task Manager',
 				style:'color:#2c3e50;font-weight:bold;'
 			},'->',
 			{
