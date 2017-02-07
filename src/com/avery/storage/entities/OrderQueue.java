@@ -780,6 +780,7 @@ public class OrderQueue extends MainAbstractEntity{
 					orderfile.setCreatedDate(now);
 					orderfile.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 					orderfile.setVarOrderEmailQueue(orderemailQueue);
+					orderfile.setVarProductLine(productLine);
 					orderFileId=orderFileAttachmentService.create(orderfile);
 				}
 				orderFileAttachmentService.insertEmailBody(orderemailQueue, emailBody, productLine, filePath);
