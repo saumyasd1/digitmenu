@@ -32,7 +32,7 @@ public interface ApplicationConstants {
 		
 		String EMAIL_FILE_NAME="CompleteEmail";
 		
-		String DEFAULT_EMAIL_FILE_EXTENSION="pdf";
+		String DEFAULT_EMAIL_FILE_EXTENSION=".html";
 		
 		String DEFAULT_USER_NAME="Adeptia";	
 		
