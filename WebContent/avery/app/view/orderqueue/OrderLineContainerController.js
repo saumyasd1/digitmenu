@@ -416,7 +416,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		store.getCount() > 0 ? cancelOrderBtn.enable() : cancelOrderBtn.disable();
     	}
     	else{
-    		if(orderQueueStatus == AOCLit.soGeneratedStatusOrderQueue || orderQueueStatus == AOCLit.soSubmittedStatusOrderQueue || orderQueueStatus == AOCLit.oracleErrorStatusOrderQueue){
+    		if(orderQueueStatus == AOCLit.soGeneratedStatusOrderQueue || orderQueueStatus == AOCLit.soSubmittedStatusOrderQueue 
+    					|| orderQueueStatus == AOCLit.oracleErrorStatusOrderQueue || orderQueueStatus == AOCLit.bookedStatusOrderQueue){
     			salesOrderbutton.disable();
         		salesViewOrderbutton.enable();
         		validateButton.disable();
