@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -970,7 +972,7 @@ public class OrderQueue extends MainAbstractEntity{
 			
 			return Response
 					.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-		            .header("content-disposition","attachment; filename = \""+fileName+"\"")
+		            .header("content-disposition","attachment; filename = \""+getEncoded(fileName)+"\"")
 		            .build();
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -1042,4 +1044,9 @@ public class OrderQueue extends MainAbstractEntity{
 		    }
 		return orderFileId;
 		}
+	
+	public String getEncoded(String fileName) throws URISyntaxException{
+    	URI uri = new URI(null, null, fileName, null);
+    	 return uri.toASCIIString();
+    }
 }
