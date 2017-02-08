@@ -36,9 +36,6 @@ public abstract class OrderQueueMixIn {
 		public abstract String getCreatedBy(); //ignore CreatedBy from partner belongs to main abstract entity class
 		
 		@JsonIgnore
-		public abstract Date getCreatedDate(); //ignore CreatedDate from partner belongs to main abstract entity class
-		
-		@JsonIgnore
 		public abstract Blob getFileData();
 		
 		@JsonIgnore

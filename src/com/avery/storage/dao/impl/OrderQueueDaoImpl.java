@@ -132,6 +132,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("listOrgInfo.orgCodeId"), "orgCodeId")
+				.add(Projections.property("createdDate"), "createdDate")
 				
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName")
 			.add(Projections.property("orderemailqueue.mailBody"),"mailBody")
