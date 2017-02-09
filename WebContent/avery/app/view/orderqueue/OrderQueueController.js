@@ -130,24 +130,42 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					me.runTime.setAllowOrderLineEdit(true);
 					
 					Ext.getBody().mask('Loading...');
+					var erporgStore = Ext.StoreManager.lookup('divisionInterfaceErporgStore');
+				     var proxy = new Ext.data.proxy.Ajax({
+				      type: 'rest',
+				      url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
+				      reader: {
+				       type: 'json',
+				       rootProperty: 'data'
+				      }
+				     });
+				     erporgStore.setProxy(proxy);
+				     erporgStore.load(function(){
+				      me.runTime.setStoreERPORG(erporgStore);
+				      me.viewOrderLineScreen(currentRecord);
+				      
+				      callout.destroy(); // hide action menu items
+				      Ext.getBody().unmask();
+				     });
 					
-					var storeERPORG = Ext.create('Ext.data.Store', {
-						fields:['id','name'],
-						proxy: {
-							type: 'rest',
-							url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
-							reader: {
-								type: 'json',
-								rootProperty: 'data'
-							}
-						}
-					});
-					storeERPORG.load();
-					me.runTime.setStoreERPORG(storeERPORG);
-					me.viewOrderLineScreen(currentRecord);
 					
-					callout.destroy(); // hide action menu items
-					Ext.getBody().unmask();
+//					var storeERPORG = Ext.create('Ext.data.Store', {
+//						fields:['id','name'],
+//						proxy: {
+//							type: 'rest',
+//							url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
+//							reader: {
+//								type: 'json',
+//								rootProperty: 'data'
+//							}
+//						}
+//					});
+//					storeERPORG.load();
+//					me.runTime.setStoreERPORG(storeERPORG);
+//					me.viewOrderLineScreen(currentRecord);
+//					
+//					callout.destroy(); // hide action menu items
+//					Ext.getBody().unmask();
 				},
 				viewSales: function(cmp){
 					var currentRecord = e.record;

@@ -418,5 +418,6 @@ Ext.define('AOC.controller.MenuController', {
 		helper.loadCodeStore('orderfilequeue');
 		helper.loadCodeStore('orderline');
 		helper.loadCodeStore('orderemailqueue');
+		Ext.create('AOC.store.DivisionInterfaceErporgStore');
 	}  
 });  

@@ -2,6 +2,7 @@ Ext.define('AOC.view.email.CancelEmailWindow',{
 	extend:'Ext.window.Window',
 	xtype:'cancelEmailWindow',
 	width:370,
+	requires:['AOC.view.email.CancelEmailWindowController'],
 	controller:'cancelEmail',
 	closable:false,
 	header:false,

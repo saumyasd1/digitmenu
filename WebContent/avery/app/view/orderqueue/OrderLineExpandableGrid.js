@@ -1028,7 +1028,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'combo',
 				displayField:'name',
 				valueField:'id',
-				store:AOC.config.Runtime.getStoreERPORG(),
 				listeners:{
 					'select':'onerporgSelectChange'
 				}

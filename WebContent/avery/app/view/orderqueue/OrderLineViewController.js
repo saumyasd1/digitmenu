@@ -251,7 +251,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var orgCodeName = '';
 		var view = this.getView();
 		if(!Ext.isEmpty(v)){
-			var store=h.column.config.editor.store;
+			var store= h.column.config.editor.store ? h.column.config.editor.store : Ext.StoreManager.lookup('divisionInterfaceErporgStore');
+			   h.column.config.editor.store = h.column.config.editor.store ? h.column.config.editor.store : store;
 			if(store){
 				var index = store.find("id",v);
 				if(index == -1){
