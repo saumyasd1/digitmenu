@@ -23,7 +23,8 @@ Ext.define('AOC.view.AOCHeader',{
                      xtype: 'image',
                      src: settings.buttonIcons.logoImage,
                      width:60,
-		             height:60
+                     margin:'1 0 0 0',
+ 					 height:56
         	     },{
         		 xtype:'component',
 		         height:60,
