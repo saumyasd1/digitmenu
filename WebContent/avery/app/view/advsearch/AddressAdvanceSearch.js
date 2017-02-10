@@ -12,7 +12,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		
+		me.buttons = me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -23,8 +23,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 		        reference:'addressAdvanceSearchForm',
 		        padding:'10 10 5 10',
 		        border:false,
-		        buttonAlign:'right',
-		        buttons:me.getButtons(),
 				defaults:{
 					labelSeparator:'',
 					labelStyle:Settings.config.defaultFormLabelStyle,

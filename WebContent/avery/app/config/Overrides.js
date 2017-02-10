@@ -7,9 +7,9 @@ Ext.define('AOC.config.Overrides',{
     	                    ab = this.allowBlank,
     	                    itemId=this.itemId;
     	                if (ab === false && fl) {
-    	                    this.fieldLabel = '<span style="color:#EB4A00;">*</span> '+fl;
+    	                    this.fieldLabel = fl + ' <span style="color:#EB4A00;">*</span> ';
     	                } else if (ab === true && fl) {
-    	                    this.fieldLabel = '  '+fl;
+    	                    this.fieldLabel = fl;
     	                }
     	                if(itemId=='messageFieldItemId'){
     	                	this.fieldCls='aoc-win-msg';

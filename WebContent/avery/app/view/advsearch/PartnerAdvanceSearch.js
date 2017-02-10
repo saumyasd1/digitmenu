@@ -14,6 +14,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
+		me.buttons = me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -23,8 +24,6 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 		    	xtype:'form',
 		        reference:'partnerAdvanceSearchForm',
 		        border:false,
-		        buttonAlign:'right',
-		        buttons:me.getButtons(),
 		        padding:'10 10 5 10',
 				defaults:{
 					labelSeparator:'',

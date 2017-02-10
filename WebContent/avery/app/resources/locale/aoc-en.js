@@ -25,6 +25,8 @@ Ext.define('AOC.lang.lit',{
     "userNameExistsMsg": "A user with the given Email already exists. Please choose another Email.",
     "userGridSearchEmptyText": "Search Email",
     //Address
+    addAddress:'Add Address',
+    editAddress:'Edit Address',
     "Description": 'Description',
     "siteNumber":'Site Number',
     "address": 'Address',

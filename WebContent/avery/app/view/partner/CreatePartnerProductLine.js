@@ -20,9 +20,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		this.callParent(arguments);
 	},
 	layout:{
-		type:'anchor',
-		stretch:'max'
-		//pack:'center'
+		type:'anchor'
 	},
 	listeners:{
 		'afterrender':'afterWindowRender'

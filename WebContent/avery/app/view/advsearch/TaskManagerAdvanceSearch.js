@@ -13,7 +13,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		
+		me.buttons=me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -24,8 +24,6 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 		        reference:'taskManagerAdvanceSearchForm',
 		        border:false,
 		        padding:'10 10 5 10',
-		        buttonAlign : 'right',
-		        buttons:me.getButtons(),
 		        items:[
 					
 					{

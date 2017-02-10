@@ -14,7 +14,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		
+		me.buttons = me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -25,8 +25,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 		        reference:'emailQueueAdvanceSearchForm',
 		        border:false,
 		        padding:'10 10 5 10',
-		        buttonAlign : 'right',
-		        buttons:me.getButtons(),
 		        items:[
 					{
 						xtype: 'fieldcontainer',

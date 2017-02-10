@@ -60,13 +60,12 @@ Ext.define('AOC.view.address.AddressController', {
 		if(!win){
 		    var data={"id":""};
 		    win=Ext.create('AOC.view.address.AddAddress',{
-			modal:true,
-			rec:currentRecord,
-			editMode:mode,
-			ID:id
-		});
-	    win.down('#titleItemId').setValue(AOCLit.title).setVisible(true);
-		win.show();
+		    	title:AOCLit.addAddress,
+				rec:currentRecord,
+				editMode:mode,
+				ID:id
+			});
+		    win.show();
 		}
 	},
 	saveAddressDetails:function(){
@@ -244,19 +243,18 @@ Ext.define('AOC.view.address.AddressController', {
   		  		if(!win){
   		  		    var data={"id":""};
   		  		    win=Ext.create('AOC.view.address.AddAddress',{
-  		  			modal:true,
-  		  			rec:currentRecord,
-  		  			editMode:mode,
-  		  			ID:id,
-  		  		    listeners: {
-	     	        	'close':function( panel, eOpts ) {
-	     	        		 Ext.getBody().unmask();
-	     	        		 win.destroy();
-	     	            }
-  		  		    }
-  		  		});
-  		  	    win.down('#titleItemId').setValue(AOCLit.title).setVisible(true);
-  		  		win.show();
+	  		  			title:AOCLit.editAddress,
+	  		  			rec:currentRecord,
+	  		  			editMode:mode,
+	  		  			ID:id,
+	  		  		    listeners: {
+		     	        	'close':function( panel, eOpts ) {
+		     	        		 Ext.getBody().unmask();
+		     	        		 win.destroy();
+		     	            }
+	  		  		    }
+	  		  		});
+  		  			win.show();
   		  		}
                   	callout.destroy();
                   },

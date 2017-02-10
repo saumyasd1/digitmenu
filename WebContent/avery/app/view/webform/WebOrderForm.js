@@ -178,7 +178,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						itemId:'dataStructureCombo',
 						displayField:'dataStructureName',
 						valueField:'id',
-						editable:true,
+						editable:false,
 						flex:1,
 						name:'dataStructureName',
 						emptyText:AOCLit.partnerDataStructure,
