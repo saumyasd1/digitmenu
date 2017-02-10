@@ -1,41 +1,45 @@
 Ext.define('AOC.view.partner.PartnerController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.partnerMain',
-    runTime: AOC.config.Runtime,
-    helper: AOC.util.Helper,
-    requires: ['AOC.view.advsearch.PartnerAdvanceSearch', 'AOC.util.Helper'],
-    SaveDetails: function() {
-        Ext.getBody().mask('Saving....');
-        var Msg = '';
-        var createpartner = Ext.ComponentQuery.query("#createpartnerItemId")[0];
-        var grid = Ext.ComponentQuery.query("#PartnerMangementitemId")[0];
-        var panel = createpartner.down('#listPanel');
-        var valueObj = '',
-            form = this.getView().down('form');
-        var methodMode = '';
-        var editMode = this.getView().editMode,
-            url = '';
+    requires: ['AOC.view.advsearch.PartnerAdvanceSearch'],
+    onSaveBtnClick: function() {
+    	var me = this,
+    		refs = me.getReferences(),
+    		view = me.getView(),
+    		partnerName = refs.partnerName,
+    		messageLabelField = refs.messageLabelField,
+    		partnerManagementGrid = AOCRuntime.getActiveGrid(),
+    		form = refs.createPartnerForm,
+    		//form = formPanel.getForm(),
+    		editMode = view.editMode,
+    		url = '',
+    		valueObj ='',
+    		method ='',
+    		msg ='';
+    	
         var length = 0;
         if (editMode) {
-            partnerId = createpartner.partnerId;
-            url = applicationContext + '/rest/partners/' + partnerId;
+            url = applicationContext + '/rest/partners/' + view.partnerId;
             form.updateRecord();
-            methodMode = 'PUT';
+            method = 'PUT';
             valueObj = form.getRecord().getChanges();
             length = Object.keys(valueObj).length;
-            Msg =AOCLit.updatePartnerMsg;
+            msg = AOCLit.updatePartnerMsg;
         } else {
             url = applicationContext + '/rest/partners';
             valueObj = form.getValues(false, true, false, true);
-            methodMode = 'POST';
+            method = 'POST';
             length = 1;
-            Msg = AOCLit.addPartnerMsg;
+            msg = AOCLit.addPartnerMsg;
         }
         var parameters = Ext.JSON.encode(valueObj);
+        
+       
         if (length > 0) {
-            if (panel.getForm().isValid()) {
+            if (form.isValid()) {
+            	view.mask('Saving....');
                 Ext.Ajax.request({
-                    method: methodMode,
+                    method: method,
                     jsonData: parameters,
                     url: url,
                     success: function(response, opts) {
@@ -43,39 +47,39 @@ Ext.define('AOC.view.partner.PartnerController', {
                         var valueExist = jsonString.valueExist;
                         if (valueExist) {
                             Ext.getBody().unmask();
-                            createpartner.lookupReference('partnerName').focus();
-                            createpartner.down('#messageFieldItemId').show();
-                            createpartner.down('#messageFieldItemId').setValue(AOCLit.partExistMsg);
+                            partnerName.focus();
+                            messageLabelField.show();
+                            messageLabelField.setValue(AOCLit.partExistMsg);
                             return false;
                         }
-                        Ext.getBody().unmask();
-                        createpartner.destroy();
-                        AOC.util.Helper.fadeoutMessage('Success', Msg);
-                        grid.store.load();
+                        view.unmask();
+                        view.close();
+                        AOC.util.Helper.fadeoutMessage('Success', msg);
+                        partnerManagementGrid.store.load();
                     },
                     failure: function(response, opts) {
                         Msg = response.responseText;
                         Msg = Msg.replace("Exception:", " ");
                         //  AOC.util.Helper.fadeoutMessage('Success',Msg);
-                        Ext.Msg.alert('Alert Message', Msg);
-                        Ext.getBody().unmask();
-                        createpartner.destroy();
+                        Ext.Msg.alert('Alert Message', msg);
+                        view.unmask();
+                        view.close();
                     }
                 });
             } else {
-                createpartner.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
+            	messageLabelField.setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
             }
 
-            this.runTime.setWindowInEditMode(false);
+            AOCRuntime.setWindowInEditMode(false);
         } else {
-            createpartner.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
+        	messageLabelField.setValue(AOCLit.editFieldEntryMsg).setVisible(true);
         }
     },
-    CancelDetails: function() {
+    onCancelBtnClick: function() {
         Ext.getBody().unmask();
         this.getView().destroy();
-        this.runTime.setWindowInEditMode(false);
-        this.runTime.getActiveGrid().store.load();
+        AOCRuntime.setWindowInEditMode(false);
+        AOCRuntime.getActiveGrid().store.load();
     },
 
     createpartner: function() {
@@ -139,7 +143,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                                     url: applicationContext + '/rest/partners/' + id,
                                     success: function(response, opts) {
                                         AOC.util.Helper.fadeoutMessage('Success', AOCLit.delPartnerMsg);
-                                        me.runTime.getActiveGrid().store.load();
+                                        AOCRuntime.getActiveGrid().store.load();
                                     },
                                     failure: function(response, opts) {}
                                 });
@@ -178,7 +182,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                     partnerproduct.partnerid = id;
                     partnerproduct.partnerName = partnerName;
                     partnerproduct.down('#pagingtoolbar').bindStore(store);
-                    me.runTime.setActiveGrid(partnerproduct);
+                    AOCRuntime.setActiveGrid(partnerproduct);
                     //partnergrid.setText('<b></b>');
                     callout.destroy();
                 }
@@ -275,14 +279,14 @@ Ext.define('AOC.view.partner.PartnerController', {
     },
     hideMandatoryMessage: function() {
         var obj = this.getView();
-        this.helper.hideMandatoryMessage(obj);
+        Helper.hideMandatoryMessage(obj);
     },
     notifyByMessage: function() {
         var obj = this.getView();
-        this.helper.notifyByMessage(obj);
+        Helper.notifyByMessage(obj);
     },
     notifyByImage: function(config) {
-        this.helper.notifyByImage(config);
+        Helper.notifyByImage(config);
     }
 
 });

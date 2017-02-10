@@ -31,19 +31,20 @@ Ext.define('AOC.view.partner.CreatePartner', {
     	    '->',
     	    {
     	    	 text: 'Save',
-    	    	 handler: 'SaveDetails'
+    	    	 handler: 'onSaveBtnClick'
     	    },
     	    {
 	   	    	 text: 'Cancel',
-	   	    	 handler: 'CancelDetails'
+	   	    	 handler: 'onCancelBtnClick'
     	    }
-    	]
+    	];
     },
     buildItem: function() {
         return [
         {
             xtype: 'displayfield',
             itemId: 'messageFieldItemId',
+            reference:'messageLabelField',
             fieldStyle:'text-align: center;',
             value: '',
             margin:'0 0 10 0',
@@ -53,6 +54,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
             xtype: 'form',
             itemId: 'listPanel',
             border: false,
+            reference:'createPartnerForm',
             anchor:'100%',
             layout:'anchor',
             defaults:{
@@ -81,13 +83,13 @@ Ext.define('AOC.view.partner.CreatePartner', {
             {
                 xtype: 'textfield',
                 itemId: 'AItemId',
-                name: 'address',
+                name: 'address1',
                 fieldLabel: AOCLit.address,
                 allowBlank: false,
                 anchor:'100%',
                 margin:'0 0 5 0',
                 blankText: AOCLit.addReq,
-                maxLength: '500',
+                maxLength: 500,
                 enforceMaxLength: true,
                 listeners: {
                     'blur': 'notifyByImage',

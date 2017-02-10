@@ -58,8 +58,14 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 			            {
 				        	text : AOCLit.address,
 				            sortable : true,
-				            dataIndex:'address',
-				            flex:1
+				            dataIndex:'address1',
+				            flex:1,
+				            renderer:function(v, metaData,record){
+				            	var value = record.get('address1') + (record.get('address2') ? +', ' + record.get('2') : '') +
+				            			(record.get('address3') ?  +', '+record.get('address3') : '');
+				            			
+				            	return value;
+				            }
 			            },
 			            {
 				        	text : AOCLit.contactPerson,
