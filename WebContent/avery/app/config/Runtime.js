@@ -1,5 +1,6 @@
 Ext.define('AOC.config.Runtime',{
     singleton : true,
+    alternateClassName:['AOCRuntime'],
     config :{
         activeButton : null,
         activeGrid:null,

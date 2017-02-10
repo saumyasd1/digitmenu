@@ -17,6 +17,7 @@ Ext.define('AOC.view.AOCHeader',{
         	layout: {
             	type: 'hbox'
             	},
+        	style:Settings.config.header.headerBgStyle,
         	items:[
                      {
                      xtype: 'image',

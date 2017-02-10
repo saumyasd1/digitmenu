@@ -75,7 +75,6 @@ Ext.define('AOC.controller.MenuController', {
 	       }
 	],
 	menuInstructions : AOC.config.MenuInstructions,
-	runTime : AOC.config.Runtime,
 	init: function(){
 		var me = this;
 		me.control({
@@ -113,9 +112,7 @@ Ext.define('AOC.controller.MenuController', {
 			manageusers : me.onManageUsers,
 			logout : me.onLogout
 		});
-		me.settings = AOC.config.Settings;
 		me.runtime = AOC.config.Runtime;
-		me.helper = AOC.util.Helper;
 	},
 	
 	onChangeMainView : function(xtype, emailQueueId){
@@ -160,11 +157,11 @@ Ext.define('AOC.controller.MenuController', {
 				success:function(form, action){
 					var obj = Ext.decode(action.response.responseText);
 					var tokenExpires = obj.tokenExpiresDays;
-					me.helper.setCookie("authorization",obj["token"],tokenExpires);
+					Helper.setCookie("authorization",obj["token"],tokenExpires);
 					var userInfo = obj["userinfo"];
 					me.runtime.setUser(userInfo);
 					me.updateHeaderUserName();
-					me.helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
+					Helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
 					Ext.getBody().unmask();
 					me.loadStores();
 					me.changeViewportCard(1);
@@ -202,8 +199,6 @@ Ext.define('AOC.controller.MenuController', {
 		
 		switch (xtype){
 			case 'homewrapper':
-				 // var chart= Ext.ComponentQuery.query('viewport odersoverviewchart')[0];
-				  //chart.getController().loadChartData(chart.down('#dashboardDateRange').getValue(),true); 
 				break;
 			case 'weborderview':
 				var webOrderView = Ext.ComponentQuery.query('weborderview')[0];
@@ -317,8 +312,8 @@ Ext.define('AOC.controller.MenuController', {
 	},
 	onLogout:function(){
 		var me=this;
-		me.helper.deleteCookie("authorization");
-		me.helper.deleteCookie("userinfo");
+		Helper.deleteCookie("authorization");
+		Helper.deleteCookie("userinfo");
 		me.changeViewportCard(0);
 	},
 	onClickEditProfile:function(){
@@ -366,7 +361,7 @@ Ext.define('AOC.controller.MenuController', {
 				method: 'PUT',
 				type : 'rest',
 				jsonData : activeForm.getValues(),
-				url: me.settings.getBaseUserUrl()+'/'+id,
+				url: Settings.getBaseUserUrl()+'/'+id,
 				headers:{"Authorization" : "Basic YWRtaW46aW5kaWdvMQ==" },
 				scope: me,
 				success: function (res) {
@@ -374,14 +369,14 @@ Ext.define('AOC.controller.MenuController', {
 					var userInfo=Ext.decode(res.responseText);
 					me.runtime.setUser(userInfo);
 					me.updateHeaderUserName();
-					me.helper.setCookie("userinfo",JSON.stringify(userInfo),30);
+					Helper.setCookie("userinfo",JSON.stringify(userInfo),30);
 					me.selectProrfileCard(0);
 					me.updateTopToolBar(true,profileInfo);
 					me.updateBottomToolBar(false);
 					me.updateProfileInfo();
 					var message =(activeForm.xtype=='useredit')?personalInformation:password;
 					message=message+savedSuccessfully;
-					me.helper.fadeoutMessage('Success',message);
+					Helper.fadeoutMessage('Success',message);
 				},
 				failure: function (rsp) {
 					Ext.getBody().unmask();
@@ -401,23 +396,23 @@ Ext.define('AOC.controller.MenuController', {
 		var cmp=Ext.ComponentQuery.query('viewport canwas mainmenu')[0],
 			store = cmp.getStore(),
 			rec = store.findRecord('xtype', xtype);
-		cmp.getSelectionModel().select(rec);
+		
+		rec ? cmp.getSelectionModel().select(rec) : cmp.getSelectionModel().deselectAll();
 	},
 	loadStores:function(){
 		//Ext.getStore('OrderCharts').load();
 		Ext.getStore('HomePageOders').load();
-		var helper=AOC.util.Helper;
-		helper.loadVariableComboStore('FreightTerms');
-		helper.loadVariableComboStore('ShippingMethod');
-		helper.loadVariableComboStore('CSR');
-		helper.loadVariableComboStore('OrderType');
-		helper.loadVariableComboStore('APOType');
-		helper.loadVariableComboStore('EndCustomer');
-		helper.loadVariableComboStore('SplitShipset');
-		helper.loadCodeStore('code');
-		helper.loadCodeStore('orderfilequeue');
-		helper.loadCodeStore('orderline');
-		helper.loadCodeStore('orderemailqueue');
+		Helper.loadVariableComboStore('FreightTerms');
+		Helper.loadVariableComboStore('ShippingMethod');
+		Helper.loadVariableComboStore('CSR');
+		Helper.loadVariableComboStore('OrderType');
+		Helper.loadVariableComboStore('APOType');
+		Helper.loadVariableComboStore('EndCustomer');
+		Helper.loadVariableComboStore('SplitShipset');
+		Helper.loadCodeStore('code');
+		Helper.loadCodeStore('orderfilequeue');
+		Helper.loadCodeStore('orderline');
+		Helper.loadCodeStore('orderemailqueue');
 		Ext.create('AOC.store.DivisionInterfaceErporgStore');
 	}  
 });  

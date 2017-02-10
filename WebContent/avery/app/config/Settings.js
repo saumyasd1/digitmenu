@@ -10,7 +10,10 @@ Ext.define('AOC.config.Settings',{
         tabHeaderTitleStyle:'color:#2f3338;font-size:13px;font-weight:bold;',
         defaultFormLabelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;',
         defaultBorderStyle:'border:solid 1px #cecece;',
-        defaultTbarHeight:50
+        defaultTbarHeight:50,
+        header:{
+        	headerBgStyle:'box-shadow: 0px 0px 1px 0px rgba(47, 51, 56, 0.07), inset 0px -1px 0px 0px #C7C8C9;'
+        }
     },
     form:{
     	defaultLabelAlign:'left',
