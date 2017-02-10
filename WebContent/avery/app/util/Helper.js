@@ -404,7 +404,14 @@ Ext.define('AOC.util.Helper',{
 			combo.setValue('');
 		}
 	},
-	
+	 clearCombo:function(combo,e){
+		  	var store = combo.store;
+			var index = store.find(combo.displayField,combo.getRawValue(),'',false,false,true);
+			if(index == -1){
+				combo.setValue('');
+			}
+		},
+		
 	resetWebOrderForm:function(webOrderView){
 		var refs = webOrderView.getReferences(),
 			form = refs.webform;
