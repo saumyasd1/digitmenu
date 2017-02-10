@@ -76,13 +76,12 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						},
 						items:[
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.siteType,
-								name:'siteType',
+								xtype:'combobox',
+								name: 'siteType',
+								displayField: 'siteType',
+								fieldLabel:AOCLit.siteType,
 								flex:1,
-								selectOnTab : true,
-								tabIndex:3,
-								enableKeyEvents:true,
+								store :[['B','Bill To Site Number'],['S','Ship To Site Number']],
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
