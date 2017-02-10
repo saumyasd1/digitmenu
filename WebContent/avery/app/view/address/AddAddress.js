@@ -92,12 +92,16 @@ Ext.define('AOC.view.address.AddAddress',{
 								xtype:'combo',
 								name: 'siteId',
 								fieldLabel:'Site',
+								allowBlank: false,
 								flex:1,
 								displayField: 'name',
 								reference:'siteName',
 								valueField: 'id',
 								store:Ext.create('AOC.store.SiteStore'),
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 									select : 'onSiteSelect',
 									'focus' : 'HideMandatoryMessage'
 								}
@@ -106,6 +110,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								xtype:'combobox',
 								name: 'system',
 								fieldLabel:'System',
+								allowBlank: false,
 								flex:1,
 								//queryMode :'local',
 								displayField: 'name',
@@ -116,6 +121,9 @@ Ext.define('AOC.view.address.AddAddress',{
 								//  store: 'SiteStore',
 								store:Ext.create('AOC.store.SystemStore'),
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 									select : 'onSystemSelect',
 								//     blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
@@ -146,6 +154,9 @@ Ext.define('AOC.view.address.AddAddress',{
 								store :'PartnerManagementStore',
 								allowBlank: false,
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 								//	 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
 								}
@@ -157,11 +168,15 @@ Ext.define('AOC.view.address.AddAddress',{
 								displayField: 'name',
 								flex:1,
 								reference:'orgName',
+								allowBlank: false,
 								valueField: 'id',
 								disabled:true,
 								margin:'0 0 0 10',
 								store:Ext.create('AOC.store.OrgStore'),
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 									select : 'onOrgSelect',
 									'focus' : 'HideMandatoryMessage'
 								}
@@ -195,6 +210,9 @@ Ext.define('AOC.view.address.AddAddress',{
 									fields:['variableFieldName']
 								}),
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 									'focus' : 'HideMandatoryMessage'
 								}
 							},
@@ -211,6 +229,9 @@ Ext.define('AOC.view.address.AddAddress',{
 								disabled:true,
 								store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
 								listeners : {
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
 									'focus' : 'HideMandatoryMessage'
 								}
 							}
@@ -262,19 +283,23 @@ Ext.define('AOC.view.address.AddAddress',{
 							{
 								xtype:'combobox',
 								name: 'siteType',
+								displayField: 'siteType',
 								fieldLabel:AOCLit.siteType,
 								flex:1,
-								store :[['B','billToSiteNumber'],['S','shipToSiteNumber']],
+								store :[['B','Bill To Site Number'],['S','Ship To Site Number']],
 								allowBlank: false,
 								listeners : {
-									blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
+									blur:function(combo,e){
+										Helper.clearCombo(combo,e);
+									},
+								'focus' : 'HideMandatoryMessage'
 								}
 							},
 							{
 								xtype:'textfield',
 								name: 'siteNumber',
 								margin:'0 0 0 10',
+								regex: /[a-zA-Z0-9]+/,
 								fieldLabel:AOCLit.siteNumber,
 								allowBlank: false,
 								flex:1,
