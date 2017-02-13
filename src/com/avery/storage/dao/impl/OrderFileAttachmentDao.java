@@ -12,6 +12,8 @@ public interface OrderFileAttachmentDao extends GenericDao<OrderFileAttachment, 
 	
 	public List<OrderFileAttachment> readAllByOrderID(Long orderID);
 	
+	public List<OrderFileAttachment> readByOrderQueueID(Long orderID);
+	
 	public List<OrderFileAttachment> readFileByID(Long fileID);
 	
 	public Map getAdditionalFilesList(long orderFileQueueId);

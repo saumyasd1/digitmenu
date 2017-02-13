@@ -447,6 +447,43 @@ public class OrderFileAttachment extends MainAbstractEntity {
 		return rb.build();
 	}
 	
+	@GET
+	@Path("/resubmit/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getByOrderQueueID(@Context UriInfo ui,
+			@Context HttpHeaders hh, @PathParam("id") String orderId) {
+		Response.ResponseBuilder rb = null;
+		List<OrderFileAttachment> orderFileAttachment = null;
+		try{
+			Long entityId = Long.parseLong(orderId);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
+			mapper.addMixIn(ProductLine.class, PartnerDataStructureMixin.class);//adding partnerDataStructureMixin for data population on attchmnt grid(Krishna varshney)
+			mapper.addMixIn(ProductLine.class, ViewMailMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+					.getInstance().getBean("orderFileAttachmentService");
+			orderFileAttachment = orderFileAttachmentService.readByOrderQueueID(entityId);
+			if (orderFileAttachment == null)
+				throw new Exception("Unable to find order attachments");
+			Map entitiesMap = new HashMap();
+			entitiesMap.put("viewmail", orderFileAttachment);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
 /*	@GET
 	@Path("/download/{id:[0-9]+}")
 	@Produces(MediaType.MULTIPART_FORM_DATA)

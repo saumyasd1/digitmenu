@@ -98,6 +98,59 @@ OrderFileAttachmentDao {
 	}
 	
 	@Override
+	public List<OrderFileAttachment> readByOrderQueueID(Long orderID){
+		
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			Map entitiesMap = new HashMap();
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(OrderFileAttachment.class)
+					.createAlias("listOrderFileQueue", "listOrderFileQueue");
+			/*
+			 * ProjectionList projections = Projections.projectionList();
+			 * projections.add(Projections.property("id"), "id");
+			 * projections.add(Projections.property("fileName"), "fileName");
+			 * criteria.setProjection(projections); criteria.setMaxResults(10);
+			 */
+			criteria.add(Restrictions.eq("listOrderFileQueue.id", orderID));
+			List<OrderFileAttachment> list = criteria.list();
+			// getting colorCode, iconName and values as required at the GUI
+			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
+			if (statusList == null)
+				throw new Exception("Unable to fetch Status List.");
+			for (OrderFileAttachment orderFileAttachment : list) {
+				String status = orderFileAttachment.getStatus();
+				if (status == null | status.equals(""))
+					throw new Exception("Unidentified value found for the status.");
+				Map<String, String> statusCodes = statusList.get(status);
+				if (statusCodes == null)
+					throw new Exception("No data found in the status table for status:: \"" + status + "\".");
+				String iconName = statusCodes.get("iconName");
+				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
+				orderFileAttachment.setIconName(iconName);
+				orderFileAttachment.setColorCode(colorCode);
+				orderFileAttachment.setCodeValue(codeValue);
+
+			}
+			return list;
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id " + orderID, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order attachments for order id " + orderID, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
+	@Override
 	public List<OrderFileAttachment> readFileByID(Long fileID){
 		
 		Session session = null;
