@@ -252,7 +252,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					
 					var response = Ext.Ajax.request({
 						async: false,
-						url: applicationContext+'/rest/orderattachements/order/'+rec.get('emailQueueId')
+						url: applicationContext+'/rest/orderattachements/resubmit/'+rec.get('id')
 					});
 					var jsonValue = Ext.decode(response.responseText),
 						fileList = jsonValue.viewmail;
