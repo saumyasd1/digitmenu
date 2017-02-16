@@ -75,34 +75,36 @@ Ext.define('AOC.util.Helper',{
 		if(selection.startCell){
 			var store = grid.store;
 			var intialCell = selection.startCell;
-			if(intialCell!=null){
+			
+			if(intialCell!=null && store.getCount() > 0){
 				var dataindex=intialCell.column.dataIndex,
 					value=intialCell.record.get(dataindex),
 					initialrowIdx=intialCell.rowIdx,
 					lastrowIdx=selection.endCell.rowIdx,
 					start=initialrowIdx,
 					end=lastrowIdx;
-					//columnSortable = intialCell.column.sortable;
 				
-				intialCell.column.sortable = false;
-				if(lastrowIdx < initialrowIdx){
-					start = lastrowIdx;
-					end = initialrowIdx;
-					//start=lastrowIdx-1;
-					//end=initialrowIdx-1;
-				}
-				for(var i= start;i <= end; i++){
-					store.getAt(i).set(dataindex, value);
+				function updateRecord(index){
+					store.getAt(index).set(dataindex, value);
 					//For Status field change code value
 					if(dataindex == 'status'){
 						if(value == AOCLit.cancelStatusOrderLine){
-							store.getAt(i).set('iconName', 'cancel');
-							store.getAt(i).set('colorCode', '#808080');
+							store.getAt(index).set('iconName', 'cancel');
+							store.getAt(index).set('colorCode', '#808080');
 						}else{
-							store.getAt(i).set('iconName', 'warning');
-							store.getAt(i).set('colorCode', '#FF0000');
+							store.getAt(index).set('iconName', 'warning');
+							store.getAt(index).set('colorCode', '#FF0000');
 						}
 						store.getAt(i).set('codeValue', intialCell.record.get('codeValue'));
+					}
+				}
+				if(end == 0 && start > 0){
+					for(var i= start;i >= end; i--){
+						updateRecord(i);
+					}
+				}else if(end > 0 && start == 0){
+					for(var i= start;i <= end; i++){
+						updateRecord(i);
 					}
 				}
 			}
@@ -167,7 +169,7 @@ Ext.define('AOC.util.Helper',{
     	/*
     	 * Implementing generic function for displaying colorCode and iconName on all screens
     	 * */
-    	return '<img style="margin-right:3px;" src="' + AOC.config.Settings.buttonIcons[obj.data.iconName] + '" /><font color="' +obj.data.colorCode+'">'+obj.data.codeValue+'</font>';
+    	return '<span style="margin-right:3px;"><i style="font-size:16px; color:'+obj.data.colorCode+'" class="' + AOC.config.Settings.buttonsCls[obj.data.iconName] + '"></i></span><span><font color="' +obj.data.colorCode+'">'+obj.data.codeValue+'</font></span>';
     },
     setCookie:function(cname, cvalue, exdays) {
         var d = new Date();
@@ -361,23 +363,23 @@ Ext.define('AOC.util.Helper',{
 	advancedSearch:function(view,values){
 		var store = view.contextGrid.store;
 		
-		  if (values) {
-			  store.proxy.setFilterParam('query');
-	            store.setRemoteFilter(true);
-	            if (!store.proxy.hasOwnProperty('filterParam')) {
-	                store.proxy.setFilterParam('query');
-	            }
-	            store.proxy.encodeFilters = function(filters) {
-	                return filters[0].getValue();
-	            };
-	            store.filter({
-	                id: 'query',
-	                property: 'query',
-	                value: Ext.JSON.encode(values)
-	            });
-	            view.contextGrid.lookupReference('clearAdvSearch').show();
-	        }
-	        view.close();
+		if (values) {
+		  store.proxy.setFilterParam('query');
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('query');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'query',
+                property: 'query',
+                value: Ext.JSON.encode(values)
+            });
+            view.contextGrid.lookupReference('clearAdvSearch').show();
+        }
+        view.close();
 	},
 	quickSearch:function(view,value){
 		var store = view.store;
@@ -404,13 +406,13 @@ Ext.define('AOC.util.Helper',{
 			combo.setValue('');
 		}
 	},
-	 clearCombo:function(combo,e){
-		  	var store = combo.store;
-			var index = store.find(combo.displayField,combo.getRawValue(),'',false,false,true);
-			if(index == -1){
-				combo.setValue('');
-			}
-		},
+	clearCombo:function(combo,e){
+	  	var store = combo.store;
+		var index = store.find(combo.displayField,combo.getRawValue(),'',false,false,true);
+		if(index == -1){
+			combo.setValue('');
+		}
+	},
 		
 	resetWebOrderForm:function(webOrderView){
 		var refs = webOrderView.getReferences(),
@@ -432,5 +434,56 @@ Ext.define('AOC.util.Helper',{
 		var con = AOC.app.getController('MenuController');
         con.selectCard(screenName);
         con.selectMenuItem(screenName);
+	},
+	
+	getIconClass:function(value){
+		if(value.substr(0,1)=='T'){
+			return '<i style="color:green;font-size:16px;" class="fa fa-check"/>';
+		}
+		else if(value.substr(0,1) == 'F'){
+			return '<i style="color:red;font-size:16px;" class="fa fa-times"/>';
+		}
+		else{
+			return '<i style="color:orange;font-size:16px;" class="fa fa-exclamation-triangle"/>';
+		}
+	},
+	showToast: function(type, msg) {
+		var style = '',
+			title = '',
+			iconCls = '',
+			bodyStyle='';
+		
+		switch(title){
+			case 'failure':
+				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f5b4a5;';
+				title:'Failure';
+				iconCls:'fa fa-exclamation-circle';
+				bodyStyle:'background-color:#f5b4a5;';
+				break;
+			case 'validation':
+				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f7f985;';
+				title:'Warning';
+				iconCls:'fa fa-exclamation-triangle';
+				bodyStyle:'background-color:#f7f985;';
+				break;
+			default:
+				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#ebffeb;',
+				title = 'Success',
+				iconCls = 'fa fa-check',
+				bodyStyle='background-color:#ebffeb;';
+				break;
+		}
+		
+        Ext.toast({
+            html: msg,
+            closable: true,
+            title:title,
+            bodyStyle:bodyStyle,
+            style:style,
+            iconCls:iconCls,
+            align: 't',
+            slideInDuration: 400,
+            minWidth: 400
+        });
 	}
 });

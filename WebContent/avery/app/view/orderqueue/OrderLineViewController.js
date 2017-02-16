@@ -251,8 +251,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var orgCodeName = '';
 		var view = this.getView();
 		if(!Ext.isEmpty(v)){
-			var store= h.column.config.editor.store ? h.column.config.editor.store : Ext.StoreManager.lookup('divisionInterfaceErporgStore');
-			   h.column.config.editor.store = h.column.config.editor.store ? h.column.config.editor.store : store;
+			h.column.config.editor.store = AOCRuntime.getStoreERPORG();
+			var store = h.column.config.editor.store;
+			
 			if(store){
 				var index = store.find("id",v);
 				if(index == -1){
@@ -334,6 +335,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			Ext.Msg.alert('Warning',fieldName + ' can not be less than Ordered date ');
 			df.setValue(orderDate);
 		}
+	},
+	
+	onWaveMoqColumnRenderer:function(value, metadata, record){
+		var v = 'N';
+		if(value){
+			v = 'Y';
+		}
+		return v;
+	},
+	qtyColumnRenderer:function(value, metadata, record){
+		if(value){
+			return Number(value)
+		}
+		return '';
 	}
     
 });

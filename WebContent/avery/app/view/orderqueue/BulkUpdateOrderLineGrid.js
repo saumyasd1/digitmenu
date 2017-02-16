@@ -68,7 +68,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     text: AOCLit.roundQty,
                     dataIndex: 'roundQty',
                     width: 50,
-                    editor: 'numberfield',
                     renderer:function(value, metadata, record){
         				if(value){
         					return Number(value)
@@ -80,7 +79,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     text: AOCLit.MOQDiffQty,
                     dataIndex: 'moqdiffQty',
                     width: 55,
-                    editor: 'numberfield',
                     renderer:function(value, metadata, record){
         				if(value){
         					return Number(value);
@@ -763,15 +761,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor:{
             	xtype:'combo',
             	editable:false,
-            	store:[[true,'Y'],[false,'N']]
-            },
-            renderer:function(value, metadata,rec){
-            	var v='N';
-            	if(value){
-            		v='Y';
-            	}
-			return v;
-        }
+            	store:[['Y','Y'],['N','N']]
+            }
         }, {
             text: AOCLit.artworkWorkAttachment,
             dataIndex: 'artworkAttachment',

@@ -93,7 +93,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		orderLineTitle.setText('Order Line   (Order Track#: '+ id + ')'); //set orderline title
 		
 		me.runTime.setOrderLineCurrenProductLine(currentRecord.get('productLineId'));
-		me.showHideValidationButton(orderlinecontainer, status);
+		//me.showHideValidationButton(orderlinecontainer, status);
 		
 		//Load orderline grid for respective orderqueue id
 		grid.store.load({params:{id:id}});
@@ -118,54 +118,38 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					var currentRecord = e.record;
 		   
 					var id = currentRecord.get('id');
-		        	   var partnerId = currentRecord.get('partnerId');
+		        	var partnerId = currentRecord.get('partnerId');
 		        	//setting parameters at runtime   
-		               me.runTime.setOrderQueueId(id);
-		               me.runTime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
-		               me.runTime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
-		               me.runTime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
-		               me.runTime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
-		               me.runTime.setOrderQueueActiveRecord(currentRecord);
+		            me.runTime.setOrderQueueId(id);
+		            me.runTime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
+		            me.runTime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
+		            me.runTime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
+		            me.runTime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
+		            me.runTime.setOrderQueueActiveRecord(currentRecord);
 					me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
 					me.runTime.setAllowOrderLineEdit(true);
 					
 					Ext.getBody().mask('Loading...');
-					var erporgStore = Ext.StoreManager.lookup('divisionInterfaceErporgStore');
-				     var proxy = new Ext.data.proxy.Ajax({
-				      type: 'rest',
-				      url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
-				      reader: {
-				       type: 'json',
-				       rootProperty: 'data'
-				      }
-				     });
-				     erporgStore.setProxy(proxy);
-				     erporgStore.load(function(){
-				      me.runTime.setStoreERPORG(erporgStore);
-				      me.viewOrderLineScreen(currentRecord);
-				      
-				      callout.destroy(); // hide action menu items
-				      Ext.getBody().unmask();
-				     });
 					
+					var storeERPORG = Ext.create('Ext.data.Store', {
+						fields:['id','name'],
+						proxy: {
+							type: 'rest',
+							url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
+							reader: {
+								type: 'json',
+								rootProperty: 'data'
+							}
+						}
+					});
 					
-//					var storeERPORG = Ext.create('Ext.data.Store', {
-//						fields:['id','name'],
-//						proxy: {
-//							type: 'rest',
-//							url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
-//							reader: {
-//								type: 'json',
-//								rootProperty: 'data'
-//							}
-//						}
-//					});
-//					storeERPORG.load();
-//					me.runTime.setStoreERPORG(storeERPORG);
-//					me.viewOrderLineScreen(currentRecord);
-//					
-//					callout.destroy(); // hide action menu items
-//					Ext.getBody().unmask();
+					storeERPORG.load(function(){
+						me.runTime.setStoreERPORG(storeERPORG);
+						me.viewOrderLineScreen(currentRecord);
+						
+						callout.destroy(); // hide action menu items
+						Ext.getBody().unmask();
+					});
 				},
 				viewSales: function(cmp){
 					var currentRecord = e.record;

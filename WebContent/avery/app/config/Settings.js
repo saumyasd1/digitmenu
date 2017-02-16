@@ -19,6 +19,14 @@ Ext.define('AOC.config.Settings',{
     	defaultLabelAlign:'left',
     	topLabelAlign:'top'
     },
+    buttonsCls:{
+    	 tick:'fa fa-check',
+         warning:'fa fa-exclamation-triangle',
+         watch:'fa fa-clock-o',
+         error:'fa fa-exclamation-circle',
+         cancel:'fa fa-ban',
+         cross:'fa fa-times'
+    },
     buttonIcons : {
          logoImage:'avery/resources/images/logo_avery.gif',
          logout:'avery/resources/images/logout.png',

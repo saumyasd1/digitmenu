@@ -63,7 +63,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  text:'#',
 			  width:30,
 			  align:'left'
-			},
+		},
 		{
 			text: 'ATO Mandatory',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
@@ -89,19 +89,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				if(mandatoryVariableDataField){
 					metadata.tdAttr = 'data-qtip="<font color=blue>' + mandatoryVariableDataField + '</font>"';
 				}
-				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '" />';
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '" />';	
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		}, 
 		{
@@ -112,19 +100,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ bulkSampleValidationFlag +'"';
-				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '" />';
-				}
-				else if (checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		}, 
 		{
@@ -136,18 +112,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ customerPOFlag +'"';
 				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing=true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		}, 
 		{
@@ -159,21 +124,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ duplicatePOFlag +'"';
 				
-				if(checkvalue.substr(0,1)=='T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing=true; 
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-				}
-				else{
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing=true; 
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		}, 
 		{
@@ -185,19 +136,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ htlSizePageValidationFlag +'"';
 				
-				if(checkvalue.substr(0,1)=='T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing=true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-					
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		}, 
 		{
@@ -209,22 +148,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ moqValidationFlag +'"';
 				
-				if(checkvalue.substr(0,1)=='T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1)=='F'){
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='false' || rec.get('waiveMOQ')==false)){
-						this.mandatoryValidationFieldMissing=true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-
-				}
-				else{
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine && (rec.get('waiveMOQ')=='true' || rec.get('waiveMOQ')== true)){
-						this.validationFieldMissing=true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		},
 		
@@ -238,15 +162,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ cooTranslationFlag +'"';
 				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		},
 		/*New Field-3*/    
@@ -259,18 +175,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ febricPercentageFlag +'"';
 				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryValidationFieldMissing = true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-				}
-				else{
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		},
 		/*New Field-4*/    
@@ -283,45 +188,20 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkvalue = value ? value.trim()  :'';
 				metadata.tdAttr = 'data-qtip="'+ reviseOrderFlag +'"';
 				
-				if(checkvalue.substr(0,1) == 'T'){
-					return '<img src="' + AOC.config.Settings.buttonIcons.tick + '"/>';
-				}
-				else if(checkvalue.substr(0,1) == 'F'){
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing = true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.cross + '"/>';
-					
-				}
-				else{
-					if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.validationFieldMissing = true;
-					}
-					return '<img src="' + AOC.config.Settings.buttonIcons.warning + '"/>';
-				}
+				return Helper.getIconClass(checkvalue);
 			}
 		},
 		{
 			text: 'Round Qty',
 			dataIndex: 'roundQty',
 			width: 50,
-			renderer:function(value, metadata, record){
-				if(value){
-					return Number(value)
-				}
-				return '';
-			}
+			renderer:'qtyColumnRenderer'
 		},
 		{
 			text: 'MOQDiff Qty',
 			dataIndex: 'moqdiffQty',
 			width: 55,
-			renderer:function(value, metadata, record){
-				if(value){
-					return Number(value)
-				}
-				return '';
-			}
+			renderer:'qtyColumnRenderer'
 		},
 		{
 			text: 'Customer Ordered Qty.<font color=red>*</font>',
@@ -350,9 +230,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 				   return value;
 				} else {	
-					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
 					metadata.style = AOCLit.cellColor;
 					return value;
 				}
@@ -366,10 +243,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				var checkMOQ=rec.data.moqvalidationFlag.trim();
 				var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
 				if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
-					return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
+					return '<i style="font-size:16px;" class="EnableUpdateMoq fa fa-cart-plus"/>';
 				}
 				else{
-					return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
+					return '<i style="font-size:16px;" class="fa fa-ban"/>';
 				}
 		   }
 		},
@@ -382,13 +259,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:function(value, metadata,rec){
-				var v = 'N';
-				if(value){
-					v ='Y';
-				}
-				return v;
-			}
+			renderer:'onWaveMoqColumnRenderer'
 		},
 		{
 			text: 'Status',
@@ -434,9 +305,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 88,
 			renderer : function(value, metadata ,record) {
 				if(value == '') {
-					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing = true;
-					}
 					metadata.style = AOCLit.cellColor;
 				} else {
 					if(value == AOCLit.averyItemNotFoundText || value==duplicateMappingLabel){
@@ -651,9 +519,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, metadata, record) {
 				if(value =='') {
-					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
 					metadata.style = AOCLit.cellColor;
 				} else {
 					 return value;
@@ -756,9 +621,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, metadata, record) {
 				if(value=='') {
-					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
 					metadata.style = AOCLit.cellColor;
 				} else {
 					 return value;
@@ -1028,6 +890,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'combo',
 				displayField:'name',
 				valueField:'id',
+				store:AOCRuntime.getStoreERPORG(),
 				listeners:{
 					'select':'onerporgSelectChange'
 				}
@@ -1041,15 +904,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor:{
 				xtype:'combo',
 				editable:false,
-				store:[[true,'Y'],[false,'N']]
+				store:[['Y','Y'],['N','N']]
 			},
-			renderer:function(value, metadata,rec){
-				var v ='N';
-				if(value){
-					v = 'Y';
-				}
-				return v;
-			}
 		}, 
 		{
 			text: AOCLit.artworkWorkAttachment,//'Artwork Work Attachment',
@@ -1060,13 +916,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:function(value, metadata,rec){
-				var v = 'N';
-				if(value){
-					v = 'Y';
-				}
-				return v;
-			}
+			renderer:'onWaveMoqColumnRenderer'
 		}, 
 		{
 			text: 'Variable Data Breakdown',
@@ -1193,13 +1043,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:function(value, metadata,rec){
-				var v ='N';
-				if(value){
-					v = 'Y';
-				}
-				return v;
-			}
+			renderer:'onWaveMoqColumnRenderer'
 		}, 
 		{
 			text: 'Production Hold',
@@ -1210,13 +1054,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:function(value, metadata,rec){
-				var v='N';
-				if(value){
-					v='Y';
-				}
-				return v;
-			}
+			renderer:'onWaveMoqColumnRenderer'
 		}, 
 		{
 			text: 'Split Shipset',
@@ -1465,28 +1303,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					flex:2,
 					editor: 'textfield',
 					renderer:function(v, metadata,rec){
-						if(v){
-							var mandatory=rec.get('mandatory');
-							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
-							if(mandatory=='Y'){
-								if(v == ''){
-									if(me.showMandatoryValidationField)
-										metadata.style = AOCLit.mandatoryValidationCellColor;
-								}
-								return v;
-							}
-							else{
-									return v;
-							}
+						var mandatory = rec.get('mandatory');
+						metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
+						if(Ext.isEmpty(v) && mandatory == 'Y'){
+							metadata.style = AOCLit.cellColor;
 						}
-						else{
-							var fieldName = rec.get('variableFieldName');
-							var fieldValue = rec.get('variableDataValue');
-							if((fieldName == 'SIZE' || fieldName == 'SIZE CHART' || fieldName == 'QTY') && fieldValue == ''){
-								metadata.style = AOCLit.cellColor;
-							}
-						}
-						return '';
+						return v;
 					}
 				}, 
 				{

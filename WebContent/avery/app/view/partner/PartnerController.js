@@ -54,14 +54,13 @@ Ext.define('AOC.view.partner.PartnerController', {
                         }
                         view.unmask();
                         view.close();
-                        AOC.util.Helper.fadeoutMessage('Success', msg);
+                        Helper.showToast('success',msg);
                         partnerManagementGrid.store.load();
                     },
                     failure: function(response, opts) {
-                        Msg = response.responseText;
-                        Msg = Msg.replace("Exception:", " ");
-                        //  AOC.util.Helper.fadeoutMessage('Success',Msg);
-                        Ext.Msg.alert('Alert Message', msg);
+                    	msg = response.responseText;
+                    	msg = Msg.replace("Exception:", " ");
+                        Helper.showToast('failure', msg);
                         view.unmask();
                         view.close();
                     }
