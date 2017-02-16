@@ -271,7 +271,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(orderQueueObj.getComment()!=null)
 				commentString=orderQueueObj.getComment().replace("::", "\n");
 			orderQueueObj.setComment(commentString);
-			orderQueueObj.setLastModifiedDate(new Date());//last modified date added
+			//orderQueueObj.setLastModifiedDate(new Date());//last modified date added
 			orderQueueObj.preUpdateOp();
 			session.update(orderQueueObj);
 			orderQueueObj.postUpdateOp();

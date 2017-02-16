@@ -41,7 +41,7 @@ public class MainAbstractEntity extends AbstractEntityImpl {
     private String createdBy;
 	
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
-	@Column(name = "lastModifiedDate")
+	@Column(name = "lastModifiedDate", updatable=false)
     private Date lastModifiedDate;
 	
 	public Date getCreatedDate() {
