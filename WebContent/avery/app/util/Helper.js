@@ -98,13 +98,19 @@ Ext.define('AOC.util.Helper',{
 						store.getAt(i).set('codeValue', intialCell.record.get('codeValue'));
 					}
 				}
-				if(end == 0 && start > 0){
+				if(end < start && start > 0){
 					for(var i= start;i >= end; i--){
-						updateRecord(i);
+						var record = store.getAt(i);
+						if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+							updateRecord(i);
+						}
 					}
-				}else if(end > 0 && start == 0){
+				}else if(end > start && start >= 0){
 					for(var i= start;i <= end; i++){
-						updateRecord(i);
+						var record = store.getAt(i);
+						if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+							updateRecord(i);
+						}
 					}
 				}
 			}
@@ -146,16 +152,12 @@ Ext.define('AOC.util.Helper',{
     getOrderLineEditor:function(record,value){
 		var store=record.store;
 		var i=store.find('id',record.id);
-		if(i==0){
 			return Ext.create('Ext.grid.CellEditor', {
 				field: {
 					xtype: 'textfield',
 					allowBlank: false
 				}
 			});
-		}else{
-			return false;
-		}
     },
     createToolTip : function(el,lit,anchor){
         var me     = this;
