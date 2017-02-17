@@ -98,19 +98,13 @@ Ext.define('AOC.util.Helper',{
 						store.getAt(i).set('codeValue', intialCell.record.get('codeValue'));
 					}
 				}
-				if(end < start && start > 0){
+				if(end == 0 && start > 0){
 					for(var i= start;i >= end; i--){
-						var record = store.getAt(i);
-						if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-							updateRecord(i);
-						}
+						updateRecord(i);
 					}
-				}else if(end > start && start >= 0){
+				}else if(end > 0 && start == 0){
 					for(var i= start;i <= end; i++){
-						var record = store.getAt(i);
-						if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-							updateRecord(i);
-						}
+						updateRecord(i);
 					}
 				}
 			}
@@ -152,12 +146,16 @@ Ext.define('AOC.util.Helper',{
     getOrderLineEditor:function(record,value){
 		var store=record.store;
 		var i=store.find('id',record.id);
+		if(i==0){
 			return Ext.create('Ext.grid.CellEditor', {
 				field: {
 					xtype: 'textfield',
 					allowBlank: false
 				}
 			});
+		}else{
+			return false;
+		}
     },
     createToolTip : function(el,lit,anchor){
         var me     = this;
@@ -455,18 +453,18 @@ Ext.define('AOC.util.Helper',{
 			iconCls = '',
 			bodyStyle='';
 		
-		switch(title){
+		switch(type){
 			case 'failure':
 				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f5b4a5;';
-				title:'Failure';
-				iconCls:'fa fa-exclamation-circle';
-				bodyStyle:'background-color:#f5b4a5;';
+				title='Failure';
+				iconCls='fa fa-exclamation-circle';
+				bodyStyle='background-color:#f5b4a5;';
 				break;
 			case 'validation':
 				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f7f985;';
-				title:'Warning';
-				iconCls:'fa fa-exclamation-triangle';
-				bodyStyle:'background-color:#f7f985;';
+				title='Warning';
+				iconCls='fa fa-exclamation-triangle';
+				bodyStyle='background-color:#f7f985;';
 				break;
 			default:
 				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#ebffeb;',
