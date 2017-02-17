@@ -72,6 +72,8 @@ Ext.define('AOC.lang.lit',{
     "deleteAddressMsg":'<b>Are you sure you want to delete the Address?</b>',
     "updateAddressMsg":"Address Updated Successfully",
     "addAddressMsg": "Address Added Successfully",
+    "systemCountMsg": "No system configured with selected site",
+    "orgCountMsg": "No org configured with selected system",
     "deleteAddMsg": "<b>Address Deleted Succesfully</b>",
     //Advance Search
     "instruction":'Instruction',
