@@ -357,8 +357,8 @@ Ext.define('AOC.view.address.AddressController', {
 			  else{
 				  org.disable();
 				  var msg=AOCLit.orgCountMsg;
-				  AOC.util.Helper.fadeoutMessage('Success',msg);
-			    	 }
+				     Helper.showToast('validation',msg); 
+			  }
 		  });
 	  },
 	  loadSystemStore:function(systemStore, value){
@@ -403,8 +403,8 @@ Ext.define('AOC.view.address.AddressController', {
 			   else{
 					  system.disable();
 					  var msg=AOCLit.systemCountMsg;
-					  AOC.util.Helper.fadeoutMessage('Success',msg);
-		    	}
+					     Helper.showToast('validation',msg);  
+				  }
 		  });
 	  },
 	  onOrgSelect:function(combo, record){
