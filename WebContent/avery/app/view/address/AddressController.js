@@ -300,7 +300,7 @@ Ext.define('AOC.view.address.AddressController', {
 		      shippingMethod = refs.shippingMethod,
 		      freightTerms = refs.freightTerms,
 		  	  system = refs.systemName,
-		    systemStore = system.store,
+		  	  systemStore = system.store,
 		  	  siteId = record.get('id');
 		  
 		 me.loadSystemStore(systemStore, siteId );
@@ -344,9 +344,31 @@ Ext.define('AOC.view.address.AddressController', {
 		 
 		 
 		  store.setProxy(proxy);
-		  store.load();
+		 // dynamically add validation for empty store of org ()
+		  store.load(function(){
+			  if(store.getCount()>0){
+				  var form =this.getView();
+				     if(form !=null && !form.isResubmit){
+				    	 org.reset();
+				     }
+				  
+				     org.enable();
+			  }
+			  else{
+				  org.disable();
+				  var Msg=AOCLit.orgCountMsg;
+				     Helper.showToast('validation',Msg); 
+			  }
+		  });
 	  },
 	  loadSystemStore:function(systemStore, value){
+		  var me = this,
+		      refs = me.getReferences(),
+		      org = refs.orgName,
+		      shippingMethod = refs.shippingMethod,
+		      freightTerms = refs.freightTerms,
+		  	  system = refs.systemName,
+		  	  systemStore = system.store;
 		  var proxy = new Ext.data.proxy.Rest({
 			    url: applicationContext+'/rest/system/site/'+ value,
 			    appendId: true,
@@ -359,7 +381,31 @@ Ext.define('AOC.view.address.AddressController', {
 			});
 		  
 		  systemStore.setProxy(proxy);
-		  systemStore.load();
+//calcuting store count for adding validation (Saumya)		  
+		  systemStore.load(function(){
+			  if(systemStore.getCount()>0){
+				  var form =me.getView();
+				     if(form !=null && !form.isResubmit){
+				    	 system.reset();
+				    	 org.reset();
+				    	 shippingMethod.reset();
+				    	 freightTerms.reset();
+				    	 shippingMethod.disable();
+				    	 freightTerms.disable();
+				    	 org.disable();
+				     }
+				     if(systemStore.getCount()>0){
+				    	 system.enable();
+				     }
+				  
+				     system.bindStore(systemStore);
+			  }
+			   else{
+					  system.disable();
+					  var Msg=AOCLit.systemCountMsg;
+					     Helper.showToast('validation',Msg);  
+				  }
+		  });
 	  },
 	  onOrgSelect:function(combo, record){
 		
