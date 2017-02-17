@@ -356,9 +356,9 @@ Ext.define('AOC.view.address.AddressController', {
 			  }
 			  else{
 				  org.disable();
-				  var Msg=AOCLit.orgCountMsg;
-				     Helper.showToast('validation',Msg); 
-			  }
+				  var msg=AOCLit.orgCountMsg;
+				  AOC.util.Helper.fadeoutMessage('Success',msg);
+			    	 }
 		  });
 	  },
 	  loadSystemStore:function(systemStore, value){
@@ -402,9 +402,9 @@ Ext.define('AOC.view.address.AddressController', {
 			  }
 			   else{
 					  system.disable();
-					  var Msg=AOCLit.systemCountMsg;
-					     Helper.showToast('validation',Msg);  
-				  }
+					  var msg=AOCLit.systemCountMsg;
+					  AOC.util.Helper.fadeoutMessage('Success',msg);
+		    	}
 		  });
 	  },
 	  onOrgSelect:function(combo, record){
