@@ -146,8 +146,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			partner.setId(partnerId);
 			pk.setVarPartner(partner);	
 		}
-		String CSRPrimaryID=productLineMap.get("CSRPrimaryID")==null?"":(String)productLineMap.get("CSRPrimaryID");
-		pk.setCSRPrimaryId(CSRPrimaryID);
+		String CSRPrimaryID=productLineMap.get("csrPrimaryID")==null?"":(String)productLineMap.get("csrPrimaryID");
+		pk.setCsrPrimaryId(CSRPrimaryID);
 		
 		boolean waivemoa=productLineMap.get("waivemoa")==null?false:(boolean)productLineMap.get("waivemoa");
 		pk.setWaiveMOA(waivemoa);
@@ -160,10 +160,10 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		boolean shipmentsample=productLineMap.get("shipmentsample")==null?false:(boolean)productLineMap.get("shipmentsample");
 		pk.setShipmentSample(shipmentsample);
 		boolean llkk=productLineMap.get("llkk")==null?false:(boolean)productLineMap.get("llkk");
-		pk.setLLKK(llkk);
+		pk.setLlkk(llkk);
 		
-		String CSRSecondaryID=productLineMap.get("CSRSecondaryID")==null?"":(String)productLineMap.get("CSRSecondaryID");
-		pk.setCSRSecondaryId(CSRSecondaryID);
+		String CSRSecondaryID=productLineMap.get("csrSecondaryID")==null?"":(String)productLineMap.get("csrSecondaryID");
+		pk.setCsrSecondaryId(CSRSecondaryID);
 		
 		pk.setCreatedDate(new Date());
 		String productLineType=productLineMap.get("productLineType")==null?"":(String)productLineMap.get("productLineType");
