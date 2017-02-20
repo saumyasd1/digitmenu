@@ -10,6 +10,8 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'productLineType', mapping:'productLineType',type: 'string'},
 		{name: 'csrName', mapping:'csrName',type: 'string'},
 		{name: 'csrEmail', mapping:'csrEmail',type: 'string'},
+		{name: 'csrPrimaryId',mapping:'csrPrimaryId',type:'string'},
+		{name: 'csrSecondaryId',mapping:'csrSecondaryId',type:'string'},
 		{name: 'orderEmailDomain', mapping:'orderEmailDomain',type: 'string'},
 		{name: 'packingInstruction', mapping:'packingInstruction',type: 'string'},
 		{name: 'splitShipSetBy', mapping:'splitShipSetBy',type: 'string'},
@@ -35,7 +37,14 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'attachmentIdentifier_3', mapping:'attachmentIdentifier_3',type: 'string'},
 		{name: 'orderToProcessSchemaID', mapping:'orderToProcessSchemaID',type: 'string'},
 		{name: 'orderToProcessMappingID', mapping:'orderToProcessMappingID',type: 'string'},
-		{name: 'preProcessPID', mapping:'preProcessPID',type: 'string'}
+		{name: 'preProcessPID', mapping:'preProcessPID',type: 'string'},
+		{name: 'fiberpercentagecheck',mapping:'fiberpercentagecheck',type:'boolean'},
+		{name: 'llkk',mapping:'llkk',type:'boolean'},
+		{name: 'sizeCheck',mapping:'sizeCheck',type:'boolean'},
+		{name: 'localBilling',mapping:'localBilling',type:'boolean'},
+		{name: 'shipmentSample',mapping:'shipmentSample',type:'boolean'},
+		{name: 'factoryTransfer',mapping:'factoryTransfer',type:'boolean'},
+		
 			    ]
 
 });

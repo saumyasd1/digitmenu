@@ -87,6 +87,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								margin:'0 0 0 10',
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
+								blankText:'Data Structure Name is required',
 								bind:'{dataStructureName}'
 							},
 							{
@@ -133,6 +134,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								valueField:'id',
 								displayField:'name',
 								maxLength : '100',
+								blankText:'Site Name is required',
 								store:siteStore,
 								siteChanged:false,
 								enforceMaxLength: true,
@@ -164,7 +166,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype:'fieldcontainer',
 						reference:'systemcontainer',
-						fieldLabel:'Systems',
+						fieldLabel:'Systems<font color=red>*</font>',
 						labelSeparator:'',
 						labelAlign:'top',
 						margin : '0 0 0 0',
@@ -250,8 +252,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'textfield',
 								itemId:'CSRPrimaryId',
-								name: 'CSRPrimaryId',
-								bind:'{CSRPrimaryId}',
+								name: 'csrPrimaryId',
+								bind:'{csrPrimaryId}',
 								fieldLabel:'CSR Primary Email',
 								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
@@ -264,8 +266,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'textfield',
 								itemId:'CSRSecondaryId',
-								name: 'CSRSecondaryId',
-								bind:'{CSRSecondaryId}',
+								name: 'csrSecondaryId',
+								bind:'{csrSecondaryId}',
 								fieldLabel:'CSR Secondary Email',
 								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
@@ -361,24 +363,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						items: [
 							{
 								boxLabel : 'Size Check',
-								name  : 'CSRAttention',
+								name  : 'sizeCheck',
 								inputValue : 'sizecheck',
 								id : 'sizecheck',
-								bind:'{sizecheck}'
+								bind:'{sizeCheck}'
 							},
 							{
 								boxLabel : 'Fabric Check',
-								name : 'CSRAttention',
+								name : 'fiberpercentagecheck',
 								inputValue : 'fabriccheck',
 								id : 'fabriccheck',
-								bind:'{fabriccheck}'
+								bind:'{fiberpercentagecheck}'
 							},
 							{
 								boxLabel : 'LLKK',
-								name : 'LLKK',
+								name : 'llkk',
 								inputValue : 'LLKK',
 								id : 'LLKK',
-								bind:'{LLKK}'
+								bind:'{llkk}'
 							}
 						]
 					},
@@ -409,6 +411,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				collapsible: true,
 				collapsed :true,
 				anchor:'100%',
+				reference:'advancePropertiesForm',
 				title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">Advanced Properties</p>',
 				titleCollapse: true,
 				style:'border:solid 1px #ccc;padding:5px;width:100%;',
@@ -427,6 +430,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								collapseDirection: 'top',
 								animCollapse: false,
 								collapsible: true,
+								reference:'orderForm',
 								collapsed :true,
 								title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">Order</p>',
 								style:'border:solid 1px #ccc;margin-bottom:5px;padding:5px;',
@@ -450,10 +454,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												itemId:'FileType',
 												name: 'fileType',
 												fieldLabel:'File Type',
-												store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
+												store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
 												editable:false,
 												bind:'{orderFileNameExtension}',
-												allowBlank:false
+												allowBlank:false,
+												blankText:'File Type is required'
 											},
 											{
 												xtype:'textfield',
@@ -548,6 +553,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								collapseDirection: 'top',
 								animCollapse: false,
 								collapsible: true,
+								reference:'additionalData',
 								collapsed :true,
 								titleCollapse: true,
 								width:'100%',

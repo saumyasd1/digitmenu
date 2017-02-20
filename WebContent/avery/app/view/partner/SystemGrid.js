@@ -129,17 +129,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				editor:{
 					xtype:'combo',
 					editable:false,
-					store:[[true,'Y'],[false,'N']]
-				},
-				renderer:function(value, metadata,rec){
-					if(Ext.isEmpty(value)){
-						return '';
-					}
-					var v = 'N';
-					if(value){
-						v = 'Y';
-					}
-					return v;
+					store:[['Y','Y'],['N','N']]
 				}
 			}
         ];
@@ -148,7 +138,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
     	var me=this;
     	if(Ext.isEmpty(value)){
     		if(me.showValidationError){
-    			metadata.style = AOCLit.mandatoryValidationCellColor;
+    			metadata.style = AOCLit.cellColor;
     		}
     		me.isSystemGridNotValid=true;
     	}

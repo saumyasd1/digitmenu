@@ -1182,6 +1182,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				     me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 				    },
 				cellclick:'onCellClickToView',
+//				'celldblclick':function(){
+//					var editWindow = Ext.create('AOC.view.orderqueue.EditOrderLineWindow');
+//					editWindow.show();
+//				},
 				'beforecelldblclick':function(view, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 					me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 					if(cellIndex==0){

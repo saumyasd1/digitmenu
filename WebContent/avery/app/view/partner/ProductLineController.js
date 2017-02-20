@@ -7,11 +7,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
 		var createproductline=this.getView();
+		refs = me.getReferences();
+		advancedPropertiesForm = refs.advancedPropertiesForm,
+		orderForm = refs.orderForm,
+		additionalData = refs.additionalData;
+		
 		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
 		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
 			var getFormInvalidFields=this.getFormInvalidFields(panel.getForm());
 			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
 			Ext.getBody().unmask();
+			advancedPropertiesForm.expand();
+	    	orderForm.expand();
+	    	additionalData.expand();
 			return false;
 		}
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
@@ -68,14 +76,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			parameters={
 					rboId:valueObj.rboId,
 					partnerId:Id,
-					CSRPrimaryId:valueObj.CSRPrimaryId,
-					CSRSecondaryId:valueObj.CSRSecondaryId,
+					csrPrimaryId:valueObj.csrPrimaryId,
+					csrSecondaryId:valueObj.csrSecondaryId,
 					waiveMOA:valueObj.waiveMOA,
 					waiveMOQ:valueObj.waiveMOQ,
-					shipmentSample:valueObj.shipmentSample,
-					factoryTransfer:valueObj.factoryTransfer,
-					localBilling:valueObj.localBilling,
-					LLKK:valueObj.LLKK,
+					shipmentSample:valueObj.shipmentSample ? valueObj.shipmentSample: false,
+					factoryTransfer:valueObj.factoryTransfer ? valueObj.factoryTransfer: false,
+					localBilling:valueObj.localBilling ? valueObj.localBilling: false,
+					llkk:valueObj.llkk ? valueObj.llkk: false,
+					sizeCheck:valueObj.sizeCheck ? valueObj.sizeCheck: false,
+					fiberpercentagecheck:valueObj.fiberpercentagecheck? valueObj.fiberpercentagecheck: false,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue,
 					
@@ -102,7 +112,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					shipmentsample:valueObj.shipmentSample,
 					factorytransfer:valueObj.factoryTransfer,
 					localbilling:valueObj.localBilling,
-					llkk:valueObj.LLKK,
+					llkk:valueObj.llkk,
+					sizeCheck:valueObj.sizeCheck,
+					fiberpercentagecheck:valueObj.fiberpercentagecheck,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue
 		    	};
@@ -647,11 +659,12 @@ Ext.define('AOC.view.productline.ProductLineController', {
 											allowBlank:allowBlank,
 											fieldLabel:'File Type ' +nameCount,
 											maxLength : '50',
-											store:[['pdf','pdf'],['xls/xlxs','xls/xlxs'],['txt','txt']],
+											store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
 											bind:'{attachmentFileNameExtension_'+count+'}',
 											editable:false,
 											itemId:'attachmentFileNameExtension_'+count+'',
-											enforceMaxLength: true
+											enforceMaxLength: true,
+											blankText:'File Type is required'
 										},
 										{
 											xtype:'textfield',
