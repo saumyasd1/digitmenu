@@ -344,7 +344,7 @@ Ext.define('AOC.view.address.AddressController', {
 		 
 		 
 		  store.setProxy(proxy);
-		 // dynamically add validation for empty store of org ()
+		 // dynamically add validation for empty store of org (Saumya)
 		  store.load(function(){
 			  if(store.getCount()>0){
 				  var form =this.getView();
@@ -357,7 +357,7 @@ Ext.define('AOC.view.address.AddressController', {
 			  else{
 				  org.disable();
 				  var msg=AOCLit.orgCountMsg;
-				     Helper.showToast('validation',msg); 
+				  AOC.util.Helper.fadeoutMessage('Success',msg); 
 			  }
 		  });
 	  },
@@ -403,7 +403,8 @@ Ext.define('AOC.view.address.AddressController', {
 			   else{
 					  system.disable();
 					  var msg=AOCLit.systemCountMsg;
-					     Helper.showToast('validation',msg);  
+					  AOC.util.Helper.fadeoutMessage('Success',msg);
+		    			
 				  }
 		  });
 	  },
