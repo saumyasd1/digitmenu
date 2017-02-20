@@ -461,6 +461,20 @@ Ext.define('AOC.view.webform.WebFormController', {
 					attachmentFileField.destroy();
 					additionalDataFileKey.destroy();
 				}
+				if(form.isResubmit){
+					var fileIdValue = form.down('#oldAdditionalFileId').getValue(),
+						fileIdArray = fileIdValue.split(','),
+						len = fileIdArray.length;
+					
+					for(var i = 0; i < len; i++){
+						if(record.get('fileId') == fileIdArray[i]){
+							fileIdArray.pop();
+							break;
+						}
+					}
+					form.down('#oldAdditionalFileId').setValue(fileIdArray.join(','));
+				}
+				
 			}
 			else{
 				if(form.isResubmit){

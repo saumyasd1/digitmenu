@@ -377,6 +377,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				name:'oldEmailId',
 				itemId:'oldEmailId',
 				value:0
+			},
+			{
+				xtype:'hidden',
+				name:'oldAdditionalFileId',
+				itemId:'oldAdditionalFileId',
+				value:''
 			}
 		]
 	},

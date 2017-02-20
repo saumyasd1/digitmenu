@@ -236,23 +236,28 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					
 					var response = Ext.Ajax.request({
 						async: false,
-						url: applicationContext+'/rest/orderattachements/resubmit/'+rec.get('id')
+						url: applicationContext+'/rest/orderattachements/resubmit/'+rec.get('id')+'/'+rec.get('emailQueueId')
 					});
 					var jsonValue = Ext.decode(response.responseText),
 						fileList = jsonValue.viewmail;
 					 
 					var controller=webOrderView.getController(),
-						currentFile = null;
+						currentFile = null,
+						oldAdditionalFileIdArray = [];
 					
 					for(var i=0;i<fileList.length;i++){
 						var currentFile=fileList[i];
 						if(currentFile.fileContentType=="Order"){
 							webOrderView.down('#oldOrderFileId').setValue(currentFile.id);
 							webOrderView.down('#orderFileType').setValue(currentFile.fileName);
-							controller.insertFileInGrid(currentFile.fileName,'Order File Type',false,i+1,currentFile.id,null); 
+							controller.insertFileInGrid(currentFile.fileName,'Order File Type',false,i+1,currentFile.id,null);
+						}else if(currentFile.fileContentType == 'AdditionalData'){
+							oldAdditionalFileIdArray.push(currentFile.id);
+							controller.insertFileInGrid(currentFile.fileName,'Attachment',true,i+1,currentFile.id,null);
 						}
-					 
 					}
+					
+					webOrderView.down('#oldAdditionalFileId').setValue(oldAdditionalFileIdArray.join(','));
 					webOrderView.down('#oldEmailId').setValue(rec.get('emailQueueId'));
 					webOrderView.down('#oldOrderId').setValue(rec.get('id'));
 					webOrderView.down('#backButtonimage').show();
