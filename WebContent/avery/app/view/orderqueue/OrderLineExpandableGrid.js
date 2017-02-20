@@ -62,12 +62,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  xtype: 'rownumberer',
 			  text:'#',
 			  width:30,
-			  align:'left'
+			  align:'right',
+			 // locked:true,
 		},
 		{
 			text: 'ATO Mandatory',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag,
 					checkvalue = value ? value.trim()  :'',
@@ -96,6 +98,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Bulk Sample',
 			dataIndex: 'bulkSampleValidationFlag',
 			width: 65,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -119,6 +122,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Dup. PO',
 			dataIndex: 'duplicatePOFlag',
 			width: 60,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -131,6 +135,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Size Page',
 			dataIndex: 'htlsizePageValidationFlag',
 			width: 60,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
@@ -157,6 +162,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'COO',
 			dataIndex: 'cooTranslationFlag',
 			width: 65,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var cooTranslationFlag= rec.data.cooTranslationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -170,6 +176,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Fabric Content',
 			dataIndex: 'febricPercentageFlag',
 			width: 65,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var febricPercentageFlag= rec.data.febricPercentageFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -183,6 +190,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Revise Order',
 			dataIndex: 'reviseOrderFlag',
 			width: 65,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var reviseOrderFlag= rec.data.reviseOrderFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -195,12 +203,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Round Qty',
 			dataIndex: 'roundQty',
 			width: 50,
+			align:'center',
 			renderer:'qtyColumnRenderer'
 		},
 		{
 			text: 'MOQDiff Qty',
 			dataIndex: 'moqdiffQty',
 			width: 55,
+			align:'center',
 			renderer:'qtyColumnRenderer'
 		},
 		{
@@ -239,11 +249,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Update Qty',
 			dataIndex: 'updateMOQ',
 			width: 50,
+			align:'center',
 			renderer:function(value, metadata,rec){
 				var checkMOQ=rec.data.moqvalidationFlag.trim();
 				var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
 				if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
-					return '<i style="font-size:16px;" class="EnableUpdateMoq fa fa-cart-plus"/>';
+					return '<i style="font-size:16px;cursor:pointer;" class="EnableUpdateMoq fa fa-cart-plus"/>';
 				}
 				else{
 					return '<i style="font-size:16px;" class="fa fa-ban"/>';
@@ -1454,7 +1465,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	},
 	onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		var grid=obj;
-		if(e.target.className=='EnableUpdateMoq'){
+		var el = Ext.get(e.target);
+		if(el.hasCls('EnableUpdateMoq')){
 			var Id=record.get('id'),
 				runTime = AOC.config.Runtime,
 				MoqDiffQty=record.get('moqdiffQty'),
