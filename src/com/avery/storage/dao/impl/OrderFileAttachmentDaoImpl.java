@@ -25,6 +25,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -98,7 +100,7 @@ OrderFileAttachmentDao {
 	}
 	
 	@Override
-	public List<OrderFileAttachment> readByOrderQueueID(Long orderID){
+	public List<OrderFileAttachment> readByOrderQueueID(Long orderID, Long emailQueueId){
 		
 		Session session = null;
 		Criteria criteria = null;
@@ -113,7 +115,16 @@ OrderFileAttachmentDao {
 			 * projections.add(Projections.property("fileName"), "fileName");
 			 * criteria.setProjection(projections); criteria.setMaxResults(10);
 			 */
-			criteria.add(Restrictions.eq("listOrderFileQueue.id", orderID));
+			Conjunction conjunction = Restrictions.conjunction();
+			conjunction.add(Restrictions.eq("varOrderEmailQueue.id", emailQueueId));
+			conjunction.add(Restrictions.eq("fileContentType", "AdditionalData"));
+			
+			Disjunction disjunction = Restrictions.disjunction();
+			disjunction.add(Restrictions.eq("listOrderFileQueue.id", orderID));
+			disjunction.add(conjunction);
+			
+			criteria.add(disjunction);
+			//criteria.add(Restrictions.eq("listOrderFileQueue.id", orderID));
 			List<OrderFileAttachment> list = criteria.list();
 			// getting colorCode, iconName and values as required at the GUI
 			HashMap<String, Map> statusList = ApplicationUtils.statusCode;

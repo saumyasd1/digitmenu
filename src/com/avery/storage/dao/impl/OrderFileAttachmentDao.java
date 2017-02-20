@@ -12,7 +12,7 @@ public interface OrderFileAttachmentDao extends GenericDao<OrderFileAttachment, 
 	
 	public List<OrderFileAttachment> readAllByOrderID(Long orderID);
 	
-	public List<OrderFileAttachment> readByOrderQueueID(Long orderID);
+	public List<OrderFileAttachment> readByOrderQueueID(Long orderID, Long emailQueueId);
 	
 	public List<OrderFileAttachment> readFileByID(Long fileID);
 	

@@ -448,14 +448,15 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	}
 	
 	@GET
-	@Path("/resubmit/{id:[0-9]+}")
+	@Path("/resubmit/{id:[0-9]+}/{emailQueueId:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getByOrderQueueID(@Context UriInfo ui,
-			@Context HttpHeaders hh, @PathParam("id") String orderId) {
+			@Context HttpHeaders hh, @PathParam("id") String orderId, @PathParam("emailQueueId") String emailId) {
 		Response.ResponseBuilder rb = null;
 		List<OrderFileAttachment> orderFileAttachment = null;
 		try{
 			Long entityId = Long.parseLong(orderId);
+			Long emailQueueId = Long.parseLong(emailId);
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
@@ -465,7 +466,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
-			orderFileAttachment = orderFileAttachmentService.readByOrderQueueID(entityId);
+			orderFileAttachment = orderFileAttachmentService.readByOrderQueueID(entityId, emailQueueId);
 			if (orderFileAttachment == null)
 				throw new Exception("Unable to find order attachments");
 			Map entitiesMap = new HashMap();

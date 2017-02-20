@@ -36,9 +36,9 @@ public class OrderFileAttachmentService extends GenericEntityService<OrderFileAt
 	}
 	
 	@Transactional
-	public List<OrderFileAttachment> readByOrderQueueID(Long entityId){
+	public List<OrderFileAttachment> readByOrderQueueID(Long entityId, Long emailQueueId){
 		
-		return getOrderFileAttachmentDao().readByOrderQueueID(entityId);
+		return getOrderFileAttachmentDao().readByOrderQueueID(entityId, emailQueueId);
 		
 	}
 	

@@ -758,6 +758,7 @@ public class OrderQueue extends MainAbstractEntity{
 		orderemailQueue.setCreatedDate(now);
 		orderemailQueue.setLastModifiedDate(now);//added last modified date in the orderemailqueue table
 		orderemailQueue.setSubject(subjectline);//added subject
+		orderemailQueue.setSenderEmailId(emailid);
 		orderemailQueue.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);//resubmit order will be treated as a web order
 		orderemailQueue.setId(0);
 		Long orderEmailQueueId=orderEmailQueueService.create(orderemailQueue);
@@ -1042,6 +1043,17 @@ public class OrderQueue extends MainAbstractEntity{
 					}
 				}
 		    }
+		String oldAdditionalFileId = formParams.getField("oldAdditionalFileId").getValue();
+		if(oldAdditionalFileId!=null && !"".equals(oldAdditionalFileId)){
+			String[] oldAdditionalFileIdList = oldAdditionalFileId.split(",");
+			for(int i=0;i<oldAdditionalFileIdList.length;i++){
+				OrderFileAttachment orderFileAttachmentObj = orderFileAttachmentService.read(Long.parseLong(oldAdditionalFileIdList[i]));
+				orderFileAttachmentObj.setId(0L);
+				orderFileAttachmentObj.setVarProductLine(productLineObj);
+				orderFileAttachmentObj.setVarOrderEmailQueue(orderemailQueue);
+				orderFileAttachmentService.create(orderFileAttachmentObj);
+			}
+		}
 		return orderFileId;
 		}
 	
