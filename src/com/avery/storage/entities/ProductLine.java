@@ -151,9 +151,9 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "controlData")
 	Boolean controlData;
 	@Column(name = "CSRPrimaryId", length = 250)
-	private String CSRPrimaryId;// 250
+	private String csrPrimaryId;// 250
 	@Column(name = "CSRSecondaryId", length = 250)
-	private String CSRSecondaryId;// 250
+	private String csrSecondaryId;// 250
 	@Column(name = "emailSubjectProductLineMatch", length = 100)
 	String emailSubjectProductLineMatch;// 100
 	@Column(name = "emailSubjectProductlineMatchLocation", length = 100)
@@ -205,7 +205,7 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "invoicelineInstruction", length = 500)
 	String invoicelineInstruction;// 500
 	@Column(name = "LLKK")
-	Boolean LLKK;
+	Boolean llkk;
 	@Column(name = "localBilling")
 	Boolean localBilling;
 	@Column(name = "miscCSRInstruction", length = 500)
@@ -259,9 +259,35 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name = "email", length = 100)
 	private String email;
 	
+	@Column(name = "sizeCheck")
+	private Boolean sizeCheck ;
+	
 	@Column(name="orderInMailBody")
 	private Boolean orderInMailBody;
 	
+	@Column(name = "splitShipSetBy", length = 5)
+	private String splitShipSetBy;
+	
+	@Column(name = "packingInstruction")
+	private String packingInstruction;
+	
+	
+	public String getSplitShipSetBy() {
+		return splitShipSetBy;
+	}
+
+	public void setSplitShipSetBy(String splitShipSetBy) {
+		this.splitShipSetBy = splitShipSetBy;
+	}
+
+	public String getPackingInstruction() {
+		return packingInstruction;
+	}
+
+	public void setPackingInstruction(String packingInstruction) {
+		this.packingInstruction = packingInstruction;
+	}
+
 	public Boolean getOrderInMailBody() {
 		return orderInMailBody;
 	}
@@ -739,20 +765,20 @@ public class ProductLine extends MainAbstractEntity{
 		this.controlData = controlData;
 	}
 
-	public String getCSRPrimaryId() {
-		return CSRPrimaryId;
+	public String getCsrPrimaryId() {
+		return csrPrimaryId;
 	}
 
-	public void setCSRPrimaryId(String cSRPrimaryId) {
-		CSRPrimaryId = cSRPrimaryId;
+	public void setCsrPrimaryId(String csrPrimaryId) {
+		this.csrPrimaryId = csrPrimaryId;
 	}
 
-	public String getCSRSecondaryId() {
-		return CSRSecondaryId;
+	public String getCsrSecondaryId() {
+		return csrSecondaryId;
 	}
 
-	public void setCSRSecondaryId(String cSRSecondaryId) {
-		CSRSecondaryId = cSRSecondaryId;
+	public void setCsrSecondaryId(String csrSecondaryId) {
+		this.csrSecondaryId = csrSecondaryId;
 	}
 
 	public String getEmailSubjectProductLineMatch() {
@@ -955,12 +981,12 @@ public class ProductLine extends MainAbstractEntity{
 		this.invoicelineInstruction = invoicelineInstruction;
 	}
 
-	public Boolean isLLKK() {
-		return LLKK;
+	public Boolean getLlkk() {
+		return llkk;
 	}
 
-	public void setLLKK(Boolean lLKK) {
-		LLKK = lLKK;
+	public void setLlkk(Boolean llkk) {
+		this.llkk = llkk;
 	}
 
 	public Boolean isLocalBilling() {
@@ -1135,8 +1161,16 @@ public class ProductLine extends MainAbstractEntity{
 
 	public void setDataStructureName(String dataStructureName) {
 		this.dataStructureName = dataStructureName;
+	} 
+
+
+	public Boolean getSizeCheck() {
+		return sizeCheck;
 	}
 
+	public void setSizeCheck(Boolean sizeCheck) {
+		this.sizeCheck = sizeCheck;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
