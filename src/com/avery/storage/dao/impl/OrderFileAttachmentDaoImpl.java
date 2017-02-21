@@ -30,6 +30,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.stereotype.Repository;
 
@@ -108,7 +109,7 @@ OrderFileAttachmentDao {
 			Map entitiesMap = new HashMap();
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderFileAttachment.class)
-					.createAlias("listOrderFileQueue", "listOrderFileQueue");
+					.createAlias("listOrderFileQueue", "listOrderFileQueue", JoinType.LEFT_OUTER_JOIN);
 			/*
 			 * ProjectionList projections = Projections.projectionList();
 			 * projections.add(Projections.property("id"), "id");
