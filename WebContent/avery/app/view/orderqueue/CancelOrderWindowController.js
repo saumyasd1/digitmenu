@@ -8,7 +8,8 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
         var id = this.runTime.getOrderQueueId(),
             me = this;
         var commentArea = this.getView().lookupReference('commentArea');
-        var comment = commentArea.getValue().replace(/\n/g, '::');
+        var cancelComboValue = this.getView().lookupReference('cancelOrderCombo');
+        var comment = cancelComboValue.getValue()+(commentArea.getValue().replace(/\n/g, '::')? ' <br>'+ commentArea.getValue().replace(/\n/g, '::') : '');
         var parameters = '{\"status\":\"' + AOCLit.cancelStatusOrderQueue + '\"';
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';
@@ -54,4 +55,4 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
     closeWindow:function(obj){
     	this.getView().destroy();
     }
-})
+});
