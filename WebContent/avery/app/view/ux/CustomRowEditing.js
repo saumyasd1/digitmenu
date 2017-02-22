@@ -31,41 +31,41 @@ Ext.override(Ext.grid.RowEditor, {
 
         // Create field containing structure for when editing a lockable grid.
         if (me.lockable) {
-            me.items = [
-                // Locked columns container shrinkwraps the fields
-                lockedCt = me.lockedColumnContainer = new Container({
-                    id: grid.id + '-locked-editor-cells',
-                    scrollable: {
-                        x: false,
-                        y: false
-                    },
-                    layout: {
-                        type: 'hbox',
-                        align: 'middle'
-                    },
-                    // Locked grid has a border, we must be exactly the same width
-                    margin: '0 1 0 0'
-                }),
-
-                // Normal columns container flexes the remaining RowEditor width
-                normalCt = me.normalColumnContainer = new Container({
-                    // not user scrollable, but needs a Scroller instance for syncing with view
-                    scrollable: {
-                        x: false,
-                        y: false
-                    },
-                    flex: 1,
-                    id: grid.id + '-normal-editor-cells',
-                    layout: {
-                        type: 'hbox',
-                        align: 'middle'
-                    }
-                })
-            ];
-
-            // keep horizontal position of fields in sync with view's horizontal scroll position
-            lockedCt.getScrollable().addPartner(grid.lockedGrid.view.getScrollable(), 'x');
-            normalCt.getScrollable().addPartner(grid.normalGrid.view.getScrollable(), 'x');
+//            me.items = [
+//                // Locked columns container shrinkwraps the fields
+//                lockedCt = me.lockedColumnContainer = new Container({
+//                    id: grid.id + '-locked-editor-cells',
+//                    scrollable: {
+//                        x: false,
+//                        y: false
+//                    },
+//                    layout: {
+//                        type: 'hbox',
+//                        align: 'middle'
+//                    },
+//                    // Locked grid has a border, we must be exactly the same width
+//                    margin: '0 1 0 0'
+//                }),
+//
+//                // Normal columns container flexes the remaining RowEditor width
+//                normalCt = me.normalColumnContainer = new Container({
+//                    // not user scrollable, but needs a Scroller instance for syncing with view
+//                    scrollable: {
+//                        x: false,
+//                        y: false
+//                    },
+//                    flex: 1,
+//                    id: grid.id + '-normal-editor-cells',
+//                    layout: {
+//                        type: 'hbox',
+//                        align: 'middle'
+//                    }
+//                })
+//            ];
+//
+//            // keep horizontal position of fields in sync with view's horizontal scroll position
+//            lockedCt.getScrollable().addPartner(grid.lockedGrid.view.getScrollable(), 'x');
+//            normalCt.getScrollable().addPartner(grid.normalGrid.view.getScrollable(), 'x');
         } else {
             // initialize a scroller instance for maintaining horizontal scroll position
             me.setScrollable({

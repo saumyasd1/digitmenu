@@ -367,7 +367,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			cancelStatusOrderLine = 0,
 			noAdditionalDataFoundStatusOrderLine = 0,
 			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus(),
-    		orderLineExpandableGrid = this.getView().queryById('orderlineexpandablegridrowmodel');
+			refs = me.getReferences(),
+    		orderLineExpandableGrid = refs.orderLineExpandableGrid;// this.getView().queryById('orderlineexpandablegridrowmodel');
     	
     	orderLineExpandableGrid.invalidComboValid = false;
     	var isSubmitSaleOrderFlag = true;
@@ -378,8 +379,9 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			atovalidationFlagCount++;
     		}
     		if(!Ext.isEmpty(orderLineExpandableGrid.openedRecordIndex) && (orderLineExpandableGrid.openedRecordIndex == index)){
-    			var expander = orderLineExpandableGrid.getPlugin('orderLineRowExpander');
-    			expander.toggleRow(index, orderLineExpandableGrid.store.getAt(index));
+    			var expander = orderLineExpandableGrid.lockedGrid.features[0].rowExpander;
+    			
+    			expander ? expander.toggleRow(index, orderLineExpandableGrid.store.getAt(index)) :'';
     		}
     		
     		switch (status){

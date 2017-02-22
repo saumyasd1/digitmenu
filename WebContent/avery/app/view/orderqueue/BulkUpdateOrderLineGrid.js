@@ -61,7 +61,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     editRenderer:  '&#160;',
                     tdCls: me.rowNumbererTdCls,
                     cls: me.rowNumbererHeaderCls,
-                    locked: me.hasLockedHeader,
+                    locked: true,
                     text:'#'
                 },
                 {
@@ -120,10 +120,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     renderer:function(value, metadata,rec){
                     	var checkMOQ = rec.data.moqValidationFlag ? rec.data.moqValidationFlag.trim()  :'';
                     	
-                   	 if(rec.data.waiveMOQ==false && (checkMOQ && checkMOQ.substr(0,1)=='F'))
-                   		return '<div><img class="EnableUpdateMoq" src="' + AOC.config.Settings.buttonIcons.EnableUpdateMoqFlag + '" /></div>';
-                   	 else
-                   		return '<div><img src="' + AOC.config.Settings.buttonIcons.DisableUpdateMoqFlag + '" /></div>';
+	                   	if(rec.data.waiveMOQ==false && (checkMOQ && checkMOQ.substr(0,1)=='F')){
+	                   		return '<i style="font-size:16px;cursor:pointer;" class="EnableUpdateMoq fa fa-cart-plus"/>';
+	    				}
+	    				else{
+	    					return '<i style="font-size:16px;" class="fa fa-ban"/>';
+	    				}
                    }
 
                 },

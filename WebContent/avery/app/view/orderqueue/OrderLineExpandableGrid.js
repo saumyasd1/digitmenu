@@ -1,7 +1,6 @@
 Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
-    //itemId: 'orderlineexpandablegrid',
     requires: [
 		'Ext.grid.Panel', 
 		'AOC.view.ux.RowExpanderGrid', 
@@ -12,24 +11,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	],
     controller: 'orderline',
     emptyText: AOCLit.emptyDataMsg,
-    //reference:'orderLineExpandableGrid',
     dataPresent:false,
     autoHeight: true,
     nestedGridRefrence:'listOrderlineDetails',
     columnLines: true,
     reserveScrollbar:true,
-    mandatoryFieldMissing:false,
-    mandatoryValidationFieldMissing:false,
-    showMandatoryValidationField:false,
-    validationFieldMissing:false,
-    invalidComboValid:false,
     showInvalidCombo:false,
     columnLines: false,
     viewConfig : {
     	stripeRows : true,
-    	preserveScrollOnRefresh:true,
-    	preserveScrollOnReload:true,
-		enableTextSelection : true,
+    	preserveScrollOnRefresh: true,
+    	preserveScrollOnReload: true,
+		enableTextSelection: true,
         forceFit:true,
         getRowClass:function(record, rowIndex, rowParams, store){
         	//hide rowexpander if perticular record has atovalidationFlag is False
@@ -62,8 +55,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  xtype: 'rownumberer',
 			  text:'#',
 			  width:30,
-			  align:'right',
-			 // locked:true,
+			  align:'center',
+			  locked:true
 		},
 		{
 			text: 'ATO Mandatory',
@@ -71,8 +64,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 65,
 			align:'center',
 			renderer:function(value, metadata,rec){
-				var mandatoryVariableDataFieldFlag= rec.data.mandatoryVariableDataFieldFlag,
-					checkvalue = value ? value.trim()  :'',
+				var checkvalue = value ? value.trim()  :'',
 					listOrderlineDetails = rec.get('listOrderlineDetails'),
 					mandatoryVariableDataField = '';
 				
@@ -645,9 +637,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer : function(value, metadata,record) {
 				if(value == '') {
-					if(record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
 					metadata.style = AOCLit.cellColor;
 				} else {
 					 return value;
@@ -758,9 +747,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'datefield',
 			renderer : function(value, metadata,record) {
 				if(value=='' || value == null) {
-					if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
-						this.mandatoryFieldMissing=true;
-					}
 					metadata.style = AOCLit.cellColor;
 				}else{
 					return Ext.Date.format(value,'Y-m-d');
@@ -916,7 +902,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'combo',
 				editable:false,
 				store:[['Y','Y'],['N','N']]
-			},
+			}
 		}, 
 		{
 			text: AOCLit.artworkWorkAttachment,//'Artwork Work Attachment',
@@ -1180,12 +1166,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				scope:this,
 				beforecellclick:function(view, td, cellIndex, record, tr, rowIdx, e){
 				     me.lastScrollLeftPosition = view.el.dom.scrollLeft;
-				    },
+			    },
 				cellclick:'onCellClickToView',
-//				'celldblclick':function(){
-//					var editWindow = Ext.create('AOC.view.orderqueue.EditOrderLineWindow');
-//					editWindow.show();
-//				},
 				'beforecelldblclick':function(view, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 					me.lastScrollLeftPosition = view.el.dom.scrollLeft;
 					if(cellIndex==0){
@@ -1194,33 +1176,81 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			}
 		});
-        me.store.on('beforeload',function(){
-        	me.mandatoryFieldMissing=false;
-        	me.mandatoryValidationFieldMissing=false;
-        	me.validationFieldMissing=false;
-        	me.invalidComboValid=false;
-        });
         this.callParent(arguments);
     },
     getRowExpander:function(){
     	var me = this,
+    		viewRenderer = false,
 			rowExpander = new AOC.view.ux.RowExpanderGrid({
 				createComponent: function(view, record, htmlnode, index) {
 					return me.createInnerGrid(record);
     		    },
+    		    rowBodyTpl : ['<div class="row-expander-body"></div>'],
     		    pluginId: 'orderLineRowExpander',
+    		    getHeaderConfig: function() {
+    		         var  rowExpanders = this,
+    		         	  lockable = this.grid.ownerLockable;
+
+    		         return {
+    		             width: rowExpanders.headerWidth,
+    		             lockable: false,
+    		             autoLock: true,
+    		             sortable: false,
+    		             resizable: false,
+    		             draggable: false,
+    		             hideable: false,
+    		             menuDisabled: true,
+    		             tdCls: Ext.baseCSSPrefix+'grid-cell-special',
+    		             innerCls: Ext.baseCSSPrefix + 'grid-cell-inner-row-expander',
+    		             renderer: function(type, config, cell, rowIndex, cellIndex, e, view) {
+    		             	var record=config.record;
+    		             	var nestedGridRefrence=me.nestedGridRefrence;
+    		             	var length=record.get(nestedGridRefrence).length;
+    		             	
+    		             	if(!viewRenderer){
+	    		             	me.view.on('expandbody', function(rowNode, record, expandRow, eOpts){
+	    		    	            rowExpander.onExpand(rowNode, record, expandRow);
+	    			        	});
+	    		             	viewRenderer = true;
+    		             	}
+    		             	if(length!=0)
+    		             		return '<div class="custom-row-expander" role="presentation"></div>';
+    		             	else
+    		             		return '<div class="hiderowexpander" role="presentation"></div>';
+    		             },
+    		             processEvent: function(type, view, cell, rowIndex, cellIndex, e, record) {
+    		                 if (e.getTarget('.custom-row-expander')) {
+    		                     if (type === "click") {
+    		                    	 rowExpanders.toggleRow(rowIndex, record);
+    		                         return rowExpanders.selectRowOnExpand;
+    		                     }
+    		                 }
+    		             },
+
+    		             // This column always migrates to the locked side if the locked side is visible.
+    		             // It has to report this correctly so that editors can position things correctly
+    		             isLocked: function() {
+    		                 return lockable && (lockable.lockedGrid.isVisible() || this.locked);
+    		             },
+
+    		             // In an editor, this shows nothing.
+    		             editRenderer: function() {
+    		                 return '&#160;';
+    		             }
+    		         };
+    		    },
     		    onExpand: function(rowNode, record, expandRow) {
     		    	this.grid.editingPlugin ? this.grid.editingPlugin.cancelEdit() : '';
-    		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bc after store load inner view destroyed
-    		    	if(Ext.isEmpty(expandRow.querySelector('.nestedGrid'))){
+    		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bcz after store load inner view destroyed
+    		    	if(Ext.isEmpty(rowNode.querySelector('.nestedGrid'))){
     		            var view = this.grid.getView(),
-    		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode)),
-    		                targetRowbody = Ext.DomQuery.selectNode('div.x-grid-rowbody', expandRow);
-    		            
-    		            while(targetRowbody.hasChildNodes()) {
-    		                targetRowbody.removeChild(targetRowbody.lastChild);
-    		            }
-    		            newComponent.render( targetRowbody ) ;
+    		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode));
+    		                targetRowbody = Ext.DomQuery.selectNode('div.row-expander-body', rowNode);
+//    		            
+//    		            while(targetRowbody.hasChildNodes()) {
+//    		                targetRowbody.removeChild(targetRowbody.lastChild);
+//    		            }
+    		            newComponent.render(targetRowbody);
     		            newComponent.getEl().swallowEvent([
                             'mousedown', 'mouseup', 'click',
                             'contextmenu', 'mouseover', 'mouseout',
@@ -1229,6 +1259,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		        }
     		    }
 			});
+    	
     	return rowExpander;
     },
     createInnerGrid:function(record){
@@ -1349,8 +1380,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			style:'border:solid 1px #ccc;',
 			plugins: me.getInnerGridPlugin(),
 			autoHeight: true,
-			frame: false,
-			header: false
+			//frame: false,
+			//header: false
 		});
     },
     getInnerGridPlugin:function(){
@@ -1380,9 +1411,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 							jsonData:obj,
 							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 							success : function(response, opts) {
-								//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-								
-								Ext.Msg.alert('Success','Order line Detail successfully updated');
+								Helper.showToast('success','Order line Detail successfully updated');
 								grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
 								Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
 								grid.view.refresh();
@@ -1419,8 +1448,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                         params:{variablename:currentRecord.get('variableFieldName')},
                         url: applicationContext + '/rest/orderlinedetails/bulkupdate/variable',
                         success: function(response, opts) {
-                        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-                            Ext.Msg.alert('Success', 'Order line Detail successfully updated');
+                            Helper.showToast('success', 'Order line Detail successfully updated');
                             grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
                             Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
                             grid.view.refresh();
@@ -1437,7 +1465,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	}else{
     		return [{ptype: 'clipboard'}];
 		}
-    	getRowExpander();
     },
     getOuterGridPlugin:function(){
     	var me = this,
@@ -1494,8 +1521,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						url : applicationContext+'/rest/orderLines/bulkupdate',
 						success : function(response, opts) {
 							Ext.getBody().unmask();
-							//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updatedCustomerQtyMsg);
-							Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+							Helper.showToast('validation','<b>Customer Qty. Updated Succesfully</b>');
 							Helper.loadOrderLineGridStore(grid.store, AOC.config.Runtime.getOrderQueueId());
 						},
 						failure: function(response, opts) {

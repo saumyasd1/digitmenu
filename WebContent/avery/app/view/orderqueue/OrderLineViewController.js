@@ -36,7 +36,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			url : applicationContext+'/rest/orderLines/bulkupdate',
 			success : function(response, opts) {
 				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
-				Ext.Msg.alert('Success','Order line successfully updated');
+				Helper.showToast('success','Order line successfully updated');
 				Ext.getBody().unmask();
 				me.getView().openedRecordIndex ='';
 				Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
@@ -61,8 +61,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-		        	//AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineDetailMsg);
-			  		Ext.Msg.alert('','Order line Detail successfully updated');
+		        	Helper.showToast('success','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
 			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
 			  		me.getView().view.refresh();
@@ -109,8 +108,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		                jsonData: obj,
 		                url: applicationContext + '/rest/orderLines/bulkupdate',
 		                success: function(response, opts) {
-		              	  //AOC.util.Helper.fadeoutMessage('Success',AOCLit.updateOrdLineMsg);
-		                   Ext.Msg.alert('Success', 'Order line successfully updated');
+		                	Helper.showToast('success','Order line successfully updated');
 		                    Ext.getBody().unmask();
 		                    ctx.grid.openedRecordIndex ='';
 		                    Helper.loadOrderLineGridStore(ctx.store, runTime.getOrderQueueId());

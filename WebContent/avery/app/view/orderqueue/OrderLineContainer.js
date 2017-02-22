@@ -192,17 +192,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				style:AOC.config.Settings.config.defaultBorderStyle,
 				activeItem:0,
 				items:[
-//					{
-//						xtype:'orderlineexpandablegrid',
-//						itemId: 'orderlineexpandablegridvv',
-//						selModel: {
-//							type:'spreadsheet',
-//							rowNumbererHeaderWidth:0
-//						}
-//					},
 					{
 						xtype:'orderlineexpandablegrid',
 						itemId: 'orderlineexpandablegridrowmodel',
+						reference:'orderLineExpandableGrid',
 						editGrid:true,
 						selModel: {
 							type: 'rowmodel'
