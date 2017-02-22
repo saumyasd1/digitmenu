@@ -63,6 +63,16 @@ int pageSize=25;
 			width:16px !important;
 			height:16px;
 		}
+		.success-icon{
+			color:#4BDE4B;
+		}
+		.failure-icon:{
+			color:#ff0000;
+		}
+		.warning-icon{
+			color:orange;
+		}
+		
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
