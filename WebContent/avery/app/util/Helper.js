@@ -490,5 +490,136 @@ Ext.define('AOC.util.Helper',{
             slideInDuration: 400,
             minWidth: 400
         });
+	},
+	
+	//(Amit Kumar)Common function for orderlinegrid and bulkupdate orderline grid column renderer
+	qtyColumnRenderer:function(value, metadata, record){
+		if(value){
+			return Number(value)
+		}
+		return '';
+	},
+	onCustomerOrderQty:function(value, metadata, record){
+		if(parseInt(value) > -1) {
+			if(value == '0'){
+				metadata.style = AOCLit.cellColor;
+			}
+			
+			if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
+				var moqValidationFlag = record.data.moqvalidationFlag  ? record.data.moqvalidationFlag : record.data.moqvalidationFlag.trim();
+				
+				if(moqValidationFlag.substr(0,1) == 'F'){
+					metadata.style = AOCLit.mandatoryValidationCellColor;
+				}
+			}
+			
+			if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline || record.get('status')==AOCLit.errorInCustomerOrderQtyStatusOrderLine ){
+				metadata.style = AOCLit.cellColor;
+			}
+		   return value;
+		} else {	
+			metadata.style = AOCLit.cellColor;
+			return value;
+		}
+	},
+	onUpdateMoqRenderer:function(value, metadata,rec){
+		var checkMOQ=rec.data.moqvalidationFlag.trim();
+		var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
+		if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
+			return '<i style="font-size:16px;cursor:pointer;" class="EnableUpdateMoq fa fa-cart-plus"/>';
+		}
+		else{
+			return '<i style="font-size:16px;" class="fa fa-ban"/>';
+		}
+	},
+	onOrderLineDateRenderer:function(v, metadata, record){
+		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
+				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+			metadata.style = AOCLit.cellColor;
+			return Ext.Date.format(v, AOCLit.dateFormat);
+		}
+		return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+	},
+	onOrdererDateRenderer:function(value, metadata,record){
+		if(value=='' || value == null) {
+			metadata.style = AOCLit.cellColor;
+        }
+        else{
+        	return Ext.Date.format(value,'Y-m-d');
+        }
+	},
+	onAtoColumnRenderer:function(value, metadata, record){
+		if(value == '' || value == null) {
+			metadata.style = AOCLit.cellColor;
+		}
+		return value;
+	},
+	onWaveMoqColumnRenderer:function(value, metadata, record){
+		var v = 'N';
+		if(value){
+			v = 'Y';
+		}
+		return v;
+	},
+	onStatusComboAfterRender:function(combo){
+		var store = combo.store;
+        //(Amit Kumar 12-01-2017)only waitingfor cs verification and cancel status will visible in combo
+        store.filterBy(function(record){
+       	 	return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
+        });
+	},
+	onStatusComboFocus:function(combo){
+		var store = combo.store,
+    		index = store.find('code',combo.getValue());
+		
+    	if(index == -1){
+    		combo.setValue('');
+    	}
+	},
+	onComboAfterRender:function(combo){
+		var store = combo.store,
+			obj = {variableFieldName:'None'},
+			index = store.find('variableFieldName', 'None','', false, false, true);
+	
+		if(index == -1){
+			store.insert(0,new Ext.data.Record(obj));
+		}
+	},
+	onComboSelect:function(combo){
+		var value = combo.getValue();
+		if(value == 'None'){
+			combo.setValue('');
+		}
+	},
+	onAveryItemNumberColumnRenderer:function(value, metadata, record){
+		if(value == '') {
+        	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine){
+        		metadata.style = AOCLit.cellColor;
+        	}
+        } else {
+        	if(value==AOCLit.averyItemNotFoundText || value==AOCLit.duplicateMappingLabel){
+        		metadata.style = AOCLit.cellColor;
+        	}
+        }
+		return value;
+	},
+	onBulkOrderColumnRenderer:function(value, metadata, rec){
+		if(!Ext.isEmpty(value)){
+			var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
+			var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
+			if(checkvalue.substr(0,1) != 'T'){
+				metadata.style = AOCLit.mandatoryValidationCellColor;
+			}
+		}else{
+			metadata.style = AOCLit.cellColor;
+		}
+		return value;
+	},
+	onPageSizeColumnRenderer:function(value, metadata, rec){
+		var htlSizePageValidationFlag = rec.get('htlsizePageValidationFlag') ? rec.get('htlsizePageValidationFlag').trim() : '';
+		if(htlSizePageValidationFlag.substr(0, 1) != 'T'){
+			metadata.style = AOCLit.mandatoryValidationCellColor;
+		}
+		return value;
 	}
 });

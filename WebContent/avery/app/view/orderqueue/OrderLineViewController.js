@@ -334,19 +334,36 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			df.setValue(orderDate);
 		}
 	},
-	
-	onWaveMoqColumnRenderer:function(value, metadata, record){
-		var v = 'N';
-		if(value){
-			v = 'Y';
+	onShowColumnBtnClick:function(btn){
+		var me = this,
+			view = me.getView(),
+			columns = view.columns,
+			len = columns.length;
+		
+		for(var i=0; i<len;i++){
+			if(btn.pressed){
+				btn.setText('Hide Column');
+				if(!columns[i].isVisible() && columns[i].type == 'address'){
+					columns[i].show();
+				}
+			}else{
+				btn.setText('Show Column');
+				if(columns[i].type == 'address'){
+					columns[i].hide();
+				}
+			}
 		}
-		return v;
 	},
-	qtyColumnRenderer:function(value, metadata, record){
-		if(value){
-			return Number(value)
+	onHideColumnBtnClick:function(){
+		var me = this,
+			view = me.getView(),
+			columns = view.columns,
+			len = columns.length;
+		
+		for(var i=0; i<len;i++){
+			if(columns[i].type == 'address'){
+				columns[i].hide();
+			}
 		}
-		return '';
 	}
-    
 });

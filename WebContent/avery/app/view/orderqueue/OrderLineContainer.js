@@ -84,7 +84,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						xtype:'fieldcontainer',
 						layout:'hbox',
 						margin:'0 10 0 10',
-						style:'border-top:solid 1px #cecece;padding:10px;',
+						style:'border-top:solid 1px #cecece;padding:5px;',
 						defaults:{
 							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -123,7 +123,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				xtype:'fieldcontainer',
 				layout:'hbox',
 				margin:'0 10 0 10',
-				style:'border-top:solid 1px #cecece;padding:10px;',
+				style:'border-top:solid 1px #cecece;padding:5px;',
 				items:[
 					{
 						xtype: 'form',
@@ -186,14 +186,14 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			},
 			{
 				xtype:'container',
-				layout:'card',
+				layout:'border',
 				flex:1,
 				itemId:'orderlineexpandablegridcard',
 				style:AOC.config.Settings.config.defaultBorderStyle,
-				activeItem:0,
 				items:[
 					{
 						xtype:'orderlineexpandablegrid',
+						region:'center',
 						itemId: 'orderlineexpandablegridrowmodel',
 						reference:'orderLineExpandableGrid',
 						editGrid:true,

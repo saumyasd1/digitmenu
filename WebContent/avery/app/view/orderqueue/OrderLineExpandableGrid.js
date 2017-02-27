@@ -196,14 +196,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'roundQty',
 			width: 50,
 			align:'center',
-			renderer:'qtyColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.qtyColumnRenderer(value, metadata, record);
+			}
 		},
 		{
 			text: 'MOQDiff Qty',
 			dataIndex: 'moqdiffQty',
 			width: 55,
 			align:'center',
-			renderer:'qtyColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.qtyColumnRenderer(value, metadata, record);
+			}
 		},
 		{
 			text: 'Customer Ordered Qty.<font color=red>*</font>',
@@ -214,27 +218,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				minValue:0
 			},
 			renderer : function(value, metadata, record) {
-				if(parseInt(value) > -1) {
-					if(value == '0'){
-						metadata.style = AOCLit.cellColor;
-					}
-					if(this.showMandatoryValidationField){
-						if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
-							var moqValidationFlag = record.data.moqvalidationFlag  ? record.data.moqvalidationFlag : record.data.moqvalidationFlag.trim();
-							
-							if(moqValidationFlag.substr(0,1) == 'F'){
-								metadata.style = AOCLit.mandatoryValidationCellColor;
-							}
-						}
-					}
-					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline || record.get('status')==AOCLit.errorInCustomerOrderQtyStatusOrderLine ){
-						metadata.style = AOCLit.cellColor;
-					}
-				   return value;
-				} else {	
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
+				return Helper.onCustomerOrderQty(value, metadata, record);
 			} 
 		},
 		{
@@ -243,15 +227,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 50,
 			align:'center',
 			renderer:function(value, metadata,rec){
-				var checkMOQ=rec.data.moqvalidationFlag.trim();
-				var allowOrderLineEdit=AOC.config.Runtime.getAllowOrderLineEdit();
-				if(rec.get('status')==AOCLit.waitingForCSRStatusOrderLine && allowOrderLineEdit==true && rec.data.waiveMOQ==false && checkMOQ.substr(0,1)=='F'){
-					return '<i style="font-size:16px;cursor:pointer;" class="EnableUpdateMoq fa fa-cart-plus"/>';
-				}
-				else{
-					return '<i style="font-size:16px;" class="fa fa-ban"/>';
-				}
-		   }
+            	return Helper.onUpdateMoqRenderer(value, metadata,rec);
+            }
 		},
 		{
 			text: 'Waive MOQ',
@@ -262,7 +239,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:'onWaveMoqColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
 		},
 		{
 			text: 'Status',
@@ -277,18 +256,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
 				listeners:{
 			        afterrender:function(combo){
-				         var store = combo.store;
-				         //(Amit Kumar 12-01-2017)only waitingfor cs verification and cancel status will visible in combo
-				         store.filterBy(function(record){
-				        	 return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
-				         });
+			        	Helper.onStatusComboAfterRender(combo);
 			        },
 			        focus:function(combo){
-			        	var store = combo.store;
-			        	var index = store.find('code',combo.getValue());
-			        	if(index == -1){
-			        		combo.setValue('');
-			        	}
+			        	Helper.onStatusComboFocus(combo);
 			        },
 			        select:'onStatusSelect'
 		       }
@@ -306,16 +277,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Avery Item #<font color=red>*</font>',
 			dataIndex: 'averyItemNumber',
 			width: 88,
-			renderer : function(value, metadata ,record) {
-				if(value == '') {
-					metadata.style = AOCLit.cellColor;
-				} else {
-					if(value == AOCLit.averyItemNotFoundText || value==duplicateMappingLabel){
-						metadata.style = AOCLit.cellColor;
-					}
-				}
-				return value;
-			}
+			renderer : function(value, metadata,record) {
+                return Helper.onAveryItemNumberColumnRenderer(value, metadata, record);
+            }
 		}, 
 		{
 			text: 'Customer Item #',
@@ -334,7 +298,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 102
 		},
 		{
-			text: 'Bulk Order',
+			text: AOCLit.Bulk,
 			dataIndex: 'bulk',
 			width: 60,
 			editor:{
@@ -343,189 +307,172 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:[['Y','Y'],['N','N']]
 			},
 			renderer:function(value, metadata,rec){
-				if(!Ext.isEmpty(value)){
-					var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
-					var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
-					if(checkvalue.substr(0,1)=='T'){
-						return value;
-					}
-					else{
-						metadata.style = AOCLit.mandatoryValidationCellColor;
-						return value;
-					}
-				}else{
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-			}	
+				return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
+			}
 		},
 		{
 			text: 'Avery ATO',
 			dataIndex: 'averyATO',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Bulk Item',
 			dataIndex: 'averyBulk',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery MOQ',
 			dataIndex: 'averyMOQ',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery ProductLine Type',
 			dataIndex: 'averyProductLineType',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery Region',
 			dataIndex: 'averyRegion',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		},
 		{
 			text: 'Avery Roundup Qty',
 			dataIndex: 'averyRoundupQty',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		},
 		{
-			text: 'Customer Name',
+			text: AOCLit.custName,
 			dataIndex: 'partnerCustomerName',
 			width: 126,
 			editor: 'textfield'
 		}, 
 		{
-			text: 'Vendor Name',
+			text: AOCLit.vendorName,
 			dataIndex: 'partnerVendorName',
 			width: 111,
 			editor: 'textfield'
 		}, 
 		{
-			text: 'Ship To Customer',
+			text: AOCLit.shipToCustomer,
 			dataIndex: 'shipToCustomer',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
-			text: 'Ship To Contact',
+			text: AOCLit.shipContact,
 			dataIndex: 'shipToContact',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
-			text: 'Ship To Address 1',
+			text: AOCLit.shipToAddress1,
 			dataIndex: 'shipToAddress1',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Address 2',
 			dataIndex: 'shipToAddress2',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Address 3',
 			dataIndex: 'shipToAddress3',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To City',
 			dataIndex: 'shipToCity',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Country',
 			dataIndex: 'shipToCountry',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To State',
 			dataIndex: 'shipToState',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Zip',
 			dataIndex: 'shipToZip',
 			width: 85,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Email',
 			dataIndex: 'shipToEmail',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Fax',
 			dataIndex: 'shipToFax',
 			width: 130,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Ship To Telephone',
 			dataIndex: 'shipToTelephone',
 			width: 130,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		},
 		{
 			text: 'Bill to Site #<font color=red>*</font>',
 			dataIndex: 'oracleBillToSiteNumber',
 			width: 100,
 			editor: 'textfield',
-			renderer : function(value, metadata, record) {
-				if(value =='') {
-					metadata.style = AOCLit.cellColor;
-				} else {
-					 return value;
-				}
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		}, 
 		{
@@ -533,6 +480,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'billToCustomer',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Contact',
@@ -540,60 +489,80 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'billToContact',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 1',
 			dataIndex: 'billToAddress1',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 2',
 			dataIndex: 'billToAddress2',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 3',
 			dataIndex: 'billToAddress3',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To City',
 			dataIndex: 'billToCity',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Country',
 			dataIndex: 'billToCountry',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To State',
 			dataIndex: 'billToState',
 			width: 112,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Zip',
 			dataIndex: 'billToZip',
 			width: 85,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Email',
 			dataIndex: 'billToEmail',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Fax',
 			dataIndex: 'billToFax',
 			width: 130,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Bill To Telephone',
@@ -601,33 +570,31 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 130,
 			editor: {
 				xtype:'textfield'
-				//readOnly:true
-			},
-			setEditor:function(record){}
+			}
+//			type:'address',
+//			hidden:true
 		}, 
 		{
 			text: 'Special Instruction',
 			dataIndex: 'specialInstruction',
 			width: 170,
 			editor: 'textfield'
+//			type:'address',
+//			hidden:true
 		}, 
-		{
-			text: 'Order Received Date',
-			dataIndex: 'orderReceivedDate',
-			width: 93,
-			hidden:true
-		}, 
+//		{
+//			text: 'Order Received Date',
+//			dataIndex: 'orderReceivedDate',
+//			width: 93,
+//			hidden:true
+//		}, 
 		{
 			text: 'Sold To RBO#<font color=red>*</font>',
 			dataIndex: 'soldToRBONumber',
 			width: 100,
 			editor: 'textfield',
-			renderer : function(value, metadata, record) {
-				if(value=='') {
-					metadata.style = AOCLit.cellColor;
-				} else {
-					 return value;
-				}
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		},  
 		{
@@ -635,12 +602,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'oracleShipToSiteNumber',
 			width: 100,
 			editor: 'textfield',
-			renderer : function(value, metadata,record) {
-				if(value == '') {
-					metadata.style = AOCLit.cellColor;
-				} else {
-					 return value;
-				}
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		}, 
 		{
@@ -658,18 +621,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 			    	focus:'onComboFocus',
 			    	afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-						index = store.find('variableFieldName', 'None','', false, false, true);
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+			    		Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -687,16 +642,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 102,
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
-				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag') ? rec.get('htlsizePageValidationFlag').trim() : '';
-				if(htlSizePageValidationFlag.substr(0, 1) == 'T'){
-					return value;
-				}
-				else{
-					if(this.showMandatoryValidationField){
-						metadata.style = AOCLit.mandatoryValidationCellColor;
-					}
-					return value;
-				}
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
 		}, 
 		{
@@ -705,26 +651,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 72,
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
-				var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag') ? rec.get('htlSizePageValidationFlag').trim():'';
-				if(htlSizePageValidationFlag.substr(0,1) == 'T'){
-					return value;
-				}
-				else{
-					if(this.showMandatoryValidationField){
-						metadata.style = mandatoryValidationCellColor;
-					}
-					return value;
-				}
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
 		}, 
 		{
 			text: 'Contract #',
 			dataIndex: 'contractNumber',
 			width: 130,
-			editor: 'textfield',
-			renderer : function(value, metadata,record) {
-				return value;
-			}
+			editor: 'textfield'
 		}, 
 		{
 			text: 'Style No',
@@ -745,13 +679,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			xtype:'datecolumn',
 			format:AOCLit.dateFormat,
 			editor: 'datefield',
-			renderer : function(value, metadata,record) {
-				if(value=='' || value == null) {
-					metadata.style = AOCLit.cellColor;
-				}else{
-					return Ext.Date.format(value,'Y-m-d');
-				}
-			} 
+			renderer : function(value, meta,record) {
+            	return Helper.onOrdererDateRenderer(value, meta,record);
+        	}
 		}, 
 		{
 			text: 'Requested Delivery Date',
@@ -767,13 +697,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			},
 			renderer:function(v, metadata, record){
-			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
-			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-			     metadata.style = AOCLit.cellColor;
-			     return Ext.Date.format(v, AOCLit.dateFormat);
-			    }
-			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
-		   }
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
+			}
 		}, 
 		{
 			text: 'Promise Date',
@@ -789,13 +714,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				}
 			},
 			renderer:function(v, metadata, record){
-			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
-			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-			     metadata.style = AOCLit.cellColor;
-			     return Ext.Date.format(v, AOCLit.dateFormat);
-			    }
-			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
-		   }
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
+			}
 		}, 
 		{
 			text: 'Freight Terms',
@@ -812,19 +732,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -843,19 +754,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			    listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -913,7 +815,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:'onWaveMoqColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Variable Data Breakdown',
@@ -942,19 +846,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -981,19 +876,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -1040,7 +926,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:'onWaveMoqColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Production Hold',
@@ -1051,7 +939,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[[true,'Y'],[false,'N']]
 			},
-			renderer:'onWaveMoqColumnRenderer'
+			renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Split Shipset',
@@ -1068,19 +958,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
 			},
@@ -1113,19 +994,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-					      var store = combo.store,
-					       obj = {variableFieldName:'None'},
-					       index = store.find('variableFieldName', 'None','', false, false, true);
-					      
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 				     },
 				     select:function(combo){
-					      var value = combo.getValue();
-					      if(value == 'None'){
-					    	  combo.setValue('');
-					      }
+						Helper.onComboSelect(combo);
 				     }
 			    }
 			},
@@ -1157,11 +1029,24 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		}
 	],
 	editGrid:true,
+	buildTbar:function(){
+		return [
+		   {
+			   xtype:'button',
+			   text:'Show Column',
+			   ui:'blue',
+			   scale:'small',
+			   enableToggle:true,
+			   handler:'onShowColumnBtnClick'
+		   }
+		]
+	},
     initComponent: function() {
         var me = this;
         this.fieldArray = [];
         Ext.apply(this, {
 		    plugins: me.getOuterGridPlugin(),
+		    //tbar:me.buildTbar(),
 	        listeners:{
 				scope:this,
 				beforecellclick:function(view, td, cellIndex, record, tr, rowIdx, e){
@@ -1246,10 +1131,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		            var view = this.grid.getView(),
     		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode));
     		                targetRowbody = Ext.DomQuery.selectNode('div.row-expander-body', rowNode);
-//    		            
-//    		            while(targetRowbody.hasChildNodes()) {
-//    		                targetRowbody.removeChild(targetRowbody.lastChild);
-//    		            }
+    		            
     		            newComponent.render(targetRowbody);
     		            newComponent.getEl().swallowEvent([
                             'mousedown', 'mouseup', 'click',

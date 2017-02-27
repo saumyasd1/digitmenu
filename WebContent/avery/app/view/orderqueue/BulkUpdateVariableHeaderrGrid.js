@@ -82,18 +82,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid', {
 		];
     },
     dockedItems: [
-		{
-			xtype: 'toolbar',
-			dock: 'top', 
-			height: 50,
-			items :[
-				{
-				  xtype:'tbtext',
-				  margin:'10 10 10 10',
-				  text:'<font size=5px>Bulk Update</font>'
-				}
-			]
-		},
+		
 		{
 			xtype: 'toolbar',
 			dock: 'bottom', 

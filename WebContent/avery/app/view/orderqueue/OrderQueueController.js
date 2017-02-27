@@ -93,7 +93,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		orderLineTitle.setText('Order Line   (Order Track#: '+ id + ')'); //set orderline title
 		
 		me.runTime.setOrderLineCurrenProductLine(currentRecord.get('productLineId'));
-		//me.showHideValidationButton(orderlinecontainer, status);
 		
 		//Load orderline grid for respective orderqueue id
 		grid.store.load({params:{id:id}});

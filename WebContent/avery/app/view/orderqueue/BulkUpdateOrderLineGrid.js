@@ -69,10 +69,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     dataIndex: 'roundQty',
                     width: 50,
                     renderer:function(value, metadata, record){
-        				if(value){
-        					return Number(value)
-        				}
-        				return '';
+        				return Helper.qtyColumnRenderer(value, metadata, record);
         			}
                 },
                 {
@@ -80,10 +77,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     dataIndex: 'moqdiffQty',
                     width: 55,
                     renderer:function(value, metadata, record){
-        				if(value){
-        					return Number(value);
-        				}
-        				return '';
+        				return Helper.qtyColumnRenderer(value, metadata, record);
         			}
                 },
                 {
@@ -92,42 +86,16 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     width: 106,
                     editor: 'numberfield',
                     renderer : function(value, metadata, record) {
-                    	if(parseInt(value) > -1) {
-	    					if(value == '0'){
-	    						metadata.style = AOCLit.cellColor;
-	    					}
-    						if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine && (record.get('waiveMOQ')=='false' || record.get('waiveMOQ')==false)){
-    							var moqValidationFlag = record.data.moqvalidationFlag  ? record.data.moqvalidationFlag : record.data.moqvalidationFlag.trim();
-    							
-    							if(moqValidationFlag.substr(0,1) == 'F'){
-    								metadata.style = AOCLit.mandatoryValidationCellColor;
-    							}
-    						}
-	    					if(record.get('status')==AOCLit.customerQtyMismatchStatusOrderline || record.get('status')==AOCLit.errorInCustomerOrderQtyStatusOrderLine){
-	    						metadata.style = AOCLit.cellColor;
-	    					}
-	    					return value;
-                    	} else {	
-	    					metadata.style = AOCLit.cellColor;
-	    					return value;
-	    				}
-                    } 
+        				return Helper.onCustomerOrderQty(value, metadata, record);
+        			} 
                 },
                 {
                     text: AOCLit.updateQty,
                     dataIndex: 'updateMOQ',
                     width: 50,
                     renderer:function(value, metadata,rec){
-                    	var checkMOQ = rec.data.moqValidationFlag ? rec.data.moqValidationFlag.trim()  :'';
-                    	
-	                   	if(rec.data.waiveMOQ==false && (checkMOQ && checkMOQ.substr(0,1)=='F')){
-	                   		return '<i style="font-size:16px;cursor:pointer;" class="EnableUpdateMoq fa fa-cart-plus"/>';
-	    				}
-	    				else{
-	    					return '<i style="font-size:16px;" class="fa fa-ban"/>';
-	    				}
-                   }
-
+                    	return Helper.onUpdateMoqRenderer(value, metadata,rec);
+                    }
                 },
                 {
                     text: AOCLit.waiveMOQ,
@@ -138,46 +106,34 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     	editable:false,
                     	store:[[true,'Y'],[false,'N']]
                     },
-                    renderer:function(value, metadata,rec){
-                    	var v = 'N';
-                    	if(value){
-                    		v = 'Y';
-                    	}
-        				return v;
-                }
-                },
-                {
-            text: AOCLit.Status,
-            dataIndex: 'status',
-            width: 180,
-            editor: {
-            	xtype:'combo',
-            	editable:false,
-            	displayField:'value',
-            	editable:false,
-				valueField:'code',
-				queryMode :'local',
-				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
-				listeners:{
-			        afterrender:function(combo){
-				         var store = combo.store;
-				         store.filterBy(function(record){
-				        	 return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
-				         });
-			        },
-			        focus:function(combo){
-			        	var store = combo.store;
-			        	var index = store.find('code',combo.getValue());
-			        	if(index == -1){
-			        		combo.setValue('');
-			        	}
-			        },
-			        select:'onSelectStatusBulk'
-		       }		
-            },
-			renderer:function(v, metadata, rec){
-				return Helper.getSatus(rec);
-			}
+                    renderer:function(value, metadata, record){
+        				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+        			}
+                }, {
+	            text: AOCLit.Status,
+	            dataIndex: 'status',
+	            width: 180,
+	            editor: {
+	            	xtype:'combo',
+	            	editable:false,
+	            	displayField:'value',
+	            	editable:false,
+					valueField:'code',
+					queryMode :'local',
+					store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
+					listeners:{
+				        afterrender:function(combo){
+				        	Helper.onStatusComboAfterRender(combo);
+				        },
+				        focus:function(combo){
+				        	Helper.onStatusComboFocus(combo);
+				        },
+				        select:'onSelectStatusBulk'
+			       }		
+	            },
+				renderer:function(v, metadata, rec){
+					return Helper.getSatus(rec);
+				}
         },{
             text: 'PO#<font color=red>*</font>',
             dataIndex: 'poNumber',
@@ -188,14 +144,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'averyItemNumber',
             width: 88,
             renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	if(value==AOCLit.averyItemNotFoundText || value==AOCLit.duplicateMappingLabel)
-                		meta.style = AOCLit.cellColor;
-                	 return value;
-                }
+                return Helper.onAveryItemNumberColumnRenderer(value, meta,record);
             }
         }, {
             text: AOCLit.custItemNo,
@@ -219,88 +168,56 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	store:[['Y','Y'],['N','N']]
             },
             renderer:function(value, metadata,rec){
-				
-				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
-				var checkvalue=bulkSampleValidationFlag ? bulkSampleValidationFlag.trim() :'';
-				if(checkvalue.substr(0,1)=='T'){
-					return value;
-				}
-				else{
-					return value;
-				}
+				return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
 			}
         }, 
         {
 			text: 'Avery ATO',
 			dataIndex: 'averyATO',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Bulk Item',
 			dataIndex: 'averyBulk',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery MOQ',
 			dataIndex: 'averyMOQ',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery ProductLine Type',
 			dataIndex: 'averyProductLineType',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		}, 
 		{
 			text: 'Avery Region',
 			dataIndex: 'averyRegion',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		},
 		{
 			text: 'Avery Roundup Qty',
 			dataIndex: 'averyRoundupQty',
 			width: 93,
-			renderer : function(value, metadata,record) {
-				if(value == '' || value == null) {
-					metadata.style = AOCLit.cellColor;
-					return value;
-				}
-				return value;
-			} 
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
 		},
         {
             text: AOCLit.custName,
@@ -322,77 +239,77 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'shipToContact',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToAddress1,
             dataIndex: 'shipToAddress1',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToAddress2,
             dataIndex: 'shipToAddress2',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToAddress3,
             dataIndex: 'shipToAddress3',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToCity,
             dataIndex: 'shipToCity',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToCountry,
             dataIndex: 'shipToCountry',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToState,
             dataIndex: 'shipToState',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToZip,
             dataIndex: 'shipToZip',
             width: 85,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToEmail,
             dataIndex: 'shipToEmail',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToFax,
             dataIndex: 'shipToFax',
             width: 130,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         }, {
             text: AOCLit.shipToTelephone,
             dataIndex: 'shipToTelephone',
             width: 130,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleShiptoSiteNumber');
             }
         },{
         	xtype:'gridcolumn',
@@ -400,14 +317,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'oracleBillToSiteNumber',
             width: 100,
             editor:'textfield',
-            renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
+            renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
         }, {
             text: AOCLit.billToCustomer,
             dataIndex: 'billToCustomer',
@@ -418,77 +330,77 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'billToContact',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToAddress1,
             dataIndex: 'billToAddress1',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToAddress2,
             dataIndex: 'billToAddress2',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToAddress3,
             dataIndex: 'billToAddress3',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToCity,
             dataIndex: 'billToCity',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text:AOCLit.billToCountry,
             dataIndex: 'billToCountry',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToState,
             dataIndex: 'billToState',
             width: 112,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToZip,
             dataIndex: 'billToZip',
             width: 85,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToEmail,
             dataIndex: 'billToEmail',
             width: 170,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToFax,
             dataIndex: 'billToFax',
             width: 130,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.billToTelephone,
             dataIndex: 'billToTelephone',
             width: 130,
             getEditor: function(record) {
-            	return AOC.util.Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
+            	return Helper.getOrderLineEditor(record,'oracleBilltoSiteNumber');
             }
         }, {
             text: AOCLit.specialInstruction,
@@ -505,27 +417,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             dataIndex: 'soldToRBONumber',
             width: 100,
             editor: 'textfield',
-            renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
+            renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
         },  {
             text: 'Ship to Site #<font color=red>*</font>',
             dataIndex: 'oracleShipToSiteNumber',
             width: 100,
             editor:'textfield',
-            renderer : function(value, meta,record) {
-                if(value=='') {
-                	if(record.get('status')==AOCLit.waitingForCSRStatusOrderLine)
-                		meta.style = AOCLit.cellColor;
-                } else {
-                	 return value;
-                }
-            }
+            renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
         }, {
             text: AOCLit.shippingMethod,
             dataIndex: 'shippingMethod',
@@ -540,19 +442,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
             },
@@ -568,16 +461,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 102,
             editor: 'textfield',
             renderer:function(value, metadata,rec){
-				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag') ? rec.get('htlsizePageValidationFlag').trim() : '';
-				if(htlSizePageValidationFlag.substr(0, 1) == 'T'){
-					return value;
-				}
-				else{
-					//if(this.showMandatoryValidationField){
-						metadata.style = AOCLit.mandatoryValidationCellColor;
-					//}
-					return value;
-				}
+            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
         }, {
             text:AOCLit.customerSize,
@@ -585,16 +469,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 72,
             editor: 'textfield',
             renderer:function(value, metadata,rec){
-				var htlSizePageValidationFlag=rec.get('htlSizePageValidationFlag') ? rec.get('htlSizePageValidationFlag').trim():'';
-				if(htlSizePageValidationFlag.substr(0,1) == 'T'){
-					return value;
-				}
-				else{
-					//if(this.showMandatoryValidationField){
-						metadata.style = mandatoryValidationCellColor;
-					//}
-					return value;
-				}
+            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
         }, {
             text: 'Contract #',
@@ -619,12 +494,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             format:AOCLit.dateFormat,
             editor: 'datefield',
             renderer : function(value, meta,record) {
-                if(value=='' || value == null) {
-                	meta.style = AOCLit.cellColor;
-                }
-                else{
-                	return Ext.Date.format(value,'Y-m-d');
-                }
+            	return Helper.onOrdererDateRenderer(value, meta,record);
             }
         }, {
             text:AOCLit.requestedDeliveryDate,
@@ -640,13 +510,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				}
 			},
 			renderer:function(v, metadata, record){
-			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
-			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-			     metadata.style = AOCLit.cellColor;
-			     return Ext.Date.format(v, AOCLit.dateFormat);
-			    }
-			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
-		   }
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
+			}
         }, {
             text: AOCLit.promiseDate,
             dataIndex: 'promiseDate',
@@ -661,13 +526,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				}
 			},
 			renderer:function(v, metadata, record){
-			    if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
-			    		&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-			     metadata.style = AOCLit.cellColor;
-			     return Ext.Date.format(v, AOCLit.dateFormat);
-			    }
-			    return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
-		   }
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
+			}
         }, {
             text: AOCLit.freightTerm,
             dataIndex: 'freightTerms',
@@ -682,19 +542,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
             },
@@ -713,19 +564,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
             },
@@ -774,13 +616,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	editable:false,
             	store:[[true,'Y'],[false,'N']]
             },
-            renderer:function(value, metadata,rec){
-            	var v='N';
-            	if(value){
-            		v='Y';
-            	}
-            	return v;
-        }
+            renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
         }, {
             text: AOCLit.variableDataBreakdown,
             dataIndex: 'variableDataBreakdown',
@@ -805,19 +643,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
             },
@@ -841,19 +670,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					       store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onComboAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onComboSelect(combo);
 					}
 			    }
             },
@@ -896,13 +716,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	editable:false,
             	store:[[true,'Y'],[false,'N']]
             },
-            renderer:function(value, metadata,rec){
-            	var v='N';
-            	if(value){
-            		v='Y';
-            	}
-				return v;
-        }
+            renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
         }, {
             text: AOCLit.productionHold,
             dataIndex: 'productionHold',
@@ -912,13 +728,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	editable:false,
             	store:[[true,'Y'],[false,'N']]
             },
-            renderer:function(value, metadata,rec){
-            	var v='N';
-            	if(value){
-            		v='Y';
-            	}
-				return v;
-        }
+            renderer:function(value, metadata, record){
+				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+			}
         }, {
             text: AOCLit.splitShipset,
             dataIndex: 'splitShipset',
@@ -933,19 +745,10 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-						var store = combo.store,
-							obj = {variableFieldName:'None'},
-							index = store.find('variableFieldName', 'None','', false, false, true);
-						
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
+						Helper.onSplitShipsetAfterRender(combo);
 					},
 					select:function(combo){
-						var value = combo.getValue();
-						if(value == 'None'){
-							combo.setValue('');
-						}
+						Helper.onSplitShipsetSelect(combo);
 					}
 			    }
             },
@@ -974,20 +777,11 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         		listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
-					      var store = combo.store,
-					       obj = {variableFieldName:'None'},
-					       index = store.find('variableFieldName', 'None','', false, false, true);
-					      
-					      if(index == -1){
-					    	  store.insert(0,new Ext.data.Record(obj));
-					      }
-					     },
-					     select:function(combo){
-					      var value = combo.getValue();
-					      if(value == 'None'){
-					    	  combo.setValue('');
-					      }
-					     }
+						Helper.onComboAfterRender(combo);
+				     },
+				     select:function(combo){
+				    	 Helper.onComboSelect(combo);
+				     }
 			    }
             },
             renderer:'comboColumnRenderer'

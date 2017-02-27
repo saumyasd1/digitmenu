@@ -10,7 +10,6 @@ Ext.define('AOC.view.partner.PartnerController', {
     		messageLabelField = refs.messageLabelField,
     		partnerManagementGrid = AOCRuntime.getActiveGrid(),
     		form = refs.createPartnerForm,
-    		//form = formPanel.getForm(),
     		editMode = view.editMode,
     		url = '',
     		valueObj ='',

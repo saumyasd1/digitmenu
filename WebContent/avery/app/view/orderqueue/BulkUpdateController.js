@@ -130,7 +130,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     },
     divisionForInterfaceERPORGColumnRenderer: function(v,h,l,k){
 		var orgCodeName = '';
-		var view = this.getView();
 		if(!Ext.isEmpty(v)){
 			var store=h.column.config.editor.store;
 			if(store){
@@ -151,7 +150,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		return orgCodeName;
 	},
 	comboColumnRenderer:function(v,h,l,k){
-		var view=this.getView();
 		if(!Ext.isEmpty(v)){
 			var store = h.column.config.editor.store;
 			if(store){
@@ -175,7 +173,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			columns = grid.columns,
 			len = columns.length,
 			store = grid.store,
-			context = grid.editingPlugin.context
+			context = grid.lockedGrid.editingPlugin.context
 			rowIdx = context.rowIdx;
 		
 		store.getAt(rowIdx).set(context.field, value);
@@ -206,7 +204,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	onComboFocus:function(field){
 			var me = this,
 		   	view = me.getView(),
-		   	editor = view.editingPlugin,
+		   	editor = view.lockedGrid.editingPlugin,
 		   	context = editor.context,
 		   	rowIdx = context.rowIdx,
 		   	fieldStore = field.store,
@@ -223,7 +221,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	},
 	onSelectDate: function(df){
 		var view = this.getView(),
-	   	editor = view.editingPlugin,
+	   	editor = view.lockedGrid.editingPlugin,
 	   	context = editor.context,
 		fieldName = context.column.text,
 		orderDate = context.record.get('orderedDate');

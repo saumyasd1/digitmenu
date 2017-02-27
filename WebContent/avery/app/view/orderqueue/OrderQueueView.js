@@ -5,25 +5,25 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 	itemId : 'orderQueueViewItemId',
 	initComponent : function() {
 		Ext.apply(this, {
-			 layout: {
-		         type: 'vbox',
-		         align: 'stretch'
-		        },
-			items : [{
-		 				xtype:'container',
-		 				flex:1,
-		 				layout:'fit',
-		 				layout:'card',
-						collapsible :false,
-						itemId : 'orderQueueViewItemId1',
-						activeItem:0,
-		 				items:[
-	 				       {
-	 				    	   xtype:'orderqueuegrid',
-	 				    	   reference:'orderQueueGrid'
-	 				       }
- 				       ]
-					}]
+			layout: {
+				type: 'vbox',
+				align: 'stretch'
+	        },
+	        items:[
+                 {
+	 				xtype:'container',
+	 				flex:1,
+	 				layout:'card',
+					itemId : 'orderQueueViewItemId1',
+					activeItem:0,
+	 				items:[
+ 				       {
+ 				    	   xtype:'orderqueuegrid',
+ 				    	   reference:'orderQueueGrid'
+ 				       }
+			       	]
+				}
+             ]
 	 	});
 	 	this.callParent(arguments);
 	}
