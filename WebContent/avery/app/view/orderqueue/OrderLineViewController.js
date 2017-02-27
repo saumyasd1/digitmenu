@@ -179,7 +179,11 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     },
     onerporgSelectChange:function(cmp,record){
     	Ext.getBody().mask('Setting...');
-    	var currentRecord=cmp.ownerCt.context.record,view=this.getView(),me=this,systemId=0;
+    	var me = this,
+    		view = me.getView(),
+    		currentRecord = view.editingPlugin.context.record,
+    		systemId = 0;
+    	
     	var response = Ext.Ajax.request({
 			async: false,
 			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+me.runTime.getOrderLineCurrenProductLine()+'/'+record.get('id')
