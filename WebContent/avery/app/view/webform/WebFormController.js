@@ -199,6 +199,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid,
 			store = webOrderAttachmentInfoGrid.store,
 			orderFileType = refs.orderFileType,
+			attachment = refs.attachment1,
+			oldAdditionalFileId = refs.oldAdditionalFileId,
 			//attachmentField = refs.attachmentField,
 			//additionalDataFileKeyField = refs.additionalDataFileKeyField,
 			oldFileIds = [],
@@ -211,6 +213,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 			if(odFileId!=0){
 				oldFileIds.push(odFileId);
 			}
+		}
+		if(oldAdditionalFileId.getValue().length>0){
+			attachment.allowBlank = true;
 		}
 		if(oldFileIds.length>0){
 			orderFileType.allowBlank = true;
