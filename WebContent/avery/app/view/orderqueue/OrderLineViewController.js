@@ -129,9 +129,10 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		currentRecord = context.store.getAt(rowIdx),
     		currentRecordStatus = currentRecord.get('status'),
     		columns = editor.grid.columns,
-			len = columns.length;
+			len = columns.length,
+			gridView = me.getView();
     	
-    	editor.grid.lastScrollLeftPosition = editor.grid.view.el.dom.scrollLeft;
+    	editor.grid.lastScrollLeftPosition = gridView.view.normalView.el.dom.scrollLeft;
     	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
     			&& (currentRecordStatus == AOCLit.waitingForCSRStatusOrderLine
@@ -303,7 +304,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   	editor = view.editingPlugin,
 		   	context = editor.context;
 		
-		context.grid.lastScrollLeftPosition = context.grid.view.el.dom.scrollLeft;
+		context.grid.lastScrollLeftPosition = view.view.normalView.el.dom.scrollLeft;;
 		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
 			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
         }

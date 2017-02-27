@@ -427,7 +427,12 @@ Ext.override(Ext.grid.RowEditor, {
         this.context.setColumn(field.column);
         field.column.getView().getScrollable().scrollIntoView(field.el);
         if(this.context.grid && !Ext.isEmpty(this.context.grid.lastScrollLeftPosition)){
-        	this.context.grid.view.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
+        	if(this.context.grid.lockedGrid){
+        		this.context.grid.view.normalView.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
+        	}
+        	else{
+        		this.context.grid.view.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
+        	}
         }
     },
 
