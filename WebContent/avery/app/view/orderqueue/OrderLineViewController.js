@@ -358,17 +358,5 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				}
 			}
 		}
-	},
-	onHideColumnBtnClick:function(){
-		var me = this,
-			view = me.getView(),
-			columns = view.columns,
-			len = columns.length;
-		
-		for(var i=0; i<len;i++){
-			if(columns[i].type == 'address'){
-				columns[i].hide();
-			}
-		}
 	}
 });

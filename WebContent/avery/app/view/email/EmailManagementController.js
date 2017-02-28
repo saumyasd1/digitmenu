@@ -195,9 +195,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
   	  	  refs = view.getReferences(),
   	  	  form = refs.emailQueueAdvanceSearchForm.getForm(),
   	  	  values = form.getValues();
-  	      values.datecriteriavalue = 'receivedDate';
-  	  	  store = view.contextGrid.store;
-          Helper.advancedSearch(view,values);
-    
+  	  
+      values.datecriteriavalue = 'receivedDate';
+  	  store = view.contextGrid.store;
+      Helper.advancedSearch(view, values);
     }
 });

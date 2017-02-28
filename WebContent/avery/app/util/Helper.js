@@ -172,9 +172,9 @@ Ext.define('AOC.util.Helper',{
     	 * */
     	var iconColor = obj.data.colorCode;
     	if(obj.data.colorCode === '#008000'){
-    		iconColor = '#4BDE4B';
+    		iconColor = '#4AA02C';
     	}
-    	return '<span style="margin-right:3px;"><i style="font-size:15px; color:'+iconColor+'" class="' + AOC.config.Settings.buttonsCls[obj.data.iconName] + '"></i></span><span><font color="' +obj.data.colorCode+'">'+obj.data.codeValue+'</font></span>';
+    	return '<span style="margin-right:3px;"><i style="font-size:15px; color:'+iconColor+'" class="' + AOC.config.Settings.buttonsCls[obj.data.iconName] + '"></i></span><span><font color="' +iconColor+'">'+obj.data.codeValue+'</font></span>';
     },
     setCookie:function(cname, cvalue, exdays) {
         var d = new Date();
@@ -369,7 +369,7 @@ Ext.define('AOC.util.Helper',{
 		var store = view.contextGrid.store;
 		
 		if (values) {
-		  store.proxy.setFilterParam('query');
+			store.proxy.setFilterParam('query');
             store.setRemoteFilter(true);
             if (!store.proxy.hasOwnProperty('filterParam')) {
                 store.proxy.setFilterParam('query');
@@ -386,10 +386,23 @@ Ext.define('AOC.util.Helper',{
         }
         view.close();
 	},
-	quickSearch:function(view,value){
+	quickSearch:function(view, value){
 		var store = view.store;
-		if (value != null && value != '') {
-            store.load({params:{query:Ext.JSON.encode(value)}});
+		if (value != null && !Ext.isEmpty(value)) {
+			store.proxy.setFilterParam('query');
+            store.setRemoteFilter(true);
+            if (!store.proxy.hasOwnProperty('filterParam')) {
+                store.proxy.setFilterParam('query');
+            }
+            store.proxy.encodeFilters = function(filters) {
+                return filters[0].getValue();
+            };
+            store.filter({
+                id: 'query',
+                property: 'query',
+                value: Ext.JSON.encode(value)
+            });
+            //store.load({params:{query:Ext.JSON.encode(value)}});
         }
 	},
 	getDependendVariableComboStore:function(variableName,systemId,OrgCode){
@@ -443,7 +456,7 @@ Ext.define('AOC.util.Helper',{
 	
 	getIconClass:function(value){
 		if(value.substr(0,1)=='T'){
-			return '<i style="color:green;font-size:16px;" class="fa fa-check"/>';
+			return '<i style="color:#4AA02C;font-size:16px;" class="fa fa-check"/>';
 		}
 		else if(value.substr(0,1) == 'F'){
 			return '<i style="color:red;font-size:16px;" class="fa fa-times"/>';
