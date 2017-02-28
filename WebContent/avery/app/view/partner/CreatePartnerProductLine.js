@@ -609,6 +609,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										name: 'instruction',
 										fieldLabel:'Instruction',//?/
 										labelSeparator:'',
+										hidden:true,
 										labelWidth : 150,
 										width : 450,
 										labelStyle:'color:#2c3e50;font-size:13px;font-weight:bold;'
@@ -666,6 +667,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										name: 'instruction',
 										fieldLabel:'Instruction',//?/
 										labelSeparator:'',
+										hidden:true,
 										labelWidth : 150,
 										labelStyle:Settings.config.defaultFormLabelStyle,
 										width : 450
@@ -825,19 +827,22 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'RBO',
 												name: 'rbo',
-												fieldLabel:'RBO'
+												fieldLabel:'RBO',
+												hidden:true,
 											},
 											{
 												xtype:'textfield',
 												margin:'0 0 0 10',
 												name: 'sheet',
-												fieldLabel:'Sheet'
+												fieldLabel:'Sheet',
+												hidden:true
 											},
 											{
 												xtype:'textfield',
 												name: 'cell',
 												margin:'0 0 0 10',
-												fieldLabel:'Cell'
+												fieldLabel:'Cell',
+												hidden:true,
 											}
 										]
 									},

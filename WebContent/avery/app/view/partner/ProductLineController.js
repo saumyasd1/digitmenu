@@ -179,7 +179,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    		var valueExist=jsonString.valueExist;
 				    		if(valueExist){
 				    			Ext.getBody().unmask();
-				    			createproductline.lookupReference('dataStructureName').focus();
+				    			createproductline.down('#dataStructureName').focus();
 				    			createproductline.down('#messageFieldItemId').show();
 				    			createproductline.down('#messageFieldItemId').setValue(AOCLit.entryExistMsg);
 				    			return false;
