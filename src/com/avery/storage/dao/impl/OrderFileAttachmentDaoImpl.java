@@ -282,7 +282,7 @@ OrderFileAttachmentDao {
 		OrderFileAttachment obj=new OrderFileAttachment();
 		obj.setVarOrderEmailQueue(orderEmailQueue);
 		obj.setFilePath(filePath);
-		obj.setVarProductLine(productLineObj);
+		//obj.setVarProductLine(productLineObj);
 		obj.setCreatedDate(new Date());
 		obj.setStatus(ApplicationConstants.DEFAULT_WEBORDER_EMAILBODY_STATUS);
 		obj.setFileContentType(ApplicationConstants.DEFAULT_EMAILBODY_CONTENT_TYPE);
