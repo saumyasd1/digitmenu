@@ -274,7 +274,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     callSubmitSalesOrderReq:function(){
     	var me = this,
     		id = me.runTime.getOrderQueueId(),
-    		grid= me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem();
+    		refs = me.getReferences(),
+    		grid = refs.orderLineExpandableGrid;
     	
     	Ext.getBody().mask(AOCLit.pleaseWaitTitle); // show mask on body
     	
@@ -369,7 +370,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			noAdditionalDataFoundStatusOrderLine = 0,
 			orderQueueStatus = AOC.config.Runtime.getOrderQueueStatus(),
 			refs = me.getReferences(),
-    		orderLineExpandableGrid = refs.orderLineExpandableGrid;// this.getView().queryById('orderlineexpandablegridrowmodel');
+    		orderLineExpandableGrid = refs.orderLineExpandableGrid;
     	
     	orderLineExpandableGrid.invalidComboValid = false;
     	var isSubmitSaleOrderFlag = true;
@@ -453,20 +454,17 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     getUpdateScreen:function(){
 		var me = this,
 			refs = me.getReferences(),
-			orderLineExpandableGrid = me.getView().queryById('orderlineexpandablegridrowmodel'),//Ext.ComponentQuery.query('orderlineexpandablegrid')[0],
-			viwport = Ext.ComponentQuery.query('#viewportitemid')[0],
-			height = viwport.getHeight()-100,
-			width = viwport.getWidth()-100,
+			height = Ext.getBody().getHeight()-100,
+			width = Ext.getBody().getWidth()-100,
 			id = me.runTime.getOrderQueueId(),
-			radioGroupValue = me.lookupReference('radioGroup').getValue().rb,
+			radioGroupValue = refs.radioGroup.rb,
 			store,
-			win,
 			innerGridType,
 			comboValue = '';
 			
 		if(radioGroupValue == '2'){
-      		var comboField = this.lookupReference('variableFieldCombo'),
-				comboValue = comboField.getValue();
+      		var comboField = this.lookupReference('variableFieldCombo');
+			comboValue = comboField.getValue();
 				
       		if(comboValue == '' || comboValue == null){
       			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectValueDrpMsg);
@@ -490,7 +488,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		}else{
 			store=Ext.create('AOC.store.OrderLineStore');
 			store.load({params:{id:id}});
-			//store = orderLineExpandableGrid.store;
       		innerGridType = 'bulkupdateorderlinegrid';
 		}
 		
@@ -517,12 +514,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		});
 		win.show();
     },
-    radioButtonClick:function(obj,newValue,oldValue){
+    radioButtonClick:function(obj, newValue, oldValue){
     	var comboField=this.lookupReference('variableFieldCombo');
-    	if(newValue.rb=='2'){
+    	
+    	if(newValue.rb == '2'){
     		Ext.getBody().mask('Loading..');
     		var id= this.runTime.getOrderQueueId();
-    		Ext.Ajax.request( {
+    		Ext.Ajax.request({
     			method:'GET',
     			url : applicationContext+'/rest/orderlinedetails/order/'+id,
 		        success : function(response, opts) {
@@ -547,10 +545,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        },
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();
-	          }
-	  	});
+		        }
+    		});
     	}else{
     		comboField.setVisible(false);
     	}
     }
-})
+});

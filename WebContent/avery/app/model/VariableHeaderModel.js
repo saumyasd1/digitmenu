@@ -7,10 +7,12 @@ Ext.define('AOC.model.VariableHeaderModel',{
     		type: 'string'
     	}, {
     		name : 'skuno',
-    		mapping : 'skuno'
+    		mapping : 'skuno',
+    		type:'int'
     	}, {
     		name : 'typesetter',
-    		mapping : 'typesetter'
+    		mapping : 'typesetter',
+    		type:'int'
     	},{
     		name : 'variableFieldName',
     		mapping : 'variableFieldname'

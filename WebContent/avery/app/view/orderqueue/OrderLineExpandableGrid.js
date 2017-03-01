@@ -614,7 +614,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				editable:false,
+				//editable:false,
 				queryMode :'local',
 				reference:'shippingMethodCombo',
 				store:Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
@@ -1072,6 +1072,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		    },
     		    rowBodyTpl : ['<div class="row-expander-body"></div>'],
     		    pluginId: 'orderLineRowExpander',
+    		    selectRowOnExpand:true,
     		    getHeaderConfig: function() {
     		         var  rowExpanders = this,
     		         	  lockable = this.grid.ownerLockable;
@@ -1107,7 +1108,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		                 if (e.getTarget('.custom-row-expander')) {
     		                     if (type === "click") {
     		                    	 rowExpanders.toggleRow(rowIndex, record);
-    		                         return rowExpanders.selectRowOnExpand;
+    		                    	 rowExpanders.view.getRow(rowIndex).scrollIntoView();
+    		                         //return rowExpanders.selectRowOnExpand;
     		                     }
     		                 }
     		             },
@@ -1125,7 +1127,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		         };
     		    },
     		    onExpand: function(rowNode, record, expandRow) {
-    		    	this.grid.editingPlugin ? this.grid.editingPlugin.cancelEdit() : '';
+    		    	this.grid.ownerGrid.editingPlugin ? this.grid.ownerGrid.editingPlugin.cancelEdit() : '';
+    		    	
     		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bcz after store load inner view destroyed
     		    	if(Ext.isEmpty(rowNode.querySelector('.nestedGrid'))){
     		            var view = this.grid.getView(),
@@ -1133,6 +1136,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		                targetRowbody = Ext.DomQuery.selectNode('div.row-expander-body', rowNode);
     		            
     		            newComponent.render(targetRowbody);
+    		            me.lastTopScrollPosition = this.view.el.dom.scrollTop;
     		            newComponent.getEl().swallowEvent([
                             'mousedown', 'mouseup', 'click',
                             'contextmenu', 'mouseover', 'mouseout',
@@ -1155,6 +1159,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			
 			for(var i = 0; i < len; i++){
 				if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
+					data[i].skuno = parseInt(data[i].skuno);
+					data[i].typeSetter = parseInt(data[i].typeSetter);
 					items.push(data[i]);
 				}
 			}
@@ -1201,17 +1207,27 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				  flex:0.5
 				}, 
 				{
-				  text: "SKU #",
+				  text: 'SKU #',
 				  dataIndex: 'skuno',
-				  flex:0.5
+				  flex:0.5,
+				  renderer:function(v, metadata, record){
+					  if(v){
+						  return v;
+					  }return '';
+				  }
 				}, 
 				{
-				  text: "TypeSetterCode",
+				  text:'TypeSetterCode',
 				  dataIndex: 'typeSetter',
-				  flex:0.8
+				  flex:0.8,
+				  renderer:function(v, metadata, record){
+					  if(v){
+						  return v;
+					  }return '';
+				  }
 				}, 
 				{
-					text: "Variable Field Name",
+					text: 'Variable Field Name',
 					dataIndex: 'variableFieldName',
 					flex:1.8,
 					renderer:function(v, metadata,rec){
@@ -1226,7 +1242,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 				}, 
 				{
-					text: "Variable Field Value",
+					text: 'Variable Field Value',
 					dataIndex: 'variableDataValue',
 					flex:2,
 					editor: 'textfield',
@@ -1240,7 +1256,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					}
 				}, 
 				{
-				  text: "Fiber Content Percentage",
+				  text: 'Fiber Content Percentage',
 				  dataIndex: 'fiberPercent',
 				  xtype:'gridcolumn',
 				  align:'center',
@@ -1251,7 +1267,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				  }
 				},
 				{
-					text:"Help Message",
+					text:'Help Message',
 					dataIndex:'helpMessage',
 					flex:1
 				}
@@ -1262,8 +1278,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			style:'border:solid 1px #ccc;',
 			plugins: me.getInnerGridPlugin(),
 			autoHeight: true,
-			//frame: false,
-			//header: false
+			frame: false,
+			header: false
 		});
     },
     getInnerGridPlugin:function(){

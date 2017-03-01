@@ -4,8 +4,8 @@ Ext.define('AOC.store.Sections', {
     model  : 'AOC.model.Section',
     data   : [
               ['home.png', 'HOME', 'homewrapper',true,0],
-              ['mail.png', 'EMAIL QUEUE', 'emailmanagement', false, 0, 'emailmanagementgrid'],
               ['calendar.png', 'TASK MANAGER', 'taskmanager', false, 0, 'taskManagergrid'],
+              ['mail.png', 'EMAIL QUEUE', 'emailmanagement', false, 0, 'emailmanagementgrid'],
               ['orders.png', 'ORDER QUEUE', 'orderqueueview', false, 0, 'orderqueuegrid'],
               ['webform.png', 'WEB ORDER', 'weborderview', false, 0, 'weborderview'],
               ['partners.png', 'PARTNERS', 'partnermanagement', false, 0, 'partnermanagementgrid'],	

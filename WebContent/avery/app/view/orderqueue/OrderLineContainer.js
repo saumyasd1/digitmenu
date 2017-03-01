@@ -203,6 +203,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 					}
 				]
 			}
-		]
+		];
 	}
 });
