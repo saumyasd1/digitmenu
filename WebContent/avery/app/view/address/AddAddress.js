@@ -354,6 +354,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								xtype:'textfield',
 								name: 'phone1',
 								flex:1,
+								regex: /^(\d+-?)+\d+$/,
 								fieldLabel:AOCLit.Phone1
 								
 							},
@@ -362,6 +363,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								name: 'phone2',
 								margin:'0 0 0 10',
 								flex:1,
+								regex: /^(\d+-?)+\d+$/,
 								fieldLabel:AOCLit.phone2
 							}
 						]
