@@ -49,7 +49,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}]
 			},
 			{
-  		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+  		       	header: Settings.config.defaultIcons.commentColumnIcon,
   	            width:40,
   				dataIndex:'comment',
   				tooltip:'Comments',
@@ -59,9 +59,9 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   					if(value){
   						var status = rec.get('status');
   						if(status == AOCLit.emailUnidentifiedStatus){
-  						var comment = Ext.String.htmlEncode(value);
-  						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
-						return '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />';
+	  						var comment = Ext.String.htmlEncode(value);
+	  						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+							return Settings.config.defaultIcons.commentColumnIcon;
   						}
   					}else{
   						return '';
@@ -76,7 +76,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				menuDisabled  :true,
 				renderer:function(v, metadata, record){
 					if(v=='Email')
-						return '<img data-qtip="<font color=blue>Email</font>" class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
+						return '<i data-qtip="<font color=blue>Email</font>" class="viewemail fa fa-envelope-o"></i>';
 					else{
 						return '<i data-qtip="<font color=blue>Web</font>" style="font-size:16px; color:black"; class="fa fa-globe"></i>';
 					}

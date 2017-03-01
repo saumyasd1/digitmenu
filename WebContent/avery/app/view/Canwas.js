@@ -20,12 +20,12 @@ Ext.define('AOC.view.Canwas',{
 	        {
 				 xtype:'mainmenu',
 				 region:'north',
-				 style  : AOC.config.Settings.getBaseBackgroundColor(),
+				 style: AOC.config.Settings.getBaseBackgroundColor(),
 				 height:60
 	    	},
 	    	{
 	    	    xtype:'maincontainer' ,
-	    	    margin:'0 10 10 10',
+	    	    margin:'0 10 5 10',
 	    	    region:'center',
 	    	    style:{"background-color": "#fff;","border-radius":"5px",'border':'solid 1px #ccc'}
 	    	}

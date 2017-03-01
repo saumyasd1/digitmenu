@@ -54,7 +54,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				]
 			},
 			{
-  		       	header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+  		       	header: Settings.config.defaultIcons.commentColumnIcon,
   	            width:40,
   				dataIndex:'comment',
   				tooltip:'Comments',
@@ -64,7 +64,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
   					if(value){
   						var comment = Ext.String.htmlEncode(value);
   						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
-						return '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />';
+						return Settings.config.defaultIcons.commentColumnIcon;
   					}else{
   						return '';
 					}

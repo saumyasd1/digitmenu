@@ -13,8 +13,14 @@ Ext.define('AOC.config.Settings',{
         defaultTbarHeight:50,
         header:{
         	headerBgStyle:'box-shadow: 0px 0px 1px 0px rgba(47, 51, 56, 0.07), inset 0px -1px 0px 0px #C7C8C9;'
+        },
+        defaultIcons:{
+        	commentColumnIcon:'<i class="fa fa-comment-o" style="font-size:16px;"></i>',
+        	errorColumnIcon:'<i class="fa fa fa-exclamation-circle" style="font-size:16px;color:#ff0000;"></i>',
+        	actionIcon:'fa fa-ellipsis-v'	
         }
     },
+    
     form:{
     	defaultLabelAlign:'left',
     	topLabelAlign:'top'

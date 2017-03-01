@@ -57,7 +57,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				}]
 			},
 			{
-				header: '<img src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" />',
+				header: Settings.config.defaultIcons.commentColumnIcon,
 				width:40,
 				dataIndex:'Comments',
 				menuDisabled:true,
@@ -66,7 +66,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				renderer:function(value, metadata,rec){
 					if(value){
 						var comment=Ext.String.htmlEncode(rec.data.comment);
-					   return '<div><img data-qtip="<font color=blue>'+comment+'</font>"  src="' +  AOC.config.Settings.buttonIcons.commentIcon + '" /></div>';
+						metadata.tdAttr = 'data-qtip="<font color=blue>'+ comment +'</font>"';
+					   return Settings.config.defaultIcons.commentColumnIcon;
 					}
 					else{
 						return '';
@@ -74,7 +75,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				} 
 		   	},
 			{
-				 header: '<img src="' + AOC.config.Settings.buttonIcons.error + '" />',
+		   			header: Settings.config.defaultIcons.errorColumnIcon,
 					width:40,
 					dataIndex:'error',
 					tooltip:'Error',
@@ -83,7 +84,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 					renderer:function(value, metadata,rec){
 						if(value){
 							var error=Ext.String.htmlEncode(rec.data.error);
-							return '<img data-qtip="<font color=blue>'+error+'</font>"   src="' +  AOC.config.Settings.buttonIcons.error + '" />';
+							metadata.tdAttr = 'data-qtip="<font color=blue>'+error+'</font>"';
+							return Settings.config.defaultIcons.errorColumnIcon;
 						}
 						else{
 							return '';
@@ -123,7 +125,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				renderer:function(v, metadata, record){
 						var emailBody = record.get('emailBody'); 
 						metadata.tdAttr = 'data-qtip="<font color=blue>CompleteEmail.html</font>"';
-						return '<img class="viewemail" src="' +  AOC.config.Settings.buttonIcons.mailIcon + '" />';
+						return '<i class="viewemail fa fa-envelope-o" style="font-size:16px;"></i>';
 				}	
 			
 			},

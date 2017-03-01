@@ -72,7 +72,13 @@ int pageSize=25;
 		.warning-icon{
 			color:orange;
 		}
-		
+		.main-menu-list .section-wrap .section-wrap-text{color:#2c3e50 !important;}
+		.main-menu-list .section-wrap-text{ padding-top:0px !important;}
+		.main-menu-list .section-wrap-selected .section-wrap-img,
+		.main-menu-list .section-wrap-selected .section-wrap-text,
+		.main-menu-list .section-wrap .section-wrap-text:hover,
+		.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
+		main-menu-list .section-wrap-selected .section-wrap-text{font-weight:bold;}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
