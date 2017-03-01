@@ -97,7 +97,9 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				.add(Projections.property("system"), "system").add(Projections.property("country"), "country")
 				.add(Projections.property("shippingMethod"), "shippingMethod").add(Projections.property("zip"), "zip")
 				.add(Projections.property("id"), "id");
-
+		
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		
 		criteria.createAlias("varOrgCode", "varOrgCode").createAlias("varPartner", "varPartner");
 
 		String limit = (String) queryMap.getFirst("limit");
@@ -115,9 +117,6 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Address.class));
 		List<Address> list = criteria.list();
-
-		criteria.addOrder(Order.desc("lastModifiedDate"));
-
 		if (queryMap.getFirst("orgCodeName") != null) {
 			String orgCode = (String) queryMap.getFirst("orgCodeName");
 			String orgUniqueName = orgCode;
