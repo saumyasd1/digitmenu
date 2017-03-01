@@ -445,7 +445,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileOrderMatch(fileOrderMatch);
 			pk.setFileOrderMatchRequired(false);
 		}else{
-			pk.setFileOrderMatchLocation("Sheet Name : "+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell : "+fileOrderMatchCell+";");
+			pk.setFileOrderMatchLocation("Sheet Name :"+fileOrderMatchSheet+";Value:"+fileOrderMatch+";Cell :"+fileOrderMatchCell+";");
 			pk.setFileOrderMatchRequired(true);
 		}
 		String fileProductlineMatch=productLineMap.get("fileProductlineMatch")==null?"":(String)productLineMap.get("fileProductlineMatch");
@@ -455,7 +455,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			pk.setFileProductlineMatch(fileProductlineMatch);
 			pk.setFileProductLineMatchRequired(false);
 		}else{
-			pk.setFileProductLineMatchLocation("Sheet Name : "+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell : "+fileProductlineCellMatch+";");
+			pk.setFileProductLineMatchLocation("Sheet Name :"+fileProductlineSheetMatch+";Value:"+fileProductlineMatch+";Cell :"+fileProductlineCellMatch+";");
 			pk.setFileProductLineMatchRequired(true);
 		}
 		String fileRBOMatch=productLineMap.get("fileRBOMatch")==null?"":(String)productLineMap.get("fileRBOMatch");
