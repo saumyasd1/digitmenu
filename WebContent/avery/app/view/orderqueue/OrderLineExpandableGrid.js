@@ -374,97 +374,97 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shipToCustomer,
 			dataIndex: 'shipToCustomer',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: AOCLit.shipContact,
 			dataIndex: 'shipToContact',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: AOCLit.shipToAddress1,
 			dataIndex: 'shipToAddress1',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Address 2',
 			dataIndex: 'shipToAddress2',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Address 3',
 			dataIndex: 'shipToAddress3',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To City',
 			dataIndex: 'shipToCity',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Country',
 			dataIndex: 'shipToCountry',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To State',
 			dataIndex: 'shipToState',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Zip',
 			dataIndex: 'shipToZip',
 			width: 85,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Email',
 			dataIndex: 'shipToEmail',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Fax',
 			dataIndex: 'shipToFax',
 			width: 130,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Ship To Telephone',
 			dataIndex: 'shipToTelephone',
 			width: 130,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		},
 		{
 			text: 'Bill to Site #<font color=red>*</font>',
@@ -479,90 +479,90 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Bill To Customer',
 			dataIndex: 'billToCustomer',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Contact',
 			xtype:'gridcolumn',
 			dataIndex: 'billToContact',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 1',
 			dataIndex: 'billToAddress1',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 2',
 			dataIndex: 'billToAddress2',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Address 3',
 			dataIndex: 'billToAddress3',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To City',
 			dataIndex: 'billToCity',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Country',
 			dataIndex: 'billToCountry',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To State',
 			dataIndex: 'billToState',
 			width: 112,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Zip',
 			dataIndex: 'billToZip',
 			width: 85,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Email',
 			dataIndex: 'billToEmail',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Fax',
 			dataIndex: 'billToFax',
 			width: 130,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bill To Telephone',
@@ -570,17 +570,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 130,
 			editor: {
 				xtype:'textfield'
-			}
-//			type:'address',
-//			hidden:true
+			},
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Special Instruction',
 			dataIndex: 'specialInstruction',
 			width: 170,
-			editor: 'textfield'
-//			type:'address',
-//			hidden:true
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 //		{
 //			text: 'Order Received Date',
@@ -634,7 +634,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Retailer PO/Customer Job',
 			dataIndex: 'retailerPO_CustomerJob',
 			width: 115,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'ITEM Desc/Size Page',
@@ -652,25 +654,33 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
+			},
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Contract #',
 			dataIndex: 'contractNumber',
 			width: 130,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Style No',
 			dataIndex: 'styleNo',
 			width: 111,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Customer Season',
 			dataIndex: 'customerSeason',
 			width: 93,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		},
 		{
 			text: 'Ordered Date<font color=red>*</font>',
@@ -767,19 +777,25 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Packing Instruction',
 			dataIndex: 'packingInstruction',
 			width: 180,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Shipping Instructions',
 			dataIndex: 'shippingInstructions',
 			width: 180,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Invoice line Instruction',
 			dataIndex: 'invoicelineInstruction',
 			width: 119,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Division For Interface ERPORG',
@@ -823,7 +839,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Variable Data Breakdown',
 			dataIndex: 'variableDataBreakdown',
 			width: 110,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Manufacturing Notes',
@@ -859,7 +877,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Order By',
 			dataIndex: 'orderBy',
 			width: 115,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'End Customer',
@@ -889,13 +909,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Ship Mark',
 			dataIndex: 'shipMark',
 			width: 150,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		},
 		{
 			text: AOCLit.additionalLabel,
 			dataIndex: 'additionalLabelInternalItem',
 			width: 150,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Bank Charge',
@@ -971,13 +995,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: 'Agreement',
 			dataIndex: 'agreement',
 			width: 102,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Model Serial #',
 			dataIndex: 'modelSerialNumber',
 			width: 180,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'APO Type',
@@ -1008,13 +1036,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'sentToOracleDate',
 			width: 100,
 			hidden:true,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: 'Comment',
 			dataIndex: 'comment',
 			width: 100,
-			editor: 'textfield'
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		},
 		{
 			text: AOCLit.productionLine,
@@ -1032,13 +1064,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	buildTbar:function(){
 		return [
 		   {
-			   xtype:'button',
-			   text:'Show Column',
-			   ui:'blue',
-			   scale:'small',
-			   enableToggle:true,
-			   handler:'onShowColumnBtnClick'
-		   }
+	  	    	 text:'',
+	  	    	 scale:'medium',
+	  	    	 cls:'aoc-btn',
+	  	    	 enableToggle:true,
+	  	    	 tooltip:'<font color="blue">Expand Column</font>',
+	  	    	 iconCls:'fa fa-expand aoc-icon',
+	  	    	 handler:'onShowColumnBtnClick'
+  	     	}
 		]
 	},
     initComponent: function() {

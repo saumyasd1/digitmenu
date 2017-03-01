@@ -32,11 +32,25 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	buildBbar:function(){
 		return [
 			{
-				xtype:'whitebutton',
-				text:'Back',
+				//xtype:'whitebutton',
+				text:'',
+				tooltip:'<font color="blue">Go Back</font>',
+				scale:'medium',
+				cls:'aoc-btn',
+				iconCls:'fa fa-arrow-left aoc-icon',
 				handler:'backButton'
 			},
 			'->',
+			{
+	  	    	 text:'<b>Expand Column</b>',
+	  	    	 xtype:'button',
+	  	    	 ui:'blue-plain',
+	  	    	 //cls:'aoc-btn',
+	  	    	 enableToggle:true,
+	  	    	 //tooltip:'<font color="blue">Expand Column</font>',
+	  	    	 //iconCls:'fa fa-expand aoc-icon',
+	  	    	 handler:'onShowColumnBtnClick'
+			},
 			{
 				xtype:'button',
 				reference:'validateButton',

@@ -550,5 +550,30 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}else{
     		comboField.setVisible(false);
     	}
-    }
+    },
+    onShowColumnBtnClick:function(btn){
+		var me = this,
+			refs = me.getReferences(),
+			orderLineExpandableGrid = refs.orderLineExpandableGrid; 
+			columns = orderLineExpandableGrid.columns,
+			len = columns.length;
+			
+		for(var i=0; i<len;i++){
+			if(btn.pressed){
+				//btn.setIconCls('fa fa-compress aoc-icon');
+				btn.setText('<b>Collapse Column</b>');
+				//btn.setTooltip('<font color="blue">Collapse Column</font>');
+				if(!columns[i].isVisible() && columns[i].type == 'address'){
+					columns[i].show();
+				}
+			}else{
+				//btn.setIconCls('fa fa-expand aoc-icon');
+				btn.setText('<b>Expand Column</b>');
+				//btn.setTooltip('<font color="blue">Expand Column</font>');
+				if(columns[i].type == 'address'){
+					columns[i].hide();
+				}
+			}
+		}
+	}
 });
