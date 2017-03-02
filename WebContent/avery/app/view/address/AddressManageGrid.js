@@ -43,59 +43,59 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	  	                          }]
 	                    },
         			    {  
-            	            text : 'ORG Code',
+            	            text : AOCLit.orgCode,
             	          	width:120,
             	            sortable : true,
             	            dataIndex:'orgCode',
             	            flex:1.5
                			},
                          {
-				        	text : 'Partner Name',
+				        	text : AOCLit.partnerName,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'partnerName',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'Address',
+				        	text : AOCLit.address,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'address',
 				            flex:1.5
 			            },
 			            {
-				        	text : 'SiteNumber',
+				        	text : AOCLit.siteNumber,
 				          	width:120,
 				            sortable : true,
 				            dataIndex:'siteNumber',
 				            flex:1.5
 			            },
 		                {
-				            text : 'Contact',
+				            text : AOCLit.Contact,
 				            width:150,
 				            dataIndex:'contact',
 				            flex:1
                         },
                         {
-				            text : 'Phone1',
+				            text : AOCLit.Phone1,
 				            width:150,
 				            dataIndex:'phone1',
 				            flex:1
                         },
                         {
-				            text : 'Fax',
+				            text : AOCLit.fax,
 				            width:150,
 				            dataIndex:'fax',
 				            flex:1
                         },
                         {
-				            text : 'Email',
+				            text : AOCLit.Email,
 				            width:150,
 				            dataIndex:'email',
 				            flex:1
                         },
                         {
-				            text : 'SiteType',
+				            text : AOCLit.siteType,
 				            width:150,
 				            dataIndex:'siteType',
 				            flex:1

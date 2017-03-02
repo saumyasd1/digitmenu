@@ -51,13 +51,13 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             	            
                			},
                          {
-				        	text : 'RBO Name',
+				        	text : AOCLit.RBOName,
 				            sortable : true,
 				            dataIndex:'rboName',
 				            flex:1
 			            },
 			            {
-			            	text:'Data Structure Name',
+			            	text: AOCLit.partnerDataStructure,
 			            	sortable:true,
 			            	dataIndex:'dataStructureName',
 			            	flex:1
@@ -81,7 +81,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            flex:1
 			            },
                         {
-				            text : 'Split Ship Set',
+				            text : AOCLit.splitShipSetBy,
 				            dataIndex:'splitShipSetBy',
 				            flex:1
                         }

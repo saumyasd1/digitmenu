@@ -69,8 +69,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				} 
 			},
 			{
-				text : 'Order Source',
-				width:80,
+				text : AOCLit.orderSource,
+				width:100,
 				align:'center',
 				dataIndex:'orderSource',
 				menuDisabled  :true,
@@ -93,7 +93,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 			
 			},
 			{
-				text : 'Partner Name',
+				text : AOCLit.partnerName,
 				width:150,
 				name:'PartnerName',
 				menuDisabled :true,
@@ -101,19 +101,19 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				dataIndex:'PartnerName'
 			},
 			{
-				text : 'RBO',
+				text : AOCLit.RBO,
 				width:150,
 				dataIndex:'RBO',
 				menuDisabled :true,
 				sortable:false
 			},
 			{
-				text : 'Sender Email Id',
-				width:120,
+				text : AOCLit.senderEmailID,
+				width:180,
 				dataIndex:'senderEmailId'
 			},
 			{
-				text :'Subject',
+				text :AOCLit.Subject,
 				width:120,
 				dataIndex:'subject',
 				renderer:function(v, metadata){
@@ -121,53 +121,53 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				}
 			},
 			{
-				text :'Receiver Email Id',
-				width:120,
+				text :AOCLit.receiverEmailID,
+				width:180,
 				dataIndex:'Email'
 			},
 			{
-				text :'Status',
-				width:120,
+				text :AOCLit.Status,
+				width:180	,
 				dataIndex:'status',
 				renderer:function(v, metadata,rec){
 					return Helper.getSatus(rec);
 				}
 			},
 			{
-				text :'CC',
-				width:120,
+				text :AOCLit.ccMailId,
+				width:180,
 				dataIndex:'CC',
 				renderer:function(v, metaData){
 					return me.tipRenderer(v, metaData);
 				}
 			},
 			{  
-				text : 'CSR Name',
+				text : AOCLit.CSRName,
 				width:120,
 				dataIndex:'csrName'
 			},
 			{
-				text :'Received Date',
+				text :AOCLit.receivedDate,
 				width:150,
 				dataIndex:'receivedDate'
 			},
 			{
-				text :'Read Date',
+				text :AOCLit.readDate,
 				width:150,
 				dataIndex:'readDate'
 			},
 			{
-				text :'Acknowledged Date',
+				text :AOCLit.acknowledgeDate,
 				width:150,
 				dataIndex:'acknowledgementDate'
 			},
 			{
-				text :'Last Modified By',
+				text :AOCLit.lastmodifiedby,
 				width:120,
 				dataIndex:'lastModifiedBy'
 			},
 			{
-				text :'Last Modified Date',
+				text :AOCLit.lastmodifieddate,
 				width:150,
 				dataIndex:'lastModifiedDate'
 			}

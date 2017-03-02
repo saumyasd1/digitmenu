@@ -65,11 +65,11 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			width: 170
 		}, 
 		{
-			text: 'Customer PO #',
+			text: AOCLit.custPO,
 			dataIndex: 'customerPoNumber'
 		}, 
 		{
-			text: 'Retailer PoCustomer job',
+			text:  AOCLit.retailerPO_CustomerJob,
 			dataIndex: 'retailerPo_CustomerJob'
 		}, 
 		{
