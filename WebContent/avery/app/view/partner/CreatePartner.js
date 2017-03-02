@@ -10,7 +10,10 @@ Ext.define('AOC.view.partner.CreatePartner', {
     rec: null,
     partnerId: null,
     partnerName: null,
-    layout:'anchor',
+    layout:{
+    	type:'vbox',
+    	align:'stretch'
+    },
     initComponent: function() {
         var me = this;
         Ext.apply(me, {
@@ -47,6 +50,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
             reference:'messageLabelField',
             fieldStyle:'text-align: center;',
             value: '',
+            flex:1,
             margin:'0 0 10 0',
             hidden: true
         }, 
@@ -55,8 +59,8 @@ Ext.define('AOC.view.partner.CreatePartner', {
             itemId: 'listPanel',
             border: false,
             reference:'createPartnerForm',
-            anchor:'100%',
-            layout:'anchor',
+            flex:1,
+            layout:{type:'vbox',align:'stretch'},
             defaults:{
 				labelSeparator:'',
 				labelStyle:Settings.config.defaultFormLabelStyle,
@@ -70,7 +74,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 reference: 'partnerName',
                 fieldLabel: AOCLit.partnerName,
                 allowBlank: false,
-                anchor:'100%',
+                flex:1,
                 maxLength: '250',
                 margin:'0 0 5 0',
                 blankText: AOCLit.partnerNameReq,
@@ -86,7 +90,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 name: 'address1',
                 fieldLabel: AOCLit.address,
                 allowBlank: false,
-                anchor:'100%',
+                flex:1,
                 margin:'0 0 5 0',
                 blankText: AOCLit.addReq,
                 maxLength: 500,
@@ -102,10 +106,10 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 name: 'contactPerson',
                 fieldLabel: AOCLit.contactPerson,
                 allowBlank: false,
-                anchor:'100%',
+                flex:1,
                 margin:'0 0 5 0',
-                blankText: AOCLit.contactPerson,
-                maxLength: '100',
+                blankText: AOCLit.contactPersonReq,
+                maxLength: 100,
                 enforceMaxLength: true,
                 listeners: {
                     'blur': 'notifyByImage',
@@ -119,10 +123,10 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 name: 'phone',
                 fieldLabel: 'Phone',
                 allowBlank: false,
-                anchor:'100%',
+                flex:1,
                 margin:'0 0 5 0',
                 blankText: AOCLit.phoneReqMsg,
-                maxLength: '100',
+                maxLength: 20,
                 regex: /^(\d+-?)+\d+$/,
                 enforceMaxLength: true,
                 listeners: {

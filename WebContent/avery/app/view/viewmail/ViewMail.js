@@ -16,7 +16,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			height:AOC.config.Settings.config.defaultTbarHeight,
 			items :me.buildTBar()
 		}
-		me.bbar = me.buildBBar();
+		me.buttons = me.buildButtons();
 		me.callParent(arguments);
 	},
 	listeners:{
@@ -32,16 +32,16 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			}
 		]
 	},
-	buildBBar:function(){
+	buildButtons:function(){
 		return [
 			{
-				xtype:'whitebutton',
+				//xtype:'whitebutton',
 				text:'Back',
 				handler:'backButton'
 			},
 			'->',
 			{
-			   xtype   : 'whitebutton',
+			   //xtype   : 'whitebutton',
 			   margin  : '0 10 0 10',
 			   text    : 'Save',
 			   reference:'saveEmailAttachmentBtn',
@@ -50,7 +50,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   handler : 'onSaveBtnClicked'
 			},
 			{
-			   xtype   : 'whitebutton',
+			   //xtype   : 'whitebutton',
 			   margin  : '0 10 0 10',
 			   text    : 'Assign CSR',
 			   reference:'assignCSRBtn',
@@ -59,7 +59,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   handler : 'onAssignCSRBtnClicked'
 			},
 			{
-			   xtype   : 'whitebutton',
+			   //xtype   : 'whitebutton',
 			   margin  : '0 10 0 0',
 			   itemId  : 'downloadAttachments',
 			   text    : 'Download Attachment(s)',
@@ -67,7 +67,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   handler : 'onDownloadAttachmentBtnClick'
 			},
 			{
-			   xtype   : 'whitebutton',
+			   //xtype   : 'whitebutton',
 			   itemId  : 'processOrderBtn',
 			   text    : 'Process Order',
 			   reference:'processOrderBtn',

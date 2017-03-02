@@ -1,6 +1,7 @@
 Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'orderlineexpandablegrid',
+    cls:'orderline-expandable-grid',
     requires: [
 		'Ext.grid.Panel', 
 		'AOC.view.ux.RowExpanderGrid', 

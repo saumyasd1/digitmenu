@@ -313,7 +313,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 		];
     },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-		if(e.target.className=='vieworderattachment'){
+    	var el =Ext.get(e.target);
+		if(el.hasCls('vieworderattachment')){
 			var form = Ext.create('Ext.form.Panel', { 
 				standardSubmit: true,   
 				url : applicationContext+'/rest/orders/download/orderfile/'+record.get('id')
@@ -322,12 +323,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				method : 'GET'
 			});
 		}
-		else if(e.target.className=='viewattachment'){
+		else if(el.hasCls('viewattachment')){
 			var id = record.get('id');
 			var attachmentWin = Ext.create('AOC.view.orderqueue.OrderQueueAttachmentWindow',{recordId: id});
 			attachmentWin.show();
 		}
-		else if(e.target.className=='attachment'){
+		else if(el.hasCls('attachment')){
 			var id=e.target.accessKey;
 			var form = Ext.create('Ext.form.Panel', { 
 				standardSubmit: true,   
@@ -336,7 +337,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			form.submit({
 				method : 'GET'
 			});
-		}else if(e.target.className=='viewemail'){
+		}else if(el.hasCls('viewemail')){
 			var form = Ext.create('Ext.form.Panel', { 
 				standardSubmit: true,   
 				url : applicationContext+'/rest/orders/download/emailbody/'+record.get('emailQueueId')

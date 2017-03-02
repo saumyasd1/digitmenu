@@ -17,7 +17,7 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			height:AOC.config.Settings.config.defaultTbarHeight,
 			items :me.buildTBar()
 		}
-		me.bbar = me.buildBBar();
+		me.buttons = me.buildButtons();
 		
 		me.callParent(arguments);
 	},
@@ -31,10 +31,10 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			}
 		]
 	},
-	buildBBar:function(){
+	buildButtons:function(){
 		return [
 			{
-				xtype:'whitebutton',
+				//xtype:'whitebutton',
 				text:'Back',
 				itemId:'backButtonimage',
 				handler:'backButton',
@@ -42,13 +42,13 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			},
 		    '->',
 			{
-			   xtype: 'plainbutton',
+			   //xtype: 'plainbutton',
 			   itemId: 'cancel',
 			   text:AOCLit.Cancel,
 			   handler: 'onCancelBtnClick'
 			},
 			{
-			   xtype: 'whitebutton',
+			   //xtype: 'whitebutton',
 			   margin: '0 10 0 10',
 			   text:AOCLit.Save,
 			   itemId: 'save',

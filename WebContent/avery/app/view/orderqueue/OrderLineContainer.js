@@ -4,14 +4,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	alias : 'widget.orderlinecontainer',
 	controller:'orderlinecontainer',
 	layout: {
-		type: 'vbox',
-		align: 'stretch'
+		type: 'border'
 	},
 	border:'4 4 4 4',
 	initComponent : function() {
 		var me = this;
 		me.items = me.buildItems();
-		me.bbar = me.buildBbar();
+		me.buttons = me.buildButtons();
 		Ext.apply(this, {
 			tbar:{
 				height:AOC.config.Settings.config.defaultTbarHeight,
@@ -26,60 +25,99 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 				xtype:'tbtext',
 				style:AOC.config.Settings.config.tabHeaderTitleStyle,
 				reference:'orderLineTitle'
+			},'->',
+			{
+				xtype:'form',
+				reference:'orderLineForm',
+				margin:'0 0 0 20',
+				width:'100%',
+				height:40,
+				border:false,
+				items:[
+					{
+						xtype:'fieldcontainer',
+						layout:'hbox',
+						margin:'0 0 0 0',
+						style:'padding-top:4px;',
+						flex:1,
+						defaults:{
+							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+							labelSeparator:'',
+							labelWidth:80,
+							xtype:'displayfield'
+						},
+						items:[
+							{
+								fieldLabel:'Partner',
+								name:'PartnerName',
+								flex:1
+							},
+							{
+								fieldLabel : 'RBO',
+								name:'RBOName',
+								margin:'0 0 0 10',
+								flex:1
+							},
+							{
+								fieldLabel : 'Subject',
+								name:'Subject',
+								margin:'0 0 0 10',
+								flex:2
+							}
+						]
+					}
+				]
 			}
-		]
+		];
 	},
-	buildBbar:function(){
+	buildButtons:function(){
 		return [
 			{
-				//xtype:'whitebutton',
-				text:'',
-				tooltip:'<font color="blue">Go Back</font>',
-				scale:'medium',
-				cls:'aoc-btn',
-				iconCls:'fa fa-arrow-left aoc-icon',
+				text:'Back',
+				//tooltip:'<font color="blue">Go Back</font>',
+//				scale:'medium',
+//				cls:'aoc-btn',
+//				iconCls:'fa fa-arrow-left aoc-icon',
 				handler:'backButton'
 			},
 			'->',
 			{
-	  	    	 text:'<b>Expand Column</b>',
-	  	    	 xtype:'button',
-	  	    	 ui:'blue-plain',
-	  	    	 //cls:'aoc-btn',
+	  	    	 text:'Expand Column',
+	  	    	 //xtype:'button',
+	  	    	 //ui:'blue-plain',
 	  	    	 enableToggle:true,
-	  	    	 //tooltip:'<font color="blue">Expand Column</font>',
-	  	    	 //iconCls:'fa fa-expand aoc-icon',
 	  	    	 handler:'onShowColumnBtnClick'
 			},
 			{
-				xtype:'button',
+				//xtype:'button',
 				reference:'validateButton',
-				ui:'white',
-				text: '<b>Validate</b>',
+				//ui:'white',
+				text: 'Validate',
 				margin:'0 10 0 10',
 				handler: 'validateOrderLine'
 			},
 			{
-				xtype: 'button',
-				ui:'white', 
+				//xtype: 'button',
+				//ui:'white', 
 				reference:'cancelOrderButton',
 				margin:'0 10 0 0',
-				text: '<b>Cancel Order</b>',
+				text: AOCLit.cancelSalesOrderText,
 				handler: 'cancelOrder'
 			},
 			{
-				xtype: 'button',
+				//xtype: 'button',
 				reference: 'salesOrderbutton',
-				ui:'white',
+				//ui:'white',
 				text: AOCLit.salesOrdersumbitText,
 				margin:'0 10 0 0',
 				handler: 'submitSalesOrder'
 			},
 			{
-				xtype: 'button',
+				//xtype: 'button',
 				reference: 'salesViewOrderbutton',
-				ui:'white',
-				autoWidth: true, 
+				//ui:'white',
+				//autoWidth: true, 
 				text: AOCLit.viewSalesOrderBtnText,
 				handler: 'viewSalesOrder',
 				disabled:true
@@ -90,62 +128,17 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		var me = this;
 		return [
 	        {
-	        	xtype:'form',
-	        	reference:'orderLineForm',
-	        	border:false,
+	        	xtype:'container',
+	        	layout:'hbox',
+	        	region:'north',
+	        	padding:'10 5 5 5',
+	        	style:'background:#fff;border-top:solid 1px #cecece;',
+				height:50,
 	        	items:[
 					{
-						xtype:'fieldcontainer',
-						layout:'hbox',
-						margin:'0 10 0 10',
-						style:'border-top:solid 1px #cecece;padding:5px;',
-						defaults:{
-							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-							labelSeparator:'',
-							xtype:'displayfield'
-						},
-						items:[
-							{
-								fieldLabel:'Partner',
-								name:'PartnerName',
-								flex:1.3
-							},
-							{
-								fieldLabel : 'RBO',
-								name:'RBOName',
-								flex:1.3
-							},
-							{
-								fieldLabel : 'Subject',
-								name:'Subject',
-								flex:2
-							},
-							{
-					            xtype:'checkboxfield',
-					            boxLabel  : 'Copy Data',
-								margin:'0 0 5 0',
-					            flex:0.5,
-					            hidden:true,
-								checked: false
-					        }
-						]
-					}
-	        	]
-	        },
-			{
-				xtype:'fieldcontainer',
-				layout:'hbox',
-				margin:'0 10 0 10',
-				style:'border-top:solid 1px #cecece;padding:5px;',
-				items:[
-					{
 						xtype: 'form',
-						reference: 'form',
-						padding:'10 0 10 0',
+						reference:'form',
 						layout: 'hbox',
-						maxWidth:620,
-						minWidth:400,
 						defaults:{
 							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 							labelSeparator:''
@@ -197,25 +190,16 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 						]
 					}
 				]
-			},
-			{
-				xtype:'container',
-				layout:'border',
-				flex:1,
-				itemId:'orderlineexpandablegridcard',
-				style:AOC.config.Settings.config.defaultBorderStyle,
-				items:[
-					{
-						xtype:'orderlineexpandablegrid',
-						region:'center',
-						itemId: 'orderlineexpandablegridrowmodel',
-						reference:'orderLineExpandableGrid',
-						editGrid:true,
-						selModel: {
-							type: 'rowmodel'
-						}
-					}
-				]
+	        },	
+	        {
+				xtype:'orderlineexpandablegrid',
+				region:'center',
+				itemId: 'orderlineexpandablegridrowmodel',
+				reference:'orderLineExpandableGrid',
+				editGrid:true,
+				selModel: {
+					type: 'rowmodel'
+				}
 			}
 		];
 	}

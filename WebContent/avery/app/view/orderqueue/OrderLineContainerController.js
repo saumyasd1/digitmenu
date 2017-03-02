@@ -166,7 +166,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     submitSalesOrder:function(){
     	var me = this,
     		refs = me.getReferences(),
-    		grid = refs.orderLineExpandableGrid,//me.getView().down('#orderlineexpandablegridcard').getLayout().getActiveItem(),
+    		grid = refs.orderLineExpandableGrid,
     		store = grid.store,
     		status,
     		id=this.runTime.getOrderQueueId();

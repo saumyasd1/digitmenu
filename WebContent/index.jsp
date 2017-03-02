@@ -1,6 +1,6 @@
 <%
 String applicationContext = request.getContextPath();
-int pageSize=25;
+int pageSize=100;
 %>
 <!doctype html>
 <html lang="en">
@@ -79,6 +79,7 @@ int pageSize=25;
 		.main-menu-list .section-wrap .section-wrap-text:hover,
 		.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
 		main-menu-list .section-wrap-selected .section-wrap-text{font-weight:bold;}
+		.orderline-expandable-grid .x-grid-inner-locked{border-right-color:#ccc !important;}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
