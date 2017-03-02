@@ -155,7 +155,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text :AOCLit.PONumber,
-				width:120,
+				width:180,
 				dataIndex:'ponumber'
 			},
 			{
@@ -188,12 +188,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.processedDate,
-				width:98,
+				width:150,
 				dataIndex:'createdDate'
 			},
 			{
 				text : AOCLit.senderEmailID,
-				width:128,
+				width:180,
 				dataIndex:'SenderEmailID',
 				renderer:function(v,metadata){
 					if(v){
@@ -219,7 +219,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			{
 				text : AOCLit.submittedBy,
-				width:82,
+				width:100,
 				dataIndex:'SubmittedBy'
 			},
 			{
@@ -229,7 +229,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},{
 				text :AOCLit.lastmodifiedby,
 				dataIndex:'lastModifiedBy',
-				width:150
+				width:120
 			},
 			{
 				text :AOCLit.lastmodifieddate,

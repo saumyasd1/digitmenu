@@ -80,19 +80,19 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				}
 			},
 			{
-				text :'CSR',
+				text :AOCLit.CSRName,
 				sortable : true,
 				dataIndex:'csrName',
 				flex:0.5
 			},
 			{
-				text : 'From',
+				text : AOCLit.from,
 				sortable : true,
 				dataIndex:'senderEmailId',
-				flex:0.5
+				flex:0.9
 			},
 			{
-				text :'Subject',
+				text :AOCLit.Subject,
 				sortable : true,
 				dataIndex:'subject',
 				flex:0.5,
@@ -101,7 +101,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				}
 			},
 			{
-				text :'CC',
+				text :AOCLit.ccMailId,
 				sortable : true,
 				dataIndex:'ccMailId',
 				flex:0.5,
@@ -110,7 +110,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				}
 			},
 			{
-				text :'Status',
+				text :AOCLit.Status,
 				sortable : true,
 				dataIndex:'status',
 				flex:0.5,
@@ -119,21 +119,21 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				}
 			},
 			{
-				text : 'Date-Time',
+				text : AOCLit.dateTime,
 				sortable : true,
 				dataIndex:'createdDate',
 				align: 'right',
-				flex:0.5
+				flex:0.6
 			},
 			{
-				text :'Last Modified By',
+				text :AOCLit.lastModifiedBy,
 				dataIndex:'lastModifiedBy',
 				flex:0.5
 			},
 			{
-				text :'Last Modified Date',
+				text :AOCLit.lastModifiedDate,
 				dataIndex:'lastModifiedDate',
-				flex:0.5
+				flex:0.6
 			}
 		];
 	},

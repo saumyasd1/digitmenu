@@ -74,7 +74,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 			},
 		   items:[
 				{
-					text : 'File Name',
+					text : AOCLit.fileName,
 					flex :1.5,
 					dataIndex:'fileName',
 					name: 'fileName',
@@ -85,7 +85,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					}
 				},
 				{
-					text : 'File Content Type',
+					text : AOCLit.fileName,
 					flex :1.3,
 					dataIndex:'contentType',
 					name: 'File Content Type',
@@ -115,7 +115,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					} 
 				},
 				{
-					text : 'Partner Data Structure',
+					text : AOCLit.partnerDataStructure,
 					flex :2,
 					dataIndex:'dataStructureNameId',
 					name: 'Partner Data Structure',
@@ -144,33 +144,33 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					}
 				}, 
 				{
-					text : 'Additional Data File Key',
+					text : AOCLit.additionalDataFileKey,
 					flex :1.3,
 					dataIndex:'additionalDataFileKey',
 					name: 'additionalDataFileKey',
 					editor:'textarea'
 				}, 
 				{
-					text : 'RBO Match',
+					text : AOCLit.rboMatch,
 					flex :1,
 					dataIndex:'RBO Match',
 					name: 'rboMatch'
 				},
 				{
-					text : 'ProductLine Match',
+					text : AOCLit.productLineMatch,
 					flex :1,
 					dataIndex:'ProductLine Match',
 					name: 'productLineMatch'
 				},
 				{
-					text : 'File Type Match',
+					text : AOCLit.fileTypeMatch,
 					flex :1.2,
 					dataIndex:'fileContentMatch',
 					resizable:true,
 					name: 'fileContentMatch'
 				},
 				{
-					text : 'Status',
+					text : AOCLit.Status,
 					flex :1,
 					dataIndex:'status',
 					name: 'status',

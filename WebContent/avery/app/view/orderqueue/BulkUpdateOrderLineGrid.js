@@ -81,7 +81,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
         			}
                 },
                 {
-                    text: 'Customer Ordered Qty.<font color=red>*</font>',
+                    text: AOCLit.custOrderedQty+'<font color=red>*</font>',
                     dataIndex: 'customerOrderedQty',
                     width: 106,
                     editor: 'numberfield',
@@ -135,12 +135,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 					return Helper.getSatus(rec);
 				}
         },{
-            text: 'PO#<font color=red>*</font>',
+            text: AOCLit.PONumber+'<font color=red>*</font>',
             dataIndex: 'poNumber',
             width: 120
         },
         {
-            text: 'Avery Item#<font color=red>*</font>',
+            text: AOCLit.averyItem,
             dataIndex: 'averyItemNumber',
             width: 88,
             renderer : function(value, meta,record) {
@@ -172,7 +172,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
         }, 
         {
-			text: 'Avery ATO',
+			text: AOCLit.averyATO,
 			dataIndex: 'averyATO',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -180,7 +180,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
 		}, 
 		{
-			text: 'Bulk Item',
+			text: AOCLit.bulkItem,
 			dataIndex: 'averyBulk',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -188,7 +188,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
 		}, 
 		{
-			text: 'Avery MOQ',
+			text: AOCLit.averyMOQ,
 			dataIndex: 'averyMOQ',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -196,7 +196,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
 		}, 
 		{
-			text: 'Avery ProductLine Type',
+			text: AOCLit.averyProduction,
 			dataIndex: 'averyProductLineType',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -204,7 +204,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
 		}, 
 		{
-			text: 'Avery Region',
+			text: AOCLit.averyRegion,
 			dataIndex: 'averyRegion',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -212,7 +212,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			}
 		},
 		{
-			text: 'Avery Roundup Qty',
+			text: AOCLit.averyRoundupQty,
 			dataIndex: 'averyRoundupQty',
 			width: 93,
 			renderer:function(value, metadata, record){
@@ -413,7 +413,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             hidden:true
         }, {
-            text: 'Sold To RBO#<font color=red>*</font>',
+            text: AOCLit.soldToRbo+'<font color=red>*</font>',
             dataIndex: 'soldToRBONumber',
             width: 100,
             editor: 'textfield',
@@ -421,7 +421,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
         },  {
-            text: 'Ship to Site #<font color=red>*</font>',
+            text: AOCLit.shipToSite+'<font color=red>*</font>',
             dataIndex: 'oracleShipToSiteNumber',
             width: 100,
             editor:'textfield',
@@ -472,7 +472,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
         }, {
-            text: 'Contract #',
+            text: AOCLit.contractNo,
             dataIndex: 'contractNumber',
             width: 130,
             editor: 'textfield'
@@ -487,7 +487,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             editor: 'textfield'
         }, {
-            text: 'Ordered Date<font color=red>*</font>',
+            text: AOCLit.orderedDate+'<font color=red>*</font>',
             dataIndex: 'orderedDate',
             width: 90,
             xtype:'datecolumn',
@@ -551,7 +551,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:'comboColumnRenderer'
         }, {
-            text: 'CSR',
+            text: AOCLit.CSR,
             dataIndex: 'csr',
             width: 160,
             editor: {
@@ -679,7 +679,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             },
             renderer:'comboColumnRenderer'
         },{
-			text: 'Ship Mark',
+			text: AOCLit.shipMark,
 			dataIndex: 'shipMark',
 			width: 150,
 			editor: 'textfield'
@@ -799,7 +799,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor: 'textfield'
         },
         {
-			text: 'Production Line',
+			text: AOCLit.productionLine,
 			dataIndex: 'productionLine',
 			width: 100,
 			editor: 'textfield'
