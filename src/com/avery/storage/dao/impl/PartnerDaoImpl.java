@@ -69,8 +69,8 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		for (Object obj : list) {
 			partner = (Partner) obj;
 			long id = partner.getId();
-			//partner.setProductLineCount(getCountBasedOnPartnerId(ProductLine.class,id,"partner.id"));
-			//partner.setAddressCount(getCountBasedOnPartnerId(Address.class,id,"partner.id"));
+			partner.setProductLineCount(getCountBasedOnPartnerId(ProductLine.class,id,"varPartner.id"));
+			partner.setAddressCount(getCountBasedOnPartnerId(Address.class,id,"varPartner.id"));
 			//partner.setOrderQueueCount(getCountBasedOnPartnerId(OrderQueue.class,id,"partner.id"));
 		}
         entitiesMap.put("totalCount", totalCount);
