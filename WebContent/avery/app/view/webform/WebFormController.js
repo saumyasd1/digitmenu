@@ -409,7 +409,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    }
     	}
 	},
-	insertFileInGrid:function(fileName,fileType,multiAllowed,i,id,additionalDataFileKey){
+	insertFileInGrid:function(fileName, fileType, multiAllowed, i, id, additionalDataFileKey){
 		var me = this,
 			webOrderAttachmentInfoGrid = me.lookupReference('webOrderAttachmentInfoGrid'),
 			id = (Ext.isEmpty(id)) ? 0 : id,
@@ -437,8 +437,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 				}
 			}
 			store.add({
-				fileName : fileName,
-				fileType : fileType,
+				fileName: fileName,
+				fileType: fileType,
 				type:'new',
 				internalId:i,
 				fileId:id,
@@ -448,8 +448,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 	 },
 	
 	 onAttachmentGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-		if(e.target.className=='deleteClass'){
-			Ext.getBody().mask('Deleting...');
+		 var el = Ext.get(e.target);
+		if(el.hasCls('deleteClass')){
+			//Ext.getBody().mask('Deleting...');
 			var view = this.getView(),
 				form = view.lookupReference('webform'),
 				orderFileType = view.lookupReference('orderFileType'),
@@ -493,7 +494,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			}
 			store.remove(record);
 			webOrderAttachmentInfoGrid.getView().refresh();
-			Ext.getBody().unmask();
+			//Ext.getBody().unmask();
 		}
 	},
 	 

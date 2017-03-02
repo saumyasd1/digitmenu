@@ -28,35 +28,39 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
                 hideable :false,
                 resizable:false
                },
-               items:[{
-        	xtype:'rownumberer'
-        },{
-            text : 'File Name',
-            flex :1,
-            dataIndex:'fileName'
-        },
-        {
-            text : 'Additional DataFile Key',
-            flex :1,
-            data : '',
-            dataIndex:'additionalDataFileKey',
-            editor:{
-            	xtype:'textfield'
-            }
-        },
-        {
-            text : 'File Type',
-            flex :1,
-            data : '',
-            dataIndex:'fileType'
-        },
-        {
-            text : 'Delete',
-            width :60,
-            data : '',
-            renderer:function(v,cell,record){
-            	return '<div><img class="deleteClass" src="' +  AOC.config.Settings.buttonIcons.deleteImageSrc + '" /></div>';
-        }
-        }]};
+           items:[
+              {
+            	  xtype:'rownumberer'
+              },
+              {
+            	  text : 'File Name',
+            	  flex :1,
+            	  dataIndex:'fileName',
+            	  resizable:true
+              },
+              {
+            	  text : 'Additional DataFile Key',
+            	  flex :1,
+            	  data : '',
+            	  dataIndex:'additionalDataFileKey',
+            	  editor:{
+            		  xtype:'textfield'
+            	  }
+	        },
+	        {
+	            text : 'File Type',
+	            flex :1,
+	            data : '',
+	            dataIndex:'fileType'
+	        },
+	        {
+	            text : 'Delete',
+	            width :60,
+	            data : '',
+	            renderer:function(v,cell,record){
+	            	return '<i class="deleteClass fa fa-trash-o" style="cursor:pointer;font-size:16px;"></i>';
+	            }
+	        }
+        ]};
     }
 });

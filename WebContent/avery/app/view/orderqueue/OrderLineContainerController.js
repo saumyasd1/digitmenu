@@ -457,7 +457,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			height = Ext.getBody().getHeight()-100,
 			width = Ext.getBody().getWidth()-100,
 			id = me.runTime.getOrderQueueId(),
-			radioGroupValue = refs.radioGroup.rb,
+			radioGroupValue = refs.radioGroup.getValue().rb,
 			store,
 			innerGridType,
 			comboValue = '';

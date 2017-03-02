@@ -17,7 +17,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 	},
 	initComponent:function(){
 		this.items = this.buildItems();
-		this.bbar = this.buildBBar();
+		this.buttons = this.buildButtons();
 		this.callParent(arguments);
 	},
 	buildItems:function(){
@@ -35,11 +35,11 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 			}
 		];
 	},
-	buildBBar:function(){
+	buildButtons:function(){
 		return [
 	        '->',
 			{
-				xtype:'whitebutton',
+				//xtype:'whitebutton',
 				text:'Assign',
 				handler:'onSaveBtnClicked'
 			}
