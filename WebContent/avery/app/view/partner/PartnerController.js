@@ -130,8 +130,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                     var id = data.id;
                     var productLineCount = data.get('productLineCount');
                     var addressCount = data.get('addressCount');
-                    var orderQueueCount = data.get('orderQueueCount');
-                    if (productLineCount != 0 || addressCount != 0 || orderQueueCount != 0)
+                    if (productLineCount != 0 || addressCount != 0) //removing order count to delete the partner(vishal sharma)
                         Ext.MessageBox.alert('', AOCLit.deletePartner);
                     else {
                         Ext.MessageBox.confirm('Confirm Action',AOCLit.deletePartnerMsg, function(response) {

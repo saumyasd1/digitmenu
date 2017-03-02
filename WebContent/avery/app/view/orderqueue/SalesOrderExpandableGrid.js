@@ -46,7 +46,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			dataIndex: 'orderSource'
 		}, 
 		{
-			text: AOCLit.SOLDTORBONumber,
+			text: AOCLit.soldToRboNumber,
 			dataIndex: 'soldToRboNumber',
 			align:'right'
 		}, 
