@@ -339,13 +339,12 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			}
 		]
     },
-    bbar:{
-    	items:[
-			{
-				xtype:'whitebutton',
-				text:'Back',
-				handler:'backButton'
-			}
-    	]
-    }
+    buttonAlign:'left',
+    buttons:[
+		{
+			//xtype:'button',
+			text:'Back',
+			handler:'backButton'
+		}
+	]
 });
