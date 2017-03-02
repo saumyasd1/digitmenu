@@ -300,6 +300,26 @@ public class Partner extends MainAbstractEntity {
 //	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
 //		this.listSalesOrderLine = listSalesOrderLine;
 //	}
+	
+	private transient int productLineCount;
+	private transient int addressCount;
+	
+	public int getProductLineCount() {
+		return productLineCount;
+	}
+
+	public void setProductLineCount(int productLineCount) {
+		this.productLineCount = productLineCount;
+	}
+
+	public int getAddressCount() {
+		return addressCount;
+	}
+
+	public void setAddressCount(int addressCount) {
+		this.addressCount = addressCount;
+	}
+
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
