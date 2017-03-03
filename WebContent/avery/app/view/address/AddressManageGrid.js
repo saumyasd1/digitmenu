@@ -5,6 +5,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     requires:['AOC.view.ux.CustomSearchField','AOC.view.address.AddressController'],
     controller:'addressMain',
 	emptyText:AOCLit.emptyDataMsg,
+	cls:'aoc-panel',
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
@@ -112,14 +113,13 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 					itemId : 'addressManagetextItemId',
 					text : '<div style="color:"><b>Address-Manage</b></div>'
 				   },
-				   {
-				    	xtype :'tbspacer',
-				    	width :10
-					},
 				  {
-		              icon:  AOC.config.Settings.buttonIcons.addImage,
+		              //icon:  AOC.config.Settings.buttonIcons.addImage,
 		              text:'New',
 		              itemId :'newAddress',
+		              iconCls:'fa fa-plus',
+		              cls:'blue-btn',
+		              ui:'blue',
 		              handler:'openAddAddressWindow'
 		         },
 					 '->',
@@ -131,21 +131,23 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	    			width: 200,
 	    			emptyText: "Search by Site Number"
 				 },
-				 {
-	                	xtype :'tbspacer',
-	                	width :10
-	        		},
 	            {
 					xtype:'button',
 					refrence:'advancesearchbutton',
 					text:AOCLit.advSearchText,
-					icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
-					iconAlign: "right",
+					//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+					iconCls:'fa fa-search',
+    				iconAlign: "right",
+    				ui:'blue',
+    				cls:'blue-btn',
 					handler:'openAdvancedSearchWindow'
 				 },
 				 {
 						hidden:true, 
-						icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+						//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+						iconCls:'fa fa-times',
+						ui:'blue',
+						cls:'blue-btn',
 						itemId:'clearadvanedsearch',
 						reference:'clearAdvSearch',
 						handler:'clearAdvancedSearch',

@@ -8,6 +8,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
           'AOC.view.productline.ProductLineController'
 	],
 	controller:'productlineMain',
+	cls:'aoc-panel',
 	emptyText: AOCLit.emptyDataMsg,
 	partnerid:null,
 	partnerName:null,
@@ -112,10 +113,13 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	                     	width :10
 	             		},
 				     {
-			              icon:  AOC.config.Settings.buttonIcons.addImage,
+			              //icon:  AOC.config.Settings.buttonIcons.addImage,
 			              text:'New',
 			              itemId : 'newPartner',
 			              handler:'createproductline',
+			              iconCls:'fa fa-plus',
+			              cls:'blue-btn',
+			              ui:'blue',
 			              hidden:false
 		              },
 		          '->',
@@ -126,21 +130,24 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		    			width: 200,
 		    			emptyText: "Search by ProductLine"
 					 },
-					 {
-		                	xtype :'tbspacer',
-		                	width :10
-		        		},
+					
 		        		{
 		    				xtype:'button',
 		    				refrence:'advancesearchbutton',
 		    				text:AOCLit.advSearchText,
-		    				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+		    				//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+		    				iconCls:'fa fa-search',
 		    				iconAlign: "right",
+		    				ui:'blue',
+		    				cls:'blue-btn',
 		    				handler:'openAdvancedSearchWindow'
 		    			 },
 		    			 {
 		 					hidden:true, 
-		 					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					iconCls:'fa fa-times',
+							ui:'blue',
+							cls:'blue-btn',
 		 					itemId:'clearadvanedsearch',
 		 					reference:'clearAdvSearch',
 		 					handler:'clearAdvancedSearch',

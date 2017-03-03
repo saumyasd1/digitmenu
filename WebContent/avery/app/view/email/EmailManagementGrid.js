@@ -4,6 +4,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	controller:'emailManagementController',
 	itemId : 'EmailMangementitemId',
     alias : 'widget.emailmanagementgrid',
+    cls:'aoc-panel',
     emptyText: AOCLit.emptyDataMsg,
     requires:[
           'AOC.view.email.EmailManagementController',
@@ -201,20 +202,22 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				emptyText: "Search by Email Track # "
 			},
 			{
-					xtype :'tbspacer',
-					width :10
-			},
-			{
 				xtype:'button',
 				refrence:'advancesearchbutton',
 				text:AOCLit.advSearchText,
-				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconCls:'fa fa-search',
 				iconAlign: "right",
+				ui:'blue',
+				cls:'blue-btn',
 				handler:'openAdvancedSearchWindow'
 			 },
 			 {
 					hidden:true, 
-					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+					//icon:  AOC.config.Settings.buttonIcons.clearSearchIcon,
+					iconCls:'fa fa-times',
+					ui:'blue',
+					cls:'blue-btn',
 					itemId:'clearadvanedsearch',
 					reference:'clearAdvSearch',
 					handler:'clearAdvancedSearch',

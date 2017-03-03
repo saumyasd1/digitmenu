@@ -456,10 +456,11 @@ Ext.define('AOC.util.Helper',{
 	
 	getIconClass:function(value){
 		if(value.substr(0,1)=='T'){
-			return '<i style="color:#4AA02C;font-size:16px;" class="fa fa-check"/>';
+			//7CFFAA
+			return '<i style="color:#7CF2A5;font-size:16px;" class="fa fa-check"/>';
 		}
 		else if(value.substr(0,1) == 'F'){
-			return '<i style="color:red;font-size:16px;" class="fa fa-times"/>';
+			return '<i style="color:#FFC7B0;font-size:16px;" class="fa fa-times"/>';
 		}
 		else{
 			return '<i style="color:orange;font-size:16px;" class="fa fa-exclamation-triangle"/>';

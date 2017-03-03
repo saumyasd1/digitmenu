@@ -2,6 +2,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.orderqueuegrid',
     itemId:'OrderQueueGridItemId',
+    cls:'aoc-panel',
 	emptyText: AOCLit.emptyDataMsg,
 	controller: 'orderqueue',
 	requires:[
@@ -254,16 +255,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 			},
 			'->',
 			{
-				 xtype       : 'button',
-		            icon : AOC.config.Settings.buttonIcons.report,
-					iconAlign : "left",
-		            reference      : 'report',
-		            margin      :'0 15 0 0',
-		            text:'Report',
-		           // ui:'blue',
-		            listeners:{
-		            	'click':'getReportView'
-		            }
+				xtype: 'button',
+	            //icon: AOC.config.Settings.buttonIcons.report,
+				iconCls:'fa fa-bar-chart',
+				iconAlign: "left",
+	            reference: 'report',
+	            margin:'0 15 0 0',
+	            text:'Report',
+	            ui:'blue',
+	            cls:'blue-btn',
+	            listeners:{
+	            	'click':'getReportView'
+	            }
 			},
 			{
 				xtype: 'customsearchfield',
@@ -274,26 +277,28 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				margin:'0 10 0 0',
 				emptyText: "Search by Order Track #"
 			},
-			{
-				xtype :'tbspacer',
-				width :10
-		    },
 		    {
 				xtype:'button',
 				refrence:'advancesearchbutton',
 				text:AOCLit.advSearchText,
-				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				//icon:  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconCls:'fa fa-search',
 				iconAlign: "right",
+				ui:'blue',
+				cls:'blue-btn',
 				handler:'openAdvancedSearchWindow'
 			 },
 			 {
-					hidden:true, 
-					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
-					itemId:'clearadvanedsearch',
-					reference:'clearAdvSearch',
-					handler:'clearAdvancedSearch',
-					tooltip:'Clear Search'
-				}
+				hidden:true, 
+				//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+				iconCls:'fa fa-times',
+				ui:'blue',
+				cls:'blue-btn',
+				itemId:'clearadvanedsearch',
+				reference:'clearAdvSearch',
+				handler:'clearAdvancedSearch',
+				tooltip:'Clear Search'
+			 }
 			 
 		];
 	},

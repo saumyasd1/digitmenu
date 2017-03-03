@@ -57,12 +57,12 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 								fieldLabel : 'RBO',
 								name:'RBOName',
 								margin:'0 0 0 10',
-								flex:1
+								flex:.6
 							},
 							{
 								fieldLabel : 'Subject',
 								name:'Subject',
-								margin:'0 0 0 10',
+								margin:'0 5 0 10',
 								flex:2
 							}
 						]

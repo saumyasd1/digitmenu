@@ -80,6 +80,12 @@ int pageSize=100;
 		.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
 		main-menu-list .section-wrap-selected .section-wrap-text{font-weight:bold;}
 		.orderline-expandable-grid .x-grid-inner-locked{border-right-color:#ccc !important;}
+		.aoc-panel .x-toolbar .x-btn .x-btn-icon-el{
+			height:16px;font-size:16px;
+		}
+		.aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small{color:#fff;}
+		.blue-btn.x-btn-over{box-shadow: 0px 0px 4px 0px #65beed;}
+		.x-btn{border-radius:2px !important;}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>

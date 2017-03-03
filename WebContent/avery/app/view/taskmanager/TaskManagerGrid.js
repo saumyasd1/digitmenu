@@ -4,6 +4,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	controller:'taskManagerController',
 	itemId : 'TaskManagerGriditemId',
     alias : 'widget.taskManagergrid',
+    cls:'aoc-panel',
     emptyText: AOCLit.emptyDataMsg,
     reserveScrollbar:true,
     requires:['AOC.store.TaskManagerStore','AOC.view.taskmanager.TaskManagerController'],
@@ -161,21 +162,23 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				width: 200,
 				emptyText: "Search by Email Subject"
 			},
-			{
-				xtype :'tbspacer',
-				width :10
-		    },
 		    {
 				xtype:'button',
 				refrence:'advancesearchbutton',
 				text:AOCLit.advSearchText,
-				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+				iconCls:'fa fa-search',
 				iconAlign: "right",
+				ui:'blue',
+				cls:'blue-btn',
 				handler:'openAdvancedSearchWindow'
 			 },
 			 {
 					hidden:true, 
-					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+					//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+					iconCls:'fa fa-times',
+					ui:'blue',
+					cls:'blue-btn',
 					itemId:'clearadvanedsearch',
 					reference:'clearAdvSearch',
 					handler:'clearAdvancedSearch',

@@ -7,6 +7,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	       'AOC.view.partner.PartnerController'
 	],
 	controller:'partnerMain',
+	cls:'aoc-panel',
 	itemId : 'PartnerMangementitemId',
     alias : 'widget.partnermanagementgrid',
 	emptyText: AOCLit.emptyDataMsg,
@@ -94,22 +95,22 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 	 buildtbar:function(){
 		var me=this;
 			return [
-			        {
-						xtype : 'tbtext',
-						itemId : 'PartnertextItemId',
-						text : '<div style="color:"><b>Partners</b></div>'
-		               },
-		               {
-		                	xtype :'tbspacer',
-		                	width :10
-		        		},
-				  {
-		              icon:  AOC.config.Settings.buttonIcons.addImage,
-		              text:'New',
-		              itemId : 'newPartner',
-		              handler:'createpartner',
-		              hidden:false
-		              },
+		        {
+					xtype : 'tbtext',
+					itemId : 'PartnertextItemId',
+					text : '<div style="color:"><b>Partners</b></div>'
+		        },
+		        {
+		        	//icon:  AOC.config.Settings.buttonIcons.addImage,
+		        	text:'New',
+		        	itemId : 'newPartner',
+		        	handler:'createpartner',
+		        	iconCls:'fa fa-plus',
+    				iconAlign: 'left',
+    				ui:'blue',
+    				cls:'blue-btn',
+		        	hidden:false
+		        },
 		          '->',
 		      	     {
 		            	xtype: 'customsearchfield',
@@ -118,21 +119,23 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
 		    			width: 200,
 		    			emptyText: "Search by Partner Name "
 					 },
-					 {
-		                	xtype :'tbspacer',
-		                	width :10
-		        		},
 		        		{
 		    				xtype:'button',
 		    				refrence:'advancesearchbutton',
 		    				text:AOCLit.advSearchText,
-		    				icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+		    				//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
+		    				iconCls:'fa fa-search',
 		    				iconAlign: "right",
+		    				ui:'blue',
+		    				cls:'blue-btn',
 		    				handler:'openAdvancedSearchWindow'
 		    			 },
 		    			 {
 		 					hidden:true, 
-		 					icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+		 					iconCls:'fa fa-times',
+							ui:'blue',
+							cls:'blue-btn',
 		 					itemId:'clearadvanedsearch',
 		 					reference:'clearAdvSearch',
 		 					handler:'clearAdvancedSearch',
