@@ -2,6 +2,7 @@ package com.avery.storage.service;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -57,5 +58,10 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 	@Transactional
 	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate){
 		getOrderEmailQueueDao().updateAcknowledgementDate(entityId, acknowledgementDate);
+	}
+	
+	@Transactional
+	public Set<OrderEmailQueue> getList(int lastDays,Set<String> status)throws Exception{
+		return getOrderEmailQueueDao().getList(lastDays,status);
 	}
 }
