@@ -14,7 +14,7 @@ Ext.define('AOC.lang.lit',{
     "sizePage":'Size Page',
     "moqRoundUp":'MOQ/Round up',
     "coo":'COO',
-    "febricContent":'Febric Content',
+    "febricContent":'Fabric Content',
     "reviseOrder":'Revise Order',
     "averyItem":'Avery Item #<font color=red>*</font>',
     "averyATO":'Avery ATO',
