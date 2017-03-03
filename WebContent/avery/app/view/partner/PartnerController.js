@@ -45,7 +45,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                         var jsonString = Ext.JSON.decode(response.responseText);
                         var valueExist = jsonString.valueExist;
                         if (valueExist) {
-                            Ext.getBody().unmask();
+                        	view.unmask();
                             partnerName.focus();
                             messageLabelField.show();
                             messageLabelField.setValue(AOCLit.partExistMsg);
