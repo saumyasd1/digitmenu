@@ -47,7 +47,15 @@ Ext.define('AOC.view.home.HomePageController', {
 		status = status.join(',');
 		
 		var parameters = '{"days":"' +days + '","Status":"' + status +'"}';
-		me.filterOrderQueueList(parameters);
+		if(record.get('type') == 'orderqueue'){
+			me.filterOrderQueueList(parameters);
+		}
+		else if(record.get('type') == 'emailqueue'){
+			me.filterEmailQueueList(parameters);
+		}
+		else if(record.get('type') == 'taskmanager'){
+			me.filterTaskManagerList(parameters);
+		}
 	},
 	filterOrderQueueList:function(parameters){
 		var store = Ext.StoreManager.lookup('OrderQueueStore');
@@ -64,6 +72,48 @@ Ext.define('AOC.view.home.HomePageController', {
         Helper.changeScreen('orderqueueview');
 		
 		Ext.ComponentQuery.query('maincontainer orderqueuegrid #clearadvanedsearch')[0].setVisible(true);
+		store.filter({
+			id: 'query',
+			property: 'query',
+			value: parameters
+		});
+	},
+	filterEmailQueueList:function(parameters){
+		var store = Ext.StoreManager.lookup('EmailManagementStoreId');
+		store.proxy.setFilterParam('query');
+        
+		store.setRemoteFilter(true);
+        if (!store.proxy.hasOwnProperty('filterParam')) {
+            store.proxy.setFilterParam('query');
+        }
+        store.proxy.encodeFilters = function(filters) {
+            return filters[0].getValue();
+        };
+        
+        Helper.changeScreen('emailmanagement');
+		
+		Ext.ComponentQuery.query('maincontainer emailmanagementgrid #clearadvanedsearch')[0].setVisible(true);
+		store.filter({
+			id: 'query',
+			property: 'query',
+			value: parameters
+		});
+	},
+	filterTaskManagerList:function(parameters){
+		var store = Ext.StoreManager.lookup('TaskManagerStoreId');
+		store.proxy.setFilterParam('query');
+        
+		store.setRemoteFilter(true);
+        if (!store.proxy.hasOwnProperty('filterParam')) {
+            store.proxy.setFilterParam('query');
+        }
+        store.proxy.encodeFilters = function(filters) {
+            return filters[0].getValue();
+        };
+        
+        Helper.changeScreen('taskmanager');
+		
+		Ext.ComponentQuery.query('maincontainer taskManagergrid #clearadvanedsearch')[0].setVisible(true);
 		store.filter({
 			id: 'query',
 			property: 'query',

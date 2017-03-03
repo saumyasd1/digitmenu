@@ -28,7 +28,9 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -48,11 +50,6 @@ public class OrderTrend {
 
 	private static Map<String, String> statusMap = new HashMap<String, String>();
 	static {
-		/*statusMap.put("11", "received");
-		statusMap.put("19", "waitingCR");
-		statusMap.put("23", "waitingSR");
-		statusMap.put("41", "success");
-		statusMap.put("42", "failed");*/
 		statusMap.put("11", "received");
 		statusMap.put("12", "parsingOrderFile");
 		statusMap.put("13", "readyForItemSpec");
@@ -66,6 +63,12 @@ public class OrderTrend {
 		statusMap.put("42", "error");
 		statusMap.put("50", "cancel");
 		statusMap.put("56", "oracleError");
+	}
+	
+	private static Map<String, String> emailQueueStatusMap = new HashMap<String, String>();
+	static {
+		emailQueueStatusMap.put("3", "unidentified");
+		emailQueueStatusMap.put("4", "unrecognized");
 	}
 
 	@GET
@@ -112,12 +115,10 @@ public class OrderTrend {
 		}
 	}
 
-	public static List<Map<String, Object>> buildChartData(int day)
-			throws Exception {
-		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
-				.getInstance().getBean("orderQueueService");
-		Set<OrderQueue> set = orderQueueService
-				.getList(day, statusMap.keySet());
+	public static List<Map<String, Object>> buildChartData(int day) throws Exception {
+		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+				.getBean("orderQueueService");
+		Set<OrderQueue> set = orderQueueService.getList(day, statusMap.keySet());
 		switch (day) {
 		case 1: {
 			return buildDataList(set, day, 24);
@@ -138,14 +139,12 @@ public class OrderTrend {
 		}
 	}
 
-	private static List<Map<String, Object>> buildDataList(Set<OrderQueue> set,
-			int day, int part) {
+	private static List<Map<String, Object>> buildDataList(Set<OrderQueue> set, int day, int part) {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		if (day <= 0 || set.size() == 0)
 			return list;
 		Map<String, Object> datamap = null;
-		Format formatter = (part == 24) ? new SimpleDateFormat("dd::HH")
-				: new SimpleDateFormat("dd MMM");
+		Format formatter = (part == 24) ? new SimpleDateFormat("dd::HH") : new SimpleDateFormat("dd MMM");
 		Date endDate = new Date();
 		Date startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 				: DateUtils.getPreviousDate(endDate, day / part);
@@ -157,14 +156,12 @@ public class OrderTrend {
 			}
 			for (OrderQueue orderQueue : set) {
 				datamap.put("day", formatter.format(endDate));
-//				recieveDate = orderQueue.getReceivedDate();
+				// recieveDate = orderQueue.getReceivedDate();
 				if (recieveDate.before(endDate) && recieveDate.after(startDate)) {
 					for (String status : statusMap.keySet()) {
 						if (orderQueue.getStatus().equals(status)) {
 							if (datamap.containsKey(statusMap.get(status))) {
-								datamap.put(
-										statusMap.get(status),
-										(int) datamap.get(statusMap.get(status)) + 1);
+								datamap.put(statusMap.get(status), (int) datamap.get(statusMap.get(status)) + 1);
 							} else {
 								datamap.put(statusMap.get(status), 1);
 							}
@@ -173,7 +170,7 @@ public class OrderTrend {
 
 				}
 			}
-			((LinkedList)list).addFirst(datamap);
+			((LinkedList) list).addFirst(datamap);
 			endDate = startDate;
 			startDate = (part == 24) ? DateUtils.getPreviousHours(endDate, 1)
 					: DateUtils.getPreviousDate(endDate, day / part);
@@ -182,22 +179,13 @@ public class OrderTrend {
 	}
 
 	public static List<Map<String, Object>> buildGridData() throws Exception {
-		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
-				.getInstance().getBean("orderQueueService");
+		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+				.getBean("orderQueueService");
 		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet());
+		OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+				.getBean("orderEmailQueueService");
+		Set<OrderEmailQueue> emailQueueSet = orderEmailQueueService.getList(30, emailQueueStatusMap.keySet());
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-		/*Map<String, Object> recievedMap = buildMap("Received");
-		list.add(recievedMap);
-		Map<String, Object> waitinCRMap = buildMap("Waiting CS Review");
-		list.add(waitinCRMap);
-		Map<String, Object> waitinSRMap = buildMap("Waiting System Response");
-		list.add(waitinSRMap);
-		Map<String, Object> successMap = buildMap("Successful");
-		list.add(successMap);
-		Map<String, Object> failedMap = buildMap("Failed");
-		list.add(failedMap);
-		Map<String, Object> toatalCount = buildMap("Total Count");
-		list.add(toatalCount);*/
 		Map<String, Object> recievedMap = buildMap("Order Received", "11");
 		list.add(recievedMap);
 		Map<String, Object> parsingOrderFileMap = buildMap("Parsing Order File", "12");
@@ -222,16 +210,15 @@ public class OrderTrend {
 		list.add(errorMap);
 		Map<String, Object> cancelMap = buildMap("Cancel", "50");
 		list.add(cancelMap);
+		Map<String, Object> unidentifiedMap = buildMapForEmailQueue("Unidentified", "3");
+		list.add(unidentifiedMap);
+		Map<String, Object> unrecognizedMap = buildMapForTaskManager("Unrecognized", "4");
+		list.add(unrecognizedMap);
 		Map<String, Object> oracleErrorMap = buildMap("Oracle Error", "56");
 		list.add(oracleErrorMap);
 		Map<String, Object> toatalCount = buildMapForTotalCount("Total Count");
 		list.add(toatalCount);
 		Map<String, Map<String, Object>> myMap = new HashMap<String, Map<String, Object>>();
-		/*myMap.put("11", recievedMap);
-		myMap.put("19", waitinCRMap);
-		myMap.put("23", waitinSRMap);
-		myMap.put("41", successMap);
-		myMap.put("42", failedMap);*/
 		myMap.put("11", recievedMap);
 		myMap.put("12", parsingOrderFileMap);
 		myMap.put("13", readyForItemSpecMap);
@@ -245,31 +232,40 @@ public class OrderTrend {
 		myMap.put("42", errorMap);
 		myMap.put("50", cancelMap);
 		myMap.put("56", oracleErrorMap);
+		// myMap.put("3", unidentifiedMap);
+		// myMap.put("4", unrecognizedMap);
 		buildMapData(set, 1, myMap);
 		buildMapData(set, 7, myMap);
 		buildMapData(set, 14, myMap);
 		buildMapData(set, 30, myMap);
+		Map<String, Map<String, Object>> emailQueueMap = new HashMap<String, Map<String, Object>>();
+		emailQueueMap.put("3", unidentifiedMap);
+		emailQueueMap.put("4", unrecognizedMap);
+		buildMapDataForEmailQueue(emailQueueSet, 1, emailQueueMap);
+		buildMapDataForEmailQueue(emailQueueSet, 7, emailQueueMap);
+		buildMapDataForEmailQueue(emailQueueSet, 14, emailQueueMap);
+		buildMapDataForEmailQueue(emailQueueSet, 30, emailQueueMap);
 		Map<String, Object> m = null;
-		for(String key:myMap.keySet()){
-			m=myMap.get(key);
-		  for(String type:m.keySet()){
-			  if(!type.equals("orderType") && !type.equals("colorCode") && !type.equals("statusCode")){
-				  toatalCount.put(type, (int) toatalCount.get(type) + (int) m.get(type));  
-			  }
-		  }
+		for (String key : myMap.keySet()) {
+			m = myMap.get(key);
+			for (String type : m.keySet()) {
+				if (!(type.equals("orderType") || type.equals("colorCode") || type.equals("statusCode")
+						|| type.equals("type"))) {
+					toatalCount.put(type, (int) toatalCount.get(type) + (int) m.get(type));
+				}
+			}
 		}
 		return list;
 	}
 
-	static void buildMapData(Set<OrderQueue> set, int days,
-			Map<String, Map<String, Object>> myMap) {
+	static void buildMapData(Set<OrderQueue> set, int days, Map<String, Map<String, Object>> myMap) {
 		Date endDate = new Date();
 		endDate.setHours(0);
 		endDate.setMinutes(0);
 		endDate.setSeconds(0);
 		Date startDate = DateUtils.getPreviousDate(endDate, days);
-		Calendar c = Calendar.getInstance(); 
-		c.setTime(endDate); 
+		Calendar c = Calendar.getInstance();
+		c.setTime(endDate);
 		c.add(Calendar.DATE, 1);
 		endDate = c.getTime();
 		Date createdDate = null;
@@ -299,40 +295,10 @@ public class OrderTrend {
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(createdDate);
 			Date ddd = cal.getTime();
-			
+
 			if (ddd.before(endDate) && ddd.after(startDate)) {
 				status = orderQueue.getStatus();
 				switch (status) {
-				/*case "11": {
-					m = myMap.get(status);
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}
-				case "19": {
-					m = myMap.get(status);
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}
-				case "23": {
-					m = myMap.get(status);
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}
-				case "41": {
-					m = myMap.get(status);
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}
-				case "42": {
-					m = myMap.get(status);
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}*/
-				/*case "2": {
-					m = myMap.get("41");
-					m.put(key, (int) m.get(key) + 1);
-					break;
-				}*/
 				case "11": {
 					m = myMap.get(status);
 					m.put(key, (int) m.get(key) + 1);
@@ -402,6 +368,62 @@ public class OrderTrend {
 			}
 		}
 	}
+	
+	static void buildMapDataForEmailQueue(Set<OrderEmailQueue> set, int days, Map<String, Map<String, Object>> myMap) {
+		Date endDate = new Date();
+		endDate.setHours(0);
+		endDate.setMinutes(0);
+		endDate.setSeconds(0);
+		Date startDate = DateUtils.getPreviousDate(endDate, days);
+		Calendar c = Calendar.getInstance();
+		c.setTime(endDate);
+		c.add(Calendar.DATE, 1);
+		endDate = c.getTime();
+		Date createdDate = null;
+		String status;
+		String key = "";
+		switch (days) {
+		case 1: {
+			key = "lastOneDay";
+			break;
+		}
+		case 7: {
+			key = "lastWeek";
+			break;
+		}
+		case 14: {
+			key = "lastTwoWeek";
+			break;
+		}
+		case 30: {
+			key = "lastMonth";
+			break;
+		}
+		}
+		Map<String, Object> m = null;
+		for (OrderEmailQueue orderEmailQueue : set) {
+			createdDate = orderEmailQueue.getCreatedDate();
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(createdDate);
+			Date ddd = cal.getTime();
+
+			if (ddd.before(endDate) && ddd.after(startDate)) {
+				status = orderEmailQueue.getStatus();
+				switch (status) {
+				case "3": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				case "4": {
+					m = myMap.get(status);
+					m.put(key, (int) m.get(key) + 1);
+					break;
+				}
+				}
+			}
+		}
+	}
 
 	static Map<String, Object> buildMap(String type, String status) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -413,6 +435,35 @@ public class OrderTrend {
 		map.put("lastMonth", 0);
 		map.put("colorCode", statusCodes.get("colorCode"));
 		map.put("statusCode", status);
+		map.put("type", "orderqueue");
+		return map;
+	}
+	
+	static Map<String, Object> buildMapForEmailQueue(String type, String status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> statusCodes = statusList.get(status);
+		map.put("orderType", type);
+		map.put("lastOneDay", 0);
+		map.put("lastWeek", 0);
+		map.put("lastTwoWeek", 0);
+		map.put("lastMonth", 0);
+		map.put("colorCode", statusCodes.get("colorCode"));
+		map.put("statusCode", status);
+		map.put("type", "emailqueue");
+		return map;
+	}
+	
+	static Map<String, Object> buildMapForTaskManager(String type, String status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> statusCodes = statusList.get(status);
+		map.put("orderType", type);
+		map.put("lastOneDay", 0);
+		map.put("lastWeek", 0);
+		map.put("lastTwoWeek", 0);
+		map.put("lastMonth", 0);
+		map.put("colorCode", statusCodes.get("colorCode"));
+		map.put("statusCode", status);
+		map.put("type", "taskmanager");
 		return map;
 	}
 	
