@@ -2,7 +2,7 @@ Ext.define('AOC.store.OrgStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','name','systemId'],
 	//storeId:'siteId',
-	autoLoad:true,
+	autoLoad:false,
 	proxy: {
         type: 'rest',
         url : applicationContext+'/rest/org',
