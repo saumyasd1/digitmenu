@@ -129,6 +129,11 @@ Ext.define('AOC.view.address.AddressController', {
 			//Msg='Address Updated Successfully';
 			var Msg=AOCLit.updateAddressMsg;
 			var parameters=Ext.JSON.encode(valueObj);
+			if(length>0){
+			if(panel.getForm().isValid()){
+				AOC.util.Helper.fadeoutMessage('Success',Msg);
+	  		}
+			}
 		}
 		else{
 			url=applicationContext+'/rest/address';
