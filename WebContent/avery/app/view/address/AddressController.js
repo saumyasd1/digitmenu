@@ -69,6 +69,7 @@ Ext.define('AOC.view.address.AddressController', {
 		}
 	},
 	saveAddressDetails:function(){
+		debugger;
 		Ext.getBody().mask('Saving....');
 		var me=this;
 		var Msg='';
@@ -196,7 +197,6 @@ Ext.define('AOC.view.address.AddressController', {
 	
 		if(length>0){
 			if(panel.getForm().isValid()){
-				AOC.util.Helper.fadeoutMessage('Success',Msg);
 				Ext.Ajax.request( {
 					method: methodMode,
 				    jsonData : parameters,	
