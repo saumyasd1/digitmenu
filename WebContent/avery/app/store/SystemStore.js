@@ -3,7 +3,7 @@ Ext.define('AOC.store.SystemStore', {
 	fields:['id','name','siteId'],
 //	model:'AOC.model.PartnerManagementModel',
 	//autoLoad : true,
-	autoLoad:true,
+	autoLoad:false,
 	remoteSort: true,
 	totalCount:'total',
 	pageSize:pageSize,
