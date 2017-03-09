@@ -101,6 +101,7 @@ Ext.define('AOC.lang.lit',{
     "deleteAddMsg": "<b>Address Deleted Succesfully</b>",
     //EmailAttachmentInfoGrid
     "fileName":'File Name',
+    "fileContentType":'File Content Type',
     "additionalDataFileKey":'Additional Data File Key',
     "rboMatch":'RBO Match',
     "productLineMatch":'Product Line Match',

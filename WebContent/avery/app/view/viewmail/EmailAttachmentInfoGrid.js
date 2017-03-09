@@ -85,7 +85,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					}
 				},
 				{
-					text : AOCLit.fileName,
+					text : AOCLit.fileContentType,
 					flex :1.3,
 					dataIndex:'contentType',
 					name: 'File Content Type',
