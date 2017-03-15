@@ -248,6 +248,7 @@ public class OrderQueue extends MainAbstractEntity{
 	@Transient
 	private int additionalFileCount;
 	@Transient
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
 	private Date receivedDate;
 	
 	
