@@ -823,7 +823,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
 		    String field = entry.getKey();
 		    FormDataBodyPart formdata = entry.getValue().get(0);
-				if (formdata != null && (field.equals("orderFileType") || field.startsWith("attachment"))) {
+				if (formdata != null && (field.startsWith("orderFileType") || field.startsWith("attachment"))) {
 					 stream = ((FormDataBodyPart) formParams
 							.getField(field)).getEntityAs(InputStream.class);
 					 fileName = ((FormDataBodyPart) formParams.getField(field))
@@ -835,7 +835,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 					
 					fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
 					
-					if (field.equalsIgnoreCase("orderFileType"))
+					if (field.startsWith("orderFileType"))
 					{
 						fileContentType = ApplicationConstants.DEFAULT_ORDER_CONTENT_TYPE;
 						additionalDataFileKey=null;
