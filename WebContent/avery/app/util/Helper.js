@@ -443,7 +443,7 @@ Ext.define('AOC.util.Helper',{
 		var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
 		attachmentInfoGrid.store.removeAll();
 		attachmentInfoGrid.getView().refresh();
-		webOrderView.lookupReference('orderFileType').setDisabled(true);
+		webOrderView.lookupReference('orderFileType1').setDisabled(true);
 		webOrderView.rboId = '';
 		webOrderView.productLineId = '';
 		
@@ -456,10 +456,10 @@ Ext.define('AOC.util.Helper',{
 	
 	getIconClass:function(value){
 		if(value.substr(0,1)=='T'){
-			//7CFFAA
+			//7CFFAA 4AA02C 7CF2A5
 			return '<i style="color:#7CF2A5;font-size:16px;" class="fa fa-check"/>';
 		}
-		else if(value.substr(0,1) == 'F'){
+		else if(value.substr(0,1) == 'F'){//FFC7B0
 			return '<i style="color:#FFC7B0;font-size:16px;" class="fa fa-times"/>';
 		}
 		else{

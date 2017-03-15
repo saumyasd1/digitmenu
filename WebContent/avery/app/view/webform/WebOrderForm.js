@@ -10,7 +10,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	extend:'Ext.form.Panel',
 	alias:'widget.weborderform',
 	itemId:'weborderformItemId',
-	//controller:'webFormMain',
 	bodyPadding: '10',
 	requires: [
 	    'AOC.lang.lit',
@@ -20,6 +19,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	attachmentFileNameExtension_1:null,
 	orderFileNameExtension:null,
 	attachmentCount:1,
+	orderFileAttachmentCount:1,
+	maximumOrderFileCount:4,
 	maxAttachmentCount:4,
 	isResubmit:false,
 	requires:['AOC.store.WebformStore'],
@@ -32,7 +33,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	},
     resetFormFields: function() {
     	this.isResubmit=false;
-    	var i=this.attachmentCount,currentAttachment,form=this;
+    	var i=this.attachmentCount,currentAttachment,form=this,currentOrderFile;
     	for(var j=2;j<=i;j++){
     		currentAttachment=this.queryById('attachment'+j),
     		additionalDataFileKey=this.queryById('additionalDataFileKey'+j);
@@ -43,6 +44,42 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				}
     		}
     	}
+    	//If more than one Orderfiletype field is exist then destoy 
+    	var orderFileAttachmentCount = this.orderFileAttachmentCount;
+    	for(var j=2;j<=orderFileAttachmentCount;j++){
+    		currentOrderFile=this.queryById('orderFileType'+j);
+    		if(currentOrderFile){
+    			currentOrderFile.destroy();
+    		}
+    	}
+    	this.orderFileAttachmentCount = 1;
+    	currentOrderFile = this.queryById('orderFileType1');
+    	if(currentOrderFile){
+    		!currentOrderFile.isVisible() ? currentOrderFile.show() :'';
+    		//currentOrderFile.hide();
+    	}else{
+    		var orderFileTypeCont = this.queryById('orderFileTypeCont');
+    		orderFileTypeCont.add({ 
+				xtype : 'fileuploadfield', 
+				name : 'orderFileType1',
+				reference:'orderFileType1',
+				fieldLabel : 'Order File', 
+				itemId:'orderFileType1',
+				flex:1.8,
+				margin:'0 0 0 10',
+				allowBlank : false, 
+				disabled:true,
+				forceSelection : true,
+				enforceMaxLength: true,
+				blankText :'Order File Type is required',
+				listeners:{
+					'change':'onOrderFileChange',
+					blur : this.notifyByImage,
+					'focus': 'notifyByMessage'
+				}
+			});
+    	}
+    	
     	this.attachmentCount=1;
     	currentAttachment = this.queryById('attachment1'),
     	additionalDataFileKey1 = this.queryById('additionalDataFileKey1');
@@ -90,12 +127,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							listeners:{
 								'change':'onAttachmentChange'
 							}
-						},
-						{
-							xtype:'box',
-							flex:0.3,
-							html:''
 						}
+//						{
+//							xtype:'box',
+//							flex:0.3,
+//							html:''
+//						}
 					]
 				}
 			);
@@ -104,7 +141,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         this.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
-        this.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
+       // this.queryById('orderFileType1').setFieldStyle(AOC.lang.lit.hideImage);
     },
     initComponent : function(){
     	var me = this;
@@ -188,12 +225,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							'change':'onDataStructureSelection',
 							'focus': 'notifyByMessage'
 						}
-					},
-					{
-						xtype:'box',
-						flex:0.3,
-						html:''
 					}
+//					{
+//						xtype:'box',
+//						flex:0.3,
+//						html:''
+//					}
 				]
 			},
 			{
@@ -243,18 +280,20 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						  blur : this.notifyByImage,
 						'focus': 'notifyByMessage'
 						}
-					},
-					{
-						xtype:'box',
-						flex:0.3,
-						html:''
 					}
+//					{
+//						xtype:'box',
+//						flex:0.3,
+//						html:''
+//					}
 				]
 			},
 			{
 				xtype:'fieldcontainer',
 				layout:'hbox',
 				flex:1,
+				itemId:'orderFileTypeCont',
+				reference:'orderFileTypeCont',
 				margin:'0 0 5 0',
 				defaults:{
 					labelSeparator:'',
@@ -275,6 +314,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank: false,
 						flex:1.8,
 						blankText :'Email Body is required',
+						//margin:'0 50 0 0',
 						listeners:{
 							blur : this.notifyByImage,
 							'focus': 'notifyByMessage'
@@ -282,10 +322,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					},
 					{ 
 						xtype : 'fileuploadfield', 
-						name : 'orderFileType',
-						reference:'orderFileType',
+						name : 'orderFileType1',
+						reference:'orderFileType1',
 						fieldLabel : 'Order File', 
-						itemId:'orderFileType',
+						itemId:'orderFileType1',
 						flex:1.8,
 						margin:'0 0 0 10',
 						allowBlank : false, 
@@ -298,12 +338,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							blur : this.notifyByImage,
 							'focus': 'notifyByMessage'
 						}
-					},
-					{
-						xtype:'box',
-						flex:0.3,
-						html:''
 					}
+//					{
+//						xtype:'box',
+//						flex:0.3,
+//						html:''
+//					}
 				]
 			},
 			{
@@ -344,15 +384,15 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						hidden:true,
 						listeners:{
 							'change':'onAttachmentChange',
-							//blur : this.notifyByImage,
-							//'focus': 'notifyByMessage'
+							blur : this.notifyByImage,
+							'focus': 'notifyByMessage'
 						}
-					},
-					{
-						xtype:'box',
-						flex:0.3,
-						html:''
 					}
+//					{
+//						xtype:'box',
+//						flex:0.3,
+//						html:''
+//					}
 				]
 			},
 			{
