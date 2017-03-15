@@ -2,8 +2,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.productlineMain',
     runTime : AOC.config.Runtime,
+    active:false,
     requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
-    SaveDetails:function(){
+    onSaveDetails:function(){
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
 		var createproductline=this.getView();
@@ -169,6 +170,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				attachmentMappingID_4:dataModel.attachmentMappingID_4,
 				attachmentIdentifier_4:dataModel.attachmentIdentifier_4
 		};
+		secondParam.active = me.active;
 		Ext.merge(parameters,secondParam);
 				Ext.Ajax.request( {
 					method: methodMode,
@@ -200,7 +202,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
       	});
 		this.runTime.setWindowInEditMode(false);
     },
-	CancelDetails:function(){       
+    onCancelDetails:function(){       
 	    Ext.getBody().unmask();
 		this.getView().destroy();
 		this.runTime.setWindowInEditMode(false);
@@ -583,10 +585,44 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    		var hiddenProductLineField=this.getView().lookupReference('productLineHidden');
 	    		hiddenProductLineField.setValue(value);
 	    	},
-	    	afterWindowRender:function(){
+	    	onElClick:function(e, target){
+	    		var me = this,
+	    			el = Ext.get(target);
+	    		if(el.hasCls('activeBtn')){
+	    			var isToggleOff = el.hasCls('fa-toggle-off');
+	    			
+	    			me.setActiveBox(isToggleOff, el);
+	    		}
+	    	},
+	    	setActiveBox:function(active, el){
+	    		var me = this,
+	    			el = el ? el : Ext.get(Ext.select('.activeBtn').elements[0]),
+	    			onClass = 'activeBtn fa fa-toggle-on',
+    				offClass= 'activeBtn fa fa-toggle-off';
+	    		
+	    		if(active){
+    				el.removeCls(offClass);
+    				el.addCls(onClass);
+    				el.setStyle({
+    					color:'green'
+    				});
+    				me.active = true;
+    			}else{
+    				el.removeCls(onClass);
+    				el.addCls(offClass);
+    				el.setStyle({
+    					color:'#ccc'
+    				});
+    				me.active = false;
+    			}
+	    	},
+	    	afterWindowRender:function(win){
+	    		win.el.on('click', this.onElClick, this);
+	    		
 	    		var me=this,view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
 	    		mixed=view.lookupReference('mixed'),
 	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
+	    		me.setActiveBox(data.active);
 	    		if(data.productLineType=='MIXED'){
 	    			unique.setValue(false);
 	    			mixed.setValue(true);

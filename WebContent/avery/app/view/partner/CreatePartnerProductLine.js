@@ -5,7 +5,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	controller:'productlineMain',
 	bodyPadding: 10,
 	width: 990,
-	height:580,
+	height:560,
     draggable:false,
     editMode:false,
     rec:null,
@@ -29,11 +29,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return [
 			{
 				text : AOCLit.Save,
-				handler : 'SaveDetails'
+				handler : 'onSaveDetails'
 			},
 			{
 				text : AOCLit.Cancel,
-				handler : 'CancelDetails'
+				handler : 'onCancelDetails'
 			}
 		];
 	},
@@ -255,7 +255,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								name: 'csrPrimaryId',
 								bind:'{csrPrimaryId}',
 								fieldLabel:'CSR Primary Email',
-								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 								blankText : AOCLit.prodLineReq,
 								listeners : {
@@ -269,7 +268,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								name: 'csrSecondaryId',
 								bind:'{csrSecondaryId}',
 								fieldLabel:'CSR Secondary Email',
-								//allowBlank: false,
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 								blankText : AOCLit.CSRReq,
 								margin:'0 0 0 10',
@@ -385,22 +383,31 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						]
 					},
 					{
-                        xtype: 'togglebutton',
-                        fieldLabel: 'Active',
-                        value: 0,
-                        labelSeparator:'',
-                        labelAlign:'top',
-                        labelStyle:Settings.config.defaultFormLabelStyle,
-                        labelWidth : 200,
-      		            width : 30,
-      		            height:60,
-      		            bind:'{active}',
-                        listeners: {
-                            changecomplete: function(slider, newValue, thumb, eOpts ){
-                                // 'do the required action'
-                            }
-                        }
+						xtype:'displayfield',
+						fieldLabel:'Active',
+						labelSeparator:'',
+						labelWidth:50,
+						margin:'0 0 5 0',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						value:'<div class="activeBtn fa fa-toggle-off" style="font-size:24px;color:#ccc;cursor:pointer;"></div>'
 					}
+//					{
+//                        xtype: 'togglebutton',
+//                        fieldLabel: 'Active',
+//                        value: 0,
+//                        labelSeparator:'',
+//                        labelAlign:'top',
+//                        labelStyle:Settings.config.defaultFormLabelStyle,
+//                        labelWidth : 200,
+//      		            width : 30,
+//      		            height:60,
+//      		            bind:'{active}',
+//                        listeners: {
+//                            changecomplete: function(slider, newValue, thumb, eOpts ){
+//                                // 'do the required action'
+//                            }
+//                        }
+//					}
 			   ]
 			},
 			{
