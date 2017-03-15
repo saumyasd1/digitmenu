@@ -46,7 +46,12 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name : 'createdDate',
 		mapping : 'createdDate',
 		type: 'string'
-	}, 
+	},
+	{
+		name : 'receivedDate',
+		mapping : 'receivedDate',
+		type: 'string'
+	},
 	{
 		name : 'submittedDate',
 		mapping : 'submittedDate',

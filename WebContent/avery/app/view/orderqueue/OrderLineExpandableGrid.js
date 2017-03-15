@@ -298,6 +298,26 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 102
 		},
 		{
+			text: AOCLit.itemDescription,
+			dataIndex: 'pageSize',
+			width: 102,
+			editor: 'textfield',
+			renderer:function(value, metadata,rec){
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+			}
+		}, 
+		{
+			text: AOCLit.customerSize,
+			dataIndex: 'customerSize',
+			width: 72,
+			editor: 'textfield',
+			renderer:function(value, metadata,rec){
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+			},
+			type:'address',
+			hidden:true
+		},
+		{
 			text: AOCLit.Bulk,
 			dataIndex: 'bulk',
 			width: 60,
@@ -629,26 +649,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'retailerPO_CustomerJob',
 			width: 115,
 			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.itemDescription,
-			dataIndex: 'pageSize',
-			width: 102,
-			editor: 'textfield',
-			renderer:function(value, metadata,rec){
-				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
-		}, 
-		{
-			text: AOCLit.customerSize,
-			dataIndex: 'customerSize',
-			width: 72,
-			editor: 'textfield',
-			renderer:function(value, metadata,rec){
-				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			},
 			type:'address',
 			hidden:true
 		}, 

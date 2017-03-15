@@ -3,6 +3,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     alias: 'controller.webFormMain',
   
     runTime : AOC.config.Runtime,
+    fileArray:[],
     hideAndDestroyAttachmentField:function(){
     	var me = this,
     		refs = me.getReferences(),
@@ -29,7 +30,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	    email = me.lookupReference('email'),
     	    subject = me.lookupReference('subject'),
     	    emailBody = me.lookupReference('emailBody'),
-    	    orderFileType = me.lookupReference('orderFileType'),
+    	    orderFileType = me.lookupReference('orderFileType1'),
     	    attachment1 = me.lookupReference('attachment1'),
     	    additionalDataFileKey1 = me.lookupReference('additionalDataFileKey1');
 			
@@ -55,7 +56,7 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	 	email.reset();
    	    	 	subject.reset();
    	    	 	emailBody.reset();
-   	    	 	orderFileType.reset();
+   	    	 	//orderFileType.reset();
    	    	 	webOrderAttachmentInfoGrid.store.removeAll();
    	    	 	webOrderAttachmentInfoGrid.getView().refresh();
    	    	 	orderFileType.setDisabled(true);
@@ -152,7 +153,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				view.lookupReference('emailBody').enable();
 				view.lookupReference('email').enable();
 				view.lookupReference('subject').enable();
-				view.lookupReference('orderFileType').enable();
+				view.lookupReference('orderFileType1').enable();
 			 }else{
 				view.lookupReference('subject').disable();
 				view.lookupReference('emailBody').disable();
@@ -169,23 +170,58 @@ Ext.define('AOC.view.webform.WebFormController', {
 
 	onOrderFileChange:function(obj, value, eOpts){
 		value = value.substring(value.lastIndexOf("\\"));
-		var view = this.getView();
+		var view = this.getView(),
+			refs = this.getReferences(),
+			webOrderForm = this.lookupReference('webform'),
+			orderFileTypeCont = refs.orderFileTypeCont;
+		
 		value = value.replace("\\"," ");
 		if(!Ext.isEmpty(value)){
 			var extension=value.substring(value.lastIndexOf(".")+1);
 			if(!Ext.isEmpty(view.orderFileNameExtension)){
 				if(view.orderFileNameExtension.toLowerCase().indexOf(extension.toLowerCase())==-1){
-					obj.reset( );
+					obj.reset();
 					Ext.Msg.alert('','Please attach only ' +view.orderFileNameExtension +' type of files');
 					return false;
 				}else{
 					if(view.down('#weborderformItemId').isResubmit){
 						view.down('#oldOrderFileDeleted').setValue(true);
 					}
-					this.insertFileInGrid(value,'Order File Type',false,null);
+					var count=obj.name.replace('orderFileType','');
+					if(!webOrderForm.isResubmit){
+			    		var i=parseInt(count)+1;
+			    		if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
+				    		orderFileTypeCont.add({ 
+								xtype : 'fileuploadfield', 
+								name : 'orderFileType'+i,
+								reference:'orderFileType'+i,
+								fieldLabel : 'Order File', 
+								itemId:'orderFileType'+i,
+								flex:1.8,
+								margin:'0 0 0 10',
+								forceSelection : true,
+								enforceMaxLength: true,
+								blankText :'Order File Type is required',
+								listeners:{
+									'change':'onOrderFileChange',
+									//blur : this.notifyByImage,
+									'focus': 'notifyByMessage'
+								}
+							});
+				    		webOrderForm.orderFileAttachmentCount++;
+							this.insertFileInGrid(value,'Order File Type',true, count, null);
+							obj.hide();
+			    		}else{
+			    			Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maximumOrderFileCount+' order file.')
+							obj.reset();
+			    			obj.setDisabled(true);
+			    		}
+					}else{
+						obj.reset();
+					}
 				}
 			}else{
-				obj.reset( );
+				obj.reset();
 				Ext.Msg.alert('','Order File Extension is not defined for this productline. Please configure the productline correctly before proceding.');
 				return false;
 			}
@@ -198,7 +234,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			form = webOrderFormView.getForm(),
 			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid,
 			store = webOrderAttachmentInfoGrid.store,
-			orderFileType = refs.orderFileType,
+			orderFileType = refs.orderFileType1,
 			attachment = refs.attachment1,
 			oldAdditionalFileId = refs.oldAdditionalFileId,
 			//attachmentField = refs.attachmentField,
@@ -218,7 +254,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			attachment.allowBlank = true;
 		}
 		if(oldFileIds.length>0){
-			orderFileType.allowBlank = true;
+			orderFileType.allowBlank = orderFileType ? true : '';
 		}
 		
 		form.setValues({"oldFileIds":oldFileIds});
@@ -297,7 +333,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 					return {
 						formEl: formEl,
 						uploadFields: uploadFields,
-						uploadEls: uploadEls
+						uploadEls: uploadEls,
+						files:me.scope.fileArray
 					};
 				},
 				method: 'POST',
@@ -306,7 +343,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 				success : function(form,action){
 					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
 					Helper.resetWebOrderForm(me.getView());
-					orderFileType.setDisabled(true);
+					webOrderFormView.resetFormFields();
+					//orderFileType.setDisabled(true);
 					Ext.getBody().unmask();
 				},
 				failure : function(form, action) {
@@ -325,7 +363,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 			var me = this,
 				webOrderForm = me.lookupReference('webform'),
 				view = me.getView();
-				
+			
+			//me.fileArray.push(obj.getEl().down('input[type=file]').dom.files[0]); 	
 			var value = value.substring(value.lastIndexOf("\\"));
 		    value = value.replace("\\"," ");
 			
@@ -333,7 +372,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			
 		    if(!Ext.isEmpty(view.attachmentFileNameExtension_1)){
 		    	if(view.attachmentFileNameExtension_1.toLowerCase().indexOf(extension.toLowerCase())==-1){
-		    		obj.reset( );
+		    		obj.reset();
 		    		Ext.getBody().unmask();
 		    		Ext.Msg.alert(AOCLit.warningTitle,'Please attach only ' +view.attachmentFileNameExtension_1 +' type of files');
 		    		return false;
@@ -380,12 +419,12 @@ Ext.define('AOC.view.webform.WebFormController', {
 									listeners:{
 										'change':'onAttachmentChange'
 									}
-								},
-								{
-									xtype:'box',
-									flex:0.3,
-									html:''
 								}
+//								{
+//									xtype:'box',
+//									flex:0.3,
+//									html:''
+//								}
 							]
 						});
 		    		
@@ -453,10 +492,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 			//Ext.getBody().mask('Deleting...');
 			var view = this.getView(),
 				form = view.lookupReference('webform'),
-				orderFileType = view.lookupReference('orderFileType'),
 				internalId=record.get('internalId'),
 				fileType=record.get('fileType'),
 				attachmentFileField,
+				orderFileType = view.lookupReference('orderFileType'+internalId),
 				webOrderAttachmentInfoGrid = view.lookupReference('webOrderAttachmentInfoGrid'),
 				store=webOrderAttachmentInfoGrid.store;
 				attachmentFileField = view.lookupReference('attachment'+internalId);
@@ -485,12 +524,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 			else{
 				if(form.isResubmit){
 					form.down('#oldOrderFileDeleted').setValue(true);
-					
 				}
 				if(attachmentFileField){
 					attachmentFileField.reset();
 				}
-				orderFileType.reset();
+				orderFileType.destroy();
 			}
 			store.remove(record);
 			webOrderAttachmentInfoGrid.getView().refresh();
