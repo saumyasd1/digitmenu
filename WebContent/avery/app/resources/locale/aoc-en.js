@@ -408,6 +408,7 @@ Ext.define('AOC.lang.lit',{
     "emailMailReceived":'1',
     "identifyingMail":'2',
     "emailUnidentifiedStatus":'3',
+    "emailErrorStatus":'57',
     "unrecognizedEmailStatus":'4',
     "emailIdentifiedStatus":"5",
     "emailAttachmentInfoGridUnIdentifiedStatus":"6",

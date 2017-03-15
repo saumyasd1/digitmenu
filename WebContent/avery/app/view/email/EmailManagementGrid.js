@@ -59,7 +59,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
   				renderer:function(value, metaData, rec){
   					if(value){
   						var status = rec.get('status');
-  						if(status == AOCLit.emailUnidentifiedStatus){
+  						if(status == AOCLit.emailUnidentifiedStatus | status == AOCLit.emailErrorStatus){
 	  						var comment = Ext.String.htmlEncode(value);
 	  						metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
 							return Settings.config.defaultIcons.commentColumnIcon;
