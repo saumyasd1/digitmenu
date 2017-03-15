@@ -265,14 +265,16 @@ public class ProductLine extends MainAbstractEntity{
 	@Column(name="orderInMailBody")
 	private Boolean orderInMailBody;
 	
-	@Column(name = "splitShipSetBy", length = 5)
-	private String splitShipSetBy;
+	/*These columns are removed from the database and hence commented in the pojo*/
 	
-	@Column(name = "packingInstruction")
-	private String packingInstruction;
+	/*@Column(name = "splitShipSetBy", length = 5)
+	private String splitShipSetBy;*/
+	
+	/*@Column(name = "packingInstruction")
+	private String packingInstruction;*/
 	
 	
-	public String getSplitShipSetBy() {
+	/*public String getSplitShipSetBy() {
 		return splitShipSetBy;
 	}
 
@@ -286,7 +288,7 @@ public class ProductLine extends MainAbstractEntity{
 
 	public void setPackingInstruction(String packingInstruction) {
 		this.packingInstruction = packingInstruction;
-	}
+	}*/
 
 	public Boolean getOrderInMailBody() {
 		return orderInMailBody;
