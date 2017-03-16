@@ -3,7 +3,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	requires : ['AOC.util.Helper'],
 	controller:'taskManagerController',
 	itemId : 'TaskManagerGriditemId',
-    alias : 'widget.taskManagergrid',
+    alias : 'widget.taskmanagergrid',
     cls:'aoc-panel',
     emptyText: AOCLit.emptyDataMsg,
     reserveScrollbar:true,
@@ -174,16 +174,16 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 				handler:'openAdvancedSearchWindow'
 			 },
 			 {
-					hidden:true, 
-					//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
-					iconCls:'fa fa-times',
-					ui:'blue',
-					cls:'blue-btn',
-					itemId:'clearadvanedsearch',
-					reference:'clearAdvSearch',
-					handler:'clearAdvancedSearch',
-					tooltip:'Clear Search'
-				}
+				hidden:true, 
+				//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
+				iconCls:'fa fa-times',
+				ui:'blue',
+				cls:'blue-btn',
+				itemId:'clearadvanedsearch',
+				reference:'clearAdvSearch',
+				handler:'clearAdvancedSearch',
+				tooltip:'Clear Search'
+			 }
 		];
 	},
 	buildDockedItems : function(){

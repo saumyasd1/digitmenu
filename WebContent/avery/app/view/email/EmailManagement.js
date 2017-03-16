@@ -6,8 +6,9 @@ Ext.define('AOC.view.email.EmailManagement',{
          'AOC.view.viewmail.ViewMail'
 	],
 	alias : 'widget.emailmanagement',
-	itemId : 'emailmanagementitemId',
-	layout :'fit', 
+	itemId : 'emailManagementItemId',
+	layout :'card',
+	activeItem: 0,
 	border:'4 4 4 4',
 	
 	initComponent : function() {
@@ -17,25 +18,12 @@ Ext.define('AOC.view.email.EmailManagement',{
 	buildItems:function(){
 		return [
 			{
-    			xtype : 'container',
-    			flex : 1.8,
-    			layout:'card',
-				itemId:'emailPanel',
-				collapsible :false,
-				activeItem: 0,
-				hidden:false,
-    			items:[
-					{
-						xtype:'emailmanagementgrid',
-						itemId:'EmailMangementitemId'
-					},
-					{
-						xtype:'viewmail',
-						reference:'viewMailContainer',
-						itemId: 'viewMailItemId'
-					}
-    			]
-    		}
+				xtype:'emailmanagementgrid'
+			},
+			{
+				xtype:'viewmail',
+				reference:'viewMailContainer'
+			}
 		]
 	}
 });

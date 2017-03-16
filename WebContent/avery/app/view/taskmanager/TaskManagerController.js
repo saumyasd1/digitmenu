@@ -20,7 +20,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
             	viewMail: function(){  
             		currentRecord = e.record;
 					var id = currentRecord.get('id'),
-						panel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
+						panel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
 						taskManagerGrid = panel.queryById('TaskManagerGriditemId');
 						form = panel.down('#viewmailformItemId'),
 						viewMail = panel.down('#viewMailItemId');

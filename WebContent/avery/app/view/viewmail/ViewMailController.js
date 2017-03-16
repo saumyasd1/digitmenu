@@ -62,20 +62,11 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
     	var owner = this.getView().ownerCt,
     		itemId = '#'+owner.itemId;
     	
-    	if(owner.itemId=='emailPanel'){  		   
-    	   var panel=Ext.ComponentQuery.query('#emailPanel')[0];
-    	   var emailManagement=panel.down('#EmailMangementitemId');
-    	   panel.getLayout().setActiveItem(emailManagement);
-    	   emailManagement.getView().refresh();
-    	   emailManagement.getStore().load();
-    	}
-    	else if(owner.itemId=='taskManagerPanel'){  		   
-    	   var panel=Ext.ComponentQuery.query('#taskManagerPanel')[0];
-    	   var taskManager=panel.down('#TaskManagerGriditemId');
-    	   panel.getLayout().setActiveItem(taskManager);
-    	   taskManager.getView().refresh();	
-    	   taskManager.getStore().load();
-    	}
+    	var panel=Ext.ComponentQuery.query(itemId)[0];
+ 	   	panel.getLayout().setActiveItem(0);
+ 	   	var activeItem = panel.getLayout().getActiveItem();
+ 	   //activeItem.getView().refresh();
+ 	   	activeItem.getStore().load();
     },
   	
   	onSaveBtnClicked:function(btn){

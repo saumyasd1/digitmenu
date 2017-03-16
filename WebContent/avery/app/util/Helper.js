@@ -452,6 +452,8 @@ Ext.define('AOC.util.Helper',{
 		var con = AOC.app.getController('MenuController');
         con.selectCard(screenName);
         con.selectMenuItem(screenName);
+        var section= Ext.ComponentQuery.query(screenName)[0];
+        section.getLayout().setActiveItem(0);
 	},
 	
 	getIconClass:function(value){
