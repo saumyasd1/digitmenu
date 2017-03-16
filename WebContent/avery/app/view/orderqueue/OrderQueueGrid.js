@@ -93,26 +93,29 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 						}
 				}
 			},
-			{   header: '<img src="' +  AOC.config.Settings.buttonIcons.attacheImageSrc + '" />',
+			{   header: '<i style="font-size:16px; color:black"; class="fa fa-paperclip" ></i>',
 				width:40,
 				dataIndex:'OrderFile',
+				align:'center',
 				tooltip:'Order File',
 				renderer:function(v, metadata, record){
 					var filename=record.get('orderFileName');
 					metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(filename) + '</font>"';
-					return '<img class="vieworderattachment" src="' + attacheImageSrc + '" />';
+					return '<i style="font-size:16px; color:black; cursor:pointer;" class="vieworderattachment fa fa-paperclip" ></i>';
 				}
 			},
 			{
-				header: '<img src="' + AOC.config.Settings.buttonIcons.clip + '" />',
+				header: '<i style="font-size:16px; color:black;" class="fa fa-file-text-o" ></i>',
 				width:50,
 				hideable: true,
+				align:'center',
 				tooltip:'Additional File',
 				dataIndex:'attachmentPresent',
-				renderer:function(v,cell,record){
+				renderer:function(v,metadata,record){
 					var fileCount = record.data.additionalFileCount;
 					if(fileCount>0){
-					return '<img style="cursor:pointer;" class="viewattachment" src="' + AOC.config.Settings.buttonIcons.clip + '" />';
+						metadata.tdAttr = 'data-qtip="<font color=blue>Additional file attachment</font>"';
+					return '<i style="font-size:16px; color:black; cursor:pointer;" class="viewattachment fa fa-file-text-o" ></i>';
 					}
 					else{
 						return '';

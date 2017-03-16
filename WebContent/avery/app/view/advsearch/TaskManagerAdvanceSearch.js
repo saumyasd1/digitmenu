@@ -119,7 +119,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 							},{
 								xtype:'combo',
 								displayField:'csrName',
-								fieldLabel:'CSR',
+								fieldLabel:AOCLit.CSRName,
 								reference:'csrCombo',
 								name:'assignCSR',
 								valueField:'id',

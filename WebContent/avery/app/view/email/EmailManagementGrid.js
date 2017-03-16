@@ -2,7 +2,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	extend : 'Ext.grid.Panel',
 	requires : ['AOC.util.Helper','AOC.view.ux.CustomSearchField'],
 	controller:'emailManagementController',
-	itemId : 'EmailMangementitemId',
+	itemId : 'emailManagementGrid',
     alias : 'widget.emailmanagementgrid',
     cls:'aoc-panel',
     emptyText: AOCLit.emptyDataMsg,
@@ -77,7 +77,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 				menuDisabled  :true,
 				renderer:function(v, metadata, record){
 					if(v=='Email')
-						return '<i data-qtip="<font color=blue>Email</font>" class="viewemail fa fa-envelope-o"></i>';
+						return '<i data-qtip="<font color=blue>Email</font>" style="font-size:16px; color:black"; class="viewemail fa fa-envelope-o"></i>';
 					else{
 						return '<i data-qtip="<font color=blue>Web</font>" style="font-size:16px; color:black"; class="fa fa-globe"></i>';
 					}
