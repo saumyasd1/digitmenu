@@ -25,7 +25,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					currentRecord = e.record;
 					var id = currentRecord.get('id'),
 						form = Ext.ComponentQuery.query('#viewmailformItemId')[0],
-						panel = Ext.ComponentQuery.query('#emailPanel')[0],
+						panel = Ext.ComponentQuery.query('#emailManagementItemId')[0],
 						emailAttachmentInfoGrid = panel.down('#EmailAttachmentInfoGriditemId');
 					
 					Helper.showHideEmailBodySubjectFields(form, currentRecord);

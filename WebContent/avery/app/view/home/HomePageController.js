@@ -113,7 +113,7 @@ Ext.define('AOC.view.home.HomePageController', {
         
         Helper.changeScreen('taskmanager');
 		
-		Ext.ComponentQuery.query('maincontainer taskManagergrid #clearadvanedsearch')[0].setVisible(true);
+		Ext.ComponentQuery.query('maincontainer taskmanagergrid #clearadvanedsearch')[0].setVisible(true);
 		store.filter({
 			id: 'query',
 			property: 'query',

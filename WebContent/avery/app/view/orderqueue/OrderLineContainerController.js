@@ -14,8 +14,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     },
     isSalesOrderSubmittedFlag : true,
     backButton:function(){
-    	var orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
-    	//active orderqueue item
+    	var orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId')[0];
     	orderQueueView.getLayout().setActiveItem(0);
     	
     	var ordeQueueGrid = orderQueueView.getLayout().activeItem;

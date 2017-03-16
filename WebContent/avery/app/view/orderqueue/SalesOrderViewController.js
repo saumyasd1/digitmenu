@@ -68,14 +68,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		   win.show();
       	 },
     backButton:function(){
-    	 var bulkUpdate=Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-    	 var panel=Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
-    	 var activeIndex = panel.items.indexOf(this.getView());
-    	 var currentRecord=this.runTime.getOrderQueueActiveRecord();
+    	var panel=Ext.ComponentQuery.query('#orderQueueViewItemId')[0];
+    	var activeIndex = panel.items.indexOf(this.getView());
+    	var currentRecord=this.runTime.getOrderQueueActiveRecord();
         panel.getLayout().setActiveItem(parseInt(activeIndex)-1);
-        var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
-        var currentRecord=this.runTime.getOrderQueueActiveRecord();
-        var row = ordeQueueGrid.getView().getRow(currentRecord);
+        //var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
+        //var currentRecord=this.runTime.getOrderQueueActiveRecord();
+        //var row = ordeQueueGrid.getView().getRow(currentRecord);
 //        var el = Ext.fly(row);
 //        if(el)
 //        el.highlight("#c1ddf1", {

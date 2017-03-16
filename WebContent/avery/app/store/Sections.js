@@ -12,7 +12,7 @@ Ext.define('AOC.store.Sections', {
 //              ['contacts.png', 'ADDRESS', 'addressmanage', false, 0, 'addressmanagegrid']
               //['archives.png','ARCHIVE','archivemanage',false,0]
 		['fa fa-home', 'HOME', 'homewrapper',true,0],
-		['fa fa-tasks', 'TASK MANAGER', 'taskmanager', false, 0, 'taskManagergrid'],
+		['fa fa-tasks', 'TASK MANAGER', 'taskmanager', false, 0, 'taskmanagergrid'],
         ['fa fa-envelope', 'EMAIL QUEUE', 'emailmanagement', false, 0, 'emailmanagementgrid'],
         ['fa fa-calendar-o', 'ORDER QUEUE', 'orderqueueview', false, 0, 'orderqueuegrid'],
         ['fa fa-globe', 'WEB ORDER', 'weborderview', false, 0, 'weborderview'],

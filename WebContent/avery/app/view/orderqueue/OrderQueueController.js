@@ -74,7 +74,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     viewOrderLineScreen:function(currentRecord){
     	var me = this,
     		id = currentRecord.get('id'),
-    	    orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId1')[0],
+    	    orderQueueView = Ext.ComponentQuery.query('#orderQueueViewItemId')[0],
 			status = currentRecord.get('Status');
 	
 		orderQueueView.insert({
