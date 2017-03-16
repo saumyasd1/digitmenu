@@ -391,23 +391,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						value:'<div class="activeBtn fa fa-toggle-off" style="font-size:24px;color:#ccc;cursor:pointer;"></div>'
 					}
-//					{
-//                        xtype: 'togglebutton',
-//                        fieldLabel: 'Active',
-//                        value: 0,
-//                        labelSeparator:'',
-//                        labelAlign:'top',
-//                        labelStyle:Settings.config.defaultFormLabelStyle,
-//                        labelWidth : 200,
-//      		            width : 30,
-//      		            height:60,
-//      		            bind:'{active}',
-//                        listeners: {
-//                            changecomplete: function(slider, newValue, thumb, eOpts ){
-//                                // 'do the required action'
-//                            }
-//                        }
-//					}
 			   ]
 			},
 			{
