@@ -86,6 +86,9 @@ int pageSize=100;
 		.aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small{color:#fff;}
 		.blue-btn.x-btn-over{box-shadow: 0px 0px 4px 0px #65beed;}
 		.x-btn{border-radius:2px !important;}
+		.aoc-wi-form .x-accordion-item .x-panel-header-default {
+		    border: solid 1px #f5f5f5;
+		}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>
