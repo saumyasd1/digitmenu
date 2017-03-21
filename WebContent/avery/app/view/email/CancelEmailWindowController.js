@@ -18,7 +18,7 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
             method: 'PUT',
             jsonData: parameters,
             success: function(response, opts) {
-                var orderEmailQueueView= Ext.ComponentQuery.query('#emailPanel')[0];
+                var orderEmailQueueView= Ext.ComponentQuery.query('#emailManagementItemId')[0];
                 var activeItem=orderEmailQueueView.getLayout().getActiveItem();
                 activeItem.getStore().load();
                 Ext.Msg.alert(AOCLit.success,AOCLit.emailMovedToTaskManagerSuccessAlert);

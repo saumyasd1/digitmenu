@@ -68,7 +68,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 					
 					var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
 						callback:function(rec){
-							var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerPanel')[0],
+							var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
 								taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId');
 							
 							assignCsrWin.mask(AOCLit.pleaseWaitTitle);

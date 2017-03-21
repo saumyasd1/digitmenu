@@ -20,7 +20,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
             method: 'PUT',
             jsonData: parameters,
             success: function(response, opts) {
-                var orderQueueView= Ext.ComponentQuery.query('#orderQueueViewItemId1')[0];
+                var orderQueueView= Ext.ComponentQuery.query('#orderQueueViewItemId')[0];
                 var activeItem=orderQueueView.getLayout().getActiveItem();
                 if(activeItem.xtype.indexOf('orderline')!=-1){
                 	var orderlineexpandablegrid = activeItem.down('grid'),
