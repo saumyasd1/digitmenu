@@ -437,6 +437,8 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "orderFileOrderType", length = 50)
 	private String orderFileOrderType;
 	
+	@Column(name= "skuQtyDifference", length = 100)
+	private String skuQtyDifference;
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient
@@ -1477,6 +1479,14 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
 		this.additionalLabelInternalItem = additionalLabelInternalItem;
+	}
+	
+	public String getSkuQtyDifference() {
+		return skuQtyDifference;
+	}
+
+	public void setSkuQtyDifference(String skuQtyDifference) {
+		this.skuQtyDifference = skuQtyDifference;
 	}
 //
 //	public List<SalesOrder> getListSalesOrderLine() {
