@@ -67,7 +67,7 @@ Ext.define('AOC.controller.MenuController', {
 	    },
 	    {
 	    	ref: 'orderQueueViewContainer',
-    		selector:'viewport canwas maincontainer orderqueueview #orderQueueViewItemId1'
+    		selector:'viewport canwas maincontainer orderqueueview'
 	    },
 	    {
 	        ref:'clearOrderQueueAdvSearch',
