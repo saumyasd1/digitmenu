@@ -5,6 +5,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     controller:'viewMailController',
     reserveScrollbar:true,
     columnLines:true,
+    requires:['Ext.grid.selection.SpreadsheetModel'],
     isIdentifiedFlag:false,
     requires:[
           'AOC.view.viewmail.ViewMailController',
@@ -20,9 +21,16 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     
     listeners:{
 		edit:'editEmailAttachmentGridColumn',
-		cellclick:'onEmailAttachmentGridCellClick'
+		cellclick:'onEmailAttachmentGridCellClick',
+		'selectionchange':function( grid, selection, eOpts ){
+				AOC.util.Helper.emailAttachmentGrid( grid, selection, eOpts);
+   	 }
 	},
-    
+	selModel:{
+		type: 'spreadsheet',
+		columnSelect: true,
+		checkboxSelect: true
+	},
     plugins: [
 		{
 	        ptype: 'cellediting',
@@ -61,8 +69,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	        }
 	    }
 	],
-	selType: 'checkboxmodel',
-
+     
     buildColumns : function(){
     	var me = this;
         return {
