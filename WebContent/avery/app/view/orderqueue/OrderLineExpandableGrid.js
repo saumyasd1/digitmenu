@@ -1276,7 +1276,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					text: 'Variable Field Value',
 					dataIndex: 'variableDataValue',
 					flex:2,
-					editor: 'textfield',
+					editor: 'textarea',
 					renderer:function(v, metadata,rec){
 						var mandatory = rec.get('mandatory');
 						metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
