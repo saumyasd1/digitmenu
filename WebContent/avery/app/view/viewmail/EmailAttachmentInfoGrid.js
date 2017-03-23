@@ -20,7 +20,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
     },
     
     listeners:{
-		//edit:'editEmailAttachmentGridColumn',
+		edit:'editEmailAttachmentGridColumn',
 		cellclick:'onEmailAttachmentGridCellClick',
 		'selectionchange':function( grid, selection, eOpts ){
 				AOC.util.Helper.emailAttachmentGrid( grid, selection, eOpts);

@@ -1262,7 +1262,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					dataIndex: 'variableFieldName',
 					flex:1.8,
 					renderer:function(v, metadata,rec){
+						
 						var mandatory = rec.get('mandatory');
+						
 						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>"';
 						if(mandatory == 'Y'){
 							return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
@@ -1276,14 +1278,25 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					text: 'Variable Field Value',
 					dataIndex: 'variableDataValue',
 					flex:2,
-					editor: 'textarea',
+					editor: {
+							xtype:'textareafield',
+							height:40
+						   },
 					renderer:function(v, metadata,rec){
-						var mandatory = rec.get('mandatory');
+						var mandatory = rec.get('mandatory'),
+						isContainsFiberLine = rec.get('variableFieldName').toLowerCase(),
+						variableDataValue = rec.get('variableDataValue'),
+						fiberPercent = rec.get('fiberPercent');
 						metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
 						if(Ext.isEmpty(v) && mandatory == 'Y'){
 							metadata.style = AOCLit.cellColor;
 						}
-						return v;
+						else if(isContainsFiberLine.includes('fiber line') && (fiberPercent>0 && variableDataValue=="" ) ){
+							metadata.style = AOCLit.cellColor;
+						}
+						else{
+							return v;
+						}
 					}
 				}, 
 				{
@@ -1295,7 +1308,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				  editor: {
 					  xtype:'textfield',
 					  disabled:true
-				  }
+				  },
+				  renderer:function(v, metadata,rec){
+						var isContainsFiberLine = rec.get('variableFieldName').toLowerCase(),
+						variableDataValue = rec.get('variableDataValue'),
+						fiberPercent = rec.get('fiberPercent');
+						if(isContainsFiberLine.includes('fiber line') && Ext.isEmpty(fiberPercent)){
+							metadata.style = AOCLit.cellColor;
+						}
+						else{
+							return v;
+						}
+					}
 				},
 				{
 					text:'Help Message',

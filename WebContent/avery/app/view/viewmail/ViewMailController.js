@@ -78,14 +78,10 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
   		if(editorPlugin.editing){
   			gridView.focus();
   		}
-  		var updatedRecords = store.getModifiedRecords();
-  		var len = updatedRecords.length;
   		
-  		for(var i=0;i<len;i++){
-  			me.editEmailAttachmentGridColumn(gridView, updatedRecords[i]);
-  		}
-  		var length = gridView.emailGridRecordArray.length;
-  		for(var i=0; i<length; i++){
+  		var len = gridView.emailGridRecordArray.length;
+  		
+  		for(var i=0; i<len; i++){
   			var rec = gridView.emailGridRecordArray[i];
   			if((rec.fileContentType == 'Order' && !rec.productLineId) || (rec.fileContentType == 'AdditionalData' && !rec.productLineId)){
   				Ext.Msg.alert(AOCLit.warningTitle,'Please select Partner Data Structure.');
@@ -169,8 +165,10 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 		    }
 		});
 	},
-	editEmailAttachmentGridColumn:function(grid, record){
-		var me = this;
+	editEmailAttachmentGridColumn:function(editor, context){
+		var me = this,
+			record = context.record
+			grid = editor.grid,
 			obj = {
 				productLineId:record.get('dataStructureNameId'), 
 				id:record.get('id'),
