@@ -4,6 +4,8 @@ Ext.define('AOC.view.webform.WebFormController', {
   
     runTime : AOC.config.Runtime,
     fileArray:[],
+    latestOrderFieldCount :1,
+    latestAttachmentFieldCount:1,
     hideAndDestroyAttachmentField:function(){
     	var me = this,
     		refs = me.getReferences(),
@@ -208,6 +210,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 									'focus': 'notifyByMessage'
 								}
 							});
+				    		this.latestOrderFieldCount++;
 				    		webOrderForm.orderFileAttachmentCount++;
 							this.insertFileInGrid(value,'Order File Type',true, count, null);
 							obj.hide();
@@ -429,6 +432,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 						});
 		    		
 						//webOrderForm.totalAttachmentCount++;
+			    		this.latestAttachmentFieldCount++;
 						webOrderForm.attachmentCount++;
 						this.insertFileInGrid(value, 'Attachment', true, count, null, additionalDataFileKey.getValue());
 						obj.hide();
@@ -437,8 +441,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 						Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maxAttachmentCount+' attachment.')
 						obj.reset();
 						additionalDataFileKey.reset();
-						obj.hide();
-						additionalDataFileKey.hide();
+						obj.setDisabled(true);
 					}
 		    	}
 		    }else{
@@ -505,6 +508,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 				if(attachmentFileField){
 					attachmentFileField.destroy();
 					additionalDataFileKey.destroy();
+					
+					attachmentFileTypeNew = view.lookupReference('attachment'+this.latestAttachmentFieldCount);
+					attachmentFileTypeNew.setDisabled(false);
+					form.attachmentCount--;
 				}
 				if(form.isResubmit){
 					var fileIdValue = form.down('#oldAdditionalFileId').getValue(),
@@ -529,6 +536,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 					attachmentFileField.reset();
 				}
 				orderFileType.destroy();
+				orderFileTypeNew = view.lookupReference('orderFileType'+this.latestOrderFieldCount);
+				orderFileTypeNew.setDisabled(false);
+				form.orderFileAttachmentCount--;
+				
 			}
 			store.remove(record);
 			webOrderAttachmentInfoGrid.getView().refresh();

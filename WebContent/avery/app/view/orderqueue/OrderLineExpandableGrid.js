@@ -1313,7 +1313,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						var isContainsFiberLine = rec.get('variableFieldName').toLowerCase(),
 						variableDataValue = rec.get('variableDataValue'),
 						fiberPercent = rec.get('fiberPercent');
-						if(isContainsFiberLine.includes('fiber line') && Ext.isEmpty(fiberPercent)){
+						if(isContainsFiberLine.includes('fiber line') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
 							metadata.style = AOCLit.cellColor;
 						}
 						else{

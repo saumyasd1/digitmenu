@@ -53,6 +53,11 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     		}
     	}
     	this.orderFileAttachmentCount = 1;
+    	
+    	var orderFileArray = this.query('[name^=orderFileType]');
+    	for(var i=0,len=orderFileArray.length;i<len;i++){
+    		orderFileArray[i].destroy();
+    	}
     	currentOrderFile = this.queryById('orderFileType1');
     	if(currentOrderFile){
     		!currentOrderFile.isVisible() ? currentOrderFile.show() :'';
@@ -81,15 +86,18 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	}
     	
     	this.attachmentCount=1;
-    	currentAttachment = this.queryById('attachment1'),
-    	additionalDataFileKey1 = this.queryById('additionalDataFileKey1');
-    	if(currentAttachment){
-    		currentAttachment.hide();
-	    	if(additionalDataFileKey1){
-	    		additionalDataFileKey1.hide();
-			}
-    	}else{
-    		form.add(
+    	
+    	var attachmentFileArray = this.query('[name^=attachement]');
+    	for(var i=0,len=attachmentFileArray.length;i<len;i++){
+    		attachmentFileArray[i].destroy();
+    	}
+    	
+    	var additionalDataFileArray = this.query('[name^=additionalDataFileKey]');
+    	for(var i=0,len=additionalDataFileArray.length;i<len;i++){
+    		additionalDataFileArray[i].destroy();
+    	}
+    	
+    	form.add(
 				{
 					xtype:'fieldcontainer',
 					layout:'hbox',
@@ -136,7 +144,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					]
 				}
 			);
-    	}
         this.form.reset();
         this.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
