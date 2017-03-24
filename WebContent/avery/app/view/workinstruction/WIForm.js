@@ -4,12 +4,16 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	cls:'aoc-wi-form',
 	requires:[
 	   'AOC.view.workinstruction.WISystemGrid',
-	   'AOC.view.workinstruction.WIOrgGrid'
+	   'AOC.view.workinstruction.WIOrgGrid',
+	   'AOC.view.workinstruction.WIPanel',
+	   'AOC.view.workinstruction.WIAOCFieldGrid'
 	],
 	controller:'wiformcontroller',
 	viewModel: {
         type: 'wiformviewmodel'
     },
+    scrollable:true,
+    bodyPadding:10,
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -45,34 +49,35 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        {
 	        	xtype:'form',
 	        	reference:'wIForm',
+	        	scrollable:true,
 	        	layout:{
-	        		type:'accordion',
-	        		animate:true
-	        		//activeOnTop:true
+	        		type:'anchor'
 	        	},
 	        	border:false,
 	        	items:[
 	        	    me.getProfileHeaderItems(),
-	        	    {
-	        	    	title:'Work Instruction (WI)',
-	        	    	bodyPadding:10,
-	        	    	html:'Instruction'
-	        	    },
-	        	    {
-	        	    	title:'SKU',
-	        	    	bodyPadding:10,
-	        	    	html:'SKU Instruction'
-	        	    }
+	        	    me.getWorkingInstructionItems()
 	        	]
 	        }
 		]
+	},
+	getWorkingInstructionItems:function(){
+		return {
+			  xtype:'wipanel',
+			  margin:'5 0',
+			  cls:'wi-form-panel-header',
+			  title:'Work Instruction',
+			  bodyPadding:'10',
+			  titleAlign:'center'
+		  };
 	},
 	getProfileHeaderItems:function(){
 		var me = this;
 		return {
 		   title:'Partnership Profile',
+		   cls:'wi-form-panel-header',
+		   titleAlign:'center',
 		   bodyPadding:'10 20',
-		   scrollable:true,
 		   layout:{
 			   type:'anchor'
 		   },
@@ -81,7 +86,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        	  xtype:'fieldcontainer',
 	        	  layout:'hbox',
 	        	  margin:'0 0 5 0',
-	        	  anchor:'100%',
+	        	  flex:1,
 	        	  defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -365,404 +370,380 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	},
 	getSystemOrg:function(){
 		return {
-		   xtype:'fieldset',
-		   title:'System',
 		   margin:'10 0',
-		   bodyPadding:5,
-		   collapsible:true,
-		   defaults:{
-			   layout:{
-				   type:'vbox',
-				   align:'stretch'
-			   }
+		   layout:{
+			   type:'vbox',
+			   align:'stretch'
 		   },
 		   items:[
 		      {
 		    	  xtype:'wisystemgrid',
 		    	  reference:'wiSystemGrid',
 		    	  border:'solid 1px #ccc;',
-		    	  height:100
+		    	  flex:1,
+		    	  title:'System',
+		    	  titleAlign:'center',
+		    	  height:250
 		      },
 		      {
-		    	  xtype:'fieldcontainer',
-		    	  border:false,
-		    	  layout:{
-		    		  type:'hbox',
-		    		  align:'stretch'
-		    	  },
-		    	  items:[
-		    	      {
-		    	    	  xtype:'wiorggrid',
-				    	  reference:'wiorgGrid',
-				    	  flex:1,
-				    	  height:100,
-				    	  border:'solid 1px #ccc;'
-		    	      },
-		    	      {
-		    	    	  xtype:'button',
-		    	    	  text:'+Org',
-		    	    	  margin:'45 0 5 5',
-		    	    	  ui:'white',
-		    	    	  width:50
-		    	      }
-		    	  ]
-		      }
+    	    	  xtype:'wiorggrid',
+		    	  reference:'wiorgGrid',
+		    	  flex:1,
+		    	  height:250,
+		    	  border:'solid 1px #ccc;',
+		    	  title:'Org',
+		    	  margin:'10 0',
+		    	  titleAlign:'center'
+    	      }
 		   ]
 	   }
 	},
 	getSchemaIdentificationItems:function(){
 		return{
-			xtype:'fieldset',
 			title:'Schema Identification',
-			collapsible:true,
+			titleAlign:'center',
+			cls:'wi-form-panel-header',
 			reference:'schemaIdentification',
-			bodyPadding:'5',
+			bodyPadding:10,
 			margin:'10 0',
+			layout:{
+				type:'vbox',
+				align:'stretch'
+			},
 			items:[
 			    {
-			    	xtype:'fieldset',
-			    	title:'Email Subject',
-			    	reference:'emailSubject',
-			    	bodyPadding:'5',
-			    	collapsible:true,
-			    	items:[
-			    	    {
-			    	    	xtype:'fieldcontainer',
-			    	    	margin:'0 0 5 0',
-			    	    	layout:{
-			    	    		type:'hbox',
-			    	    		align:'stretch'
-			    	    	},
-			    	    	defaults:{
-								labelSeparator:'',
-								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-								labelAlign:AOC.config.Settings.form.topLabelAlign
-								//labelWidth:150
-							},
-			    	    	items:[
-			    	    	    {
-			    	    	    	xtype:'combo',
-			    	    	    	fieldLabel:'Contain / Exact Match',
-			    	    	    	reference:'emailContainExactMatch',
-			    	    	    	name:'emailContainExactMatch',
-				                	bind:'{detail.emailContainExactMatch}',
-			    	    	    	queryMode:'local',
-			    	    	    	displayField:'name',
-			    	    	    	valueField:'name',
-			    	    	    	store:new Ext.data.JsonStore({
-			    	    	    		data:[{name:'Contain'},{name:'Exact Match'}],
-			    	    	    		fields:['name']
-			    	    	    	}),
-			    	    	    	flex:1
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'textfield',
-			    	    	    	name:'emailKeyWording',
-				                	bind:'{detail.emailKeyWording}',
-			    	    	    	fieldLabel:'Key Wordings',
-			    	    	    	flex:1,
-			    	    	    	margin:'0 10'
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'combo',
-			    	    	    	name:'emailSubjectDataStructureRule',
-				                	bind:'{detail.emailSubjectDataStructureRule}',
-			    	    	    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
-			    	    	    	displayField:'name',
-			    	    	    	valueField:'name',
-			    	    	    	queryMode:'local',
-			    	    	    	store:new Ext.data.JsonStore({
-			    	    	    		data:[{name:'Yes'},{name:'No'}],
-			    	    	    		fields:['name']
-			    	    	    	})
-			    	    	    }
-			    	    	]
-			    	    },
-			    	    {
-			    	    	xtype:'displayfield',
-			    	    	value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
-			    	    },
-			    	    {
-			    	    	xtype:'textfield',
-			    	    	hideLabel:true,
-			    	    	name:'emailSubjectDataStructureOtherRule',
-		                	bind:'{detail.emailSubjectDataStructureOtherRule}',
-			    	    	width:300
-			    	    }
-			    	]
-			    },
-                {
-			    	xtype:'fieldset',
-			    	title:'Order File',
-			    	reference:'orderFileFieldSet',
-			    	bodyPadding:'5',
-			    	collapsible:true,
-			    	items:[
-			    	    {
-			    	    	xtype:'fieldcontainer',
-			    	    	margin:'0 0 5 0',
-			    	    	layout:{
-			    	    		type:'hbox',
-			    	    		align:'stretch'
-			    	    	},
-			    	    	defaults:{
-								labelSeparator:'',
-								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-								labelAlign:AOC.config.Settings.form.topLabelAlign,
-								labelWidth:150
-							},
-			    	    	items:[
-			    	    	    {
-			    	    	    	xtype:'combo',
-			    	    	    	fieldLabel:'Contain / Exact Match',
-			    	    	    	reference:'orderFileContainExactMatch',
-			    	    	    	name:'orderFileContainExactMatch',
-				                	bind:'{detail.orderFileContainExactMatch}',
-			    	    	    	queryMode:'local',
-			    	    	    	displayField:'name',
-			    	    	    	valueField:'name',
-			    	    	    	store:new Ext.data.JsonStore({
-			    	    	    		data:[{name:'Contain'},{name:'Exact Match'}],
-			    	    	    		fields:['name']
-			    	    	    	}),
-			    	    	    	flex:1
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'textfield',
-			    	    	    	name:'orderFileKeyWording',
-				                	bind:'{detail.orderFileKeyWording}',
-			    	    	    	fieldLabel:'Key Wordings',
-			    	    	    	flex:1,
-			    	    	    	margin:'0 10'
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'textfield',
-			    	    	    	name:'orderFormat',
-				                	bind:'{detail.orderFormat}',
-			    	    	    	fieldLabel:'Format',
-			    	    	    	flex:1
-			    	    	    }
-			    	    	]
-			    	    },
-			    	    {
-			    	    	xtype:'radiogroup',
-			    	    	column:2,
-			    	    	width:300,
-			    	    	items:[
-			    	    	    {boxLabel:'If Text', name:'order', inputValue:1, checked:true},
-			    	    	    {boxLabel:'If Excel', name:'order', inputValue:2}
-			    	    	],
-		                	bind:'{detail.order}',
-			    	    	listeners:{
-			    	    		change:'onOrderRadioChange'
-			    	    	}
-			    	    },
-			    	    {
-			    	    	xtype:'fieldcontainer',
-			    	    	margin:'0 0 5 0',
-			    	    	defaults:{
-								labelSeparator:'',
-								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-								labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-								labelWidth:200
-							},
-							layout:{
-								type:'hbox',
-								align:'stretch'
-							},
-							items:[
-							   {
-								   xtype:'combo',
-								   name:'orderTextFirstLastPage',
-				                	bind:'{detail.orderTextFirstLastPage}',
-								   reference:'orderTextFirstLastPage',
-								   fieldLabel:'First Page/Last Page',
-								   displayField:'name',
-								   valueField:'name',
-								   queryMode:'local',
-								   flex:1,
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'First Page'},{name:'Last Page'}],
-									   fields:['name']
-								   })
-							   },
-							   {
-								   xtype:'combo',
-								   name:'orderTextPosition',
-				                	bind:'{detail.orderTextPosition}',
-								   fieldLabel:'Top/Mid/Bottom of the page',
-								   displayField:'name',
-								   reference:'orderTextPosition',
-								   valueField:'name',
-								   queryMode:'local',
-								   margin:'0 10',
-								   flex:1,
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
-									   fields:['name']
-								   })
-							   },
-							   {
-								   xtype:'textfield',
-								   name:'orderExcelCell',
-								   reference:'orderExcelCell',
-								   hidden:true,
-								   fieldLabel:'Cell',
-								   flex:1
-							   },
-							   {
-								   xtype:'combo',
-								   name:'orderExcelSheet',
-								   fieldLabel:'1 Sheet/Multiple sheets in a file',
-								   displayField:'name',
-								   hidden:true,
-								   reference:'orderExcelSheet',
-								   valueField:'name',
-								   queryMode:'local',
-								   margin:'0 10',
-								   flex:1,
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'1 Sheet in a file'},{name:'Multiple order sheets in a file'}],
-									   fields:['name']
-								   })
-							   }
-							]
-			    	    }
-			    	]
-			    },
-			    {
-			    	xtype:'fieldset',
-			    	title:'Attachment',
-			    	reference:'attachmentFileFieldSet',
-			    	bodyPadding:'5',
-			    	collapsible:true,
-			    	items:[
-			    	    {
-			    	    	xtype:'fieldcontainer',
-			    	    	margin:'0 0 5 0',
-			    	    	layout:{
-			    	    		type:'hbox',
-			    	    		align:'stretch'
-			    	    	},
-			    	    	defaults:{
-								labelSeparator:'',
-								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-								labelAlign:AOC.config.Settings.form.topLabelAlign,
-								labelWidth:150
-							},
-			    	    	items:[
-			    	    	    {
-			    	    	    	xtype:'combo',
-			    	    	    	fieldLabel:'Contain / Exact Match',
-			    	    	    	reference:'attachmentFileContainExactMatch',
-			    	    	    	name:'attachmentFileContainExactMatch',
-			    	    	    	queryMode:'local',
-			    	    	    	displayField:'name',
-			    	    	    	valueField:'name',
-			    	    	    	store:new Ext.data.JsonStore({
-			    	    	    		data:[{name:'Contain'},{name:'Exact Match'}],
-			    	    	    		fields:['name']
-			    	    	    	}),
-			    	    	    	flex:1
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'textfield',
-			    	    	    	name:'attachmentFileKeyWording',
-			    	    	    	fieldLabel:'Key Wordings',
-			    	    	    	flex:1,
-			    	    	    	margin:'0 10'
-			    	    	    },
-			    	    	    {
-			    	    	    	xtype:'textfield',
-			    	    	    	name:'attachmentFormat',
-			    	    	    	fieldLabel:'Format',
-			    	    	    	flex:1
-			    	    	    }
-			    	    	]
-			    	    },
-			    	    {
-			    	    	xtype:'radiogroup',
-			    	    	column:2,
-			    	    	width:300,
-			    	    	items:[
-			    	    	    {boxLabel:'If Text', name:'attach', inputValue:1, checked:true},
-			    	    	    {boxLabel:'If Excel', name:'attach', inputValue:2}
-			    	    	],
-			    	    	listeners:{
-			    	    		change:'onAttachmentRadioChange'
-			    	    	}
-			    	    },
-			    	    {
-			    	    	xtype:'fieldcontainer',
-			    	    	margin:'0 0 5 0',
-			    	    	defaults:{
-								labelSeparator:'',
-								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-								labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-								labelWidth:200
-							},
-							layout:{
-								type:'hbox',
-								align:'stretch'
-							},
-							items:[
-							   {
-								   xtype:'combo',
-								   name:'attachmentTextFirstLastPage',
-								   reference:'attachmentTextFirstLastPage',
-								   fieldLabel:'First Page/Last Page',
-								   displayField:'name',
-								   valueField:'name',
-								   queryMode:'local',
-								   flex:1,
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'First Page'},{name:'Last Page'}],
-									   fields:['name']
-								   })
-							   },
-							   {
-								   xtype:'combo',
-								   name:'attachmentTextPosition',
-								   fieldLabel:'Top/Mid/Bottom of the page',
-								   displayField:'name',
-								   reference:'attachmentTextPosition',
-								   valueField:'name',
-								   queryMode:'local',
-								   flex:1,
-								   margin:'0 10',
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
-									   fields:['name']
-								   })
-							   },
-							   {
-								   xtype:'textfield',
-								   name:'attachmentExcelCell',
-								   reference:'attachmentExcelCell',
-								   hidden:true,
-								   fieldLabel:'Cell',
-								   flex:1
-							   },
-							   {
-								   xtype:'combo',
-								   name:'attachmentExcelSheet',
-								   fieldLabel:'1 Sheet/Multiple sheets in a file',
-								   displayField:'name',
-								   hidden:true,
-								   reference:'attachmentExcelSheet',
-								   valueField:'name',
-								   queryMode:'local',
-								   margin:'0 10',
-								   flex:1,
-								   store:new Ext.data.JsonStore({
-									   data:[{name:'1 Sheet in a file'},{name:'Multiple order sheets in a file'}],
-									   fields:['name']
-								   })
-							   }
-							]
-			    	    }
-			    	]
-			    }
+			    	xtype:'label',
+			    	text:'Email Subject',
+			    	style:'font-weight:bold;color:#2c3e50;font-size:15px;'
+			    },   
+				{
+					xtype:'fieldcontainer',
+					margin:'0 0 5 0',
+					flex:1,
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign
+					},
+					items:[
+					    {
+					    	xtype:'combo',
+					    	fieldLabel:'Contain / Exact Match',
+					    	reference:'emailContainExactMatch',
+					    	name:'emailContainExactMatch',
+				        	bind:'{detail.emailContainExactMatch}',
+					    	queryMode:'local',
+					    	displayField:'name',
+					    	valueField:'name',
+					    	store:new Ext.data.JsonStore({
+					    		data:[{name:'Contain'},{name:'Exact Match'}],
+					    		fields:['name']
+					    	}),
+					    	flex:1
+					    },
+					    {
+					    	xtype:'textfield',
+					    	name:'emailKeyWording',
+				        	bind:'{detail.emailKeyWording}',
+					    	fieldLabel:'Key Wordings',
+					    	flex:1,
+					    	margin:'0 10'
+					    },
+					    {
+					    	xtype:'combo',
+					    	name:'emailSubjectDataStructureRule',
+				        	bind:'{detail.emailSubjectDataStructureRule}',
+					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
+					    	displayField:'name',
+					    	valueField:'name',
+					    	queryMode:'local',
+					    	store:new Ext.data.JsonStore({
+					    		data:[{name:'Yes'},{name:'No'}],
+					    		fields:['name']
+					    	})
+					    }
+					]
+				},
+				{
+					xtype:'displayfield',
+					flex:1,
+					value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
+				},
+				{
+					xtype:'textfield',
+					hideLabel:true,
+					name:'emailSubjectDataStructureOtherRule',
+					bind:'{detail.emailSubjectDataStructureOtherRule}',
+					width:300
+				},
+				{
+					xtype:'label',
+					text:'Order File',
+	                style:'font-weight:bold;color:#2c3e50;font-size:15px;margin-top:5px;'
+				},
+				{
+	    	    	xtype:'fieldcontainer',
+	    	    	margin:'0 0 5 0',
+	    	    	flex:1,
+	    	    	layout:{
+	    	    		type:'hbox',
+	    	    		align:'stretch'
+	    	    	},
+	    	    	defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign
+					},
+	    	    	items:[
+	    	    	    {
+	    	    	    	xtype:'combo',
+	    	    	    	fieldLabel:'Contain / Exact Match',
+	    	    	    	reference:'orderFileContainExactMatch',
+	    	    	    	name:'orderFileContainExactMatch',
+		                	bind:'{detail.orderFileContainExactMatch}',
+	    	    	    	queryMode:'local',
+	    	    	    	displayField:'name',
+	    	    	    	valueField:'name',
+	    	    	    	store:new Ext.data.JsonStore({
+	    	    	    		data:[{name:'Contain'},{name:'Exact Match'}],
+	    	    	    		fields:['name']
+	    	    	    	}),
+	    	    	    	flex:1
+	    	    	    },
+	    	    	    {
+	    	    	    	xtype:'textfield',
+	    	    	    	name:'orderFileKeyWording',
+		                	bind:'{detail.orderFileKeyWording}',
+	    	    	    	fieldLabel:'Key Wordings',
+	    	    	    	flex:1,
+	    	    	    	margin:'0 10'
+	    	    	    },
+	    	    	    {
+	    	    	    	xtype:'textfield',
+	    	    	    	name:'orderFormat',
+		                	bind:'{detail.orderFormat}',
+	    	    	    	fieldLabel:'Format',
+	    	    	    	flex:1
+	    	    	    }
+	    	    	]
+	    	    },
+	    	    {
+	    	    	xtype:'radiogroup',
+	    	    	column:2,
+	    	    	width:300,
+	    	    	items:[
+	    	    	    {boxLabel:'If Text', name:'order', inputValue:1, checked:true},
+	    	    	    {boxLabel:'If Excel', name:'order', inputValue:2}
+	    	    	],
+                	bind:'{detail.order}',
+	    	    	listeners:{
+	    	    		change:'onOrderRadioChange'
+	    	    	}
+	    	    },
+	    	    {
+	    	    	xtype:'fieldcontainer',
+	    	    	margin:'0 0 5 0',
+	    	    	flex:1,
+	    	    	defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign
+					},
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					items:[
+					   {
+						   xtype:'combo',
+						   name:'orderTextFirstLastPage',
+		                	bind:'{detail.orderTextFirstLastPage}',
+						   reference:'orderTextFirstLastPage',
+						   fieldLabel:'First Page/Last Page',
+						   displayField:'name',
+						   valueField:'name',
+						   queryMode:'local',
+						   flex:1,
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'First Page'},{name:'Last Page'}],
+							   fields:['name']
+						   })
+					   },
+					   {
+						   xtype:'combo',
+						   name:'orderTextPosition',
+		                	bind:'{detail.orderTextPosition}',
+						   fieldLabel:'Top/Mid/Bottom of the page',
+						   displayField:'name',
+						   reference:'orderTextPosition',
+						   valueField:'name',
+						   queryMode:'local',
+						   margin:'0 0 0 10',
+						   flex:1,
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
+							   fields:['name']
+						   })
+					   },
+					   {
+						   xtype:'textfield',
+						   name:'orderExcelCell',
+						   reference:'orderExcelCell',
+						   hidden:true,
+						   fieldLabel:'Cell',
+						   flex:1
+					   },
+					   {
+						   xtype:'combo',
+						   name:'orderExcelSheet',
+						   fieldLabel:'One Sheet/Multiple sheets in a file',
+						   displayField:'name',
+						   hidden:true,
+						   reference:'orderExcelSheet',
+						   valueField:'name',
+						   queryMode:'local',
+						   margin:'0 0 0 10',
+						   flex:1,
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'One Sheet in a file'},{name:'Multiple order sheets in a file'}],
+							   fields:['name']
+						   })
+					   }
+					]
+	    	    },
+	    	    {
+					xtype:'label',
+					text:'Attachment File',
+	                style:'font-weight:bold;color:#2c3e50;font-size:15px;margin-top:5px;'
+				},
+	    	    {
+	    	    	xtype:'fieldcontainer',
+	    	    	margin:'0 0 5 0',
+	    	    	flex:1,
+	    	    	layout:{
+	    	    		type:'hbox',
+	    	    		align:'stretch'
+	    	    	},
+	    	    	defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign,
+					},
+	    	    	items:[
+	    	    	    {
+	    	    	    	xtype:'combo',
+	    	    	    	fieldLabel:'Contain / Exact Match',
+	    	    	    	reference:'attachmentFileContainExactMatch',
+	    	    	    	name:'attachmentFileContainExactMatch',
+	    	    	    	queryMode:'local',
+	    	    	    	displayField:'name',
+	    	    	    	valueField:'name',
+	    	    	    	store:new Ext.data.JsonStore({
+	    	    	    		data:[{name:'Contain'},{name:'Exact Match'}],
+	    	    	    		fields:['name']
+	    	    	    	}),
+	    	    	    	flex:1
+	    	    	    },
+	    	    	    {
+	    	    	    	xtype:'textfield',
+	    	    	    	name:'attachmentFileKeyWording',
+	    	    	    	fieldLabel:'Key Wordings',
+	    	    	    	flex:1,
+	    	    	    	margin:'0 10'
+	    	    	    },
+	    	    	    {
+	    	    	    	xtype:'textfield',
+	    	    	    	name:'attachmentFormat',
+	    	    	    	fieldLabel:'Format',
+	    	    	    	flex:1
+	    	    	    }
+	    	    	]
+	    	    },
+	    	    {
+	    	    	xtype:'radiogroup',
+	    	    	column:2,
+	    	    	width:300,
+	    	    	items:[
+	    	    	    {boxLabel:'If Text', name:'attach', inputValue:1, checked:true},
+	    	    	    {boxLabel:'If Excel', name:'attach', inputValue:2}
+	    	    	],
+	    	    	listeners:{
+	    	    		change:'onAttachmentRadioChange'
+	    	    	}
+	    	    },
+	    	    {
+	    	    	xtype:'fieldcontainer',
+	    	    	margin:'0 0 5 0',
+	    	    	flex:1,
+	    	    	defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign
+					},
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					items:[
+					   {
+						   xtype:'combo',
+						   name:'attachmentTextFirstLastPage',
+						   reference:'attachmentTextFirstLastPage',
+						   fieldLabel:'First Page/Last Page',
+						   displayField:'name',
+						   valueField:'name',
+						   queryMode:'local',
+						   flex:1,
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'First Page'},{name:'Last Page'}],
+							   fields:['name']
+						   })
+					   },
+					   {
+						   xtype:'combo',
+						   name:'attachmentTextPosition',
+						   fieldLabel:'Top/Mid/Bottom of the page',
+						   displayField:'name',
+						   reference:'attachmentTextPosition',
+						   valueField:'name',
+						   queryMode:'local',
+						   flex:1,
+						   margin:'0 0 0 10',
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
+							   fields:['name']
+						   })
+					   },
+					   {
+						   xtype:'textfield',
+						   name:'attachmentExcelCell',
+						   reference:'attachmentExcelCell',
+						   hidden:true,
+						   fieldLabel:'Cell',
+						   flex:1
+					   },
+					   {
+						   xtype:'combo',
+						   name:'attachmentExcelSheet',
+						   fieldLabel:'One Sheet/Multiple sheets in a file',
+						   displayField:'name',
+						   hidden:true,
+						   reference:'attachmentExcelSheet',
+						   valueField:'name',
+						   queryMode:'local',
+						   margin:'0 10',
+						   flex:1,
+						   store:new Ext.data.JsonStore({
+							   data:[{name:'One Sheet in a file'},{name:'Multiple order sheets in a file'}],
+							   fields:['name']
+						   })
+					   }
+					]
+	    	    }
 			]
 		}
 	}

@@ -54,7 +54,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	onSaveBtnClick:function(btn){
 		var me = this,
 			refs = me.getReferences(),
-			wiFormPanel = refs.wIform,
+			wiFormPanel = refs.wIForm,
 			form = wiFormPanel.getForm(),
 			values = form.getValues();
 		
