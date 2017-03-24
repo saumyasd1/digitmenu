@@ -6,6 +6,11 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		stripeRows:true,
 		enableTextSelection:true
 	},
+	store:new Ext.data.JsonStore({
+		data:[],
+		fields:['system','csrName','packingInstruction','manufacturingNotes','invoiceNote','variableDataBreakdown',
+		        'splitShipSetBy','shippingMark','artworkHold']
+	}),
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -15,25 +20,70 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			    	 ptype:'cellediting',
 			    	 clickToEdit:1
 			     }    
-			]
+			],
+			listeners:{
+				afterrender:function(grid){
+					var store = grid.store,
+						count = store.getCount();
+					if(count == 0){
+						var record = {
+								system:31,
+								csrName:'Amit',
+								packingInstruction:'',
+								manufacturingNotes:'Test',
+								invoiceNote:'',
+								variableDataBreakdown:'',
+								splitShipSetBy:'L',
+								shippingMark:'',
+								artworkHold:'N'
+						}
+						store.insert(0,new Ext.data.Record(record));
+					}
+				}
+			}
 		});
 		me.callParent(arguments);
 	},
 	
 	buildColumns:function(){
 		return [
+		    {
+		    	text:'System',
+		    	dataIndex:'system',
+		    	width:150,
+		    	editor:{
+		    		xtype:'combo',
+		    		displayField:'name',
+		    		valueField:'id',
+		    		queryMode:'local',
+		    		store:new Ext.data.JsonStore({
+		    			data:[{name:'Oracle',id:31},{name:'VIPS', id:32}],
+		    			fields:['name','id']
+		    		})
+		    	},
+		    	renderer:function(value, metaData, record){
+		    		var editor = metaData.column.getEditor(record),    
+			    	storeRecord = editor.store.getById(value);
+				
+				    if(storeRecord) {       
+				        return storeRecord.data[editor.displayField];
+				    }
+				    else{         
+				        return null;
+				    }
+		    	}
+		    },    
 			{  
 				text : 'CSR Name',
 				width:120,
 				sortable : true,
-				//flex:1.5,
 				dataIndex:'csrName',
 				editor:{
 					xtype:'textfield'
-				},
-				renderer:function(value,metadata){
-					return me.validationRendered(value, metadata);
 				}
+//				renderer:function(value,metadata){
+//					return me.validationRendered(value, metadata);
+//				}
 			},
 			{
 				text : 'Packing Instruction',
@@ -126,7 +176,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			}
 		]
 	},
-	validationRendered:function(value,metadata){
+	validationRendered:function(value, metadata){
     	var me=this;
     	if(Ext.isEmpty(value)){
     		if(me.showValidationError){
