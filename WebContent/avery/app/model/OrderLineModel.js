@@ -119,6 +119,8 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'productionLine',mapping:'productionLine',type:'string'},
 	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'},
 	 		{name: 'shipMark', mapping:'shipMark', type:'string'},
-	 		{name: 'additionalLabelInternalItem',mapping:'additionalLabelInternalItem', type:'string'}
+	 		{name: 'additionalLabelInternalItem',mapping:'additionalLabelInternalItem', type:'string'},
+	 		{name: 'skuQtyDifference',mapping:'skuQtyDifference', type:'string'}
+	 		
 	     ]
 });
