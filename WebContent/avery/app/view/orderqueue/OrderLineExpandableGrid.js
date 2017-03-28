@@ -222,6 +222,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			} 
 		},
 		{
+			text: AOCLit.skuQtyDifference ,
+			dataIndex: 'skuQtyDifference',
+			width: 106
+		},
+		{
 			text: AOCLit.updateQty,
 			dataIndex: 'updateMOQ',
 			width: 55,
