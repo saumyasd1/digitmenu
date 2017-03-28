@@ -44,16 +44,20 @@ import com.avery.storage.entities.ProductLine;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 
+/**
+ * @author Vishal
+ *
+ */
 @Repository
-public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachment, Long> implements
-OrderFileAttachmentDao {
-	
+public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachment, Long>
+		implements OrderFileAttachmentDao {
+
 	@Override
-	public List<OrderFileAttachment> readAllByOrderID(Long orderID){
-		
+	public List<OrderFileAttachment> readAllByOrderID(Long orderID) {
+
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			Map entitiesMap = new HashMap();
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
@@ -83,12 +87,12 @@ OrderFileAttachmentDao {
 				orderFileAttachment.setColorCode(colorCode);
 				orderFileAttachment.setCodeValue(codeValue);
 				String[] commentArray = {};
-				if(orderFileAttachment.getComment()!=null)
+				if (orderFileAttachment.getComment() != null && !"".equals(orderFileAttachment.getComment()))
 					commentArray = orderFileAttachment.getComment().split(",");
-				if(commentArray.length>0){
+				if (commentArray.length > 0) {
 					StringBuilder commentBuilder = new StringBuilder();
-					for(String comment : commentArray){
-						if(NumberUtils.isNumber(comment)){
+					for (String comment : commentArray) {
+						if (NumberUtils.isNumber(comment)) {
 							commentBuilder.append(comment).append(",");
 						}
 					}
@@ -97,31 +101,27 @@ OrderFileAttachmentDao {
 				}
 			}
 			return list;
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderID, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderID, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderID, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderID, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
+
 	}
-	
+
 	@Override
-	public List<OrderFileAttachment> readByOrderQueueID(Long orderID, Long emailQueueId){
-		
+	public List<OrderFileAttachment> readByOrderQueueID(Long orderID, Long emailQueueId) {
+
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			Map entitiesMap = new HashMap();
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(OrderFileAttachment.class)
-					.createAlias("listOrderFileQueue", "listOrderFileQueue", JoinType.LEFT_OUTER_JOIN);
+			criteria = session.createCriteria(OrderFileAttachment.class).createAlias("listOrderFileQueue",
+					"listOrderFileQueue", JoinType.LEFT_OUTER_JOIN);
 			/*
 			 * ProjectionList projections = Projections.projectionList();
 			 * projections.add(Projections.property("id"), "id");
@@ -131,13 +131,13 @@ OrderFileAttachmentDao {
 			Conjunction conjunction = Restrictions.conjunction();
 			conjunction.add(Restrictions.eq("varOrderEmailQueue.id", emailQueueId));
 			conjunction.add(Restrictions.eq("fileContentType", "AdditionalData"));
-			
+
 			Disjunction disjunction = Restrictions.disjunction();
 			disjunction.add(Restrictions.eq("listOrderFileQueue.id", orderID));
 			disjunction.add(conjunction);
-			
+
 			criteria.add(disjunction);
-			//criteria.add(Restrictions.eq("listOrderFileQueue.id", orderID));
+			// criteria.add(Restrictions.eq("listOrderFileQueue.id", orderID));
 			List<OrderFileAttachment> list = criteria.list();
 			// getting colorCode, iconName and values as required at the GUI
 			HashMap<String, Map> statusList = ApplicationUtils.statusCode;
@@ -159,27 +159,23 @@ OrderFileAttachmentDao {
 
 			}
 			return list;
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderID, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderID, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderID, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderID, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
+
 	}
-	
+
 	@Override
-	public List<OrderFileAttachment> readFileByID(Long fileID){
-		
+	public List<OrderFileAttachment> readFileByID(Long fileID) {
+
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderFileAttachment.class);
 			ProjectionList projections = Projections.projectionList();
@@ -189,36 +185,29 @@ OrderFileAttachmentDao {
 			orderQueue.setId(fileID);
 			criteria.add(Restrictions.eq("orderQueue", orderQueue));
 			return criteria.list();
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + fileID, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + fileID, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + fileID, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + fileID, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
+
 	}
 
 	@Override
-	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 	@Override
-	public Map getAdditionalFilesList(long orderFileQueueId){
+	public Map getAdditionalFilesList(long orderFileQueueId) {
 		Map entitiesMap = new HashMap();
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(OrderLine.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderFileQueueId));
@@ -227,7 +216,7 @@ OrderFileAttachmentDao {
 			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
 			List<String> list = criteria.list();
-			if(list == null | list.size() == 0){
+			if (list == null | list.size() == 0) {
 				session.close();
 				return entitiesMap;
 			}
@@ -235,9 +224,9 @@ OrderFileAttachmentDao {
 			Iterator itr = uniqueList.iterator();
 			Criteria crit = null;
 			List<OrderFileAttachment> resList = new ArrayList<OrderFileAttachment>();
-			while(itr.hasNext()){
+			while (itr.hasNext()) {
 				Long orderFileAttachmentId = (Long) itr.next();
-				//System.out.println(ll);
+				// System.out.println(ll);
 				crit = session.createCriteria(OrderFileAttachment.class);
 				ProjectionList proj = Projections.projectionList();
 				proj.add(Projections.property("id").as("id"));
@@ -251,19 +240,16 @@ OrderFileAttachmentDao {
 			}
 			entitiesMap.put("additionalfiles", new LinkedHashSet(resList));
 
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderFileQueueId, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderFileQueueId,
+					ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order attachments for order id " + orderFileQueueId, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		finally{
+			AppLogger.getSystemLogger().error("Error in fetching order attachments for order id " + orderFileQueueId,
+					e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		} finally {
 			session.close();
 		}
 		return entitiesMap;
@@ -288,13 +274,14 @@ OrderFileAttachmentDao {
 
 		return newList;
 	}
-	
+
 	@Override
-	public void insertEmailBody(OrderEmailQueue orderEmailQueue,String emailBody,ProductLine productLineObj, String filePath){
-		OrderFileAttachment obj=new OrderFileAttachment();
+	public void insertEmailBody(OrderEmailQueue orderEmailQueue, String emailBody, ProductLine productLineObj,
+			String filePath) {
+		OrderFileAttachment obj = new OrderFileAttachment();
 		obj.setVarOrderEmailQueue(orderEmailQueue);
 		obj.setFilePath(filePath);
-		//obj.setVarProductLine(productLineObj);
+		// obj.setVarProductLine(productLineObj);
 		obj.setCreatedDate(new Date());
 		obj.setStatus(ApplicationConstants.DEFAULT_WEBORDER_EMAILBODY_STATUS);
 		obj.setFileContentType(ApplicationConstants.DEFAULT_EMAILBODY_CONTENT_TYPE);
@@ -303,8 +290,10 @@ OrderFileAttachmentDao {
 		obj.setFileExtension(ApplicationConstants.DEFAULT_EMAIL_FILE_EXTENSION);
 		create(obj);
 		createHTMLFile(emailBody, filePath);
-}
-	//Method for updating emailqueue status to disregard if all the corresponding attachments are disregard
+	}
+
+	// Method for updating emailqueue status to disregard if all the
+	// corresponding attachments are disregard
 	@Override
 	public void checkDisregardMail(Long entityId) {
 		Session session = null;
@@ -343,8 +332,10 @@ OrderFileAttachmentDao {
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-	
-	/**Method for creating html file from string
+
+	/**
+	 * Method for creating html file from string
+	 * 
 	 * @param emailBody
 	 * @param filePath
 	 */
@@ -369,5 +360,5 @@ OrderFileAttachmentDao {
 			}
 		}
 	}
-	
+
 }
