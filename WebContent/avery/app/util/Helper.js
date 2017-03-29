@@ -125,7 +125,6 @@ Ext.define('AOC.util.Helper',{
 					end=lastrowIdx;
 				
 					function updateRecord(index){
-						debugger
 						var record =store.getAt(index),
 							commentValue= record.data.comment,
 							commentId = commentValue.split(",");

@@ -185,6 +185,7 @@ Ext.define('AOC.lang.lit',{
     "systemStatus":'System Status',
     "acknowledgeDate":'Acknowledgement Date',
     "custOrderedQty": 'Customer Ordered Qty',
+    "skuQtyDifference":'SKU Qty Difference',
     "qtyVariableLabel": 'qty',
     "sizeVariableLabel": 'size',
     "duplicateMappingLabel": 'DUPLICATE MAPPING',
