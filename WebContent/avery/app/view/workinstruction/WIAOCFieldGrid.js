@@ -7,11 +7,6 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 		stripeRows:true,
 		enableTextSelection:true
 	},
-	store:new Ext.data.JsonStore({
-		data:[],
-		fields:['system','csrName','packingInstruction','manufacturingNotes','invoiceNote','variableDataBreakdown',
-		        'splitShipSetBy','shippingMark','artworkHold']
-	}),
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -22,6 +17,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			    	 clickToEdit:1
 			     }    
 			],
+			store: Ext.data.StoreManager.lookup('wiAOCFieldStore') == null ? Ext.create('AOC.store.WIAOCFieldStore',{storeId:'wiAOCFieldStore'}) : Ext.data.StoreManager.lookup('wiAOCFieldStore'),
 			listeners:{
 				afterrender:function(grid){
 					
@@ -39,7 +35,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 		    	flex:1.5
 		    },    
 			{  
-				text : 'Default/Capture/Complicated Logic',
+				text : 'Default/Capture/Complicated Logic(Please explain clearly) '+ AOCLit.wiDefaultCaptureCompIconText,
 				flex:1.5,
 				dataIndex:'logic',
 				editor:{
@@ -54,7 +50,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				}
 			},
 			{
-				text : 'Field Value Location',
+				text : 'Field Value Location '+ AOCLit.wiFieldValueLocationIconText,
 				flex:1.5,
 				dataIndex:'fieldValueExample',
 				editor:{
@@ -62,7 +58,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				}
 			},
 			{
-				text : 'Explanation/Rules/Additional Logic/Validation',
+				text : 'Explanation/Rules/Additional Logic/Validation '+ AOCLit.wiExplanationRulesIconText,
 				flex:1.5,
 				dataIndex:'validation',
 				editor:{
@@ -71,14 +67,15 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			},
 			{
 				text : 'Reference',
-				flex:.5,
+				flex:1,
 				dataIndex:'reference',
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
-				xtype:'actioncolumn'
+				xtype:'actioncolumn',
+				flex:.5
 			}
 		]
 	}

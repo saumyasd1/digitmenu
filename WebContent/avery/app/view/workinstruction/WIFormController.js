@@ -60,7 +60,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/wi',
-			params:values,
+			jsonData:Ext.JSON.encode(values),
 			success:function(response){
 				Helper.showToast('success','Record has been suuccessfully saved');
 			},
@@ -70,5 +70,42 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		});
 		
 		console.log(values);
+	},
+	onBackBtnClick:function(btn){
+		var view = this.getView();
+		var parentCont = view.up('wicontainer');
+		parentCont.getLayout().setActiveItem(0);
+	},
+	//SChema Identification
+	onEmailRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences();
+		
+		if(newValue.emailRequired == 1){
+			
+		}
+	},
+	
+	//System Grid
+	onSystemDefaultOrgExpand:function(field){
+		field.store.clearFilter();
+		var grid = field.up('grid'),
+			context = grid.editingPlugin.context,
+			rowIdx = context.rowIdx,
+			record = grid.store.getAt(rowIdx),
+			system = record.get('system'),
+			comboStore = field.store;
+		
+		switch(system){
+		case 'Oracle':
+			comboStore.filter('systemId',31);
+			break;
+		case 'VIPS':
+			comboStore.filter('systemId',32);
+			break;
+		case 'Sparrow':
+			comboStore.filter('systemId',33);
+			break;
+		}
 	}
 });

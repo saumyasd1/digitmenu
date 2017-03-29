@@ -13,7 +13,10 @@ Ext.define('AOC.controller.MenuController', {
 		'OrderQueueStore',
 		'OrderCharts',
 		'HomePageOders',
-		'Roles'
+		'Roles',
+		'WIOrgStore',
+		'WISystemStore',
+		'WIAOCFieldStore'
 	],
 	views : [
 		'base.BaseToolbar',
@@ -205,6 +208,13 @@ Ext.define('AOC.controller.MenuController', {
 				Helper.resetWebOrderForm(webOrderView);
 				webOrderView.down('#backButtonimage').hide();
 				webOrderView.updateHeaderLabel(newWebOrder);
+				break;
+			case 'wicontainer':
+				var gridView = Ext.ComponentQuery.query(view)[0],
+			     	store = gridView.getStore();
+		   
+				//store.clearFilter(true);
+				//store.load();	
 				break;
 			default :
 				var gridView = Ext.ComponentQuery.query(view)[0],

@@ -17,6 +17,7 @@ Ext.define('AOC.store.Sections', {
         ['fa fa-calendar-o', 'ORDER QUEUE', 'orderqueueview', false, 0, 'orderqueuegrid'],
         ['fa fa-globe', 'WEB ORDER', 'weborderview', false, 0, 'weborderview'],
         ['fa fa-users', 'PARTNERS', 'partnermanagement', false, 0, 'partnermanagementgrid'],	
-        ['fa fa-address-card', 'ADDRESS', 'addressmanage', false, 0, 'addressmanagegrid']
+        ['fa fa-address-card', 'ADDRESS', 'addressmanage', false, 0, 'addressmanagegrid'],
+        ['fa fa-calendar', 'WORK INSTRUCTION', 'wicontainer', false, 0, 'wigrid']
     ]
 });

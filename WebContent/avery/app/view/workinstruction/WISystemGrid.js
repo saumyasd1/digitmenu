@@ -6,11 +6,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		stripeRows:true,
 		enableTextSelection:true
 	},
-	store:new Ext.data.JsonStore({
-		data:[],
-		fields:['system','csrName','packingInstruction','manufacturingNotes','invoiceNote','variableDataBreakdown',
-		        'splitShipSetBy','shippingMark','artworkHold']
-	}),
+	selType: 'checkboxmodel',
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -21,24 +17,25 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			    	 clickToEdit:1
 			     }    
 			],
+			store: Ext.data.StoreManager.lookup('wiSystemStore') == null ? Ext.create('AOC.store.WISystemStore',{storeId:'wiSystemStore'}) : Ext.data.StoreManager.lookup('wiSystemStore'),
 			listeners:{
 				afterrender:function(grid){
-					var store = grid.store,
-						count = store.getCount();
-					if(count == 0){
-						var record = {
-								system:31,
-								csrName:'Amit',
-								packingInstruction:'',
-								manufacturingNotes:'Test',
-								invoiceNote:'',
-								variableDataBreakdown:'',
-								splitShipSetBy:'L',
-								shippingMark:'',
-								artworkHold:'N'
-						}
-						store.insert(0,new Ext.data.Record(record));
-					}
+//					var store = grid.store,
+//						count = store.getCount();
+//					if(count == 0){
+//						var record = {
+//								system:'Oracle',
+//								csrName:'Amit',
+//								packingInstruction:'',
+//								manufacturingNotes:'Test',
+//								invoiceNote:'',
+//								variableDataBreakdown:'',
+//								splitShipSetBy:'L',
+//								shippingMark:'',
+//								artworkHold:'N'
+//						}
+//						store.insert(0,new Ext.data.Record(record));
+//					}
 				}
 			}
 		});
@@ -46,78 +43,75 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 	},
 	
 	buildColumns:function(){
+		var qtipTitle1 = '<i data-qtip="<font color=#3892d3>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO <b>UP it will be imported as <br>TAIWAN <br>1 TO UP</font>" class="fa fa-info-circle"></i>';
+		
 		return [
 		    {
 		    	text:'System',
-		    	dataIndex:'system',
-		    	width:150,
+		    	dataIndex:'systemName',
+		    	flex:1
+		    },
+		    {
+		    	text:'Default Org',
+		    	dataIndex:'dafultOrg',
+		    	flex:1,
 		    	editor:{
 		    		xtype:'combo',
 		    		displayField:'name',
 		    		valueField:'id',
 		    		queryMode:'local',
-		    		store:new Ext.data.JsonStore({
-		    			data:[{name:'Oracle',id:31},{name:'VIPS', id:32}],
-		    			fields:['name','id']
-		    		})
-		    	},
-		    	renderer:function(value, metaData, record){
-		    		var editor = metaData.column.getEditor(record),    
-			    	storeRecord = editor.store.getById(value);
-				
-				    if(storeRecord) {       
-				        return storeRecord.data[editor.displayField];
-				    }
-				    else{         
-				        return null;
-				    }
+		    		store:new Ext.data.Store({
+		    			data:[
+		    			   {name:'PYT', id:1, systemId:31},{name:'PYL', id:2, systemId:31},{name:'VN', id:3, systemId:31},
+		    			   {name:'POHKT', id:4, systemId:32},{name:'POHKL', id:5, systemId:32},{name:'ADNS', id:6, systemId:32},
+		    			   {name:'ADNL', id:7, systemId:32},{name:'ADHK', id:8, systemId:32},{name:'PXVN', id:9, systemId:32},
+		    			   {name:'PXSH', id:10, systemId:32},{name:'SZ', id:11, systemId:33}
+		    			],
+		    			fields:['name','id','systemName']
+		    		}),
+		    		listeners:{
+		    			expand:'onSystemDefaultOrgExpand'
+		    		}
 		    	}
-		    },    
+		    },
 			{  
 				text : 'CSR Name',
-				width:120,
+				flex:1,
 				sortable : true,
 				dataIndex:'csrName',
 				editor:{
 					xtype:'textfield'
 				}
-//				renderer:function(value,metadata){
-//					return me.validationRendered(value, metadata);
-//				}
 			},
 			{
-				text : 'Packing Instruction',
-				width:120,
+				text : 'Packing Instruction '+ qtipTitle1,
+				flex:1,
 				sortable : true,
 				dataIndex:'packingInstruction',
-				//flex:1.5,
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
-				text : 'Manufacturing Note',
-				width:120,
+				text : 'Manufacturing Note '+ qtipTitle1,
+				flex:1,
 				sortable : true,
-				dataIndex:'manufacturingNotes',
-				//flex:1.5,
+				dataIndex:'manufacturing',
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
-				text : 'Invoice Note',
-				width:120,
+				text : 'Invoice Line Instruction '+ qtipTitle1,
 				sortable : true,
-				dataIndex:'invoiceNote',
-				//flex:1.5,
+				dataIndex:'invoiceLineInstruction',
+				flex:1,
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
-				text : 'Variable data breakdown',
-				//width:120,
+				text : 'Variable data breakdown '+ qtipTitle1,
 				sortable : true,
 				dataIndex:'variableDataBreakdown',
 				flex:1.5,
@@ -126,9 +120,8 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 				}
 			},
 			{
-				text : 'Split by Ship Set',
-				//width:150,
-				dataIndex:'splitShipSetBy',
+				text : 'Split by Ship Set <i data-qtip="<font color=#3892d3>Fill in P/L:<br>P- If multiple Cust. po is imported into one SO, 1 Ship set for 1 Customer PO<b>L- Different Ship set per sales order line</font>" class="fa fa-info-circle"></i>',
+				dataIndex:'splitByShipSet',
 				flex:1,
 				editor: {
 					xtype: 'combo',
@@ -156,18 +149,16 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 				}
 			},
 			{
-				text : 'Ship mark',
-				//width:150,
-				dataIndex:'shippingMark',
+				text : 'Ship mark '+ qtipTitle1,
+				dataIndex:'shipMark',
 				flex:1,
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
-				text : 'Artwork Hold',
-				//width:150,
-				dataIndex:'artworkHold',
+				text : 'Artwork Hold <i data-qtip="<font color=#3892d3>Yes/No , it will apply for all item</font>" class="fa fa-info-circle"></i>',
+				dataIndex:'artWorkHold',
 				editor:{
 					xtype:'combo',
 					editable:false,
