@@ -234,7 +234,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				{
 					xtype:'label',
 					text:'COO Validation',
-					style:'font-weight:bold;color:#2c3e50;font-size:15px;',
+					style:'font-weight:bold;color:#2c3e50;font-size:15px;'
 				},
 				{
 					xtype:'fieldcontainer',
@@ -316,15 +316,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'aocWaive',
     	    	    	fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
     	    	    	reference:'aocWaive',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
-    	    	    	queryMode:'local',
     	    	    	margin:'0 0 0 10',
     	    	    	flex:1,
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Yes'},{name:'No'}],
-    	    	    		fields:['name']
-    	    	    	})
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
     	    	    }
     	    	]
     	    },
@@ -383,43 +378,28 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'sampleBulkOrderPresentWI',
     	    	    	fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
     	    	    	reference:'sampleBulkOrderPresentWI',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
-    	    	    	queryMode:'local',
     	    	    	flex:1,
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Yes'},{name:'No'}],
-    	    	    		fields:['name']
-    	    	    	})
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
     	    	    },
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleOrderRequiredMOQ',
     	    	    	fieldLabel:'Is the sample order required to waive MOQ?',
     	    	    	reference:'sampleOrderRequiredMOQ',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
     	    	    	flex:1,
     	    	    	margin:'0 10',
-    	    	    	queryMode:'local',
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Yes'},{name:'No'}],
-    	    	    		fields:['name']
-    	    	    	})
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
     	    	    },
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleItemRequiredWI',
     	    	    	fieldLabel:'Is there any sample item that would be ordered in this WI?',
     	    	    	reference:'sampleItemRequiredWI',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
     	    	    	flex:1,
-    	    	    	queryMode:'local',
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Yes'},{name:'No'}],
-    	    	    		fields:['name']
-    	    	    	})
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
     	    	    }
     	    	]
     	    },
@@ -486,15 +466,9 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'sampleItemApproved',
     	    	    	fieldLabel:'Is it the rule that sample items are not approved to be ordered by bulk order?',
     	    	    	reference:'sampleItemApproved',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
     	    	    	flex:1,
-    	    	    	queryMode:'local',
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Yes'},
-    	    	    		      {name:'No'}],
-    	    	    		fields:['name']
-    	    	    	})
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
     	    	    },
     	    	    {
     	    	    	xtype:'textfield',
@@ -529,13 +503,9 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   xtype:'combo',
 					   name:'discountPrice',
 					   fieldLabel:'Discount Price',
-					   displayField:'name',
-					   valueField:'name',
 					   flex:1,
-					   store:new Ext.data.JsonStore({
-						   data:[{name:'Yes'}],
-						   fields:['name']
-					   })
+					   editable:false,
+					   store:[['Yes','Yes'],['No','No']],
 				   },
 				   {
 					   xtype:'combo',
@@ -543,12 +513,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   fieldLabel:'Pricing Aggrement',
 					   margin:'0 0 0 10',
 					   flex:1,
-					   displayField:'name',
-					   valueField:'name',
-					   store:new Ext.data.JsonStore({
-						   data:[{name:'Yes'}],
-						   fields:['name']
-					   })
+					   editable:false,
+					   store:[['Yes','Yes'],['No','No']],
 				   }
 				]
     	    }
@@ -674,26 +640,18 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   name:'billToSite#',
 					   reference:'billToSite',
 					   fieldLabel:'How can we determine Bill to Site#',
-					   displayField:'name',
-					   valueField:'name',
 					   flex:1,
-					   store:new Ext.data.JsonStore({
-						   data:[{name:'Yes'}],
-						   fields:['name']
-					   })
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
 				   },
 					{
 				    	xtype:'combo',
 				    	fieldLabel:'How can we determine Ship to Site#',
 				    	name:'shipToSite#',
 				    	reference:'shipToSite',
-				    	displayField:'name',
-				    	valueField:'name',
 				    	margin:'0 0 0 10',
-				    	store:new Ext.data.JsonStore({
-						   data:[{name:'Yes'}],
-						   fields:['name']
-				    	}),
+		    	    	editable:false,
+		    	    	store:[['Yes','Yes'],['No','No']],
 				    	flex:1
 				    }
 				]

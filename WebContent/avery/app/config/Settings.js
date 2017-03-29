@@ -23,7 +23,8 @@ Ext.define('AOC.config.Settings',{
     
     form:{
     	defaultLabelAlign:'left',
-    	topLabelAlign:'top'
+    	topLabelAlign:'top',
+    	 wiLabelStyle:'font-weight:bold;color:#2c3e50;font-size:15px;'
     },
     buttonsCls:{
     	 tick:'fa fa-check',

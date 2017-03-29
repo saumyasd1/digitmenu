@@ -11,7 +11,8 @@ Ext.define('AOC.view.Main',{
         'AOC.view.webform.WebOrderView',
         'AOC.view.archive.ArchiveManage',
         'AOC.view.users.myprofile.Wrapper',
-        'AOC.view.users.manage.User'
+        'AOC.view.users.manage.User',
+        'AOC.view.workinstruction.WIContainer'
     ],
     layout: {
     	type: 'card',

@@ -1,19 +1,15 @@
 Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.wiorggrid',
-   // controller:'orgcontroller',
     referenceHolder:true,
-    requires:['AOC.view.ux.RadioModel'],
 	emptyText: AOCLit.emptyDataMsg,
-	showValidationError:false,
-	isOrgGridNotValid:false,
-	store:null,
-	systemId:0,
 	initComponent : function(){
-		var me=this;
+		var me = this;
+		
 		Ext.apply(this,{
 			columns : this.buildColumns(),
 			columnLines:true,
+			store: Ext.data.StoreManager.lookup('wiOrgStore') == null ? Ext.create('AOC.store.WIOrgStore',{storeId:'wiOrgStore'}) : Ext.data.StoreManager.lookup('wiOrgStore'),
 			viewConfig : {
 				stripeRows : true,
 				enableTextSelection : true
@@ -22,22 +18,12 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 				ptype: 'cellediting',
 				clicksToEdit: 1,
 				listeners:{
-					beforeedit:'OnBeforeEdit'
+					//beforeedit:'OnBeforeEdit'
 				}
 			}],
-			selModel: {
-				selType: 'radiomodel'
-			},
+			selModel: 'checkboxmodel',
 			listeners:{
 				'afterrender':function(){
-					var store=me.getStore(),
-						index = store.find('isDefault',true);
-					if(index!=-1){
-						me.getSelectionModel().select(index);
-					}
-					me.getView().on('beforerefresh',function(){
-						me.isOrgGridNotValid=false;
-					});
 				}
 			}
 		});
@@ -45,105 +31,62 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 	},
 	buildColumns : function(){
     	var me = this;
-        return [    
-			{
-				text : 'Org',
-				width:120,
-				sortable : true,
-				dataIndex:'orgCodeId',
-				editor:{
-					xtype:'combo',
-					store:me.orgStore,
-					//reference:'orgCodeCombo',
-					displayField:'name',
-					valueField:'id',
-					listeners:{
-						'render':'onOrgeCodeComboRender',
-						'change':'onOrgeCodeComboChange'
-					}
-				},
-				renderer:'onOrgCodeCellRender'
-			},
-			{
-				text : 'Legacy Bill to Code',
-				width:100,
-				sortable : true,
-				dataIndex:'billToCode',
-				editor:{
-					xtype:'textfield'
-				}
-			},
-			{
-				text : 'Legacy Ship to Code',
-				width:100,
-				sortable : true,
-				dataIndex:'shipToCode',
-				editor:{
-					xtype:'textfield'
-				}
-			},
-			{
-				text : 'Freight Terms',
-				width:120,
-				sortable : true,
-				dataIndex:'freightTerm',
-				editor: {
-					xtype: 'combo',
-					displayField: 'variableFieldName',
-					valueField: 'variableFieldName',
-					editable:false,
-					queryMode :'local',
-					listeners:{
-						select:function(field){
-							if(field.getValue() == 'None'){
-								field.setValue('');
-							}
-						}
-					}
-				}
-			},
-			{
-				text : 'Shipping method',
-				width:150,
-				dataIndex:'shippingMethod',
-				editor: {
-					xtype: 'combo',
-					displayField: 'variableFieldName',
-					valueField: 'variableFieldName',
-					editable:false,
-					queryMode :'local',
-					listeners:{
-						select:function(field){
-							if(field.getValue() == 'None'){
-								field.setValue('');
-							}
-						}
-					}
-				}
-			},
-			{
-				text : 'Shipping Instructions',
-				flex:1,
-				dataIndex:'shippingInstruction',
-				editor:{
-					xtype:'textfield'
-				}
-			},{
-				xtype:'actioncolumn',
-				text:'',
-				width:30,
-				glyphColor:'red',
-				glyph:'xf056@FontAwesome',
-				menuDisabled  :true,
-				baseCls:'custom-action',
-				handler: function(grid, rowIndex, colIndex) {
-					 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
-						if(btn=='yes'){
-							grid.getStore().removeAt(rowIndex);
-						} 
-					 });
-			    }
-			}
+        return [
+            {
+            	text:'System',
+            	dataIndex:'systemName',
+            	flex:1
+            },
+            {
+            	text:'Site',
+            	dataIndex:'siteName',
+            	flex:1
+            },
+            {
+            	text:'Org',
+            	dataIndex:'orgName',
+            	flex:1
+            },
+            {
+            	text:'Please select \"Yes\" if Org exist in this WI',
+            	dataIndex:'orgExistFlag',
+            	flex:1,
+            	editor:{
+            		xtype:'combo',
+            		name:'orgExistFlag',
+            		store:[['Yes','Yes'],['No','No']]
+            	}	
+            },
+            {
+            	text:'Bill to Site#',
+            	dataIndex:'billToCode',
+            	editor:'textfield',
+            	flex:1
+            },
+            {
+            	text:'Ship to Site#',
+            	dataIndex:'shipToCode',
+            	editor:'textfield',
+            	flex:1
+            },
+            {
+            	text:'Freight Term',
+            	dataIndex:'freightTerm',
+            	editor:'textfield',
+            	flex:1
+            },
+            {
+            	text:'Shipping Method',
+            	dataIndex:'shippingMethod',
+            	editor:'textfield',
+            	flex:1
+            },
+            {
+            	text:'Shipping Instruction',
+            	dataIndex:'shippingInstruction',
+            	editor:'textfield',
+            	flex:1
+            }
         ];
     }
 });

@@ -40,13 +40,6 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
     	    	 text:'Order Queue Status',
     	    	 style:AOC.config.Settings.config.tabHeaderTitleStyle
     	     },
-    	     {
-    	    	 text:'WI Form',
-    	    	 handler:function(){
-    	    		 var win = Ext.create('AOC.view.workinstruction.WIForm');
-    	    		 win.show();
-    	    	 }
-    	     },
     	     '->',
     	     {
     	    	xtype:'combo',

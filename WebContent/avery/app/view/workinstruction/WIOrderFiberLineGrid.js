@@ -34,7 +34,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	buildColumns:function(){
 		return [
 		    {
-		    	text:'System & Order/Line/Fiber Level',
+		    	text:'System & Order/Line/Fiber Level <i data-qtip="<font color= #3892d3> Example/<br>	Reference: </font>" class="fa fa-info-circle"></i>',
 		    	dataIndex:'systemOrderLineFiberLevel',
 		    	flex:1.5,
 		    	editor:{
@@ -49,7 +49,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				}
 		    },
 		    {
-		    	text:'Product Line',
+		    	text:'Product Line <i data-qtip="<font color= #3892d3> Example/<br>	Reference: </font>" class="fa fa-info-circle"></i>',
 		    	dataIndex:'productLine',
 		    	flex:1,
 		    	editor:{
@@ -57,15 +57,15 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 		    	}
 		    },
 		    {
-		    	text:'Field Name',
-		    	dataIndex:'fieldName',
+		    	text:'Legacy Field Name '+ AOCLit.wiLegacyFieldIconText,
+		    	dataIndex:'legacyFieldName',
 		    	flex:1,
 		    	editor:{
 		    		xtype:'textfield'
 		    	}
 		    },
 			{  
-				text : 'RBO Validation/Factory Validation/Structure Specific',
+				text : 'RBO Validation/Factory Validation/Structure Specific <i data-qtip="<font color= #3892d3> VIPS\'s SKU must be Line Level </font>" class="fa fa-info-circle"></i>',
 				flex:1.5,
 				dataIndex:'rboFactStrucSpecific',
 				editor:{
@@ -81,7 +81,15 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				}
 			},
 			{
-				text : 'Default Value/Field Location',
+				text : 'Default / Capture/ Complicated Logic <i class="fa fa-info-circle" data-qtip="<font color=#3892d3>For Complicated Logic, please explain clearly in (Explanation/Rules) with Reference</font>"></i>',
+				flex:1.5,
+				dataIndex:'defaultCaptureComplicatedLogic',
+				editor:{
+					xtype:'combo'
+				}
+			},
+			{
+				text : 'Default Value/Field Location ' + AOCLit.wiFieldValueLocationIconText,
 				flex:1.5,
 				dataIndex:'defaultValueFieldLocation',
 				editor:{
@@ -89,7 +97,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				}
 			},
 			{
-				text : 'Explanation/Rules/Additional Logic/Validation',
+				text : 'Explanation/Rules/Additional Logic/Validation '+ AOCLit.wiExplanationRulesIconText1,
 				flex:1.5,
 				dataIndex:'additionalLoginValidation',
 				editor:{
@@ -97,7 +105,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				}
 			},
 			{
-				text : 'Reference',
+				text : 'Reference <i class="fa fa-info-circle" data-qtip="<font color=#3892d3><b>EXAMPLE ONLY:</b><br>Highlight the corresponding part in the order form/attachment</font>"></i>',
 				flex:.5,
 				dataIndex:'reference',
 				editor:{
