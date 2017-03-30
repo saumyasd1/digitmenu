@@ -167,15 +167,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 					//var count=obj.name.replace('orderFileType','');
 					if(!webOrderForm.isResubmit){
 			    		//var i=parseInt(count)+1;
-			    		if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
+			    		//if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
 							me.insertFileInGrid(value,'Order File Type',true, null);
-							this.insertFileInGrid(value,'Order File Type',true, count, null);
-							//obj.hide();
-			    		}else{
+			    		/*}else{
 			    			Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maximumOrderFileCount+' order file.')
 							obj.reset();
 			    			//obj.setDisabled(true);
-			    		}
+			    		}*/
 					}else{
 						obj.reset();
 					}
@@ -231,15 +229,15 @@ Ext.define('AOC.view.webform.WebFormController', {
 				url:url,
 				jsonData:fieldParams,
 				success:function(response){
-					var data = JSON.parse(response.responsetext);
-					me.uploadFiles(data.emailQueueId, data.filePath);
+					var data = JSON.parse(response.responseText);
+					me.uploadFiles(data.emailQueueId, data.filePath, form);
 					//Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
 					
-					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
+				/*	Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
 					Helper.resetWebOrderForm(me.getView());
 					webOrderFormView.resetFormFields();
 					//orderFileType.setDisabled(true);
-					Ext.getBody().unmask();
+					Ext.getBody().unmask();*/
 				},
 				failure:function(action){
 					//Ext.Msg.alert('Failed', action.result.message);
@@ -254,17 +252,24 @@ Ext.define('AOC.view.webform.WebFormController', {
 			//message.setVisible(true);
 		}
     },
-    uploadFiles:function(emailQueueId, filePath){
+    uploadFiles:function(emailQueueId, filePath, form){
     	var me = this;
     		xhttp = new XMLHttpRequest(),
     		fileArray = this.fileArray,
     		formData = new FormData(),
-    		url ='';
-    	
-    	if(fileArray.lenght > 0){
-	    	formData.append('file',fileArray[fileArray.lenght-1]);
+    		url =applicationContext+'/rest/emailqueue/fileupload';;
+    		var values = form.getValues();
+    	var len = fileArray.length;
+    	if(fileArray.length > 0){
+	    	formData.append('file',fileArray[len-1]);
 	    	formData.append('emailQueueId', emailQueueId);
+	    	formData.append('fileName', fileArray[len-1].name);
 	    	formData.append('filePath', filePath);
+	    	formData.append('dataStructureName', values.dataStructureName);
+	    	formData.append('additionalDataFileKey', '');
+	    	formData.append('fileContentType', '');
+	    	formData.append('sendAcknowledgementFlag', 'false');
+	    	formData.append('email', values.email);
 	    	
 	        xhttp.onreadystatechange = function() {
 	            (4 === xhttp.readyState) && uploadDone(xhttp);
