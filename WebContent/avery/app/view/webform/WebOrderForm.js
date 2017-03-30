@@ -18,8 +18,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	border:false,
 	attachmentFileNameExtension_1:null,
 	orderFileNameExtension:null,
-	attachmentCount:1,
-	orderFileAttachmentCount:1,
 	maximumOrderFileCount:4,
 	maxAttachmentCount:4,
 	isResubmit:false,
@@ -33,6 +31,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	},
     resetFormFields: function() {
     	this.isResubmit=false;
+<<<<<<< HEAD
+=======
 //    	var i=this.attachmentCount,currentAttachment,form=this,currentOrderFile;
 //    	for(var j=2;j<=i;j++){
 //    		currentAttachment=this.queryById('attachment'+j),
@@ -144,6 +144,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 //					]
 //				}
 //			);
+>>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
         this.form.reset();
         this.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
@@ -160,12 +161,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	buildItems:function(){
 		var me=this;
 		return [
-	        {
-				xtype:'displayfield',
-				itemId:'messageFieldItemId',
-				flex:1,
-				hidden:true
-	        },
 			{
 				xtype:'fieldcontainer',
 				layout:'hbox',
@@ -233,11 +228,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							'focus': 'notifyByMessage'
 						}
 					}
-//					{
-//						xtype:'box',
-//						flex:0.3,
-//						html:''
-//					}
 				]
 			},
 			{

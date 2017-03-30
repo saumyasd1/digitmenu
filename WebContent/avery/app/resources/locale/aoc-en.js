@@ -132,7 +132,7 @@ Ext.define('AOC.lang.lit',{
     "toDate": 'To Date',
     "dateFormat":'Y-m-d',
     "undoChangesText":'Undo',
-    "fillMandatoryFieldMsg": 'Please fill valid entry in the field marked as <img src="' + errorIcon + '" width="15" height="15">',
+    "fillMandatoryFieldMsg": 'Please fill valid entry in the field marked as <span style="color:red"> * </span>',
     "setDateMsg": '<center><font color=red>From Date must be less than or equal to To Date</font></center>',
     "advSearchTitle": '<font color=#3300FF><b>Advanced Search</b></font>',
     "editFieldEntryMsg": '<font size=2 color=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No field is edited,Please edit field</font>',
