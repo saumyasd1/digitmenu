@@ -46,11 +46,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 	   	    	    attachment.reset();
 	   	    	    additionalDataFileKey.reset();
    	    	 	}
-   	    	 	obj.isChangedForFirstTime=false;
-<<<<<<< HEAD
-=======
-   	    	 	//me.hideAndDestroyAttachmentField();
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
     		}
     		emailBody.reset();
 			dataStructureCombo.disable();
@@ -113,10 +108,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 			store = cmp.getStore(),
 			index = store.find('id', newValue),
 			view = me.getView(),
-<<<<<<< HEAD
-=======
-			//attachmentCount = view.attachmentCount,
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 			attachementField = me.lookupReference('attachment'),
 			additionalDataFileKey = me.lookupReference('additionalDataFileKey');
 			
@@ -177,38 +168,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 					if(!webOrderForm.isResubmit){
 			    		//var i=parseInt(count)+1;
 			    		if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
-<<<<<<< HEAD
 							me.insertFileInGrid(value,'Order File Type',true, null);
-=======
-//				    		orderFileTypeCont.add({ 
-//								xtype : 'fileuploadfield', 
-//								name : 'orderFileType'+i,
-//								reference:'orderFileType'+i,
-//								fieldLabel : 'Order File', 
-//								itemId:'orderFileType'+i,
-//								flex:1.8,
-//								margin:'0 0 0 10',
-//								forceSelection : true,
-//								enforceMaxLength: true,
-//								blankText :'Order File Type is required',
-//								listeners:{
-//									'change':'onOrderFileChange',
-//									//blur : this.notifyByImage,
-//									'focus': 'notifyByMessage'
-//								}
-//							});
-//				    		this.latestOrderFieldCount++;
-//				    		webOrderForm.orderFileAttachmentCount++;
 							this.insertFileInGrid(value,'Order File Type',true, count, null);
 							//obj.hide();
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 			    		}else{
 			    			Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maximumOrderFileCount+' order file.')
 							obj.reset();
-<<<<<<< HEAD
-=======
 			    			//obj.setDisabled(true);
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 			    		}
 					}else{
 						obj.reset();
@@ -233,7 +199,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 			oldAdditionalFileId = refs.oldAdditionalFileId,
 			oldFileIds = [],
 			odFileId = 0;
-//			messageField = this.getView().down('#messageFieldItemId');
 		
 		var len = store.getCount();
 		for(var i = 0; i < len; i++){
@@ -266,18 +231,15 @@ Ext.define('AOC.view.webform.WebFormController', {
 				url:url,
 				jsonData:fieldParams,
 				success:function(response){
-<<<<<<< HEAD
 					var data = JSON.parse(response.responsetext);
 					me.uploadFiles(data.emailQueueId, data.filePath);
 					//Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
 					
-=======
 					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
 					Helper.resetWebOrderForm(me.getView());
 					webOrderFormView.resetFormFields();
 					//orderFileType.setDisabled(true);
 					Ext.getBody().unmask();
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 				},
 				failure:function(action){
 					//Ext.Msg.alert('Failed', action.result.message);
@@ -285,94 +247,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 				}
 			});
 			
-<<<<<<< HEAD
-=======
-//			form.submit({
-//				url: url,
-//				getParams: function(useModelValues) {
-//					var fieldParams = this.form.getValues(false,false,false,true);
-//					return Ext.apply({}, fieldParams);
-//				},
-//				buildForm: function() {
-//					var me = this,
-//						fieldsSpec = [],
-//						formSpec, formEl,
-//						basicForm = me.form,
-//						params = me.getParams(),
-//						uploadFields = [],
-//						uploadEls = [],
-//						fields = basicForm.getFields().items,
-//						i,
-//						len = fields.length,
-//						field, key, value, v, vLen, el;
-//						
-//					for (i = 0; i < len; ++i) {
-//						field = fields[i];
-//						if (field.isFileUpload() && field.isDirty()) {
-//							uploadFields.push(field);
-//						}
-//					}
-//					for (key in params) {
-//						if (params.hasOwnProperty(key)) {
-//							value = params[key];
-//							if (Ext.isArray(value)) {
-//								vLen = value.length;
-//								for (v = 0; v < vLen; v++) {
-//									fieldsSpec.push(me.getFieldConfig(key, value[v]));
-//								}
-//							} else {
-//								fieldsSpec.push(me.getFieldConfig(key, value));
-//							}
-//						}
-//					}
-//					formSpec = {
-//						tag: 'form',
-//						role: 'presentation',
-//						action: me.getUrl(),
-//						method: me.getMethod(),
-//						target: me.target ? (Ext.isString(me.target) ? me.target : Ext.fly(me.target).dom.name) : '_self',
-//						style: 'display:none',
-//						cn: fieldsSpec
-//					};
-//					if (!formSpec.target) {
-//						Ext.Error.raise('Invalid form target.');
-//					}
-//					
-//					if (uploadFields.length) {
-//						formSpec.encoding = formSpec.enctype = 'multipart/form-data';
-//					}
-//					
-//					formEl = Ext.DomHelper.append(Ext.getBody(), formSpec);
-//					
-//					len = uploadFields.length;
-//					for (i = 0; i < len; ++i) {
-//						el = uploadFields[i].extractFileInput();
-//						formEl.appendChild(el);
-//						uploadEls.push(el);
-//					}
-//					return {
-//						formEl: formEl,
-//						uploadFields: uploadFields,
-//						uploadEls: uploadEls,
-//						files:me.scope.fileArray
-//					};
-//				},
-//				method: 'POST',
-//				waitMsg: 'Uploading your file...',
-//				scope : this,
-//				success : function(form,action){
-//					Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
-//					Helper.resetWebOrderForm(me.getView());
-//					webOrderFormView.resetFormFields();
-//					//orderFileType.setDisabled(true);
-//					Ext.getBody().unmask();
-//				},
-//				failure : function(form, action) {
-//					Ext.Msg.alert('Failed', action.result.message);
-//					Ext.getBody().unmask();
-//				}
-//			});
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 		}else{
 			Ext.getBody().unmask();
 			Helper.showToast('validation', AOCLit.fillMandatoryFieldMsg);
@@ -437,70 +311,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    		Ext.Msg.alert(AOCLit.warningTitle,'Please attach only ' +view.attachmentFileNameExtension_1 +' type of files');
 		    		return false;
 		    	}else{
-<<<<<<< HEAD
-=======
-//		    		var count=obj.name.replace('attachment','');
-//		    		var i=parseInt(count)+1;
-//		    		var additionalDataFileKey= me.lookupReference('additionalDataFileKey'+count);
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 		    		if(webOrderForm.attachmentCount <= webOrderForm.maxAttachmentCount){
-<<<<<<< HEAD
 						this.insertFileInGrid(value, 'Attachment', true, null, additionalDataFileKey.getValue());
-=======
-//			    		webOrderForm.add({
-//							xtype:'fieldcontainer',
-//							layout:'hbox',
-//							flex:1,
-//							scope:me,
-//							margin:'0 0 5 0',
-//							defaults:{
-//								labelSeparator:'',
-//								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-//								labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-//								labelWidth:150
-//							},
-//							items:[
-//								{   
-//									xtype:'textfield',
-//									name: 'additionalDataFileKey'+i,
-//									reference: 'additionalDataFileKey'+i,
-//									fieldLabel:'Additional DataFile Key',
-//									itemId:'additionalDataFileKey'+i,
-//									flex:1.8,
-//									scope:me,
-//									listeners:{
-//										'focus': 'notifyByMessage'
-//									 }
-//								},
-//								{
-//									xtype:'fileuploadfield',
-//									name: 'attachment'+i,
-//									reference: 'attachment'+i,
-//									fieldLabel:'Attachments',
-//									itemId:'attachment'+i,
-//									allowBlank: true,
-//									flex:1.8,
-//									margin:'0 0 0 10',
-//									scope:me,
-//									listeners:{
-//										'change':'onAttachmentChange'
-//									}
-//								}
-////								{
-////									xtype:'box',
-////									flex:0.3,
-////									html:''
-////								}
-//							]
-//						});
-		    		
-						//webOrderForm.totalAttachmentCount++;
-			    		//this.latestAttachmentFieldCount++;
-						//webOrderForm.attachmentCount++;
-						this.insertFileInGrid(value, 'Attachment', true, count, null, additionalDataFileKey.getValue());
-						//obj.hide();
-						//additionalDataFileKey.hide();
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 					}else{
 						Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maxAttachmentCount+' attachment.')
 						obj.reset();
@@ -511,10 +323,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    	}
 		    }else{
 			    	obj.reset();
-<<<<<<< HEAD
-=======
-			    	//additionalDataFileKey.reset();
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 			    	Ext.Msg.alert(AOCLit.warningTitle,'Attachment File Extension is not defined for this productline. Please configure the productline correctly before proceding.');
 		    		return false;
 		    }
@@ -570,17 +378,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 				
 			if(fileType == 'Attachment'){
 				var additionalDataFileKey = view.lookupReference('additionalDataFileKey');
-<<<<<<< HEAD
-=======
-//				if(attachmentFileField){
-//					attachmentFileField.destroy();
-//					additionalDataFileKey.destroy();
-//					
-//					attachmentFileTypeNew = view.lookupReference('attachment'+this.latestAttachmentFieldCount);
-//					attachmentFileTypeNew.setDisabled(false);
-//					form.attachmentCount--;
-//				}
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 				if(form.isResubmit){
 					var fileIdValue = form.down('#oldAdditionalFileId').getValue(),
 						fileIdArray = fileIdValue.split(','),
@@ -603,14 +400,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 				if(attachmentFileField){
 					attachmentFileField.reset();
 				}
-<<<<<<< HEAD
-=======
-				//orderFileType.destroy();
-				//orderFileTypeNew = view.lookupReference('orderFileType'+this.latestOrderFieldCount);
-				//orderFileTypeNew.setDisabled(false);
-				//form.orderFileAttachmentCount--;
-				
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 			}
 			store.remove(record);
 			webOrderAttachmentInfoGrid.getView().refresh();
@@ -644,14 +433,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 			attachmentField = view.lookupReference('attachment'), 
 			additionalDataFileKey = view.lookupReference('additionalDataFileKey');
 		
-<<<<<<< HEAD
-=======
-		//context.record.commit();
-//		if(additionalDataFileKey){
-//			additionalDataFileKey.setValue(context.value);
-//			//attachmentField.setValue(record.get('fileName'));
-//		}
->>>>>>> branch 'master' of https://github.com/adeptia/AveryDennisonWeb.git
 	},
 	beforeEditorShow:function(editor,context){
 		view=this.getView(),
