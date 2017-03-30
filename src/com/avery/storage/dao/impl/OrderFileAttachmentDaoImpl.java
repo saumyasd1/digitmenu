@@ -86,19 +86,21 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 				orderFileAttachment.setIconName(iconName);
 				orderFileAttachment.setColorCode(colorCode);
 				orderFileAttachment.setCodeValue(codeValue);
-				String[] commentArray = {};
-				if (orderFileAttachment.getComment() != null && !"".equals(orderFileAttachment.getComment()))
-					commentArray = orderFileAttachment.getComment().split(",");
-				if (commentArray.length > 0) {
-					StringBuilder commentBuilder = new StringBuilder();
-					for (String comment : commentArray) {
-						if (NumberUtils.isNumber(comment)) {
-							commentBuilder.append(comment).append(",");
-						}
-					}
-					commentBuilder.deleteCharAt(commentBuilder.length() - 1);
-					orderFileAttachment.setComment(commentBuilder.toString());
-				}
+				//commenting the code as reverting back the AOC#250
+//				String[] commentArray = {};
+//				if (orderFileAttachment.getComment() != null && !"".equals(orderFileAttachment.getComment()))
+//					commentArray = orderFileAttachment.getComment().split(",");
+//				if (commentArray.length > 0) {
+//					StringBuilder commentBuilder = new StringBuilder();
+//					for (String comment : commentArray) {
+//						if (NumberUtils.isNumber(comment)) {
+//							commentBuilder.append(comment).append(",");
+//						}
+//					}
+//					if (commentBuilder.length() > 0)
+//						commentBuilder.deleteCharAt(commentBuilder.length() - 1);
+//					orderFileAttachment.setComment(commentBuilder.toString());
+//				}
 			}
 			return list;
 		} catch (WebApplicationException ex) {
