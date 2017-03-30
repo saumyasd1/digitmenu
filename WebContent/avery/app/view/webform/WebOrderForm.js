@@ -33,122 +33,122 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	},
     resetFormFields: function() {
     	this.isResubmit=false;
-    	var i=this.attachmentCount,currentAttachment,form=this,currentOrderFile;
-    	for(var j=2;j<=i;j++){
-    		currentAttachment=this.queryById('attachment'+j),
-    		additionalDataFileKey=this.queryById('additionalDataFileKey'+j);
-    		if(currentAttachment){
-    			currentAttachment.destroy();
-    			if(additionalDataFileKey){
-    				additionalDataFileKey.destroy();
-				}
-    		}
-    	}
-    	//If more than one Orderfiletype field is exist then destoy 
-    	var orderFileAttachmentCount = this.orderFileAttachmentCount;
-    	for(var j=2;j<=orderFileAttachmentCount;j++){
-    		currentOrderFile=this.queryById('orderFileType'+j);
-    		if(currentOrderFile){
-    			currentOrderFile.destroy();
-    		}
-    	}
-    	this.orderFileAttachmentCount = 1;
-    	
-    	var orderFileArray = this.query('[name^=orderFileType]');
-    	for(var i=0,len=orderFileArray.length;i<len;i++){
-    		orderFileArray[i].destroy();
-    	}
-    	currentOrderFile = this.queryById('orderFileType1');
-    	if(currentOrderFile){
-    		!currentOrderFile.isVisible() ? currentOrderFile.show() :'';
-    		//currentOrderFile.hide();
-    	}else{
-    		var orderFileTypeCont = this.queryById('orderFileTypeCont');
-    		orderFileTypeCont.add({ 
-				xtype : 'fileuploadfield', 
-				name : 'orderFileType1',
-				reference:'orderFileType1',
-				fieldLabel : 'Order File', 
-				itemId:'orderFileType1',
-				flex:1.8,
-				margin:'0 0 0 10',
-				allowBlank : false, 
-				disabled:true,
-				forceSelection : true,
-				enforceMaxLength: true,
-				blankText :'Order File Type is required',
-				listeners:{
-					'change':'onOrderFileChange',
-					blur : this.notifyByImage,
-					'focus': 'notifyByMessage'
-				}
-			});
-    	}
-    	
-    	this.attachmentCount=1;
-    	
-    	var attachmentFileArray = this.query('[name^=attachement]');
-    	for(var i=0,len=attachmentFileArray.length;i<len;i++){
-    		attachmentFileArray[i].destroy();
-    	}
-    	
-    	var additionalDataFileArray = this.query('[name^=additionalDataFileKey]');
-    	for(var i=0,len=additionalDataFileArray.length;i<len;i++){
-    		additionalDataFileArray[i].destroy();
-    	}
-    	
-    	form.add(
-				{
-					xtype:'fieldcontainer',
-					layout:'hbox',
-					flex:1,
-					margin:'0 0 5 0',
-					defaults:{
-						labelSeparator:'',
-						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-						labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-						labelWidth:150
-					},
-					items:[
-						{   
-							xtype:'textfield',
-							name: 'additionalDataFileKey1',
-							reference: 'additionalDataFileKey1',
-							fieldLabel:'Additional DataFile Key',
-							itemId:'additionalDataFileKey1',
-							flex:1.8,
-							disabled:true,
-							hidden:true,
-							listeners:{
-								'focus': 'notifyByMessage'
-							 }
-						},
-						{
-							xtype:'fileuploadfield',
-							name: 'attachment1',
-							reference: 'attachment1',
-							fieldLabel:'Attachments',
-							allowBlank: true,
-							flex:1.8,
-							margin:'0 0 0 10',
-							hidden:true,
-							listeners:{
-								'change':'onAttachmentChange'
-							}
-						}
+//    	var i=this.attachmentCount,currentAttachment,form=this,currentOrderFile;
+//    	for(var j=2;j<=i;j++){
+//    		currentAttachment=this.queryById('attachment'+j),
+//    		additionalDataFileKey=this.queryById('additionalDataFileKey'+j);
+//    		if(currentAttachment){
+//    			currentAttachment.destroy();
+//    			if(additionalDataFileKey){
+//    				additionalDataFileKey.destroy();
+//				}
+//    		}
+//    	}
+//    	//If more than one Orderfiletype field is exist then destoy 
+//    	var orderFileAttachmentCount = this.orderFileAttachmentCount;
+//    	for(var j=2;j<=orderFileAttachmentCount;j++){
+//    		currentOrderFile=this.queryById('orderFileType'+j);
+//    		if(currentOrderFile){
+//    			currentOrderFile.destroy();
+//    		}
+//    	}
+//    	this.orderFileAttachmentCount = 1;
+//    	
+//    	var orderFileArray = this.query('[name^=orderFileType]');
+//    	for(var i=0,len=orderFileArray.length;i<len;i++){
+//    		orderFileArray[i].destroy();
+//    	}
+//    	currentOrderFile = this.queryById('orderFileType1');
+//    	if(currentOrderFile){
+//    		!currentOrderFile.isVisible() ? currentOrderFile.show() :'';
+//    		//currentOrderFile.hide();
+//    	}else{
+//    		var orderFileTypeCont = this.queryById('orderFileTypeCont');
+//    		orderFileTypeCont.add({ 
+//				xtype : 'fileuploadfield', 
+//				name : 'orderFileType1',
+//				reference:'orderFileType1',
+//				fieldLabel : 'Order File', 
+//				itemId:'orderFileType1',
+//				flex:1.8,
+//				margin:'0 0 0 10',
+//				allowBlank : false, 
+//				disabled:true,
+//				forceSelection : true,
+//				enforceMaxLength: true,
+//				blankText :'Order File Type is required',
+//				listeners:{
+//					'change':'onOrderFileChange',
+//					blur : this.notifyByImage,
+//					'focus': 'notifyByMessage'
+//				}
+//			});
+//    	}
+//    	
+//    	this.attachmentCount=1;
+//    	
+//    	var attachmentFileArray = this.query('[name^=attachement]');
+//    	for(var i=0,len=attachmentFileArray.length;i<len;i++){
+//    		attachmentFileArray[i].destroy();
+//    	}
+//    	
+//    	var additionalDataFileArray = this.query('[name^=additionalDataFileKey]');
+//    	for(var i=0,len=additionalDataFileArray.length;i<len;i++){
+//    		additionalDataFileArray[i].destroy();
+//    	}
+//    	
+//    	form.add(
+//				{
+//					xtype:'fieldcontainer',
+//					layout:'hbox',
+//					flex:1,
+//					margin:'0 0 5 0',
+//					defaults:{
+//						labelSeparator:'',
+//						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+//						labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+//						labelWidth:150
+//					},
+//					items:[
+//						{   
+//							xtype:'textfield',
+//							name: 'additionalDataFileKey1',
+//							reference: 'additionalDataFileKey1',
+//							fieldLabel:'Additional DataFile Key',
+//							itemId:'additionalDataFileKey1',
+//							flex:1.8,
+//							disabled:true,
+//							hidden:true,
+//							listeners:{
+//								'focus': 'notifyByMessage'
+//							 }
+//						},
 //						{
-//							xtype:'box',
-//							flex:0.3,
-//							html:''
+//							xtype:'fileuploadfield',
+//							name: 'attachment1',
+//							reference: 'attachment1',
+//							fieldLabel:'Attachments',
+//							allowBlank: true,
+//							flex:1.8,
+//							margin:'0 0 0 10',
+//							hidden:true,
+//							listeners:{
+//								'change':'onAttachmentChange'
+//							}
 //						}
-					]
-				}
-			);
+////						{
+////							xtype:'box',
+////							flex:0.3,
+////							html:''
+////						}
+//					]
+//				}
+//			);
         this.form.reset();
         this.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
         this.queryById('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
-       // this.queryById('orderFileType1').setFieldStyle(AOC.lang.lit.hideImage);
+        this.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
     },
     initComponent : function(){
     	var me = this;
@@ -329,10 +329,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					},
 					{ 
 						xtype : 'fileuploadfield', 
-						name : 'orderFileType1',
-						reference:'orderFileType1',
+						name : 'orderFileType',
+						reference:'orderFileType',
 						fieldLabel : 'Order File', 
-						itemId:'orderFileType1',
+						itemId:'orderFileType',
 						flex:1.8,
 						margin:'0 0 0 10',
 						allowBlank : false, 
@@ -367,9 +367,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				items:[
 					{   
 						xtype:'textfield',
-						name: 'additionalDataFileKey1',
+						name: 'additionalDataFileKey',
 						flex:1.8,
-						reference: 'additionalDataFileKey1',
+						reference: 'additionalDataFileKey',
 						fieldLabel:'Additional DataFile Key',
 						itemId:'additionalDataFileKey1',
 						disabled:true,
@@ -380,12 +380,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					},
 					{   
 						xtype:'fileuploadfield',
-						name: 'attachment1',
+						name: 'attachment',
 						flex:1.8,
 						margin:'0 0 0 10',
-						reference: 'attachment1',
+						reference: 'attachment',
 						fieldLabel:'Attachments',
-						itemId:'attachment1',
+						itemId:'attachment',
 						disabled:true,
 						allowBlank: true,
 						hidden:true,

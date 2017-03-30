@@ -492,7 +492,7 @@ Ext.define('AOC.util.Helper',{
 		var attachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
 		attachmentInfoGrid.store.removeAll();
 		attachmentInfoGrid.getView().refresh();
-		webOrderView.lookupReference('orderFileType1').setDisabled(true);
+		webOrderView.lookupReference('orderFileType').setDisabled(true);
 		webOrderView.rboId = '';
 		webOrderView.productLineId = '';
 		
