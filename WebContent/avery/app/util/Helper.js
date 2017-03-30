@@ -109,55 +109,6 @@ Ext.define('AOC.util.Helper',{
 				}
 			}
 		}
-	  },
-  	emailAttachmentGrid:function(grid, selection, eOpts){
-  	if (grid.status == AOCLit.emailUnidentifiedStatus || grid.status == AOCLit.emailDisregardedStatus ){
-		if(selection.startCell){
-			var store = grid.store,
-			intialCell = selection.startCell;
-			
-			if(intialCell!=null && store.getCount() > 0){
-				var dataindex=intialCell.column.dataIndex,
-					value=intialCell.record.get(dataindex),
-					initialrowIdx=intialCell.rowIdx,
-					lastrowIdx=selection.endCell.rowIdx,
-					start=initialrowIdx,
-					end=lastrowIdx;
-				
-					function updateRecord(index){
-						var record =store.getAt(index),
-							commentValue= record.data.comment,
-							commentId = commentValue.split(",");
-						
-						if(dataindex == 'dataStructureNameId'){
-							if(!Ext.isEmpty(commentValue) && commentId.indexOf(value.toString()) != -1){
-								store.getAt(index).set(dataindex, value);
-							}
-							else if(Ext.isEmpty(commentValue)){
-								store.getAt(index).set(dataindex, value);
-							}
-						}
-						else{
-							store.getAt(index).set(dataindex, value);
-						}
-					//For Status field change code value
-					}
-
-				if(dataindex == 'contentType' || dataindex == 'dataStructureNameId' || dataindex == 'additionalDataFileKey')
-				{
-						if(end < start && start > 0){
-						for(var i= start;i >= end; i--){
-							updateRecord(i);
-						}
-					}else if(end > start){
-						for(var i= start;i <= end; i++){
-							updateRecord(i);
-						}
-				}
-			 }
-			}
-		}
-  	  }
   	},
     getCodeStore:function(type){
 		var store=Ext.data.StoreManager.lookup(type+'id');
