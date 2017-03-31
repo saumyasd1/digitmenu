@@ -1285,7 +1285,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					flex:2,
 					editor: {
 							xtype:'textareafield',
-							height:40
+							height:40,
+							autoScroll:true,
+							grow:true
 						   },
 					renderer:function(v, metadata,rec){
 						var mandatory = rec.get('mandatory'),
