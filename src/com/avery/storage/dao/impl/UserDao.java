@@ -19,5 +19,6 @@ public interface UserDao extends GenericDao<User, Long>{
 	
 	public List<User> getSortedList();
 
-}
+	public String getApplicationDefaultTimeZone();
 
+}

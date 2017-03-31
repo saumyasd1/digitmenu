@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -428,5 +429,35 @@ public class User extends MainAbstractEntity {
 		}
 		return rb.build();
 
+	}
+	
+	@GET
+	@Path("/globaltimezone")
+	public Response getApplicationDefaultTimeZone(@Context UriInfo ui, @Context HttpHeaders hh){
+		Response.ResponseBuilder rb = null;
+		String timeZone;
+		Map responseMap = new HashMap();
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig
+					.getInstance().getBean("userService");
+			timeZone = userService.getApplicationDefaultTimeZone();
+			if (timeZone == null | "".equals(timeZone))
+				timeZone = TimeZone.getDefault().getID();
+			responseMap.put("timeZone", timeZone);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
 	}
 }

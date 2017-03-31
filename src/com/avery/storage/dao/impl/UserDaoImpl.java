@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
@@ -27,6 +29,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.User;
 import com.avery.storage.service.UserService;
@@ -174,5 +177,27 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return criteria.list();
+	}
+	
+	@Override
+	public String getApplicationDefaultTimeZone() {
+		Session session = null;
+		String timeZone;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			String s = "select defaultTimeZone from GlobalConfiguration";
+			Query q = session.createQuery(s);
+			List results = q.list();
+			timeZone = (String) results.get(0);
+			return timeZone;
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while fetching data from the database", ex);
+			return TimeZone.getDefault().getID();
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while fetching data from the database", e);
+//			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+//					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+			return TimeZone.getDefault().getID();
+		}
 	}
 }

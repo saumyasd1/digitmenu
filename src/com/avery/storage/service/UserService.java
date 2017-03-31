@@ -45,4 +45,9 @@ public class UserService extends GenericEntityService<User, Long>{
 	public List<User> getSortedList(){
 		return getUserDao().getSortedList();
 	}
+
+	@Transactional
+	public String getApplicationDefaultTimeZone() {
+		return getUserDao().getApplicationDefaultTimeZone();
+	}
 }

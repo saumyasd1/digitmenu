@@ -2,6 +2,7 @@ package com.avery.app;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.TimeZone;
 
 import com.avery.app.config.PathConfig;
 import com.avery.app.config.PropertiesConfig;
@@ -104,6 +105,10 @@ public class Main {
 		}else{
 			userService.create(averyUser);
 		}
+		
+		String timeZone = userService.getApplicationDefaultTimeZone();
+		if (timeZone != null && !"".equals(timeZone))
+			TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
 		
 		CodeService codeService = (CodeService) SpringConfig
 				.getInstance().getBean("codeService");
