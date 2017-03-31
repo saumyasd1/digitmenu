@@ -423,5 +423,17 @@ Ext.define('AOC.controller.MenuController', {
 		Helper.loadCodeStore('orderfilequeue');
 		Helper.loadCodeStore('orderline');
 		Helper.loadCodeStore('orderemailqueue');
-	}  
+		this.getTimeZone();
+	},  
+	getTimeZone:function() {
+		Ext.Ajax.request({
+			url:applicationContext+'/rest/users/globaltimezone',
+			success:function(response){
+				var data = JSON.parse(response.responseText),
+				timeZone = data.timeZone;
+				
+				AOCRuntime.setTimeZone(timeZone);
+			}
+		})
+	}
 });  

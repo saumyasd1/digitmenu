@@ -23,7 +23,8 @@ Ext.define('AOC.config.Runtime',{
         openRow:[],
         user: {},
         storeERPORG:null,
-        orderLineCurrenProductLine:0
+        orderLineCurrenProductLine:0,
+        timeZone:null
     },
     constructor : function(config){
         this.initConfig(config);

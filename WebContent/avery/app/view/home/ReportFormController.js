@@ -41,6 +41,7 @@ Ext.define('AOC.view.home.ReportFormController', {
 	obj.PartnerName=this.lookupReference('partner').getDisplayValue();
 	obj.RBOName=rboName.join(',');
 	obj.Status=statusCode.join(',');
+	var values = reportForm.getValues();
 	query=Ext.JSON.encode(obj);
 	
      	var form = Ext.create('Ext.form.Panel', { 
@@ -50,7 +51,7 @@ Ext.define('AOC.view.home.ReportFormController', {
         });
      	form.submit({
         	method : 'GET',
-        	params:{query:query}
+        	params:{query:query,timezone:values.timeZone}
         });
     	}else{
     		 Ext.MessageBox.alert('', AOCLit.emptyFilter);

@@ -2,6 +2,7 @@ Ext.define('AOC.view.home.ReportForm',{
     extend: 'Ext.form.Panel',
     controller:'reportcontroller',
     alias:'widget.reportform',
+    runTime: AOC.config.Runtime,
     layout: {
         type: 'vbox',
         align: 'stretch'
@@ -17,6 +18,8 @@ Ext.define('AOC.view.home.ReportForm',{
 
     buildItems : function(){
         var me = this;
+        var tz = Ext.Date.getTimezone(new Date());
+        var serverTz = AOCRuntime.getTimeZone();
         return [
             {
 				xtype: 'fieldcontainer',
@@ -83,6 +86,14 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    		}
 	                    	}
 	                    }
+					},
+					{
+						xtype:'combo',
+						name:'timeZone',
+						reference:'timeZone',
+						editable:false,
+						margin:'0 20 0 0',
+						store:[[serverTz, serverTz],[tz, tz]],
 					}
 				]
 	        },
