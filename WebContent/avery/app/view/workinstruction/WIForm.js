@@ -21,8 +21,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			layout:{
 				type:'fit'
 			}
-			//width:Ext.getBody().getWidth()-50,
-			//height:Ext.getBody().getHeight()-80
 		});
 	
 		me.callParent(arguments);
@@ -130,18 +128,9 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	reference:'productLine',
 	                	bind:'{detail.productLine}',
 	                	fieldLabel:'Product Line',
-	                	displayField:'name',
-	                	valueField:'v',
-	                	queryMode:'local',
 	                	margin:'0 0 0 10',
 	                	flex:1,
-	                	store:new Ext.data.JsonStore({
-	                		data:[{name:'PFL', v:'PFL'},{name:'Multiple(HTL&PFL)', v:'Multiple(HTL&PFL)'},{name:'HTL', v:'HTL'},
-	                		           {name:'WVL', v:'WVL'},{name:'GG', v:'GG'},{name:'Multiple(please specify here)', v:'Multiple(please specify here)'},
-	                		           {name:'Others(please specify here)', v:'Others(please specify here)'}
-	                		],  
-	                		fields:['name','v']
-	                	})
+	                	store:Helper.getProductLineStore()
                 	 },
                 	 {
  	                	xtype:'box',
@@ -169,17 +158,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	reference:'atoNato',
 	                	bind:'{detail.aTONATO}',
 	                	fieldLabel:'ATO/NATO',
-	                	displayField:'name',
-	                	valueField:'value',
-	                	queryMode:'local',
-	                	store:new Ext.data.JsonStore({
-	                		data:[
-	                		  {name:'ATO',value:'ATO'},
-	                		  {name:'NATO', value:'NATO'},
-	                		  {name:'Both ATO & NATO', value:'BothATO&NATO'}
-	                		],
-	                		fields:['name', 'value']
-	                	}),
+	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
 	                	flex:1
 	                },
 	                {
@@ -295,16 +274,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            	reference:'glidCustomerItem',
 	                	bind:'{detail.gLIDCustomerItem}',
 			        	fieldLabel:'GLID/Customer Item #?',
-			        	displayField:'name',
-			        	valueField:'value',
-			        	queryMode:'local',
-			        	store:new Ext.data.JsonStore({
-			        		data:[
-			        		   {name:'Customer Item #',value:'CustomerItem#'},
-			        		   {name:'GLID', value:'GLID'}
-			        		],
-			        		fields:['name','value']
-			        	}),
+			        	store:[['CustomerItem#','Customer Item #'],['GLID','GLID']],
 			        	flex:1
 			        },
 			        {
@@ -372,15 +342,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				    	name:'system',
 	                	bind:'{detail.system}',
 				    	fieldLabel:'System (Must fill in when Internal item # is selected above)',
-				    	displayField:'name',
-				    	valueField:'name',
-				    	queryMode:'local',
-				    	store:new Ext.data.JsonStore({
-				    		data:[
-				    		   {name:'Oracle'}
-				    		],
-				    		fields:['name']
-				    	}),
+				    	store:[['Oracle','Oracle']],
 				    	flex:1
 				    },
 				    {
@@ -433,7 +395,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	},
 	getSystemOrg:function(){
 		return {
-		   margin:'10 0',
+		   margin:'15 0',
 		   layout:{
 			   type:'vbox',
 			   align:'stretch'
@@ -446,7 +408,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	  flex:1,
 		    	  title:'System Level',
 		    	  titleAlign:'center',
-		    	  height:250
+		    	  height:160
 		      },
 		      {
 		    	  title:'Org Level',
@@ -507,7 +469,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     	    	  xtype:'wiorggrid',
 		    	  reference:'wiOrgGrid',
 		    	  flex:1,
-		    	  height:250,
+		    	  height:325,
 		    	  border:'solid 1px #ccc;',
 		    	  margin:'10 0'
     	      }
@@ -541,13 +503,14 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							xtype:'radiogroup',
 							column:2,
 							width:300,
+							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'emailRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'emailRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:1},
+							    {boxLabel:'No Required', name:'emailSubjectRequired', inputValue:2, checked:true}
 							],
-							bind:'{detail.emailRequired}',
+							bind:'{detail.emailSubjectRequired}',
 							listeners:{
-								change:'onEmailRequiredRadioChange'
+								change:'onEmailSubjectRequiredRadioChange'
 							}
 						}
 			    	]
@@ -585,8 +548,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    },
 					    {
 					    	xtype:'textfield',
-					    	name:'emailKeyWording',
-				        	bind:'{detail.emailKeyWording}',
+					    	name:'emailSubjectKeyWording',
+				        	bind:'{detail.emailSubjectKeyWording}',
 					    	fieldLabel:'Key Wordings',
 					    	flex:1,
 					    	margin:'0 10'
@@ -597,13 +560,72 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				        	bind:'{detail.emailSubjectDataStructureRule}',
 					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
 			    	    	editable:false,
-			    	    	store:[['Yes','Yes'],['No','No']],
+			    	    	store:Helper.getYesNoStore(),
+					    }
+					]
+				},
+				{
+			    	xtype:'box',
+			    	html:'Email Body',
+			    	style:'font-weight:bold;color:#2c3e50;font-size:15px;'
+			    },
+			    {
+			    	items:[
+						{
+							xtype:'radiogroup',
+							column:2,
+							width:300,
+							margin:'0 0 5 0',
+							items:[
+							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:1},
+							    {boxLabel:'No Required', name:'emailBodyRequired', inputValue:2, checked:true}
+							],
+							bind:'{detail.emailBodyRequired}',
+							listeners:{
+								change:'onEmailBodyRequiredRadioChange'
+							}
+						}
+			    	]
+			    },
+				{
+					xtype:'fieldcontainer',
+					margin:'0 0 5 0',
+					flex:1,
+					reference:'emailBodyFieldCont',
+					disabled:true,
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					defaults:{
+						labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelAlign:AOC.config.Settings.form.topLabelAlign
+					},
+					items:[
+					    {
+					    	xtype:'combo',
+					    	fieldLabel:'Identification Type',
+					    	reference:'emailBodyIdentificationType',
+					    	name:'emailBodyIdentificationType',
+				        	bind:'{detail.emailBodyIdentificationType}',
+				        	store:[['RBO','RBO'],['ProductLine','Product Line']],
+					    	flex:1
+					    },
+					    {
+					    	xtype:'textfield',
+					    	name:'emailBodyKeyWording',
+				        	bind:'{detail.emailBodyKeyWording}',
+					    	fieldLabel:'Key Wordings',
+					    	margin:'0 0 0 10',
+					    	flex:1
 					    }
 					]
 				},
 				{
 					xtype:'displayfield',
 					flex:1,
+					margin:'0 0 5 0',
 					value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
 				},
 				{
@@ -624,13 +646,14 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							xtype:'radiogroup',
 							column:2,
 							width:300,
+							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'orderRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'orderRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'orderFileRequired', inputValue:1},
+							    {boxLabel:'No Required', name:'orderFileRequired', inputValue:2, checked:true}
 							],
-							bind:'{detail.orderRequired}',
+							bind:'{detail.orderFileRequired}',
 							listeners:{
-								//change:'onOrderRadioChange'
+								change:'onOrderRequiredRadioChange'
 							}
 						}
 					]
@@ -638,6 +661,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				{
 	    	    	xtype:'fieldcontainer',
 	    	    	margin:'0 0 5 0',
+	    	    	reference:'orderFileFieldCont',
+	    	    	disabled:true,
 	    	    	flex:1,
 	    	    	layout:{
 	    	    		type:'hbox',
@@ -655,13 +680,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	reference:'orderFileNameContent',
 	    	    	    	name:'orderFileNameContent',
 		                	bind:'{detail.orderFileNameContent}',
-	    	    	    	queryMode:'local',
-	    	    	    	displayField:'name',
-	    	    	    	valueField:'name',
-	    	    	    	store:new Ext.data.JsonStore({
-	    	    	    		data:[{name:'RBO'},{name:'Product Line'}],
-	    	    	    		fields:['name']
-	    	    	    	}),
+	    	    	    	store:Helper.getFileNameContentStore(),
+	    	    	    	editable:false,
 	    	    	    	flex:1
 	    	    	    },
 	    	    	    {
@@ -674,8 +694,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
-	    	    	    	name:'orderFormat',
-		                	bind:'{detail.orderFormat}',
+	    	    	    	name:'orderFileTypeFormat',
+		                	bind:'{detail.orderFileTypeFormat}',
 	    	    	    	fieldLabel:'Format',
 	    	    	    	flex:1
 	    	    	    }
@@ -687,9 +707,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	xtype:'radiogroup',
     		    	    	column:2,
     		    	    	width:300,
+							margin:'0 0 5 0',
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'order', inputValue:1, checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'order', inputValue:2}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:1, checked:true},
+    		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:2}
     		    	    	],
     	                	bind:'{detail.order}',
     		    	    	listeners:{
@@ -718,30 +739,20 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   bind:'{detail.orderTextFirstLastPage}',
 						   reference:'orderTextFirstLastPage',
 						   fieldLabel:'First Page/Last Page',
-						   displayField:'name',
-						   valueField:'name',
-						   queryMode:'local',
+						   editable:false,
 						   flex:1,
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'First Page'},{name:'Last Page'}],
-							   fields:['name']
-						   })
+						   store:Helper.getFirstLastPageStore()
 					   },
 					   {
 						   xtype:'combo',
 						   name:'orderTextPosition',
 						   bind:'{detail.orderTextPosition}',
 						   fieldLabel:'Top/Mid/Bottom of the page',
-						   displayField:'name',
 						   reference:'orderTextPosition',
-						   valueField:'name',
-						   queryMode:'local',
+						   editable:false,
 						   margin:'0 0 0 10',
 						   flex:1,
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
-							   fields:['name']
-						   })
+						   store:Helper.getTopMidBottomStore()
 					   },
 					   {
 						   xtype:'textfield',
@@ -755,17 +766,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   xtype:'combo',
 						   name:'orderExcelSheet',
 						   fieldLabel:'One Sheet/Multiple sheets in a file',
-						   displayField:'name',
 						   hidden:true,
+						   editable:false,
 						   reference:'orderExcelSheet',
-						   valueField:'name',
-						   queryMode:'local',
 						   margin:'0 0 0 10',
 						   flex:1,
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'One Sheet in a file'},{name:'Multiple order sheets in a file'}],
-							   fields:['name']
-						   })
+						   store:Helper.getExcelStore()
 					   }
 					]
 	    	    },
@@ -780,13 +786,14 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							xtype:'radiogroup',
 							column:2,
 							width:300,
+							margin:'0 0 5 0',
 							items:[
 							    {boxLabel:'Required', name:'attachmentRequired', inputValue:1},
 							    {boxLabel:'No Required', name:'attachmentRequired', inputValue:2, checked:true}
 							],
 							bind:'{detail.attachmentRequired}',
 							listeners:{
-								//change:'onOrderRadioChange'
+								change:'onAttachmentRequiredRadioChange'
 							}
 						}
 					]
@@ -795,6 +802,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	xtype:'fieldcontainer',
 	    	    	margin:'0 0 5 0',
 	    	    	flex:1,
+	    	    	reference:'attachmentFieldCont',
+	    	    	disbled:true,
 	    	    	layout:{
 	    	    		type:'hbox',
 	    	    		align:'stretch'
@@ -810,13 +819,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	fieldLabel:'File Name / File Content',
 	    	    	    	reference:'attachmentFileNameContent',
 	    	    	    	name:'attachmentFileNameContent',
-	    	    	    	queryMode:'local',
-	    	    	    	displayField:'name',
-	    	    	    	valueField:'name',
-	    	    	    	store:new Ext.data.JsonStore({
-	    	    	    		data:[{name:'RBO'},{name:'Product Line'}],
-	    	    	    		fields:['name']
-	    	    	    	}),
+	    	    	    	editable:false,
+	    	    	    	store:Helper.getFileNameContentStore(),
 	    	    	    	flex:1
 	    	    	    },
 	    	    	    {
@@ -840,9 +844,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	xtype:'radiogroup',
     		    	    	column:2,
     		    	    	width:300,
+							margin:'0 0 5 0',
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attach', inputValue:1, checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'attach', inputValue:2}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:1, checked:true},
+    		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:2}
     		    	    	],
     		    	    	listeners:{
     		    	    		change:'onAttachmentRadioChange'
@@ -869,29 +874,19 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   name:'attachmentTextFirstLastPage',
 						   reference:'attachmentTextFirstLastPage',
 						   fieldLabel:'First Page/Last Page',
-						   displayField:'name',
-						   valueField:'name',
-						   queryMode:'local',
+						   editable:false,
 						   flex:1,
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'First Page'},{name:'Last Page'}],
-							   fields:['name']
-						   })
+						   store:Helper.getFirstLastPageStore()
 					   },
 					   {
 						   xtype:'combo',
 						   name:'attachmentTextPosition',
 						   fieldLabel:'Top/Mid/Bottom of the page',
-						   displayField:'name',
 						   reference:'attachmentTextPosition',
-						   valueField:'name',
-						   queryMode:'local',
+						   editable:false,
 						   flex:1,
 						   margin:'0 0 0 10',
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'Top'},{name:'Mid'}, {name:'Bottom'}],
-							   fields:['name']
-						   })
+						   store:Helper.getTopMidBottomStore()
 					   },
 					   {
 						   xtype:'textfield',
@@ -905,17 +900,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   xtype:'combo',
 						   name:'attachmentExcelSheet',
 						   fieldLabel:'One Sheet/Multiple sheets in a file',
-						   displayField:'name',
 						   hidden:true,
 						   reference:'attachmentExcelSheet',
-						   valueField:'name',
-						   queryMode:'local',
 						   margin:'0 10',
+						   editable:false,
 						   flex:1,
-						   store:new Ext.data.JsonStore({
-							   data:[{name:'One Sheet in a file'},{name:'Multiple order sheets in a file'}],
-							   fields:['name']
-						   })
+						   store:Helper.getExcelStore()
 					   }
 					]
 	    	    }

@@ -6,7 +6,11 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		stripeRows:true,
 		enableTextSelection:true
 	},
-	selType: 'checkboxmodel',
+	requires:['AOC.view.ux.RadioModel'],
+	//selType: 'checkboxmodel',
+	selModel: {
+		selType: 'radiomodel'
+	},
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -20,22 +24,6 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			store: Ext.data.StoreManager.lookup('wiSystemStore') == null ? Ext.create('AOC.store.WISystemStore',{storeId:'wiSystemStore'}) : Ext.data.StoreManager.lookup('wiSystemStore'),
 			listeners:{
 				afterrender:function(grid){
-//					var store = grid.store,
-//						count = store.getCount();
-//					if(count == 0){
-//						var record = {
-//								system:'Oracle',
-//								csrName:'Amit',
-//								packingInstruction:'',
-//								manufacturingNotes:'Test',
-//								invoiceNote:'',
-//								variableDataBreakdown:'',
-//								splitShipSetBy:'L',
-//								shippingMark:'',
-//								artworkHold:'N'
-//						}
-//						store.insert(0,new Ext.data.Record(record));
-//					}
 				}
 			}
 		});
@@ -53,7 +41,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		    },
 		    {
 		    	text:'Default Org',
-		    	dataIndex:'dafultOrg',
+		    	dataIndex:'defaultOrg',
 		    	flex:1,
 		    	editor:{
 		    		xtype:'combo',
@@ -67,7 +55,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		    			   {name:'ADNL', id:7, systemId:32},{name:'ADHK', id:8, systemId:32},{name:'PXVN', id:9, systemId:32},
 		    			   {name:'PXSH', id:10, systemId:32},{name:'SZ', id:11, systemId:33}
 		    			],
-		    			fields:['name','id','systemName']
+		    			fields:['name','id','systemId']
 		    		}),
 		    		listeners:{
 		    			expand:'onSystemDefaultOrgExpand'

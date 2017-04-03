@@ -637,5 +637,33 @@ Ext.define('AOC.util.Helper',{
 			metadata.style = AOCLit.mandatoryValidationCellColor;
 		}
 		return value;
+	},
+	//WI section
+	getProductLineStore:function(){
+		return [
+	        ['PFL','PFL'],['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
+	        ['GG','GG'],['Multiple','Multiple(please specify here)'],['Others','Others(please specify here)']
+		];
+	},
+	getCustomerItemIdentifierStore:function(){
+		return [
+		        ['Color Code','Color Code'],['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
+		        ['GG','GG'],['Multiple','Multiple(please specify here)'],['Others','Others(please specify here)']
+			];
+	},
+	getFileNameContentStore:function(){
+		return [['RBO','RBO'],['Product Line','Product Line']];
+	},
+	getFirstLastPageStore:function(){
+		return [['First Page','First Page'],['Last Page','Last Page']];
+	},
+	getTopMidBottomStore:function(){
+		return [['Top','Top'],['Mid','Mid'],['Bottom','Bottom']];
+	},
+	getExcelStore:function(){
+		return [['One Sheet in a file','One Sheet in a file'],['Multiple order sheets in a file','Multiple order sheets in a file']];
+	},
+	getYesNoStore:function(){
+		return [['Yes','Yes'],['No','No']];
 	}
 });

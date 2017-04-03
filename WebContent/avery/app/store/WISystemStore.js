@@ -10,6 +10,7 @@ Ext.define('AOC.store.WISystemStore', {
         url: applicationContext+'/rest/wisystem',
         reader: {
             type: 'json'
+            //rootProperty:'items'
         },
         headers: {
             Authorization : 'Basic YWRtaW46aW5kaWdvMQ=='

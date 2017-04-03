@@ -2,6 +2,7 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.wiorggrid',
     referenceHolder:true,
+    requires:['AOC.view.ux.RadioModel'],
 	emptyText: AOCLit.emptyDataMsg,
 	initComponent : function(){
 		var me = this;
@@ -21,7 +22,10 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 					//beforeedit:'OnBeforeEdit'
 				}
 			}],
-			selModel: 'checkboxmodel',
+			//selModel: 'checkboxmodel',
+			selModel: {
+				selType: 'radiomodel'
+			},
 			listeners:{
 				'afterrender':function(){
 				}
@@ -50,7 +54,7 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
             {
             	text:'Please select \"Yes\" if Org exist in this WI',
             	dataIndex:'orgExistFlag',
-            	flex:1,
+            	flex:1.5,
             	editor:{
             		xtype:'combo',
             		name:'orgExistFlag',
@@ -58,34 +62,34 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
             	}	
             },
             {
-            	text:'Bill to Site#',
+            	text:'Bill to Site# <i data-qtip="<font color=#3892d3>Please fill in Oracle Customer site #/VIPS bill to number if it cannot be captured from the order form / if only 1 bill to code would be ordered</font>" class="fa fa-info-circle"></i>',
             	dataIndex:'billToCode',
             	editor:'textfield',
-            	flex:1
+            	flex:1.5
             },
             {
-            	text:'Ship to Site#',
+            	text:'Ship to Site# <i data-qtip="<font color=#3892d3>Please fill in Oracle Customer site #/VIPS ship to number if it cannot be captured from the order form / if only 1 ship to code would be ordered</font>" class="fa fa-info-circle"></i>',
             	dataIndex:'shipToCode',
             	editor:'textfield',
-            	flex:1
+            	flex:1.5
             },
             {
-            	text:'Freight Term',
+            	text:'Freight Term <i data-qtip="<font color=#3892d3>Please fill in Oracle Oracle Freight Term</font>" class="fa fa-info-circle"></i>',
             	dataIndex:'freightTerm',
             	editor:'textfield',
-            	flex:1
+            	flex:1.5
             },
             {
-            	text:'Shipping Method',
+            	text:'Shipping Method <i data-qtip="<font color=#3892d3>Please fill in Oracle Oracle Shipping Method</font>" class="fa fa-info-circle"></i>',
             	dataIndex:'shippingMethod',
             	editor:'textfield',
-            	flex:1
+            	flex:1.5
             },
             {
             	text:'Shipping Instruction',
             	dataIndex:'shippingInstruction',
             	editor:'textfield',
-            	flex:1
+            	flex:1.5
             }
         ];
     }

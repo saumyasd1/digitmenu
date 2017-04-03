@@ -170,15 +170,15 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 	    	    	    	name:'sizeValidationStructure',
 	    	    	    	fieldLabel:'Is there any size validation for this structure?',
 	    	    	    	reference:'sizeValidationStructure',
-	    	    	    	displayField:'name',
 	    	    	    	flex:1,
-	    	    	    	valueField:'name',
-	    	    	    	queryMode:'local',
-	    	    	    	store:new Ext.data.JsonStore({
-	    	    	    		data:[{name:'Yes'},{name:'No'}],
-	    	    	    		fields:['name']
-	    	    	    	})
+	    	    	    	editable:false,
+	    	    	    	store:Helper.getYesNoStore()
 					    },
+					    {
+		                	xtype:'box',
+		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. size has to be validated by Size Chart/Size Page/Additional attachment'),
+		                	margin:'36 0 0 5'	
+		                },
 					    {
 					    	xtype:'textfield',
 					    	flex:1,
@@ -209,25 +209,24 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					items:[
 					    {
 					    	xtype:'combo',
-	    	    	    	name:'fabricContentValidationStructure',
-	    	    	    	fieldLabel:'Is there any Fabric Content validation for this structure?',
-	    	    	    	reference:'fabricContentValidationStructure',
-	    	    	    	displayField:'name',
+	    	    	    	name:'fiberContentValidationStructure',
+	    	    	    	fieldLabel:'Is there any Fiber Content validation for this structure?',
+	    	    	    	reference:'fibreContentValidationStructure',
 	    	    	    	flex:1,
-	    	    	    	valueField:'name',
-	    	    	    	queryMode:'local',
-	    	    	    	store:new Ext.data.JsonStore({
-	    	    	    		data:[{name:'Yes'},{name:'No'}],
-	    	    	    		fields:['name']
-	    	    	    	})
+	    	    	    	store:Helper.getYesNoStore()
 					    },
+					    {
+		                	xtype:'box',
+		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Sum of the Fabric Content must be in the multiple of 100%'),
+		                	margin:'36 0 0 5'	
+		                },
 					    {
 					    	xtype:'textfield',
 					    	flex:1,
 					    	margin:'0 0 0 10',
-					    	fieldLabel:'If yes, could you advise the SKU field name that requires Fabric Content validation',
-					    	name:'fabricContentValidationSKUFieldName',
-					    	reference:'fabricContentValidationSKUFieldName'
+					    	fieldLabel:'If yes, could you advise the SKU field name that requires Fiber Content validation',
+					    	name:'fibreContentValidationSKUFieldName',
+					    	reference:'fibreContentValidationSKUFieldName'
 					    }
 					]
 				},
@@ -254,15 +253,15 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 	    	    	    	name:'cooValidationStructure',
 	    	    	    	fieldLabel:'Is there any COO validation for this structure?',
 	    	    	    	reference:'cooValidationStructure',
-	    	    	    	displayField:'name',
 	    	    	    	flex:1,
-	    	    	    	valueField:'name',
-	    	    	    	queryMode:'local',
-	    	    	    	store:new Ext.data.JsonStore({
-	    	    	    		data:[{name:'Yes'},{name:'No'}],
-	    	    	    		fields:['name']
-	    	    	    	})
+	    	    	    	editable:false,
+	    	    	    	store:Helper.getYesNoStore()
 					    },
+					    {
+		                	xtype:'box',
+		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Country of Origin or its translation has to be validated'),
+		                	margin:'36 0 0 5'	
+		                },
 					    {
 					    	xtype:'textfield',
 					    	flex:1,
@@ -281,7 +280,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    {
     	    	xtype:'label',
     	    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
-    	    	text:'General Information and practice'
+    	    	text:'1. General Information and practice'
     	    },
     	    {
     	    	xtype:'fieldcontainer',
@@ -319,7 +318,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	margin:'0 0 0 10',
     	    	    	flex:1,
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore()
     	    	    }
     	    	]
     	    },
@@ -344,7 +343,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	    },
 		    	    {
 		    	    	xtype:'textfield',
-		    	    	name:'emailSubjectWarning',
+		    	    	name:'emailContentWarning',
 		    	    	margin:'0 0 0 10',
 		    	    	flex:1,
 		    	    	fieldLabel:'Please specify the wordings in the Email content that AOC has to raise warning if any?'
@@ -358,7 +357,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    {
     	    	xtype:'label',
     	    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
-    	    	text:'Sample/Bulk'
+    	    	text:'2. Sample/Bulk'
     	    },
     	    {
     	    	xtype:'fieldcontainer',
@@ -380,7 +379,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	reference:'sampleBulkOrderPresentWI',
     	    	    	flex:1,
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore()
     	    	    },
     	    	    {
     	    	    	xtype:'combo',
@@ -390,7 +389,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	flex:1,
     	    	    	margin:'0 10',
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore()
     	    	    },
     	    	    {
     	    	    	xtype:'combo',
@@ -399,7 +398,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	reference:'sampleItemRequiredWI',
     	    	    	flex:1,
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore()
     	    	    }
     	    	]
     	    },
@@ -468,7 +467,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	reference:'sampleItemApproved',
     	    	    	flex:1,
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore()
     	    	    },
     	    	    {
     	    	    	xtype:'textfield',
@@ -482,7 +481,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    },
     	    {
     	    	xtype:'label',
-    	    	text:'Internal information for CS (Please ignore for Adeptia) that would not be handled by AOC',
+    	    	text:'3. Internal information for CS (Please ignore for Adeptia) that would not be handled by AOC',
     	    	style:'font-weight:bold;color:#2c3e50;font-size:15px;'
     	    },
     	    {
@@ -505,7 +504,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   fieldLabel:'Discount Price',
 					   flex:1,
 					   editable:false,
-					   store:[['Yes','Yes'],['No','No']],
+					   store:Helper.getYesNoStore()
 				   },
 				   {
 					   xtype:'combo',
@@ -514,7 +513,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   margin:'0 0 0 10',
 					   flex:1,
 					   editable:false,
-					   store:[['Yes','Yes'],['No','No']],
+					   store:Helper.getYesNoStore()
 				   }
 				]
     	    }
@@ -524,7 +523,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		return [
 		    {
 		    	xtype:'label',
-		    	text:'Line Information',
+		    	text:'1. Line Information',
 		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
 		    	flex:1
 		    },
@@ -560,7 +559,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    {
 		    	xtype:'label',
-		    	text:'Order Information',
+		    	text:'2. Order Information',
 		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
 		    	flex:1
 		    },
@@ -586,7 +585,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    {
 		    	xtype:'label',
-		    	text:'Bill/Ship Information',
+		    	text:'3. Bill/Ship Information',
 		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
 		    	flex:1
 		    },
@@ -635,27 +634,46 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 				},
 				items:[
-					{
+			       {
 					   xtype:'combo',
 					   name:'billToSite#',
 					   reference:'billToSite',
 					   fieldLabel:'How can we determine Bill to Site#',
 					   flex:1,
-		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+					   editable:false,
+					   displayField:'name',
+					   valueField:'name',
+					   queryMode:'local',
+					   store:new Ext.data.JsonStore({
+						   data:[
+						       {name:'1 Default Value'},{name:'Bill To Address'},{name:'PO# (Please fill in "Bill/Ship Mapping Table")'},
+						       {name:'Email Subject (Please fill in "Bill/Ship Mapping Table")'},
+						       {name :'Others ( (Please specify & fill in "Bill/Ship Mapping Table")'}
+						   ],
+						   fields:'name'
+					   })
 				   },
-					{
+				   {
 				    	xtype:'combo',
 				    	fieldLabel:'How can we determine Ship to Site#',
 				    	name:'shipToSite#',
 				    	reference:'shipToSite',
 				    	margin:'0 0 0 10',
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	displayField:'name',
+		    	    	valueField:'name',
+		    	    	queryMode:'local',
+		    	    	store:new Ext.data.JsonStore({
+						   data:[
+						       {name:'1 Default Value'},{name:'Ship To Address'},{name:'PO#'},
+						       {name:'Email Subject'},{name:'Shippig Mark'},
+						       {name :'Others ( (Please specify & fill in "Bill/Ship Mapping Table")'}
+						   ],
+						   fields:'name'
+		    	    	}),
 				    	flex:1
 				    }
 				]
-				
 		    }
 		]
 	}

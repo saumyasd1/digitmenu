@@ -2,6 +2,13 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	extend:'Ext.app.ViewController',
 	alias:'controller.wiformcontroller',
 	
+	//Back button click
+	onBackBtnClick:function(btn){
+		var view = this.getView();
+		var parentCont = view.up('wicontainer');
+		parentCont.getLayout().setActiveItem(0);
+	},
+	
 	//Order File section
 	onOrderRadioChange:function(field, newValue, oldValue){
 		var me = this;
@@ -51,6 +58,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	
 	//End of Attachment section
 	
+	//Save btn click
 	onSaveBtnClick:function(btn){
 		var me = this,
 			refs = me.getReferences(),
@@ -58,9 +66,13 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			form = wiFormPanel.getForm(),
 			values = form.getValues();
 		
+		Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
+		Ext.apply(values, {listWiSystem:me.processOrgSystemData(refs.wiSystemGrid)});
+		Ext.apply(values, {listWiOrg:me.processOrgData(refs.wiOrgGrid)});
+		
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/wi',
-			jsonData:Ext.JSON.encode(values),
+			jsonData:values,
 			success:function(response){
 				Helper.showToast('success','Record has been suuccessfully saved');
 			},
@@ -71,18 +83,126 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		console.log(values);
 	},
-	onBackBtnClick:function(btn){
-		var view = this.getView();
-		var parentCont = view.up('wicontainer');
-		parentCont.getLayout().setActiveItem(0);
+	getSchemaIdentificationParams:function(values){
+		 var obj ={
+			 emailSubjectRequired : values.emailSubjectRequired,
+			 emailFileNameContent : values.emailFileNameContent,
+			 emailSubjectKeyWording : values.emailSubjectKeyWording,
+			 emailSubjectDataStructureRule: values.emailSubjectDataStructureRule,
+			 emailSubjectDataStructureOtherRule:values.emailSubjectDataStructureOtherRule,
+			 orderFileRequired:values.orderFileRequired,
+			 orderFileNameContent:values.orderFileNameContent,
+			 orderFileKeyWording:values.orderFileKeyWording,
+			 orderFileFormat:values.orderFileTypeFormat,
+			 orderFileType:values.orderFileType,
+			 orderTextFirstLastPage:values.orderTextFirstLastPage,
+			 orderTextPosition:values.orderTextPosition,
+			 orderExcelCell:values.orderExcelCell,
+			 orderExcelSheet:values.orderExcelSheet,
+			 attachmentRequired:values.attachmentRequired,
+			 attachmentFileNameContent:values.attachmentFileNameContent,
+			 attachmentFileKeyWording:values.attachmentFileKeyWording,
+			 attachmentFormat:values.attachmentFormat,
+			 attachmentFileType:values.attachmentFileType,
+			 attachmentTextFirstLastPage:values.attachmentTextFirstLastPage,
+			 attachmentTextPosition:values.attachmentTextPosition,
+			 attachmentExcelCell:values.attachmentExcelCell,
+			 attachmentExcelSheet:values.attachmentExcelSheet
+		 }
+		 delete values.emailSubjectRequired;
+		 delete values.emailFileNameContent;
+		 delete values.emailSubjectKeyWording;
+		 delete values.emailSubjectDataStructureRule;
+		 delete values.emailSubjectDataStructureOtherRule;
+		 delete values.orderFileRequired;
+		 delete values.orderFileNameContent;
+		 delete values.orderFileKeyWording;
+		 delete values.orderFileTypeFormat;
+		 delete values.orderFileType;
+		 delete values.orderTextFirstLastPage;
+		 delete values.orderTextPosition;
+		 delete values.orderExcelCell;
+		 delete values.orderExcelSheet;
+		 delete values.attachmentRequired;
+		 delete values.attachmentFileNameContent;
+		 delete values.attachmentFileKeyWording;
+		 delete values.attachmentFormat;
+		 delete values.attachmentFileType;
+		 delete values.attachmentTextFirstLastPage;
+		 delete values.attachmentTextPosition;
+		 delete values.attachmentExcelCell;
+		 delete values.attachmentExcelSheet;
+		 
+		 return obj;
 	},
-	//SChema Identification
-	onEmailRequiredRadioChange:function(field, newValue, oldValue){
-		var me = this,
-			refs = me.getReferences();
+	processOrgSystemData:function(grid){
+		var store = grid.store,
+			records = [];
 		
-		if(newValue.emailRequired == 1){
+		store.each(function(rec){
+			var modifiedRecords = rec.getChanges();
+			Ext.apply(rec.data, modifiedRecords);
 			
+			records.push(rec.data);
+		});
+		return records;
+	},
+	processOrgData:function(grid){
+		var store = grid.store,
+			records = [];
+		
+		store.each(function(rec){
+			var modifiedRecords = rec.getChanges();
+			Ext.apply(rec.data, modifiedRecords);
+			
+			records.push(rec.data);
+		});
+		return records;
+	},
+	
+	//SChema Identification
+	onEmailSubjectRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			emailSubjectFieldCont = refs.emailSubjectFieldCont;
+		
+		if(newValue.emailSubjectRequired == 1){
+			emailSubjectFieldCont.setDisabled(false);
+		}else{
+			emailSubjectFieldCont.setDisabled(true);
+		}
+	},
+	onEmailBodyRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			emailBodyFieldCont = refs.emailBodyFieldCont;
+		
+		if(newValue.emailBodyRequired == 1){
+			emailBodyFieldCont.setDisabled(false);
+		}else{
+			emailBodyFieldCont.setDisabled(true);
+		}
+	},
+	onAttachmentRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			attachmentFieldCont = refs.attachmentFieldCont;
+		
+		if(newValue.attachmentRequired == 1){
+			attachmentFieldCont.setDisabled(false);
+		}else{
+			attachmentFieldCont.setDisabled(true);
+		}
+	},
+	onOrderRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			orderFileFieldCont = refs.orderFileFieldCont;
+		
+		if(newValue.orderFileRequired == 1){
+			orderFileFieldCont.setDisabled(false);
+		}else{
+			orderFileFieldCont.setDisabled(true);
 		}
 	},
 	
@@ -93,18 +213,18 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			context = grid.editingPlugin.context,
 			rowIdx = context.rowIdx,
 			record = grid.store.getAt(rowIdx),
-			system = record.get('system'),
+			system = record.get('systemName'),
 			comboStore = field.store;
 		
 		switch(system){
 		case 'Oracle':
-			comboStore.filter('systemId',31);
+			comboStore.filter('systemName',31);
 			break;
 		case 'VIPS':
-			comboStore.filter('systemId',32);
+			comboStore.filter('systemName',32);
 			break;
 		case 'Sparrow':
-			comboStore.filter('systemId',33);
+			comboStore.filter('systemName',33);
 			break;
 		}
 	}

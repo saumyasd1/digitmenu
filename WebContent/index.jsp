@@ -89,8 +89,13 @@ int pageSize=100;
 		.aoc-wi-form .x-accordion-item .x-panel-header-default {
 		    border: solid 1px #f5f5f5;
 		}
-		.wi-form-panel-header{border:solid 1px #ccc;}
-		.aoc-wi-form .wi-form-panel-header .x-panel-header{border:solid 1px #ccc;background:rgb(246, 246, 246);}
+		.wi-form-panel-header .x-title-text{
+			color: #2c3e50;
+		    font-size: 15px;
+		    font-weight: bold;
+	    }
+		.wi-form-panel-header{border:solid 1px #cecece;}
+		.aoc-wi-form .wi-form-panel-header .x-panel-header{border:solid 1px #cecece;background:rgb(246, 246, 246);}
 		
 	</style>
   <title>Avery Dennison Web App</title>    
