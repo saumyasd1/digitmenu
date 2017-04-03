@@ -1297,7 +1297,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						if(Ext.isEmpty(v) && mandatory == 'Y'){
 							metadata.style = AOCLit.cellColor;
 						}
-						else if(isContainsFibre.includes('fiber line') && (fiberPercent>0 && Ext.isEmpty(variableDataValue) ) ){
+						else if(isContainsFibre.includes('fibre') && (fiberPercent>0 && Ext.isEmpty(variableDataValue) ) ){
 							metadata.style = AOCLit.cellColor;
 						}
 						else{
@@ -1318,7 +1318,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						var isContainsFibre = rec.get('level').toLowerCase(),
 						variableDataValue = rec.get('variableDataValue'),
 						fiberPercent = rec.get('fiberPercent');
-						if(isContainsFibre.includes('fiber line') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
+						if(isContainsFibre.includes('fibre') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
 							metadata.style = AOCLit.cellColor;
 						}
 						else{
