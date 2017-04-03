@@ -34,7 +34,6 @@ Ext.define('AOC.view.webform.WebOrderView', {
 	buildButtons:function(){
 		return [
 			{
-				//xtype:'whitebutton',
 				text:'Back',
 				itemId:'backButtonimage',
 				handler:'backButton',
@@ -42,13 +41,11 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			},
 		    '->',
 			{
-			   //xtype: 'plainbutton',
 			   itemId: 'cancel',
 			   text:AOCLit.Cancel,
 			   handler: 'onCancelBtnClick'
 			},
 			{
-			   //xtype: 'whitebutton',
 			   margin: '0 10 0 10',
 			   text:AOCLit.Save,
 			   itemId: 'save',
@@ -63,15 +60,14 @@ Ext.define('AOC.view.webform.WebOrderView', {
 				reference:'webform',
 				region:'center',
 				padding:10,
-				style:'border-top:solid 1px #cecece;background-color:#fff;',
-				scrollable:true
+				style:'border-top:solid 1px #cecece;background-color:#fff;'
 			},
 			{
 				xtype:'attachmentinfoGrid',
 				reference:'webOrderAttachmentInfoGrid',
 				style:AOC.config.Settings.config.defaultBorderStyle,
 				region:'south',
-				height:200
+				height:230
 			}
 		]
 	},

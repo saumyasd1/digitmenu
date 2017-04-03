@@ -17,6 +17,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	],
 	border:false,
 	attachmentFileNameExtension_1:null,
+	attachmentCount:1,
+	orderFileAttachmentCount:1,
 	orderFileNameExtension:null,
 	maximumOrderFileCount:4,
 	maxAttachmentCount:4,
@@ -30,12 +32,16 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 		labelWidth:150
 	},
     resetFormFields: function() {
-    	this.isResubmit=false;
-        this.form.reset();
-        this.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
-        this.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
-        this.queryById('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
-        this.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
+    	var me = this;
+    	me.attachmentCount = 1;
+    	me.orderFileAttachmentCount =1;
+    	me.isResubmit=false;
+        me.form.reset();
+        me.queryById('additionalDataFileKey').hide();
+        me.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
+        me.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
+        me.queryById('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
+        me.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
     },
     initComponent : function(){
     	var me = this;
@@ -237,7 +243,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						flex:1.8,
 						reference: 'additionalDataFileKey',
 						fieldLabel:'Additional DataFile Key',
-						itemId:'additionalDataFileKey1',
+						itemId:'additionalDataFileKey',
 						disabled:true,
 						hidden:true,
 						listeners:{

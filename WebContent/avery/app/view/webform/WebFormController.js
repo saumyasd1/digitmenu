@@ -4,6 +4,7 @@ Ext.define('AOC.view.webform.WebFormController', {
   
     runTime : AOC.config.Runtime,
     fileArray:[],
+    totalFileCount:0,
     onPartnerChange:function(obj, newValue){
     	var me = this,
 			rboCombo = me.lookupReference('rboCombo'),
@@ -151,7 +152,12 @@ Ext.define('AOC.view.webform.WebFormController', {
 			webOrderForm = me.lookupReference('webform'),
 			orderFileTypeCont = refs.orderFileTypeCont;
 		
-		me.fileArray.push(obj.getEl().down('input[type=file]').dom.files[0]); 
+		var file = obj.getEl().down('input[type=file]').dom.files[0];
+		if(!file){
+			return;
+		}
+		file.fileContentType ='orderFileType';
+		
 		value = value.replace("\\"," ");
 		if(!Ext.isEmpty(value)){
 			var extension=value.substring(value.lastIndexOf(".")+1);
@@ -164,18 +170,34 @@ Ext.define('AOC.view.webform.WebFormController', {
 					if(view.down('#weborderformItemId').isResubmit){
 						view.down('#oldOrderFileDeleted').setValue(true);
 					}
-					//var count=obj.name.replace('orderFileType','');
-					if(!webOrderForm.isResubmit){
-			    		//var i=parseInt(count)+1;
-			    		//if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
-							me.insertFileInGrid(value,'Order File Type',true, null);
-			    		/*}else{
+					if(webOrderForm.isResubmit){
+						var fileId = me.totalFileCount++,
+							len = me.fileArray.length;
+						
+		    			file.fileId = fileId;
+		    			for(var i=0;i<len;i++){
+		    				if(me.fileArray[i].fileContentType == 'orderFileType'){
+		    					me.fileArray.splice(i, 1);
+		    					break;
+		    				}
+		    			}
+		    			me.fileArray.push(file); 
+						me.insertFileInGrid(value,'Order File Type',false, fileId);
+						obj.reset();
+						obj.allowBlank=true;
+					}else{
+			    		if(webOrderForm.orderFileAttachmentCount <= webOrderForm.maximumOrderFileCount){
+			    			var fileId = me.totalFileCount++;
+			    			file.fileId = fileId;
+			    			me.fileArray.push(file); 
+							me.insertFileInGrid(value,'Order File Type',true, fileId);
+							webOrderForm.orderFileAttachmentCount++;
+							obj.reset();
+							obj.allowBlank=true;
+			    		}else{
 			    			Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maximumOrderFileCount+' order file.')
 							obj.reset();
-			    			//obj.setDisabled(true);
-			    		}*/
-					}else{
-						obj.reset();
+			    		}
 					}
 				}
 			}else{
@@ -223,24 +245,16 @@ Ext.define('AOC.view.webform.WebFormController', {
 				url=applicationContext+'/rest/emailqueue/newweborder';
 			}
 			var fieldParams = form.getValues(false,false,false,true);
-			//var query = Ext.JSON.encode(fieldParams);
 			
+			Ext.getBody().mask(AOCLit.pleaseWait);
 			Ext.Ajax.request({
 				url:url,
 				jsonData:fieldParams,
 				success:function(response){
 					var data = JSON.parse(response.responseText);
-					me.uploadFiles(data.emailQueueId, data.filePath, form);
-					//Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
-					
-				/*	Ext.Msg.alert('Success', AOCLit.webSubmissionSuccesFulMsg);
-					Helper.resetWebOrderForm(me.getView());
-					webOrderFormView.resetFormFields();
-					//orderFileType.setDisabled(true);
-					Ext.getBody().unmask();*/
+					me.uploadFiles(data.emailQueueId, data.filePath);
 				},
 				failure:function(action){
-					//Ext.Msg.alert('Failed', action.result.message);
 					Ext.getBody().unmask();
 				}
 			});
@@ -248,27 +262,35 @@ Ext.define('AOC.view.webform.WebFormController', {
 		}else{
 			Ext.getBody().unmask();
 			Helper.showToast('validation', AOCLit.fillMandatoryFieldMsg);
-			//var message=messageField.setValue(AOCLit.fillMandatoryFieldMsg);
-			//message.setVisible(true);
 		}
     },
-    uploadFiles:function(emailQueueId, filePath, form){
+    uploadFiles:function(emailQueueId, filePath){
     	var me = this;
+    		refs = me.getReferences(),
+    		webOrderFormView = refs.webform,
+    		form = webOrderFormView.getForm(),
     		xhttp = new XMLHttpRequest(),
     		fileArray = this.fileArray,
     		formData = new FormData(),
-    		url =applicationContext+'/rest/emailqueue/fileupload';;
-    		var values = form.getValues();
-    	var len = fileArray.length;
+    		url =applicationContext+'/rest/emailqueue/fileupload',
+    		values = form.getValues(),
+    		len = fileArray.length;
+    		
     	if(fileArray.length > 0){
 	    	formData.append('file',fileArray[len-1]);
 	    	formData.append('emailQueueId', emailQueueId);
 	    	formData.append('fileName', fileArray[len-1].name);
 	    	formData.append('filePath', filePath);
 	    	formData.append('dataStructureName', values.dataStructureName);
-	    	formData.append('additionalDataFileKey', '');
-	    	formData.append('fileContentType', '');
-	    	formData.append('sendAcknowledgementFlag', 'false');
+	    	formData.append('additionalDataFileKey', fileArray[len-1].additionalDataFileKey);
+	    	formData.append('fileContentType', fileArray[len-1].fileContentType);
+	    	
+	    	if(fileArray.length == 1){
+	    		formData.append('sendAcknowledgementFlag', 'true');
+	    	}else{
+	    		formData.append('sendAcknowledgementFlag', 'false');
+	    	}
+	    	
 	    	formData.append('email', values.email);
 	    	
 	        xhttp.onreadystatechange = function() {
@@ -278,7 +300,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        xhttp.open("POST", url, true);
 	        xhttp.send(formData);
 	        
-	        
 	        function uploadDone(xhttp){
 	        	switch(xhttp.status){
 	        		case 200:
@@ -286,24 +307,32 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        			if(fileArray.length == 0){
 	        				Helper.resetWebOrderForm(me.getView());
 	    					webOrderFormView.resetFormFields();
+	    					me.totalFileCount = 0;
 	    					Ext.getBody().unmask();
 	        			}else{
 	        				console.log('File Uploaded');
 		        			me.uploadFiles(emailQueueId, filePath);
 	        			}
-	        			
 	        			break;
 	        	}
 	        }
+    	}else{
+    		Ext.getBody().unmask();
     	}
     },
     onAttachmentChange:function(obj, value){
     	if(!Ext.isEmpty(value)){
 			var me = this,
 				webOrderForm = me.lookupReference('webform'),
+				additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
 				view = me.getView();
 			
-			me.fileArray.push(obj.getEl().down('input[type=file]').dom.files[0]); 	
+			var file =obj.getEl().down('input[type=file]').dom.files[0];
+			if(!file){return;}
+			
+			file.fileContentType ='attachment';
+			file.additionalDataFileKey = additionalDataFileKey.getValue();
+			
 			var value = value.substring(value.lastIndexOf("\\"));
 		    value = value.replace("\\"," ");
 			
@@ -317,13 +346,18 @@ Ext.define('AOC.view.webform.WebFormController', {
 		    		return false;
 		    	}else{
 		    		if(webOrderForm.attachmentCount <= webOrderForm.maxAttachmentCount){
-						this.insertFileInGrid(value, 'Attachment', true, null, additionalDataFileKey.getValue());
+		    			var fileId = me.totalFileCount++;
+		    			file.fileId = fileId;
+		    			me.fileArray.push(file); 
+						this.insertFileInGrid(value, 'Attachment', true, fileId, additionalDataFileKey.getValue());
+						obj.reset();
+						obj.allowBlank=true;
+						additionalDataFileKey.reset();
+						webOrderForm.attachmentCount++;
 					}else{
 						Ext.Msg.alert(AOCLit.warningTitle,'You can upload only'+webOrderForm.maxAttachmentCount+' attachment.')
 						obj.reset();
 						additionalDataFileKey.reset();
-						obj.setDisabled(true);
-						additionalDataFileKey.setDisabled(true);
 					}
 		    	}
 		    }else{
@@ -371,18 +405,14 @@ Ext.define('AOC.view.webform.WebFormController', {
 	
 	 onAttachmentGridCellClick:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		 var el = Ext.get(e.target);
-		if(el.hasCls('deleteClass')){
+		 if(el.hasCls('deleteClass')){
 			var view = this.getView(),
 				form = view.lookupReference('webform'),
-				fileType=record.get('fileType'),
-				attachmentFileField,
-				orderFileType = view.lookupReference('orderFileType'),
+				fileType = record.get('fileType'),
 				webOrderAttachmentInfoGrid = view.lookupReference('webOrderAttachmentInfoGrid'),
-				store=webOrderAttachmentInfoGrid.store;
-				attachmentFileField = view.lookupReference('attachment');
+				store = webOrderAttachmentInfoGrid.store;
 				
 			if(fileType == 'Attachment'){
-				var additionalDataFileKey = view.lookupReference('additionalDataFileKey');
 				if(form.isResubmit){
 					var fileIdValue = form.down('#oldAdditionalFileId').getValue(),
 						fileIdArray = fileIdValue.split(','),
@@ -396,35 +426,41 @@ Ext.define('AOC.view.webform.WebFormController', {
 					}
 					form.down('#oldAdditionalFileId').setValue(fileIdArray.join(','));
 				}
-				
 			}
 			else{
 				if(form.isResubmit){
 					form.down('#oldOrderFileDeleted').setValue(true);
 				}
-				if(attachmentFileField){
-					attachmentFileField.reset();
-				}
 			}
 			store.remove(record);
+			this.removeFileFromFileArray(record.get('fileId'));
 			webOrderAttachmentInfoGrid.getView().refresh();
 		}
 	},
-	 
+	removeFileFromFileArray:function(id){
+		var me = this,
+			len = me.fileArray.length;
+		
+		for(var i = 0; i<len; i++){
+			if(me.fileArray[i].fileId == id){
+				me.fileArray.splice(i,1);
+				me.totalFileCount--;
+				break;
+			}
+		}
+	},
 	onCancelBtnClick:function(){
 		var me = this,
 			refs = me.getReferences()
 			webOrderForm = refs.webform,
 			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
-			
+		
+		Helper.resetWebOrderForm(me.getView());
 		webOrderForm.resetFormFields();
 		webOrderAttachmentInfoGrid.store.removeAll();
 		webOrderAttachmentInfoGrid.getView().refresh();
 	},
 	notifyByMessage: function(config){
-//     	var messageField=this.getView().down('#messageFieldItemId');
-//		var message = messageField.setValue('');
-//		message.setVisible(false);
 	},
     backButton:function(){
     	var con = AOC.app.getController('MenuController');
