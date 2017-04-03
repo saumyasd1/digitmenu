@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -538,6 +539,7 @@ public class OrderQueue extends MainAbstractEntity{
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			mapper.setDateFormat(ApplicationUtils.df);
+			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, orderQueue);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -820,12 +822,15 @@ public class OrderQueue extends MainAbstractEntity{
 		List<OrderQueue> orderQueue = null;
 		try {
 			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
+			String timeZone = TimeZone.getDefault().getID();//default value if no values is coming from GUI
+			if(queryParamMap.getFirst("timezone")!=null && !"".equals(queryParamMap.getFirst("timezone")))
+				timeZone = queryParamMap.getFirst("timezone");
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService.getAllEntitiesListForDailyReport(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
-			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue);
+			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue, timeZone);
 			byte[] bytes = outputStream.toByteArray();
 			String fileName = "Daily_Report.xls";
 			return Response
@@ -869,12 +874,15 @@ public class OrderQueue extends MainAbstractEntity{
 		List<OrderQueue> orderQueue = null;
 		try {
 			MultivaluedMap<String, String> queryParamMap=ui.getQueryParameters() ;
+			String timeZone = TimeZone.getDefault().getID();//default value if no values is coming from GUI
+			if(queryParamMap.getFirst("timezone")!=null && !"".equals(queryParamMap.getFirst("timezone")))
+				timeZone = queryParamMap.getFirst("timezone");
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService.getAllEntitiesListForOpenReport(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
-			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue);
+			ByteArrayOutputStream outputStream=ExcelUtils.createOrderQueueExcelFile(orderQueue, timeZone);
 			byte[] bytes = outputStream.toByteArray();
 			String fileName = "Detail_Status_Report.xls";
 			return Response
