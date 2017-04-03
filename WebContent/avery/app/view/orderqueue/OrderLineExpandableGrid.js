@@ -212,7 +212,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.custOrderedQty +'<font color=red>*</font>',
 			dataIndex: 'customerOrderedQty',
-			width: 106,
+			width: 130,
 			editor: {
 				xtype:'numberfield',
 				minValue:0
@@ -238,7 +238,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.waiveMOQ,
 			dataIndex: 'waiveMOQ',
-			width: 59,
+			width: 80,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -251,7 +251,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.Status,
 			dataIndex: 'status',
-			width: 180,
+			width: 200,
 			editor: {
 				xtype:'combo',
 				editable:false,
@@ -306,7 +306,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.itemDescription,
 			dataIndex: 'pageSize',
 			width: 102,
-			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
@@ -386,13 +385,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.custName,
 			dataIndex: 'partnerCustomerName',
-			width: 126,
+			width: 130,
 			editor: 'textfield'
 		}, 
 		{
 			text: AOCLit.vendorName,
 			dataIndex: 'partnerVendorName',
-			width: 111,
+			width: 120,
 			editor: 'textfield'
 		}, 
 		{
@@ -1313,8 +1312,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				  align:'center',
 				  flex:1,
 				  editor: {
-					  xtype:'textfield',
-					  disabled:true
+					  xtype:'textfield'
 				  },
 				  renderer:function(v, metadata,rec){
 						var isContainsFibre = rec.get('level').toLowerCase(),
@@ -1353,7 +1351,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
                 saveAndNextBtn: true,
                 listeners:{
 					edit:function(editor, context, eOpts){
-						Ext.getBody().mask('Saving....');
 						var ctx = context,
 							idx = ctx.rowIdx,
 							currentRecord = ctx.store.getAt(idx),
@@ -1361,26 +1358,33 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						
 						var obj = currentRecord.getChanges();
 						obj.id = currentRecord.id;
+						fiberPercent = currentRecord.get('fiberPercent');
 						
-						var runTime = AOC.config.Runtime;
-						
-						var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
-						
-						Ext.Ajax.request({
-							method:'PUT',
-							jsonData:obj,
-							url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
-							success : function(response, opts) {
-								Helper.showToast('success','Order line Detail successfully updated');
-								grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
-								Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
-								grid.view.refresh();
-								Ext.getBody().unmask();
-							},
-							failure: function(response, opts) {
-								Ext.getBody().unmask();
-							}
-						});
+						if(fiberPercent.includes('.')==true || fiberPercent<0){
+							Helper.showToast('failure','Please enter only positive integer value for Fiber percent');
+						}
+						else{
+							Ext.getBody().mask('Saving....');
+							var runTime = AOC.config.Runtime;
+							
+							var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+							
+							Ext.Ajax.request({
+								method:'PUT',
+								jsonData:obj,
+								url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+								success : function(response, opts) {
+									Helper.showToast('success','Order line Detail successfully updated');
+									grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
+									Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
+									grid.view.refresh();
+									Ext.getBody().unmask();
+								},
+								failure: function(response, opts) {
+									Ext.getBody().unmask();
+								}
+							});
+					  }
 					}
                 },
                 'beforeEdit':function(editor, context){
