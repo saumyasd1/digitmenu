@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.mail.Message;
@@ -441,6 +442,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 			entitiesMap = orderEmailQueueService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
+			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -475,6 +477,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
+			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
