@@ -245,7 +245,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 				url=applicationContext+'/rest/emailqueue/newweborder';
 			}
 			var fieldParams = form.getValues(false,false,false,true);
-			
+			if(webOrderFormView.isResubmit){
+				fieldParams.isResubmit = 'true';
+			}
 			Ext.getBody().mask(AOCLit.pleaseWait);
 			Ext.Ajax.request({
 				url:url,
@@ -284,7 +286,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    	formData.append('dataStructureName', values.dataStructureName);
 	    	formData.append('additionalDataFileKey', fileArray[len-1].additionalDataFileKey ? fileArray[len-1].additionalDataFileKey:'');
 	    	formData.append('fileContentType', fileArray[len-1].fileContentType);
-	    	
+	    	formData.append('oldOrderId', values.oldOrderId);
+	    	if(webOrderFormView.isResubmit){
+	    		formData.append('isResubmit', 'true');
+			}
 	    	if(fileArray.length == 1){
 	    		formData.append('sendAcknowledgementFlag', 'true');
 	    	}else{
