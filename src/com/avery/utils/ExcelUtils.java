@@ -71,7 +71,7 @@ public class ExcelUtils {
 			cell9.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 			Cell cell10 = row.createCell(++columncellCount);
 			if(obj.getReceivedDate()!=null)
-				date = obj.getReceivedDate();
+				date = obj.getCreatedDate();
 				cell10.setCellValue(convertDateUsingTimezone(date, timeZone));
 			Cell cell11 = row.createCell(++columncellCount);
 			cell11.setCellValue(obj.getSenderEmailId());
