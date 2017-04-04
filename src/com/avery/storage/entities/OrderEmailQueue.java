@@ -3,8 +3,6 @@ package com.avery.storage.entities;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +18,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,6 +45,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
@@ -58,7 +56,9 @@ import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
+import com.avery.storage.service.OrderQueueService;
 import com.avery.utils.ApplicationConstants;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -946,4 +946,317 @@ private static final long serialVersionUID = 3208431286041487210L;
 			e.printStackTrace();
 		}
 	}
+	
+	/*@POST
+    @Path("/fileupload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+  	public Response fileUpload(@Context UriInfo uriInfo,
+            @Context HttpHeaders hh, @FormDataParam("file") InputStream file,
+            @FormDataParam("file") FormDataContentDisposition fileDetail,
+            FormDataMultiPart fdm,
+            @FormDataParam("fileName") String fileName) {
+  		Response.ResponseBuilder rb = null;
+  		InputStream stream = null;
+  		try {
+  			fdm.getField("").getValue();
+  			Map<String, List<FormDataBodyPart>> fieldsList = fdm.getFields();
+  			for(Map.Entry<String, List<FormDataBodyPart>> entry : fieldsList.entrySet()){
+  				FormDataBodyPart fdbp = entry.getValue().get(0);
+  			}
+  			ContentDisposition cd = fdm.getContentDisposition();
+  			String filName = fileDetail.getName();
+  			Map<String, List<FormDataBodyPart>> map = fdm.getFields();
+  			FormDataBodyPart fdbp = fdm.getField("file");
+  			File targetFile = new File("D:\\"+fileDetail.getName());
+  			FileUtils.copyInputStreamToFile(file, targetFile);
+  			ObjectMapper mapper = new ObjectMapper();
+  			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+  		} catch (WebApplicationException ex) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", ex);
+  			throw ex;
+  		} catch (Exception e) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", e);
+  			throw new WebApplicationException(Response
+  					.status(Status.INTERNAL_SERVER_ERROR)
+  					.entity(ExceptionUtils.getRootCauseMessage(e))
+  					.type(MediaType.TEXT_PLAIN_TYPE).build());
+  		}
+		return rb.build();
+  	}*/
+	
+	@POST
+	@Path("/newweborder")
+	public Response createNewWebOrder(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
+		Map<String, String> jsonMap = null;
+		Response.ResponseBuilder rb = null;
+		OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
+		Date now = new Date();
+		Long orderEmailQueueId = 0L;
+		Map responseMap = new HashMap();
+		String filePath;
+		long productlineId = 0L;
+
+		try {
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+					.getBean("orderQueueService");
+
+			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
+
+			String emailId = jsonMap.get("email");
+			String emailBody = jsonMap.get("emailBody");
+			String dataStructureId = jsonMap.get("dataStructureName");
+			String oldOrderFileDeleted = jsonMap.get("oldOrderFileDeleted");
+			boolean isOldOrderFileDeleted = Boolean.parseBoolean(
+					oldOrderFileDeleted == null || oldOrderFileDeleted.equals("") ? "false" : oldOrderFileDeleted);
+			String oldOrderFileId = jsonMap.get("oldOrderFileId") != null ? jsonMap.get("oldOrderFileId") : null;
+			String oldAdditionalFileId = jsonMap.get("oldAdditionalFileId") != null ? jsonMap.get("oldAdditionalFileId")
+					: null;
+			String oldOrderQueueId = jsonMap.get("oldOrderId") != null ? jsonMap.get("oldOrderId") : null;
+			productlineId = Long.parseLong(dataStructureId);
+			ProductLine productLineObj = new ProductLine();
+			productLineObj.setId(productlineId);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			orderEmailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
+			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
+			orderEmailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+			orderEmailQueueObj.setOrderMail(false);
+			orderEmailQueueObj.setReceivedDate(now);
+			orderEmailQueueObj.setCreatedDate(now);
+			orderEmailQueueObj.setSenderEmailId(jsonMap.get("email"));
+			orderEmailQueueObj.setSubject(jsonMap.get("subject"));
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			orderEmailQueueId = orderEmailQueueService.create(orderEmailQueueObj);
+			orderEmailQueueObj.setId(orderEmailQueueId);
+
+			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+					.getInstance().getBean("orderFileAttachmentService");
+			String defaultFilePath = PropertiesConfig.getString(PropertiesConstants.FILEATTACHMENT_PATH);
+			UUID uniqueUUId = UUID.randomUUID();
+			String uniqueString = uniqueUUId.toString();
+			filePath = defaultFilePath + File.separator + uniqueString;
+			new File(filePath).mkdir();
+			orderFileAttachmentService.insertEmailBody(orderEmailQueueObj, emailBody, productLineObj, filePath);
+
+			if (oldOrderFileId != null && !"".equals(oldOrderFileId) && !isOldOrderFileDeleted) {
+				OrderFileAttachment orderFileAttachmentObj = orderFileAttachmentService
+						.read(Long.parseLong(oldOrderFileId));
+				orderFileAttachmentObj.setId(0);
+				orderFileAttachmentObj.setCreatedDate(now);
+				orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+				// orderQueue.setPrevOrderQueueId(Integer.parseInt(oldOrderQueueId));
+				orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
+				orderFileAttachmentObj.setVarProductLine(productLineObj);
+				Long orderFileAttachmentId = orderFileAttachmentService.create(orderFileAttachmentObj);
+				orderFileAttachmentObj.setId(orderFileAttachmentId);
+				OrderQueue orderQueue = orderQueueService.read(Long.parseLong(oldOrderQueueId));
+				orderQueue.setCreatedDate(now);
+				orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+				orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
+				orderQueue.setVarProductLine(productLineObj);
+				int prevOrderId = Integer.parseInt(oldOrderQueueId);
+				orderQueue.setPrevOrderQueueId(prevOrderId);
+				orderQueueService.create(orderQueue);
+			}
+			
+			if(oldAdditionalFileId!=null && !"".equals(oldAdditionalFileId)){
+				String[] oldAdditionalFileIdList = oldAdditionalFileId.split(",");
+				for(int i=0;i<oldAdditionalFileIdList.length;i++){
+					OrderFileAttachment orderFileAttachmentObj = orderFileAttachmentService.read(Long.parseLong(oldAdditionalFileIdList[i]));
+					orderFileAttachmentObj.setId(0L);
+					orderFileAttachmentObj.setVarProductLine(productLineObj);
+					orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
+					orderFileAttachmentService.create(orderFileAttachmentObj);
+				}
+			}
+
+			// sendAcknowledgement(emailId , orderEmailQueueId);
+			responseMap.put("emailQueueId", orderEmailQueueId);
+			responseMap.put("filePath", filePath);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rb.build();
+	}
+	
+	@POST
+	@Path("/fileupload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response webOrderFileUpload(@Context UriInfo uriInfo, @Context HttpHeaders hh,
+			@FormDataParam("file") InputStream file, @FormDataParam("fileName") String fileName,
+			@FormDataParam("emailQueueId") String emailQueueId, @FormDataParam("filePath") String filePath,
+			@FormDataParam("dataStructureName") String dataStructureName,
+			@FormDataParam("additionalDataFileKey") String additionalDataFileKey,
+			@FormDataParam("fileContentType") String fileContentType,
+			@FormDataParam("sendAcknowledgementFlag") String sendAcknowledgementFlag,
+			@FormDataParam("email") String emailId, @FormDataParam("isResubmit") boolean isResubmit) {
+		Response.ResponseBuilder rb = null;
+		long orderEmailQueueId = 0L;
+		long productLineId = 0L;
+		String fileExtension = null;
+		Date now = new Date();
+		try {
+			fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+
+			orderEmailQueueId = Long.parseLong(emailQueueId);
+			productLineId = Long.parseLong(dataStructureName);
+			File targetFile = new File(filePath + File.separatorChar + fileName);
+			FileUtils.copyInputStreamToFile(file, targetFile);
+			OrderFileAttachment orderFileAttachmentObj = new OrderFileAttachment();
+			OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
+			ProductLine productLineObj = new ProductLine();
+			orderEmailQueueObj.setId(orderEmailQueueId);
+			productLineObj.setId(productLineId);
+
+			orderFileAttachmentObj.setFileName(fileName);
+			orderFileAttachmentObj.setFileExtension(fileExtension);
+			orderFileAttachmentObj.setFileContentType(fileContentType);
+			orderFileAttachmentObj.setCreatedDate(new Date());
+			orderFileAttachmentObj.setAdditionalDataFileKey(additionalDataFileKey);
+			orderFileAttachmentObj.setFilePath(filePath);
+			orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+			orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
+			orderFileAttachmentObj.setVarProductLine(productLineObj);
+
+			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+					.getInstance().getBean("orderFileAttachmentService");
+			Long orderFileAttachmentId = orderFileAttachmentService.create(orderFileAttachmentObj);
+			orderFileAttachmentObj.setId(orderFileAttachmentId);
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+					.getBean("orderQueueService");
+			if (fileContentType.equals("Order")) {
+				OrderQueue orderQueue = new OrderQueue();
+				orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
+				orderQueue.setVarProductLine(productLineObj);
+				orderQueue.setCreatedDate(now);
+				orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+				orderQueue.setPrevOrderQueueId(0);
+				orderQueueService.create(orderQueue);
+			}
+			if (sendAcknowledgementFlag.equalsIgnoreCase("true")) {
+				sendAcknowledgement(emailId, orderEmailQueueId);
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			Map entitiesMap = new HashMap();
+			StringWriter writer = new StringWriter();
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while uploading the file", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while processing order", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	/*@POST
+    @Path("/resubmit/fileupload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+  	public Response webOrderResubmitFileUpload(@Context UriInfo uriInfo,
+            @Context HttpHeaders hh, @FormDataParam("file") InputStream file,
+            						 @FormDataParam("fileName") String fileName,
+            						 @FormDataParam("emailQueueId") String emailQueueId,
+            						 @FormDataParam("filePath") String filePath,
+            						 @FormDataParam("dataStructureName") String dataStructureName,
+            						 @FormDataParam("additionalDataFileKey") String additionalDataFileKey,
+            						 @FormDataParam("fileContentType") String fileContentType,
+            						// @FormDataParam("sendAcknowledgementFlag") String sendAcknowledgementFlag,
+            						 @FormDataParam("oldOrderQueueId") String oldOrderQueueId,
+            						 @FormDataParam("isOldFileDeleted") boolean isOldFileDeleted,
+            						 @FormDataParam("attachmentId") String attachmentId,
+            						 @FormDataParam("email") String emailId,
+            						 @FormDataParam("isOrderFile") boolean isOrderFile) throws Exception {
+  		Response.ResponseBuilder rb = null;
+  		ObjectMapper mapper = new ObjectMapper();
+		Map entitiesMap = new HashMap();
+		StringWriter writer = new StringWriter();
+  		long orderEmailQueueId = 0L;
+  		long productLineId = 0L;
+  		long orderFileAttachmentId = 0L;
+  		String fileExtension = null;
+  		Date now = new Date();
+  		OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
+  		try {
+  			OrderFileAttachment orderFileAttachmentObj = new OrderFileAttachment();
+  			OrderQueue orderQueueObj = new OrderQueue();
+  			ProductLine productLineObj = new ProductLine();
+  			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
+						.getInstance().getBean("orderFileAttachmentService");
+  			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance().getBean("orderQueueService");
+  			
+			fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+			orderEmailQueueId = Long.parseLong(emailQueueId);
+			productLineId = Long.parseLong(dataStructureName);
+			orderEmailQueueObj.setId(orderEmailQueueId);
+			productLineObj.setId(productLineId);
+			orderFileAttachmentObj = orderFileAttachmentService.read(Long.parseLong(attachmentId));
+
+  			if(isOldFileDeleted){
+  	  			File targetFile = new File(filePath+File.separatorChar+fileName);
+  	  			FileUtils.copyInputStreamToFile(file, targetFile);
+  			}
+  			else{  				
+  				String oldFilePath = orderFileAttachmentObj.getFilePath();
+  	  			File sourceFile = new File(oldFilePath+File.separatorChar+fileName);
+  	  			File targetFile = new File(filePath+File.separatorChar+fileName);
+  	  			FileUtils.copyFile(sourceFile, targetFile);
+  			}
+			
+
+			orderFileAttachmentObj.setFileName(fileName);
+			orderFileAttachmentObj.setFileExtension(fileExtension);
+			orderFileAttachmentObj.setFileContentType(fileContentType);
+			orderFileAttachmentObj.setCreatedDate(now);
+			orderFileAttachmentObj.setAdditionalDataFileKey(additionalDataFileKey);
+			orderFileAttachmentObj.setFilePath(filePath);
+			orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+			orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
+			orderFileAttachmentObj.setVarProductLine(productLineObj);	  			
+  			
+			if (isOrderFile) {
+				orderFileAttachmentId = orderFileAttachmentService.create(orderFileAttachmentObj);
+				orderFileAttachmentObj.setId(orderFileAttachmentId);
+				orderQueueObj.setVarOrderFileAttachment(orderFileAttachmentObj);
+	    		orderQueueObj.setVarProductLine(productLineObj);
+	    		orderQueueObj.setPrevOrderQueueId(Integer.parseInt(oldOrderQueueId));
+	    		orderQueueObj.setCreatedDate(now);
+	    		orderQueueObj.setSubject(subject);
+	    		orderQueueObj.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+	    		orderQueueService.create(orderQueueObj);
+			} else {
+				orderFileAttachmentService.create(orderFileAttachmentObj);
+			}
+			entitiesMap.put("success", true);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+  		} catch (WebApplicationException ex) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while uploading the file", ex);
+  			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
+					.getInstance().getBean("orderEmailQueueService");
+  			orderEmailQueueService.delete(orderEmailQueueObj);
+  			throw ex;
+  		} catch (Exception e) {
+  			AppLogger.getSystemLogger().error(
+  					"Error while processing order", e);
+  			throw new WebApplicationException(Response
+  					.status(Status.INTERNAL_SERVER_ERROR)
+  					.entity(ExceptionUtils.getRootCauseMessage(e))
+  					.type(MediaType.TEXT_PLAIN_TYPE).build());
+  		}
+		return rb.build();
+  	}*/
 }

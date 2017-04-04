@@ -156,7 +156,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		if(!file){
 			return;
 		}
-		file.fileContentType ='orderFileType';
+		file.fileContentType ='Order';
 		
 		value = value.replace("\\"," ");
 		if(!Ext.isEmpty(value)){
@@ -176,7 +176,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 						
 		    			file.fileId = fileId;
 		    			for(var i=0;i<len;i++){
-		    				if(me.fileArray[i].fileContentType == 'orderFileType'){
+		    				if(me.fileArray[i].fileContentType == 'Order'){
 		    					me.fileArray.splice(i, 1);
 		    					break;
 		    				}
@@ -240,7 +240,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				oldOrderId = webOrderFormView.down('#oldOrderId').getValue();
 			
 			if(webOrderFormView.isResubmit){
-				url=applicationContext+'/rest/orders/attachments/'+oldOrderId;
+				url=applicationContext+'/rest/emailqueue/newweborder';
 			}else{
 				url=applicationContext+'/rest/emailqueue/newweborder';
 			}
@@ -282,7 +282,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    	formData.append('fileName', fileArray[len-1].name);
 	    	formData.append('filePath', filePath);
 	    	formData.append('dataStructureName', values.dataStructureName);
-	    	formData.append('additionalDataFileKey', fileArray[len-1].additionalDataFileKey);
+	    	formData.append('additionalDataFileKey', fileArray[len-1].additionalDataFileKey ? fileArray[len-1].additionalDataFileKey:'');
 	    	formData.append('fileContentType', fileArray[len-1].fileContentType);
 	    	
 	    	if(fileArray.length == 1){
@@ -330,7 +330,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			var file =obj.getEl().down('input[type=file]').dom.files[0];
 			if(!file){return;}
 			
-			file.fileContentType ='attachment';
+			file.fileContentType ='AdditionalData';
 			file.additionalDataFileKey = additionalDataFileKey.getValue();
 			
 			var value = value.substring(value.lastIndexOf("\\"));

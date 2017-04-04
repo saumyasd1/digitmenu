@@ -278,7 +278,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				xtype:'hidden',
 				name:'oldOrderFileId',
 				itemId:'oldOrderFileId',
-				value:0
+				value:''
 			},
 			{
 				xtype:'hidden',
@@ -290,7 +290,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				xtype:'hidden',
 				name:'oldEmailId',
 				itemId:'oldEmailId',
-				value:0
+				value:''
 			},
 			{
 				xtype:'hidden',

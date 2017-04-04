@@ -70,7 +70,7 @@ public class ExcelUtils {
 			Cell cell9 = row.createCell(++columncellCount);
 			cell9.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 			Cell cell10 = row.createCell(++columncellCount);
-			if(obj.getReceivedDate()!=null)
+			if(obj.getCreatedDate()!=null)
 				date = obj.getCreatedDate();
 				cell10.setCellValue(convertDateUsingTimezone(date, timeZone));
 			Cell cell11 = row.createCell(++columncellCount);
@@ -106,6 +106,8 @@ public class ExcelUtils {
 	 *         changed date
 	 */
 	private static String convertDateUsingTimezone(Date date, String timeZone) {
+		if(date==null)
+			return "";
 		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
 		return formatter1.format(date);

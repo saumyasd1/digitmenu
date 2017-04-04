@@ -2,6 +2,8 @@ package com.avery.storage.dao.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +24,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -86,21 +92,22 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 				orderFileAttachment.setIconName(iconName);
 				orderFileAttachment.setColorCode(colorCode);
 				orderFileAttachment.setCodeValue(codeValue);
-				//commenting the code as reverting back the AOC#250
-//				String[] commentArray = {};
-//				if (orderFileAttachment.getComment() != null && !"".equals(orderFileAttachment.getComment()))
-//					commentArray = orderFileAttachment.getComment().split(",");
-//				if (commentArray.length > 0) {
-//					StringBuilder commentBuilder = new StringBuilder();
-//					for (String comment : commentArray) {
-//						if (NumberUtils.isNumber(comment)) {
-//							commentBuilder.append(comment).append(",");
-//						}
-//					}
-//					if (commentBuilder.length() > 0)
-//						commentBuilder.deleteCharAt(commentBuilder.length() - 1);
-//					orderFileAttachment.setComment(commentBuilder.toString());
-//				}
+				// commenting the code as reverting back the AOC#250
+				// String[] commentArray = {};
+				// if (orderFileAttachment.getComment() != null &&
+				// !"".equals(orderFileAttachment.getComment()))
+				// commentArray = orderFileAttachment.getComment().split(",");
+				// if (commentArray.length > 0) {
+				// StringBuilder commentBuilder = new StringBuilder();
+				// for (String comment : commentArray) {
+				// if (NumberUtils.isNumber(comment)) {
+				// commentBuilder.append(comment).append(",");
+				// }
+				// }
+				// if (commentBuilder.length() > 0)
+				// commentBuilder.deleteCharAt(commentBuilder.length() - 1);
+				// orderFileAttachment.setComment(commentBuilder.toString());
+				// }
 			}
 			return list;
 		} catch (WebApplicationException ex) {
@@ -292,6 +299,7 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 		obj.setFileExtension(ApplicationConstants.DEFAULT_EMAIL_FILE_EXTENSION);
 		create(obj);
 		createHTMLFile(emailBody, filePath);
+		createXLSFile(emailBody, filePath);
 	}
 
 	// Method for updating emailqueue status to disregard if all the
@@ -360,6 +368,31 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 					// ignore
 				}
 			}
+		}
+	}
+
+	/**
+	 * Method for creating excel file from the email body
+	 * 
+	 * @param emailBody
+	 * @param filePath
+	 * @throws IOException
+	 */
+	private void createXLSFile(String emailBody, String filePath) {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("Sheet 1");
+		Row row = sheet.createRow(0);
+		Cell cell = row.createCell(0);
+		cell.setCellValue(emailBody);
+		try (FileOutputStream outputStream = new FileOutputStream(
+				filePath + File.separatorChar + "CompleteEmail.xls")) {
+			workbook.write(outputStream);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
