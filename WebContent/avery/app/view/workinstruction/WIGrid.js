@@ -9,9 +9,8 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
-		data:[],
-		fields:['system','csrName','packingInstruction','manufacturingNotes','invoiceNote','variableDataBreakdown',
-		        'splitShipSetBy','shippingMark','artworkHold']
+		data:[{wiId:1,wiStatus:'Ready For Review'},{wiId:2,wiStatus:'Ready For Review'},{wiId:3,wiStatus:'Ready For Review'}],
+		fields:['wiId','wiStatus']
 	}),
 	initComponent:function(){
 		var me = this;
@@ -24,7 +23,8 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 			listeners:{
 				afterrender:function(grid){
 					
-				}
+				},
+				cellclick:'onWICellClick'
 			}
 		});
 		me.callParent(arguments);
@@ -56,11 +56,25 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 	},
 	buildColumns:function(){
 		return [
+			{
+				header: '<img src="' +  AOC.config.Settings.buttonIcons.menuIcon + '" />',
+				width:25,
+				menuDisabled:true,
+				tooltip:'Menu Action',
+				renderer:function(value, metaData, record){
+					return '<i style="font-size:16px;color#2c3e50;cursor:pointer;" class="fa fa-ellipsis-v"></i>';
+				}
+			},
 		    {
-		    	text:'WI Name',
-		    	dataIndex:'wiName',
+		    	text:'WI #',
+		    	dataIndex:'wiId',
+		    	flex:.5
+		    }, 
+		    {
+		    	text:'WI Status',
+		    	dataIndex:'wiStatus',
 		    	flex:1.5
-		    },    
+		    },
 			{  
 				text : 'Last Modified By',
 				flex:1.5,

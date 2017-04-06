@@ -33,14 +33,13 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	handler:'onBackBtnClick'
 		    },'->',
 		    {
-		    	text:'View'
-		    },
-		    {
 		    	text:'Save',
+		    	reference:'wiSaveBtn',
 		    	handler:'onSaveBtnClick'
 		    },
 		    {
-		    	text:'Submit'
+		    	text:'Submit',
+		    	reference:'wiSubmitBtn',
 		    }
 		]
 	},
@@ -157,7 +156,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	name:'atoNATO',
 	                	reference:'atoNato',
 	                	editable:false,
-	                	bind:'{detail.aTONATO}',
+	                	bind:'{detail.atoNATO}',
 	                	fieldLabel:'ATO/NATO',
 	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
 	                	flex:1
@@ -275,7 +274,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			        	xtype:'combo',
 			        	name:'glidCustomerItem',
 		            	reference:'glidCustomerItem',
-	                	bind:'{detail.gLIDCustomerItem}',
+	                	bind:'{detail.glidCustomerItem}',
 			        	fieldLabel:'GLID/Customer Item #?',
 			        	editable:false,
 			        	store:[['CustomerItem#','Customer Item #'],['GLID','GLID']],
@@ -443,6 +442,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	    	name:'aocDefaultOneBillToSite',
 		    	    	fieldLabel:'Should AOC default one Bill to Site # only?',
 		    	    	reference:'aocDefaultOneBillToSite',
+		    	    	bind:'{detail.aocDefaultOneBillToSite}',
 		    	    	queryMode:'local',
 		    	    	editable:false,
 		    	    	store:[['Yes','Yes'],['No','No']],
@@ -456,6 +456,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	    {
 		    	    	xtype:'combo',
 		    	    	name:'aocDefaultOneShipToSite',
+		    	    	bind:'{detail.aocDefaultOneShipToSite}',
 		    	    	fieldLabel:'Should AOC default one Ship to Site # only?',
 		    	    	reference:'aocDefaultOneShipToSite',
 		    	    	editable:false,
@@ -515,6 +516,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:300,
 							margin:'0 0 5 0',
+							bind:{
+								value:{
+									emailSubjectRequired:'{detail.schemaIdentification.emailSubjectRequired}'
+								}
+							},
 							items:[
 							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:1},
 							    {boxLabel:'No Required', name:'emailSubjectRequired', inputValue:2, checked:true}
@@ -546,7 +552,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	fieldLabel:'File Name / File Content',
 					    	reference:'emailFileNameContent',
 					    	name:'emailFileNameContent',
-				        	bind:'{detail.emailFileNameContent}',
+				        	bind:'{detail.schemaIdentification.emailFileNameContent}',
 				        	editable:false,
 							disabled:true,
 					    	store:Helper.getFileNameContentStore(),
@@ -556,7 +562,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	xtype:'textfield',
 					    	name:'emailSubjectKeyWording',
 					    	reference:'emailSubjectKeyWording',
-				        	bind:'{detail.emailSubjectKeyWording}',
+				        	bind:'{detail.schemaIdentification.emailSubjectKeyWording}',
 					    	fieldLabel:'Key Wordings',
 					    	flex:1,
 							disabled:true,
@@ -566,7 +572,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	xtype:'combo',
 					    	name:'emailSubjectDataStructureRule',
 					    	reference:'emailSubjectDataStructureRule',
-				        	bind:'{detail.emailSubjectDataStructureRule}',
+				        	bind:'{detail.schemaIdentification.emailSubjectDataStructureRule}',
 					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
 			    	    	editable:false,
 							disabled:true,
@@ -585,6 +591,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							xtype:'radiogroup',
 							column:2,
 							width:300,
+							bind:{
+								value:{
+									emailBodyRequired:'{detail.schemaIdentification.emailBodyRequired}'
+								}
+							},
 							margin:'0 0 5 0',
 							items:[
 							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:1},
@@ -617,7 +628,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	fieldLabel:'Identification Type',
 					    	reference:'emailBodyIdentificationType',
 					    	name:'emailBodyIdentificationType',
-				        	bind:'{detail.emailBodyIdentificationType}',
+				        	bind:'{detail.schemaIdentification.emailBodyIdentificationType}',
 				        	store:Helper.getFileNameContentStore(),
 							disabled:true,
 					    	flex:1
@@ -626,7 +637,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	xtype:'textfield',
 					    	name:'emailBodyKeyWording',
 					    	reference:'emailBodyKeyWording',
-				        	bind:'{detail.emailBodyKeyWording}',
+				        	bind:'{detail.schemaIdentification.emailBodyKeyWording}',
 					    	fieldLabel:'Key Wordings',
 					    	margin:'0 0 0 10',
 							disabled:true,
@@ -644,7 +655,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					xtype:'textfield',
 					hideLabel:true,
 					name:'emailSubjectDataStructureOtherRule',
-					bind:'{detail.emailSubjectDataStructureOtherRule}',
+					bind:'{detail.schemaIdentification.emailSubjectDataStructureOtherRule}',
 					width:300
 				},
 				{
@@ -659,6 +670,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:300,
 							margin:'0 0 5 0',
+							bind:{
+								value:{
+									orderFileRequired:'{detail.schemaIdentification.orderFileRequired}'
+								}
+							},
 							items:[
 							    {boxLabel:'Required', name:'orderFileRequired', inputValue:1},
 							    {boxLabel:'No Required', name:'orderFileRequired', inputValue:2, checked:true}
@@ -690,7 +706,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	fieldLabel:'File Name / File Content',
 	    	    	    	reference:'orderFileNameContent',
 	    	    	    	name:'orderFileNameContent',
-		                	bind:'{detail.orderFileNameContent}',
+		                	bind:'{detail.schemaIdentification.orderFileNameContent}',
 	    	    	    	store:Helper.getFileNameContentStore(),
 	    	    	    	editable:false,
 	    					disabled:true,
@@ -700,7 +716,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'orderFileKeyWording',
 	    	    	    	reference: 'orderFileKeyWording',
-		                	bind:'{detail.orderFileKeyWording}',
+		                	bind:'{detail.schemaIdentification.orderFileKeyWording}',
 	    	    	    	fieldLabel:'Key Wordings',
 	    	    	    	flex:1,
 	    					disabled:true,
@@ -710,7 +726,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'orderFileTypeFormat',
 	    	    	    	reference:'orderFileTypeFormat',
-		                	bind:'{detail.orderFileTypeFormat}',
+		                	bind:'{detail.schemaIdentification.orderFileTypeFormat}',
 	    	    	    	fieldLabel:'Format',
 	    					disabled:true,
 	    	    	    	flex:1
@@ -724,6 +740,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	column:2,
     		    	    	width:300,
 							margin:'0 0 5 0',
+							bind:{
+								value:{
+									orderFileType:'{detail.schemaIdentification.orderFileType}'
+								}
+							},
     		    	    	items:[
     		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:1, checked:true},
     		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:2}
@@ -752,7 +773,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'orderTextFirstLastPage',
-						   bind:'{detail.orderTextFirstLastPage}',
+						   bind:'{detail.schemaIdentification.orderTextFirstLastPage}',
 						   reference:'orderTextFirstLastPage',
 						   fieldLabel:'First Page/Last Page',
 						   editable:false,
@@ -762,7 +783,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'orderTextPosition',
-						   bind:'{detail.orderTextPosition}',
+						   bind:'{detail.schemaIdentification.orderTextPosition}',
 						   fieldLabel:'Top/Mid/Bottom of the page',
 						   reference:'orderTextPosition',
 						   editable:false,
@@ -773,6 +794,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'textfield',
 						   name:'orderExcelCell',
+						   bind:'{detail.schemaIdentification.orderExcelCell}',
 						   reference:'orderExcelCell',
 						   hidden:true,
 						   fieldLabel:'Cell',
@@ -781,6 +803,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'orderExcelSheet',
+						   bind:'{detail.schemaIdentification.orderExcelSheet}',
 						   fieldLabel:'One Sheet/Multiple sheets in a file',
 						   hidden:true,
 						   editable:false,
@@ -803,11 +826,15 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:300,
 							margin:'0 0 5 0',
+							bind:{
+								value:{
+									attachmentRequired:'{detail.schemaIdentification.attachmentRequired}'
+								}
+							},
 							items:[
 							    {boxLabel:'Required', name:'attachmentRequired', inputValue:1},
 							    {boxLabel:'No Required', name:'attachmentRequired', inputValue:2, checked:true}
 							],
-							bind:'{detail.attachmentRequired}',
 							listeners:{
 								change:'onAttachmentRequiredRadioChange'
 							}
@@ -833,6 +860,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	xtype:'combo',
 	    	    	    	fieldLabel:'File Name / File Content',
 	    	    	    	reference:'attachmentFileNameContent',
+	    	    	    	bind:'{detail.schemaIdentification.attachmentFileNameContent}',
 	    	    	    	name:'attachmentFileNameContent',
 	    	    	    	editable:false,
 	    					disabled:true,
@@ -842,6 +870,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'attachmentFileKeyWording',
+	    	    	    	bind:'{detail.schemaIdentification.attachmentFileKeyWording}',
 	    	    	    	reference:'attachmentFileKeyWording',
 	    	    	    	fieldLabel:'Key Wordings',
 	    	    	    	flex:1,
@@ -851,6 +880,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'attachmentFormat',
+	    	    	    	bind:'{detail.schemaIdentification.attachmentFormat}',
 	    	    	    	reference:'attachmentFormat',
 	    	    	    	fieldLabel:'Format',
 	    					disabled:true,
@@ -865,6 +895,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	column:2,
     		    	    	width:300,
 							margin:'0 0 5 0',
+							bind:{
+								value:{
+									attachmentFileType:'{detail.schemaIdentification.attachmentFileType}'
+								}
+							},
     		    	    	items:[
     		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:1, checked:true},
     		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:2}
@@ -892,6 +927,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'attachmentTextFirstLastPage',
+						   bind:'{detail.schemaIdentification.attachmentTextFirstLastPage}',
 						   reference:'attachmentTextFirstLastPage',
 						   fieldLabel:'First Page/Last Page',
 						   editable:false,
@@ -901,6 +937,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'attachmentTextPosition',
+						   bind:'{detail.schemaIdentification.attachmentTextPosition}',
 						   fieldLabel:'Top/Mid/Bottom of the page',
 						   reference:'attachmentTextPosition',
 						   editable:false,
@@ -911,6 +948,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'textfield',
 						   name:'attachmentExcelCell',
+						   bind:'{detail.schemaIdentification.attachmentExcelCell}',
 						   reference:'attachmentExcelCell',
 						   hidden:true,
 						   fieldLabel:'Cell',
@@ -919,6 +957,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   {
 						   xtype:'combo',
 						   name:'attachmentExcelSheet',
+						   bind:'{detail.schemaIdentification.attachmentExcelSheet}',
 						   fieldLabel:'One Sheet/Multiple sheets in a file',
 						   hidden:true,
 						   reference:'attachmentExcelSheet',
@@ -930,6 +969,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					]
 	    	    }
 			]
-		}
+		};
 	}
 });

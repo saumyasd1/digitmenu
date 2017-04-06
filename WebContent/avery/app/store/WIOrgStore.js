@@ -9,7 +9,6 @@ Ext.define('AOC.store.WIOrgStore', {
         url : applicationContext+ '/rest/wiorg',
         reader: {
             type: 'json'
-            //rootProperty : 'items'
         }
     }
 });

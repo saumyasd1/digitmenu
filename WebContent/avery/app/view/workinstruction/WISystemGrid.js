@@ -4,6 +4,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 	emptyText:AOCLit.emptyDataMsg,
 	viewConfig:{
 		stripeRows:true,
+		columnLines:true,
 		enableTextSelection:true
 	},
 	requires:['AOC.view.ux.RadioModel'],

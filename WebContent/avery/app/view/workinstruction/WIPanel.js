@@ -300,6 +300,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'orderPlacementMethod',
+    	    	    	bind:'{detail.orderPlacementMethod}',
     	    	    	fieldLabel:'Order Placement Method',
     	    	    	reference:'orderPlacementMethod',
     	    	    	displayField:'name',
@@ -314,6 +315,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'aocWaive',
+    	    	    	bind:'{detail.aocWaive}',
     	    	    	fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
     	    	    	reference:'aocWaive',
     	    	    	margin:'0 0 0 10',
@@ -339,6 +341,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	   {
 		    	    	xtype:'textfield',
 		    	    	name:'emailSubjectWarning',
+		    	    	bind:'{detail.emailSubjectWarning}',
 		    	    	flex:1,
 		    	    	fieldLabel:'Please specify the wordings in the Email subject that AOC has to raise warning if any?'
 		    	    },
@@ -346,6 +349,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	    	xtype:'textfield',
 		    	    	name:'emailContentWarning',
 		    	    	margin:'0 0 0 10',
+		    	    	bind:'{detail.emailContentWarning}',
 		    	    	flex:1,
 		    	    	fieldLabel:'Please specify the wordings in the Email content that AOC has to raise warning if any?'
 		    	    }
@@ -376,6 +380,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleBulkOrderPresentWI',
+    	    	    	bind:'{detail.sampleBulkOrderPresentWI}',
     	    	    	fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
     	    	    	reference:'sampleBulkOrderPresentWI',
     	    	    	flex:1,
@@ -385,6 +390,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleOrderRequiredMOQ',
+    	    	    	bind:'{detail.sampleOrderRequiredMOQ}',
     	    	    	fieldLabel:'Is the sample order required to waive MOQ?',
     	    	    	reference:'sampleOrderRequiredMOQ',
     	    	    	flex:1,
@@ -395,6 +401,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleItemRequiredWI',
+    	    	    	bind:'{detail.sampleItemRequiredWI}',
     	    	    	fieldLabel:'Is there any sample item that would be ordered in this WI?',
     	    	    	reference:'sampleItemRequiredWI',
     	    	    	flex:1,
@@ -419,6 +426,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'textfield',
     	    	    	name:'bulkOrderIdentified',
+    	    	    	bind:'{detail.bulkOrderIdentified}',
     	    	    	fieldLabel:'Bulk Order can be identified if',
     	    	    	reference:'bulkOrderIdentified',
     	    	    	flex:1
@@ -426,6 +434,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'textfield',
     	    	    	name:'sampleOrderIdentified',
+    	    	    	bind:'{detail.sampleOrderIdentified}',
     	    	    	fieldLabel:'Sample Order can be identified if',
     	    	    	reference:'sampleOrderIdentified',
     	    	    	margin:'0 10',
@@ -434,6 +443,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'isSampleItem',
+    	    	    	bind:'{detail.isSampleItem}',
     	    	    	fieldLabel:'How can we identify if the item is sample item?',
     	    	    	reference:'isSampleItem',
     	    	    	displayField:'name',
@@ -464,6 +474,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'combo',
     	    	    	name:'sampleItemApproved',
+    	    	    	bind:'{detail.sampleItemApproved}',
     	    	    	fieldLabel:'Is it the rule that sample items are not approved to be ordered by bulk order?',
     	    	    	reference:'sampleItemApproved',
     	    	    	flex:1,
@@ -473,6 +484,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    {
     	    	    	xtype:'textfield',
     	    	    	name:'sampleBulkOthers',
+    	    	    	bind:'{detail.sampleBulkOthers}',
     	    	    	margin:'0 0 0 10',
     	    	    	fieldLabel:'Sample/Bulk - Others',
     	    	    	reference:'sampleBulkOthers',
@@ -502,6 +514,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				   {
 					   xtype:'combo',
 					   name:'discountPrice',
+					   bind:'{detail.discountPrice}',
 					   fieldLabel:'Discount Price',
 					   flex:1,
 					   editable:false,
@@ -510,6 +523,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				   {
 					   xtype:'combo',
 					   name:'pricingAggrement',
+					   bind:'{detail.pricingAggrement}',
 					   fieldLabel:'Pricing Aggrement',
 					   margin:'0 0 0 10',
 					   flex:1,
@@ -545,6 +559,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'textfield',
 						fieldLabel:'Internal information for CS (Please ignore for Adeptia): Discount price, pricing agreement',
 						name:'internalInformation',
+						bind:'{detail.internalInformation}',
 						reference:'internalInformation',
 						flex:1
 					},
@@ -552,6 +567,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'textfield',
 						fieldLabel:'Order grouping - how the orders should be grouped from AOC to the back end system?',
 						name:'orderGrouping',
+						bind:'{detail.orderGrouping}',
 						reference:'orderGrouping',
 						margin:'0 0 0 10',
 						flex:1
@@ -568,6 +584,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	xtype:'textfield',
 		    	fieldLabel:'If there is an additional attachment, what is the identifier to map the order information/data between order form and attachment? ',
 		    	name:'attachmentIdentifier',
+		    	bind:'{detail.attachmentIdentifier}',
 		    	reference:'attachmentIdentifier',
 		    	flex:1,
 		    	labelSeparator:'',
@@ -578,6 +595,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	xtype:'textfield',
 		    	fieldLabel:'If there is an additional attachment, please specify the process on how we can map the order information/data between order form and attachment ',
 		    	name:'attachmentProcess',
+		    	bind:'{detail.attachmentProcess}',
 		    	reference:'attachmentProcess',
 		    	flex:1,
 		    	labelSeparator:'',
@@ -608,6 +626,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'textfield',
 						fieldLabel:'Please list out all Bill to Site Number (For testing purpose)',
 						name:'billToSiteNumber',
+						bind:'{detail.billToSiteNumber}',
 						reference:'billToSiteNumber',
 						flex:1
 					},
@@ -615,6 +634,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				    	xtype:'textfield',
 				    	fieldLabel:'Please list out all Ship to Site Number (For testing purpose)',
 				    	name:'shipToSiteNumber',
+				    	bind:'{detail.shipToSiteNumber}',
 				    	reference:'shipToSiteNumber',
 				    	margin:'0 0 0 10',
 				    	flex:1
@@ -638,6 +658,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			       {
 					   xtype:'combo',
 					   name:'billToSite#',
+					   bind:'{detail.billToSite#}',
 					   reference:'billToSite',
 					   fieldLabel:'How can we determine Bill to Site#',
 					   flex:1,
@@ -658,6 +679,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				    	xtype:'combo',
 				    	fieldLabel:'How can we determine Ship to Site#',
 				    	name:'shipToSite#',
+				    	bind:'{detail.shipToSite#}',
 				    	reference:'shipToSite',
 				    	margin:'0 0 0 10',
 		    	    	editable:false,

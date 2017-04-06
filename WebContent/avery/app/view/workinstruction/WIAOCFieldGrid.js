@@ -6,6 +6,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 	viewConfig:{
 		forceFit:true,
 		stripeRows:true,
+		columnLines:true,
 		enableTextSelection:true
 	},
 	initComponent:function(){

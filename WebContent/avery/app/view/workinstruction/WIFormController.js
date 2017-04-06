@@ -145,7 +145,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			var modifiedRecords = rec.getChanges();
 			Ext.apply(rec.data, modifiedRecords);
 			if(rec.data.id){
-				rec.data.listId = !addRecordIdFlag ? rec.data.id : '';
+				rec.data.listId = !addRecordIdFlag ? (rec.data.id).toString() : '';
 				delete rec.data.id;
 			}
 			records.push(rec.data);

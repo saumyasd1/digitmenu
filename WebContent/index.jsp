@@ -86,9 +86,7 @@ int pageSize=100;
 		.aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small{color:#fff;}
 		.blue-btn.x-btn-over{box-shadow: 0px 0px 4px 0px #65beed;}
 		.x-btn{border-radius:2px !important;}
-		.aoc-wi-form .x-accordion-item .x-panel-header-default {
-		    border: solid 1px #f5f5f5;
-		}
+		
 		.wi-form-panel-header .x-title-text{
 			color: #2c3e50;
 		    font-size: 15px;
@@ -96,7 +94,15 @@ int pageSize=100;
 	    }
 		.wi-form-panel-header{border:solid 1px #cecece;}
 		.aoc-wi-form .wi-form-panel-header .x-panel-header{border:solid 1px #cecece;background:rgb(246, 246, 246);}
+		.wi-grid table.x-grid-item{height:30px;}
 		
+		.x-menu-item-icon-default.aoc-menu-icon{
+			font-size:16px;color:#2c3e50;top:5px;
+		}
+		.x-menu-default.aoc-action-menu{border-radius:4px;}
+		.aoc-action-menu .x-menu-item-link{padding:3px;}
+		.aoc-action-menu .x-menu-item-link .x-menu-item-text{color:#2c3e50;}
+		.aoc-action-menu .x-menu-item-icon{font-size:16px;color:#2c3e50;}
 	</style>
   <title>Avery Dennison Web App</title>    
   <script>

@@ -6,6 +6,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	viewConfig:{
 		forceFit:true,
 		stripeRows:true,
+		columnLines:true,
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
