@@ -41,10 +41,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	items:[].concat(me.getOrderExtractionItems()).concat([
 					{
 						xtype:'wiaocfieldgrid',
+						reference:'wiaocfieldgrid',
 						border:'solid 1px #ccc;',
-						margin:'10 0',
-						height:200,
-						scrollable:true
+						margin:'20 0',
+						height:'auto'
 					}
 				])
 		    
@@ -57,9 +57,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    me.getSKUValidationItems(),
 		    {
 		    	xtype:'wiorderfiberlinegrid',
-		    	height:300,
+		    	reference:'wiorderfiberlinegrid',
+		    	height:370,
 		    	scrollable:true,
-		    	margin:'10 0',
+		    	margin:'20 0',
 		    	border:'solid 1px #ccc;'
 		    },
 		    me.getOthersItems()

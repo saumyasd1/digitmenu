@@ -1,6 +1,7 @@
 Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	extend:'Ext.grid.Panel',
 	alias:'widget.wiorderfiberlinegrid',
+	cls:'wi-grid',
 	emptyText:AOCLit.emptyDataMsg,
 	viewConfig:{
 		forceFit:true,
@@ -9,8 +10,8 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	},
 	store:new Ext.data.JsonStore({
 		data:[],
-		fields:['system','csrName','packingInstruction','manufacturingNotes','invoiceNote','variableDataBreakdown',
-		        'splitShipSetBy','shippingMark','artworkHold']
+		fields:['id','createdBy','createdDate','lastModifiedBy','lastModifiedDate','additionalLogicValidation',
+		        'defaultValueFieldLocation','fieldName','productLine','rboFactStrucSpecific','systemOrderLineFiberLevel']
 	}),
 	initComponent:function(){
 		var me = this;
@@ -39,13 +40,8 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 		    	flex:1.5,
 		    	editor:{
 					xtype:'combo',
-					displayField:'name',
-					valueField:'name',
-					queryMode:'local',
-					store:new Ext.data.JsonStore({
-						data:[],
-						fields:['name']
-					})
+					editable:false,
+					store:[['Oracle','Oracle'],['VIPS','VIPS'],['Sparrow','Sparrow']]
 				}
 		    },
 		    {
@@ -70,14 +66,12 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				dataIndex:'rboFactStrucSpecific',
 				editor:{
 					xtype:'combo',
+					editable:false,
 					name:'rboFactStrucSpecific',
-					displayField:'name',
-					valueField:'name',
-					queryMode:'local',
-					store:new Ext.data.JsonStore({
-						data:[],
-						fields:['name']
-					})
+					store:[
+				       ['RBO Validation','RBO Validation'],
+				       ['Factory Validation','Factory Validation'],
+				       ['Structure Specific','Structure Specific']]
 				}
 			},
 			{
@@ -85,7 +79,11 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				flex:1.5,
 				dataIndex:'defaultCaptureComplicatedLogic',
 				editor:{
-					xtype:'combo'
+					xtype:'combo',
+					displayField:'name',
+					valueField:'name',
+					queryMode:'local',
+					store:Helper.getDefaultCaptureLogicStore()
 				}
 			},
 			{

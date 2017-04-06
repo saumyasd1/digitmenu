@@ -156,6 +156,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	xtype:'combo',
 	                	name:'atoNATO',
 	                	reference:'atoNato',
+	                	editable:false,
 	                	bind:'{detail.aTONATO}',
 	                	fieldLabel:'ATO/NATO',
 	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
@@ -188,12 +189,14 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	bind:'{detail.site}',
 						fieldLabel:'Site',
 						reference:'site',
-						valueField:'id',
-						displayField:'name',
 						margin:'0 0 0 10',
 						blankText:'Site Name is required',
-						store:Ext.data.StoreManager.lookup('siteId')== null ? Ext.create('AOC.store.SiteStore') : Ext.data.StoreManager.lookup('siteId'),
-						flex: 1
+						store:Helper.getSiteStore(),
+						editable:false,
+						flex: 1,
+						listeners:{
+							select:'onSiteSelect'
+						}
 					},
 					{
  	                	xtype:'box',
@@ -274,6 +277,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            	reference:'glidCustomerItem',
 	                	bind:'{detail.gLIDCustomerItem}',
 			        	fieldLabel:'GLID/Customer Item #?',
+			        	editable:false,
 			        	store:[['CustomerItem#','Customer Item #'],['GLID','GLID']],
 			        	flex:1
 			        },
@@ -291,6 +295,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			        	displayField:'name',
 			        	valueField:'name',
 			        	queryMode:'local',
+			        	editable:false,
 			        	store:new Ext.data.JsonStore({
 			        		data:[
 			        		    {name:'Color Code'},{name:'Color Name'} ,{name:'Color Way'},
@@ -312,12 +317,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			        	name:'isOrderWithAttachment',
 		            	reference:'isOrderWithAttachment',
 	                	bind:'{detail.isOrderWithAttachment}',
-			        	fieldLabel:'Is Order with Attachment',
+			        	fieldLabel:'Is Order with Attachment?',
 			        	editable:false,
 			        	queryMode:'local',
 			        	margin:'0 0 0 10',
 			        	flex:1,
-			        	store:[['Yes','Yes'],['No','No']]
+			        	store:Helper.getYesNoStore()
 			        },
 			        {
  	                	xtype:'box',
@@ -340,10 +345,15 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				    {
 				    	xtype:'combo',
 				    	name:'system',
+				    	reference:'sysetemField',
 	                	bind:'{detail.system}',
+	                	editable:false,
 				    	fieldLabel:'System (Must fill in when Internal item # is selected above)',
 				    	store:[['Oracle','Oracle']],
-				    	flex:1
+				    	flex:1,
+				    	listeners:{
+				    		select:'onSystemSelect'
+				    	}
 				    },
 				    {
  	                	xtype:'box',
@@ -356,7 +366,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	bind:'{detail.orderFileFormat}',
 				    	fieldLabel:'Order File Format',
 				    	displayField:'name',
-				    	valueField:'v',
+				    	valueField:'name',
 				    	queryMode:'local',
 				    	margin:'0 0 0 10',
 				    	flex:1,
@@ -374,7 +384,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	bind:'{detail.additionalAttachment}',
 				    	fieldLabel:'Additional Attachment Format',
 				    	displayField:'name',
-				    	valueField:'v',
+				    	valueField:'name',
 				    	queryMode:'local',
 				    	flex:1,
 				    	margin:'0 0 0 10',
@@ -449,7 +459,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	    	fieldLabel:'Should AOC default one Ship to Site # only?',
 		    	    	reference:'aocDefaultOneShipToSite',
 		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
+		    	    	store:Helper.getYesNoStore(),
 		    	    	flex:1,
 		    	    	margin:'0 0 0 10'
 		    	    },
@@ -468,6 +478,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		      {
     	    	  xtype:'wiorggrid',
 		    	  reference:'wiOrgGrid',
+		    	  hidden:true,
 		    	  flex:1,
 		    	  height:325,
 		    	  border:'solid 1px #ccc;',
@@ -520,7 +531,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					margin:'0 0 5 0',
 					flex:1,
 					reference:'emailSubjectFieldCont',
-					disabled:true,
 					layout:{
 						type:'hbox',
 						align:'stretch'
@@ -537,29 +547,29 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	reference:'emailFileNameContent',
 					    	name:'emailFileNameContent',
 				        	bind:'{detail.emailFileNameContent}',
-					    	queryMode:'local',
-					    	displayField:'name',
-					    	valueField:'name',
-					    	store:new Ext.data.JsonStore({
-					    		data:[{name:'RBO'},{name:'Product Line'}],
-					    		fields:['name']
-					    	}),
+				        	editable:false,
+							disabled:true,
+					    	store:Helper.getFileNameContentStore(),
 					    	flex:1
 					    },
 					    {
 					    	xtype:'textfield',
 					    	name:'emailSubjectKeyWording',
+					    	reference:'emailSubjectKeyWording',
 				        	bind:'{detail.emailSubjectKeyWording}',
 					    	fieldLabel:'Key Wordings',
 					    	flex:1,
+							disabled:true,
 					    	margin:'0 10'
 					    },
 					    {
 					    	xtype:'combo',
 					    	name:'emailSubjectDataStructureRule',
+					    	reference:'emailSubjectDataStructureRule',
 				        	bind:'{detail.emailSubjectDataStructureRule}',
 					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
 			    	    	editable:false,
+							disabled:true,
 			    	    	store:Helper.getYesNoStore(),
 					    }
 					]
@@ -592,7 +602,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					margin:'0 0 5 0',
 					flex:1,
 					reference:'emailBodyFieldCont',
-					disabled:true,
 					layout:{
 						type:'hbox',
 						align:'stretch'
@@ -609,15 +618,18 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	reference:'emailBodyIdentificationType',
 					    	name:'emailBodyIdentificationType',
 				        	bind:'{detail.emailBodyIdentificationType}',
-				        	store:[['RBO','RBO'],['ProductLine','Product Line']],
+				        	store:Helper.getFileNameContentStore(),
+							disabled:true,
 					    	flex:1
 					    },
 					    {
 					    	xtype:'textfield',
 					    	name:'emailBodyKeyWording',
+					    	reference:'emailBodyKeyWording',
 				        	bind:'{detail.emailBodyKeyWording}',
 					    	fieldLabel:'Key Wordings',
 					    	margin:'0 0 0 10',
+							disabled:true,
 					    	flex:1
 					    }
 					]
@@ -662,7 +674,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	xtype:'fieldcontainer',
 	    	    	margin:'0 0 5 0',
 	    	    	reference:'orderFileFieldCont',
-	    	    	disabled:true,
 	    	    	flex:1,
 	    	    	layout:{
 	    	    		type:'hbox',
@@ -682,21 +693,26 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		                	bind:'{detail.orderFileNameContent}',
 	    	    	    	store:Helper.getFileNameContentStore(),
 	    	    	    	editable:false,
+	    					disabled:true,
 	    	    	    	flex:1
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'orderFileKeyWording',
+	    	    	    	reference: 'orderFileKeyWording',
 		                	bind:'{detail.orderFileKeyWording}',
 	    	    	    	fieldLabel:'Key Wordings',
 	    	    	    	flex:1,
+	    					disabled:true,
 	    	    	    	margin:'0 10'
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'orderFileTypeFormat',
+	    	    	    	reference:'orderFileTypeFormat',
 		                	bind:'{detail.orderFileTypeFormat}',
 	    	    	    	fieldLabel:'Format',
+	    					disabled:true,
 	    	    	    	flex:1
 	    	    	    }
 	    	    	]
@@ -803,7 +819,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	margin:'0 0 5 0',
 	    	    	flex:1,
 	    	    	reference:'attachmentFieldCont',
-	    	    	disbled:true,
 	    	    	layout:{
 	    	    		type:'hbox',
 	    	    		align:'stretch'
@@ -820,20 +835,25 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	reference:'attachmentFileNameContent',
 	    	    	    	name:'attachmentFileNameContent',
 	    	    	    	editable:false,
+	    					disabled:true,
 	    	    	    	store:Helper.getFileNameContentStore(),
 	    	    	    	flex:1
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'attachmentFileKeyWording',
+	    	    	    	reference:'attachmentFileKeyWording',
 	    	    	    	fieldLabel:'Key Wordings',
 	    	    	    	flex:1,
+	    					disabled:true,
 	    	    	    	margin:'0 10'
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
 	    	    	    	name:'attachmentFormat',
+	    	    	    	reference:'attachmentFormat',
 	    	    	    	fieldLabel:'Format',
+	    					disabled:true,
 	    	    	    	flex:1
 	    	    	    }
 	    	    	]

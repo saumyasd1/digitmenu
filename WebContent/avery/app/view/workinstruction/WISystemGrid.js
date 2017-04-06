@@ -18,7 +18,10 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			plugins:[
 			     {
 			    	 ptype:'cellediting',
-			    	 clickToEdit:1
+			    	 clickToEdit:1,
+			    	 listeners:{
+			    		 beforeedit: 'onSystemGridBeforeEdit'
+			    	 }
 			     }    
 			],
 			store: Ext.data.StoreManager.lookup('wiSystemStore') == null ? Ext.create('AOC.store.WISystemStore',{storeId:'wiSystemStore'}) : Ext.data.StoreManager.lookup('wiSystemStore'),
@@ -36,12 +39,12 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		return [
 		    {
 		    	text:'System',
-		    	dataIndex:'systemName',
+		    	dataIndex:AOCLit.systemName,
 		    	flex:1
 		    },
 		    {
 		    	text:'Default Org',
-		    	dataIndex:'defaultOrg',
+		    	dataIndex:AOCLit.defaultOrg,
 		    	flex:1,
 		    	editor:{
 		    		xtype:'combo',
@@ -60,13 +63,25 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		    		listeners:{
 		    			expand:'onSystemDefaultOrgExpand'
 		    		}
+		    	},
+		    	renderer:function(value, metaData, record){
+		    		
+					var editor = metaData.column.getEditor(record),    
+				    	storeRecord = editor.store.getById(value);
+					
+				    if(storeRecord) {       
+				        return storeRecord.data[editor.displayField];
+				    }
+				    else{         
+				        return null;
+				    }
 		    	}
 		    },
 			{  
 				text : 'CSR Name',
 				flex:1,
 				sortable : true,
-				dataIndex:'csrName',
+				dataIndex:AOCLit.csrName,
 				editor:{
 					xtype:'textfield'
 				}
@@ -75,7 +90,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 				text : 'Packing Instruction '+ qtipTitle1,
 				flex:1,
 				sortable : true,
-				dataIndex:'packingInstruction',
+				dataIndex:AOCLit.packingInstruction,
 				editor:{
 					xtype:'textfield'
 				}
@@ -84,7 +99,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 				text : 'Manufacturing Note '+ qtipTitle1,
 				flex:1,
 				sortable : true,
-				dataIndex:'manufacturing',
+				dataIndex:AOCLit.manufacturing,
 				editor:{
 					xtype:'textfield'
 				}
@@ -92,7 +107,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			{
 				text : 'Invoice Line Instruction '+ qtipTitle1,
 				sortable : true,
-				dataIndex:'invoiceLineInstruction',
+				dataIndex:AOCLit.invoiceLineInstruction,
 				flex:1,
 				editor:{
 					xtype:'textfield'
@@ -101,7 +116,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			{
 				text : 'Variable data breakdown '+ qtipTitle1,
 				sortable : true,
-				dataIndex:'variableDataBreakdown',
+				dataIndex:AOCLit.variableDataBreakdown,
 				flex:1.5,
 				editor:{
 					xtype:'textfield'
@@ -109,7 +124,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			},
 			{
 				text : 'Split by Ship Set <i data-qtip="<font color=#3892d3>Fill in P/L:<br>P- If multiple Cust. po is imported into one SO, 1 Ship set for 1 Customer PO<b>L- Different Ship set per sales order line</font>" class="fa fa-info-circle"></i>',
-				dataIndex:'splitByShipSet',
+				dataIndex:AOCLit.splitByShipSet,
 				flex:1,
 				editor: {
 					xtype: 'combo',
@@ -138,7 +153,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			},
 			{
 				text : 'Ship mark '+ qtipTitle1,
-				dataIndex:'shipMark',
+				dataIndex:AOCLit.shipMark,
 				flex:1,
 				editor:{
 					xtype:'textfield'
@@ -146,7 +161,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			},
 			{
 				text : 'Artwork Hold <i data-qtip="<font color=#3892d3>Yes/No , it will apply for all item</font>" class="fa fa-info-circle"></i>',
-				dataIndex:'artWorkHold',
+				dataIndex:AOCLit.artWorkHold,
 				editor:{
 					xtype:'combo',
 					editable:false,

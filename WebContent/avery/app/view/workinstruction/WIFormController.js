@@ -67,8 +67,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			values = form.getValues();
 		
 		Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
-		Ext.apply(values, {listWiSystem:me.processOrgSystemData(refs.wiSystemGrid)});
-		Ext.apply(values, {listWiOrg:me.processOrgData(refs.wiOrgGrid)});
+		Ext.apply(values, {listWiSystem:me.processGridData(refs.wiSystemGrid)});
+		Ext.apply(values, {listWiOrg:me.processGridData(refs.wiOrgGrid)});
+		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
+		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
 		
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/wi',
@@ -135,26 +137,17 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		 
 		 return obj;
 	},
-	processOrgSystemData:function(grid){
+	processGridData:function(grid, addRecordIdFlag){
 		var store = grid.store,
 			records = [];
-		
+	
 		store.each(function(rec){
 			var modifiedRecords = rec.getChanges();
 			Ext.apply(rec.data, modifiedRecords);
-			
-			records.push(rec.data);
-		});
-		return records;
-	},
-	processOrgData:function(grid){
-		var store = grid.store,
-			records = [];
-		
-		store.each(function(rec){
-			var modifiedRecords = rec.getChanges();
-			Ext.apply(rec.data, modifiedRecords);
-			
+			if(rec.data.id){
+				rec.data.listId = !addRecordIdFlag ? rec.data.id : '';
+				delete rec.data.id;
+			}
 			records.push(rec.data);
 		});
 		return records;
@@ -164,49 +157,91 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	onEmailSubjectRequiredRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			emailSubjectFieldCont = refs.emailSubjectFieldCont;
+			emailFileNameContent = refs.emailFileNameContent,
+			emailSubjectKeyWording = refs.emailSubjectKeyWording,
+			emailSubjectDataStructureRule = refs.emailSubjectDataStructureRule;
 		
 		if(newValue.emailSubjectRequired == 1){
-			emailSubjectFieldCont.setDisabled(false);
+			emailFileNameContent.setDisabled(false);
+			emailSubjectKeyWording.setDisabled(false);
+			emailSubjectDataStructureRule.setDisabled(false);
 		}else{
-			emailSubjectFieldCont.setDisabled(true);
+			emailFileNameContent.setDisabled(true);
+			emailSubjectKeyWording.setDisabled(true);
+			emailSubjectDataStructureRule.setDisabled(true);
 		}
 	},
 	onEmailBodyRequiredRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			emailBodyFieldCont = refs.emailBodyFieldCont;
+			emailBodyIdentificationType = refs.emailBodyIdentificationType,
+			emailBodyKeyWording = refs.emailBodyKeyWording;
 		
 		if(newValue.emailBodyRequired == 1){
-			emailBodyFieldCont.setDisabled(false);
+			emailBodyIdentificationType.setDisabled(false);
+			emailBodyKeyWording.setDisabled(false);
 		}else{
-			emailBodyFieldCont.setDisabled(true);
+			emailBodyIdentificationType.setDisabled(true);
+			emailBodyKeyWording.setDisabled(true);
 		}
 	},
 	onAttachmentRequiredRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			attachmentFieldCont = refs.attachmentFieldCont;
+			attachmentFileNameContent = refs.attachmentFileNameContent,
+			attachmentFileKeyWording = refs.attachmentFileKeyWording,
+			attachmentFormat = refs.attachmentFormat;
 		
 		if(newValue.attachmentRequired == 1){
-			attachmentFieldCont.setDisabled(false);
+			attachmentFileNameContent.setDisabled(false);
+			attachmentFileKeyWording.setDisabled(false);
+			attachmentFormat.setDisabled(false);
 		}else{
-			attachmentFieldCont.setDisabled(true);
+			attachmentFileNameContent.setDisabled(true);
+			attachmentFileKeyWording.setDisabled(true);
+			attachmentFormat.setDisabled(true);
 		}
 	},
 	onOrderRequiredRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			orderFileFieldCont = refs.orderFileFieldCont;
+			orderFileNameContent = refs.orderFileNameContent,
+			orderFileKeyWording = refs.orderFileKeyWording,
+			orderFileTypeFormat = refs.orderFileTypeFormat;
 		
 		if(newValue.orderFileRequired == 1){
-			orderFileFieldCont.setDisabled(false);
+			orderFileNameContent.setDisabled(false);
+			orderFileKeyWording.setDisabled(false);
+			orderFileTypeFormat.setDisabled(false);
 		}else{
-			orderFileFieldCont.setDisabled(true);
+			orderFileNameContent.setDisabled(true);
+			orderFileKeyWording.setDisabled(true);
+			orderFileTypeFormat.setDisabled(true);
 		}
 	},
 	
 	//System Grid
+	onSystemGridBeforeEdit:function(e, editor){
+		var me = this,
+			currentRecord = editor.record,
+			systemName = currentRecord.get('systemName'),
+			dataIndex = editor.column.dataIndex,
+			defaultOrg = currentRecord.get('defaultOrg');
+		
+		if((systemName == 'Sparrow' ||(systemName == 'VIPS' && defaultOrg == 10)) 
+				&& (dataIndex == AOCLit.variableDataBreakdown || dataIndex == AOCLit.splitByShipSet || dataIndex == AOCLit.shipMark)){
+			return false;
+		}
+		else if((systemName == 'VIPS' && (defaultOrg == 6 || defaultOrg == 7 || defaultOrg == 8)) 
+				&& (dataIndex == AOCLit.variableDataBreakdown || dataIndex == AOCLit.splitByShipSet || dataIndex == AOCLit.manufacturing
+					|| dataIndex == AOCLit.invoiceLineInstruction)){
+			return false;
+		}
+		else if((systemName == 'VIPS' && (defaultOrg == 4 || defaultOrg == 5 || defaultOrg == 9)) 
+				&& (dataIndex == AOCLit.variableDataBreakdown || dataIndex == AOCLit.shipMark)){
+			return false;
+		}
+	},
 	onSystemDefaultOrgExpand:function(field){
 		field.store.clearFilter();
 		var grid = field.up('grid'),
@@ -218,14 +253,36 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		switch(system){
 		case 'Oracle':
-			comboStore.filter('systemName',31);
+			comboStore.filter('systemId', 31);
 			break;
 		case 'VIPS':
-			comboStore.filter('systemName',32);
+			comboStore.filter('systemId', 32);
 			break;
 		case 'Sparrow':
-			comboStore.filter('systemName',33);
+			comboStore.filter('systemId', 33);
 			break;
+		}
+	},
+	
+	onSiteSelect:function(field){
+		var me = this;
+		me.showHideOrgView(field);
+	},
+	onSystemSelect:function(field){
+		var me = this;
+		me.showHideOrgView(field);
+	},
+	showHideOrgView:function(field){
+		var me = this,
+			refs = me.getReferences(),
+			siteField = refs.site,
+			wiOrgGrid = refs.wiOrgGrid,
+			systemCombo = refs.sysetemField;
+		
+		if(siteField.getValue() && systemCombo.getValue()){
+			wiOrgGrid.show();
+		}else{
+			wiOrgGrid.hide();
 		}
 	}
 });

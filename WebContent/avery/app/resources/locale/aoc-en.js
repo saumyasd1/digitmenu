@@ -495,4 +495,15 @@ Ext.define('AOC.lang.lit',{
     wiExplanationRulesIconText:'<i data-qtip="<font color= #3892d3> i.e. For the first sentence, please first use (Capture after xyz.), (Capture before abc.) and (Capture between xyz and abc) if only certain information in the cell/field has to be captured<br>i.e. If you want to capture (China) as COO in the special instruction field (RN: 123, CA:abc, COO: China;), please write (Capture between COO: and ;) </font>" class="fa fa-info-circle"></i>',
     wiExplanationRulesIconText1:'<i data-qtip="<font color= #3892d3> <b>EXAMPLE ONLY:</b><br>i) Capture Style # in order form under each item code<br>	ii) Based on the style #, find the corresponding attachment file<br>iii) In the attachment file, you could find COO under table A<br> iv) Add (MADE IN) before the COO if (MADE IN) did not be mentioned in the field, eg. CHINA -> MADE IN CHINA, MADE IN CHINA -> MADE IN CHINA </font>" class="fa fa-info-circle"></i>',
     wiLegacyFieldIconText:'<i data-qtip="<font color= #3892d3> COO, ColorName, Color Code... (Please list all and provide the exact field name)<br>	i.e. SIZE, SIZE_OPTIONAL, SOURCING_SIZE </font>" class="fa fa-info-circle"></i>',
+    //system grid dataindex
+    systemName:'systemName',
+    defaultOrg:'defaultOrg',
+    csrName:'csrName',
+    packingInstruction:'packingInstruction',
+    manufacturing:'manufacturing',
+    invoiceLineInstruction:'invoiceLineInstruction',
+    variableDataBreakdown:'variableDataBreakdown',
+    splitByShipSet:'splitByShipSet',
+    shipMark:'shipMark',
+    artWorkHold:'artWorkHold'
 });

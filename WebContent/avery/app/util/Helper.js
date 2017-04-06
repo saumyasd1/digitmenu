@@ -665,5 +665,18 @@ Ext.define('AOC.util.Helper',{
 	},
 	getYesNoStore:function(){
 		return [['Yes','Yes'],['No','No']];
+	},
+	getSiteStore:function(){
+		return [['Nansha','Nansha'],['Panyu','Panyu'],['Suzhou','Suzhou'],['Vietnam','Vietnam']];
+	},
+	getDefaultCaptureLogicStore:function(){
+		return new Ext.data.JsonStore({
+			data:[
+			   {name:'Default Value'}  ,{name:'Capture below field name (Order Form) '},{name:'Capture from field location (Order Form)'},
+			   {name:'Capture right next to field name (Order Form)'},{name:'Capture below field name (Attachment)'},{name:'Capture right next to field name (Attachment)'},
+			   {name:'Capture from field location (Attachment)'},{name:'Complicated Logic'}, {name:'N/A'}  
+			],
+			fields:'name'
+		})
 	}
 });

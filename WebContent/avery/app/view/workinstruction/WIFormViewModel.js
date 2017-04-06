@@ -4,8 +4,8 @@ Ext.define('AOC.view.workinstruction.WIFormViewModel',{
 	
 	data:{
 		detail:{
-			factoryName:'Adidas',
-			rBOName:'Nike'
+			//factoryName:'Adidas',
+			//rBOName:'Nike'
 		}
 	}
 });
