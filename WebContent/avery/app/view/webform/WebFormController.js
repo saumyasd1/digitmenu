@@ -313,6 +313,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        				Helper.resetWebOrderForm(me.getView());
 	    					webOrderFormView.resetFormFields();
 	    					me.totalFileCount = 0;
+	    					Helper.showToast('success','Plase goto Email Queue');
 	    					Ext.getBody().unmask();
 	        			}else{
 	        				console.log('File Uploaded');
@@ -322,6 +323,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        	}
 	        }
     	}else{
+    		Helper.resetWebOrderForm(me.getView());
+			webOrderFormView.resetFormFields();
+			Helper.showToast('success','Plase goto Order Queue');
     		Ext.getBody().unmask();
     	}
     },
@@ -431,11 +435,13 @@ Ext.define('AOC.view.webform.WebFormController', {
 					}
 					form.down('#oldAdditionalFileId').setValue(fileIdArray.join(','));
 				}
+				form.attachmentCount--;
 			}
 			else{
 				if(form.isResubmit){
 					form.down('#oldOrderFileDeleted').setValue(true);
 				}
+				form.orderFileAttachmentCount--;
 			}
 			store.remove(record);
 			this.removeFileFromFileArray(record.get('fileId'));
@@ -462,6 +468,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 		
 		Helper.resetWebOrderForm(me.getView());
 		webOrderForm.resetFormFields();
+		me.fileArray =[];
 		webOrderAttachmentInfoGrid.store.removeAll();
 		webOrderAttachmentInfoGrid.getView().refresh();
 	},
