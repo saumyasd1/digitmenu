@@ -38,6 +38,9 @@ Ext.define('AOC.view.webform.WebFormController', {
    	    	 	email.reset();
    	    	 	subject.reset();
    	    	 	emailBody.reset();
+   	    	 	webOrderFormView.orderFileAttachmentCount=1;
+   	    	 	me.fileArray = [];
+   	    	 	webOrderFormView.attachmentCount =1;
    	    	 	webOrderAttachmentInfoGrid.store.removeAll();
    	    	 	webOrderAttachmentInfoGrid.getView().refresh();
    	    	 	orderFileType.setDisabled(true);
