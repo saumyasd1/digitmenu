@@ -60,4 +60,6 @@ public interface ApplicationConstants {
 		
 		String TEST_NOTIFICATION_PASSWORD="VesWep2W06";
 		
+		String Order_Email_Processed="10";
+		
 }

@@ -986,7 +986,12 @@ private static final long serialVersionUID = 3208431286041487210L;
 			StringWriter writer = new StringWriter();
 			orderEmailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
 			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
-			orderEmailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+			if (isResubmit){
+				orderEmailQueueObj.setStatus(ApplicationConstants.Order_Email_Processed);
+			}
+			else{
+				orderEmailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+			}
 			orderEmailQueueObj.setOrderMail(false);
 			orderEmailQueueObj.setReceivedDate(now);
 			orderEmailQueueObj.setCreatedDate(now);
