@@ -46,9 +46,8 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(OrderLine.class)
-					.createAlias("orgCode", "orgCode");
+			session = getSessionFactory().getCurrentSession();;
+ -			criteria = session.createCriteria(OrderLine.class);
 			OrderQueue orderQueue = new OrderQueue();
 			orderQueue.setId(orderID);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderID));
