@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.List;
 
 import com.avery.storage.entities.Address;
-import com.avery.storage.entities.OrderLine;
-import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,6 +28,4 @@ public abstract class OrgMixIn {
 	public abstract SystemInfo getSystem();
 	@JsonIgnore
 	public abstract List<Address> getAddressList();
-	@JsonIgnore
-	public abstract List<OrderLine> getOrderlineList();
 }

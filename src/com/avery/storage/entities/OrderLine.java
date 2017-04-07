@@ -406,8 +406,6 @@ public class OrderLine extends MainAbstractEntity{
 	@JoinColumn(name="orderQueueId",nullable=false)
 	OrderQueue varOrderFileQueue;
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
@@ -438,9 +436,9 @@ public class OrderLine extends MainAbstractEntity{
 	
 	@Column(name = "orderFileOrderType", length = 50)
 	private String orderFileOrderType;
-	@Column(name= "skuQtyDifference", length = 100)
- -	private String skuQtyDifference;
 	
+	@Column(name= "skuQtyDifference", length = 100)
+	private String skuQtyDifference;
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient
@@ -1482,13 +1480,14 @@ public class OrderLine extends MainAbstractEntity{
 	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
 		this.additionalLabelInternalItem = additionalLabelInternalItem;
 	}
+	
 	public String getSkuQtyDifference() {
- -		return skuQtyDifference;
- -	}
- -
- -	public void setSkuQtyDifference(String skuQtyDifference) {
- -		this.skuQtyDifference = skuQtyDifference;
- -	}
+		return skuQtyDifference;
+	}
+
+	public void setSkuQtyDifference(String skuQtyDifference) {
+		this.skuQtyDifference = skuQtyDifference;
+	}
 //
 //	public List<SalesOrder> getListSalesOrderLine() {
 //		return listSalesOrderLine;
