@@ -33,7 +33,7 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	}
 	
 	@Transactional
-	public void cancelOrder(String data,Long entityId){
+	public void cancelOrder(String data,Long entityId) throws Exception{
 		getOrderQueueDao().cancelOrder(data,entityId);
 	}
 	
