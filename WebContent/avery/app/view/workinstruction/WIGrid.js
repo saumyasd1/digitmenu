@@ -9,8 +9,18 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
-		data:[{wiId:1,wiStatus:'Ready For Review'},{wiId:2,wiStatus:'Ready For Review'},{wiId:3,wiStatus:'Ready For Review'}],
-		fields:['wiId','wiStatus']
+		fields:['id','factoryName','assigneeName','status'],
+		autoLoad:true,
+		proxy: {
+			type: 'rest',
+	        url: applicationContext+'/rest/wi',
+	        reader: {
+	            type: 'json'
+	        },
+	        headers: {
+	            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
+	        }
+	    }
 	}),
 	initComponent:function(){
 		var me = this;
@@ -67,12 +77,22 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 			},
 		    {
 		    	text:'WI #',
-		    	dataIndex:'wiId',
+		    	dataIndex:'id',
 		    	flex:.5
 		    }, 
 		    {
-		    	text:'WI Status',
-		    	dataIndex:'wiStatus',
+		    	text:'Name',
+		    	dataIndex:'factoryName',
+		    	flex:1.5
+		    },
+		    {
+		    	text:'Status',
+		    	dataIndex:'status',
+		    	flex:1.5
+		    },
+		    {
+		    	text:'Assignee',
+		    	dataIndex:'assignee',
 		    	flex:1.5
 		    },
 			{  

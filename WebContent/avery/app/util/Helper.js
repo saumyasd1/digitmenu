@@ -641,15 +641,9 @@ Ext.define('AOC.util.Helper',{
 	//WI section
 	getProductLineStore:function(){
 		return [
-	        ['PFL','PFL'],['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
-	        ['GG','GG'],['Multiple','Multiple(please specify here)'],['Others','Others(please specify here)']
+	        ['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
+	        ['GG','GG']
 		];
-	},
-	getCustomerItemIdentifierStore:function(){
-		return [
-		        ['Color Code','Color Code'],['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
-		        ['GG','GG'],['Multiple','Multiple(please specify here)'],['Others','Others(please specify here)']
-			];
 	},
 	getFileNameContentStore:function(){
 		return [['RBO','RBO'],['Product Line','Product Line']];

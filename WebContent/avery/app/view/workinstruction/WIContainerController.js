@@ -33,8 +33,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		url:applicationContext+'/rest/wiaocfieldinfo',
 		success:function(response){
 			var data = JSON.parse(response.responseText);
-			var list = data.wiAocFieldInfo;
-			wiaocfieldgrid.store.loadData(list);
+			wiaocfieldgrid.store.loadData(data);
 		}
 	});
 	},
@@ -48,8 +47,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			url:applicationContext+'/rest/wisysteminfo',
 			success:function(response){
 				var data = JSON.parse(response.responseText);
-				var list = data.wiSystemInfo;
-				wiSystemGrid.store.loadData(list);
+				wiSystemGrid.store.loadData(data);
 			}
 		});
 		
@@ -64,8 +62,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			url:applicationContext+'/rest/wiorginfo',
 			success:function(response){
 				var data = JSON.parse(response.responseText);
-				var list = data.wiOrgInfo;
-				wiOrgGrid.store.loadData(list);
+				wiOrgGrid.store.loadData(data);
 			}
 		});
 	},
@@ -207,9 +204,12 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			url:applicationContext+'/rest/wiorderdetail',
 			params:{ wId: wId },
 			success:function(response){
-				var detail = JSON.parse(response.responseText);
-				var viewModel = wiFormPanel.getViewModel();
-				viewModel.setData({detail:detail});
+				var detail = JSON.parse(response.responseText),
+					schemaIdentification = detail.listWiSchemaIdentification;
+				
+				Ext.apply(detail,schemaIdentification);
+				var form = wiFormPanel.getReferences().wIForm;
+				form.loadRecord(detail);
 				wiFormPanel.unmask();
 			},
 			failure:function(){

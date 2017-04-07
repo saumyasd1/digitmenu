@@ -76,6 +76,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			url:applicationContext+'/rest/wi',
 			jsonData:values,
 			success:function(response){
+				//form.reset();
+				//me.onBackBtnClick();
 				Helper.showToast('success','Record has been suuccessfully saved');
 			},
 			failure:function(){
