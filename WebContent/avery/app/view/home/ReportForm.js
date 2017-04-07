@@ -86,15 +86,15 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    		}
 	                    	}
 	                    }
-					},
-					{
-						xtype:'combo',
-						name:'timeZone',
-						reference:'timeZone',
-						editable:false,
-						margin:'0 20 0 0',
-						store:[[serverTz, serverTz],[tz, tz]],
 					}
+//					{
+//						xtype:'combo',
+//						name:'timeZone',
+//						reference:'timeZone',
+//						editable:false,
+//						margin:'0 20 0 0',
+//						store:[[serverTz, serverTz],[tz, tz]],
+//					}
 				]
 	        },
 			{

@@ -130,6 +130,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								displayField:'dataStructureName',
 								name:'partnerDataStructure',
 								valueField:'id',
+								typeAhead:true,
 								queryMode :'local',
 								flex:1,
 								tabIndex:6,

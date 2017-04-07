@@ -51,7 +51,7 @@ Ext.define('AOC.view.home.ReportFormController', {
         });
      	form.submit({
         	method : 'GET',
-        	params:{query:query,timezone:values.timeZone}
+        	params:{query:query}
         });
     	}else{
     		 Ext.MessageBox.alert('', AOCLit.emptyFilter);

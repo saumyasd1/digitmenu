@@ -117,6 +117,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								valueField:'code',
 								queryMode :'local',
 								tabIndex:5,
+								typeAhead:true,
 								enableKeyEvents:true,
 								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId'),
 								listeners:{

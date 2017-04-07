@@ -1358,10 +1358,35 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						
 						var obj = currentRecord.getChanges();
 						obj.id = currentRecord.id;
-						fiberPercent = currentRecord.get('fiberPercent');
-						
-						if(fiberPercent.includes('.')==true || fiberPercent<0){
-							Helper.showToast('failure','Please enter only positive integer value for Fiber percent');
+						 var fiberPercent = currentRecord.get('fiberPercent');
+						var isContainsFibre = currentRecord.get('level').toLowerCase();
+						if(isContainsFibre=='fibre'){
+							if(fiberPercent.includes('.')==true || fiberPercent<0){
+								Helper.showToast('failure','Please enter only positive integer value for Fiber percent');
+							}
+							else{
+								Ext.getBody().mask('Saving....');
+								var runTime = AOC.config.Runtime;
+								
+								var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+								
+								Ext.Ajax.request({
+									method:'PUT',
+									jsonData:obj,
+									url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+									success : function(response, opts) {
+										Helper.showToast('success','Order line Detail successfully updated');
+										grid.openedRecordIndex = grid.store.find('id', nestedGrid.recordId);
+										Helper.loadOrderLineGridStore(grid.store, runTime.getOrderQueueId());
+										grid.view.refresh();
+										Ext.getBody().unmask();
+									},
+									failure: function(response, opts) {
+										Ext.getBody().unmask();
+									}
+								});
+						  
+							}
 						}
 						else{
 							Ext.getBody().mask('Saving....');

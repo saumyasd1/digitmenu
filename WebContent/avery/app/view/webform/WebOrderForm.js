@@ -259,7 +259,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						fieldLabel:'Attachments',
 						itemId:'attachment',
 						disabled:true,
-						allowBlank: true,
+						allowBlank: false,
 						hidden:true,
 						listeners:{
 							'change':'onAttachmentChange',

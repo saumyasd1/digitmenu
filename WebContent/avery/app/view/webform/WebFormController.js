@@ -316,7 +316,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        				Helper.resetWebOrderForm(me.getView());
 	    					webOrderFormView.resetFormFields();
 	    					me.totalFileCount = 0;
-	    					Helper.showToast('success','Plase goto Email Queue');
+	    					Helper.showToast('success',AOCLit.webSubmissionSuccesFulMsg);
 	    					Ext.getBody().unmask();
 	        			}else{
 	        				console.log('File Uploaded');
@@ -328,7 +328,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     	}else{
     		Helper.resetWebOrderForm(me.getView());
 			webOrderFormView.resetFormFields();
-			Helper.showToast('success','Plase goto Order Queue');
+			Helper.showToast('success',AOCLit.webSubmissionSuccesFulMsg);
     		Ext.getBody().unmask();
     	}
     },
