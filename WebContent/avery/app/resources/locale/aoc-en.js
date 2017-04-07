@@ -398,7 +398,7 @@ Ext.define('AOC.lang.lit',{
     "password" : 'Password',
     "confirmPassword":'Confirm Password',
     //Web Form
-    "webSubmissionSuccesFulMsg":'The form was successfully submitted. Please go to Email Queue to see your order.',	
+    "webSubmissionSuccesFulMsg":'Please go to Email Queue to see your order.',	
     "uploadOnlyExcelFileAlert":'Please attach only xls or xlxs type of files',
     "uploadOnlyPdfFileAlert":'Please attach only pdf type of files',
     "onProductLineChangeAlert":'Please delete the attachment before changing the productline',
