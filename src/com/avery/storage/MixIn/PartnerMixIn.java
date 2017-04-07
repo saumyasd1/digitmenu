@@ -10,7 +10,6 @@ import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.storage.entities.Site;
-import com.avery.storage.entities.Wi;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class PartnerMixIn {
@@ -39,8 +38,4 @@ public abstract class PartnerMixIn {
 	@JsonIgnore
 	public abstract List<Address> getAddressList();
 	
-	@JsonIgnore
-	public abstract List<Wi> getListWi();
-
-
 }
