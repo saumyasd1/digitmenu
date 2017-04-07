@@ -1,8 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,9 +19,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.PropertiesConfig;
 import com.avery.logging.AppLogger;
 import com.avery.rest.RestClient;
-import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Path("router")
@@ -156,33 +152,5 @@ public class Router {
 		}
 		return rb.build();
 
-	}
-	
-	public Response getResponse() throws Exception{
-		String adeptiaServerURL=PropertiesConfig
-				.getString(PropertiesConstants.ADEPTIA_SERVER_URL);
-		String userName=PropertiesConfig
-				.getString(PropertiesConstants.ADEPTIA_SERVER_USERNAME);
-		String password=PropertiesConfig
-				.getString(PropertiesConstants.ADEPTIA_SERVER_PASSWORD);
-		//String url = adeptiaServerURL+"/adeptia/wsapi/1.1/validation?OrderFileQueueID="+orderId.intValue();
-		/*Response response = RestClient.invoke(
-				url,
-				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
-				"get", null, null, null, null, userName, password,1,1,AppLogger.getSystemLogger());*/
-		/*String p = (String) response.getEntity();
-		Map<String, String> map = ApplicationUtils.convertJSONtoMaps(p);
-		String p1 = map.get("timezone");
-		return p1;*/
-		Map entitiesMap = new HashMap();
-		entitiesMap.put("timezone", "IST");
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
-		mapper.writeValue(writer, entitiesMap);
-		Response.ResponseBuilder rb = null;
-		rb = Response.ok(writer.toString());
-		Response response = rb.build();
-		System.out.println("TimeZone set......................................................");
-		return response;
 	}
 }
