@@ -62,17 +62,6 @@ public class Org extends MainAbstractEntity {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varOrgCode", fetch = FetchType.LAZY)
 	List<Address> addressList = new ArrayList<Address>();
-	
-	@OneToMany(mappedBy = "orgCode", fetch = FetchType.LAZY)
-	List<OrderLine> orderlineList = new ArrayList<OrderLine>();
-	
-	public List<OrderLine> getOrderlineList() {
-		return orderlineList;
-	}
-
-	public void setOrderlineList(List<OrderLine> orderlineList) {
-		this.orderlineList = orderlineList;
-	}
 
 	public List<Address> getAddressList() {
 		return addressList;
