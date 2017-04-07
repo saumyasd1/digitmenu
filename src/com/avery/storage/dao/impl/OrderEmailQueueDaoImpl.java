@@ -53,6 +53,7 @@ OrderEmailQueueDao {
 	
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
+		System.out.println(new Date());
 		Map entitiesMap = new HashMap();
 		int totalCount = 0;
 		Criteria criteria = getCriteria(queryMap);//session.createCriteria(OrderEmailQueue.class);

@@ -151,7 +151,11 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		wiSubmitBtn[showFlag ? 'show':'hide']();
 	},
 	onEditWIFormMenuItemClick:function(menuItem, e){
-		var me = this;
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel;
+		
+		wiFormPanel.mode = 'edit';
 		me.setReadOnlyView(false);
 		me.loadWIForm();
 		me.showHideSaveSubmitBtn(true);
@@ -163,16 +167,21 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			record = wiGrid.getSelectionModel().getSelection()[0],
 			wId = record.get('id');
 		
+		AOCRuntime.setWiId(wId);
 		me.loadOrgGrid(wId);
 		me.loadSystemGrid(wId);
 		me.loadAOCFieldGrid(wId);
-//		//me.loadSystemLevelGrid(wId);
+		me.loadSystemLevelGrid(wId);
 		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
 	},
 	
 	onViewWIFormMenuItemClick:function(menuItem, e){
-		var me = this;
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel;
+	
+		wiFormPanel.mode = 'view';
 		me.setReadOnlyView(true);
 		me.loadWIForm();
 		me.showHideSaveSubmitBtn(false);
@@ -246,6 +255,15 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiaocfieldgrid = formRefs.wiaocfieldgrid;
 		
 		wiaocfieldgrid.store.load({params:{id:wId}});
+	},
+	loadSystemLevelGrid:function(wId){
+		var me = this,
+		refs = me.getReferences(),
+		wiFormPanel = refs.wiFormPanel,
+		formRefs = wiFormPanel.getReferences(),
+		wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid;
+	
+		wiorderfiberlinegrid.store.load({params:{id:wId}});
 	}
 	
 });

@@ -10,7 +10,15 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
-		data:[],
+		autoLoad:false,
+		proxy: {
+	        type: 'rest',
+	        url : applicationContext+ '/rest/wisystemlevel/systemlevel',
+	        reader: {
+	            type: 'json',
+	            rootProperty: 'systemlevel'
+	        }
+	    },
 		fields:['id','createdBy','createdDate','lastModifiedBy','lastModifiedDate','additionalLogicValidation',
 		        'defaultValueFieldLocation','fieldName','productLine','rboFactStrucSpecific','systemOrderLineFiberLevel']
 	}),

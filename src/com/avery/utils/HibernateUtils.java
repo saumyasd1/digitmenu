@@ -1,10 +1,12 @@
 package com.avery.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
@@ -54,5 +56,19 @@ public class HibernateUtils {
 		criteria.add(Restrictions.ge(dateType, startDate)); 
 		criteria.add(Restrictions.lt(dateType, endDate));
 		return criteria;
+	}
+	public static Date getCurrentSystemDate(Date date, long offSet) throws ParseException {
+		Date locDate = null;
+		try{
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			dateFormat.setTimeZone(TimeZone.getDefault());
+			Date date1 = new Date(date.getTime()+offSet);
+			String currDate = dateFormat.format(date1);
+			locDate = dateFormat.parse(currDate);
+		}
+		catch(Exception e){
+			return null;
+		}
+		return locDate;
 	}
 }

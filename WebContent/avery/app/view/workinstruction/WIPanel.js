@@ -33,7 +33,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	cls:'wi-form-panel-header',
 		    	titleAlign:'center',
 		    	bodyPadding:10,
-		    	margin:'5 0',
+		    	margin:'15 0',
 		    	layout:{
 		    		type:'vbox',
 		    		align:'stretch'
@@ -325,7 +325,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    },
     	    {
     	    	xtype:'fieldcontainer',
-    	    	margin:'0 0 5 0',
+    	    	margin:'0 0 15 0',
     	    	layout:{
     	    		type:'hbox',
     	    		align:'stretch'
@@ -363,6 +363,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    {
     	    	xtype:'fieldcontainer',
     	    	flex:1,
+    	    	margin:'0 0 5 0',
     	    	layout:{
     	    		type:'hbox',
     	    		align:'stretch' 	
@@ -406,6 +407,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    {
     	    	xtype:'fieldcontainer',
     	    	flex:1,
+    	    	margin:'0 0 5 0',
     	    	layout:{
     	    		type:'hbox',
     	    		align:'stretch' 	
@@ -451,6 +453,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    {
     	    	xtype:'fieldcontainer',
     	    	flex:1,
+    	    	margin:'0 0 15 0',
     	    	layout:{
     	    		type:'hbox',
     	    		align:'stretch' 	
@@ -530,6 +533,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    {
 		    	xtype:'fieldcontainer',
+		    	margin:'0 0 20 0',
 		    	flex:1,
 		    	layout:{
 		    		type:'hbox',
@@ -570,6 +574,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	name:'attachmentIdentifier',
 		    	reference:'attachmentIdentifier',
 		    	flex:1,
+		    	margin:'0 0 5 0',
 		    	labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign
@@ -580,6 +585,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	name:'attachmentProcess',
 		    	reference:'attachmentProcess',
 		    	flex:1,
+		    	margin:'0 0 20 0',
 		    	labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign

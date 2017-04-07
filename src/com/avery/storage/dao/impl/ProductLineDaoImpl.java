@@ -571,7 +571,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			for (Long productLineId : productLineIds) {
 				ProductLine productLine = new ProductLine();
 				productLine = (ProductLine) session.get(ProductLine.class, productLineId);
-				if (productLine != null) {
+				if (productLine != null && productLine.isActive()) {
 					Map<String, String> dataStructureValue = new HashMap<>();
 					dataStructureValue.put("id", productLineId.toString());
 					dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
@@ -582,6 +582,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			Criteria crit = session.createCriteria(ProductLine.class)
 					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
 							.add(Projections.property("dataStructureName"), "dataStructureName"))
+					.add(Restrictions.ne("active", false))
 					.addOrder(Order.asc("dataStructureName"))
 					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
 

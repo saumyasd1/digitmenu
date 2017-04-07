@@ -43,6 +43,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineMixIn;
+import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.service.OrderLineService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.utils.ApplicationUtils;
@@ -406,6 +407,18 @@ public class OrderLine extends MainAbstractEntity{
 	@JoinColumn(name="orderQueueId",nullable=false)
 	OrderQueue varOrderFileQueue;
 	
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="ddd")
+	Org orgCode;
+	
+	public Org getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(Org orgCode) {
+		this.orgCode = orgCode;
+	}
+
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="varOrderLine",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	List<OrderLineDetail> listOrderlineDetails=new ArrayList<OrderLineDetail>();
@@ -437,8 +450,6 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "orderFileOrderType", length = 50)
 	private String orderFileOrderType;
 	
-	@Column(name= "skuQtyDifference", length = 100)
-	private String skuQtyDifference;
 	
 	//transient variables added for getting colorCode and iconName
 	@Transient
@@ -1480,14 +1491,6 @@ public class OrderLine extends MainAbstractEntity{
 	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
 		this.additionalLabelInternalItem = additionalLabelInternalItem;
 	}
-	
-	public String getSkuQtyDifference() {
-		return skuQtyDifference;
-	}
-
-	public void setSkuQtyDifference(String skuQtyDifference) {
-		this.skuQtyDifference = skuQtyDifference;
-	}
 //
 //	public List<SalesOrder> getListSalesOrderLine() {
 //		return listSalesOrderLine;
@@ -1653,6 +1656,7 @@ public class OrderLine extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
 			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			OrderLineService orderLineService = (OrderLineService) SpringConfig
 					.getInstance().getBean("orderLineService");

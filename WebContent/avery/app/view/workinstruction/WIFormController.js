@@ -64,7 +64,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			refs = me.getReferences(),
 			wiFormPanel = refs.wIForm,
 			form = wiFormPanel.getForm(),
-			values = form.getValues();
+			values = form.getValues(),
+			mode = wiFormPanel.mode;
 		
 		Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
 		Ext.apply(values, {listWiSystem:me.processGridData(refs.wiSystemGrid)});
@@ -72,6 +73,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
 		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
 		
+		if(mode == 'edit'){
+			values.id =  AOCRuntime.getWiId();
+		}
+		wiFormPanel.mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/wi',
 			jsonData:values,
@@ -79,9 +84,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				//form.reset();
 				//me.onBackBtnClick();
 				Helper.showToast('success','Record has been suuccessfully saved');
+				wiFormPanel.unmask();
 			},
 			failure:function(){
-				
+				wiFormPanel.unmask();
 			}
 		});
 		

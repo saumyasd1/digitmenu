@@ -226,6 +226,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            {
 		            	xtype:'textfield',
 		            	name:'specificFactoryEmailAddress',
+		            	vtype:'email',
 		            	reference:'specificFactoryEmailAddress',
 		            	fieldLabel:'Specific Factory Email Address',
 		            	flex:1,
@@ -239,6 +240,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            {
 		            	xtype:'textfield',
 		            	name:'csrEmailAddress',
+		            	vtype:'email',
 		            	reference:'csrEmailAddress',
 		            	fieldLabel:'CSR Email Address',
 		            	margin:'0 0 0 10',
@@ -446,7 +448,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		      {
 		    	  xtype:'label',
 		    	  style:Settings.form.wiLabelStyle,
-		    	  text:'Note:Please select site, check system in System Level table and answer the above two question, order to show the Org Level table'
+		    	  text:'Note:Please select Site and System and answer the above two question, order to show the Org Level table'
 		      },
 		      {
     	    	  xtype:'wiorggrid',
@@ -544,6 +546,19 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					]
 				},
 				{
+					xtype:'displayfield',
+					flex:1,
+					margin:'0 0 5 0',
+					value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
+				},
+				{
+					xtype:'textfield',
+					hideLabel:true,
+					name:'emailSubjectDataStructureOtherRule',
+					width:300,
+					margin:'0 0 15 0'
+				},
+				{
 			    	xtype:'box',
 			    	html:'Email Body',
 			    	style:'font-weight:bold;color:#2c3e50;font-size:15px;'
@@ -572,7 +587,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			    },
 				{
 					xtype:'fieldcontainer',
-					margin:'0 0 5 0',
 					flex:1,
 					reference:'emailBodyFieldCont',
 					layout:{
@@ -604,18 +618,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	flex:1
 					    }
 					]
-				},
-				{
-					xtype:'displayfield',
-					flex:1,
-					margin:'0 0 5 0',
-					value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
-				},
-				{
-					xtype:'textfield',
-					hideLabel:true,
-					name:'emailSubjectDataStructureOtherRule',
-					width:300
 				},
 				{
 					xtype:'box',
@@ -714,7 +716,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    },
 	    	    {
 	    	    	xtype:'fieldcontainer',
-	    	    	margin:'0 0 5 0',
+	    	    	margin:'0 0 15 0',
 	    	    	flex:1,
 	    	    	defaults:{
 						labelSeparator:'',

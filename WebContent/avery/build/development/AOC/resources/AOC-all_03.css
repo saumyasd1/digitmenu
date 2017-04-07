@@ -1313,51 +1313,24 @@
   color: rgba(47, 51, 55, 0.6);
   line-height: 16px; }
 
-/* line 1, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.light-black .x-grid-cell {
-  background-color: #4b4b4b !important; }
+/* line 1, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
+.custom-row-expander {
+  width: 16px;
+  height: 15px;
+  cursor: pointer;
+  background-image: url(images/colapse.png); }
 
-/* line 4, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.black .x-grid-cell {
-  background-color: #3f3f3f !important; }
+/* line 7, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
+.x-grid-row-collapsed .custom-row-expander {
+  background-image: url(images/expand.png); }
 
-/* line 7, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.home-oder-grid-column-text {
-  font-family: San Serif, Helvetica, Arial;
-  font-weight: 600;
-  color: #FFFFFF!important; }
+/* line 10, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
+.hiderowexpander .x-grid-cell-inner-row-expander {
+  padding: 0px 0px 0px 0px; }
 
-/* line 12, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.home-oder-grid-circle {
-  margin-top: 2px;
-  float: left;
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  opacity: 0.6; }
-
-/* line 21, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.home-oder-grid-text {
-  float: left;
-  padding-left: 5px;
-  font-family: San Serif, Helvetica, Arial;
-  font-weight: 600;
-  color: #FFFFFF!important; }
-
-/* line 28, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.home-order-grid {
-  background-color: #282828 !important;
-  border-width: 0px !important;
-  color: #ffffff !important; }
-
-/* line 35, ../../../../sass/src/view/home/HomePageOrderList.scss */
-.home-order-grid .x-column-header-over,
-.home-order-grid .x-column-header-sort-ASC,
-.home-order-grid .x-column-header-sort-DESC {
-  background-color: #282828 !important;
-  border-width: 0px !important;
-  color: #ffffff !important; }
+/* line 13, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
+.invalid .x-grid-row-expander {
+  background-color: yellow !important; }
 
 /* line 1, ../../../../sass/src/view/users/myprofile/UserEdit.scss */
 .userDetail-title {
@@ -1577,24 +1550,51 @@ profile-info-form-item {
     .section-wrap .section-wrap-text:hover {
       color: blue!important; }
 
-/* line 1, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
-.custom-row-expander {
-  width: 16px;
-  height: 15px;
-  cursor: pointer;
-  background-image: url(images/colapse.png); }
+/* line 1, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.light-black .x-grid-cell {
+  background-color: #4b4b4b !important; }
 
-/* line 7, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
-.x-grid-row-collapsed .custom-row-expander {
-  background-image: url(images/expand.png); }
+/* line 4, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.black .x-grid-cell {
+  background-color: #3f3f3f !important; }
 
-/* line 10, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
-.hiderowexpander .x-grid-cell-inner-row-expander {
-  padding: 0px 0px 0px 0px; }
+/* line 7, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.home-oder-grid-column-text {
+  font-family: San Serif, Helvetica, Arial;
+  font-weight: 600;
+  color: #FFFFFF!important; }
 
-/* line 13, ../../../../sass/src/view/ux/RowExpanderGrid.scss */
-.invalid .x-grid-row-expander {
-  background-color: yellow !important; }
+/* line 12, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.home-oder-grid-circle {
+  margin-top: 2px;
+  float: left;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0.6; }
+
+/* line 21, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.home-oder-grid-text {
+  float: left;
+  padding-left: 5px;
+  font-family: San Serif, Helvetica, Arial;
+  font-weight: 600;
+  color: #FFFFFF!important; }
+
+/* line 28, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.home-order-grid {
+  background-color: #282828 !important;
+  border-width: 0px !important;
+  color: #ffffff !important; }
+
+/* line 35, ../../../../sass/src/view/home/HomePageOrderList.scss */
+.home-order-grid .x-column-header-over,
+.home-order-grid .x-column-header-sort-ASC,
+.home-order-grid .x-column-header-sort-DESC {
+  background-color: #282828 !important;
+  border-width: 0px !important;
+  color: #ffffff !important; }
 
 /* line 1, ../../../../sass/src/view/orderqueue/OrderLineExpandableGrid.scss */
 .nestedGrid .x-grid-header-ct {
