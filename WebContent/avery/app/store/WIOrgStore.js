@@ -6,9 +6,10 @@ Ext.define('AOC.store.WIOrgStore', {
 	autoLoad:false,
 	proxy: {
         type: 'rest',
-        url : applicationContext+ '/rest/wiorg',
+        url : applicationContext+ '/rest/wiorg/org',
         reader: {
-            type: 'json'
+            type: 'json',
+            rootProperty: 'org'
         }
     }
 });

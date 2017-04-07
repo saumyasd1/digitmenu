@@ -6,9 +6,10 @@ Ext.define('AOC.store.WISystemStore', {
 	autoLoad:false,
 	proxy: {
         type: 'rest',
-        url : applicationContext+ '/rest/wisystem',
+        url : applicationContext+ '/rest/wisystem/system',
         reader: {
-            type: 'json'
+            type: 'json',
+            rootProperty: 'system'
         }
     }
 });

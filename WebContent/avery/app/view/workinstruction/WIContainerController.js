@@ -131,6 +131,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				    {
 				    	text:'Edit WI Form',
 				    	iconCls:'fa fa-pencil-square-o',
+				    	scope:me,
 				    	handler:me.onEditWIFormMenuItemClick
 				    }
 				]
@@ -160,13 +161,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			view = me.getView(),
 			wiGrid = me.getReferences().wiGrid,
 			record = wiGrid.getSelectionModel().getSelection()[0],
-			wId = record.get('wiId');
+			wId = record.get('id');
 		
-//		me.loadOrgGrid(wId);
-//		me.loadSystemGrid(wId);
-//		me.loadAOCFieldGrid(wId);
+		me.loadOrgGrid(wId);
+		me.loadSystemGrid(wId);
+		me.loadAOCFieldGrid(wId);
 //		//me.loadSystemLevelGrid(wId);
-//		me.loadWiForm(wId);
+		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
 	},
 	
@@ -194,22 +195,24 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		}
 		
 	},
-	loadWiForm:function(wId){
+	loadWiFormData:function(wId){
 		var me = this,
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel;
 		
 		wiFormPanel.mask('Loading...');
 		Ext.Ajax.request({
-			url:applicationContext+'/rest/wiorderdetail',
-			params:{ wId: wId },
+			url:applicationContext+'/rest/wi/wiorderdetail',
+			params:{ id: wId },
+			method: 'GET',
 			success:function(response){
 				var detail = JSON.parse(response.responseText),
-					schemaIdentification = detail.listWiSchemaIdentification;
+					schemaIdentification = detail.formdata.listWiSchemaIdentification;
 				
-				Ext.apply(detail,schemaIdentification);
+				delete detail.formdata.listWiSchemaIdentification;
+				Ext.apply(detail.formdata,schemaIdentification);
 				var form = wiFormPanel.getReferences().wIForm;
-				form.loadRecord(detail);
+				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));
 				wiFormPanel.unmask();
 			},
 			failure:function(){
@@ -224,7 +227,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiOrgGrid = formRefs.wiOrgGrid;
 		
-		wiOrgGrid.store.load({params:{wId:wId}});
+		wiOrgGrid.store.load({params:{id:wId}});
 	},
 	loadSystemGrid:function(wId){
 		var me = this,
@@ -233,7 +236,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiSystemGrid = formRefs.wiSystemGrid;
 		
-		wiSystemGrid.store.load({params:{wId:wId}});
+		wiSystemGrid.store.load({params:{id:wId}});
 	},
 	loadAOCFieldGrid:function(wId){
 		var me = this,
@@ -242,7 +245,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiaocfieldgrid = formRefs.wiaocfieldgrid;
 		
-		wiaocfieldgrid.store.load({params:{wId:wId}});
+		wiaocfieldgrid.store.load({params:{id:wId}});
 	}
 	
 });

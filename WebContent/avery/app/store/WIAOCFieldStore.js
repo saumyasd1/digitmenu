@@ -6,9 +6,10 @@ Ext.define('AOC.store.WIAOCFieldStore', {
     autoLoad:false,
 	proxy: {
         type: 'rest',
-        url : applicationContext+ '/rest/wiaocfield',
+        url : applicationContext+ '/rest/aocfield/fielddata',
         reader: {
-            type: 'json'
+            type: 'json',
+            rootProperty: 'aocfields'
         }
     }
 });
