@@ -117,7 +117,7 @@ public class SystemInfo extends MainAbstractEntity{
 					.getInstance().getBean("systemInfoService");
 			systems = systemInfoService.readAllBySiteId(entityId);
 			if (systems == null)
-				throw new Exception("Unable to find System Info");
+				throw new Exception("Unable to find Order Line");
 			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, systems);
 			rb = Response.ok(writer.toString());

@@ -25,7 +25,9 @@ Ext.define('AOC.config.Runtime',{
         storeERPORG:null,
         orderLineCurrenProductLine:0,
         timeZone:null,
-        wiId:null
+        wiId:null,
+        currentWiMode:null,
+        schemaIdentificationId:null
     },
     constructor : function(config){
         this.initConfig(config);
