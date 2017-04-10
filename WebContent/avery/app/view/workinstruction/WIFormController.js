@@ -73,13 +73,14 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
 		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
 		
-		if(mode == 'edit'){
-			values.id =  AOCRuntime.getWiId();
+		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+			values.id =  AOCRuntime.getWiId().toString();
 		}
 		wiFormPanel.mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
-			url:applicationContext+'/rest/wi',
+			url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
 			jsonData:values,
+			method:AOCRuntime.getCurrentWiMode() == 'edit' ? 'PUT':'POST',
 			success:function(response){
 				//form.reset();
 				//me.onBackBtnClick();
@@ -117,7 +118,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			 attachmentTextFirstLastPage:values.attachmentTextFirstLastPage,
 			 attachmentTextPosition:values.attachmentTextPosition,
 			 attachmentExcelCell:values.attachmentExcelCell,
-			 attachmentExcelSheet:values.attachmentExcelSheet
+			 attachmentExcelSheet:values.attachmentExcelSheet,
+		 }
+		 if(AOCRuntime.getCurrentWiMode() == 'edit'){
+			 obj.id=AOCRuntime.getSchemaIdentificationId();
 		 }
 		 delete values.emailSubjectRequired;
 		 delete values.emailFileNameContent;
@@ -152,8 +156,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		store.each(function(rec){
 			var modifiedRecords = rec.getChanges();
 			Ext.apply(rec.data, modifiedRecords);
-			if(rec.data.id){
-				rec.data.listId = !addRecordIdFlag ? (rec.data.id).toString() : '';
+			if(rec.data.id && AOCRuntime.getCurrentWiMode() == 'add'){
+				rec.data.parentId = !addRecordIdFlag ? (rec.data.id).toString() : '';
 				delete rec.data.id;
 			}
 			records.push(rec.data);

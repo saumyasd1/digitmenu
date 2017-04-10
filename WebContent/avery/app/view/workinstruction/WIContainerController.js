@@ -10,7 +10,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid;
 		
-		wiFormPanel.mode = 'add';
+		AOCRuntime.setCurrentWiMode('add');
 		
 		me.loadDefaultSystemInfo();
 		me.loadDefaultOrgInfo();
@@ -151,11 +151,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		wiSubmitBtn[showFlag ? 'show':'hide']();
 	},
 	onEditWIFormMenuItemClick:function(menuItem, e){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel;
+		var me = this;
 		
-		wiFormPanel.mode = 'edit';
+		AOCRuntime.setCurrentWiMode('edit');
 		me.setReadOnlyView(false);
 		me.loadWIForm();
 		me.showHideSaveSubmitBtn(true);
@@ -181,7 +179,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel;
 	
-		wiFormPanel.mode = 'view';
+		AOCRuntime.setCurrentWiMode('view');
 		me.setReadOnlyView(true);
 		me.loadWIForm();
 		me.showHideSaveSubmitBtn(false);
@@ -219,6 +217,8 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 					schemaIdentification = detail.formdata.listWiSchemaIdentification;
 				
 				delete detail.formdata.listWiSchemaIdentification;
+				AOCRuntime.setSchemaIdentificationId(schemaIdentification.id);
+				delete schemaIdentification.id;
 				Ext.apply(detail.formdata,schemaIdentification);
 				var form = wiFormPanel.getReferences().wIForm;
 				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));

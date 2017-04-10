@@ -151,7 +151,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	              items:[
 	                {
 	                	xtype:'combo',
-	                	name:'atoNATO',
+	                	name:'atoNato',
 	                	reference:'atoNato',
 	                	editable:false,
 	                	fieldLabel:'ATO/NATO',
