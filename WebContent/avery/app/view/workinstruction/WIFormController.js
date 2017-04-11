@@ -1,7 +1,9 @@
 Ext.define('AOC.view.workinstruction.WIFormController',{
 	extend:'Ext.app.ViewController',
 	alias:'controller.wiformcontroller',
-	
+	fileArray:[],
+	maxFileCount:6,
+	totalCount:1,
 	//Back button click
 	onBackBtnClick:function(btn){
 		var view = this.getView();
@@ -76,19 +78,23 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
 		}
-		wiFormPanel.mask(AOCLit.pleaseWait);
+		Ext.getBody().mask(AOCLit.pleaseWait);
+		//wiFormPanel.mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
 			url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
 			jsonData:values,
 			method:AOCRuntime.getCurrentWiMode() == 'edit' ? 'PUT':'POST',
 			success:function(response){
-				//form.reset();
-				//me.onBackBtnClick();
+				var data = JSON.parse(response.responseText);
+				form.reset();
+				me.uploadFiles(data.wiId);
 				Helper.showToast('success','Record has been suuccessfully saved');
-				wiFormPanel.unmask();
+				//wiFormPanel.unmask();
+				
 			},
 			failure:function(){
-				wiFormPanel.unmask();
+				Ext.getBody().unmask();
+				//wiFormPanel.unmask();
 			}
 		});
 		
@@ -296,5 +302,122 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		}else{
 			wiOrgGrid.hide();
 		}
-	}
+	},
+	
+	//Upload section
+	setImagePreview:function(file, imageContainer){
+		var me = this,
+			name=file.name;
+		
+		 var fileReader = new window.FileReader();
+         fileReader.onload = function(e,b){
+             var fileContent = e.target.result;
+             imageContainer.add(
+	             {
+	            	 xtype:'box',
+	            	 style:'float:left;',
+	            	 width:130,
+	            	 html:'<a style="letter-spacing:.15px;color:#2c3e50;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,15)+'</a>'
+	             }
+             );
+         }
+         fileReader.readAsDataURL(file);
+	},
+	addFileInBox:function(obj, imageContainer){
+		var me = this;
+		
+		if(me.totalCount < me.maxFileCount){
+			var file = obj.getEl().down('input[type=file]').dom.files[0];
+			
+			if(!file){
+				return;
+			}
+			var ext = file.name.lastIndexOf('.') > 0 ? file.name.substring(1 + file.name.lastIndexOf('.')) : '';
+			file.extension = ext;
+			me.fileArray.push(file);
+			me.totalCount++;
+			me.setImagePreview(file, imageContainer);
+			obj.reset();
+		}else{
+			Helper.showToast('validation','You can not add more than '+me.maxFileCount);
+		}
+	},
+	onOrderFileAttachmentChange:function(obj, value){
+		var me = this,
+			refs = me.getReferences(),
+			orderFileImageContainer = refs.orderFileImageContainer;
+		
+		me.addFileInBox(obj, orderFileImageContainer);
+	},
+	onAttachmentChange:function(obj, value){
+		var me = this;
+			refs = me.getReferences(),
+			attchmentContainer = refs.attchmentContainer;
+		
+		me.addFileInBox(obj, attchmentContainer);
+	},
+	onSampleFileChange:function(obj, value){
+		var me = this,
+			refs = me.getReferences(),
+			sampleFileContainer = refs.sampleFileContainer;
+		
+		me.addFileInBox(obj, sampleFileContainer);
+	},
+	uploadFiles:function(wId, filePath){
+    	var me = this;
+    		refs = me.getReferences(),
+    		xhttp = new XMLHttpRequest(),
+    		fileArray = this.fileArray,
+    		formData = new FormData(),
+    		orderFileImageContainer = refs.orderFileImageContainer,
+    		attchmentContainer = refs.attchmentContainer,
+    		sampleFileContainer = refs.sampleFileContainer,
+    		url =applicationContext+'/rest/emailqueue/fileupload',
+    		len = fileArray.length;
+    		
+    	if(len > 0){
+	    	formData.append('file',fileArray[len-1]);
+	    	formData.append('wiId', wId);
+	    	formData.append('fileName', fileArray[len-1].name);
+	    	
+	    	if(len == 1){
+	    		formData.append('sendAcknowledgementFlag', 'true');
+	    	}else{
+	    		formData.append('sendAcknowledgementFlag', 'false');
+	    	}
+	    	
+	    	formData.append('email', values.email);
+	    	
+	        xhttp.onreadystatechange = function() {
+	            (4 === xhttp.readyState) && uploadDone(xhttp);
+	        };
+	   
+	        xhttp.open("POST", url, true);
+	        xhttp.send(formData);
+	        
+	        function uploadDone(xhttp){
+	        	switch(xhttp.status){
+	        		case 200:
+	        			fileArray.pop();
+	        			if(fileArray.length == 0){
+	    					me.totalCount = 1;
+	    					Helper.showToast('success','Record has been save successfully.');
+	    					orderFileImageContainer.removeAll();
+	    					attchmentContainer.removeAll();
+	    					sampleFileContainer.removeAll();
+	    					me.fileArray = [];
+	    					me.onBackBtnClick();
+	    					Ext.getBody().unmask();
+	        			}else{
+	        				console.log('File Uploaded');
+		        			me.uploadFiles(wId, filePath);
+	        			}
+	        			break;
+	        	}
+	        }
+    	}else{
+    		Helper.showToast('success','Record has been save successfully.');
+    		Ext.getBody().unmask();
+    	}
+    }
 });

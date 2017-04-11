@@ -63,8 +63,104 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	margin:'20 0',
 		    	border:'solid 1px #ccc;'
 		    },
-		    me.getOthersItems()
+		    me.getOthersItems(),
+		    {
+		    	xtype:'container',
+		    	itemId:'imageContainer',
+		    	reference:'imageContainer',
+		    	margin:'0 0 20 0'
+		    },
+		    me.getUploadOrderFileItems(),
+		    me.getUploadAttachementItems(),
+		    me.getSampleFileItems()
 		]
+	},
+	getUploadOrderFileItems:function(){
+		return {
+		   xtype:'fieldcontainer',
+		   margin:'0 0 5 0',
+		   layout:'hbox',
+		   items:[
+				{   
+					xtype:'fileuploadfield',
+					buttonText:'Upload Order File',
+					name: 'orderfile',
+					flex:1,
+					reference: 'orderfileattachment',
+					hideLabel:true,
+					buttonOnly:true,
+					itemId:'orderfileattachment',
+					listeners:{
+						'change':'onOrderFileAttachmentChange',
+					}
+				},
+				{
+			    	xtype:'container',
+			    	itemId:'orderFileImageContainer',
+			    	reference:'orderFileImageContainer',
+			    	flex:1,
+			    	margin:'0 0 0 10'
+			    }
+		   ]
+	   };
+	},
+	getUploadAttachementItems:function(){
+		return {
+		   xtype:'fieldcontainer',
+		   margin:'0 0 5 0',
+		   layout:'hbox',
+		   items:[
+				{   
+					xtype:'fileuploadfield',
+					buttonText:'Upload Attachment',
+					name: 'attachment',
+					flex:1,
+					reference: 'attachment',
+					hideLabel:true,
+					buttonOnly:true,
+					itemId:'attachment',
+					listeners:{
+						'change':'onAttachmentChange',
+					}
+				},
+				{
+			    	xtype:'container',
+			    	itemId:'attchmentContainer',
+			    	reference:'attchmentContainer',
+			    	flex:1,
+			    	margin:'0 0 0 10'
+			    }
+		   ]
+	   };
+	},
+	getSampleFileItems:function(){
+		return {
+		   xtype:'fieldcontainer',
+		   margin:'0 0 5 0',
+		   layout:'hbox',
+		   items:[
+				{   
+					xtype:'fileuploadfield',
+					buttonText:'Upload Sample File',
+					name: 'sampleFile',
+					flex:1,
+					buttonOnly:true,
+					reference: 'sampleFile',
+					hideLabel:true,
+					itemId:'sampleFile',
+					listeners:{
+						'change':'onSampleFileChange',
+					}
+				},
+				{
+			    	xtype:'container',
+			    	itemId:'sampleFileContainer',
+			    	reference:'sampleFileContainer',
+			    	flex:1,
+			    	margin:'0 0 0 10'
+			    }
+		   ]
+	   };
 	},
 	getOthersItems:function(){
 		return {
