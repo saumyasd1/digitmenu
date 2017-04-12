@@ -11,6 +11,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	},
 	store:new Ext.data.JsonStore({
 		autoLoad:false,
+		storeId:'systemLevelStore',
 		proxy: {
 	        type: 'rest',
 	        url : applicationContext+ '/rest/wisystemlevel/systemlevel',

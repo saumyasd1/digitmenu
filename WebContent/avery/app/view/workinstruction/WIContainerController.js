@@ -2,7 +2,26 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	extend:'Ext.app.ViewController',
 	alias:'controller.wicontainercontroller',
 	
+	onWiGridRefreshBtnClick : function(){
+		var me = this,
+			view = this.getView(),
+			refs = me.getReferences(),
+			wiGrid = refs.wiGrid;
+		
+		wiGrid.store.load();
+	},
 	createNewWI:function(btn){
+		var me = this,
+			view = me.getView();
+		
+		AOCRuntime.setCurrentWiMode('add');
+		me.loadDefaultGrid();
+		me.setReadOnlyView(false);
+		me.showHideSaveSubmitBtn(true);
+		
+		view.getLayout().setActiveItem(1);
+	},
+	loadDefaultGrid:function(){
 		var me = this,
 			view = me.getView()
 			refs = me.getReferences(),
@@ -10,18 +29,14 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid;
 		
-		AOCRuntime.setCurrentWiMode('add');
-		
+		var form = formRefs.wIForm.getForm();
+		form.reset();
 		me.loadDefaultSystemInfo();
 		me.loadDefaultOrgInfo();
 		me.loadDefaultAOCFieldName();
 		
 		wiorderfiberlinegrid.store.loadData(this.loadDefaultSystemLevelGridData());
 		
-		me.setReadOnlyView(false);
-		me.showHideSaveSubmitBtn(true);
-		
-		view.getLayout().setActiveItem(1);
 	},
 	loadDefaultAOCFieldName:function(){
 		var refs = this.getReferences(),
@@ -29,13 +44,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			wiaocfieldgrid = formRefs.wiaocfieldgrid;
 	
-	Ext.Ajax.request({
-		url:applicationContext+'/rest/wiaocfieldinfo',
-		success:function(response){
-			var data = JSON.parse(response.responseText);
-			wiaocfieldgrid.store.loadData(data);
-		}
-	});
+		Ext.Ajax.request({
+			url:applicationContext+'/rest/wiaocfieldinfo',
+			success:function(response){
+				var data = JSON.parse(response.responseText);
+				wiaocfieldgrid.store.loadData(data);
+			}
+		});
 	},
 	loadDefaultSystemInfo:function(){
 		var refs = this.getReferences(),
@@ -166,11 +181,10 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wId = record.get('id');
 		
 		AOCRuntime.setWiId(wId);
-		me.loadOrgGrid(wId);
-		me.loadSystemGrid(wId);
-		me.loadAOCFieldGrid(wId);
-		me.loadSystemLevelGrid(wId);
-		me.loadWiFormData(wId);
+		me.loadGridInEditMode(wId, 'wiOrgGrid');
+		me.loadGridInEditMode(wId, 'wiSystemGrid');
+		me.loadGridInEditMode(wId, 'wiaocfieldgrid');
+		me.loadGridInEditMode(wId, 'wiorderfiberlinegrid');
 		view.getLayout().setActiveItem(1);
 	},
 	
@@ -190,11 +204,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiFormPanel = refs.wiFormPanel,
 			wIForm = wiFormPanel.getReferences().wIForm,
 			textBoxArray = wIForm.query('[xtype = textfield]'),
+			textAreaArray = wIForm.query('[xtype = textarea]'),
 			comboArray = wIForm.query('[xtype = combo]'),
 			radioGroupArray = wIForm.query('[xtype = radiogroup]'),
 			tempArray = [].concat(textBoxArray)
 						  .concat(comboArray)
-						  .concat(radioGroupArray);
+						  .concat(radioGroupArray)
+						  .concat(textAreaArray);
 		
 		var len = tempArray.length;
 		for(var i = 0; i < len; i++){
@@ -229,41 +245,19 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			}
 		});
 	},
-	loadOrgGrid:function(wId){
+	loadGridInEditMode:function(wId, gridType){
 		var me = this,
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel,
 			formRefs = wiFormPanel.getReferences(),
-			wiOrgGrid = formRefs.wiOrgGrid;
-		
-		wiOrgGrid.store.load({params:{id:wId}});
-	},
-	loadSystemGrid:function(wId){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
-			formRefs = wiFormPanel.getReferences(),
-			wiSystemGrid = formRefs.wiSystemGrid;
-		
-		wiSystemGrid.store.load({params:{id:wId}});
-	},
-	loadAOCFieldGrid:function(wId){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
-			formRefs = wiFormPanel.getReferences(),
-			wiaocfieldgrid = formRefs.wiaocfieldgrid;
-		
-		wiaocfieldgrid.store.load({params:{id:wId}});
-	},
-	loadSystemLevelGrid:function(wId){
-		var me = this,
-		refs = me.getReferences(),
-		wiFormPanel = refs.wiFormPanel,
-		formRefs = wiFormPanel.getReferences(),
-		wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid;
+			grid = formRefs[gridType];
 	
-		wiorderfiberlinegrid.store.load({params:{id:wId}});
+		grid.store.load({
+			params:{id:wId},
+			callback:function(records, operation, success){
+				//To Do after store load
+			}
+		});
 	}
 	
 });

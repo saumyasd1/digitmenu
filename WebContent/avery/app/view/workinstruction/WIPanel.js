@@ -70,6 +70,11 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	reference:'imageContainer',
 		    	margin:'0 0 20 0'
 		    },
+		    {
+		    	xtype:'box',
+		    	hidden:true,
+		    	html:'<input id="upload-file" type="file"/>'
+		    },
 		    me.getUploadOrderFileItems(),
 		    me.getUploadAttachementItems(),
 		    me.getSampleFileItems()
@@ -240,8 +245,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			margin:'10 0',
 			bodyPadding:10,
 			layout:{
-				type:'vbox',
-				align:'stretch'
+				type:'anchor'
+				//align:'stretch'
 			},
 			items:[
 				{
@@ -250,125 +255,95 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					style:'font-weight:bold;color:#2c3e50;font-size:15px;',
 				},
 				{
-					xtype:'fieldcontainer',
-					flex:1,
-					layout:{
-						type:'hbox',
-						align:'stretch'
-					},
-					defaults:{
-						labelSeparator:'',
-						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-						labelAlign:AOC.config.Settings.form.topLabelAlign
-					},
+					xtype:'radiogroup',
+					fieldLabel:'Is there any size validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. size has to be validated by Size Chart/Size Page/Additional attachment'),
+					reference:'sizeValidationStructure',
+					width:600,
+					margin:'0 0 5 0',
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:400,
 					items:[
-					    {
-					    	xtype:'combo',
-	    	    	    	name:'sizeValidationStructure',
-	    	    	    	fieldLabel:'Is there any size validation for this structure?',
-	    	    	    	reference:'sizeValidationStructure',
-	    	    	    	flex:1,
-	    	    	    	editable:false,
-	    	    	    	store:Helper.getYesNoStore()
-					    },
-					    {
-		                	xtype:'box',
-		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. size has to be validated by Size Chart/Size Page/Additional attachment'),
-		                	margin:'36 0 0 5'	
-		                },
-					    {
-					    	xtype:'textfield',
-					    	flex:1,
-					    	fieldLabel:'If yes, could you advise the SKU field name that requires size validation',
-					    	margin:'0 0 0 10',
-					    	name:'sizeValidationSKUFieldName',
-					    	reference:'sizeValidationSKUFieldName'
-					    }
+					  { boxLabel:'Yes',inputValue:'Yes',name:'sizeValidationStructure'},
+					  { boxLabel:'No',inputValue:'No',name:'sizeValidationStructure'}
 					]
 				},
+				{
+			    	xtype:'textfield',
+			    	flex:1,
+			    	labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign,
+					anchor:'50%',
+			    	fieldLabel:'If yes, could you advise the SKU field name that requires size validation',
+			    	margin:'0 0 5 0',
+			    	name:'sizeValidationSKUFieldName',
+			    	reference:'sizeValidationSKUFieldName'
+			    },
 				{
 					xtype:'label',
 					text:'Fabric Content Validation',
 					style:'font-weight:bold;color:#2c3e50;font-size:15px;',
 				},
 				{
-					xtype:'fieldcontainer',
-					flex:1,
-					layout:{
-						type:'hbox',
-						align:'stretch'
-					},
-					defaults:{
-						labelSeparator:'',
-						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-						labelAlign:AOC.config.Settings.form.topLabelAlign
-					},
+					xtype:'radiogroup',
+					fieldLabel:'Is there any Fiber Content validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Sum of the Fabric Content must be in the multiple of 100%'),
+					reference:'fiberContentValidationStructure',
+					width:600,
+					margin:'0 0 5 0',
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:400,
 					items:[
-					    {
-					    	xtype:'combo',
-	    	    	    	name:'fiberContentValidationStructure',
-	    	    	    	fieldLabel:'Is there any Fiber Content validation for this structure?',
-	    	    	    	reference:'fibreContentValidationStructure',
-	    	    	    	flex:1,
-	    	    	    	store:Helper.getYesNoStore()
-					    },
-					    {
-		                	xtype:'box',
-		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Sum of the Fabric Content must be in the multiple of 100%'),
-		                	margin:'36 0 0 5'	
-		                },
-					    {
-					    	xtype:'textfield',
-					    	flex:1,
-					    	margin:'0 0 0 10',
-					    	fieldLabel:'If yes, could you advise the SKU field name that requires Fiber Content validation',
-					    	name:'fibreContentValidationSKUFieldName',
-					    	reference:'fibreContentValidationSKUFieldName'
-					    }
+					  { boxLabel:'Yes',inputValue:'Yes',name:'fiberContentValidationStructure'},
+					  { boxLabel:'No',inputValue:'No',name:'fiberContentValidationStructure'}
 					]
 				},
+				{
+			    	xtype:'textfield',
+			    	labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign,
+					anchor:'50%',
+			    	margin:'0 0 5 0',
+			    	fieldLabel:'If yes, could you advise the SKU field name that requires Fiber Content validation',
+			    	name:'fibreContentValidationSKUFieldName',
+			    	reference:'fibreContentValidationSKUFieldName'
+			    },
 				{
 					xtype:'label',
 					text:'COO Validation',
 					style:'font-weight:bold;color:#2c3e50;font-size:15px;'
 				},
 				{
-					xtype:'fieldcontainer',
-					flex:1,
-					layout:{
-						type:'hbox',
-						align:'stretch'
-					},
-					defaults:{
-						labelSeparator:'',
-						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-						labelAlign:AOC.config.Settings.form.topLabelAlign
-					},
+					xtype:'radiogroup',
+					fieldLabel:'Is there any COO validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Country of Origin or its translation has to be validated'),
+					reference:'cooValidationStructure',
+					width:600,
+					margin:'0 0 5 0',
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:400,
 					items:[
-					    {
-					    	xtype:'combo',
-	    	    	    	name:'cooValidationStructure',
-	    	    	    	fieldLabel:'Is there any COO validation for this structure?',
-	    	    	    	reference:'cooValidationStructure',
-	    	    	    	flex:1,
-	    	    	    	editable:false,
-	    	    	    	store:Helper.getYesNoStore()
-					    },
-					    {
-		                	xtype:'box',
-		                	html:Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Country of Origin or its translation has to be validated'),
-		                	margin:'36 0 0 5'	
-		                },
-					    {
-					    	xtype:'textfield',
-					    	flex:1,
-					    	fieldLabel:'If yes, could you advise the SKU field name that requires COO validation',
-					    	margin:'0 0 0 10',
-					    	name:'cooValidationSKUFieldName',
-					    	reference:'cooValidationSKUFieldName'
-					    }
+					  { boxLabel:'Yes',inputValue:'Yes',name:'cooValidationStructure'},
+					  { boxLabel:'No',inputValue:'No',name:'cooValidationStructure'}
 					]
-				}
+				},
+				{
+			    	xtype:'textfield',
+			    	flex:1,
+			    	fieldLabel:'If yes, could you advise the SKU field name that requires COO validation',
+			    	labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign,
+					anchor:'50%',
+			    	margin:'0 0 5 0',
+			    	name:'cooValidationSKUFieldName',
+			    	reference:'cooValidationSKUFieldName'
+			    }
 			]
 		}
 	},
@@ -460,44 +435,57 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	xtype:'fieldcontainer',
     	    	flex:1,
     	    	margin:'0 0 5 0',
-    	    	layout:{
-    	    		type:'hbox',
-    	    		align:'stretch' 	
-    	    	},
     	    	defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:430
 				},
     	    	items:[
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'sampleBulkOrderPresentWI',
-    	    	    	fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
-    	    	    	reference:'sampleBulkOrderPresentWI',
-    	    	    	flex:1,
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore()
-    	    	    },
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'sampleOrderRequiredMOQ',
-    	    	    	fieldLabel:'Is the sample order required to waive MOQ?',
-    	    	    	reference:'sampleOrderRequiredMOQ',
-    	    	    	flex:1,
-    	    	    	margin:'0 10',
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore()
-    	    	    },
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'sampleItemRequiredWI',
-    	    	    	fieldLabel:'Is there any sample item that would be ordered in this WI?',
-    	    	    	reference:'sampleItemRequiredWI',
-    	    	    	flex:1,
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore()
-    	    	    }
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
+						reference:'sampleBulkOrderPresentWI',
+						width:600,
+						margin:'0 0 5 0',
+						items:[
+						  { boxLabel:'Yes', inputValue:'Yes', name:'sampleBulkOrderPresentWI'},
+						  { boxLabel:'No', inputValue:'No', name:'sampleBulkOrderPresentWI'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Is the sample order required to waive MOQ?',
+						reference:'sampleOrderRequiredMOQ',
+						width:600,
+						margin:'0 0 5 0',
+						items:[
+						  {boxLabel:'Yes',inputValue:'Yes',name:'sampleOrderRequiredMOQ'},
+						  {boxLabel:'No',inputValue:'No',name:'sampleOrderRequiredMOQ'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Is there any sample item that would be ordered in this WI?',
+						reference:'sampleItemRequiredWI',
+						width:600,
+						margin:'0 0 5 0',
+						items:[
+						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemRequiredWI'},
+						  { boxLabel:'No',inputValue:'No',name:'sampleItemRequiredWI'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Is it the rule that sample items are not approved to be ordered by bulk order?',
+						reference:'sampleItemApproved',
+						width:600,
+						margin:'0 0 5 0',
+						items:[
+						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemApproved'},
+						  { boxLabel:'No',inputValue:'No',name:'sampleItemApproved'}
+						]
+					}
     	    	]
     	    },
     	    {
@@ -515,35 +503,21 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				},
     	    	items:[
     	    	    {
-    	    	    	xtype:'textfield',
+    	    	    	xtype:'textarea',
     	    	    	name:'bulkOrderIdentified',
     	    	    	fieldLabel:'Bulk Order can be identified if',
     	    	    	reference:'bulkOrderIdentified',
     	    	    	flex:1
     	    	    },
     	    	    {
-    	    	    	xtype:'textfield',
+    	    	    	xtype:'textarea',
     	    	    	name:'sampleOrderIdentified',
     	    	    	fieldLabel:'Sample Order can be identified if',
     	    	    	reference:'sampleOrderIdentified',
     	    	    	margin:'0 10',
     	    	    	flex:1
-    	    	    },
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'isSampleItem',
-    	    	    	fieldLabel:'How can we identify if the item is sample item?',
-    	    	    	reference:'isSampleItem',
-    	    	    	displayField:'name',
-    	    	    	valueField:'name',
-    	    	    	flex:1,
-    	    	    	queryMode:'local',
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'"SMS" would be stated in the Oracle item Description in "PX Item Spec"'},
-    	    	    		      {name:'Others(please specify below)'}],
-    	    	    		fields:['name']
-    	    	    	})
     	    	    }
+    	    	    
     	    	]
     	    },
     	    {
@@ -560,14 +534,20 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 				},
     	    	items:[
-    	    	    {
+					{
     	    	    	xtype:'combo',
-    	    	    	name:'sampleItemApproved',
-    	    	    	fieldLabel:'Is it the rule that sample items are not approved to be ordered by bulk order?',
-    	    	    	reference:'sampleItemApproved',
+    	    	    	name:'isSampleItem',
+    	    	    	fieldLabel:'How can we identify if the item is sample item?',
+    	    	    	reference:'isSampleItem',
+    	    	    	displayField:'name',
+    	    	    	valueField:'name',
     	    	    	flex:1,
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore()
+    	    	    	queryMode:'local',
+    	    	    	store:new Ext.data.JsonStore({
+    	    	    		data:[{name:'"SMS" would be stated in the Oracle item Description in "PX Item Spec"'},
+    	    	    		      {name:'Others(please specify below)'}],
+    	    	    		fields:['name']
+    	    	    	})
     	    	    },
     	    	    {
     	    	    	xtype:'textfield',
@@ -588,33 +568,35 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	xtype:'fieldcontainer',
     	    	flex:1,
     	    	margin:'0 0 5 0',
-    	    	layout:{
-    	    		type:'hbox',
-    	    		align:'stretch'
-    	    	},
     	    	defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:200,
 				},
 				items:[
-				   {
-					   xtype:'combo',
-					   name:'discountPrice',
-					   fieldLabel:'Discount Price',
-					   flex:1,
-					   editable:false,
-					   store:Helper.getYesNoStore()
-				   },
-				   {
-					   xtype:'combo',
-					   name:'pricingAggrement',
-					   fieldLabel:'Pricing Aggrement',
-					   margin:'0 0 0 10',
-					   flex:1,
-					   editable:false,
-					   store:Helper.getYesNoStore()
-				   }
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Discount Price',
+						reference:'discountPrice',
+						width:400,
+						margin:'0 0 5 0',
+						items:[
+						  { boxLabel:'Yes',inputValue:'Yes',name:'discountPrice'},
+						  { boxLabel:'No',inputValue:'No',name:'discountPrice'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Pricing Aggrement',
+						reference:'pricingAggrement',
+						width:400,
+						margin:'0 0 5 0',
+						items:[
+						  { boxLabel:'Yes',inputValue:'Yes',name:'pricingAggrement'},
+						  { boxLabel:'No',inputValue:'No',name:'pricingAggrement'}
+						]
+					}
 				]
     	    }
     	];
@@ -642,14 +624,14 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	},
 		    	items:[
 					{
-						xtype:'textfield',
-						fieldLabel:'Internal information for CS (Please ignore for Adeptia): Discount price, pricing agreement',
+						xtype:'textarea',
+						fieldLabel:'Order grouping - how the order lines should be grouped from order form to AOC?',
 						name:'internalInformation',
 						reference:'internalInformation',
 						flex:1
 					},
 					{
-						xtype:'textfield',
+						xtype:'textarea',
 						fieldLabel:'Order grouping - how the orders should be grouped from AOC to the back end system?',
 						name:'orderGrouping',
 						reference:'orderGrouping',
@@ -665,7 +647,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	flex:1
 		    },
 		    {
-		    	xtype:'textfield',
+		    	xtype:'textarea',
 		    	fieldLabel:'If there is an additional attachment, what is the identifier to map the order information/data between order form and attachment? ',
 		    	name:'attachmentIdentifier',
 		    	reference:'attachmentIdentifier',
@@ -676,7 +658,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 		    },
 		    {
-		    	xtype:'textfield',
+		    	xtype:'textarea',
 		    	fieldLabel:'If there is an additional attachment, please specify the process on how we can map the order information/data between order form and attachment ',
 		    	name:'attachmentProcess',
 		    	reference:'attachmentProcess',

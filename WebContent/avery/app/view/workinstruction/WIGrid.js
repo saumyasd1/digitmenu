@@ -15,7 +15,8 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 			type: 'rest',
 	        url: applicationContext+'/rest/wi',
 	        reader: {
-	            type: 'json'
+	            type: 'json',
+	            rootProperty:'wi'
 	        },
 	        headers: {
 	            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
@@ -55,7 +56,15 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 				iconAlign: 'left',
 				ui:'blue',
 				cls:'blue-btn'
-	        }
+	        },'->',
+	        {
+	   	    	 text:'',
+	   	    	 scale:'medium',
+	   	    	 cls:'aoc-btn',
+	   	    	 tooltip:'<font color="blue">Quick Refresh</font>',
+	   	    	 iconCls:'fa fa-refresh aoc-icon',
+	   	    	 handler:'onWiGridRefreshBtnClick'
+   	     	}
 			//'->'
 //			{
 //				xtype: 'customsearchfield',
@@ -88,7 +97,10 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		    {
 		    	text:'Status',
 		    	dataIndex:'status',
-		    	flex:1.5
+		    	flex:1.5,
+		    	renderer:function(v, metadata,rec){
+					return Helper.getSatus(rec);
+				}
 		    },
 		    {
 		    	text:'Assignee',

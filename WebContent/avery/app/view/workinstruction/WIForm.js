@@ -55,6 +55,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        		type:'anchor'
 	        	},
 	        	border:false,
+	        	listeners:{
+	        		afterrender:function(a, b, c){
+	        			
+	        		}
+	        	},
 	        	items:[
 	        	    me.getProfileHeaderItems(),
 	        	    me.getWorkingInstructionItems()
@@ -149,15 +154,27 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelWidth:150
 	        	  },
 	              items:[
-	                {
-	                	xtype:'combo',
-	                	name:'atoNato',
-	                	reference:'atoNato',
-	                	editable:false,
-	                	fieldLabel:'ATO/NATO',
-	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
-	                	flex:1
-	                },
+//	                {
+//	                	xtype:'combo',
+//	                	name:'atoNato',
+//	                	reference:'atoNato',
+//	                	editable:false,
+//	                	fieldLabel:'ATO/NATO',
+//	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
+//	                	flex:1
+//	                },
+					{
+						xtype:'checkboxgroup',
+						column:2,
+						reference:'atoNato',
+						flex:1,
+						fieldLabel:'ATO/NATO',
+						//labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+						items:[
+						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
+						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'}
+						]
+					},
 	                {
  	                	xtype:'box',
  	                	html:'<i class=""></i>',
@@ -404,45 +421,70 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		      },
 		      {
 		    	xtype:'fieldcontainer',
-		    	layout:'hbox',
+		    	//layout:'hbox',
 		    	margin:'0 0 5 0',
 		    	flex:1,
 		    	defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:300
 		    	},
 		    	items:[
-		    	    {
-		    	    	xtype:'combo',
-		    	    	name:'aocDefaultOneBillToSite',
-		    	    	fieldLabel:'Should AOC default one Bill to Site # only?',
-		    	    	reference:'aocDefaultOneBillToSite',
-		    	    	queryMode:'local',
-		    	    	editable:false,
-		    	    	store:[['Yes','Yes'],['No','No']],
-		    	    	flex:1
-		    	    },
-		    	    {
- 	                	xtype:'box',
- 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
- 	                	margin:'36 0 0 5'	
- 	                },
-		    	    {
-		    	    	xtype:'combo',
-		    	    	name:'aocDefaultOneShipToSite',
-		    	    	fieldLabel:'Should AOC default one Ship to Site # only?',
-		    	    	reference:'aocDefaultOneShipToSite',
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore(),
-		    	    	flex:1,
-		    	    	margin:'0 0 0 10'
-		    	    },
-		    	    {
- 	                	xtype:'box',
- 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
- 	                	margin:'36 0 0 5'	
- 	                }
+//		    	    {
+//		    	    	xtype:'combo',
+//		    	    	name:'aocDefaultOneBillToSite',
+//		    	    	fieldLabel:'Should AOC default one Bill to Site # only?',
+//		    	    	reference:'aocDefaultOneBillToSite',
+//		    	    	queryMode:'local',
+//		    	    	editable:false,
+//		    	    	store:[['Yes','Yes'],['No','No']],
+//		    	    	flex:1
+//		    	    },
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+						reference:'aocDefaultOneBillToSite',
+//						flex:1,
+						width:500,
+						margin:'0 0 5 0',
+						items:[
+						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneBillToSite'},
+						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneBillToSite'}
+						]
+					},
+//		    	    {
+// 	                	xtype:'box',
+// 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+// 	                	margin:'36 0 0 5'	
+// 	                },
+//		    	    {
+//		    	    	xtype:'combo',
+//		    	    	name:'aocDefaultOneShipToSite',
+//		    	    	fieldLabel:'Should AOC default one Ship to Site # only?',
+//		    	    	reference:'aocDefaultOneShipToSite',
+//		    	    	editable:false,
+//		    	    	store:Helper.getYesNoStore(),
+//		    	    	flex:1,
+//		    	    	margin:'0 0 0 10'
+//		    	    },
+ 	                {
+						xtype:'radiogroup',
+						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+						reference:'aocDefaultOneShipToSite',
+//						flex:1,
+						width:500,
+						margin:'0 0 5 0',
+						items:[
+						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneShipToSite'},
+						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneShipToSite'}
+						]
+					}
+//		    	    {
+// 	                	xtype:'box',
+// 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+// 	                	margin:'36 0 0 5'	
+// 	                }
 		    	]
 		      },
 		      {
@@ -488,11 +530,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						{
 							xtype:'radiogroup',
 							column:2,
-							width:300,
+							width:230,
 							margin:'0 0 5 0',
 							items:[
 							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'emailSubjectRequired', inputValue:2, checked:true}
+							    {boxLabel:'Not Required', name:'emailSubjectRequired', inputValue:2, checked:true}
 							],
 							listeners:{
 								change:'onEmailSubjectRequiredRadioChange'
@@ -552,10 +594,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					value:'If "No"(i.e. more than 1 data structure could  potentially be included in same email upon recieve),please specify other data structure that would share the same Email Subject rule'
 				},
 				{
-					xtype:'textfield',
+					xtype:'textarea',
 					hideLabel:true,
 					name:'emailSubjectDataStructureOtherRule',
-					width:300,
+					flex:1,
+					//width:300,
 					margin:'0 0 15 0'
 				},
 				{
@@ -568,16 +611,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						{
 							xtype:'radiogroup',
 							column:2,
-							width:300,
-							bind:{
-								value:{
-									emailBodyRequired:'{schemaIdentification.emailBodyRequired}'
-								}
-							},
+							width:230,
 							margin:'0 0 5 0',
 							items:[
 							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'emailBodyRequired', inputValue:2, checked:true}
+							    {boxLabel:'Not Required', name:'emailBodyRequired', inputValue:2, checked:true}
 							],
 							listeners:{
 								change:'onEmailBodyRequiredRadioChange'
@@ -629,18 +667,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						{
 							xtype:'radiogroup',
 							column:2,
-							width:300,
+							width:230,
 							margin:'0 0 5 0',
-							bind:{
-								value:{
-									orderFileRequired:'{schemaIdentification.orderFileRequired}'
-								}
-							},
 							items:[
 							    {boxLabel:'Required', name:'orderFileRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'orderFileRequired', inputValue:2, checked:true}
+							    {boxLabel:'Not Required', name:'orderFileRequired', inputValue:2, checked:true}
 							],
-							bind:'{orderFileRequired}',
 							listeners:{
 								change:'onOrderRequiredRadioChange'
 							}
@@ -698,16 +730,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	column:2,
     		    	    	width:300,
 							margin:'0 0 5 0',
-							bind:{
-								value:{
-									orderFileType:'{schemaIdentification.orderFileType}'
-								}
-							},
     		    	    	items:[
     		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:1, checked:true},
     		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:2}
     		    	    	],
-    	                	bind:'{order}',
     		    	    	listeners:{
     		    	    		change:'onOrderRadioChange'
     		    	    	}
@@ -778,16 +804,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						{
 							xtype:'radiogroup',
 							column:2,
-							width:300,
+							width:230,
 							margin:'0 0 5 0',
-							bind:{
-								value:{
-									attachmentRequired:'{schemaIdentification.attachmentRequired}'
-								}
-							},
 							items:[
 							    {boxLabel:'Required', name:'attachmentRequired', inputValue:1},
-							    {boxLabel:'No Required', name:'attachmentRequired', inputValue:2, checked:true}
+							    {boxLabel:'Not Required', name:'attachmentRequired', inputValue:2, checked:true}
 							],
 							listeners:{
 								change:'onAttachmentRequiredRadioChange'
@@ -846,11 +867,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	column:2,
     		    	    	width:300,
 							margin:'0 0 5 0',
-							bind:{
-								value:{
-									attachmentFileType:'{schemaIdentification.attachmentFileType}'
-								}
-							},
     		    	    	items:[
     		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:1, checked:true},
     		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:2}

@@ -14,7 +14,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	//Order File section
 	onOrderRadioChange:function(field, newValue, oldValue){
 		var me = this;
-		if(newValue.order == 2){
+		if(newValue.orderFileType == 2){
 			me.showHideOrderTextExcelField(true);
 		}else{
 			me.showHideOrderTextExcelField(false);
@@ -38,7 +38,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	//Attachment section
 	onAttachmentRadioChange:function(field, newValue, oldValue){
 		var me = this;
-		if(newValue.attach == 2){
+		if(newValue.attachmentFileType == 2){
 			me.showHideAttachmentTextExcelField(true);
 		}else{
 			me.showHideAttachmentTextExcelField(false);
@@ -79,7 +79,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			values.id =  AOCRuntime.getWiId().toString();
 		}
 		Ext.getBody().mask(AOCLit.pleaseWait);
-		//wiFormPanel.mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
 			url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
 			jsonData:values,
@@ -87,18 +86,29 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			success:function(response){
 				var data = JSON.parse(response.responseText);
 				form.reset();
-				me.uploadFiles(data.wiId);
+				me.loadGridAfterFormSave(data.id);
+				me.uploadFiles(data.id);
 				Helper.showToast('success','Record has been suuccessfully saved');
-				//wiFormPanel.unmask();
-				
 			},
 			failure:function(){
 				Ext.getBody().unmask();
-				//wiFormPanel.unmask();
 			}
 		});
 		
 		console.log(values);
+	},
+	loadGridAfterFormSave:function(id){
+		var me = this,
+			refs = me.getReferences(),
+			wiOrgGrid = refs.wiOrgGrid,
+			wiSystemGrid = refs.wiSystemGrid,
+			aocFieldGrid = refs.wiaocfieldgrid,
+			wiorderfiberlinegrid = refs.wiorderfiberlinegrid;
+		
+		wiOrgGrid.store.load({params:{id:id}});
+		wiSystemGrid.store.load({params:{id:id}});
+		aocFieldGrid.store.load({params:{id:id}});
+		wiorderfiberlinegrid.store.load({params:{id:id}});
 	},
 	getSchemaIdentificationParams:function(values){
 		 var obj ={
@@ -323,7 +333,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
          }
          fileReader.readAsDataURL(file);
 	},
-	addFileInBox:function(obj, imageContainer){
+	addFileInBox:function(obj, imageContainer, fileType){
 		var me = this;
 		
 		if(me.totalCount < me.maxFileCount){
@@ -334,6 +344,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			}
 			var ext = file.name.lastIndexOf('.') > 0 ? file.name.substring(1 + file.name.lastIndexOf('.')) : '';
 			file.extension = ext;
+			file.fileType = fileType;
 			me.fileArray.push(file);
 			me.totalCount++;
 			me.setImagePreview(file, imageContainer);
@@ -347,21 +358,21 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			refs = me.getReferences(),
 			orderFileImageContainer = refs.orderFileImageContainer;
 		
-		me.addFileInBox(obj, orderFileImageContainer);
+		me.addFileInBox(obj, orderFileImageContainer,'Order');
 	},
 	onAttachmentChange:function(obj, value){
 		var me = this;
 			refs = me.getReferences(),
 			attchmentContainer = refs.attchmentContainer;
 		
-		me.addFileInBox(obj, attchmentContainer);
+		me.addFileInBox(obj, attchmentContainer,'Attachment');
 	},
 	onSampleFileChange:function(obj, value){
 		var me = this,
 			refs = me.getReferences(),
 			sampleFileContainer = refs.sampleFileContainer;
 		
-		me.addFileInBox(obj, sampleFileContainer);
+		me.addFileInBox(obj, sampleFileContainer,'Sample' );
 	},
 	uploadFiles:function(wId, filePath){
     	var me = this;
@@ -372,21 +383,20 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		orderFileImageContainer = refs.orderFileImageContainer,
     		attchmentContainer = refs.attchmentContainer,
     		sampleFileContainer = refs.sampleFileContainer,
-    		url =applicationContext+'/rest/emailqueue/fileupload',
+    		url =applicationContext+'/rest/wi/fileupload',
     		len = fileArray.length;
     		
     	if(len > 0){
 	    	formData.append('file',fileArray[len-1]);
-	    	formData.append('wiId', wId);
+	    	formData.append('id', wId);
 	    	formData.append('fileName', fileArray[len-1].name);
+	    	formData.append('fileType', fileArray[len-1].fileType);
 	    	
 	    	if(len == 1){
 	    		formData.append('sendAcknowledgementFlag', 'true');
 	    	}else{
 	    		formData.append('sendAcknowledgementFlag', 'false');
 	    	}
-	    	
-	    	formData.append('email', values.email);
 	    	
 	        xhttp.onreadystatechange = function() {
 	            (4 === xhttp.readyState) && uploadDone(xhttp);
@@ -417,7 +427,40 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        }
     	}else{
     		Helper.showToast('success','Record has been save successfully.');
+    		me.totalCount = 1;
+    		orderFileImageContainer.removeAll();
+			attchmentContainer.removeAll();
+			sampleFileContainer.removeAll();
+    		me.fileArray = [];
+			me.onBackBtnClick();
+    		
     		Ext.getBody().unmask();
     	}
+    },
+    
+    //AOCField Grid
+    onReferenceAttachmentChange:function(obj, value){
+    	debugger
+    },
+    onAOCFieldGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts){
+    	var grid=obj;
+		var el = Ext.get(e.target);
+    	var inputEl = Ext.get('upload-file');
+    	if(el.hasCls('upload-image')){
+    		document.getElementById('upload-file').click();
+    	}
+    },
+    onAOCFieldGridAfterRender:function(grid){
+    	var me = this;
+    	var inputEl = Ext.get('upload-file');
+    	inputEl.dom.addEventListener('change', function() {
+            me.onFilesChanged(inputEl.files);
+        }, me);
+    },
+    onFilesChanged:function(files){
+    	 var me = this,
+         files = Ext.Array.from(files);
+
+    	debugger
     }
 });

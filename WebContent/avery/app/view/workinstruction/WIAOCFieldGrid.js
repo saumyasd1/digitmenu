@@ -16,14 +16,40 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			plugins:[
 			     {
 			    	 ptype:'cellediting',
-			    	 clickToEdit:1
+			    	 clickToEdit:1,
+			    	 listeners:{
+			    		 beforeedit:function(e, editor){
+			    			 var rec  = editor.grid.store.getAt(editor.rowIdx);
+			    			 if(rec.get('aocFieldName') == 'APO'){
+			    				 editor.column.setEditor({
+									xtype:'combo',
+									editable:false,
+									store:[['No APO','No APO'],['General APO Rule','General APO Rule']]
+								});
+			    			 }else if(rec.get('aocFieldName') == 'Shipping Hold' || rec.get('aocFieldName') == 'Production Hold'
+									|| rec.get('aocFieldName') == 'Artwork Hold'){
+			    				 editor.column.setEditor({
+									xtype:'combo',
+									editable:false,
+									store:[['Yes','Yes'],['No','No']]
+			    				 });
+			    			 }else if(rec.get('aocFieldName') == 'Split Shipset'){
+			    				 editor.column.setEditor({
+									xtype:'combo',
+									editable:false,
+									store:[['None','None'],['L','L'],['P','P']]
+			    				 });
+			    			 }else{
+			    				 editor.column.setEditor('textfield');
+			    			 }
+			    		 }
+			    	 }
 			     }    
 			],
 			store: Ext.data.StoreManager.lookup('wiAOCFieldStore') == null ? Ext.create('AOC.store.WIAOCFieldStore',{storeId:'wiAOCFieldStore'}) : Ext.data.StoreManager.lookup('wiAOCFieldStore'),
 			listeners:{
-				afterrender:function(grid){
-					
-				}
+				afterrender:'onAOCFieldGridAfterRender',
+				cellclick:'onAOCFieldGridCellClick'
 			}
 		});
 		me.callParent(arguments);
@@ -64,9 +90,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				text : 'Field Value Location '+ AOCLit.wiFieldValueLocationIconText,
 				flex:1.5,
 				dataIndex:'fieldValueExample',
-				editor:{
-					xtype:'textfield'
-				}
+				editor:'textfield'
 			},
 			{
 				text : 'Explanation/Rules/Additional Logic/Validation '+ AOCLit.wiExplanationRulesIconText,
@@ -85,8 +109,10 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				}
 			},
 			{
-				xtype:'actioncolumn',
-				flex:.5
+				width:30,
+				renderer:function(value, metadata, rec){
+					return '<i class="upload-image fa fa-upload" style="font-size:16px;color:#2c3e50;cursor:pointer;">'
+				}
 			}
 		];
 	}
