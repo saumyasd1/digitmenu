@@ -1,8 +1,12 @@
 package com.avery.storage.entities;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -23,11 +29,14 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiAocFieldMixIn;
 import com.avery.storage.service.WiAocFieldService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -56,7 +65,13 @@ public class WiAocField extends MainAbstractEntity {
 
 	@Column(name = "logic", length = 500)
 	private String logic;
+	
+	@Column(name = "filePath", length = 500)
+	private String filePath;
 
+	@Column(name = "fileName", length = 100)
+	private String fileName;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
@@ -95,6 +110,22 @@ public class WiAocField extends MainAbstractEntity {
 
 	public void setLogic(String logic) {
 		this.logic = logic;
+	}
+	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public Wi getVarWi() {
@@ -170,6 +201,38 @@ public class WiAocField extends MainAbstractEntity {
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+		return rb.build();
+	}
+	
+	@POST
+	@Path("/fileupload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadFile(@Context UriInfo ui, @Context HttpHeaders hh, @FormDataParam("file") InputStream is,
+			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
+			@FormDataParam("wiId") String wiId) {
+		Response.ResponseBuilder rb = null;
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+		Properties props = new Properties();
+		String directoryPath = null;
+		try {
+			props.load(in);
+			directoryPath = props.getProperty("Wi_AocField_Filepath") + File.separatorChar + wiId;
+			ApplicationUtils.fileUpload(is, directoryPath, fileName);
+			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
+					.getBean("wiAocFieldService");
+			Boolean flag = wiAocFieldService.saveFileData(entityId, directoryPath, fileName);
+			if (flag == false)
+				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+						.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			AppLogger.getSystemLogger().error("Error in uploading the file -> ", e);
+			return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+					.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		rb = Response.ok("File uploaded successfully", MediaType.TEXT_PLAIN).status(Status.OK);
 		return rb.build();
 	}
 

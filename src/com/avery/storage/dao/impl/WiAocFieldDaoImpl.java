@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
@@ -14,6 +15,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.WiAocField;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +45,9 @@ public class WiAocFieldDaoImpl extends GenericDaoImpl<WiAocField, Long> implemen
 					.add(Projections.property("varWiAocFieldNameInfo.aocFieldName"), "aocFieldName")
 					.add(Projections.property("id"), "id").add(Projections.property("validation"), "validation")
 					.add(Projections.property("fieldValueExample"), "fieldValueExample")
-					.add(Projections.property("logic"), "logic");
+					.add(Projections.property("logic"), "logic")
+					.add(Projections.property("fileName"), "fileName")
+					.add(Projections.property("filePath"), "filePath");			
 			Criteria criteria = session.createCriteria(WiAocField.class)
 					.createAlias("varWiAocFieldNameInfo", "varWiAocFieldNameInfo").createAlias("varWi", "varWi")
 					.add(Restrictions.eq("varWi.id", entityId));
@@ -54,6 +58,30 @@ public class WiAocFieldDaoImpl extends GenericDaoImpl<WiAocField, Long> implemen
 			throw e;
 		}
 		return entitiesMap;
+	}
+	
+	@Override
+	public Boolean saveFileData(String entityId, String directoryPath, String fileName){
+		Session session = null;
+		Criteria criteria = null;
+//		WiAocFieldNameInfo wiAocFieldNameInfoObj = new WiAocFieldNameInfo();
+//		wiAocFieldNameInfoObj.setId(Long.parseLong(entityId));
+		try {
+			session = getSessionFactory().getCurrentSession();
+			WiAocField wiAocFieldObj = (WiAocField) session.get(WiAocField.class, Long.parseLong(entityId));
+			wiAocFieldObj.setFilePath(directoryPath);
+			wiAocFieldObj.setFileName(fileName);
+			session.update(wiAocFieldObj);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while uploading the file ", ex);
+			ex.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while uploading the file ", e);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

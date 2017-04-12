@@ -56,17 +56,23 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			throw new Exception("Unable to fetch Status List.");
 		for (Wi wi : list) {
 			String status = wi.getStatus();
-			if (status == null | status.equals(""))
-				throw new Exception("Unidentified value found for the status.");
+//			if (status == null | status.equals(""))
+//				throw new Exception("Unidentified value found for the status.");
 			Map<String, String> statusCodes = wiStatusList.get(status);
-			if (statusCodes == null)
-				throw new Exception("No data found in the status table for status:: \"" + status + "\".");
-			String iconName = statusCodes.get("iconName");
-			String colorCode = statusCodes.get("colorCode");
-			String codeValue = statusCodes.get("codeValue");
-			wi.setIconName(iconName);
-			wi.setColorCode(colorCode);
-			wi.setCodeValue(codeValue);
+//			if (statusCodes == null)
+			// throw new Exception("No data found in the status table for
+			// status:: \"" + status + "\".");
+			if (status != null && !"".equals(status)) {
+				String iconName = statusCodes.get("iconName");
+				String colorCode = statusCodes.get("colorCode");
+				String codeValue = statusCodes.get("codeValue");
+				wi.setIconName(iconName);
+				wi.setColorCode(colorCode);
+				wi.setCodeValue(codeValue);
+			} else {
+				wi.setCodeValue("");
+
+			}
 		}
 
 		entitiesMap.put("wi", criteria.list());
