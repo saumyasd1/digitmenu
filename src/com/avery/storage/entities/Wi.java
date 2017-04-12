@@ -748,8 +748,10 @@ public class Wi extends MainAbstractEntity {
 		try {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			wiService.create(data);
+			Long wiId = wiService.create(data);
 			responseMap.put("success", "true");
+			responseMap.put("id", wiId);
+			responseMap.put("msg", "Data has been saved successfully");
 			mapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
