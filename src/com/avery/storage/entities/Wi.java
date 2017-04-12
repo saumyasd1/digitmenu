@@ -1,16 +1,22 @@
 package com.avery.storage.entities;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -18,11 +24,13 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -30,6 +38,7 @@ import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiMixIn;
 import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
 import com.avery.storage.service.WiService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,6 +56,9 @@ public class Wi extends MainAbstractEntity {
 	}
 
 	private static final long serialVersionUID = 1833552362987121156L;
+	@Column(name = "status", length = 50)
+	private String status;
+	
 	@Column(name = "factoryName", length = 50)
 	private String factoryName;
 
@@ -206,6 +218,9 @@ public class Wi extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiSystemLevel> listWiSystemLevel;
 
+	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
+	private List<WiFiles > listWiFiles;
+	
 	/*
 	 * @ManyToOne(fetch = FetchType.LAZY)
 	 * 
@@ -227,6 +242,15 @@ public class Wi extends MainAbstractEntity {
 	 * 
 	 * @JoinColumn(name = "systemId") private SystemInfo varSystemInfo;
 	 */
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	public String getFactoryName() {
 		return factoryName;
 	}
@@ -650,18 +674,61 @@ public class Wi extends MainAbstractEntity {
 	public void setListWiSystemLevel(List<WiSystemLevel> listWiSystemLevel) {
 		this.listWiSystemLevel = listWiSystemLevel;
 	}
+	
+	public List<WiFiles> getListWiFiles() {
+		return listWiFiles;
+	}
+
+	public void setListWiFiles(List<WiFiles> listWiFiles) {
+		this.listWiFiles = listWiFiles;
+	}
+
+	@Transient
+	private String iconName;
+	
+	@Transient
+	private String colorCode;
+	
+	@Transient
+	private String codeValue;
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<Wi> wi = null;
+//		List<Wi> wi = null;
+		Map entitiesMap = null;
 		try {
+			MultivaluedMap queryMap = ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(Wi.class, WiMixIn.class);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			wi = wiService.readAll();
-			mapper.writeValue(writer, wi);
+			entitiesMap = wiService.readWithCriteria(queryMap);
+			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -694,7 +761,7 @@ public class Wi extends MainAbstractEntity {
 
 	@PUT
 	@Path("update")
-	public Response updateEntit(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
+	public Response updateWiData(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
 		Response.ResponseBuilder rb = null;
 		Map responseMap = new HashMap();
 		try {
@@ -705,6 +772,8 @@ public class Wi extends MainAbstractEntity {
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
 			Long wiId = wiService.update(data);
 			responseMap.put("success", "true");
+			responseMap.put("id", wiId);
+			responseMap.put("msg", "Data has been saved successfully");
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -738,6 +807,50 @@ public class Wi extends MainAbstractEntity {
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
+		return rb.build();
+	}
+	
+	@POST
+	@Path("/fileupload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadFile(@Context UriInfo ui, @Context HttpHeaders hh, @FormDataParam("file") InputStream is,
+			@FormDataParam("fileName") String fileName, @FormDataParam("id") String wiId,
+			@FormDataParam("fileType") String fileType) {
+		Response.ResponseBuilder rb = null;
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+		Properties props = new Properties();
+		String directoryPath = null;
+		try {
+			props.load(in);
+			if(fileType.equalsIgnoreCase("Order")){
+				directoryPath = props.getProperty("Wi_Order_Filepath");
+			}
+			else if(fileType.equalsIgnoreCase("Attachment")){
+				directoryPath = props.getProperty("Wi_Attachment_Filepath");
+			}
+			else if(fileType.equalsIgnoreCase("Sample")){
+				directoryPath = props.getProperty("Wi_Sample_Filepath");
+			}
+			else{
+				AppLogger.getSystemLogger().error("Error in uploading the file -> Wrong filetype");
+				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+						.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+			ApplicationUtils.fileUpload(is, directoryPath, fileName);
+			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
+			Boolean flag = wiService.saveFileData(wiId, directoryPath, fileName, fileType);
+			if (flag == false)
+				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+						.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			AppLogger.getSystemLogger().error("Error in uploading the file -> ", e);
+			return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+					.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		rb = Response.ok("File uploaded successfully", MediaType.TEXT_PLAIN).status(Status.OK);
 		return rb.build();
 	}
 

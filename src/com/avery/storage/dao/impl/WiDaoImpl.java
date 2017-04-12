@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
@@ -14,12 +15,14 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MixIn.WiMixIn;
 import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Wi;
 import com.avery.storage.entities.WiAocField;
 import com.avery.storage.entities.WiAocFieldNameInfo;
+import com.avery.storage.entities.WiFiles;
 import com.avery.storage.entities.WiOrg;
 import com.avery.storage.entities.WiOrgInfo;
 import com.avery.storage.entities.WiSchemaIdentification;
@@ -41,16 +44,42 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		Criteria criteria = null;
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(Wi.class);
+
+		List<Wi> list = criteria.list();
+		HashMap<String, Map> wiStatusList = ApplicationUtils.wiStatusCode;
+		if (wiStatusList == null)
+			throw new Exception("Unable to fetch Status List.");
+		for (Wi wi : list) {
+			String status = wi.getStatus();
+			if (status == null | status.equals(""))
+				throw new Exception("Unidentified value found for the status.");
+			Map<String, String> statusCodes = wiStatusList.get(status);
+			if (statusCodes == null)
+				throw new Exception("No data found in the status table for status:: \"" + status + "\".");
+			String iconName = statusCodes.get("iconName");
+			String colorCode = statusCodes.get("colorCode");
+			String codeValue = statusCodes.get("codeValue");
+			wi.setIconName(iconName);
+			wi.setColorCode(colorCode);
+			wi.setCodeValue(codeValue);
+		}
+
+		entitiesMap.put("wi", criteria.list());
+		return entitiesMap;
 	}
 
 	@Override
-	public Wi create(String wiData) throws Exception {
+	public long create(String wiData) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectReader reader = null;
 		Session session = null;
 		Wi wi = null;
+		Long wiId = null;
 		try {
 			session = getSessionFactory().getCurrentSession();
 			mapper.addMixIn(Wi.class, WiMixIn.class);
@@ -61,7 +90,8 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			// entitiesMap.get("");
 			wi = mapper.readValue(mapper.writeValueAsString(entitiesMap), Wi.class);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			Long wiId = wiService.create(wi);
+			wi.setStatus("1");
+			wiId = wiService.create(wi);
 			Wi wiObj = new Wi();
 			wiObj.setId(wiId);
 			List listWiOrg = (ArrayList) entitiesMap.get("listWiOrg");
@@ -81,7 +111,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			e.printStackTrace();
 			throw e;
 		}
-		return wi;
+		return wiId;
 	}
 
 	/**
@@ -270,6 +300,32 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			throw e;
 		}
 		return wiId;
+	}
+
+	@Override
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType) {
+		Session session = null;
+		Criteria criteria = null;
+		Wi wiObj = new Wi();
+		wiObj.setId(Long.parseLong(wiId));
+		try {
+			session = getSessionFactory().getCurrentSession();
+			WiFiles wiFilesObj = new WiFiles();
+			wiFilesObj.setVarWi(wiObj);
+			wiFilesObj.setFilePath(directoryPath);
+			wiFilesObj.setFileName(fileName);
+			wiFilesObj.setFileType(fileType);
+			session.save(wiFilesObj);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while uploading the file ", ex);
+			ex.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while uploading the file ", e);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

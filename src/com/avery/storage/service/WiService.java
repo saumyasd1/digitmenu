@@ -29,7 +29,7 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	}
 
 	@Transactional
-	public Wi create(String wiData) throws Exception {
+	public long create(String wiData) throws Exception {
 		return getWiDao().create(wiData);
 	}
 	
@@ -42,6 +42,11 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	public Long update(String data) throws Exception {
 		// TODO Auto-generated method stub
 		return getWiDao().update(data);
+	}
+
+	@Transactional
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType) {
+		return wiDao.saveFileData(wiId, directoryPath, fileName, fileType);
 	}
 
 }
