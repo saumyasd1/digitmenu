@@ -238,7 +238,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel;
 		
-		wiFormPanel.mask('Loading...');
+		Ext.getBody().mask('Loading...');
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/wi/wiorderdetail',
 			params:{ id: wId },
@@ -253,10 +253,10 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				Ext.apply(detail.formdata,schemaIdentification);
 				var form = wiFormPanel.getReferences().wIForm;
 				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));
-				wiFormPanel.unmask();
+				Ext.getBody().unmask();
 			},
 			failure:function(){
-				wiFormPanel.unmask();
+				Ext.getBody().unmask();
 			}
 		});
 	},

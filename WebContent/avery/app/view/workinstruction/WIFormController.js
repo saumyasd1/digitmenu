@@ -10,6 +10,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		var view = this.getView();
 		var parentCont = view.up('wicontainer');
 		parentCont.getLayout().setActiveItem(0);
+		parentCont.getLayout().getActiveItem().store.load();
 	},
 	
 	//Order File section
@@ -87,10 +88,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			success:function(response){
 				var data = JSON.parse(response.responseText);
 				form.reset();
-				me.loadGridAfterFormSave(data.id);
+				//me.loadGridAfterFormSave(data.id);
 				me.uploadFiles(data.id);
 				me.uploadAOCFieldFiles(data.id);
-//				Helper.showToast('success','Record has been suuccessfully saved');
 			},
 			failure:function(){
 				Ext.getBody().unmask();
@@ -183,6 +183,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			 attachmentTextPosition:values.attachmentTextPosition,
 			 attachmentExcelCell:values.attachmentExcelCell,
 			 attachmentExcelSheet:values.attachmentExcelSheet,
+			 emailBodyRequired:values.emailBodyRequired,
+			 emailBodyIdentificationType:values.emailBodyIdentificationType,
+			 emailBodyKeyWording:values.emailBodyKeyWording
 		 }
 		 if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			 obj.id=AOCRuntime.getSchemaIdentificationId();
@@ -210,6 +213,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		 delete values.attachmentTextPosition;
 		 delete values.attachmentExcelCell;
 		 delete values.attachmentExcelSheet;
+		 
+		 delete values.emailBodyRequired;
+		 delete values.emailBodyIdentificationType;
+		 delete values.emailBodyKeyWording;
 		 
 		 return obj;
 	},
