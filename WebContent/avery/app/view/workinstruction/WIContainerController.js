@@ -18,8 +18,22 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadDefaultGrid();
 		me.setReadOnlyView(false);
 		me.showHideSaveSubmitBtn(true);
-		
+		me.resetFileCont();
 		view.getLayout().setActiveItem(1);
+	},
+	resetFileCont:function(){
+		var me = this,
+			view = this.getView(),
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel,
+			formRefs = wiFormPanel.getReferences(),
+			orderFileImageContainer = formRefs.orderFileImageContainer,
+			attchmentContainer = formRefs.attchmentContainer,
+			sampleFileContainer = formRefs.sampleFileContainer;
+		
+		orderFileImageContainer.removeAll();
+		attchmentContainer.removeAll();
+		sampleFileContainer.removeAll();
 	},
 	loadDefaultGrid:function(){
 		var me = this,
@@ -185,6 +199,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadGridInEditMode(wId, 'wiSystemGrid');
 		me.loadGridInEditMode(wId, 'wiaocfieldgrid');
 		me.loadGridInEditMode(wId, 'wiorderfiberlinegrid');
+		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
 	},
 	

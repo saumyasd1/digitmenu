@@ -2,6 +2,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	extend:'Ext.app.ViewController',
 	alias:'controller.wiformcontroller',
 	fileArray:[],
+	aocFieldAttachArray :[],
 	maxFileCount:6,
 	totalCount:1,
 	//Back button click
@@ -88,7 +89,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				form.reset();
 				me.loadGridAfterFormSave(data.id);
 				me.uploadFiles(data.id);
-				Helper.showToast('success','Record has been suuccessfully saved');
+				me.uploadAOCFieldFiles(data.id);
+//				Helper.showToast('success','Record has been suuccessfully saved');
 			},
 			failure:function(){
 				Ext.getBody().unmask();
@@ -96,6 +98,52 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		});
 		
 		console.log(values);
+	},
+	
+	uploadAOCFieldFiles:function(wId){
+		var me = this;
+			refs = me.getReferences(),
+			xhttp = new XMLHttpRequest(),
+			fileArray = this.aocFieldAttachArray,
+			formData = new FormData(),
+			url = applicationContext+'/rest/aocfield/fileupload',
+			len = fileArray.length;
+			
+		if(len > 0){
+	    	formData.append('file',fileArray[len-1]);
+	    	formData.append('id', fileArray[len-1].recordId);
+	    	formData.append('fileName', fileArray[len-1].name);
+	    	formData.append('wiId', wId);
+	    	
+	    	if(len == 1){
+	    		formData.append('sendAcknowledgementFlag', 'true');
+	    	}else{
+	    		formData.append('sendAcknowledgementFlag', 'false');
+	    	}
+	    	
+	        xhttp.onreadystatechange = function() {
+	            (4 === xhttp.readyState) && uploadDone(xhttp);
+	        };
+	   
+	        xhttp.open("POST", url, true);
+	        xhttp.send(formData);
+	        
+	        function uploadDone(xhttp){
+	        	switch(xhttp.status){
+	        		case 200:
+	        			fileArray.pop();
+	        			if(fileArray.length == 0){
+	    					Ext.getBody().unmask();
+	        			}else{
+	        				console.log('AOC File Uploaded');
+		        			me.uploadAOCFieldFiles(wId);
+	        			}
+	        			break;
+	        	}
+	        }
+		}else{
+			Ext.getBody().unmask();
+		}
 	},
 	loadGridAfterFormSave:function(id){
 		var me = this,
@@ -439,12 +487,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     },
     
     //AOCField Grid
-    onReferenceAttachmentChange:function(obj, value){
-    	debugger
-    },
+    
     onAOCFieldGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts){
     	var grid=obj;
 		var el = Ext.get(e.target);
+		this.currentAOCFieldRowId=rowIndex;
     	var inputEl = Ext.get('upload-file');
     	if(el.hasCls('upload-image')){
     		document.getElementById('upload-file').click();
@@ -452,15 +499,37 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     },
     onAOCFieldGridAfterRender:function(grid){
     	var me = this;
-    	var inputEl = Ext.get('upload-file');
-    	inputEl.dom.addEventListener('change', function() {
+    	var inputEl = Ext.get('upload-file').dom;
+    	inputEl.addEventListener('change', function() {
             me.onFilesChanged(inputEl.files);
         }, me);
     },
     onFilesChanged:function(files){
-    	 var me = this,
-         files = Ext.Array.from(files);
-
-    	debugger
+    	var me = this,
+    	 	refs = me.getReferences(),
+    	 	aocFieldGrid = refs.wiaocfieldgrid,
+    	 	store = aocFieldGrid.store,
+    	 	file = Ext.Array.from(files)[0],
+    	 	currentAOCFieldRowId = me.currentAOCFieldRowId;
+    	    fileName = file.name,
+    	    rec = store.getAt(currentAOCFieldRowId);
+    	    
+    	var fileReader = new window.FileReader();
+        fileReader.onload = function(e,b){
+            var fileContent = e.target.result;
+            rec.set('fileName',fileName);
+            rec.set('filePath',fileContent);
+        }
+        fileReader.readAsDataURL(file);
+        file.recordId = rec.get('id');
+        var len = me.aocFieldAttachArray.length;
+        for(var i =0;i<len;i++){
+        	if(me.aocFieldAttachArray[i].recordId == rec.get('id')){
+        		me.aocFieldAttachArray.splice(i,1);
+        		break;
+        	}
+        }
+        
+        me.aocFieldAttachArray.push(file);
     }
 });

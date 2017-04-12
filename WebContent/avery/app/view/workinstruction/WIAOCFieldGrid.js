@@ -109,6 +109,16 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				}
 			},
 			{
+				text:'File',
+				flex:.5,
+				dataIndex:'file',
+				renderer:function(value, metadata, rec){
+					if(rec.get('fileName')){
+						return '<a style="letter-spacing:.15px;color:#2c3e50;" href="'+rec.get('filePath')+'" data-qtip="<font color=#3892d3>'+rec.get('fileName')+'</font>" target="_blank">'+ Ext.util.Format.ellipsis(rec.get('fileName'),15) +'</a>'
+					}
+				}
+			},
+			{
 				width:30,
 				renderer:function(value, metadata, rec){
 					return '<i class="upload-image fa fa-upload" style="font-size:16px;color:#2c3e50;cursor:pointer;">'

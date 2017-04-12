@@ -74,7 +74,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 			  cls:'wi-form-panel-header',
 			  title:'Work Instruction',
 			  bodyPadding:'10',
-			  titleAlign:'center'
+			  titleAlign:'center',
+			  layout:'anchor'
 		  };
 	},
 	getProfileHeaderItems:function(){
@@ -154,25 +155,16 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelWidth:150
 	        	  },
 	              items:[
-//	                {
-//	                	xtype:'combo',
-//	                	name:'atoNato',
-//	                	reference:'atoNato',
-//	                	editable:false,
-//	                	fieldLabel:'ATO/NATO',
-//	                	store:[['ATO','ATO'],['NATO', 'NATO'],['Both','Both ATO & NATO']],
-//	                	flex:1
-//	                },
 					{
-						xtype:'checkboxgroup',
-						column:2,
+						xtype:'radiogroup',
+						column:3,
 						reference:'atoNato',
 						flex:1,
 						fieldLabel:'ATO/NATO',
-						//labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 						items:[
 						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
-						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'}
+						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'},
+						    { boxLabel: 'Both ATO&NATO', name:'atoNato', inputValue:'Both ATO&NATO'}
 						]
 					},
 	                {
@@ -410,7 +402,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	  flex:1,
 		    	  title:'System Level',
 		    	  titleAlign:'center',
-		    	  height:160
+		    	  height:170
 		      },
 		      {
 		    	  title:'Org Level',
@@ -421,7 +413,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		      },
 		      {
 		    	xtype:'fieldcontainer',
-		    	//layout:'hbox',
 		    	margin:'0 0 5 0',
 		    	flex:1,
 		    	defaults:{
@@ -431,21 +422,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelWidth:300
 		    	},
 		    	items:[
-//		    	    {
-//		    	    	xtype:'combo',
-//		    	    	name:'aocDefaultOneBillToSite',
-//		    	    	fieldLabel:'Should AOC default one Bill to Site # only?',
-//		    	    	reference:'aocDefaultOneBillToSite',
-//		    	    	queryMode:'local',
-//		    	    	editable:false,
-//		    	    	store:[['Yes','Yes'],['No','No']],
-//		    	    	flex:1
-//		    	    },
 					{
 						xtype:'radiogroup',
 						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneBillToSite',
-//						flex:1,
 						width:500,
 						margin:'0 0 5 0',
 						items:[
@@ -453,26 +433,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneBillToSite'}
 						]
 					},
-//		    	    {
-// 	                	xtype:'box',
-// 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
-// 	                	margin:'36 0 0 5'	
-// 	                },
-//		    	    {
-//		    	    	xtype:'combo',
-//		    	    	name:'aocDefaultOneShipToSite',
-//		    	    	fieldLabel:'Should AOC default one Ship to Site # only?',
-//		    	    	reference:'aocDefaultOneShipToSite',
-//		    	    	editable:false,
-//		    	    	store:Helper.getYesNoStore(),
-//		    	    	flex:1,
-//		    	    	margin:'0 0 0 10'
-//		    	    },
  	                {
 						xtype:'radiogroup',
 						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneShipToSite',
-//						flex:1,
 						width:500,
 						margin:'0 0 5 0',
 						items:[
@@ -480,11 +444,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneShipToSite'}
 						]
 					}
-//		    	    {
-// 	                	xtype:'box',
-// 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
-// 	                	margin:'36 0 0 5'	
-// 	                }
 		    	]
 		      },
 		      {
@@ -598,7 +557,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					hideLabel:true,
 					name:'emailSubjectDataStructureOtherRule',
 					flex:1,
-					//width:300,
 					margin:'0 0 15 0'
 				},
 				{

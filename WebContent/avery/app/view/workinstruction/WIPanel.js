@@ -73,12 +73,72 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    {
 		    	xtype:'box',
 		    	hidden:true,
-		    	html:'<input id="upload-file" type="file"/>'
+		    	html:'<input id="upload-file" type="file" accept="image/*" />'
 		    },
 		    me.getUploadOrderFileItems(),
 		    me.getUploadAttachementItems(),
-		    me.getSampleFileItems()
+		    me.getSampleFileItems(),
+		    me.getAssigneeField()
 		]
+	},
+	getAssigneeField:function(){
+		return {
+			xtype:'fieldcontainer',
+			margin:'0 0 5 0',
+			layout:'hbox',
+			anchor:'100%',
+			defaults:{
+				labelSeparator:'',
+				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+				labelAlign:AOC.config.Settings.form.topLabelAlign
+			},
+			items:[
+				{
+					xtype:'combo',
+					fieldLabel:'Assignee',
+					name:'assignee',
+					flex:1,
+					displayField:'roleName',
+					reference:'assigneeCombo',
+					valueField:'id',
+					store:new Ext.data.JsonStore({
+						autoLoad:true,
+						proxy:{
+							type: 'rest',
+							url:applicationContext+'/rest/wiroles',
+					        reader: {
+					            type: 'json'
+					            //rootProperty: 'aocfields'
+					        }
+						},
+						fields:['roleName','id','roleId']
+					})
+				},
+				{
+					xtype:'combo',
+					fieldLabel:'Status',
+					name:'status',
+					flex:1,
+					displayField:'value',
+					reference:'statusCombo',
+					valueField:'id',
+					value:'1',
+					margin:'0 0 0 10',
+					store:new Ext.data.JsonStore({
+						autoLoad:true,
+						proxy:{
+							type: 'rest',
+							url:applicationContext+'/rest/wistatus',
+					        reader: {
+					            type: 'json'
+					            //rootProperty: 'aocfields'
+					        }
+						},
+						fields:['value','id','roleId']
+					})
+				}
+			]
+		}
 	},
 	getUploadOrderFileItems:function(){
 		return {
@@ -90,7 +150,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'fileuploadfield',
 					buttonText:'Upload Order File',
 					name: 'orderfile',
-					flex:1,
+					width:150,
 					reference: 'orderfileattachment',
 					hideLabel:true,
 					buttonOnly:true,
@@ -119,7 +179,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'fileuploadfield',
 					buttonText:'Upload Attachment',
 					name: 'attachment',
-					flex:1,
+					width:150,
 					reference: 'attachment',
 					hideLabel:true,
 					buttonOnly:true,
@@ -148,7 +208,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'fileuploadfield',
 					buttonText:'Upload Sample File',
 					name: 'sampleFile',
-					flex:1,
+					width:150,
 					buttonOnly:true,
 					reference: 'sampleFile',
 					hideLabel:true,
@@ -514,7 +574,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'sampleOrderIdentified',
     	    	    	fieldLabel:'Sample Order can be identified if',
     	    	    	reference:'sampleOrderIdentified',
-    	    	    	margin:'0 10',
+    	    	    	margin:'0 0 0 10',
     	    	    	flex:1
     	    	    }
     	    	    
