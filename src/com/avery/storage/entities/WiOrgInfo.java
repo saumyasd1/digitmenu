@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Entity
-@Table(name = "wi_orgInfo")
+@Table(name = "wi_orginfo")
 @Path("wiorginfo")
 public class WiOrgInfo extends MainAbstractEntity {
 

@@ -1,5 +1,6 @@
 package com.avery.storage.entities;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -29,16 +30,20 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiMixIn;
 import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
+import com.avery.storage.service.WiAocFieldService;
 import com.avery.storage.service.WiService;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -816,32 +821,48 @@ public class Wi extends MainAbstractEntity {
 	@Path("/fileupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@Context UriInfo ui, @Context HttpHeaders hh, @FormDataParam("file") InputStream is,
-			@FormDataParam("fileName") String fileName, @FormDataParam("id") String wiId,
-			@FormDataParam("fileType") String fileType) {
+			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
+			@FormDataParam("fileType") String fileType, @FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
-		Properties props = new Properties();
-		String directoryPath = null;
+//		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+//		Properties props = new Properties();
+		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.WIFILES_PATH);
+		String filePath = null;
+		boolean isAocFileType = false;
+		boolean successFlag = false;
 		try {
-			props.load(in);
+//			props.load(in);
 			if(fileType.equalsIgnoreCase("Order")){
-				directoryPath = props.getProperty("Wi_Order_Filepath");
+				filePath = defaultDirectoryPath + File.separator + "order";
 			}
 			else if(fileType.equalsIgnoreCase("Attachment")){
-				directoryPath = props.getProperty("Wi_Attachment_Filepath");
+				filePath = defaultDirectoryPath + File.separator + "attachment";
 			}
 			else if(fileType.equalsIgnoreCase("Sample")){
-				directoryPath = props.getProperty("Wi_Sample_Filepath");
+				filePath = defaultDirectoryPath + File.separator + "sample";
+			}
+			else if(fileType.equalsIgnoreCase("AocField")){
+				filePath = defaultDirectoryPath+File.separator+wiId;
+				isAocFileType = true;
 			}
 			else{
 				AppLogger.getSystemLogger().error("Error in uploading the file -> Wrong filetype");
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
 						.status(Status.INTERNAL_SERVER_ERROR).build();
 			}
-			ApplicationUtils.fileUpload(is, directoryPath, fileName);
+			new File(filePath).mkdir();
+			File targetFile = new File(filePath + File.separatorChar + fileName);
+			FileUtils.copyInputStreamToFile(is, targetFile);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			Boolean flag = wiService.saveFileData(wiId, directoryPath, fileName, fileType);
-			if (flag == false)
+			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
+					.getBean("wiAocFieldService");
+			if(isAocFileType){
+				successFlag = wiAocFieldService.saveFileData(entityId, wiId, filePath, fileName);
+			}
+			else{
+				successFlag = wiService.saveFileData(entityId, filePath, fileName, fileType);
+			}
+			if (successFlag == false)
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
 						.status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (IOException e) {

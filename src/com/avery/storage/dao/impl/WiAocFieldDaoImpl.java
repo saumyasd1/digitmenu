@@ -61,14 +61,19 @@ public class WiAocFieldDaoImpl extends GenericDaoImpl<WiAocField, Long> implemen
 	}
 	
 	@Override
-	public Boolean saveFileData(String entityId, String directoryPath, String fileName){
+	public Boolean saveFileData(String entityId, String wiId, String directoryPath, String fileName){
 		Session session = null;
 		Criteria criteria = null;
 //		WiAocFieldNameInfo wiAocFieldNameInfoObj = new WiAocFieldNameInfo();
 //		wiAocFieldNameInfoObj.setId(Long.parseLong(entityId));
 		try {
 			session = getSessionFactory().getCurrentSession();
-			WiAocField wiAocFieldObj = (WiAocField) session.get(WiAocField.class, Long.parseLong(entityId));
+			criteria = session.createCriteria(WiAocField.class)
+					.createAlias("varWi", "varWi")
+					.createAlias("varWiAocFieldNameInfo", "varWiAocFieldNameInfo")
+					.add(Restrictions.eq("varWi.id", Long.parseLong(wiId)))
+					.add(Restrictions.eq("varWiAocFieldNameInfo.id", Long.parseLong(entityId)));
+			WiAocField wiAocFieldObj = (WiAocField) criteria.list().get(0);
 			wiAocFieldObj.setFilePath(directoryPath);
 			wiAocFieldObj.setFileName(fileName);
 			session.update(wiAocFieldObj);
