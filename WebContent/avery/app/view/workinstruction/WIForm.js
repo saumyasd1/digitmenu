@@ -39,7 +39,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    },
 		    {
 		    	text:'Submit',
-		    	reference:'wiSubmitBtn',
+		    	reference:'wiSubmitBtn'
 		    }
 		]
 	},
@@ -542,7 +542,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
 			    	    	editable:false,
 							disabled:true,
-			    	    	store:Helper.getYesNoStore(),
+			    	    	store:Helper.getYesNoStore()
 					    }
 					]
 				},

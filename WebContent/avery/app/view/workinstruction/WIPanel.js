@@ -108,7 +108,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 							url:applicationContext+'/rest/wiroles',
 					        reader: {
 					            type: 'json'
-					            //rootProperty: 'aocfields'
 					        }
 						},
 						fields:['roleName','id','roleId']
@@ -131,7 +130,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 							url:applicationContext+'/rest/wistatus',
 					        reader: {
 					            type: 'json'
-					            //rootProperty: 'aocfields'
 					        }
 						},
 						fields:['value','id','roleId']
@@ -156,7 +154,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					buttonOnly:true,
 					itemId:'orderfileattachment',
 					listeners:{
-						'change':'onOrderFileAttachmentChange',
+						'change':'onOrderFileAttachmentChange'
 					}
 				},
 				{
@@ -185,7 +183,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					buttonOnly:true,
 					itemId:'attachment',
 					listeners:{
-						'change':'onAttachmentChange',
+						'change':'onAttachmentChange'
 					}
 				},
 				{
@@ -214,7 +212,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					hideLabel:true,
 					itemId:'sampleFile',
 					listeners:{
-						'change':'onSampleFileChange',
+						'change':'onSampleFileChange'
 					}
 				},
 				{
@@ -312,7 +310,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				{
 					xtype:'label',
 					text:'Size Validation',
-					style:'font-weight:bold;color:#2c3e50;font-size:15px;',
+					style:'font-weight:bold;color:#2c3e50;font-size:15px;'
 				},
 				{
 					xtype:'radiogroup',
@@ -344,7 +342,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				{
 					xtype:'label',
 					text:'Fabric Content Validation',
-					style:'font-weight:bold;color:#2c3e50;font-size:15px;',
+					style:'font-weight:bold;color:#2c3e50;font-size:15px;'
 				},
 				{
 					xtype:'radiogroup',
@@ -632,7 +630,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:200,
+					labelWidth:200
 				},
 				items:[
 					{

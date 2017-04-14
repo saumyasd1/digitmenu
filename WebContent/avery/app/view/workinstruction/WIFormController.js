@@ -90,7 +90,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				form.reset();
 				//me.loadGridAfterFormSave(data.id);
 				me.uploadFiles(data.id);
-				me.uploadAOCFieldFiles(data.id);
 			},
 			failure:function(){
 				Ext.getBody().unmask();
@@ -133,7 +132,12 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        		case 200:
 	        			fileArray.pop();
 	        			if(fileArray.length == 0){
-	    					Ext.getBody().unmask();
+	        				me.isAOCFileRemainig = false;
+	        				if(!me.isFileRemaining){
+	        					Helper.showToast('success','Record has been save successfully.');
+	        					me.onBackBtnClick();
+	        					Ext.getBody().unmask();
+	        				}
 	        			}else{
 	        				console.log('AOC File Uploaded');
 		        			me.uploadAOCFieldFiles(wId);
@@ -397,6 +401,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			if(!file){
 				return;
 			}
+			if(!me.isFileRemaining){
+				me.isFileRemaining = true;
+			}
 			var ext = file.name.lastIndexOf('.') > 0 ? file.name.substring(1 + file.name.lastIndexOf('.')) : '';
 			file.extension = ext;
 			file.fileType = fileType;
@@ -443,7 +450,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		
     	if(len > 0){
 	    	formData.append('file',fileArray[len-1]);
-	    	formData.append('id', wId);
+	    	formData.append('id', fileArray[len-1].recordId  ? fileArray[len-1].recordId : wId);
+	    	formData.append('wiId', wId);
 	    	formData.append('fileName', fileArray[len-1].name);
 	    	formData.append('fileType', fileArray[len-1].fileType);
 	    	
@@ -466,13 +474,15 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        			fileArray.pop();
 	        			if(fileArray.length == 0){
 	    					me.totalCount = 1;
-	    					Helper.showToast('success','Record has been save successfully.');
 	    					orderFileImageContainer.removeAll();
 	    					attchmentContainer.removeAll();
 	    					sampleFileContainer.removeAll();
 	    					me.fileArray = [];
-	    					me.onBackBtnClick();
+	    					
+    						Helper.showToast('success','Record has been save successfully.');
+    						me.onBackBtnClick();
 	    					Ext.getBody().unmask();
+	    					
 	        			}else{
 	        				console.log('File Uploaded');
 		        			me.uploadFiles(wId, filePath);
@@ -481,14 +491,13 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        	}
 	        }
     	}else{
-    		Helper.showToast('success','Record has been save successfully.');
     		me.totalCount = 1;
     		orderFileImageContainer.removeAll();
 			attchmentContainer.removeAll();
 			sampleFileContainer.removeAll();
     		me.fileArray = [];
+    		Helper.showToast('success','Record has been save successfully.');
 			me.onBackBtnClick();
-    		
     		Ext.getBody().unmask();
     	}
     },
@@ -525,18 +534,23 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         fileReader.onload = function(e,b){
             var fileContent = e.target.result;
             rec.set('fileName',fileName);
-            rec.set('filePath',fileContent);
+            rec.set('fileContent',fileContent);
         }
+        
         fileReader.readAsDataURL(file);
-        file.recordId = rec.get('id');
-        var len = me.aocFieldAttachArray.length;
+        if(AOCRuntime.getCurrentWiMode() == 'edit'){
+        	file.recordId = rec.get('parentId');
+		}else{
+			file.recordId = rec.get('id');
+		}
+        file.fileType = 'AocField';
+        var len = me.fileArray.length;
         for(var i =0;i<len;i++){
-        	if(me.aocFieldAttachArray[i].recordId == rec.get('id')){
-        		me.aocFieldAttachArray.splice(i,1);
+        	if(me.fileArray[i].recordId == rec.get('id')){
+        		me.fileArray.splice(i,1);
         		break;
         	}
         }
-        
-        me.aocFieldAttachArray.push(file);
+        me.fileArray.push(file);
     }
 });

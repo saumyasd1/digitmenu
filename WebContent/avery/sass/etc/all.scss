@@ -57,3 +57,68 @@ font-size: 2;
 color: red;
 }
 .x-action-col-glyph {font-size:16px; line-height:16px;  width:20px}
+
+.wi-form-panel-header{border:solid 1px #cecece;}
+.aoc-wi-form .wi-form-panel-header .x-panel-header{border:solid 1px #cecece;background:rgb(246, 246, 246);}
+.wi-grid table.x-grid-item{height:30px;}
+
+.x-menu-item-icon-default.aoc-menu-icon{
+	font-size:16px;color:#2c3e50;top:5px;
+}
+.x-menu-default.aoc-action-menu{border-radius:4px;}
+.aoc-action-menu .x-menu-item-link{padding:3px;}
+.aoc-action-menu .x-menu-item-link .x-menu-item-text{color:#2c3e50;}
+.aoc-action-menu .x-menu-item-icon{font-size:16px;color:#2c3e50;}
+.hide-row-expander .custom-row-expander {
+    visibility: hidden;
+}
+.aoc-win .x-window-header-title-default{
+	font-weight:bold;
+}
+.aoc-win .x-window-header-default {
+    border-width: 1px !important;
+    padding: 9px;
+    border-color: #ccc;
+} 
+.x-btn.aoc-btn{
+	border-width:0px;
+	background-image: none !important;
+	color:#2c3e50;
+	background-color:#fff;
+}
+.aoc-btn:hover{
+    color:#ccc;
+}
+.aoc-btn .aoc-icon{
+	font-size:16px;
+	width:16px !important;
+	height:16px;
+}
+	.success-icon{
+		color:#4BDE4B;
+	}
+	.failure-icon{
+		color:#ff0000;
+	}
+	.warning-icon{
+		color:orange;
+	}
+	.main-menu-list .section-wrap .section-wrap-text{color:#2c3e50 !important;}
+	.main-menu-list .section-wrap-text{ padding-top:0px !important;}
+	.main-menu-list .section-wrap-selected .section-wrap-img,
+	.main-menu-list .section-wrap-selected .section-wrap-text,
+	.main-menu-list .section-wrap .section-wrap-text:hover,
+	.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
+	.orderline-expandable-grid .x-grid-inner-locked{border-right-color:#ccc !important;}
+	.aoc-panel .x-toolbar .x-btn .x-btn-icon-el{
+		height:16px;font-size:16px;
+	}
+	.aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small{color:#fff;}
+	.blue-btn.x-btn-over{box-shadow: 0px 0px 4px 0px #65beed;}
+	.x-btn{border-radius:2px !important;}
+		
+	.wi-form-panel-header .x-title-text{
+		color: #2c3e50;
+	    font-size: 15px;
+	    font-weight: bold;
+	}
