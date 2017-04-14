@@ -34,8 +34,8 @@ public class WiAocFieldService extends GenericEntityService<WiAocField, Long> {
 	}
 
 	@Transactional
-	public Boolean saveFileData(String entityId, String directoryPath, String fileName) {
-		return getWiAocFieldDao().saveFileData(entityId, directoryPath, fileName);
+	public Boolean saveFileData(String entityId, String wiId, String directoryPath, String fileName) {
+		return getWiAocFieldDao().saveFileData(entityId, wiId, directoryPath, fileName);
 	}
 
 }

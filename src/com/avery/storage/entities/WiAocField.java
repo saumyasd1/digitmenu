@@ -28,15 +28,18 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiAocFieldMixIn;
 import com.avery.storage.service.WiAocFieldService;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -211,19 +214,23 @@ public class WiAocField extends MainAbstractEntity {
 			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
 			@FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
-		Properties props = new Properties();
+//		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+//		Properties props = new Properties();
+		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.FILEATTACHMENT_PATH);
 		String directoryPath = null;
 		try {
-			props.load(in);
-			directoryPath = props.getProperty("Wi_AocField_Filepath") + File.separatorChar + wiId;
-			ApplicationUtils.fileUpload(is, directoryPath, fileName);
+//			props.load(in);
+			directoryPath = defaultDirectoryPath + File.separatorChar + wiId;
+			new File(directoryPath).mkdir();
+			File targetFile = new File(directoryPath + File.separatorChar + fileName);
+			FileUtils.copyInputStreamToFile(is, targetFile);
+//			ApplicationUtils.fileUpload(is, directoryPath, fileName);
 			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
 					.getBean("wiAocFieldService");
-			Boolean flag = wiAocFieldService.saveFileData(entityId, directoryPath, fileName);
-			if (flag == false)
-				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
-						.status(Status.INTERNAL_SERVER_ERROR).build();
+//			Boolean flag = wiAocFieldService.saveFileData(entityId, directoryPath, fileName);
+//			if (flag == false)
+//				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
+//						.status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (IOException e) {
 			e.printStackTrace();
 			AppLogger.getSystemLogger().error("Error in uploading the file -> ", e);

@@ -13,6 +13,6 @@ public interface WiAocFieldDao extends GenericDao<WiAocField, Long> {
 	
 	public Map getEntitiesByWiId(Long entityId);
 
-	public Boolean saveFileData(String entityId, String directoryPath, String fileName);
+	public Boolean saveFileData(String entityId, String wiId, String directoryPath, String fileName);
 
 }

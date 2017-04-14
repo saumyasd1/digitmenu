@@ -62,6 +62,53 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	
 	//End of Attachment section
 	
+	onWiSubmitBtnClick:function(btn){
+		var me = this;
+		Ext.Msg.show({
+		    title:'Submit WI',
+		    message: 'Are you sure, you want to submit WI form?',
+		    buttons: Ext.Msg.YESNO,
+		    icon: Ext.Msg.QUESTION,
+		    fn: function(btn) {
+		        if (btn === 'yes') {
+		        	me.submitWIForm();
+		        } 
+		    }
+		});
+	},	
+	submitWIForm:function(){
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wIForm,
+			form = wiFormPanel.getForm(),
+			values = form.getValues();
+	
+		if(Ext.isEmpty(values.assignee)){
+			Helper.showToast('validation', 'Please select Assigne before submit form.');
+		}else{
+			var obj = {
+				assignee : values.assignee,
+				status:values.assignee,
+				id: AOCRuntime.getWiId().toString()
+			};
+		
+			Helper.showMask();
+			Ext.Ajax.request({
+				url:applicationContext+'/rest/wi/submit',
+				jsonData:obj,
+				success:function(response){
+					var data = JSON.parse(response.responseText);
+					form.reset();
+					Helper.showToast('success', data.message ? data.message : 'Record has been submitted successfully');
+					me.onBackBtnClick();
+				},
+				failure:function(){
+					Ext.getBody().unmask();
+				}
+			});
+		}
+	},
+	
 	//Save btn click
 	onSaveBtnClick:function(btn){
 		var me = this,
@@ -98,21 +145,24 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		console.log(values);
 	},
-	
-	uploadAOCFieldFiles:function(wId){
-		var me = this;
-			refs = me.getReferences(),
-			xhttp = new XMLHttpRequest(),
-			fileArray = this.aocFieldAttachArray,
-			formData = new FormData(),
-			url = applicationContext+'/rest/aocfield/fileupload',
-			len = fileArray.length;
-			
-		if(len > 0){
+	uploadFiles:function(wId, filePath){
+    	var me = this;
+    		refs = me.getReferences(),
+    		xhttp = new XMLHttpRequest(),
+    		fileArray = this.fileArray,
+    		formData = new FormData(),
+    		orderFileImageContainer = refs.orderFileImageContainer,
+    		attchmentContainer = refs.attchmentContainer,
+    		sampleFileContainer = refs.sampleFileContainer,
+    		url =applicationContext+'/rest/wi/fileupload',
+    		len = fileArray.length;
+    		
+    	if(len > 0){
 	    	formData.append('file',fileArray[len-1]);
-	    	formData.append('id', fileArray[len-1].recordId);
-	    	formData.append('fileName', fileArray[len-1].name);
+	    	formData.append('id', fileArray[len-1].recordId  ? fileArray[len-1].recordId : wId);
 	    	formData.append('wiId', wId);
+	    	formData.append('fileName', fileArray[len-1].name);
+	    	formData.append('fileType', fileArray[len-1].fileType);
 	    	
 	    	if(len == 1){
 	    		formData.append('sendAcknowledgementFlag', 'true');
@@ -132,23 +182,34 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        		case 200:
 	        			fileArray.pop();
 	        			if(fileArray.length == 0){
-	        				me.isAOCFileRemainig = false;
-	        				if(!me.isFileRemaining){
-	        					Helper.showToast('success','Record has been save successfully.');
-	        					me.onBackBtnClick();
-	        					Ext.getBody().unmask();
-	        				}
+	    					me.totalCount = 1;
+	    					orderFileImageContainer.removeAll();
+	    					attchmentContainer.removeAll();
+	    					sampleFileContainer.removeAll();
+	    					me.fileArray = [];
+	    					
+    						Helper.showToast('success','Record has been save successfully.');
+    						me.onBackBtnClick();
+	    					Ext.getBody().unmask();
+	    					
 	        			}else{
-	        				console.log('AOC File Uploaded');
-		        			me.uploadAOCFieldFiles(wId);
+	        				console.log('File Uploaded');
+		        			me.uploadFiles(wId, filePath);
 	        			}
 	        			break;
 	        	}
 	        }
-		}else{
-			Ext.getBody().unmask();
-		}
-	},
+    	}else{
+    		me.totalCount = 1;
+    		orderFileImageContainer.removeAll();
+			attchmentContainer.removeAll();
+			sampleFileContainer.removeAll();
+    		me.fileArray = [];
+    		Helper.showToast('success','Record has been save successfully.');
+			me.onBackBtnClick();
+    		Ext.getBody().unmask();
+    	}
+    },
 	loadGridAfterFormSave:function(id){
 		var me = this,
 			refs = me.getReferences(),
@@ -436,71 +497,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		me.addFileInBox(obj, sampleFileContainer,'Sample' );
 	},
-	uploadFiles:function(wId, filePath){
-    	var me = this;
-    		refs = me.getReferences(),
-    		xhttp = new XMLHttpRequest(),
-    		fileArray = this.fileArray,
-    		formData = new FormData(),
-    		orderFileImageContainer = refs.orderFileImageContainer,
-    		attchmentContainer = refs.attchmentContainer,
-    		sampleFileContainer = refs.sampleFileContainer,
-    		url =applicationContext+'/rest/wi/fileupload',
-    		len = fileArray.length;
-    		
-    	if(len > 0){
-	    	formData.append('file',fileArray[len-1]);
-	    	formData.append('id', fileArray[len-1].recordId  ? fileArray[len-1].recordId : wId);
-	    	formData.append('wiId', wId);
-	    	formData.append('fileName', fileArray[len-1].name);
-	    	formData.append('fileType', fileArray[len-1].fileType);
-	    	
-	    	if(len == 1){
-	    		formData.append('sendAcknowledgementFlag', 'true');
-	    	}else{
-	    		formData.append('sendAcknowledgementFlag', 'false');
-	    	}
-	    	
-	        xhttp.onreadystatechange = function() {
-	            (4 === xhttp.readyState) && uploadDone(xhttp);
-	        };
-	   
-	        xhttp.open("POST", url, true);
-	        xhttp.send(formData);
-	        
-	        function uploadDone(xhttp){
-	        	switch(xhttp.status){
-	        		case 200:
-	        			fileArray.pop();
-	        			if(fileArray.length == 0){
-	    					me.totalCount = 1;
-	    					orderFileImageContainer.removeAll();
-	    					attchmentContainer.removeAll();
-	    					sampleFileContainer.removeAll();
-	    					me.fileArray = [];
-	    					
-    						Helper.showToast('success','Record has been save successfully.');
-    						me.onBackBtnClick();
-	    					Ext.getBody().unmask();
-	    					
-	        			}else{
-	        				console.log('File Uploaded');
-		        			me.uploadFiles(wId, filePath);
-	        			}
-	        			break;
-	        	}
-	        }
-    	}else{
-    		me.totalCount = 1;
-    		orderFileImageContainer.removeAll();
-			attchmentContainer.removeAll();
-			sampleFileContainer.removeAll();
-    		me.fileArray = [];
-    		Helper.showToast('success','Record has been save successfully.');
-			me.onBackBtnClick();
-    		Ext.getBody().unmask();
-    	}
-    },
     
     //AOCField Grid
     
@@ -553,4 +549,5 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         }
         me.fileArray.push(file);
     }
+   
 });

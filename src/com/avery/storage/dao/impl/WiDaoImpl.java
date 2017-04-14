@@ -133,11 +133,11 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Wi wiObj = new Wi();
 		wiObj.setId(wiId);
 		Session session = null;
-		WiOrgInfo wiOrgInfoObj = new WiOrgInfo();
 		Long entityId = 0L;
 		try {
 			session = getSessionFactory().getCurrentSession();
 			for (Object obj : listWiOrg) {
+				WiOrgInfo wiOrgInfoObj = new WiOrgInfo();
 				LinkedHashMap entityMap = (LinkedHashMap) obj;
 				// entityId = Long.parseLong((String)
 				// entityMap.get("parentId"));
@@ -195,11 +195,11 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Wi wiObj = new Wi();
 		wiObj.setId(wiId);
 		Session session = null;
-		WiAocFieldNameInfo aocFieldInfoObj = new WiAocFieldNameInfo();
 		Long entityId = 0L;
 		try {
 			session = getSessionFactory().getCurrentSession();
 			for (Object obj : listWiAocField) {
+				WiAocFieldNameInfo aocFieldInfoObj = new WiAocFieldNameInfo();
 				LinkedHashMap entityMap = (LinkedHashMap) obj;
 				entityId = Long.parseLong(String.valueOf(entityMap.get("parentId")));
 				aocFieldInfoObj.setId(entityId);
@@ -227,11 +227,11 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Wi wiObj = new Wi();
 		wiObj.setId(wiId);
 		Session session = null;
-		WiSystemInfo systemInfoObj = new WiSystemInfo();
 		Long entityId = 0L;
 		try {
 			session = getSessionFactory().getCurrentSession();
 			for (Object obj : listWiSystem) {
+				WiSystemInfo systemInfoObj = new WiSystemInfo();
 				LinkedHashMap entityMap = (LinkedHashMap) obj;
 				entityId = Long.parseLong(String.valueOf(entityMap.get("parentId")));
 				systemInfoObj.setId(entityId);

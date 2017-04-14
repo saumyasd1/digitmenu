@@ -56,9 +56,26 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    me.getSKUValidationItems(),
 		    {
+		    	xtype:'checkboxgroup',
+		    	columns:3,
+		    	vertical:true,
+		    	labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+		    	width:500,
+		    	items:[
+		    	    { boxLabel:'LLKK', name:'LLKK', inputValue:'true'},
+		    	    { boxLabel:'Factory Transfer', name:'FactoryTransfer', inputValue:'true'},
+		    	    { boxLabel:'Shipment Sample', name:'ShipmentSample', inputValue:'true'},
+		    	    { boxLabel:'Size Check', name:'SizeCheck', inputValue:'true'},
+		    	    { boxLabel:'Fabric Check', name:'FabricCheck', inputValue:'true'},
+		    	    { boxLabel:'Local Billing', name:'LocalBilling', inputValue:'true'},
+		    	    { boxLabel:'Waive MOA', name:'WaiveMOA', inputValue:'true'},
+		    	    { boxLabel:'Waive MOQ', name:'WaiveMOQ', inputValue:'true'}
+		    	]
+		    },
+		    {
 		    	xtype:'wiorderfiberlinegrid',
 		    	reference:'wiorderfiberlinegrid',
-		    	height:370,
+		    	height:'auto',
 		    	scrollable:true,
 		    	margin:'20 0',
 		    	border:'solid 1px #ccc;'
@@ -98,20 +115,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					fieldLabel:'Assignee',
 					name:'assignee',
 					flex:1,
-					displayField:'roleName',
+					displayField:'assigneeName',
 					reference:'assigneeCombo',
 					valueField:'id',
-					store:new Ext.data.JsonStore({
-						autoLoad:true,
-						proxy:{
-							type: 'rest',
-							url:applicationContext+'/rest/wiroles',
-					        reader: {
-					            type: 'json'
-					        }
-						},
-						fields:['roleName','id','roleId']
-					})
+					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore'),
 				},
 				{
 					xtype:'combo',

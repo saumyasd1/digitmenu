@@ -672,5 +672,14 @@ Ext.define('AOC.util.Helper',{
 			],
 			fields:'name'
 		})
+	},
+	showMask:function(msg){
+		Ext.getBody().mask(msg ? msg : AOCLit.pleaseWait);
+	},
+	hideMask:function(){
+		Ext.getBody().unmask();
+	},
+	getUserRole:function(){
+		return 1;
 	}
 });

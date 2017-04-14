@@ -18,8 +18,19 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadDefaultGrid();
 		me.setReadOnlyView(false);
 		me.showHideSaveSubmitBtn(true);
+		me.loadAssigneeCombo();
 		me.resetFileCont();
 		view.getLayout().setActiveItem(1);
+	},
+	loadAssigneeCombo:function(){
+		var me = this,
+			view = me.getView(),
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel,
+			formRefs = wiFormPanel.getReferences(),
+			assigneeCombo = formRefs.assigneeCombo;
+		
+		assigneeCombo.store.load({params:{roleId:Helper.getUserRole()}});
 	},
 	resetFileCont:function(){
 		var me = this,

@@ -39,7 +39,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    },
 		    {
 		    	text:'Submit',
-		    	reference:'wiSubmitBtn'
+		    	reference:'wiSubmitBtn',
+		    	handler:'onWiSubmitBtnClick'
 		    }
 		]
 	},
@@ -402,7 +403,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	  flex:1,
 		    	  title:'System Level',
 		    	  titleAlign:'center',
-		    	  height:170
+		    	  height:'auto'
 		      },
 		      {
 		    	  title:'Org Level',
@@ -456,7 +457,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	  reference:'wiOrgGrid',
 		    	  hidden:true,
 		    	  flex:1,
-		    	  height:325,
+		    	  height:'auto',
 		    	  border:'solid 1px #ccc;',
 		    	  margin:'10 0'
     	      }
