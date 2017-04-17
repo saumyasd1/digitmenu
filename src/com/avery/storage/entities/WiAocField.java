@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +37,6 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiAocFieldMixIn;
 import com.avery.storage.service.WiAocFieldService;
-import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,13 +66,16 @@ public class WiAocField extends MainAbstractEntity {
 
 	@Column(name = "logic", length = 500)
 	private String logic;
-	
+
 	@Column(name = "filePath", length = 500)
 	private String filePath;
 
 	@Column(name = "fileName", length = 100)
 	private String fileName;
-	
+
+	@Column(name = "reference", length = 500)
+	private String reference;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
@@ -114,7 +115,7 @@ public class WiAocField extends MainAbstractEntity {
 	public void setLogic(String logic) {
 		this.logic = logic;
 	}
-	
+
 	public String getFilePath() {
 		return filePath;
 	}
@@ -129,6 +130,14 @@ public class WiAocField extends MainAbstractEntity {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	public Wi getVarWi() {
@@ -206,7 +215,7 @@ public class WiAocField extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
-	
+
 	@POST
 	@Path("/fileupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -214,23 +223,26 @@ public class WiAocField extends MainAbstractEntity {
 			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
 			@FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
-//		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
-//		Properties props = new Properties();
+		// InputStream in =
+		// this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+		// Properties props = new Properties();
 		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.FILEATTACHMENT_PATH);
 		String directoryPath = null;
 		try {
-//			props.load(in);
+			// props.load(in);
 			directoryPath = defaultDirectoryPath + File.separatorChar + wiId;
 			new File(directoryPath).mkdir();
 			File targetFile = new File(directoryPath + File.separatorChar + fileName);
 			FileUtils.copyInputStreamToFile(is, targetFile);
-//			ApplicationUtils.fileUpload(is, directoryPath, fileName);
+			// ApplicationUtils.fileUpload(is, directoryPath, fileName);
 			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
 					.getBean("wiAocFieldService");
-//			Boolean flag = wiAocFieldService.saveFileData(entityId, directoryPath, fileName);
-//			if (flag == false)
-//				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
-//						.status(Status.INTERNAL_SERVER_ERROR).build();
+			// Boolean flag = wiAocFieldService.saveFileData(entityId,
+			// directoryPath, fileName);
+			// if (flag == false)
+			// return Response.ok("There was some problem in uploading the
+			// file", MediaType.TEXT_PLAIN)
+			// .status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (IOException e) {
 			e.printStackTrace();
 			AppLogger.getSystemLogger().error("Error in uploading the file -> ", e);

@@ -75,6 +75,9 @@ public class WiSystem extends MainAbstractEntity {
 
 	@Column(name = "defaultOrg", length = 50)
 	private String defaultOrg;
+	
+	@Column(name = "defaultSelected")
+	private boolean defaultSelected;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_id")
@@ -154,6 +157,14 @@ public class WiSystem extends MainAbstractEntity {
 
 	public void setDefaultOrg(String defaultOrg) {
 		this.defaultOrg = defaultOrg;
+	}
+
+	public boolean isDefaultSelected() {
+		return defaultSelected;
+	}
+
+	public void setDefaultSelected(boolean defaultSelected) {
+		this.defaultSelected = defaultSelected;
 	}
 
 	public Wi getVarWi() {

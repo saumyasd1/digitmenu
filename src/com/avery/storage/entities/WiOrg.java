@@ -63,6 +63,9 @@ public class WiOrg extends MainAbstractEntity {
 
 	@Column(name = "shipToCode", length = 50)
 	private String shipToCode;
+	
+	@Column(name = "defaultSelected")
+	private boolean defaultSelected;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_id")
@@ -110,6 +113,14 @@ public class WiOrg extends MainAbstractEntity {
 
 	public void setShipToCode(String shipToCode) {
 		this.shipToCode = shipToCode;
+	}
+
+	public boolean isDefaultSelected() {
+		return defaultSelected;
+	}
+
+	public void setDefaultSelected(boolean defaultSelected) {
+		this.defaultSelected = defaultSelected;
 	}
 
 	public Wi getVarWi() {
