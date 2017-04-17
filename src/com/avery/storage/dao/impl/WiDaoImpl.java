@@ -3,6 +3,7 @@ package com.avery.storage.dao.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,10 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
@@ -29,6 +33,7 @@ import com.avery.storage.entities.WiSchemaIdentification;
 import com.avery.storage.entities.WiSystem;
 import com.avery.storage.entities.WiSystemInfo;
 import com.avery.storage.entities.WiSystemLevel;
+import com.avery.storage.entities.WiUser;
 import com.avery.storage.service.WiService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -48,8 +53,17 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Session session = null;
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(Wi.class);
-
+		ProjectionList proj = Projections.projectionList()
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("factoryName"), "factoryName")
+				.add(Projections.property("status"), "status")
+				.add(Projections.property("varWiUser.firstName"), "assigneeFirstName")
+				.add(Projections.property("varWiUser.lastName"), "assigneeLastName")
+				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
+		criteria = session.createCriteria(Wi.class)
+				.createAlias("varWiUser", "varWiUser");
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Wi.class));
 		List<Wi> list = criteria.list();
 		HashMap<String, Map> wiStatusList = ApplicationUtils.wiStatusCode;
 		if (wiStatusList == null)
@@ -71,11 +85,10 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 				wi.setCodeValue(codeValue);
 			} else {
 				wi.setCodeValue("");
-
 			}
 		}
 
-		entitiesMap.put("wi", criteria.list());
+		entitiesMap.put("wi", new LinkedHashSet(list));
 		return entitiesMap;
 	}
 
@@ -96,7 +109,10 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			// entitiesMap.get("");
 			wi = mapper.readValue(mapper.writeValueAsString(entitiesMap), Wi.class);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			wi.setStatus("1");
+			//wi.setStatus("1");
+			WiUser wiUserObj = new WiUser();
+			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
+			wi.setVarWiUser(wiUserObj);
 			wiId = wiService.create(wi);
 			Wi wiObj = new Wi();
 			wiObj.setId(wiId);

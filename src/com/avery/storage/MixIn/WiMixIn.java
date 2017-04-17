@@ -8,6 +8,7 @@ import com.avery.storage.entities.WiOrg;
 import com.avery.storage.entities.WiSchemaIdentification;
 import com.avery.storage.entities.WiSystem;
 import com.avery.storage.entities.WiSystemLevel;
+import com.avery.storage.entities.WiUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -33,5 +34,7 @@ public abstract class WiMixIn {
 	
 	@JsonIgnore
 	public abstract List<WiFiles> getListWiFiles();
-
+	
+	@JsonIgnore
+	public abstract WiUser getVarWiUser();
 }

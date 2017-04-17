@@ -69,6 +69,9 @@ public class WiUser extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
 	private List<WiPermissions> listWiPermissions;
 	
+	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
+	private List<Wi> listWi;
+	
 	public WiUser() {
 
 	}	
@@ -153,6 +156,15 @@ public class WiUser extends MainAbstractEntity {
 		this.listWiPermissions = listWiPermissions;
 	}
 	
+	public List<Wi> getListWi() {
+		return listWi;
+	}
+
+	public void setListWi(List<Wi> listWi) {
+		this.listWi = listWi;
+	}
+
+
 	@Transient
 	private long roleId;
 	

@@ -3,6 +3,7 @@ package com.avery.storage.MixIn;
 import java.util.Date;
 import java.util.List;
 
+import com.avery.storage.entities.Wi;
 import com.avery.storage.entities.WiPermissions;
 import com.avery.storage.entities.WiRoles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +25,11 @@ public abstract class WiUserMixIn {
 
 	@JsonIgnore
 	public abstract String getComment();
+	
+	@JsonIgnore
+	public abstract List<Wi> getListWi();	
+	
+	
 
 	@JsonIgnore
 	public abstract Date getCreatedDate();

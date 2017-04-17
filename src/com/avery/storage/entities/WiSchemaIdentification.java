@@ -101,17 +101,17 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 	@Column(name = "attachmentExcelSheet", length = 100)
 	private String attachmentExcelSheet;
 
-	@Column(name = "emailSubjectRequired")
-	private boolean emailSubjectRequired;
+	@Column(name = "emailSubjectRequired", length = 10)
+	private String emailSubjectRequired;
 
-	@Column(name = "emailBodyRequired")
-	private boolean emailBodyRequired;
+	@Column(name = "emailBodyRequired", length = 10)
+	private String emailBodyRequired;
 
-	@Column(name = "orderFileRequired")
-	private boolean orderFileRequired;
+	@Column(name = "orderFileRequired", length = 10)
+	private String orderFileRequired;
 
-	@Column(name = "attachmentFileRequired")
-	private boolean attachmentFileRequired;
+	@Column(name = "attachmentFileRequired", length = 10)
+	private String attachmentFileRequired;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
@@ -277,35 +277,35 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 		this.attachmentExcelSheet = attachmentExcelSheet;
 	}
 
-	public boolean isEmailSubjectRequired() {
+	public String getEmailSubjectRequired() {
 		return emailSubjectRequired;
 	}
 
-	public void setEmailSubjectRequired(boolean emailSubjectRequired) {
+	public void setEmailSubjectRequired(String emailSubjectRequired) {
 		this.emailSubjectRequired = emailSubjectRequired;
 	}
 
-	public boolean isEmailBodyRequired() {
+	public String getEmailBodyRequired() {
 		return emailBodyRequired;
 	}
 
-	public void setEmailBodyRequired(boolean emailBodyRequired) {
+	public void setEmailBodyRequired(String emailBodyRequired) {
 		this.emailBodyRequired = emailBodyRequired;
 	}
 
-	public boolean isOrderFileRequired() {
+	public String getOrderFileRequired() {
 		return orderFileRequired;
 	}
 
-	public void setOrderFileRequired(boolean orderFileRequired) {
+	public void setOrderFileRequired(String orderFileRequired) {
 		this.orderFileRequired = orderFileRequired;
 	}
 
-	public boolean isAttachmentFileRequired() {
+	public String getAttachmentFileRequired() {
 		return attachmentFileRequired;
 	}
 
-	public void setAttachmentFileRequired(boolean attachmentFileRequired) {
+	public void setAttachmentFileRequired(String attachmentFileRequired) {
 		this.attachmentFileRequired = attachmentFileRequired;
 	}
 

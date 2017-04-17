@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -247,6 +249,10 @@ public class Wi extends MainAbstractEntity {
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiFiles> listWiFiles;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "assignee_id")
+	WiUser varWiUser;
 
 	/*
 	 * @ManyToOne(fetch = FetchType.LAZY)
@@ -773,6 +779,14 @@ public class Wi extends MainAbstractEntity {
 	public void setListWiFiles(List<WiFiles> listWiFiles) {
 		this.listWiFiles = listWiFiles;
 	}
+	
+	public WiUser getVarWiUser() {
+		return varWiUser;
+	}
+
+	public void setVarWiUser(WiUser varWiUser) {
+		this.varWiUser = varWiUser;
+	}
 
 	@Transient
 	private String iconName;
@@ -782,6 +796,12 @@ public class Wi extends MainAbstractEntity {
 
 	@Transient
 	private String codeValue;
+	
+	@Transient
+	private String assigneeFirstName;
+	
+	@Transient
+	private String assigneeLastName;
 
 	public String getIconName() {
 		return iconName;
@@ -805,6 +825,22 @@ public class Wi extends MainAbstractEntity {
 
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
+	}
+
+	public String getAssigneeFirstName() {
+		return assigneeFirstName;
+	}
+
+	public void setAssigneeFirstName(String assigneeFirstName) {
+		this.assigneeFirstName = assigneeFirstName;
+	}
+
+	public String getAssigneeLastName() {
+		return assigneeLastName;
+	}
+
+	public void setAssigneeLastName(String assigneeLastName) {
+		this.assigneeLastName = assigneeLastName;
 	}
 
 	@Override
