@@ -26,9 +26,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiSystemLevelMixIn;
-import com.avery.storage.MixIn.WiSystemMixIn;
 import com.avery.storage.service.WiSystemLevelService;
-import com.avery.storage.service.WiSystemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -67,6 +65,15 @@ public class WiSystemLevel extends MainAbstractEntity {
 	@Column(name = "additionalLogicValidation", length = 250)
 	private String additionalLogicValidation;
 
+	@Column(name = "reference", length = 500)
+	private String reference;
+
+	@Column(name = "defaultCaptureComplicatedLogic", length = 250)
+	private String defaultCaptureComplicatedLogic;
+	
+	@Column(name = "legacyFieldName", length = 100)
+	private String legacyFieldName;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
@@ -119,6 +126,30 @@ public class WiSystemLevel extends MainAbstractEntity {
 		this.additionalLogicValidation = additionalLogicValidation;
 	}
 
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getDefaultCaptureComplicatedLogic() {
+		return defaultCaptureComplicatedLogic;
+	}
+
+	public void setDefaultCaptureComplicatedLogic(String defaultCaptureComplicatedLogic) {
+		this.defaultCaptureComplicatedLogic = defaultCaptureComplicatedLogic;
+	}
+
+	public String getLegacyFieldName() {
+		return legacyFieldName;
+	}
+
+	public void setLegacyFieldName(String legacyFieldName) {
+		this.legacyFieldName = legacyFieldName;
+	}
+
 	public Wi getVarWi() {
 		return varWi;
 	}
@@ -149,13 +180,13 @@ public class WiSystemLevel extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
-	
+
 	@GET
 	@Path("systemlevel")
-	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id){
+	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id) {
 		Map<?, ?> entitiesMap = null;
 		Response.ResponseBuilder rb = null;
-		try{
+		try {
 			Long entityId = Long.parseLong(id);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -165,8 +196,7 @@ public class WiSystemLevel extends MainAbstractEntity {
 			entitiesMap = wiSystemLevelService.getEntitiesByWiId(entityId);
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());

@@ -493,8 +493,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							width:230,
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:1},
-							    {boxLabel:'Not Required', name:'emailSubjectRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:'1'},
+							    {boxLabel:'Not Required', name:'emailSubjectRequired', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onEmailSubjectRequiredRadioChange'
@@ -573,8 +573,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							width:230,
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:1},
-							    {boxLabel:'Not Required', name:'emailBodyRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:'1'},
+							    {boxLabel:'Not Required', name:'emailBodyRequired', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onEmailBodyRequiredRadioChange'
@@ -629,8 +629,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							width:230,
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'orderFileRequired', inputValue:1},
-							    {boxLabel:'Not Required', name:'orderFileRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'orderFileRequired', inputValue:'1'},
+							    {boxLabel:'Not Required', name:'orderFileRequired', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onOrderRequiredRadioChange'
@@ -690,8 +690,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	width:300,
 							margin:'0 0 5 0',
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:1, checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:2}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:'1', checked:true},
+    		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:'2'}
     		    	    	],
     		    	    	listeners:{
     		    	    		change:'onOrderRadioChange'
@@ -766,8 +766,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							width:230,
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'attachmentRequired', inputValue:1},
-							    {boxLabel:'Not Required', name:'attachmentRequired', inputValue:2, checked:true}
+							    {boxLabel:'Required', name:'attachmentRequired', inputValue:'1'},
+							    {boxLabel:'Not Required', name:'attachmentRequired', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onAttachmentRequiredRadioChange'
@@ -827,8 +827,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	width:300,
 							margin:'0 0 5 0',
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:1, checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:2}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:'1', checked:true},
+    		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:'2'}
     		    	    	],
     		    	    	listeners:{
     		    	    		change:'onAttachmentRadioChange'
