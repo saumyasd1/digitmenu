@@ -9,7 +9,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
-		fields:['id','factoryName','assigneeName','status'],
+		fields:['id','factoryName','assigneeFirstName','assigneeLastName','status'],
 		autoLoad:true,
 		proxy: {
 			type: 'rest',
@@ -105,7 +105,10 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		    {
 		    	text:'Assignee',
 		    	dataIndex:'assignee',
-		    	flex:1.5
+		    	flex:1.5,
+		    	renderer:function(value, metadata, record){
+		    		return record.get('assigneeFirstName')+' '+ record.get('assigneeLastName');
+		    	}
 		    },
 			{  
 				text : 'Last Modified By',
