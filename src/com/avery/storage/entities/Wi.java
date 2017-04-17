@@ -7,7 +7,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +41,6 @@ import com.avery.storage.MixIn.WiMixIn;
 import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
 import com.avery.storage.service.WiAocFieldService;
 import com.avery.storage.service.WiService;
-import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,7 +61,7 @@ public class Wi extends MainAbstractEntity {
 	private static final long serialVersionUID = 1833552362987121156L;
 	@Column(name = "status", length = 50)
 	private String status;
-	
+
 	@Column(name = "factoryName", length = 50)
 	private String factoryName;
 
@@ -208,6 +206,30 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "aocDefaultOneShipToSite", length = 10)
 	private String aocDefaultOneShipToSite;
 
+	@Column(name = "llkk", length = 10)
+	private String llkk;
+
+	@Column(name = "factoryTransfer", length = 10)
+	private String factoryTransfer;
+
+	@Column(name = "shipmentSample", length = 10)
+	private String shipmentSample;
+
+	@Column(name = "sizeCheck", length = 10)
+	private String sizeCheck;
+
+	@Column(name = "fabricCheck", length = 10)
+	private String fabricCheck;
+
+	@Column(name = "localBilling", length = 10)
+	private String localBilling;
+
+	@Column(name = "waiveMOA", length = 10)
+	private String waiveMOA;
+
+	@Column(name = "waiveMOQ", length = 10)
+	private String waiveMOQ;
+
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiSystem> listWiSystem;
 
@@ -224,8 +246,8 @@ public class Wi extends MainAbstractEntity {
 	private List<WiSystemLevel> listWiSystemLevel;
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
-	private List<WiFiles > listWiFiles;
-	
+	private List<WiFiles> listWiFiles;
+
 	/*
 	 * @ManyToOne(fetch = FetchType.LAZY)
 	 * 
@@ -247,7 +269,7 @@ public class Wi extends MainAbstractEntity {
 	 * 
 	 * @JoinColumn(name = "systemId") private SystemInfo varSystemInfo;
 	 */
-	
+
 	public String getStatus() {
 		return status;
 	}
@@ -255,7 +277,7 @@ public class Wi extends MainAbstractEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getFactoryName() {
 		return factoryName;
 	}
@@ -640,6 +662,70 @@ public class Wi extends MainAbstractEntity {
 		this.aocDefaultOneShipToSite = aocDefaultOneShipToSite;
 	}
 
+	public String getLlkk() {
+		return llkk;
+	}
+
+	public void setLlkk(String llkk) {
+		this.llkk = llkk;
+	}
+
+	public String getFactoryTransfer() {
+		return factoryTransfer;
+	}
+
+	public void setFactoryTransfer(String factoryTransfer) {
+		this.factoryTransfer = factoryTransfer;
+	}
+
+	public String getShipmentSample() {
+		return shipmentSample;
+	}
+
+	public void setShipmentSample(String shipmentSample) {
+		this.shipmentSample = shipmentSample;
+	}
+
+	public String getSizeCheck() {
+		return sizeCheck;
+	}
+
+	public void setSizeCheck(String sizeCheck) {
+		this.sizeCheck = sizeCheck;
+	}
+
+	public String getFabricCheck() {
+		return fabricCheck;
+	}
+
+	public void setFabricCheck(String fabricCheck) {
+		this.fabricCheck = fabricCheck;
+	}
+
+	public String getLocalBilling() {
+		return localBilling;
+	}
+
+	public void setLocalBilling(String localBilling) {
+		this.localBilling = localBilling;
+	}
+
+	public String getWaiveMOA() {
+		return waiveMOA;
+	}
+
+	public void setWaiveMOA(String waiveMOA) {
+		this.waiveMOA = waiveMOA;
+	}
+
+	public String getWaiveMOQ() {
+		return waiveMOQ;
+	}
+
+	public void setWaiveMOQ(String waiveMOQ) {
+		this.waiveMOQ = waiveMOQ;
+	}
+
 	public List<WiSystem> getListWiSystem() {
 		return listWiSystem;
 	}
@@ -679,7 +765,7 @@ public class Wi extends MainAbstractEntity {
 	public void setListWiSystemLevel(List<WiSystemLevel> listWiSystemLevel) {
 		this.listWiSystemLevel = listWiSystemLevel;
 	}
-	
+
 	public List<WiFiles> getListWiFiles() {
 		return listWiFiles;
 	}
@@ -690,10 +776,10 @@ public class Wi extends MainAbstractEntity {
 
 	@Transient
 	private String iconName;
-	
+
 	@Transient
 	private String colorCode;
-	
+
 	@Transient
 	private String codeValue;
 
@@ -724,7 +810,7 @@ public class Wi extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-//		List<Wi> wi = null;
+		// List<Wi> wi = null;
 		Map entitiesMap = null;
 		try {
 			MultivaluedMap queryMap = ui.getQueryParameters();
@@ -816,7 +902,7 @@ public class Wi extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
-	
+
 	@POST
 	@Path("/fileupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -824,28 +910,25 @@ public class Wi extends MainAbstractEntity {
 			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
 			@FormDataParam("fileType") String fileType, @FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
-//		InputStream in = this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
-//		Properties props = new Properties();
+		// InputStream in =
+		// this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
+		// Properties props = new Properties();
 		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.WIFILES_PATH);
 		String filePath = null;
 		boolean isAocFileType = false;
 		boolean successFlag = false;
 		try {
-//			props.load(in);
-			if(fileType.equalsIgnoreCase("Order")){
+			// props.load(in);
+			if (fileType.equalsIgnoreCase("Order")) {
 				filePath = defaultDirectoryPath + File.separator + "order";
-			}
-			else if(fileType.equalsIgnoreCase("Attachment")){
+			} else if (fileType.equalsIgnoreCase("Attachment")) {
 				filePath = defaultDirectoryPath + File.separator + "attachment";
-			}
-			else if(fileType.equalsIgnoreCase("Sample")){
+			} else if (fileType.equalsIgnoreCase("Sample")) {
 				filePath = defaultDirectoryPath + File.separator + "sample";
-			}
-			else if(fileType.equalsIgnoreCase("AocField")){
-				filePath = defaultDirectoryPath+File.separator+wiId;
+			} else if (fileType.equalsIgnoreCase("AocField")) {
+				filePath = defaultDirectoryPath + File.separator + wiId;
 				isAocFileType = true;
-			}
-			else{
+			} else {
 				AppLogger.getSystemLogger().error("Error in uploading the file -> Wrong filetype");
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
 						.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -856,10 +939,9 @@ public class Wi extends MainAbstractEntity {
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
 			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
 					.getBean("wiAocFieldService");
-			if(isAocFileType){
+			if (isAocFileType) {
 				successFlag = wiAocFieldService.saveFileData(entityId, wiId, filePath, fileName);
-			}
-			else{
+			} else {
 				successFlag = wiService.saveFileData(entityId, filePath, fileName, fileType);
 			}
 			if (successFlag == false)

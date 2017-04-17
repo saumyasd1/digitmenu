@@ -1,15 +1,20 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,8 +60,8 @@ public class WiStatus extends MainAbstractEntity {
 	@Column(name = "iconName", length = 100)
 	private String iconName;
 
-//	@OneToMany(mappedBy = "varWiStatus", fetch = FetchType.LAZY)
-//	private List<WiPermissions> listWiPermissions;
+	@OneToMany(mappedBy = "varWiStatus", fetch = FetchType.LAZY)
+	private List<WiPermissions> listWiPermissions;
 
 	public String getColorCode() {
 		return colorCode;
@@ -106,13 +111,13 @@ public class WiStatus extends MainAbstractEntity {
 		this.comment = comment;
 	}
 
-//	public List<WiPermissions> getListWiPermissions() {
-//		return listWiPermissions;
-//	}
-//
-//	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
-//		this.listWiPermissions = listWiPermissions;
-//	}
+	public List<WiPermissions> getListWiPermissions() {
+		return listWiPermissions;
+	}
+
+	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
+		this.listWiPermissions = listWiPermissions;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -139,5 +144,27 @@ public class WiStatus extends MainAbstractEntity {
 		}
 		return rb.build();
 
+	}
+	
+	@GET
+	@Path("status")
+	public Response getStatusListByRoleId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("roleId") String roleId){
+		Map responseMap = new HashMap();
+		Response.ResponseBuilder rb = null;
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		mapper.addMixIn(WiStatus.class, WiStatusMixIn.class);
+		try {
+			WiStatusService wiStatusService = (WiStatusService) SpringConfig.getInstance().getBean("wiStatusService");
+			responseMap = wiStatusService.getStatusListByRoleId(roleId);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			AppLogger.getSystemLogger().error("Error in loading the data -> ", e);
+			e.printStackTrace();
+			return Response.ok("There was some problem while loading the data").status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return rb.build();
 	}
 }

@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
@@ -61,6 +68,23 @@ public class WiStatusDaoImpl extends GenericDaoImpl<WiStatus, Long> implements W
 		}
 
 		return statusCode;
+	}
+	
+	public Map getStatusListByRoleId(String roleId){
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		Criteria criteria = null;
+		session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList()
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("value"), "value");
+		criteria = session.createCriteria(WiStatus.class)
+				.createAlias("listWiPermissions", "listWiPermissions")
+				.createAlias("listWiPermissions.varWiRoles", "varWiRoles")
+				.add(Restrictions.eq("varWiRoles.id", Long.parseLong(roleId)));
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(WiStatus.class));
+		entitiesMap.put("status", new LinkedHashSet(criteria.list()));
+		return entitiesMap;
 	}
 
 }

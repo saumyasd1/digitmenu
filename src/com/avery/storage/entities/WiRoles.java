@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -19,6 +21,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.WiRolesMixIn;
 import com.avery.storage.service.WiRolesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -41,8 +44,8 @@ public class WiRoles extends MainAbstractEntity {
 	@Column(name = "roleName", length = 50)
 	private String roleName;
 
-	// @OneToMany(mappedBy = "varWiRoles", fetch = FetchType.LAZY)
-	// private List<WiPermissions> listWiPermissions;
+	@OneToMany(mappedBy = "varWiRoles", fetch = FetchType.LAZY)
+	private List<WiPermissions> listWiPermissions;
 
 	public String getRoleName() {
 		return roleName;
@@ -52,13 +55,13 @@ public class WiRoles extends MainAbstractEntity {
 		this.roleName = roleName;
 	}
 
-	// public List<WiPermissions> getListWiPermissions() {
-	// return listWiPermissions;
-	// }
-	//
-	// public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
-	// this.listWiPermissions = listWiPermissions;
-	// }
+	public List<WiPermissions> getListWiPermissions() {
+	return listWiPermissions;
+	}
+	
+	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
+	this.listWiPermissions = listWiPermissions;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -67,10 +70,9 @@ public class WiRoles extends MainAbstractEntity {
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			// mapper.addMixIn(WiStatus.class, WiStatusMixIn.class);
+			mapper.addMixIn(WiRoles.class, WiRolesMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			WiRolesService wiRolesService = (WiRolesService) SpringConfig.getInstance()
-					.getBean("wiRolesService");
+			WiRolesService wiRolesService = (WiRolesService) SpringConfig.getInstance().getBean("wiRolesService");
 			wiRoles = wiRolesService.readAll();
 			if (wiRoles == null)
 				throw new Exception("Unable to find roles list ");
