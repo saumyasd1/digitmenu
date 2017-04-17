@@ -17,7 +17,8 @@ Ext.define('AOC.controller.MenuController', {
 		'WIOrgStore',
 		'WISystemStore',
 		'WIAOCFieldStore',
-        'WIAssigneeStore'
+        'WIAssigneeStore',
+        'WIStatusStore'
 	],
 	views : [
 		'base.BaseToolbar',

@@ -62,14 +62,14 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 		    	width:500,
 		    	items:[
-		    	    { boxLabel:'LLKK', name:'LLKK', inputValue:'true'},
-		    	    { boxLabel:'Factory Transfer', name:'FactoryTransfer', inputValue:'true'},
-		    	    { boxLabel:'Shipment Sample', name:'ShipmentSample', inputValue:'true'},
-		    	    { boxLabel:'Size Check', name:'SizeCheck', inputValue:'true'},
-		    	    { boxLabel:'Fabric Check', name:'FabricCheck', inputValue:'true'},
-		    	    { boxLabel:'Local Billing', name:'LocalBilling', inputValue:'true'},
-		    	    { boxLabel:'Waive MOA', name:'WaiveMOA', inputValue:'true'},
-		    	    { boxLabel:'Waive MOQ', name:'WaiveMOQ', inputValue:'true'}
+		    	    { boxLabel:'LLKK', name:'llkk', inputValue:'true'},
+		    	    { boxLabel:'Factory Transfer', name:'factoryTransfer', inputValue:'true'},
+		    	    { boxLabel:'Shipment Sample', name:'shipmentSample', inputValue:'true'},
+		    	    { boxLabel:'Size Check', name:'sizeCheck', inputValue:'true'},
+		    	    { boxLabel:'Fabric Check', name:'fabricCheck', inputValue:'true'},
+		    	    { boxLabel:'Local Billing', name:'localBilling', inputValue:'true'},
+		    	    { boxLabel:'Waive MOA', name:'waiveMOA', inputValue:'true'},
+		    	    { boxLabel:'Waive MOQ', name:'waiveMOQ', inputValue:'true'}
 		    	]
 		    },
 		    {
@@ -119,7 +119,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					reference:'assigneeCombo',
 					valueField:'id',
 					queryMode:'local',
-					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore'),
+					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
 				},
 				{
 					xtype:'combo',
@@ -132,17 +132,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					value:'1',
 					margin:'0 0 0 10',
 					queryMode:'local',
-					store:new Ext.data.JsonStore({
-						autoLoad:true,
-						proxy:{
-							type: 'rest',
-							url:applicationContext+'/rest/wistatus',
-					        reader: {
-					            type: 'json'
-					        }
-						},
-						fields:['value','id','roleId']
-					})
+					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore')
 				}
 			]
 		}
