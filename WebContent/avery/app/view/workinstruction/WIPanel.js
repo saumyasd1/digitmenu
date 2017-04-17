@@ -118,6 +118,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					displayField:'assigneeName',
 					reference:'assigneeCombo',
 					valueField:'id',
+					queryMode:'local',
 					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore'),
 				},
 				{
@@ -130,6 +131,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					valueField:'id',
 					value:'1',
 					margin:'0 0 0 10',
+					queryMode:'local',
 					store:new Ext.data.JsonStore({
 						autoLoad:true,
 						proxy:{

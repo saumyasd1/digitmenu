@@ -7,10 +7,10 @@ Ext.define('AOC.store.WIAssigneeStore', {
 	autoLoad:false,
 	proxy: {
         type: 'rest',
-        method:'GET',
         url : applicationContext+ '/rest/wiusers/assignee',
         reader: {
-            type: 'json'
+            type: 'json',
+            rootProperty:'assignee'
         }
     }
 });
