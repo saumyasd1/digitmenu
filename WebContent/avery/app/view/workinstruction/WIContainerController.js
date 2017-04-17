@@ -63,7 +63,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	loadDefaultGrid:function(){
 		var me = this,
-			view = me.getView()
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel,
 			formRefs = wiFormPanel.getReferences(),
@@ -103,6 +102,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			success:function(response){
 				var data = JSON.parse(response.responseText);
 				wiSystemGrid.store.loadData(data);
+				wiSystemGrid.getSelectionModel().select(wiSystemGrid.store.getAt(0));
 			}
 		});
 		
@@ -118,6 +118,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			success:function(response){
 				var data = JSON.parse(response.responseText);
 				wiOrgGrid.store.loadData(data);
+				wiOrgGrid.getSelectionModel().select(wiOrgGrid.store.getAt(0));
 			}
 		});
 	},
@@ -211,6 +212,10 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		AOCRuntime.setCurrentWiMode('edit');
 		me.setReadOnlyView(false);
 		me.loadWIForm();
+		
+		me.loadAssigneeCombo();
+		me.loadStatusCombo();
+		
 		me.showHideSaveSubmitBtn(true);
 	},
 	loadWIForm:function(){

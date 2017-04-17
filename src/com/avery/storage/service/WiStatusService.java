@@ -33,4 +33,9 @@ public class WiStatusService extends GenericEntityService<WiStatus, Long> {
 		return wiStatusDao.getStatusCode();
 	}
 
+	@Transactional
+	public Map getStatusListByRoleId(String roleId) {
+		return getWiStatusDao().getStatusListByRoleId(roleId);
+	}
+
 }

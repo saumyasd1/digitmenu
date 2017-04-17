@@ -20,6 +20,8 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			    	 listeners:{
 			    		 beforeedit:function(e, editor){
 			    			 var rec  = editor.grid.store.getAt(editor.rowIdx);
+			    			 if(editor.field != 'fieldValueExample'){return;}
+			    			 
 			    			 if(rec.get('aocFieldName') == 'APO'){
 			    				 editor.column.setEditor({
 									xtype:'combo',

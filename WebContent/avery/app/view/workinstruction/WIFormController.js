@@ -12,6 +12,18 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		parentCont.getLayout().setActiveItem(0);
 		parentCont.getLayout().getActiveItem().store.load();
 	},
+	config: {
+        listen: {
+        	store: {
+        		'#wiSystemStore': {
+        			load: 'onSystemGridStoreLoad'
+        		},
+        		'#wiOrgStore':{
+        			load:'onOrgLevelStoreLoad'
+        		}
+    		}
+        }
+    },
 	
 	//Order File section
 	onOrderRadioChange:function(field, newValue, oldValue){
@@ -123,6 +135,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		Ext.apply(values, {listWiOrg:me.processGridData(refs.wiOrgGrid)});
 		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
 		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
+//		Ext.apply(values, me.getRadioCheckBoxValue());
 		
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
@@ -144,6 +157,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		});
 		
 		console.log(values);
+	},
+	getRadioCheckBoxValue:function(values){
+		
 	},
 	uploadFiles:function(wId, filePath){
     	var me = this;
@@ -368,7 +384,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		}
 	},
 	
-	//System Grid
+	//System/Org Grid
 	onSystemGridBeforeEdit:function(e, editor){
 		var me = this,
 			currentRecord = editor.record,
@@ -411,7 +427,46 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			break;
 		}
 	},
-	
+	onSystemGridStoreLoad:function(store, record){
+    	var me = this,
+    		refs = this.getReferences(),
+    		wiSystemGrid = refs.wiSystemGrid;
+    	
+    	store.each(function(record){
+    		if(record.get('defaultSelected') == true){
+    			wiSystemGrid.getSelectionModel().select(record);
+    		}
+    	});
+    	
+    },
+    onOrgLevelStoreLoad:function(store, record){
+    	var me = this,
+    		refs = this.getReferences(),
+    		wiOrgGrid = refs.wiOrgGrid;
+    	
+    	store.each(function(record){
+    		if(record.get('defaultSelected') == true){
+    			wiOrgGrid.getSelectionModel().select(record);
+    		}
+    	});
+    	
+    },
+    onSystemGridRowSelect:function(view, record, index){
+    	var store = view.store;
+    	store.each(function(record){
+    		record.set('defaultSelected', false);
+    	});
+    	record.set('defaultSelected', true);
+    },
+    onOrgGridRowSelect:function(view, record, index){
+    	var store = view.store;
+    	store.each(function(record){
+    		record.set('defaultSelected', false);
+    	});
+    	record.set('defaultSelected', true);
+    },
+    //END of System/Org grid
+    
 	onSiteSelect:function(field){
 		var me = this;
 		me.showHideOrgView(field);

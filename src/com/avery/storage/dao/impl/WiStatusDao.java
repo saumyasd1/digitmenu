@@ -14,4 +14,6 @@ public interface WiStatusDao extends GenericDao<WiStatus, Long> {
 
 	public HashMap<String, Map> getStatusCode();
 
+	public Map getStatusListByRoleId(String roleId);
+
 }

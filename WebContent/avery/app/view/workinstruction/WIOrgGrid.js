@@ -20,16 +20,15 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 				ptype: 'cellediting',
 				clicksToEdit: 1,
 				listeners:{
-					//beforeedit:'OnBeforeEdit'
 				}
 			}],
-			//selModel: 'checkboxmodel',
 			selModel: {
 				selType: 'radiomodel'
 			},
 			listeners:{
 				'afterrender':function(){
-				}
+				},
+				select:'onOrgGridRowSelect'
 			}
 		});
 		this.callParent(arguments);

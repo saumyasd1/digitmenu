@@ -1,7 +1,7 @@
 Ext.define('AOC.store.WISystemStore', {
 	extend : 'Ext.data.Store',
 	fields:['artWorkHold','csrName','defaultOrg','invoiceLineInstruction','manufacturing', 'packingInstruction',
-        'shipMark','splitByShipSet', 'systemName','variableDataBreakdown'
+        'shipMark','splitByShipSet', 'systemName','variableDataBreakdown','defaultSelected'
     ],
 	autoLoad:false,
 	proxy: {

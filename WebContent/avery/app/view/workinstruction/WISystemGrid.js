@@ -28,7 +28,8 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			store: Ext.data.StoreManager.lookup('wiSystemStore') == null ? Ext.create('AOC.store.WISystemStore',{storeId:'wiSystemStore'}) : Ext.data.StoreManager.lookup('wiSystemStore'),
 			listeners:{
 				afterrender:function(grid){
-				}
+				},
+				select:'onSystemGridRowSelect'
 			}
 		});
 		me.callParent(arguments);

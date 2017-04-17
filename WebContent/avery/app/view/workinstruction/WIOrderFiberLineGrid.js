@@ -107,7 +107,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 			{
 				text : 'Explanation/Rules/Additional Logic/Validation '+ AOCLit.wiExplanationRulesIconText1,
 				flex:1.5,
-				dataIndex:'additionalLoginValidation',
+				dataIndex:'additionalLogicValidation',
 				editor:{
 					xtype:'textfield'
 				}
@@ -119,9 +119,6 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				editor:{
 					xtype:'textfield'
 				}
-			},
-			{
-				xtype:'actioncolumn'
 			}
 		]
 	}

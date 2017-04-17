@@ -436,7 +436,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					},
  	                {
 						xtype:'radiogroup',
-						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+						fieldLabel:'Should AOC default one Ship to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneShipToSite',
 						width:500,
 						margin:'0 0 5 0',
