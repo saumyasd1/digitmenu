@@ -32,9 +32,9 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	public long create(String wiData) throws Exception {
 		return getWiDao().create(wiData);
 	}
-	
+
 	@Transactional
-	public Map getDataForViewForm(Long entityId){
+	public Map getDataForViewForm(Long entityId) {
 		return getWiDao().getDataForViewForm(entityId);
 	}
 
@@ -47,6 +47,11 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	@Transactional
 	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType) {
 		return wiDao.saveFileData(wiId, directoryPath, fileName, fileType);
+	}
+
+	@Transactional
+	public boolean submitWi(String data) {
+		return getWiDao().submitWi(data);
 	}
 
 }

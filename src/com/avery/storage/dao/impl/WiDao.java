@@ -12,10 +12,12 @@ import com.avery.storage.entities.Wi;
 public interface WiDao extends GenericDao<Wi, Long> {
 
 	public long create(String wiData) throws Exception;
-	
+
 	public Map getDataForViewForm(Long entityId);
 
 	public Long update(String data) throws Exception;
 
 	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType);
+
+	public boolean submitWi(String data);
 }

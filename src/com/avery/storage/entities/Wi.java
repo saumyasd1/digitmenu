@@ -249,7 +249,7 @@ public class Wi extends MainAbstractEntity {
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiFiles> listWiFiles;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "assignee_id")
 	WiUser varWiUser;
@@ -779,7 +779,7 @@ public class Wi extends MainAbstractEntity {
 	public void setListWiFiles(List<WiFiles> listWiFiles) {
 		this.listWiFiles = listWiFiles;
 	}
-	
+
 	public WiUser getVarWiUser() {
 		return varWiUser;
 	}
@@ -796,10 +796,10 @@ public class Wi extends MainAbstractEntity {
 
 	@Transient
 	private String codeValue;
-	
+
 	@Transient
 	private String assigneeFirstName;
-	
+
 	@Transient
 	private String assigneeLastName;
 
@@ -992,6 +992,34 @@ public class Wi extends MainAbstractEntity {
 			e.printStackTrace();
 		}
 		rb = Response.ok("File uploaded successfully", MediaType.TEXT_PLAIN).status(Status.OK);
+		return rb.build();
+	}
+
+	@POST
+	@Path("submit")
+	public Response submitWi(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
+		Response.ResponseBuilder rb = null;
+		Map responseMap = new HashMap();
+		boolean successFlag = false;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
+			successFlag = wiService.submitWi(data);
+			responseMap.put("success", "true");
+			responseMap.put("msg", "WI has been submitted successfully");
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in submitting the WI -> ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in submitting the WI -> ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
 		return rb.build();
 	}
 

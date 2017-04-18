@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -34,7 +35,9 @@ import com.avery.storage.entities.WiSystem;
 import com.avery.storage.entities.WiSystemInfo;
 import com.avery.storage.entities.WiSystemLevel;
 import com.avery.storage.entities.WiUser;
+import com.avery.storage.service.SendNotification;
 import com.avery.storage.service.WiService;
+import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,16 +56,13 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Session session = null;
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
-		ProjectionList proj = Projections.projectionList()
-				.add(Projections.property("id"), "id")
-				.add(Projections.property("factoryName"), "factoryName")
-				.add(Projections.property("status"), "status")
+		ProjectionList proj = Projections.projectionList().add(Projections.property("id"), "id")
+				.add(Projections.property("factoryName"), "factoryName").add(Projections.property("status"), "status")
 				.add(Projections.property("varWiUser.firstName"), "assigneeFirstName")
 				.add(Projections.property("varWiUser.lastName"), "assigneeLastName")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
-		criteria = session.createCriteria(Wi.class)
-				.createAlias("varWiUser", "varWiUser");
+		criteria = session.createCriteria(Wi.class).createAlias("varWiUser", "varWiUser");
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Wi.class));
 		List<Wi> list = criteria.list();
 		HashMap<String, Map> wiStatusList = ApplicationUtils.wiStatusCode;
@@ -70,10 +70,10 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			throw new Exception("Unable to fetch Status List.");
 		for (Wi wi : list) {
 			String status = wi.getStatus();
-//			if (status == null | status.equals(""))
-//				throw new Exception("Unidentified value found for the status.");
+			// if (status == null | status.equals(""))
+			// throw new Exception("Unidentified value found for the status.");
 			Map<String, String> statusCodes = wiStatusList.get(status);
-//			if (statusCodes == null)
+			// if (statusCodes == null)
 			// throw new Exception("No data found in the status table for
 			// status:: \"" + status + "\".");
 			if (status != null && !"".equals(status)) {
@@ -109,7 +109,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			// entitiesMap.get("");
 			wi = mapper.readValue(mapper.writeValueAsString(entitiesMap), Wi.class);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			//wi.setStatus("1");
+			// wi.setStatus("1");
 			WiUser wiUserObj = new WiUser();
 			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
 			wi.setVarWiUser(wiUserObj);
@@ -300,6 +300,9 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 			HashMap<String, Object> entitiesMap = ApplicationUtils.convertJSONtoObjectMaps(data);
 			Wi wi = mapper.readValue(mapper.writeValueAsString(entitiesMap), Wi.class);
+			WiUser wiUserObj = new WiUser();
+			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
+			wi.setVarWiUser(wiUserObj);
 			session.update(wi);
 			wiId = Long.parseLong((String) entitiesMap.get("id"));
 			Wi wiObj = new Wi();
@@ -350,4 +353,61 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		return true;
 	}
 
+	@Override
+	public boolean submitWi(String data) {
+		Session session = null;
+		long wiId = 0;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			Map<String, String> inputDataMap = ApplicationUtils.convertJSONtoMaps(data);
+			wiId = Long.parseLong(inputDataMap.get("id"));
+			String status = inputDataMap.get("status");
+			long assignee = Long.parseLong(inputDataMap.get("assignee"));
+			Wi wiObj = (Wi) session.get(Wi.class, wiId);
+			WiUser wiUserObj = new WiUser();
+			wiUserObj.setId(assignee);
+			wiObj.setVarWiUser(wiUserObj);
+			wiObj.setStatus(status);
+			session.update(wiObj);
+			sendNotificationToAssignee(wiId, assignee, status);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Method for sending notification to the assignee user
+	 * 
+	 * @param wiId
+	 * @param assignee
+	 * @param status
+	 */
+	private void sendNotificationToAssignee(long wiId, long assignee, String status) {
+		final String fromUserName = ApplicationConstants.TEST_NOTIFICATION_EMAILID;
+		final String fromUserPass = ApplicationConstants.TEST_NOTIFICATION_PASSWORD;
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		WiUser wiUserObj = (WiUser) session.get(WiUser.class, assignee);
+		String firstName = wiUserObj.getFirstName();
+		String lastName = wiUserObj.getLastName()!=null ? wiUserObj.getLastName() : "";
+		String toUserName = wiUserObj.getEmail();
+		String subject = "New WI Assigned";
+		String mailBody ="This is a system generated Email, please do not reply.\n\n" + "Dear "+firstName+" "+lastName+",\n\n"
+				+ "A new WI has been assigned to you with following details"
+				+ "\nPlease take necessary actions.\n\n" + "Your WI Id is : " + wiId
+				+ "\n\nBest Regards\n\n"
+				+ "---------------------------------------------------------------------\n"
+				+ "The information transmitted is intended only for the person or entity to which it is addressed and may contain confidential "
+				+ "and/or privileged material. Any review, retransmission, dissemination or other use of, or taking of any action in reliance "
+				+ "upon, this information by persons or entities other than the intended recipient is prohibited. If you received this in error,"
+				+ " please contact the sender and delete the material from any computer."
+				+ "\n---------------------------------------------------------------------";
+		SendNotification sendNotification = new SendNotification();
+		sendNotification.send(fromUserName, fromUserPass, toUserName, subject, mailBody);
+	}
 }
