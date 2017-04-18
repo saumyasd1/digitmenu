@@ -4,7 +4,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	
 	onWiGridRefreshBtnClick : function(){
 		var me = this,
-			view = this.getView(),
 			refs = me.getReferences(),
 			wiGrid = refs.wiGrid;
 		
@@ -27,7 +26,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	getFormReference:function(){
 		var me = this,
-			view = me.getView(),
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel;
 		
@@ -49,7 +47,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	resetFileCont:function(){
 		var me = this,
-			view = this.getView(),
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel,
 			formRefs = wiFormPanel.getReferences(),
@@ -204,7 +201,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiSubmitBtn = formPanelRefs.wiSubmitBtn;
 		
 		wiSaveBtn[showFlag ? 'show':'hide']();
-		wiSubmitBtn[showFlag ? 'show':'hide']();
+//		wiSubmitBtn[showFlag ? 'show':'hide']();
+		wiSubmitBtn.show();
+		wiSubmitBtn.setDisabled(false);
 	},
 	onEditWIFormMenuItemClick:function(menuItem, e){
 		var me = this;
@@ -235,13 +234,15 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	
 	onViewWIFormMenuItemClick:function(menuItem, e){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel;
+		var me = this;
 	
 		AOCRuntime.setCurrentWiMode('view');
 		me.setReadOnlyView(true);
 		me.loadWIForm();
+		
+		me.loadAssigneeCombo();
+		me.loadStatusCombo();
+		
 		me.showHideSaveSubmitBtn(false);
 	},
 	setReadOnlyView:function(readOnlyFlag){
@@ -260,9 +261,11 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		
 		var len = tempArray.length;
 		for(var i = 0; i < len; i++){
+			if(tempArray[i].name == 'assignee' || tempArray[i].name == 'status'){
+				return;
+			}
 			tempArray[i].setReadOnly(readOnlyFlag);
 		}
-		
 	},
 	loadWiFormData:function(wId){
 		var me = this,
@@ -298,6 +301,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			formRefs = wiFormPanel.getReferences(),
 			grid = formRefs[gridType];
 	
+		if(gridType == 'wiOrgGrid'){
+			grid.show(); 
+		}
 		grid.store.load({
 			params:{id:wId},
 			callback:function(records, operation, success){

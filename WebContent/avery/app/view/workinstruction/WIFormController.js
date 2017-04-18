@@ -89,35 +89,38 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		});
 	},	
 	submitWIForm:function(){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wIForm,
-			form = wiFormPanel.getForm(),
-			values = form.getValues();
-	
-		if(Ext.isEmpty(values.assignee)){
-			Helper.showToast('validation', 'Please select Assigne before submit form.');
-		}else{
-			var obj = {
-				assignee : values.assignee,
-				status:values.assignee,
-				id: AOCRuntime.getWiId().toString()
-			};
+		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+			var me = this,
+				refs = me.getReferences(),
+				wiFormPanel = refs.wIForm,
+				form = wiFormPanel.getForm(),
+				values = form.getValues();
 		
-			Helper.showMask();
-			Ext.Ajax.request({
-				url:applicationContext+'/rest/wi/submit',
-				jsonData:obj,
-				success:function(response){
-					var data = JSON.parse(response.responseText);
-					form.reset();
-					Helper.showToast('success', data.message ? data.message : 'Record has been submitted successfully');
-					me.onBackBtnClick();
-				},
-				failure:function(){
-					Ext.getBody().unmask();
-				}
-			});
+			if(Ext.isEmpty(values.assignee)){
+				Helper.showToast('validation', 'Please select Assigne before submit form.');
+			}else{
+				var obj = {
+					assignee : values.assignee,
+					status:values.assignee,
+					id: AOCRuntime.getWiId().toString()
+				};
+			
+				Helper.showMask();
+				Ext.Ajax.request({
+					url:applicationContext+'/rest/wi/submit',
+					jsonData:obj,
+					success:function(response){
+						var data = JSON.parse(response.responseText);
+						form.reset();
+						Helper.showToast('success', data.message ? data.message : 'Record has been submitted successfully');
+						Ext.getBody().unmask();
+						me.onBackBtnClick();
+					},
+					failure:function(){
+						Ext.getBody().unmask();
+					}
+				});
+			}
 		}
 	},
 	

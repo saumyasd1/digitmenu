@@ -40,6 +40,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    {
 		    	text:'Submit',
 		    	reference:'wiSubmitBtn',
+		    	disabled:true,
 		    	handler:'onWiSubmitBtnClick'
 		    }
 		]
