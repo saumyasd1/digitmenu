@@ -120,7 +120,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					valueField:'id',
 					queryMode:'local',
 					listeners:{
-						change:'onAssigneeComboChange'
+						//change:'onAssigneeComboChange'
 					},
 					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
 				},

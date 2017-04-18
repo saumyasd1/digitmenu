@@ -574,6 +574,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	var inputEl = Ext.get('upload-file').dom;
     	inputEl.addEventListener('change', function() {
             me.onFilesChanged(inputEl.files);
+            inputEl.reset();
         }, me);
     },
     onFilesChanged:function(files){
