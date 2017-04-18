@@ -990,7 +990,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 				orderEmailQueueObj.setStatus(ApplicationConstants.Order_Email_Processed);
 			}
 			else{
-				orderEmailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+				orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 			}
 			orderEmailQueueObj.setOrderMail(false);
 			orderEmailQueueObj.setReceivedDate(now);
@@ -1053,7 +1053,10 @@ private static final long serialVersionUID = 3208431286041487210L;
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while creating the order queue", e);
 			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -1120,7 +1123,12 @@ private static final long serialVersionUID = 3208431286041487210L;
 				orderQueue.setPrevOrderQueueId(prevOrderQueueId);
 				orderQueueService.create(orderQueue);
 			}
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			if (sendAcknowledgementFlag.equalsIgnoreCase("true")) {
+				OrderEmailQueue emailQueueObj = orderEmailQueueService.read(orderEmailQueueId);
+				emailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+				orderEmailQueueService.update(emailQueueObj);
 				sendAcknowledgement(emailId, orderEmailQueueId);
 			}
 			ObjectMapper mapper = new ObjectMapper();
@@ -1133,7 +1141,7 @@ private static final long serialVersionUID = 3208431286041487210L;
 			AppLogger.getSystemLogger().error("Error while uploading the file", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error("Error while processing order", e);
+			AppLogger.getSystemLogger().error("Error while uploading the file", e);
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
