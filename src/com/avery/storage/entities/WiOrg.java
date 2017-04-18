@@ -75,6 +75,56 @@ public class WiOrg extends MainAbstractEntity {
 	@JoinColumn(name = "wiOrgInfo_id")
 	WiOrgInfo varWiOrgInfo;
 
+
+
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<WiOrg> wiOrg = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(WiOrg.class, WiOrgMixIn.class);
+			WiOrgService wiOrgService = (WiOrgService) SpringConfig.getInstance().getBean("wiOrgService");
+			wiOrg = wiOrgService.readAll();
+			mapper.writeValue(writer, wiOrg);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("org")
+	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id){
+		Map<?, ?> entitiesMap = null;
+		Response.ResponseBuilder rb = null;
+		try{
+			Long entityId = Long.parseLong(id);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.addMixIn(WiOrg.class, WiOrgMixIn.class);
+			mapper.addMixIn(WiOrgInfo.class, WiOrgInfoMixIn.class);
+			WiOrgService wiOrgService = (WiOrgService) SpringConfig.getInstance().getBean("wiOrgService");
+			entitiesMap = wiOrgService.getEntitiesByWiId(entityId);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public String getShippingInstruction() {
 		return shippingInstruction;
 	}
@@ -181,52 +231,6 @@ public class WiOrg extends MainAbstractEntity {
 
 	public void setParentId(long parentId) {
 		this.parentId = parentId;
-	}
-
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<WiOrg> wiOrg = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(WiOrg.class, WiOrgMixIn.class);
-			WiOrgService wiOrgService = (WiOrgService) SpringConfig.getInstance().getBean("wiOrgService");
-			wiOrg = wiOrgService.readAll();
-			mapper.writeValue(writer, wiOrg);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-	}
-	
-	@GET
-	@Path("org")
-	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id){
-		Map<?, ?> entitiesMap = null;
-		Response.ResponseBuilder rb = null;
-		try{
-			Long entityId = Long.parseLong(id);
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.addMixIn(WiOrg.class, WiOrgMixIn.class);
-			mapper.addMixIn(WiOrgInfo.class, WiOrgInfoMixIn.class);
-			WiOrgService wiOrgService = (WiOrgService) SpringConfig.getInstance().getBean("wiOrgService");
-			entitiesMap = wiOrgService.getEntitiesByWiId(entityId);
-			mapper.writeValue(writer, entitiesMap);
-			rb = Response.ok(writer.toString());
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
 	}
 
 }

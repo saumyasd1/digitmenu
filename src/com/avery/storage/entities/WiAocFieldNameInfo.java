@@ -41,22 +41,6 @@ public class WiAocFieldNameInfo extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiAocFieldNameInfo", fetch = FetchType.LAZY)
 	private List<WiAocField> listWiAocField;
 
-	public String getAocFieldName() {
-		return aocFieldName;
-	}
-
-	public void setAocFieldName(String aocFieldName) {
-		this.aocFieldName = aocFieldName;
-	}
-
-	public List<WiAocField> getListWiAocField() {
-		return listWiAocField;
-	}
-
-	public void setListWiAocField(List<WiAocField> listWiAocField) {
-		this.listWiAocField = listWiAocField;
-	}
-
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -78,6 +62,24 @@ public class WiAocFieldNameInfo extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public String getAocFieldName() {
+		return aocFieldName;
+	}
+
+	public void setAocFieldName(String aocFieldName) {
+		this.aocFieldName = aocFieldName;
+	}
+
+	public List<WiAocField> getListWiAocField() {
+		return listWiAocField;
+	}
+
+	public void setListWiAocField(List<WiAocField> listWiAocField) {
+		this.listWiAocField = listWiAocField;
 	}
 
 }

@@ -60,64 +60,11 @@ public class WiStatus extends MainAbstractEntity {
 	@Column(name = "iconName", length = 100)
 	private String iconName;
 
+	@Column(name = "displayValue", length = 100)
+	private String displayValue;
+
 	@OneToMany(mappedBy = "varWiStatus", fetch = FetchType.LAZY)
 	private List<WiPermissions> listWiPermissions;
-
-	public String getColorCode() {
-		return colorCode;
-	}
-
-	public void setColorCode(String colorCode) {
-		this.colorCode = colorCode;
-	}
-
-	public String getIconName() {
-		return iconName;
-	}
-
-	public void setIconName(String iconName) {
-		this.iconName = iconName;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public List<WiPermissions> getListWiPermissions() {
-		return listWiPermissions;
-	}
-
-	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
-		this.listWiPermissions = listWiPermissions;
-	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -166,5 +113,71 @@ public class WiStatus extends MainAbstractEntity {
 			return Response.ok("There was some problem while loading the data").status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 		return rb.build();
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getDisplayValue() {
+		return displayValue;
+	}
+
+	public void setDisplayValue(String displayValue) {
+		this.displayValue = displayValue;
+	}
+
+	public List<WiPermissions> getListWiPermissions() {
+		return listWiPermissions;
+	}
+
+	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
+		this.listWiPermissions = listWiPermissions;
 	}
 }

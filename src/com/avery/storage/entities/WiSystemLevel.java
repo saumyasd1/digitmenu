@@ -78,6 +78,54 @@ public class WiSystemLevel extends MainAbstractEntity {
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
 
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<WiSystemLevel> wiSystemLevel = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(WiSystemLevel.class, WiSystemLevelMixIn.class);
+			WiSystemLevelService wiSystemLevelService = (WiSystemLevelService) SpringConfig.getInstance()
+					.getBean("wiSystemLevelService");
+			wiSystemLevel = wiSystemLevelService.readAll();
+			mapper.writeValue(writer, wiSystemLevel);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	@GET
+	@Path("systemlevel")
+	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id) {
+		Map<?, ?> entitiesMap = null;
+		Response.ResponseBuilder rb = null;
+		try {
+			Long entityId = Long.parseLong(id);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.addMixIn(WiSystemLevel.class, WiSystemLevelMixIn.class);
+			WiSystemLevelService wiSystemLevelService = (WiSystemLevelService) SpringConfig.getInstance()
+					.getBean("wiSystemLevelService");
+			entitiesMap = wiSystemLevelService.getEntitiesByWiId(entityId);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public String getRboFactStrucSpecific() {
 		return rboFactStrucSpecific;
 	}
@@ -156,51 +204,5 @@ public class WiSystemLevel extends MainAbstractEntity {
 
 	public void setVarWi(Wi varWi) {
 		this.varWi = varWi;
-	}
-
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<WiSystemLevel> wiSystemLevel = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(WiSystemLevel.class, WiSystemLevelMixIn.class);
-			WiSystemLevelService wiSystemLevelService = (WiSystemLevelService) SpringConfig.getInstance()
-					.getBean("wiSystemLevelService");
-			wiSystemLevel = wiSystemLevelService.readAll();
-			mapper.writeValue(writer, wiSystemLevel);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-	}
-
-	@GET
-	@Path("systemlevel")
-	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id) {
-		Map<?, ?> entitiesMap = null;
-		Response.ResponseBuilder rb = null;
-		try {
-			Long entityId = Long.parseLong(id);
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.addMixIn(WiSystemLevel.class, WiSystemLevelMixIn.class);
-			WiSystemLevelService wiSystemLevelService = (WiSystemLevelService) SpringConfig.getInstance()
-					.getBean("wiSystemLevelService");
-			entitiesMap = wiSystemLevelService.getEntitiesByWiId(entityId);
-			mapper.writeValue(writer, entitiesMap);
-			rb = Response.ok(writer.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
 	}
 }

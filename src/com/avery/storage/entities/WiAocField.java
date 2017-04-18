@@ -84,91 +84,11 @@ public class WiAocField extends MainAbstractEntity {
 	@JoinColumn(name = "wiAOCFieldNameInfo_id")
 	WiAocFieldNameInfo varWiAocFieldNameInfo;
 
-	public String getValidation() {
-		return validation;
-	}
-
-	public void setValidation(String validation) {
-		this.validation = validation;
-	}
-
-	public String getAocFieldName() {
-		return aocFieldName;
-	}
-
-	public void setAocFieldName(String aocFieldName) {
-		this.aocFieldName = aocFieldName;
-	}
-
-	public String getFieldValueExample() {
-		return fieldValueExample;
-	}
-
-	public void setFieldValueExample(String fieldValueExample) {
-		this.fieldValueExample = fieldValueExample;
-	}
-
-	public String getLogic() {
-		return logic;
-	}
-
-	public void setLogic(String logic) {
-		this.logic = logic;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public Wi getVarWi() {
-		return varWi;
-	}
-
-	public void setVarWi(Wi varWi) {
-		this.varWi = varWi;
-	}
-
-	public WiAocFieldNameInfo getVarWiAocFieldNameInfo() {
-		return varWiAocFieldNameInfo;
-	}
-
-	public void setVarWiAocFieldNameInfo(WiAocFieldNameInfo varWiAocFieldNameInfo) {
-		this.varWiAocFieldNameInfo = varWiAocFieldNameInfo;
-	}
-
 	@Transient
 	private long parentId;
 
 	@Transient
 	private String aocFieldName;
-
-	public long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(long parentId) {
-		this.parentId = parentId;
-	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -253,6 +173,88 @@ public class WiAocField extends MainAbstractEntity {
 		}
 		rb = Response.ok("File uploaded successfully", MediaType.TEXT_PLAIN).status(Status.OK);
 		return rb.build();
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public String getValidation() {
+		return validation;
+	}
+
+	public void setValidation(String validation) {
+		this.validation = validation;
+	}
+
+	public String getAocFieldName() {
+		return aocFieldName;
+	}
+
+	public void setAocFieldName(String aocFieldName) {
+		this.aocFieldName = aocFieldName;
+	}
+
+	public String getFieldValueExample() {
+		return fieldValueExample;
+	}
+
+	public void setFieldValueExample(String fieldValueExample) {
+		this.fieldValueExample = fieldValueExample;
+	}
+
+	public String getLogic() {
+		return logic;
+	}
+
+	public void setLogic(String logic) {
+		this.logic = logic;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public Wi getVarWi() {
+		return varWi;
+	}
+
+	public void setVarWi(Wi varWi) {
+		this.varWi = varWi;
+	}
+
+	public WiAocFieldNameInfo getVarWiAocFieldNameInfo() {
+		return varWiAocFieldNameInfo;
+	}
+
+	public void setVarWiAocFieldNameInfo(WiAocFieldNameInfo varWiAocFieldNameInfo) {
+		this.varWiAocFieldNameInfo = varWiAocFieldNameInfo;
+	}
+
+	public long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(long parentId) {
+		this.parentId = parentId;
 	}
 
 }

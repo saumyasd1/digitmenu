@@ -113,10 +113,44 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 	@Column(name = "attachmentFileRequired", length = 10)
 	private String attachmentFileRequired;
 
+	@Column(name = "emailFileNameContent", length = 50)
+	private String emailFileNameContent;
+	
+	@Column(name = "orderFileNameContent", length = 50)
+	private String orderFileNameContent;
+	
+	@Column(name = "attachmentFileNameContent", length = 50)
+	private String attachmentFileNameContent;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
 
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<WiSchemaIdentification> wiSchemaIdentification = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
+			WiSchemaIdentificationService wiSchemaIdentificationService = (WiSchemaIdentificationService) SpringConfig
+					.getInstance().getBean("wiSchemaIdentificationService");
+			wiSchemaIdentification = wiSchemaIdentificationService.readAll();
+			mapper.writeValue(writer, wiSchemaIdentification);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public String getEmailSubjectDataStructureOtherRule() {
 		return emailSubjectDataStructureOtherRule;
 	}
@@ -309,35 +343,36 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 		this.attachmentFileRequired = attachmentFileRequired;
 	}
 
+	public String getEmailFileNameContent() {
+		return emailFileNameContent;
+	}
+
+	public void setEmailFileNameContent(String emailFileNameContent) {
+		this.emailFileNameContent = emailFileNameContent;
+	}
+
+	public String getOrderFileNameContent() {
+		return orderFileNameContent;
+	}
+
+	public void setOrderFileNameContent(String orderFileNameContent) {
+		this.orderFileNameContent = orderFileNameContent;
+	}
+
+	public String getAttachmentFileNameContent() {
+		return attachmentFileNameContent;
+	}
+
+	public void setAttachmentFileNameContent(String attachmentFileNameContent) {
+		this.attachmentFileNameContent = attachmentFileNameContent;
+	}
+
 	public Wi getVarWi() {
 		return varWi;
 	}
 
 	public void setVarWi(Wi varWi) {
 		this.varWi = varWi;
-	}
-
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<WiSchemaIdentification> wiSchemaIdentification = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
-			WiSchemaIdentificationService wiSchemaIdentificationService = (WiSchemaIdentificationService) SpringConfig
-					.getInstance().getBean("wiSchemaIdentificationService");
-			wiSchemaIdentification = wiSchemaIdentificationService.readAll();
-			mapper.writeValue(writer, wiSchemaIdentification);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
 	}
 
 }

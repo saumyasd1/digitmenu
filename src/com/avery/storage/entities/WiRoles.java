@@ -47,22 +47,6 @@ public class WiRoles extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiRoles", fetch = FetchType.LAZY)
 	private List<WiPermissions> listWiPermissions;
 
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
-	public List<WiPermissions> getListWiPermissions() {
-	return listWiPermissions;
-	}
-	
-	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
-	this.listWiPermissions = listWiPermissions;
-	}
-
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -87,7 +71,24 @@ public class WiRoles extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
+	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public List<WiPermissions> getListWiPermissions() {
+		return listWiPermissions;
+	}
+
+	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
+		this.listWiPermissions = listWiPermissions;
 	}
 
 }

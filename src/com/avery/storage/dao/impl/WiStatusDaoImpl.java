@@ -52,7 +52,7 @@ public class WiStatusDaoImpl extends GenericDaoImpl<WiStatus, Long> implements W
 			for (WiStatus wiStatus : statusList) {
 				String iconName = wiStatus.getIconName();
 				String colorCode = wiStatus.getColorCode();
-				String codeValue = wiStatus.getValue();
+				String codeValue = wiStatus.getDisplayValue();
 				Map<String, String> statusValues = new HashMap<>();
 
 				statusValues.put("iconName", iconName);
@@ -70,6 +70,7 @@ public class WiStatusDaoImpl extends GenericDaoImpl<WiStatus, Long> implements W
 		return statusCode;
 	}
 	
+	@Override
 	public Map getStatusListByRoleId(String roleId){
 		Map entitiesMap = new HashMap();
 		Session session = null;
@@ -80,8 +81,8 @@ public class WiStatusDaoImpl extends GenericDaoImpl<WiStatus, Long> implements W
 				.add(Projections.property("value"), "value");
 		criteria = session.createCriteria(WiStatus.class)
 				.createAlias("listWiPermissions", "listWiPermissions")
-				.createAlias("listWiPermissions.varWiRoles", "varWiRoles")
-				.add(Restrictions.eq("varWiRoles.id", Long.parseLong(roleId)));
+				.createAlias("listWiPermissions.varWiUser", "varWiUser")
+				.add(Restrictions.eq("varWiUser.id", Long.parseLong(roleId)));
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(WiStatus.class));
 		entitiesMap.put("status", new LinkedHashSet(criteria.list()));
 		return entitiesMap;

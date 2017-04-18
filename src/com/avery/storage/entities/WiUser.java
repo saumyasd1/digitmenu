@@ -37,6 +37,10 @@ public class WiUser extends MainAbstractEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1833552362987121156L;
+	
+	public WiUser() {
+
+	}	
 
 	@Column(name = "comment", length = 250)
 	private String comment;
@@ -72,9 +76,35 @@ public class WiUser extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
 	private List<Wi> listWi;
 	
-	public WiUser() {
+	@Transient
+	private long roleId;
+	
+	@Transient
+	private String roleName;
 
-	}	
+	@GET
+	@Path("assignee")
+	public Response getAssigneeList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("roleId") String roleId){
+		Map responseMap = new HashMap();
+		Response.ResponseBuilder rb = null;
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		mapper.addMixIn(WiUser.class, WiUserMixIn.class);
+		try {
+			WiUserService wiUserService = (WiUserService) SpringConfig.getInstance().getBean("wiUserService");
+			responseMap = wiUserService.getAssigneeList(roleId);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			AppLogger.getSystemLogger().error("Error in loading the data -> ", e);
+			e.printStackTrace();
+			return Response.ok("There was some problem while loading the data").status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return rb.build();
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public String getComment() {
 		return comment;
@@ -164,13 +194,6 @@ public class WiUser extends MainAbstractEntity {
 		this.listWi = listWi;
 	}
 
-
-	@Transient
-	private long roleId;
-	
-	@Transient
-	private String roleName;
-
 	public long getRoleId() {
 		return roleId;
 	}
@@ -185,28 +208,6 @@ public class WiUser extends MainAbstractEntity {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
-	}
-
-	@GET
-	@Path("assignee")
-	public Response getAssigneeList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("roleId") String roleId){
-		Map responseMap = new HashMap();
-		Response.ResponseBuilder rb = null;
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
-		mapper.addMixIn(WiUser.class, WiUserMixIn.class);
-		try {
-			WiUserService wiUserService = (WiUserService) SpringConfig.getInstance().getBean("wiUserService");
-			responseMap = wiUserService.getAssigneeList(roleId);
-			mapper.writeValue(writer, responseMap);
-			rb = Response.ok(writer.toString());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			AppLogger.getSystemLogger().error("Error in loading the data -> ", e);
-			e.printStackTrace();
-			return Response.ok("There was some problem while loading the data").status(Status.INTERNAL_SERVER_ERROR).build();
-		}
-		return rb.build();
 	}
 	
 }

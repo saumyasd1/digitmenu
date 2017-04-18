@@ -73,6 +73,4 @@ public class WiFiles extends MainAbstractEntity {
 		this.varWi = varWi;
 	}
 	
-	
-	
 }

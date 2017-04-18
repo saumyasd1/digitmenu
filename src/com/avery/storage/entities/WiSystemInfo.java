@@ -48,22 +48,6 @@ public class WiSystemInfo extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiSystemInfo", fetch = FetchType.LAZY)
 	private List<WiSystem> listWiSystem;
 
-	public String getSystemName() {
-		return systemName;
-	}
-
-	public void setSystemName(String systemName) {
-		this.systemName = systemName;
-	}
-
-	public List<WiSystem> getListWiSystem() {
-		return listWiSystem;
-	}
-
-	public void setListWiSystem(List<WiSystem> listWiSystem) {
-		this.listWiSystem = listWiSystem;
-	}
-
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
@@ -85,6 +69,24 @@ public class WiSystemInfo extends MainAbstractEntity {
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	public List<WiSystem> getListWiSystem() {
+		return listWiSystem;
+	}
+
+	public void setListWiSystem(List<WiSystem> listWiSystem) {
+		this.listWiSystem = listWiSystem;
 	}
 
 }

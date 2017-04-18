@@ -87,6 +87,54 @@ public class WiSystem extends MainAbstractEntity {
 	@JoinColumn(name = "wiSystemInfo_id")
 	WiSystemInfo varWiSystemInfo;
 
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<WiSystem> wiSystem = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(WiSystem.class, WiSystemMixIn.class);
+			WiSystemService wiSystemService = (WiSystemService) SpringConfig.getInstance().getBean("wiSystemService");
+			wiSystem = wiSystemService.readAll();
+			mapper.writeValue(writer, wiSystem);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("system")
+	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id){
+		Map<?, ?> entitiesMap = null;
+		Response.ResponseBuilder rb = null;
+		try{
+			Long entityId = Long.parseLong(id);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.addMixIn(WiSystem.class, WiSystemMixIn.class);
+			mapper.addMixIn(WiSystemInfo.class, WiSystemInfoMixIn.class);
+			WiSystemService wiSystemService = (WiSystemService) SpringConfig.getInstance().getBean("wiSystemService");
+			entitiesMap = wiSystemService.getEntitiesByWiId(entityId);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public String getSplitByShipSet() {
 		return splitByShipSet;
 	}
@@ -203,52 +251,6 @@ public class WiSystem extends MainAbstractEntity {
 
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
-	}
-
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<WiSystem> wiSystem = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(WiSystem.class, WiSystemMixIn.class);
-			WiSystemService wiSystemService = (WiSystemService) SpringConfig.getInstance().getBean("wiSystemService");
-			wiSystem = wiSystemService.readAll();
-			mapper.writeValue(writer, wiSystem);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-	}
-	
-	@GET
-	@Path("system")
-	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id){
-		Map<?, ?> entitiesMap = null;
-		Response.ResponseBuilder rb = null;
-		try{
-			Long entityId = Long.parseLong(id);
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.addMixIn(WiSystem.class, WiSystemMixIn.class);
-			mapper.addMixIn(WiSystemInfo.class, WiSystemInfoMixIn.class);
-			WiSystemService wiSystemService = (WiSystemService) SpringConfig.getInstance().getBean("wiSystemService");
-			entitiesMap = wiSystemService.getEntitiesByWiId(entityId);
-			mapper.writeValue(writer, entitiesMap);
-			rb = Response.ok(writer.toString());
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
 	}
 
 }

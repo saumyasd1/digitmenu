@@ -54,6 +54,31 @@ public class WiOrgInfo extends MainAbstractEntity {
 	@OneToMany(mappedBy = "varWiOrgInfo", fetch = FetchType.LAZY)
 	private List<WiOrg> listWiOrg;
 
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<WiOrgInfo> wiOrgInfo = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(WiOrgInfo.class, WiOrgInfoMixIn.class);
+			WiOrgInfoService wiOrgInfoService = (WiOrgInfoService) SpringConfig.getInstance()
+					.getBean("wiOrgInfoService");
+			wiOrgInfo = wiOrgInfoService.readAll();
+			mapper.writeValue(writer, wiOrgInfo);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
 	public String getSystemName() {
 		return systemName;
 	}
@@ -84,29 +109,6 @@ public class WiOrgInfo extends MainAbstractEntity {
 
 	public void setListWiOrg(List<WiOrg> listWiOrg) {
 		this.listWiOrg = listWiOrg;
-	}
-
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<WiOrgInfo> wiOrgInfo = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(WiOrgInfo.class, WiOrgInfoMixIn.class);
-			WiOrgInfoService wiOrgInfoService = (WiOrgInfoService) SpringConfig.getInstance()
-					.getBean("wiOrgInfoService");
-			wiOrgInfo = wiOrgInfoService.readAll();
-			mapper.writeValue(writer, wiOrgInfo);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
 	}
 
 }
