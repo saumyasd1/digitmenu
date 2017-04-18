@@ -203,7 +203,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		wiSaveBtn[showFlag ? 'show':'hide']();
 //		wiSubmitBtn[showFlag ? 'show':'hide']();
 		wiSubmitBtn.show();
-		wiSubmitBtn.setDisabled(false);
+		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+			wiSubmitBtn.setDisabled(false);
+		}
 	},
 	onEditWIFormMenuItemClick:function(menuItem, e){
 		var me = this;

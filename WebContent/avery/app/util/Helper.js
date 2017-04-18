@@ -680,6 +680,6 @@ Ext.define('AOC.util.Helper',{
 		Ext.getBody().unmask();
 	},
 	getUserRole:function(){
-		return 1;
+		return AOCRuntime.getUser().role;
 	}
 });

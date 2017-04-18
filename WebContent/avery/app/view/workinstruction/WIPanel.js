@@ -116,6 +116,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					name:'assignee',
 					flex:1,
 					displayField:'assigneeName',
+					value:AOCRuntime.getUser().role,
 					reference:'assigneeCombo',
 					valueField:'id',
 					queryMode:'local',
