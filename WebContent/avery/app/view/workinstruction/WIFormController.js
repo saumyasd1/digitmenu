@@ -98,6 +98,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 			if(Ext.isEmpty(values.assignee)){
 				Helper.showToast('validation', 'Please select Assigne before submit form.');
+			}else if(Ext.isEmpty(values.status)){
+				Helper.showToast('validation', 'Please select Status before submit form.');
 			}else{
 				var obj = {
 					assignee : values.assignee,
