@@ -116,10 +116,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					name:'assignee',
 					flex:1,
 					displayField:'assigneeName',
-					value:AOCRuntime.getUser().role,
 					reference:'assigneeCombo',
 					valueField:'id',
 					queryMode:'local',
+					listeners:{
+						change:'onAssigneeComboChange'
+					},
 					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
 				},
 				{
@@ -130,7 +132,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					displayField:'value',
 					reference:'statusCombo',
 					valueField:'id',
-					value:'1',
 					margin:'0 0 0 10',
 					queryMode:'local',
 					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore')

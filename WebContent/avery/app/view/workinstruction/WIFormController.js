@@ -606,6 +606,17 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         	}
         }
         me.fileArray.push(file);
-    }
+    },
+    
+    onAssigneeComboChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+//			store = field.store,
+//		    record = store.findRecord('id', field.getValue()),
+//		    roleId = record.get('roleId')
+			statusCombo = refs.statusCombo;
+		
+		statusCombo.store.load({params:{id:field.getValue()}});
+	},
    
 });

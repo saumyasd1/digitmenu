@@ -19,7 +19,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.showHideSaveSubmitBtn(true);
 		
 		me.loadAssigneeCombo();
-		me.loadStatusCombo();
 		
 		me.resetFileCont();
 		view.getLayout().setActiveItem(1);
@@ -31,19 +30,25 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		
 		return wiFormPanel.getReferences();
 	},
-	loadStatusCombo:function(){
-		var me = this,
-			formRefs = me.getFormReference(),
-			statusCombo = formRefs.statusCombo;
-		
-		statusCombo.store.load({params:{roleId:Helper.getUserRole()}});
-	},
+//	loadStatusCombo:function(){
+//		var me = this,
+//			formRefs = me.getFormReference(),
+//			statusCombo = formRefs.statusCombo;
+//		
+//		statusCombo.store.load({params:{roleId:Helper.getUserRole()}});
+//	},
 	loadAssigneeCombo:function(){
 		var me = this,
 			formRefs = me.getFormReference(),
 			assigneeCombo = formRefs.assigneeCombo;
-		
-		assigneeCombo.store.load({params:{roleId:Helper.getUserRole()}});
+	
+		assigneeCombo.store.load({
+			params:{roleId:Helper.getUserRole()},
+			scope:assigneeCombo,
+			callback:function(records, operation, success){
+				this.setValue(Helper.getUserRole());
+			}
+		});
 	},
 	resetFileCont:function(){
 		var me = this,
@@ -215,7 +220,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadWIForm();
 		
 		me.loadAssigneeCombo();
-		me.loadStatusCombo();
 		
 		me.showHideSaveSubmitBtn(true);
 	},
@@ -243,7 +247,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadWIForm();
 		
 		me.loadAssigneeCombo();
-		me.loadStatusCombo();
 		
 		me.showHideSaveSubmitBtn(false);
 	},
