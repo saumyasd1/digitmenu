@@ -103,7 +103,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			}else{
 				var obj = {
 					assignee : values.assignee,
-					status:values.assignee,
+					status:values.status,
 					id: AOCRuntime.getWiId().toString()
 				};
 			
@@ -561,12 +561,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     //AOCField Grid
     
     onAOCFieldGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts){
-    	var grid=obj;
 		var el = Ext.get(e.target);
 		this.currentAOCFieldRowId=rowIndex;
     	var inputEl = Ext.get('upload-file');
     	if(el.hasCls('upload-image')){
-    		document.getElementById('upload-file').click();
+    		inputEl.dom.click();
     	}
     },
     onAOCFieldGridAfterRender:function(grid){
