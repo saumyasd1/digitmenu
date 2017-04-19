@@ -119,8 +119,52 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 	@Column(name = "orderFileNameContent", length = 50)
 	private String orderFileNameContent;
 	
+	@Column(name = "emailBodyIdentificationType", length = 100)
+	private String emailBodyIdentificationType;
+
 	@Column(name = "attachmentFileNameContent", length = 50)
 	private String attachmentFileNameContent;
+	
+	@Column(name = "emailBodyKeyWording", length = 100)
+	private String emailBodyKeyWording;
+	
+	@Column(name = "orderFileTypeFormat", length = 100)
+	private String orderFileTypeFormat;
+	
+	public String getOrderFileTypeFormat() {
+		return orderFileTypeFormat;
+	}
+
+	public void setOrderFileTypeFormat(String orderFileTypeFormat) {
+		this.orderFileTypeFormat = orderFileTypeFormat;
+	}
+
+	@Column(name = "emailSubjectKeyWording", length = 100)
+	private String emailSubjectKeyWording;
+	
+	public String getEmailBodyIdentificationType() {
+		return emailBodyIdentificationType;
+	}
+
+	public void setEmailBodyIdentificationType(String emailBodyIdentificationType) {
+		this.emailBodyIdentificationType = emailBodyIdentificationType;
+	}
+
+	public String getEmailBodyKeyWording() {
+		return emailBodyKeyWording;
+	}
+
+	public void setEmailBodyKeyWording(String emailBodyKeyWording) {
+		this.emailBodyKeyWording = emailBodyKeyWording;
+	}
+
+	public String getEmailSubjectKeyWording() {
+		return emailSubjectKeyWording;
+	}
+
+	public void setEmailSubjectKeyWording(String emailSubjectKeyWording) {
+		this.emailSubjectKeyWording = emailSubjectKeyWording;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")

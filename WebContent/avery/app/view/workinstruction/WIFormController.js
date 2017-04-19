@@ -254,7 +254,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			 orderFileRequired:values.orderFileRequired,
 			 orderFileNameContent:values.orderFileNameContent,
 			 orderFileKeyWording:values.orderFileKeyWording,
-			 orderFileFormat:values.orderFileTypeFormat,
+			 orderFileTypeFormat:values.orderFileTypeFormat,
 			 orderFileType:values.orderFileType,
 			 orderTextFirstLastPage:values.orderTextFirstLastPage,
 			 orderTextPosition:values.orderTextPosition,
@@ -559,33 +559,18 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	},
     
     //AOCField Grid
-    
-    onAOCFieldGridCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts){
-		var el = Ext.get(e.target);
-		this.currentAOCFieldRowId=rowIndex;
-    	var inputEl = Ext.get('upload-file');
-    	if(el.hasCls('upload-image')){
-    		inputEl.dom.click();
-    	}
-    },
-    onAOCFieldGridAfterRender:function(grid){
-    	var me = this;
-    	var inputEl = Ext.get('upload-file').dom;
-    	inputEl.addEventListener('change', function() {
-            me.onFilesChanged(inputEl.files);
-            inputEl.reset();
-        }, me);
-    },
-    onFilesChanged:function(files){
+    onFilesChanged:function(obj, value){
     	var me = this,
     	 	refs = me.getReferences(),
     	 	aocFieldGrid = refs.wiaocfieldgrid,
     	 	store = aocFieldGrid.store,
-    	 	file = Ext.Array.from(files)[0],
-    	 	currentAOCFieldRowId = me.currentAOCFieldRowId;
-    	    fileName = file.name,
-    	    rec = store.getAt(currentAOCFieldRowId);
+    	 	file = obj.getEl().down('input[type=file]').dom.files[0];
+    	    rec = store.getAt(obj.getWidgetRecord().get('id'));
     	    
+	    if(!file){
+			return;
+		}
+	    var fileName = file.name;
     	var fileReader = new window.FileReader();
         fileReader.onload = function(e,b){
             var fileContent = e.target.result;

@@ -50,8 +50,8 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			],
 			store: Ext.data.StoreManager.lookup('wiAOCFieldStore') == null ? Ext.create('AOC.store.WIAOCFieldStore',{storeId:'wiAOCFieldStore'}) : Ext.data.StoreManager.lookup('wiAOCFieldStore'),
 			listeners:{
-				afterrender:'onAOCFieldGridAfterRender',
-				cellclick:'onAOCFieldGridCellClick'
+//				afterrender:'onAOCFieldGridAfterRender',
+//				cellclick:'onAOCFieldGridCellClick'
 			}
 		});
 		me.callParent(arguments);
@@ -122,11 +122,32 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				}
 			},
 			{
-				width:30,
-				renderer:function(value, metadata, rec){
-					return '<i class="upload-image fa fa-upload" style="font-size:16px;color:#2c3e50;cursor:pointer;">'
-				}
-			}
+                text: '',
+                xtype: 'widgetcolumn',
+                width:40,
+                //dataIndex: 'file',
+                widget: {
+                    xtype: 'filefield',
+                    name: 'file',
+                    width:30,
+                    buttonOnly:true,
+                    buttonConfig:{
+                    	iconCls:'fa fa-upload aoc-icon',
+                    	cls:'aoc-btn', 
+                    	text:''
+                    },
+                    regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+                    regexText: 'Only PNG and JPEG image formats are accepted',
+                    listeners:{
+                    	change:'onFilesChanged',
+                    	afterrender:function(cmp){
+                            cmp.fileInputEl.set({
+                                accept:'image/*'
+                            });
+                        }
+                    }
+                }
+            }
 		];
 	}
 });

@@ -231,6 +231,29 @@ public class Wi extends MainAbstractEntity {
 
 	@Column(name = "waiveMOQ", length = 10)
 	private String waiveMOQ;
+	
+	@Column(name = "emailContentWarning", length = 100)
+	private String emailContentWarning;
+
+	public String getFibreContentValidationSKUFieldName() {
+		return fibreContentValidationSKUFieldName;
+	}
+
+	public void setFibreContentValidationSKUFieldName(String fibreContentValidationSKUFieldName) {
+		this.fibreContentValidationSKUFieldName = fibreContentValidationSKUFieldName;
+	}
+
+	@Column(name = "fibreContentValidationSKUFieldName", length = 100)
+	private String fibreContentValidationSKUFieldName;
+
+	
+	public String getEmailContentWarning() {
+		return emailContentWarning;
+	}
+
+	public void setEmailContentWarning(String emailContentWarning) {
+		this.emailContentWarning = emailContentWarning;
+	}
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiSystem> listWiSystem;

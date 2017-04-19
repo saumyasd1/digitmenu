@@ -87,11 +87,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	reference:'imageContainer',
 		    	margin:'0 0 20 0'
 		    },
-		    {
-		    	xtype:'box',
-		    	hidden:true,
-		    	html:'<input id="upload-file" type="file" accept="image/*" />'
-		    },
 		    me.getUploadOrderFileItems(),
 		    me.getUploadAttachementItems(),
 		    me.getSampleFileItems(),
