@@ -447,34 +447,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	    	store:Helper.getYesNoStore()
     	    	    }
     	    	]
-    	    },
-    	    {
-    	    	xtype:'fieldcontainer',
-    	    	margin:'0 0 15 0',
-    	    	layout:{
-    	    		type:'hbox',
-    	    		align:'stretch'
-    	    	},
-    	    	defaults:{
-        	    	labelSeparator:'',
-    				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-    				labelAlign:AOC.config.Settings.form.topLabelAlign
-    	    	},
-    	    	items:[
-    	    	   {
-		    	    	xtype:'textfield',
-		    	    	name:'emailSubjectWarning',
-		    	    	flex:1,
-		    	    	fieldLabel:'Please specify the wordings in the Email subject that AOC has to raise warning if any?'
-		    	    },
-		    	    {
-		    	    	xtype:'textfield',
-		    	    	name:'emailContentWarning',
-		    	    	margin:'0 0 0 10',
-		    	    	flex:1,
-		    	    	fieldLabel:'Please specify the wordings in the Email content that AOC has to raise warning if any?'
-		    	    }
-    	    	]
     	    }
     	];
 	},
@@ -805,7 +777,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	    	store:new Ext.data.JsonStore({
 						   data:[
 						       {name:'Default Value'},{name:'Ship To Address'},{name:'PO#'},
-						       {name:'Email Subject'},{name:'Shippig Mark'},
+						       {name:'Email Subject'},{name:'Shipping Mark'},
 						       {name :'Others ( (Please specify & fill in "Bill/Ship Mapping Table")'}
 						   ],
 						   fields:'name'

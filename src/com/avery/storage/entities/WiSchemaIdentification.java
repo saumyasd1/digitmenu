@@ -113,8 +113,8 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 	@Column(name = "attachmentFileRequired", length = 10)
 	private String attachmentFileRequired;
 
-	@Column(name = "emailFileNameContent", length = 50)
-	private String emailFileNameContent;
+	@Column(name = "emailSubjectIdentificationType", length = 100)
+	private String emailSubjectIdentificationType;
 	
 	@Column(name = "orderFileNameContent", length = 50)
 	private String orderFileNameContent;
@@ -164,6 +164,13 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 
 	public void setEmailSubjectKeyWording(String emailSubjectKeyWording) {
 		this.emailSubjectKeyWording = emailSubjectKeyWording;
+	}
+	public String getEmailSubjectIdentificationType() {
+		return emailSubjectIdentificationType;
+	}
+
+	public void setEmailSubjectIdentificationType(String emailSubjectIdentificationType) {
+		this.emailSubjectIdentificationType = emailSubjectIdentificationType;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -385,14 +392,6 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 
 	public void setAttachmentFileRequired(String attachmentFileRequired) {
 		this.attachmentFileRequired = attachmentFileRequired;
-	}
-
-	public String getEmailFileNameContent() {
-		return emailFileNameContent;
-	}
-
-	public void setEmailFileNameContent(String emailFileNameContent) {
-		this.emailFileNameContent = emailFileNameContent;
 	}
 
 	public String getOrderFileNameContent() {

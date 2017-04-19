@@ -505,5 +505,13 @@ Ext.define('AOC.lang.lit',{
     variableDataBreakdown:'variableDataBreakdown',
     splitByShipSet:'splitByShipSet',
     shipMark:'shipMark',
-    artWorkHold:'artWorkHold'
+    artWorkHold:'artWorkHold',
+    //wi status
+    wiInitializedStatus:1,
+    wiBAQueryAskedStatus:9,
+    wiCSManagerDisapprovedStatus:4,
+    csRoleId:1,
+    csManagerRoleId:2,
+    baTeamRoleId:3,
+    technicalTeamRoleId:4
 });

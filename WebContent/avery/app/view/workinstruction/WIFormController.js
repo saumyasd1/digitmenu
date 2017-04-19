@@ -89,7 +89,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		});
 	},	
 	submitWIForm:function(){
-		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+		if(AOCRuntime.getCurrentWiMode() != 'add'){
 			var me = this,
 				refs = me.getReferences(),
 				wiFormPanel = refs.wIForm,
@@ -145,6 +145,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
 		}
+		if(Ext.isEmpty(values.status)){
+			Helper.showToast('validation', 'Please select Status before proceed WI form.');
+			return;
+		}
 		Ext.getBody().mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
 			url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
@@ -153,7 +157,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			success:function(response){
 				var data = JSON.parse(response.responseText);
 				form.reset();
-				//me.loadGridAfterFormSave(data.id);
 				me.uploadFiles(data.id);
 			},
 			failure:function(){
@@ -247,7 +250,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	getSchemaIdentificationParams:function(values){
 		 var obj ={
 			 emailSubjectRequired : values.emailSubjectRequired,
-			 emailFileNameContent : values.emailFileNameContent,
+			 emailSubjectIdentificationType:values.emailSubjectIdentificationType,
 			 emailSubjectKeyWording : values.emailSubjectKeyWording,
 			 emailSubjectDataStructureRule: values.emailSubjectDataStructureRule,
 			 emailSubjectDataStructureOtherRule:values.emailSubjectDataStructureOtherRule,
@@ -277,7 +280,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			 obj.id=AOCRuntime.getSchemaIdentificationId();
 		 }
 		 delete values.emailSubjectRequired;
-		 delete values.emailFileNameContent;
+		 delete values.emailSubjectIdentificationType;
 		 delete values.emailSubjectKeyWording;
 		 delete values.emailSubjectDataStructureRule;
 		 delete values.emailSubjectDataStructureOtherRule;
@@ -326,16 +329,16 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	onEmailSubjectRequiredRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			emailFileNameContent = refs.emailFileNameContent,
+			emailSubjectIdentificationType = refs.emailSubjectIdentificationType,
 			emailSubjectKeyWording = refs.emailSubjectKeyWording,
 			emailSubjectDataStructureRule = refs.emailSubjectDataStructureRule;
 		
 		if(newValue.emailSubjectRequired == 1){
-			emailFileNameContent.setDisabled(false);
+			emailSubjectIdentificationType.setDisabled(false);
 			emailSubjectKeyWording.setDisabled(false);
 			emailSubjectDataStructureRule.setDisabled(false);
 		}else{
-			emailFileNameContent.setDisabled(true);
+			emailSubjectIdentificationType.setDisabled(true);
 			emailSubjectKeyWording.setDisabled(true);
 			emailSubjectDataStructureRule.setDisabled(true);
 		}

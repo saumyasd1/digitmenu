@@ -157,9 +157,6 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "isOrderWithAttachment", length = 10)
 	private String isOrderWithAttachment;
 
-	@Column(name = "emailSubjectWarning", length = 100)
-	private String emailSubjectWarning;
-
 	@Column(name = "fabricContentValidationStructure", length = 10)
 	private String fabricContentValidationStructure;
 
@@ -232,8 +229,6 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "waiveMOQ", length = 10)
 	private String waiveMOQ;
 	
-	@Column(name = "emailContentWarning", length = 100)
-	private String emailContentWarning;
 
 	public String getFibreContentValidationSKUFieldName() {
 		return fibreContentValidationSKUFieldName;
@@ -245,15 +240,6 @@ public class Wi extends MainAbstractEntity {
 
 	@Column(name = "fibreContentValidationSKUFieldName", length = 100)
 	private String fibreContentValidationSKUFieldName;
-
-	
-	public String getEmailContentWarning() {
-		return emailContentWarning;
-	}
-
-	public void setEmailContentWarning(String emailContentWarning) {
-		this.emailContentWarning = emailContentWarning;
-	}
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiSystem> listWiSystem;
@@ -728,14 +714,6 @@ public class Wi extends MainAbstractEntity {
 
 	public void setIsOrderWithAttachment(String isOrderWithAttachment) {
 		this.isOrderWithAttachment = isOrderWithAttachment;
-	}
-
-	public String getEmailSubjectWarning() {
-		return emailSubjectWarning;
-	}
-
-	public void setEmailSubjectWarning(String emailSubjectWarning) {
-		this.emailSubjectWarning = emailSubjectWarning;
 	}
 
 	public String getFabricContentValidationStructure() {

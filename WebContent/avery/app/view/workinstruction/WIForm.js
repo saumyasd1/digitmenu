@@ -519,13 +519,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					},
 					items:[
 					    {
-					    	xtype:'combo',
-					    	fieldLabel:'File Name / File Content',
-					    	reference:'emailFileNameContent',
-					    	name:'emailFileNameContent',
-				        	editable:false,
-							disabled:true,
-					    	store:Helper.getFileNameContentStore(),
+					    	xtype:'textfield',
+					    	fieldLabel:'Identification Type',
+					    	reference:'emailSubjectIdentificationType',
+					    	name:'emailSubjectIdentificationType',
+					    	disabled:true,
 					    	flex:1
 					    },
 					    {
@@ -598,11 +596,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					},
 					items:[
 					    {
-					    	xtype:'combo',
+					    	xtype:'textfield',
 					    	fieldLabel:'Identification Type',
 					    	reference:'emailBodyIdentificationType',
 					    	name:'emailBodyIdentificationType',
-				        	store:Helper.getIdentificationTypeStore(),
 							disabled:true,
 					    	flex:1
 					    },

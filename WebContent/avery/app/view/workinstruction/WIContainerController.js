@@ -183,18 +183,39 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				    {
 				    	text:'View WI Form',
 				    	iconCls:'fa fa-eye',
+				    	itemId:'viewWIMenuItem',
 				    	scope:me,
 				    	handler:me.onViewWIFormMenuItemClick
 				    },
 				    {
 				    	text:'Edit WI Form',
 				    	iconCls:'fa fa-pencil-square-o',
+				    	itemId:'editWIMenuItem',
 				    	scope:me,
 				    	handler:me.onEditWIFormMenuItemClick
 				    }
-				]
+				],
+				listeners:{
+					scope:me,
+					beforeshow:me.onActionMenuBeforeShow
+				}
 			});
 			me.contextMenu.showAt(e.getXY());
+		}
+	},
+	onActionMenuBeforeShow:function(menu){
+		var me = this,
+			wiGrid = me.getReferences().wiGrid,
+			record = wiGrid.getSelectionModel().getSelection()[0],
+//			viewWIMenuItem = menu.queryById('viewWIMenuItem'),
+			editWIMenuItem = menu.queryById('editWIMenuItem'),
+			status = record.get('status');
+		
+		if((status == AOCLit.wiInitializedStatus || status == AOCLit.wiBAQueryAskedStatus
+				|| status == AOCLit.wiCSManagerDisapprovedStatus) && AOCRuntime.getUser().role == AOCLit.csRoleId){
+			editWIMenuItem.setDisabled(false);
+		}else{
+			editWIMenuItem.setDisabled(true);
 		}
 	},
 	showHideSaveSubmitBtn:function(showFlag){
