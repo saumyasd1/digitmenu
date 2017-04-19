@@ -602,7 +602,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	fieldLabel:'Identification Type',
 					    	reference:'emailBodyIdentificationType',
 					    	name:'emailBodyIdentificationType',
-				        	store:Helper.getFileNameContentStore(),
+				        	store:Helper.getIdentificationTypeStore(),
 							disabled:true,
 					    	flex:1
 					    },

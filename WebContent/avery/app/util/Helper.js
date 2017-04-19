@@ -646,6 +646,9 @@ Ext.define('AOC.util.Helper',{
 		];
 	},
 	getFileNameContentStore:function(){
+		return [['File Name','File Name'],['File Content','File Content']];
+	},
+	getIdentificationTypeStore:function(){
 		return [['RBO','RBO'],['Product Line','Product Line']];
 	},
 	getFirstLastPageStore:function(){
