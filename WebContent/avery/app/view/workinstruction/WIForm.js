@@ -237,7 +237,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            {
 		            	xtype:'textfield',
 		            	name:'specificFactoryEmailAddress',
-		            	vtype:'email',
+		            	vtype:'multiEmail',
 		            	reference:'specificFactoryEmailAddress',
 		            	fieldLabel:'Specific Factory Email Address',
 		            	flex:1,
@@ -251,7 +251,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		            {
 		            	xtype:'textfield',
 		            	name:'csrEmailAddress',
-		            	vtype:'email',
+		            	vtype:'multiEmail',
 		            	reference:'csrEmailAddress',
 		            	fieldLabel:'CSR Email Address',
 		            	margin:'0 0 0 10',

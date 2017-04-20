@@ -227,9 +227,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiSubmitBtn = formPanelRefs.wiSubmitBtn;
 		
 		wiSaveBtn[showFlag ? 'show':'hide']();
-//		wiSubmitBtn[showFlag ? 'show':'hide']();
-		wiSubmitBtn.show();
-		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+		if(AOCRuntime.getCurrentWiMode() == 'add'){
+			wiSubmitBtn.setDisabled(true);
+		}else {
 			wiSubmitBtn.setDisabled(false);
 		}
 	},
@@ -312,6 +312,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				delete schemaIdentification.id;
 				Ext.apply(detail.formdata,schemaIdentification);
 				var form = wiFormPanel.getReferences().wIForm;
+				detail.formdata.status='';
 				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));
 				Ext.getBody().unmask();
 			},

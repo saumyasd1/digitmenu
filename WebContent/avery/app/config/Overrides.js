@@ -121,5 +121,27 @@ Ext.define('AOC.config.Overrides',{
     			        return ret;    
     			    }
  	        });
+    		// custom Vtype for vtype:'time'
+    		 Ext.define('Ext.form.field.VTypes', {
+    		     override: 'Ext.form.field.VTypes',
+
+    		     // vtype validation function
+    		     multiEmail: function (value) {
+    		         var value = value || '';
+    		         var emails = value.split(',');
+
+    		         for (var i = 0, len = emails.length; i < len; i++) {
+    		             if (!this.multiEmailRe.test(emails[i].trim())) {
+    		                 return false;
+    		             }
+    		         }
+
+    		         return true;
+    		     },
+    		     // RegExp for the value to be tested against within the validation function
+    		     multiEmailRe: /^(")?(?:[^\."\s])(?:(?:[\.])?(?:[\w\-!#$%&'*+/=?^_`{|}~]))*\1@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/,
+    		     // vtype Text property: The error text to display when the validation function returns false
+    		     multiEmailText: 'Entered email(s) are not valid. Multiple emails can be entered with comma seperated!'
+    		 });
     }
 });

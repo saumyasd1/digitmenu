@@ -568,7 +568,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	 	aocFieldGrid = refs.wiaocfieldgrid,
     	 	store = aocFieldGrid.store,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];
-    	    rec = store.getAt(obj.getWidgetRecord().get('id'));
+    	    rec = store.getAt(obj.getWidgetRecord().get('id')-1);
     	    
 	    if(!file){
 			return;
@@ -596,6 +596,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         	}
         }
         me.fileArray.push(file);
+        obj.reset();
     },
     
     onAssigneeComboChange:function(field, newValue, oldValue){
