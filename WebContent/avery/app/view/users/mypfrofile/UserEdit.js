@@ -149,13 +149,14 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         xtype: 'combobox',
                         itemId: 'role',
                         editable : false,
-                        readOnly : (id == AOC.config.Runtime.getUser().id),
-                        store: 'Roles',
-                        name : 'role',
-                        queryMode : 'local',
-                        displayField: 'displayname',
-                        valueField: 'value',
-                        fieldLabel: AOCLit.role
+                        fieldLabel: AOCLit.role,
+						name: 'roleId',
+						flex:1,
+						displayField: 'roleName',
+						reference:'roleName',
+						valueField: 'id',
+						store:Ext.create('AOC.store.RoleStore'),
+						
                     },
                     {
                    	    xtype: 'textfield',

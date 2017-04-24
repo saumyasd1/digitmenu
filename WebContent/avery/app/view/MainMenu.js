@@ -14,7 +14,7 @@ Ext.define('AOC.view.MainMenu',{
         me.callParent(arguments);
         me.on({
             itemclick: me.onItemClickMenu,
-            afterrender:me.selectFirst
+            //afterrender:me.selectFirst
         });
     },
     buildMarkup : function(){
@@ -24,9 +24,9 @@ Ext.define('AOC.view.MainMenu',{
 //					'<div class="section-wrap-img"><img src="avery/resources/images/{image}"/></div>',
 					'<div class="section-wrap-img {image}" style="color:#2c3e50; font-size:15px;"></div>',
 					'<div class="section-wrap-text">{title}</div>',
-					'<tpl if="values.count!=0">',
-						'<div class="section-wrap-count"><span class="count-text">{count}</span></div>',
-					'</tpl>',
+//					'<tpl if="values.count!=0">',
+//						'<div class="section-wrap-count"><span class="count-text">{count}</span></div>',
+//					'</tpl>',
 				'</div>',
 			'</tpl>'
 		);

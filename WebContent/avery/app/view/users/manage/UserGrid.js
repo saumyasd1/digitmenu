@@ -3,6 +3,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 	requires : ['AOC.view.ux.CustomSearchField'],
 	itemId : 'usersgriditemId',
     alias : 'widget.usersgrid',
+    cls: 'aoc-panel',
     controller:'userMain',
 	emptyText:AOCLit.emptyDataMsg,
 	recordBeingEdit:null,
@@ -105,11 +106,14 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 		                	width :10
 		        		},
 				  {
-		              icon:  AOC.config.Settings.buttonIcons.addImage,
 		              text:'New',
 		              itemId : 'newUser',
 		              handler:'createuser',
-		              hidden:false
+		              hidden:false,
+		              iconCls: 'fa fa-plus',
+		              iconAlign: 'left',
+		              ui: 'blue',
+		              cls: 'blue-btn'
 		              },
 		          '->',
 		      	     {

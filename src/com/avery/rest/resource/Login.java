@@ -7,7 +7,9 @@ import static com.avery.utils.ApplicationConstants.USER_NOT_ACTIVATED;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -24,6 +26,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.storage.MixIn.MenuMixIn;
+import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.User;
 import com.avery.storage.service.UserService;
 import com.avery.utils.HashPassword;
@@ -109,15 +113,34 @@ public class Login {
 					Map<String, Object> claimsMap = new HashMap<String, Object>();
 					claimsMap.put("user", user.getEmail());
 					claimsMap.put("role", user.getRole());
-					responseMap.put("tokenExpiresDays",30);
+					responseMap.put("tokenExpiresDays", 30);
 					String token = JWTUtils.createJWT(
-							String.valueOf(user.getId()), "Avery", "token",
-							token_Expiry_time, claimsMap);
+					String.valueOf(user.getId()), "Avery", "token", token_Expiry_time, claimsMap);
 					if (!isCallFromExternalApp) {
 						responseMap.put("success", true);
 					}
 					responseMap.put("userinfo", user);
+					String roleId = user.getRole();
+					List<Menu> menuData = userService.getMenuRole(roleId);
+					List<Menu> menuList = new ArrayList<Menu>();
+					responseMap.put("menuList", menuData);
+					
+					for (Menu menuRole : menuData) {
+						if (menuRole != null) {
+							Menu menu = new Menu();
+							menu.setId(menuRole.getId());
+							menu.setTitle(menuRole.getTitle());
+							menu.setImage(menuRole.getImage());
+							menu.setXtype(menuRole.getXtype());
+							menu.setView(menuRole.getView());
+							menu.setSel(menuRole.getSel());
+							menuList.add(menu);
+							} 
+					}
+
+					responseMap.put("menuList", menuList);
 					responseMap.put("token", token);
+					mapper.addMixIn(Menu.class, MenuMixIn.class);
 					mapper.writeValue(writer, responseMap);
 					return writer.toString();
 				}

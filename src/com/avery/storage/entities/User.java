@@ -13,8 +13,6 @@ import java.util.TimeZone;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,13 +38,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 @Entity
 @Table(name = "user")
 @Path("users")
 public class User extends MainAbstractEntity {
 
 	/**
-	 * 
+	 * @author Saumya
 	 */
 	private static final long serialVersionUID = 1833552362987121156L;
 
@@ -66,26 +65,331 @@ public class User extends MainAbstractEntity {
 	private String password;
 	@Column(name = "role", length = 20)
 	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Column(name = "siteId")
 	Integer siteId;
 	@Column(name = "status")
 	Integer status;
 	@Column(name = "middleName", length = 64)
 	private String middleName;
+	@Column(name = "userRoleId", length = 64)
+	private String userRoleId;
 
 	public User() {
-
 	}
 
 	public User(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-
 	}
-	
-	
-	
 
+	/* Business Logic Starts */
+
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		Map<?, ?> entitiesMap = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			MultivaluedMap<String, String> queryParamMap = ui
+					.getQueryParameters();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			entitiesMap = userService.readWithCriteria(queryParamMap);
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find users");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	@Override
+	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
+		Long id = 0L;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			User user = mapper.readValue(data, User.class);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			boolean userExist = userService.checkDuplicateUser(user);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (userExist) {
+				responseMap.put("valueExist", true);
+				mapper.writeValue(writer, responseMap);
+			} else {
+				user.setPassword(com.avery.utils.HashPassword.simpleHash(user
+						.getPassword()));
+				user.setCreatedDate(new Date());
+				user.setLastModifiedDate(new Date());
+				id = userService.create(user);
+				responseMap.put("valueExist", false);
+				responseMap.put("id", id);
+				mapper.writeValue(writer, responseMap);
+			}
+			return Response.ok(writer.toString()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+	@Override
+	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
+			String data) {
+		Response.ResponseBuilder rb = null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			User user = userService.read(Long.parseLong(id));
+			String password = user.getPassword();
+			Date createdDate = user.getCreatedDate();
+			ObjectReader updater = mapper.readerForUpdating(user);
+			user = updater.readValue(data);
+			if (user == null) {
+				throw new WebApplicationException(Response
+						.status(Status.BAD_REQUEST)
+						.entity("User entity with id \"" + id
+								+ "\" doesn't exist")
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			boolean userExist = userService.checkDuplicateUser(user);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			if (userExist) {
+				responseMap.put("valueExist", true);
+				mapper.writeValue(writer, responseMap);
+			} else {
+				if (user.getPassword() != null
+						&& !user.getPassword().equals("")
+						&& !user.getPassword().equals(password))
+					user.setPassword(HashPassword.simpleHash(user.getPassword()));
+				else {
+					user.setPassword(password);
+				}
+				user.setLastModifiedDate(new Date());
+				user.setCreatedDate(createdDate);
+				userService.update(user);
+				responseMap.put("valueExist", false);
+				responseMap.put("user", user);
+				mapper.writeValue(writer, responseMap);
+			}
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in updating user entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in updating user entity with id " + id, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	@Override
+	public Response getEntity(UriInfo ui, HttpHeaders hh, String id) {
+		Response.ResponseBuilder rb = null;
+		try {
+			Long entityId = Long.parseLong(id);
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			User user = userService.read(entityId);
+			if (user == null)
+				throw new WebApplicationException(Response
+						.status(Status.BAD_REQUEST)
+						.entity("User entity with id \"" + id
+								+ "\" doesn't exist")
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			mapper.writeValue(writer, user);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching user entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching user entity with id " + id, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	@Override
+	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		try {
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			// read existing entity from database
+			User user = userService.read(Long.parseLong(id));
+			if (user == null) {
+				throw new WebApplicationException(Response
+						.status(Status.BAD_REQUEST)
+						.entity("User entity with id \"" + id
+								+ "\" doesn't exist")
+						.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			// prepare response
+			userService.delete(user);
+			return Response.ok(id).build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in deleting User entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in deleting User entity with id " + id, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+	@GET
+	@Path("/checkcurrentpassword/{id: [0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response CheckUserPassword(@Context UriInfo ui,
+			@Context HttpHeaders hh, @QueryParam(PASSWORD) String password,
+			@PathParam(ID) String id) {
+		try {
+			Long _id = Long.parseLong(id);
+			password = (password == null) ? "" : password;
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			User user = userService.read(_id);
+			if (user != null
+					&& (HashPassword.simpleHash(password).equals(user
+							.getPassword()))) {
+				return Response.ok("{\"success\":true,\"passwordmatch\":true}")
+						.build();
+			} else {
+				return Response
+						.ok("{\"success\":true,\"passwordmatch\":false}")
+						.build();
+			}
+		} catch (WebApplicationException aep) {
+			throw aep;
+		} catch (Exception e) {
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+	// Getting list of all users
+	@GET
+	@Path("/csrlist")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<User> csrList = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			csrList = userService.getSortedList();
+			if (csrList == null || csrList.isEmpty())
+				throw new Exception("Unable to find csr");
+			mapper.writeValue(writer, csrList);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	@GET
+	@Path("/globaltimezone")
+	public Response getApplicationDefaultTimeZone(@Context UriInfo ui,
+			@Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		String timeZone;
+		Map responseMap = new HashMap();
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			UserService userService = (UserService) SpringConfig.getInstance()
+					.getBean("userService");
+			timeZone = userService.getApplicationDefaultTimeZone();
+			if (timeZone == null | "".equals(timeZone))
+				timeZone = TimeZone.getDefault().getID();
+			responseMap.put("timeZone", timeZone);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+
+	/* Business Logic Ends */
+
+	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public String getUserRoleId() {
+		return userRoleId;
+	}
+
+	public void setUserRoleId(String userRoleId) {
+		this.userRoleId = userRoleId;
+	}
 
 	public String getComment() {
 		return comment;
@@ -143,14 +447,6 @@ public class User extends MainAbstractEntity {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	public Integer getSiteId() {
 		return siteId;
 	}
@@ -175,289 +471,4 @@ public class User extends MainAbstractEntity {
 		this.middleName = middleName;
 	}
 
-	@Override
-	public Response getEntities(UriInfo ui, HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		Map<?,?> entitiesMap=null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			entitiesMap = userService.readWithCriteria( queryParamMap);
-			if (entitiesMap == null || entitiesMap.isEmpty())
-				throw new Exception("Unable to find users");
-			mapper.writeValue(writer, entitiesMap);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-
-	}
-	
-	@Override
-	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
-		Long id=0L;
-		Map<String,Object> responseMap=new HashMap<String,Object>();
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			User user = mapper.readValue(data, User.class);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			boolean userExist = userService.checkDuplicateUser(user);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			if (userExist) {
-				responseMap.put("valueExist",true);
-				mapper.writeValue(writer, responseMap);
-			}else{
-				user.setPassword(com.avery.utils.HashPassword.simpleHash(user.getPassword()));
-				user.setCreatedDate(new Date());
-				user.setLastModifiedDate(new Date());
-				id = userService.create(user);
-				responseMap.put("valueExist",false);
-				responseMap.put("id",id);
-				mapper.writeValue(writer, responseMap);
-			}
-			return Response.ok(writer.toString()).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
-	
-	@Override
-	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
-			String data) {
-		Response.ResponseBuilder rb = null;
-		Map<String,Object> responseMap=new HashMap<String,Object>();
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			User user = userService.read(Long.parseLong(id));
-			String password =user.getPassword();
-			Date createdDate = user.getCreatedDate();
-			ObjectReader updater = mapper.readerForUpdating(user);
-			user = updater.readValue(data);
-			if (user == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			}
-			boolean userExist = userService.checkDuplicateUser(user);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			if (userExist) {
-				responseMap.put("valueExist",true);
-				mapper.writeValue(writer, responseMap);
-			}else{
-			if (user.getPassword() != null && !user.getPassword().equals("")
-					&& !user.getPassword().equals(password))
-				user.setPassword(HashPassword.simpleHash(user.getPassword()));
-			else{
-				user.setPassword(password);
-			}
-			user.setLastModifiedDate(new Date());
-			user.setCreatedDate(createdDate);
-			userService.update(user);
-			responseMap.put("valueExist",false);
-			responseMap.put("user",user);
-			mapper.writeValue(writer, responseMap);
-			}
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating user entity with id " + id, ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating user entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-	}
-
-
-	@Override
-	public Response getEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
-		try {
-			Long entityId = Long.parseLong(id);
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			User user = userService.read(entityId);
-			if (user == null)
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			mapper.writeValue(writer, user);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching user entity with id " + id, ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching user entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-
-	}
-	@Override
-	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		try {
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			// read existing entity from database
-			User user = userService.read(Long.parseLong(id));
-			if (user == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
-			}
-			// prepare response
-			userService.delete(user);
-			return Response.ok(id).build();
-		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting User entity with id " + id, ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting User entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
-	
-	@GET
-	@Path("/checkcurrentpassword/{id: [0-9]+}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response CheckUserPassword(@Context UriInfo ui,
-			@Context HttpHeaders hh, @QueryParam(PASSWORD) String password,
-			@PathParam(ID) String id) {
-		try {
-			Long _id = Long.parseLong(id);
-			password = (password == null) ? "" : password;
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
-			User user = userService.read(_id);
-			if (user != null
-					&& (HashPassword.simpleHash(password).equals(user
-							.getPassword()))){
-				return Response.ok("{\"success\":true,\"passwordmatch\":true}")
-						.build();
-			}
-			else{
-				return Response
-						.ok("{\"success\":true,\"passwordmatch\":false}")
-						.build();
-			}
-		} catch (WebApplicationException aep) {
-			throw aep;
-		} catch (Exception e) {
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
-	
-	//Getting list of all users
-	@GET
-	@Path("/csrlist")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh) {
-		Response.ResponseBuilder rb = null;
-		List<User> csrList = null;
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			csrList = userService.getSortedList();
-			if (csrList == null || csrList.isEmpty())
-				throw new Exception("Unable to find csr");
-			mapper.writeValue(writer, csrList);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-
-	}
-	
-	@GET
-	@Path("/globaltimezone")
-	public Response getApplicationDefaultTimeZone(@Context UriInfo ui, @Context HttpHeaders hh){
-		Response.ResponseBuilder rb = null;
-		String timeZone;
-		Map responseMap = new HashMap();
-		try {
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig
-					.getInstance().getBean("userService");
-			timeZone = userService.getApplicationDefaultTimeZone();
-			if (timeZone == null | "".equals(timeZone))
-				timeZone = TimeZone.getDefault().getID();
-			responseMap.put("timeZone", timeZone);
-			mapper.writeValue(writer, responseMap);
-			rb = Response.ok(writer.toString());
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		return rb.build();
-	}
 }

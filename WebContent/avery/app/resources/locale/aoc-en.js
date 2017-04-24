@@ -195,6 +195,7 @@ Ext.define('AOC.lang.lit',{
     "newWebOrder":'New Web Order',
     "Save":'Save',
     "Cancel": 'Cancel',
+    "close":'Close',
     "updateOrdLineMsg": 'Order line successfully updated',
     "updateOrdLineDetailMsg": 'Order line Detail successfully updated',
     "validateErrorMsg":'An error occured during validation process. Please contact your system Administartor for further information.',
@@ -513,5 +514,23 @@ Ext.define('AOC.lang.lit',{
     csRoleId:1,
     csManagerRoleId:2,
     baTeamRoleId:3,
-    technicalTeamRoleId:4
+    technicalTeamRoleId:4,
+        	
+    //UserManagement
+    roleName:'Role Name',
+    users:'Add User(s)',
+    setPermission:'<b>Set Permission</b>',
+    updateRoleMsg:'Role updated Successfully',
+    addRoleMsg:'Role added successfully',
+    roleExistMsg:'An entry already exists for given Role Name.',
+    home:'Home Screen',
+    taskManager:'Task Manager',
+    emailQueue:'Email Queue',
+    orderQueue:'Order Queue',
+    partner:'Partner',
+    address:'Address',
+    webOrder:'Web Order',
+    deleteRoleMsg:'Role deleted successfully',
+    delRoleMsg:'<b>Are you sure you want to delete the role?</b>',
+    adminDelMsg:'Super Admin can not be deleted.'
 });

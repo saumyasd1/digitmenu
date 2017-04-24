@@ -45,11 +45,13 @@ Ext.define('AOC.view.users.manage.UserController', {
 			var parameters=Ext.JSON.encode(valueObj);
 		}
 		else{
+			var refs = this.getReferences();
 			url=applicationContext+'/rest/users';
 			valueObj=form.getValues(false,true,false,true);
 			methodMode='POST';
 			valueObj.status=100;
-			
+			valueObj.role = valueObj.roleId;
+			valueObj.gender = valueObj.gender;
 			//Msg='User Added Successfully';
 			var Msg=AOCLit.addUserMsg;
 			length = Object.keys(valueObj).length-1;

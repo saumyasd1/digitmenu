@@ -23,7 +23,8 @@ Ext.define('AOC.controller.MenuController', {
 	views : [
 		'base.BaseToolbar',
 		'Viewport',
-		'users.manage.User'
+		'users.manage.User',
+		'users.roles.Role'
 	],
 	refs : [
 		{
@@ -115,6 +116,7 @@ Ext.define('AOC.controller.MenuController', {
 			scope: me,
 			myprofile : me.onMyProfile,
 			manageusers : me.onManageUsers,
+			manageroles : me.onManageRoles,
 			logout : me.onLogout
 		});
 		me.runtime = AOC.config.Runtime;
@@ -169,6 +171,7 @@ Ext.define('AOC.controller.MenuController', {
 					Helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
 					Ext.getBody().unmask();
 					me.loadStores();
+					me.showHideMenuItem(obj["menuList"]);
 					me.changeViewportCard(1);
 				},
 				failure:function(formss, action){
@@ -286,6 +289,9 @@ Ext.define('AOC.controller.MenuController', {
 			'<tpl if="this.isAdmin(values)">',
 				'<div style="width:140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="manageusers"">Manage Users</div>',
 			'</tpl>',
+			'<tpl if="this.isAdmin(values)">',
+			'<div style="width:140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="manageroles"">Manage Roles</div>',
+			'</tpl>',
 			'<div style="width:140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="logout"">Logout</div>',
 			//'</tpl>',
 			{
@@ -321,6 +327,9 @@ Ext.define('AOC.controller.MenuController', {
 	},
 	onManageUsers:function(){
 		this.selectCard('users');
+	},
+	onManageRoles:function(){
+		this.selectCard('roles');
 	},
 	onLogout:function(){
 		var me=this;
@@ -436,6 +445,13 @@ Ext.define('AOC.controller.MenuController', {
 				
 				AOCRuntime.setTimeZone(timeZone);
 			}
-		})
+		});
+	},
+	showHideMenuItem: function(data){
+		var me = this,
+			mainMenu = me.getMainMenu();
+		
+		mainMenu.store.loadData(data);
+		
 	}
 });  

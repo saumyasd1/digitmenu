@@ -7,14 +7,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.UserDao;
+import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.User;
+
 /**
-* 28 DEC -2015
-* 
-* @author Amit Trivedi
-*/
+ * 28 DEC -2015
+ * 
+ * @author Amit Trivedi
+ */
 @Component
-public class UserService extends GenericEntityService<User, Long>{
+public class UserService extends GenericEntityService<User, Long> {
+
 	private UserDao userDao;
 
 	public UserDao getUserDao() {
@@ -25,24 +28,24 @@ public class UserService extends GenericEntityService<User, Long>{
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
+
 	@Transactional
 	public Boolean checkDuplicate(String email) throws Exception {
 		return userDao.checkDuplicate(email);
 	}
-	
+
 	@Transactional
-	public User findUserByEmail(String email)throws Exception{
+	public User findUserByEmail(String email) throws Exception {
 		return getUserDao().findUserByEmail(email);
 	}
-	
+
 	@Transactional
-	public boolean checkDuplicateUser(User userObj) throws Exception{
+	public boolean checkDuplicateUser(User userObj) throws Exception {
 		return getUserDao().checkDuplicateUser(userObj);
 	}
-	
+
 	@Transactional
-	public List<User> getSortedList(){
+	public List<User> getSortedList() {
 		return getUserDao().getSortedList();
 	}
 
@@ -50,4 +53,9 @@ public class UserService extends GenericEntityService<User, Long>{
 	public String getApplicationDefaultTimeZone() {
 		return getUserDao().getApplicationDefaultTimeZone();
 	}
+
+	public List<Menu> getMenuRole(String roleId) {
+		return getUserDao().getMenuRole(roleId);
+	}
+
 }
