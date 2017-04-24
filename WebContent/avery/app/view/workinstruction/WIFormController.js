@@ -24,7 +24,49 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		}
         }
     },
-	
+    onWiFormAfterRender:function(wiForm){
+    	wiForm.getEl().on('click',this.onWiFormElClick,this);
+    },
+    onWiFormElClick:function(e, target){
+    	var me = this,
+    		refs = me.getReferences(),
+    		el = Ext.get(target);
+    	
+    	if(el.hasCls('delete-file')){
+    		var fileName = el.getAttribute('fileName'),
+    			fileType = el.getAttribute('fileType'),
+    			parent = el.parent('.file-box');
+    		
+    		var orderFileImageContainer = refs.orderFileImageContainer,
+	    		attchmentContainer = refs.attchmentContainer,
+	    		sampleFileContainer = refs.sampleFileContainer;
+    		
+    		if(fileType == 'Order'){
+    			orderFileImageContainer.remove(Ext.get(parent).component)
+    		}
+    		else if(fileType == 'Attachment'){
+    			attchmentContainer.remove(Ext.get(parent).component);
+    		}
+    		else if(fileType == 'Sample'){
+    			sampleFileContainer.remove(Ext.get(parent).component);
+    		}
+    		
+    		this.removeFileFromFileArray(fileName);
+    	}
+    },
+    removeFileFromFileArray:function(fileName){
+    	var me = this,
+    		fileArray = me.fileArray,
+    		len = fileArray.length;
+    	
+    	for(var i=0; i<len; i++){
+    		if(fileArray[i].name === fileName){
+    			fileArray.splice(i,1);
+    			break;
+    		}
+    	}
+    },
+    
 	//Order File section
 	onOrderRadioChange:function(field, newValue, oldValue){
 		var me = this;
@@ -506,7 +548,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	//Upload section
 	setImagePreview:function(file, imageContainer){
 		var me = this,
-			name=file.name;
+			name = file.name,
+			fileType = file.fileType;
 		
 		 var fileReader = new window.FileReader();
          fileReader.onload = function(e,b){
@@ -514,9 +557,15 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
              imageContainer.add(
 	             {
 	            	 xtype:'box',
-	            	 style:'float:left;',
-	            	 width:130,
-	            	 html:'<a style="letter-spacing:.15px;color:#2c3e50;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,15)+'</a>'
+	            	 style:'float:left;border:solid 1px #ccc;padding:5px;margin-right:5px;',
+	            	 width:150,
+	            	// itemId:name,
+	            	 cls:'file-box',
+	            	 html:[
+            	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,20)+'</a>',
+            	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'"></i>',
+            	       '<div style="clear:both"></div>'
+            	     ]
 	             }
              );
          }
@@ -525,7 +574,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	addFileInBox:function(obj, imageContainer, fileType){
 		var me = this;
 		
-		if(me.totalCount < me.maxFileCount){
+		if(me.totalCount <= me.maxFileCount){
 			var file = obj.getEl().down('input[type=file]').dom.files[0];
 			
 			if(!file){
@@ -570,11 +619,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     //AOCField Grid
     onFilesChanged:function(obj, value){
     	var me = this,
-    	 	refs = me.getReferences(),
-    	 	aocFieldGrid = refs.wiaocfieldgrid,
-    	 	store = aocFieldGrid.store,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];
-    	    rec = store.getAt(obj.getWidgetRecord().get('id')-1);
+    	    rec = obj.getWidgetRecord();
     	    
 	    if(!file){
 			return;
@@ -606,9 +652,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     },
     onSystemFilesChanged:function(obj, value){
     	var me = this,
-    	 	refs = me.getReferences(),
-    	 	grid = refs.wiorderfiberlinegrid,
-    	 	store = grid.store,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];
     	    rec = obj.getWidgetRecord();
     	    
@@ -652,7 +695,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	},
 	
 	onWIComboBlur:function(field, e){
-		Helper.clearCSRCombo(field, e);
+		Helper.clearCombo(field, e);
 	}
    
 });

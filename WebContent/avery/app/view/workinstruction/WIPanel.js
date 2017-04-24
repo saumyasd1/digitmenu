@@ -104,20 +104,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 			},
 			items:[
-				{
-					xtype:'combo',
-					fieldLabel:'Assignee',
-					name:'assignee',
-					flex:1,
-					displayField:'assigneeName',
-					reference:'assigneeCombo',
-					valueField:'id',
-					queryMode:'local',
-					listeners:{
-						blur:'onWIComboBlur'
-					},
-					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
-				},
+				
 				{
 					xtype:'combo',
 					fieldLabel:'Status',
@@ -126,12 +113,26 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					displayField:'value',
 					reference:'statusCombo',
 					valueField:'id',
-					margin:'0 0 0 10',
 					queryMode:'local',
 					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore'),
 					listeners:{
 						blur:'onWIComboBlur'
                 	}
+				},
+				{
+					xtype:'combo',
+					fieldLabel:'Assignee',
+					name:'assignee',
+					flex:1,
+					displayField:'assigneeName',
+					reference:'assigneeCombo',
+					valueField:'id',
+					margin:'0 0 0 10',
+					queryMode:'local',
+					listeners:{
+						blur:'onWIComboBlur'
+					},
+					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
 				}
 			]
 		}
@@ -768,7 +769,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						   data:[
 						       {name:'Default Value'},{name:'Bill To Address'},{name:'PO# (Please fill in "Bill/Ship Mapping Table")'},
 						       {name:'Email Subject (Please fill in "Bill/Ship Mapping Table")'},
-						       {name :'Others ( (Please specify & fill in "Bill/Ship Mapping Table")'}
+						       {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
 						   ],
 						   fields:'name'
 					   })
@@ -787,7 +788,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						   data:[
 						       {name:'Default Value'},{name:'Ship To Address'},{name:'PO#'},
 						       {name:'Email Subject'},{name:'Shipping Mark'},
-						       {name :'Others ( (Please specify & fill in "Bill/Ship Mapping Table")'}
+						       {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
 						   ],
 						   fields:'name'
 		    	    	}),
@@ -798,7 +799,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    {
 		    	xtype:'billshipmappinggrid',
 		    	reference:'billShipMappingGrid',
-		    	height:400,
+		    	height:'auto',
+		    	margin:'20 0',
 		    	style:'border:solid 1px #ccc;'
 		    }
 		]

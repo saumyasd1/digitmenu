@@ -25,7 +25,9 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	
 		me.callParent(arguments);
 	},
-	
+	listeners:{
+		afterrender:'onWiFormAfterRender'
+	},
 	buildButtons:function(){
 		return [
 		    {

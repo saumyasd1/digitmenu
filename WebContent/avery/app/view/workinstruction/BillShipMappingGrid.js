@@ -5,6 +5,7 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
     cls:'wi-grid',
 //    requires:['AOC.view.ux.RadioModel'],
     title:'Bill/Ship Mapping',
+    titleAlign:'center',
 	emptyText: AOCLit.emptyDataMsg,
 	initComponent : function(){
 		var me = this;
@@ -22,12 +23,20 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
 				ptype: 'cellediting',
 				clicksToEdit:1
 			}],
+			tools:[
+				{
+					type:'plus',
+					//callback:'',
+					tooltip:'Add More Row'
+				}   
+			],
 			listeners:{
 //				select:'onOrgGridRowSelect'
 			}
 		});
 		this.callParent(arguments);
 	},
+	
 	buildColumns : function(){
     	var me = this;
         return [

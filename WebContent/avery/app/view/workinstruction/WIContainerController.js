@@ -256,10 +256,61 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadGridInEditMode(wId, 'wiSystemGrid');
 		me.loadGridInEditMode(wId, 'wiaocfieldgrid');
 		me.loadGridInEditMode(wId, 'wiorderfiberlinegrid');
+		me.getAttachmentList(wId);
 		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
 	},
-	
+	getAttachmentList:function(wId){
+		var me = this;
+		Ext.Ajax.request({
+			method:'GET',
+			url:applicationContext+'/rest/wifiles/list',
+			params:{ id: wId },
+			success:function(response){
+				var data = JSON.parse(response.responseText);
+				var fileList = data.files;
+				me.loadAttachment(fileList);
+			}
+		});
+	},
+	loadAttachment:function(fileList){
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel,
+			formRefs = wiFormPanel.getReferences(),
+			orderFileImageContainer = formRefs.orderFileImageContainer,
+    		attchmentContainer = formRefs.attchmentContainer,
+    		sampleFileContainer = formRefs.sampleFileContainer,
+    		len = fileList.length;
+		
+		for(var i=0;i<len;i++){
+			if(fileList[i].fileType == 'Order'){
+				me.setImagePreview(orderFileImageContainer,fileList[i] );
+    		}
+			else if(fileList[i].fileType == 'Attachment'){
+				me.setImagePreview(attchmentContainer,fileList[i] );
+    		}
+			else if(fileList[i].fileType == 'Sample'){
+				me.setImagePreview(sampleFileContainer,fileList[i] );
+    		}
+		}
+	},
+	setImagePreview:function(imageContainer, file){
+		var name = file.fileName;
+		imageContainer.add(
+             {
+            	 xtype:'box',
+            	 style:'float:left;border:solid 1px #ccc;padding:5px;margin-right:5px;',
+            	 width:150,
+            	 cls:'file-box',
+            	 html:[
+           	       '<a class="download-attachment-link" style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,20)+'</a>'
+//	           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+file.name+'" fileType="'+file.fileType+'"></i>',
+//	           	       '<div style="clear:both"></div>'
+           	     ]
+             }
+        );
+	},
 	onViewWIFormMenuItemClick:function(menuItem, e){
 		var me = this;
 	

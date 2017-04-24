@@ -684,5 +684,12 @@ Ext.define('AOC.util.Helper',{
 	},
 	getUserRole:function(){
 		return AOCRuntime.getUser().role;
-	}
+	},
+	clearCombo:function(combo,e){
+		var store = combo.store;
+		var index = store.find(combo.displayField,combo.getRawValue(),'',false,false,true);
+		if(index == -1){
+			combo.setValue('');
+		}
+	},
 });
