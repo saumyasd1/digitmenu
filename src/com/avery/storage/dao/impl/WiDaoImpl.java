@@ -2,6 +2,7 @@ package com.avery.storage.dao.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -263,12 +264,11 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 	}
 
 	@Override
-	public Map getDataForViewForm(Long entityId) {
+	public Map getDataForViewForm(Long entityId) throws Exception{
 		Map entitiesMap = new HashMap();
 		List list = new ArrayList();
 		Session session = null;
 		ObjectMapper mapper = new ObjectMapper();
-		try {
 			mapper.addMixIn(Wi.class, WiMixIn.class);
 			mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
 			session = getSessionFactory().getCurrentSession();
@@ -276,14 +276,12 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			list = criteria.list();
 			Object obj = criteria.list().get(0);
 			Map<String, Object> map = mapper.convertValue(obj, Map.class);
-			Criteria schemIdentCriteria = session.createCriteria(WiSchemaIdentification.class)
+			Criteria schemaIdentCriteria = session.createCriteria(WiSchemaIdentification.class)
 					.createAlias("varWi", "varWi").add(Restrictions.eq("varWi.id", entityId));
-			map.put("listWiSchemaIdentification", schemIdentCriteria.list().get(0));
+			if(schemaIdentCriteria.list().size() == 0)
+				throw new ArrayIndexOutOfBoundsException();
+			map.put("listWiSchemaIdentification", schemaIdentCriteria.list().get(0));
 			entitiesMap.put("formdata", map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 		return entitiesMap;
 	}
 
@@ -303,6 +301,10 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			WiUser wiUserObj = new WiUser();
 			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
 			wi.setVarWiUser(wiUserObj);
+			Date now = new Date();
+			wi.setLastModifiedDate(now);
+			wi.setLastModifiedBy("abc");
+			wi.setCreatedDate(now);
 			session.update(wi);
 			wiId = Long.parseLong((String) entitiesMap.get("id"));
 			Wi wiObj = new Wi();

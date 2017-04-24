@@ -74,6 +74,15 @@ public class WiSystemLevel extends MainAbstractEntity {
 	@Column(name = "legacyFieldName", length = 100)
 	private String legacyFieldName;
 	
+	@Column(name = "filePath", length = 500)
+	private String filePath;
+
+	@Column(name = "fileName", length = 100)
+	private String fileName;
+	
+	@Column(name = "defaultId")
+	private int defaultId;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
 	Wi varWi;
@@ -196,6 +205,30 @@ public class WiSystemLevel extends MainAbstractEntity {
 
 	public void setLegacyFieldName(String legacyFieldName) {
 		this.legacyFieldName = legacyFieldName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	public int getDefaultId() {
+		return defaultId;
+	}
+
+	public void setDefaultId(int defaultId) {
+		this.defaultId = defaultId;
 	}
 
 	public Wi getVarWi() {

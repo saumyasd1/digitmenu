@@ -18,7 +18,7 @@ import com.avery.storage.entities.WiSystemLevel;
 public class WiSystemLevelService extends GenericEntityService<WiSystemLevel, Long> {
 
 	private WiSystemLevelDao wiSystemLevelDao;
-	
+
 	public WiSystemLevelDao getWiSystemLevelDao() {
 		return wiSystemLevelDao;
 	}
@@ -29,9 +29,14 @@ public class WiSystemLevelService extends GenericEntityService<WiSystemLevel, Lo
 	}
 
 	@Transactional
-	public Map  getEntitiesByWiId(Long entityId) {
+	public Map getEntitiesByWiId(Long entityId) {
 		// TODO Auto-generated method stub
 		return getWiSystemLevelDao().getEntitiesByWiId(entityId);
+	}
+
+	@Transactional
+	public boolean saveFileData(String entityId, String wiId, String filePath, String fileName) {
+		return getWiSystemLevelDao().saveFileData(entityId, wiId, filePath, fileName);
 	}
 
 }

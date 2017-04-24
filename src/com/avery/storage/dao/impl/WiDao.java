@@ -13,7 +13,7 @@ public interface WiDao extends GenericDao<Wi, Long> {
 
 	public long create(String wiData) throws Exception;
 
-	public Map getDataForViewForm(Long entityId);
+	public Map getDataForViewForm(Long entityId) throws Exception;
 
 	public Long update(String data) throws Exception;
 

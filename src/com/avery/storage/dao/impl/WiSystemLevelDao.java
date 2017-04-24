@@ -13,4 +13,5 @@ public interface WiSystemLevelDao extends GenericDao<WiSystemLevel, Long> {
 
 	public Map getEntitiesByWiId(Long entityId);
 
+	public boolean saveFileData(String entityId, String wiId, String filePath, String fileName);
 }

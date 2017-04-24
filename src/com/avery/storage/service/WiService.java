@@ -34,7 +34,7 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	}
 
 	@Transactional
-	public Map getDataForViewForm(Long entityId) {
+	public Map getDataForViewForm(Long entityId) throws Exception {
 		return getWiDao().getDataForViewForm(entityId);
 	}
 

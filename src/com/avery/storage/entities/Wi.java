@@ -43,6 +43,7 @@ import com.avery.storage.MixIn.WiMixIn;
 import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
 import com.avery.storage.service.WiAocFieldService;
 import com.avery.storage.service.WiService;
+import com.avery.storage.service.WiSystemLevelService;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,7 +104,7 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "factoryEmailDomain", length = 50)
 	private String factoryEmailDomain;
 
-	@Column(name = "atoNato", length = 10)
+	@Column(name = "atoNato", length = 50)
 	private String atoNato;
 
 	@Column(name = "productLine", length = 50)
@@ -228,7 +229,6 @@ public class Wi extends MainAbstractEntity {
 
 	@Column(name = "waiveMOQ", length = 10)
 	private String waiveMOQ;
-	
 
 	public String getFibreContentValidationSKUFieldName() {
 		return fibreContentValidationSKUFieldName;
@@ -366,6 +366,8 @@ public class Wi extends MainAbstractEntity {
 			entitiesMap = wiService.getDataForViewForm(entityId);
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return Response.ok("No data found").status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -387,7 +389,9 @@ public class Wi extends MainAbstractEntity {
 		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.WIFILES_PATH);
 		String filePath = null;
 		boolean isAocFileType = false;
+		boolean isSystemLevel = false;
 		boolean successFlag = false;
+		String directoryName = defaultDirectoryPath.substring(defaultDirectoryPath.lastIndexOf("/"));
 		try {
 			// props.load(in);
 			if (fileType.equalsIgnoreCase("Order")) {
@@ -397,8 +401,11 @@ public class Wi extends MainAbstractEntity {
 			} else if (fileType.equalsIgnoreCase("Sample")) {
 				filePath = defaultDirectoryPath + File.separator + "sample";
 			} else if (fileType.equalsIgnoreCase("AocField")) {
-				filePath = defaultDirectoryPath + File.separator + wiId;
+				filePath = defaultDirectoryPath + File.separator + "aocfield" + File.separator + wiId;
 				isAocFileType = true;
+			} else if (fileType.equalsIgnoreCase("SystemLevel")) {
+				filePath = defaultDirectoryPath + File.separator + "systemlevel" + File.separator + wiId;
+				isSystemLevel = true;
 			} else {
 				AppLogger.getSystemLogger().error("Error in uploading the file -> Wrong filetype");
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
@@ -410,8 +417,12 @@ public class Wi extends MainAbstractEntity {
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
 			WiAocFieldService wiAocFieldService = (WiAocFieldService) SpringConfig.getInstance()
 					.getBean("wiAocFieldService");
+			WiSystemLevelService wiSystemLevelService = (WiSystemLevelService) SpringConfig.getInstance()
+					.getBean("wiSystemLevelService");
 			if (isAocFileType) {
 				successFlag = wiAocFieldService.saveFileData(entityId, wiId, filePath, fileName);
+			} else if (isSystemLevel) {
+				successFlag = wiSystemLevelService.saveFileData(entityId, wiId, filePath, fileName);
 			} else {
 				successFlag = wiService.saveFileData(entityId, filePath, fileName, fileType);
 			}
