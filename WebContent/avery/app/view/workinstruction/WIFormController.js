@@ -696,6 +696,15 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	
 	onWIComboBlur:function(field, e){
 		Helper.clearCombo(field, e);
+	},
+	onStatusSelect:function(field, value){
+		var me = this,
+			refs = me.getReferences(),
+			assigneeCombo = refs.assigneeCombo,
+			val = assigneeCombo.getValue();
+		
+		assigneeCombo.setDisabled(false);
+		assigneeCombo.store.load({params:{id:val.toString()}});
 	}
    
 });

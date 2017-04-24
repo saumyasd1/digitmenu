@@ -50,8 +50,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    {
 		    	xtype:'label',
-		    	text:'Notes:RBO/Program/Product line specific guidelines, aimed at showing how to validate the sku information or applying logic that applicable to the whole RBO or program or product lines.This guidelines can be shared with all WI under the same RBO/Program/Product line.',
-		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;'
+		    	text:'Notes: RBO/Program/Product line specific guidelines, aimed at showing how to validate the sku information or applying logic that applicable to the whole RBO or program or product lines.This guidelines can be shared with all WI under the same RBO/Program/Product line.',
+		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;font-style: italic;color: #808080;'
 		    },
 		    me.getSKUValidationItems(),
 		    {
@@ -59,15 +59,15 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	columns:3,
 		    	vertical:true,
 		    	labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-		    	width:500,
+		    	width:550,
 		    	items:[
-		    	    { boxLabel:'LLKK', name:'llkk', inputValue:'true'},
-		    	    { boxLabel:'Factory Transfer', name:'factoryTransfer', inputValue:'true'},
-		    	    { boxLabel:'Shipment Sample', name:'shipmentSample', inputValue:'true'},
+//		    	    { boxLabel:'LLKK', name:'llkk', inputValue:'true'},
+//		    	    { boxLabel:'Factory Transfer', name:'factoryTransfer', inputValue:'true'},
+//		    	    { boxLabel:'Shipment Sample', name:'shipmentSample', inputValue:'true'},
 		    	    { boxLabel:'Size Check', name:'sizeCheck', inputValue:'true'},
 		    	    { boxLabel:'Fabric Check', name:'fabricCheck', inputValue:'true'},
-		    	    { boxLabel:'Local Billing', name:'localBilling', inputValue:'true'},
-		    	    { boxLabel:'Waive MOA', name:'waiveMOA', inputValue:'true'},
+//		    	    { boxLabel:'Local Billing', name:'localBilling', inputValue:'true'},
+//		    	    { boxLabel:'Waive MOA', name:'waiveMOA', inputValue:'true'},
 		    	    { boxLabel:'Waive MOQ', name:'waiveMOQ', inputValue:'true'}
 		    	]
 		    },
@@ -116,7 +116,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					queryMode:'local',
 					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore'),
 					listeners:{
-						blur:'onWIComboBlur'
+						blur:'onWIComboBlur',
+						select:'onStatusSelect'
                 	}
 				},
 				{
@@ -126,6 +127,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					flex:1,
 					displayField:'assigneeName',
 					reference:'assigneeCombo',
+					disabled:true,
 					valueField:'id',
 					margin:'0 0 0 10',
 					queryMode:'local',
@@ -236,10 +238,11 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			},
 			items:[
 			    {
-			    	xtype:'textfield',
+			    	xtype:'textarea',
 			    	fieldLabel:'Please specify any other special rules/Remark',
 			    	name:'specialRulesRemark',
 					labelSeparator:'',
+					maxLength:250,
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 			    },
@@ -264,18 +267,20 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					},
 					items:[
 						{
-							xtype:'textfield',
+							xtype:'textarea',
 							flex:1,
 							fieldLabel:'Link',
 							name:'link',
-							reference:'link'
+							reference:'link',
+							maxLength:250
 						},
 					    {
-					    	xtype:'textfield',
+					    	xtype:'textarea',
 					    	flex:1,
 					    	fieldLabel:'Folder Layers',
 					    	margin:'0 0 0 10',
 					    	name:'folderLayers',
+							maxLength:250,
 					    	reference:'folderLayers'
 					    }
 					]
@@ -299,7 +304,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			title:'SKU Validation',
 			cls:'wi-form-panel-header',
 			titleAlign:'center',
-			margin:'10 0',
+			margin:'20 0',
 			bodyPadding:10,
 			layout:{
 				type:'anchor'
@@ -315,7 +320,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'radiogroup',
 					fieldLabel:'Is there any size validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. size has to be validated by Size Chart/Size Page/Additional attachment'),
 					reference:'sizeValidationStructure',
-					width:600,
+					width:550,
 					margin:'0 0 5 0',
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -347,7 +352,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'radiogroup',
 					fieldLabel:'Is there any Fiber Content validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Sum of the Fabric Content must be in the multiple of 100%'),
 					reference:'fiberContentValidationStructure',
-					width:600,
+					width:550,
 					margin:'0 0 5 0',
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -378,7 +383,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					xtype:'radiogroup',
 					fieldLabel:'Is there any COO validation for this structure? '+Ext.String.format(AOCLit.wiInfoIconText, 'i.e. Country of Origin or its translation has to be validated'),
 					reference:'cooValidationStructure',
-					width:600,
+					width:550,
 					margin:'0 0 5 0',
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -425,17 +430,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelWidth:430
 				},
     	    	items:[
-	    	       {
-						xtype:'radiogroup',
-						column:2,
-						margin:'0 0 5 0',
-						width:600,
-						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
-						items:[
-						    { boxLabel: 'Yes', name:'aocWaive', inputValue:'Yes'},
-						    { boxLabel: 'No', name:'aocWaive', inputValue:'No'}
-						]
-					},
 					{
 						xtype:'radiogroup',
 						column:2,
@@ -445,6 +439,17 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						items:[
 						    { boxLabel: 'Direct Email Form Customer', name:'orderPlacementMethod', inputValue:'1'},
 						    { boxLabel: 'Email Forwarded by CS', name:'orderPlacementMethod', inputValue:'2'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						column:2,
+						margin:'0 0 5 0',
+						width:550,
+						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
+						items:[
+						    { boxLabel: 'Yes', name:'aocWaive', inputValue:'Yes'},
+						    { boxLabel: 'No', name:'aocWaive', inputValue:'No'}
 						]
 					}
     	    	]
@@ -473,7 +478,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'radiogroup',
 						fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
 						reference:'sampleBulkOrderPresentWI',
-						width:600,
+						width:550,
 						margin:'0 0 5 0',
 						items:[
 						  { boxLabel:'Yes', inputValue:'Yes', name:'sampleBulkOrderPresentWI'},
@@ -484,7 +489,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'radiogroup',
 						fieldLabel:'Is the sample order required to waive MOQ?',
 						reference:'sampleOrderRequiredMOQ',
-						width:600,
+						width:550,
 						margin:'0 0 5 0',
 						items:[
 						  {boxLabel:'Yes',inputValue:'Yes',name:'sampleOrderRequiredMOQ'},
@@ -495,7 +500,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'radiogroup',
 						fieldLabel:'Is there any sample item that would be ordered in this WI?',
 						reference:'sampleItemRequiredWI',
-						width:600,
+						width:550,
 						margin:'0 0 5 0',
 						items:[
 						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemRequiredWI'},
@@ -506,7 +511,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'radiogroup',
 						fieldLabel:'Is it the rule that sample items are not approved to be ordered by bulk order?',
 						reference:'sampleItemApproved',
-						width:600,
+						width:550,
 						margin:'0 0 5 0',
 						items:[
 						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemApproved'},
@@ -604,14 +609,14 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:200
+					labelWidth:200,
+					width:325
 				},
 				items:[
 					{
 						xtype:'radiogroup',
 						fieldLabel:'Discount Price',
 						reference:'discountPrice',
-						width:400,
 						margin:'0 0 5 0',
 						items:[
 						  { boxLabel:'Yes',inputValue:'Yes',name:'discountPrice'},
@@ -622,7 +627,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						xtype:'radiogroup',
 						fieldLabel:'Pricing Aggrement',
 						reference:'pricingAggrement',
-						width:400,
 						margin:'0 0 5 0',
 						items:[
 						  { boxLabel:'Yes',inputValue:'Yes',name:'pricingAggrement'},

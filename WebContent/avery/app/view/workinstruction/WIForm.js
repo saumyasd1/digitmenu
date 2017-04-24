@@ -164,22 +164,16 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelWidth:150
 	        	  },
 	              items:[
-					{
-						xtype:'radiogroup',
-						column:3,
-						reference:'atoNato',
-						flex:1,
-						fieldLabel:'ATO/NATO',
-						items:[
-						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
-						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'},
-						    { boxLabel: 'Both ATO&NATO', name:'atoNato', inputValue:'Both ATO&NATO'}
-						]
-					},
-	                {
+                     {
+ 		            	xtype:'textfield',
+ 		            	name:'factoryEmailDomain',
+ 		            	reference:'factoryEmailDomain',
+ 		            	fieldLabel:'Factory Email Domain',
+ 		            	flex:1
+ 		            },
+ 		            {
  	                	xtype:'box',
- 	                	html:'<i class=""></i>',
- 	                	width:11,
+ 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Please use , to separate individual email domains'),
  	                	margin:'36 0 0 5'	
  	                },
 	                {
@@ -231,24 +225,11 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		          items:[
 		            {
 		            	xtype:'textfield',
-		            	name:'factoryEmailDomain',
-		            	reference:'factoryEmailDomain',
-		            	fieldLabel:'Factory Email Domain',
-		            	flex:1
-		            },
-		            {
-	                	xtype:'box',
-	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Please use , to separate individual email domains'),
-	                	margin:'36 0 0 5'	
-	                },
-		            {
-		            	xtype:'textfield',
 		            	name:'specificFactoryEmailAddress',
 		            	vtype:'multiEmail',
 		            	reference:'specificFactoryEmailAddress',
 		            	fieldLabel:'Specific Factory Email Address',
-		            	flex:1,
-		            	margin:'0 0 0 10'
+		            	flex:1
 		            },
 		            {
 	                	xtype:'box',
@@ -268,38 +249,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	xtype:'box',
 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Please use , to separate individual email Once AOC receive the order, system will send an order acknowledgement report to this CSR Email'),
 	                	margin:'36 0 0 5'	
-	                }
-		          ]
-		      },
-		      {
-				  xtype:'fieldcontainer',
-				  layout:'hbox',
-				  margin:'0 0 5 0',
-				  flex:1,
-				  defaults:{
-					labelSeparator:'',
-					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
-				  },
-			      items:[
-					{
-						xtype:'radiogroup',
-						column:2,
-						reference:'glidCustomerItem',
-						flex:1,
-						fieldLabel:'GLID/Customer Item #? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
-						items:[
-						    { boxLabel: 'Customer Item #', name:'glidCustomerItem', inputValue:'Customer Item#'},
-						    { boxLabel: 'GLID', name:'glidCustomerItem', inputValue:'GLID'}
-						]
-					},
-					{
- 	                	xtype:'box',
- 	                	html:'<i class=""></i>',
- 	                	width:11,
- 	                	margin:'36 0 0 5'	
- 	                },
-			        {
+	                },
+	                {
 			        	xtype:'textfield',
 			        	name:'customerItemIdentifier',
 		            	reference:'customerItemIdentifier',
@@ -311,28 +262,9 @@ Ext.define('AOC.view.workinstruction.WIForm',{
  	                	xtype:'box',
  	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Please fill in the variable that is to identify the internal item # if any. For example, Size, color code..... if any'),
  	                	margin:'36 0 0 5'	
- 	                },
- 	                {
-						xtype:'radiogroup',
-						column:3,
-						reference:'isOrderWithAttachment',
-						flex:1,
-			        	margin:'0 0 0 10',
-		            	reference:'isOrderWithAttachment',
-						fieldLabel:'Is Order with Attachment? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
-						items:[
-						    { boxLabel: 'Yes', name:'isOrderWithAttachment', inputValue:'Yes'},
-						    { boxLabel: 'No', name:'isOrderWithAttachment', inputValue:'No'}
-						]
-					},
-					{
- 	                	xtype:'box',
- 	                	html:'<i class=""></i>',
- 	                	width:11,
- 	                	margin:'36 0 0 5'	
  	                }
-			      ]
-			  },
+		          ]
+		      },
 			  {
 				  xtype:'fieldcontainer',
 				  layout:'hbox',
@@ -403,6 +335,53 @@ Ext.define('AOC.view.workinstruction.WIForm',{
                 	 }
 				  ]
 			  },
+			  {
+				  xtype:'fieldcontainer',
+				  margin:'0 0 5 0',
+				  flex:1,
+				  defaults:{
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:200
+				  },
+				  items:[
+			         {
+						xtype:'radiogroup',
+						column:3,
+						reference:'atoNato',
+						width:600,
+						fieldLabel:'ATO/NATO',
+						items:[
+						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
+						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'},
+						    { boxLabel: 'Both ATO&NATO', name:'atoNato', inputValue:'Both ATO&NATO'}
+						]
+			         },
+			         {
+						xtype:'radiogroup',
+						column:2,
+						width:500,
+						reference:'glidCustomerItem',
+						fieldLabel:'GLID/Customer Item #? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
+						items:[
+						    { boxLabel: 'Customer Item #', name:'glidCustomerItem', inputValue:'Customer Item#'},
+						    { boxLabel: 'GLID', name:'glidCustomerItem', inputValue:'GLID'}
+						]
+			         },
+			         {
+						xtype:'radiogroup',
+						column:2,
+						width:350,
+		            	reference:'isOrderWithAttachment',
+						fieldLabel:'Is Order with Attachment? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
+						items:[
+						    { boxLabel: 'Yes', name:'isOrderWithAttachment', inputValue:'Yes'},
+						    { boxLabel: 'No', name:'isOrderWithAttachment', inputValue:'No'}
+						]
+			         }
+				  ]
+			  },
 			  me.getSystemOrg(),
 			  me.getSchemaIdentificationItems()
 		   ]
@@ -440,14 +419,14 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:300
+					labelWidth:300,
+					width:430
 		    	},
 		    	items:[
 					{
 						xtype:'radiogroup',
-						fieldLabel:'Should AOC default one Bill to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+						fieldLabel:'Should AOC default one Bill to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneBillToSite',
-						width:500,
 						margin:'0 0 5 0',
 						items:[
 						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneBillToSite'},
@@ -456,9 +435,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					},
  	                {
 						xtype:'radiogroup',
-						fieldLabel:'Should AOC default one Ship to Site # only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
+						fieldLabel:'Should AOC default one Ship to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneShipToSite',
-						width:500,
 						margin:'0 0 5 0',
 						items:[
 						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneShipToSite'},
@@ -469,8 +447,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		      },
 		      {
 		    	  xtype:'label',
-		    	  style:Settings.form.wiLabelStyle,
-		    	  text:'Note:Please select Site and System and answer the above two question, order to show the Org Level table'
+		    	  style:'font-weight:bold;color:#2c3e50;font-size:15px;font-style: italic;color: #808080;',
+		    	  text:'Note: Please select Site and System and answer the above two question, order to show the Org Level table'
 		      },
 		      {
     	    	  xtype:'wiorggrid',
@@ -479,7 +457,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	  flex:1,
 		    	  height:'auto',
 		    	  border:'solid 1px #ccc;',
-		    	  margin:'10 0'
+		    	  margin:'20 0'
     	      }
 		   ]
 	   }

@@ -68,16 +68,73 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel,
 			formRefs = wiFormPanel.getReferences(),
-			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid;
+			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid,
+			billShipMappingGrid = formRefs.billShipMappingGrid;
 		
 		var form = formRefs.wIForm.getForm();
 		form.reset();
 		me.loadDefaultSystemInfo();
 		me.loadDefaultOrgInfo();
 		me.loadDefaultAOCFieldName();
+		me.loadDefaultBillShipMappingGrid(billShipMappingGrid);
 		
 		wiorderfiberlinegrid.store.loadData(this.loadDefaultSystemLevelGridData());
 		
+	},
+	loadDefaultBillShipMappingGrid:function(billShipMappingGrid){
+		var data = [
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    },
+			    {
+			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
+			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
+			        'endCustomer':'','manufacturingNote':'','csr':''
+			    }
+			];
+		billShipMappingGrid.store.loadData(data);
 	},
 	loadDefaultAOCFieldName:function(){
 		var refs = this.getReferences(),

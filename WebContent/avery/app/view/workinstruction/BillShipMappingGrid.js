@@ -3,7 +3,6 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
     alias : 'widget.billshipmappinggrid',
     referenceHolder:true,
     cls:'wi-grid',
-//    requires:['AOC.view.ux.RadioModel'],
     title:'Bill/Ship Mapping',
     titleAlign:'center',
 	emptyText: AOCLit.emptyDataMsg,
@@ -13,7 +12,7 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
 		Ext.apply(this,{
 			columns : this.buildColumns(),
 			columnLines:true,
-//			store: Ext.data.StoreManager.lookup('wiOrgStore') == null ? Ext.create('AOC.store.WIOrgStore',{storeId:'wiOrgStore'}) : Ext.data.StoreManager.lookup('wiOrgStore'),
+			store: Ext.data.StoreManager.lookup('wiBillShipMappingStore') == null ? Ext.create('AOC.store.WIBillShipMappingStore',{storeId:'wiBillShipMappingStore'}) : Ext.data.StoreManager.lookup('wiBillShipMappingStore'),
 			viewConfig : {
 				stripeRows: true,
 				columnLines: true,
@@ -23,13 +22,13 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
 				ptype: 'cellediting',
 				clicksToEdit:1
 			}],
-			tools:[
-				{
-					type:'plus',
-					//callback:'',
-					tooltip:'Add More Row'
-				}   
-			],
+//			tools:[
+//				{
+//					type:'plus',
+//					//callback:'',
+//					tooltip:'Add More Row'
+//				}   
+//			],
 			listeners:{
 //				select:'onOrgGridRowSelect'
 			}
@@ -58,6 +57,7 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
             		xtype:'combo',
             		displayField:'name',
             		valueField:'name',
+            		queryMode:'local',
             		store:new Ext.data.JsonStore({
             			data:[
             			  {name:'Begin With'},{name:'End With'},{name:'Contain'},{name:'Equal To'}    

@@ -18,7 +18,8 @@ Ext.define('AOC.controller.MenuController', {
 		'WISystemStore',
 		'WIAOCFieldStore',
         'WIAssigneeStore',
-        'WIStatusStore'
+        'WIStatusStore',
+        'WIBillShipMappingStore'
 	],
 	views : [
 		'base.BaseToolbar',
@@ -171,7 +172,7 @@ Ext.define('AOC.controller.MenuController', {
 					Helper.setCookie("userinfo",JSON.stringify(userInfo),tokenExpires);
 					Ext.getBody().unmask();
 					me.loadStores();
-					me.showHideMenuItem(obj["menuList"]);
+					//me.showHideMenuItem(obj["menuList"]);
 					me.changeViewportCard(1);
 				},
 				failure:function(formss, action){
@@ -215,8 +216,8 @@ Ext.define('AOC.controller.MenuController', {
 				webOrderView.updateHeaderLabel(newWebOrder);
 				break;
 			case 'wicontainer':
-				var gridView = Ext.ComponentQuery.query(view)[0],
-			     	store = gridView.getStore();
+//				var gridView = Ext.ComponentQuery.query(view)[0],
+//			     	store = gridView.getStore();
 		   
 				//store.clearFilter(true);
 				//store.load();	
