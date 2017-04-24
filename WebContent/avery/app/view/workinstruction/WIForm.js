@@ -62,6 +62,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        			
 	        		}
 	        	},
+	        	beforeLayout:function(){
+	        	},
 	        	items:[
 	        	    me.getProfileHeaderItems(),
 	        	    me.getWorkingInstructionItems()
@@ -135,7 +137,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	fieldLabel:'Product Line',
 	                	margin:'0 0 0 10',
 	                	flex:1,
-	                	store:Helper.getProductLineStore()
+	                	store:Helper.getProductLineStore(),
+	                	listeners:{
+	                		blur:'onWIComboBlur'
+	                	}
                 	 },
                 	 {
  	                	xtype:'box',
@@ -275,18 +280,21 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 				  },
 			      items:[
-			        {
-			        	xtype:'combo',
-			        	name:'glidCustomerItem',
-		            	reference:'glidCustomerItem',
-			        	fieldLabel:'GLID/Customer Item #?',
-			        	editable:false,
-			        	store:[['CustomerItem#','Customer Item #'],['GLID','GLID']],
-			        	flex:1
-			        },
-			        {
+					{
+						xtype:'radiogroup',
+						column:2,
+						reference:'glidCustomerItem',
+						flex:1,
+						fieldLabel:'GLID/Customer Item #? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
+						items:[
+						    { boxLabel: 'Customer Item #', name:'glidCustomerItem', inputValue:'Customer Item#'},
+						    { boxLabel: 'GLID', name:'glidCustomerItem', inputValue:'GLID'}
+						]
+					},
+					{
  	                	xtype:'box',
- 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
+ 	                	html:'<i class=""></i>',
+ 	                	width:11,
  	                	margin:'36 0 0 5'	
  	                },
 			        {
@@ -302,20 +310,23 @@ Ext.define('AOC.view.workinstruction.WIForm',{
  	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Please fill in the variable that is to identify the internal item # if any. For example, Size, color code..... if any'),
  	                	margin:'36 0 0 5'	
  	                },
-			        {
-			        	xtype:'combo',
-			        	name:'isOrderWithAttachment',
-		            	reference:'isOrderWithAttachment',
-			        	fieldLabel:'Is Order with Attachment?',
-			        	editable:false,
-			        	queryMode:'local',
+ 	                {
+						xtype:'radiogroup',
+						column:3,
+						reference:'isOrderWithAttachment',
+						flex:1,
 			        	margin:'0 0 0 10',
-			        	flex:1,
-			        	store:Helper.getYesNoStore()
-			        },
-			        {
+		            	reference:'isOrderWithAttachment',
+						fieldLabel:'Is Order with Attachment? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
+						items:[
+						    { boxLabel: 'Yes', name:'isOrderWithAttachment', inputValue:'Yes'},
+						    { boxLabel: 'No', name:'isOrderWithAttachment', inputValue:'No'}
+						]
+					},
+					{
  	                	xtype:'box',
- 	                	html:Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
+ 	                	html:'<i class=""></i>',
+ 	                	width:11,
  	                	margin:'36 0 0 5'	
  	                }
 			      ]
@@ -357,7 +368,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				    	queryMode:'local',
 				    	margin:'0 0 0 10',
 				    	flex:1,
-				    	store:fileFormatStore
+				    	store:fileFormatStore,
+				    	listeners:{
+				    		blur:'onWIComboBlur'
+	                	}
 				    },
 				    {
  	                	xtype:'box',
@@ -374,7 +388,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				    	queryMode:'local',
 				    	flex:1,
 				    	margin:'0 0 0 10',
-				    	store:fileFormatStore
+				    	store:fileFormatStore,
+				    	listeners:{
+				    		blur:'onWIComboBlur'
+	                	}
 		    		 },
 		    		 {
  	                	xtype:'box',
@@ -764,8 +781,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							width:230,
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'attachmentRequired', inputValue:'1'},
-							    {boxLabel:'Not Required', name:'attachmentRequired', inputValue:'2', checked:true}
+							    {boxLabel:'Required', name:'attachmentFileRequired', inputValue:'1'},
+							    {boxLabel:'Not Required', name:'attachmentFileRequired', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onAttachmentRequiredRadioChange'

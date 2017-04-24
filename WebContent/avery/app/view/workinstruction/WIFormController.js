@@ -98,8 +98,10 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 			if(Ext.isEmpty(values.assignee)){
 				Helper.showToast('validation', 'Please select Assigne before submit form.');
+				return;
 			}else if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before submit form.');
+				return;
 			}else{
 				var obj = {
 					assignee : values.assignee,
@@ -145,8 +147,12 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
 		}
-		if(Ext.isEmpty(values.status)){
-			Helper.showToast('validation', 'Please select Status before proceed WI form.');
+		if(Ext.isEmpty(values.assignee)){
+			Helper.showToast('validation', 'Please select Assigne before save WI form.');
+			return;
+		}
+		if(Ext.isEmpty(values.status && values.status != '1')){
+			Helper.showToast('validation', 'Please select Status \"WI Initialized\" before proceed WI form.');
 			return;
 		}
 		Ext.getBody().mask(AOCLit.pleaseWait);
@@ -263,7 +269,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			 orderTextPosition:values.orderTextPosition,
 			 orderExcelCell:values.orderExcelCell,
 			 orderExcelSheet:values.orderExcelSheet,
-			 attachmentRequired:values.attachmentRequired,
+			 attachmentFileRequired:values.attachmentFileRequired,
 			 attachmentFileNameContent:values.attachmentFileNameContent,
 			 attachmentFileKeyWording:values.attachmentFileKeyWording,
 			 attachmentFormat:values.attachmentFormat,
@@ -293,7 +299,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		 delete values.orderTextPosition;
 		 delete values.orderExcelCell;
 		 delete values.orderExcelSheet;
-		 delete values.attachmentRequired;
+		 delete values.attachmentFileRequired;
 		 delete values.attachmentFileNameContent;
 		 delete values.attachmentFileKeyWording;
 		 delete values.attachmentFormat;
@@ -364,7 +370,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			attachmentFileKeyWording = refs.attachmentFileKeyWording,
 			attachmentFormat = refs.attachmentFormat;
 		
-		if(newValue.attachmentRequired == 1){
+		if(newValue.attachmentFileRequired == 1){
 			attachmentFileNameContent.setDisabled(false);
 			attachmentFileKeyWording.setDisabled(false);
 			attachmentFormat.setDisabled(false);
@@ -598,7 +604,42 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         me.fileArray.push(file);
         obj.reset();
     },
-    
+    onSystemFilesChanged:function(obj, value){
+    	var me = this,
+    	 	refs = me.getReferences(),
+    	 	grid = refs.wiorderfiberlinegrid,
+    	 	store = grid.store,
+    	 	file = obj.getEl().down('input[type=file]').dom.files[0];
+    	    rec = obj.getWidgetRecord();
+    	    
+	    if(!file){
+			return;
+		}
+	    var fileName = file.name;
+    	var fileReader = new window.FileReader();
+        fileReader.onload = function(e,b){
+            var fileContent = e.target.result;
+            rec.set('fileName',fileName);
+            rec.set('fileContent',fileContent);
+        }
+        
+        fileReader.readAsDataURL(file);
+        if(AOCRuntime.getCurrentWiMode() == 'edit'){
+        	file.recordId = rec.get('defaultId');
+		}else{
+			file.recordId = rec.get('defaultId');
+		}
+        file.fileType = 'SystemLevel';
+        var len = me.fileArray.length;
+        for(var i =0;i<len;i++){
+        	if(me.fileArray[i].recordId == rec.get('defaultId')){
+        		me.fileArray.splice(i,1);
+        		break;
+        	}
+        }
+        me.fileArray.push(file);
+        obj.reset();
+    },
     onAssigneeComboChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
@@ -609,5 +650,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		statusCombo.store.load({params:{id:field.getValue()}});
 	},
+	
+	onWIComboBlur:function(field, e){
+		Helper.clearCSRCombo(field, e);
+	}
    
 });

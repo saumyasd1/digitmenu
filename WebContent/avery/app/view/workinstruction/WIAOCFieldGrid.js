@@ -16,7 +16,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			plugins:[
 			     {
 			    	 ptype:'cellediting',
-			    	 clickToEdit:1,
+			    	 clicksToEdit:1,
 			    	 listeners:{
 			    		 beforeedit:function(e, editor){
 			    			 var rec  = editor.grid.store.getAt(editor.rowIdx);
@@ -80,24 +80,30 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				text : 'Default/Capture/Complicated Logic(Please explain clearly) '+ AOCLit.wiDefaultCaptureCompIconText,
 				flex:1.5,
 				dataIndex:'logic',
+		    	cellWrap:true,
 				editor:{
 					xtype:'combo',
 					displayField:'name',
 					valueField:'name',
 					queryMode:'local',
-					store:Helper.getDefaultCaptureLogicStore()
+					store:Helper.getDefaultCaptureLogicStore(),
+					listeners:{
+						
+					}
 				}
 			},
 			{
 				text : 'Field Value Location '+ AOCLit.wiFieldValueLocationIconText,
 				flex:1.5,
 				dataIndex:'fieldValueExample',
+		    	cellWrap:true,
 				editor:'textfield'
 			},
 			{
 				text : 'Explanation/Rules/Additional Logic/Validation '+ AOCLit.wiExplanationRulesIconText,
 				flex:1.5,
 				dataIndex:'validation',
+		    	cellWrap:true,
 				editor:{
 					xtype:'textfield'
 				}
@@ -106,6 +112,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				text : 'Reference',
 				flex:1,
 				dataIndex:'reference',
+		    	cellWrap:true,
 				editor:{
 					xtype:'textfield'
 				}
@@ -125,7 +132,6 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
                 text: '',
                 xtype: 'widgetcolumn',
                 width:40,
-                //dataIndex: 'file',
                 widget: {
                     xtype: 'filefield',
                     name: 'file',

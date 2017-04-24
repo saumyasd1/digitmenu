@@ -4,9 +4,9 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 	emptyText:AOCLit.emptyDataMsg,
 	cls:'aoc-panel',
 	viewConfig:{
-		forceFit:true,
-		stripeRows:true,
-		enableTextSelection:true
+		forceFit: true,
+		stripeRows: true,
+		enableTextSelection: true
 	},
 	store:new Ext.data.JsonStore({
 		fields:['id','factoryName','assigneeFirstName','assigneeLastName','status'],
@@ -55,6 +55,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 	        	iconCls:'fa fa-plus',
 				iconAlign: 'left',
 				ui:'blue',
+				hidden:AOCRuntime.getUser().role != 1, 
 				cls:'blue-btn'
 	        },'->',
 	        {

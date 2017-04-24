@@ -128,43 +128,43 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		return [
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':1
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':2
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':3
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':4
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':5
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':6
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':7
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':8
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':9
 		    },
 		    {
 		    	'additionalLogicValidation':'','defaultValueFieldLocation':'','fieldName':'', 'productLine':'', 'rboFactStrucSpecific':'',
-		        'systemOrderLineFiberLevel':''
+		        'systemOrderLineFiberLevel':'','defaultId':10
 		    }
 		]
 	},

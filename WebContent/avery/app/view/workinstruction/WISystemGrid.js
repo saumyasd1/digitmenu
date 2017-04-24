@@ -2,6 +2,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 	extend:'Ext.grid.Panel',
 	alias:'widget.wisystemgrid',
 	emptyText:AOCLit.emptyDataMsg,
+	cls:'wi-grid',
 	viewConfig:{
 		stripeRows:true,
 		columnLines:true,
@@ -19,7 +20,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			plugins:[
 			     {
 			    	 ptype:'cellediting',
-			    	 clickToEdit:1,
+			    	 clicksToEdit:1,
 			    	 listeners:{
 			    		 beforeedit: 'onSystemGridBeforeEdit'
 			    	 }
@@ -27,8 +28,6 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			],
 			store: Ext.data.StoreManager.lookup('wiSystemStore') == null ? Ext.create('AOC.store.WISystemStore',{storeId:'wiSystemStore'}) : Ext.data.StoreManager.lookup('wiSystemStore'),
 			listeners:{
-				afterrender:function(grid){
-				},
 				select:'onSystemGridRowSelect'
 			}
 		});
@@ -53,6 +52,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 		    		displayField:'name',
 		    		valueField:'id',
 		    		queryMode:'local',
+		    		editable:false,
 		    		store:new Ext.data.Store({
 		    			data:[
 		    			   {name:'PYT', id:1, systemId:31},{name:'PYL', id:2, systemId:31},{name:'VN', id:3, systemId:31},
@@ -91,8 +91,9 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			{
 				text : 'Packing Instruction '+ qtipTitle1,
 				flex:1,
-				sortable : true,
+				sortable: false,
 				dataIndex:AOCLit.packingInstruction,
+		    	cellWrap:true,
 				editor:{
 					xtype:'textfield'
 				}
@@ -100,16 +101,18 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			{
 				text : 'Manufacturing Note '+ qtipTitle1,
 				flex:1,
-				sortable : true,
+				sortable: false,
 				dataIndex:AOCLit.manufacturing,
+		    	cellWrap:true,
 				editor:{
 					xtype:'textfield'
 				}
 			},
 			{
 				text : 'Invoice Line Instruction '+ qtipTitle1,
-				sortable : true,
+				sortable: false,
 				dataIndex:AOCLit.invoiceLineInstruction,
+		    	cellWrap:true,
 				flex:1,
 				editor:{
 					xtype:'textfield'
@@ -117,8 +120,9 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 			},
 			{
 				text : 'Variable data breakdown '+ qtipTitle1,
-				sortable : true,
+				sortable: true,
 				dataIndex:AOCLit.variableDataBreakdown,
+		    	cellWrap:true,
 				flex:1.5,
 				editor:{
 					xtype:'textfield'
@@ -157,6 +161,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 				text : 'Ship mark '+ qtipTitle1,
 				dataIndex:AOCLit.shipMark,
 				flex:1,
+		    	cellWrap:true,
 				editor:{
 					xtype:'textfield'
 				}

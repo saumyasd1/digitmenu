@@ -2,6 +2,7 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.wiorggrid',
     referenceHolder:true,
+    cls:'wi-grid',
     requires:['AOC.view.ux.RadioModel'],
 	emptyText: AOCLit.emptyDataMsg,
 	initComponent : function(){
@@ -12,22 +13,18 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 			columnLines:true,
 			store: Ext.data.StoreManager.lookup('wiOrgStore') == null ? Ext.create('AOC.store.WIOrgStore',{storeId:'wiOrgStore'}) : Ext.data.StoreManager.lookup('wiOrgStore'),
 			viewConfig : {
-				stripeRows : true,
-				columnLines:true,
-				enableTextSelection : true
+				stripeRows: true,
+				columnLines: true,
+				enableTextSelection: true
 			},
 			plugins: [{
 				ptype: 'cellediting',
-				clicksToEdit: 1,
-				listeners:{
-				}
+				clicksToEdit:1
 			}],
 			selModel: {
 				selType: 'radiomodel'
 			},
 			listeners:{
-				'afterrender':function(){
-				},
 				select:'onOrgGridRowSelect'
 			}
 		});
@@ -58,6 +55,7 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
             	editor:{
             		xtype:'combo',
             		name:'orgExistFlag',
+            		editable:false,
             		store:[['Yes','Yes'],['No','No']]
             	}	
             },

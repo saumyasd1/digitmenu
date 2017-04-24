@@ -25,8 +25,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    		align:'stretch'
 		    	},
 		    	items:[].concat(me.getGeneralInformationItems()).concat(
-		    			me.getSampleBulkItems()
-		    		)
+	    			me.getSampleBulkItems()
+	    		)
 		    },
 		    {
 		    	title:'Order Extraction',
@@ -47,7 +47,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						height:'auto'
 					}
 				])
-		    
 		    },
 		    {
 		    	xtype:'label',
@@ -115,7 +114,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					valueField:'id',
 					queryMode:'local',
 					listeners:{
-						//change:'onAssigneeComboChange'
+						blur:'onWIComboBlur'
 					},
 					store:Ext.data.StoreManager.lookup('wiAssigneeStore') == null ? Ext.create('AOC.store.WIAssigneeStore',{storeId:'wiAssigneeStore'}) : Ext.data.StoreManager.lookup('wiAssigneeStore')
 				},
@@ -129,7 +128,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					valueField:'id',
 					margin:'0 0 0 10',
 					queryMode:'local',
-					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore')
+					store:Ext.data.StoreManager.lookup('wiStatusStore') == null ? Ext.create('AOC.store.WIStatusStore',{storeId:'wiStatusStore'}) : Ext.data.StoreManager.lookup('wiStatusStore'),
+					listeners:{
+						blur:'onWIComboBlur'
+                	}
 				}
 			]
 		}
@@ -413,39 +415,37 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	margin:'0 0 5 0',
     	    	flex:1,
     	    	layout:{
-    	    		type:'hbox',
-    	    		align:'stretch' 	
+    	    		type:'anchor'
     	    	},
     	    	defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:430
 				},
     	    	items:[
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'orderPlacementMethod',
-    	    	    	fieldLabel:'Order Placement Method',
-    	    	    	reference:'orderPlacementMethod',
-    	    	    	displayField:'name',
-    	    	    	flex:1,
-    	    	    	valueField:'name',
-    	    	    	queryMode:'local',
-    	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'Direct Email Form Customer'},{name:'Email Forwarded by CS'}],
-    	    	    		fields:['name']
-    	    	    	})
-    	    	    },
-    	    	    {
-    	    	    	xtype:'combo',
-    	    	    	name:'aocWaive',
-    	    	    	fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
-    	    	    	reference:'aocWaive',
-    	    	    	margin:'0 0 0 10',
-    	    	    	flex:1,
-		    	    	editable:false,
-		    	    	store:Helper.getYesNoStore()
-    	    	    }
+	    	       {
+						xtype:'radiogroup',
+						column:2,
+						margin:'0 0 5 0',
+						width:600,
+						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
+						items:[
+						    { boxLabel: 'Yes', name:'aocWaive', inputValue:'Yes'},
+						    { boxLabel: 'No', name:'aocWaive', inputValue:'No'}
+						]
+					},
+					{
+						xtype:'radiogroup',
+						column:2,
+						margin:'0 0 5 0',
+						anchor:'80%',
+						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
+						items:[
+						    { boxLabel: 'Direct Email Form Customer', name:'orderPlacementMethod', inputValue:'1'},
+						    { boxLabel: 'Email Forwarded by CS', name:'orderPlacementMethod', inputValue:'2'}
+						]
+					}
     	    	]
     	    }
     	];
@@ -533,6 +533,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'bulkOrderIdentified',
     	    	    	fieldLabel:'Bulk Order can be identified if',
     	    	    	reference:'bulkOrderIdentified',
+    	    	    	maxLength:250,
     	    	    	flex:1
     	    	    },
     	    	    {
@@ -541,6 +542,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	fieldLabel:'Sample Order can be identified if',
     	    	    	reference:'sampleOrderIdentified',
     	    	    	margin:'0 0 0 10',
+    	    	    	maxLength:250,
     	    	    	flex:1
     	    	    }
     	    	    
@@ -573,7 +575,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    		data:[{name:'"SMS" would be stated in the Oracle item Description in "PX Item Spec"'},
     	    	    		      {name:'Others(please specify below)'}],
     	    	    		fields:['name']
-    	    	    	})
+    	    	    	}),
+    	    	    	listeners:{
+    	    	    		blur:'onWIComboBlur'
+	                	}
     	    	    },
     	    	    {
     	    	    	xtype:'textfield',
@@ -654,6 +659,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Order grouping - how the order lines should be grouped from order form to AOC?',
 						name:'internalInformation',
 						reference:'internalInformation',
+    	    	    	maxLength:200,
 						flex:1
 					},
 					{
@@ -662,6 +668,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						name:'orderGrouping',
 						reference:'orderGrouping',
 						margin:'0 0 0 10',
+    	    	    	maxLength:200,
 						flex:1
 					}
 		    	]
@@ -680,6 +687,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	flex:1,
 		    	margin:'0 0 5 0',
 		    	labelSeparator:'',
+    	    	maxLength:250,
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 		    },
@@ -690,6 +698,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	reference:'attachmentProcess',
 		    	flex:1,
 		    	margin:'0 0 20 0',
+    	    	maxLength:250,
 		    	labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign
@@ -785,6 +794,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				    	flex:1
 				    }
 				]
+		    },
+		    {
+		    	xtype:'billshipmappinggrid',
+		    	reference:'billShipMappingGrid',
+		    	height:400,
+		    	style:'border:solid 1px #ccc;'
 		    }
 		]
 	}

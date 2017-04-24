@@ -122,7 +122,7 @@ Ext.define('AOC.config.Overrides',{
     			    }
  	        });
     		// custom Vtype for vtype:'time'
-    		 Ext.define('Ext.form.field.VTypes', {
+    		 Ext.define('Override.form.field.VTypes', {
     		     override: 'Ext.form.field.VTypes',
 
     		     // vtype validation function
