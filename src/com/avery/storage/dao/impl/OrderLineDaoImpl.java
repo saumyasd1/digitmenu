@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -110,6 +111,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
+			mapper.setTimeZone(TimeZone.getDefault());
 			session = getSessionFactory().getCurrentSession();
 			String t=null;
 			boolean insertShipAddress=false,insertBillAddress=false;
@@ -254,6 +256,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
+			mapper.setTimeZone(TimeZone.getDefault());
 			for(OrderLine orderLine:entities){
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(jsonData);
