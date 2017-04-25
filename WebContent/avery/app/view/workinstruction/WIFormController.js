@@ -184,7 +184,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		Ext.apply(values, {listWiOrg:me.processGridData(refs.wiOrgGrid)});
 		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
 		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
-//		Ext.apply(values, me.getRadioCheckBoxValue());
+		Ext.apply(values, {listWiBillShipMapping:me.processGridData(refs.billShipMappingGrid, true)});
 		
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();

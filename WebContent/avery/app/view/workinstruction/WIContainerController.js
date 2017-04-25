@@ -256,7 +256,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				    	iconCls:'fa fa-pencil-square-o',
 				    	itemId:'cloneWIMenuItem',
 				    	scope:me,
-				    	handler:me.onEditWIFormMenuItemClick
+				    	handler:me.onCloneWIFormMenuItemClick
 				    }
 				],
 				listeners:{
@@ -297,6 +297,17 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiSubmitBtn.setDisabled(false);
 		}
 	},
+	onCloneWIFormMenuItemClick:function(){
+		var me = this;
+		
+		AOCRuntime.setCurrentWiMode('add');
+		me.setReadOnlyView(false);
+		me.loadWIForm();
+		
+		me.loadAssigneeCombo();
+		me.loadStatusCombo();
+		me.showHideSaveSubmitBtn(true);
+	},
 	onEditWIFormMenuItemClick:function(menuItem, e){
 		var me = this;
 		
@@ -320,6 +331,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadGridInEditMode(wId, 'wiSystemGrid');
 		me.loadGridInEditMode(wId, 'wiaocfieldgrid');
 		me.loadGridInEditMode(wId, 'wiorderfiberlinegrid');
+		me.loadGridInEditMode(wId, 'billShipMappingGrid');
 		me.getAttachmentList(wId);
 		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
