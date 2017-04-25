@@ -230,14 +230,6 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "waiveMOQ", length = 10)
 	private String waiveMOQ;
 
-	public String getFibreContentValidationSKUFieldName() {
-		return fibreContentValidationSKUFieldName;
-	}
-
-	public void setFibreContentValidationSKUFieldName(String fibreContentValidationSKUFieldName) {
-		this.fibreContentValidationSKUFieldName = fibreContentValidationSKUFieldName;
-	}
-
 	@Column(name = "fibreContentValidationSKUFieldName", length = 100)
 	private String fibreContentValidationSKUFieldName;
 
@@ -258,10 +250,13 @@ public class Wi extends MainAbstractEntity {
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiFiles> listWiFiles;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "assignee_id")
-	WiUser varWiUser;
+	private WiUser varWiUser;
+
+	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
+	private List<WiBillShipMapping> listWiBillShipMapping;
 
 	@Transient
 	private String iconName;
@@ -919,6 +914,14 @@ public class Wi extends MainAbstractEntity {
 		this.waiveMOQ = waiveMOQ;
 	}
 
+	public String getFibreContentValidationSKUFieldName() {
+		return fibreContentValidationSKUFieldName;
+	}
+
+	public void setFibreContentValidationSKUFieldName(String fibreContentValidationSKUFieldName) {
+		this.fibreContentValidationSKUFieldName = fibreContentValidationSKUFieldName;
+	}
+
 	public List<WiSystem> getListWiSystem() {
 		return listWiSystem;
 	}
@@ -973,6 +976,14 @@ public class Wi extends MainAbstractEntity {
 
 	public void setVarWiUser(WiUser varWiUser) {
 		this.varWiUser = varWiUser;
+	}
+
+	public List<WiBillShipMapping> getListWiBillShipMapping() {
+		return listWiBillShipMapping;
+	}
+
+	public void setListWiBillShipMapping(List<WiBillShipMapping> listWiBillShipMapping) {
+		this.listWiBillShipMapping = listWiBillShipMapping;
 	}
 
 	public String getIconName() {

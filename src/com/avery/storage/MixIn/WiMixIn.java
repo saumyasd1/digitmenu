@@ -3,6 +3,7 @@ package com.avery.storage.MixIn;
 import java.util.List;
 
 import com.avery.storage.entities.WiAocField;
+import com.avery.storage.entities.WiBillShipMapping;
 import com.avery.storage.entities.WiFiles;
 import com.avery.storage.entities.WiOrg;
 import com.avery.storage.entities.WiSchemaIdentification;
@@ -37,4 +38,7 @@ public abstract class WiMixIn {
 	
 	@JsonIgnore
 	public abstract WiUser getVarWiUser();
+	
+	@JsonIgnore
+	public abstract List<WiBillShipMapping> getListWiBillShipMapping();
 }

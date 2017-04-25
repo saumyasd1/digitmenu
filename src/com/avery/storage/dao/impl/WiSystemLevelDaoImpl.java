@@ -56,7 +56,7 @@ public class WiSystemLevelDaoImpl extends GenericDaoImpl<WiSystemLevel, Long> im
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(WiSystemLevel.class).createAlias("varWi", "varWi")
 					.add(Restrictions.eq("varWi.id", Long.parseLong(wiId)))
-					.add(Restrictions.eq("defaultId", Long.parseLong(entityId)));
+					.add(Restrictions.eq("defaultId", Integer.parseInt(entityId)));
 			WiSystemLevel wiSystemLevelObj = (WiSystemLevel) criteria.list().get(0);
 			wiSystemLevelObj.setFilePath(filePath);
 			wiSystemLevelObj.setFileName(fileName);

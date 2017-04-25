@@ -28,6 +28,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Wi;
 import com.avery.storage.entities.WiAocField;
 import com.avery.storage.entities.WiAocFieldNameInfo;
+import com.avery.storage.entities.WiBillShipMapping;
 import com.avery.storage.entities.WiFiles;
 import com.avery.storage.entities.WiOrg;
 import com.avery.storage.entities.WiOrgInfo;
@@ -114,6 +115,8 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			WiUser wiUserObj = new WiUser();
 			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
 			wi.setVarWiUser(wiUserObj);
+			Date now = new Date();
+			wi.setCreatedDate(now);
 			wiId = wiService.create(wi);
 			Wi wiObj = new Wi();
 			wiObj.setId(wiId);
@@ -121,10 +124,12 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			List listWiSystemLevel = (ArrayList) entitiesMap.get("listWiSystemLevel");
 			List listWiAocField = (ArrayList) entitiesMap.get("listWiAocField");
 			List listWiSystem = (ArrayList) entitiesMap.get("listWiSystem");
+			List listWiBillShipMapping = (ArrayList) entitiesMap.get("listWiBillShipMapping");
 			saveWiOrgList(listWiOrg, wiId);
 			saveWiAocFieldList(listWiAocField, wiId);
 			saveWiSystemList(listWiSystem, wiId);
 			saveWiSystemLevelList(listWiSystemLevel, wiId);
+			saveWiBillShipMapping(listWiBillShipMapping, wiId);
 			LinkedHashMap listWiSchemaIdentification = (LinkedHashMap) entitiesMap.get("listWiSchemaIdentification");
 			WiSchemaIdentification wiSchemaIdentification = mapper
 					.readValue(mapper.writeValueAsString(listWiSchemaIdentification), WiSchemaIdentification.class);
@@ -263,25 +268,53 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		}
 	}
 
+	/**
+	 * Method for saving and updating the WiBillShipMapping table data
+	 * 
+	 * @param listWiBillShipMapping
+	 * @param wiId
+	 * @throws Exception
+	 */
+	public void saveWiBillShipMapping(List listWiBillShipMapping, Long wiId) throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		Wi wiObj = new Wi();
+		wiObj.setId(wiId);
+		Session session = null;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			for (Object obj : listWiBillShipMapping) {
+				LinkedHashMap entityMap = (LinkedHashMap) obj;
+				WiBillShipMapping wiBillShipMappingObj = mapper.readValue(mapper.writeValueAsString(entityMap),
+						WiBillShipMapping.class);
+				wiBillShipMappingObj.setVarWi(wiObj);
+				session.saveOrUpdate(wiBillShipMappingObj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 	@Override
-	public Map getDataForViewForm(Long entityId) throws Exception{
+	public Map getDataForViewForm(Long entityId) throws Exception {
 		Map entitiesMap = new HashMap();
 		List list = new ArrayList();
 		Session session = null;
 		ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(Wi.class, WiMixIn.class);
-			mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
-			session = getSessionFactory().getCurrentSession();
-			Criteria criteria = session.createCriteria(Wi.class).add(Restrictions.eq("id", entityId));
-			list = criteria.list();
-			Object obj = criteria.list().get(0);
-			Map<String, Object> map = mapper.convertValue(obj, Map.class);
-			Criteria schemaIdentCriteria = session.createCriteria(WiSchemaIdentification.class)
-					.createAlias("varWi", "varWi").add(Restrictions.eq("varWi.id", entityId));
-			if(schemaIdentCriteria.list().size() == 0)
-				throw new ArrayIndexOutOfBoundsException();
-			map.put("listWiSchemaIdentification", schemaIdentCriteria.list().get(0));
-			entitiesMap.put("formdata", map);
+		mapper.addMixIn(Wi.class, WiMixIn.class);
+		mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
+		session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(Wi.class).add(Restrictions.eq("id", entityId));
+		list = criteria.list();
+		Object obj = criteria.list().get(0);
+		Map<String, Object> map = mapper.convertValue(obj, Map.class);
+		Criteria schemaIdentCriteria = session.createCriteria(WiSchemaIdentification.class)
+				.createAlias("varWi", "varWi").add(Restrictions.eq("varWi.id", entityId));
+		if (schemaIdentCriteria.list().size() == 0)
+			throw new ArrayIndexOutOfBoundsException();
+		map.put("listWiSchemaIdentification", schemaIdentCriteria.list().get(0));
+		entitiesMap.put("formdata", map);
 		return entitiesMap;
 	}
 
@@ -303,8 +336,6 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			wi.setVarWiUser(wiUserObj);
 			Date now = new Date();
 			wi.setLastModifiedDate(now);
-			wi.setLastModifiedBy("abc");
-			wi.setCreatedDate(now);
 			session.update(wi);
 			wiId = Long.parseLong((String) entitiesMap.get("id"));
 			Wi wiObj = new Wi();
@@ -313,10 +344,12 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			List listWiSystemLevel = (ArrayList) entitiesMap.get("listWiSystemLevel");
 			List listWiAocField = (ArrayList) entitiesMap.get("listWiAocField");
 			List listWiSystem = (ArrayList) entitiesMap.get("listWiSystem");
+			List listWiBillShipMapping = (ArrayList) entitiesMap.get("listWiBillShipMapping");
 			saveWiOrgList(listWiOrg, wiId);
 			saveWiAocFieldList(listWiAocField, wiId);
 			saveWiSystemList(listWiSystem, wiId);
 			saveWiSystemLevelList(listWiSystemLevel, wiId);
+			saveWiBillShipMapping(listWiBillShipMapping, wiId);
 			LinkedHashMap listWiSchemaIdentification = (LinkedHashMap) entitiesMap.get("listWiSchemaIdentification");
 			WiSchemaIdentification wiSchemaIdentification = mapper
 					.readValue(mapper.writeValueAsString(listWiSchemaIdentification), WiSchemaIdentification.class);
@@ -396,13 +429,12 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		session = getSessionFactory().getCurrentSession();
 		WiUser wiUserObj = (WiUser) session.get(WiUser.class, assignee);
 		String firstName = wiUserObj.getFirstName();
-		String lastName = wiUserObj.getLastName()!=null ? wiUserObj.getLastName() : "";
+		String lastName = wiUserObj.getLastName() != null ? wiUserObj.getLastName() : "";
 		String toUserName = wiUserObj.getEmail();
 		String subject = "New WI Assigned";
-		String mailBody ="This is a system generated Email, please do not reply.\n\n" + "Dear "+firstName+" "+lastName+",\n\n"
-				+ "A new WI has been assigned to you with following details"
-				+ "\nPlease take necessary actions.\n\n" + "Your WI Id is : " + wiId
-				+ "\n\nBest Regards\n\n"
+		String mailBody = "This is a system generated Email, please do not reply.\n\n" + "Dear " + firstName + " "
+				+ lastName + ",\n\n" + "A new WI has been assigned to you with following details"
+				+ "\nPlease take necessary actions.\n\n" + "Your WI Id is : " + wiId + "\n\nBest Regards\n\n"
 				+ "---------------------------------------------------------------------\n"
 				+ "The information transmitted is intended only for the person or entity to which it is addressed and may contain confidential "
 				+ "and/or privileged material. Any review, retransmission, dissemination or other use of, or taking of any action in reliance "

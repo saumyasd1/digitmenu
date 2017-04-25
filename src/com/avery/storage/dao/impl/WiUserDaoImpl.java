@@ -37,16 +37,16 @@ public class WiUserDaoImpl extends GenericDaoImpl<WiUser, Long> implements WiUse
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList()
-				.add(Projections.property("roles.id"), "roleId")
-				.add(Projections.property("roles.roleName"), "roleName")
 				.add(Projections.property("id"), "id")
 				.add(Projections.property("firstName"), "firstName")
-				.add(Projections.property("lastName"), "lastName");
+				.add(Projections.property("lastName"), "lastName")
+				.add(Projections.property("varWiRoles.roleName"), "roleName");
 		criteria = session.createCriteria(WiUser.class)
-				.createAlias("listWiPermissions", "listWiPermissions")
-				.createAlias("listWiPermissions.varWiRoles", "varWiRoles")
-				.createAlias("varWiRoles", "roles")
-				.add(Restrictions.eq("varWiRoles.id", Long.parseLong(roleId)));
+				.createAlias("varWiRoles", "varWiRoles")
+				.createAlias("varWiRoles.listWiPermissions", "listWiPermissions")
+				.createAlias("listWiPermissions.varWiStatus", "varWiStatus")
+				.add(Restrictions.eq("varWiStatus.id", Long.parseLong(roleId)))
+				.add(Restrictions.eq("listWiPermissions.flag", "true"));
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(WiUser.class));
 		entitiesMap.put("assignee", new LinkedHashSet(criteria.list()));
 		return entitiesMap;

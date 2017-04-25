@@ -70,8 +70,8 @@ public class WiUser extends MainAbstractEntity {
 	@JoinColumn(name = "role_id")
 	WiRoles varWiRoles;
 	
-	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
-	private List<WiPermissions> listWiPermissions;
+//	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
+//	private List<WiPermissions> listWiPermissions;
 	
 	@OneToMany(mappedBy = "varWiUser", fetch = FetchType.LAZY)
 	private List<Wi> listWi;
@@ -84,7 +84,7 @@ public class WiUser extends MainAbstractEntity {
 
 	@GET
 	@Path("assignee")
-	public Response getAssigneeList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("roleId") String roleId){
+	public Response getAssigneeList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String roleId){
 		Map responseMap = new HashMap();
 		Response.ResponseBuilder rb = null;
 		ObjectMapper mapper = new ObjectMapper();
@@ -178,13 +178,13 @@ public class WiUser extends MainAbstractEntity {
 		this.varWiRoles = varWiRoles;
 	}
 
-	public List<WiPermissions> getListWiPermissions() {
-		return listWiPermissions;
-	}
-
-	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
-		this.listWiPermissions = listWiPermissions;
-	}
+//	public List<WiPermissions> getListWiPermissions() {
+//		return listWiPermissions;
+//	}
+//
+//	public void setListWiPermissions(List<WiPermissions> listWiPermissions) {
+//		this.listWiPermissions = listWiPermissions;
+//	}
 	
 	public List<Wi> getListWi() {
 		return listWi;

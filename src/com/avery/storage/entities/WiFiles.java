@@ -1,6 +1,10 @@
 package com.avery.storage.entities;
 
+import java.io.File;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -90,6 +95,39 @@ public class WiFiles extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
+	
+	@GET
+	@Path("/download")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getFileByID(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("filePath") String filePath) {
+		OrderFileAttachment orderFileAttachment = null;
+		try {
+
+			filePath = URLDecoder.decode(filePath, "UTF-8");
+
+			File file = new File(filePath);
+			if (!file.exists()) {
+				return Response.ok("The file is not available", MediaType.TEXT_PLAIN).status(Status.NOT_FOUND).build();
+			}
+
+			String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+
+			return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+					.header("content-disposition", "attachment; filename=\"" + getEncoded(fileName) + "\"").build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+	private String getEncoded(String fileName) throws URISyntaxException {
+		URI uri = new URI(null, null, fileName, null);
+		return uri.toASCIIString();
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public String getFilePath() {

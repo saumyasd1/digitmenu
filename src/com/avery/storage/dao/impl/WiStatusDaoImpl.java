@@ -81,8 +81,9 @@ public class WiStatusDaoImpl extends GenericDaoImpl<WiStatus, Long> implements W
 				.add(Projections.property("value"), "value");
 		criteria = session.createCriteria(WiStatus.class)
 				.createAlias("listWiPermissions", "listWiPermissions")
-				.createAlias("listWiPermissions.varWiUser", "varWiUser")
-				.add(Restrictions.eq("varWiUser.id", Long.parseLong(roleId)));
+				.createAlias("listWiPermissions.varWiRoles", "varWiRoles")
+				.add(Restrictions.eq("varWiRoles.id", Long.parseLong(roleId)))
+				.add(Restrictions.eq("listWiPermissions.fwd", "true"));
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(WiStatus.class));
 		entitiesMap.put("status", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
