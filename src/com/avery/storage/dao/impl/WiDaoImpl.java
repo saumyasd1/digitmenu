@@ -59,7 +59,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList().add(Projections.property("id"), "id")
-				.add(Projections.property("factoryName"), "factoryName").add(Projections.property("status"), "status")
+				.add(Projections.property("structureName"), "structureName").add(Projections.property("status"), "status")
 				.add(Projections.property("varWiUser.firstName"), "assigneeFirstName")
 				.add(Projections.property("varWiUser.lastName"), "assigneeLastName")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
@@ -116,7 +116,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			wiUserObj.setId(Long.parseLong((String) entitiesMap.get("assignee")));
 			wi.setVarWiUser(wiUserObj);
 			Date now = new Date();
-			wi.setCreatedDate(now);
+			wi.setLastModifiedDate(now);
 			wiId = wiService.create(wi);
 			Wi wiObj = new Wi();
 			wiObj.setId(wiId);
@@ -398,11 +398,13 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			wiId = Long.parseLong(inputDataMap.get("id"));
 			String status = inputDataMap.get("status");
 			long assignee = Long.parseLong(inputDataMap.get("assignee"));
+			String lastModifiedBy = inputDataMap.get("lastModifiedBy");
 			Wi wiObj = (Wi) session.get(Wi.class, wiId);
 			WiUser wiUserObj = new WiUser();
 			wiUserObj.setId(assignee);
 			wiObj.setVarWiUser(wiUserObj);
 			wiObj.setStatus(status);
+			wiObj.setLastModifiedBy(lastModifiedBy);
 			session.update(wiObj);
 			sendNotificationToAssignee(wiId, assignee, status);
 		} catch (IOException e) {
