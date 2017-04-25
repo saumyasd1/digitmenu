@@ -641,27 +641,27 @@ Ext.define('AOC.util.Helper',{
 	//WI section
 	getProductLineStore:function(){
 		return [
-	        ['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
+	        ['None','None'],['PFL','PFL'],['Multiple(HTL&PFL)','Multiple(HTL&PFL)'],['HTL','HTL'],['WVL','WVL'],
 	        ['GG','GG']
 		];
 	},
 	getFileNameContentStore:function(){
-		return [['File Name','File Name'],['File Content','File Content']];
+		return [['None','None'],['File Name','File Name'],['File Content','File Content']];
 	},
 	getIdentificationTypeStore:function(){
-		return [['RBO','RBO'],['Product Line','Product Line']];
+		return [['None','None'],['RBO','RBO'],['Product Line','Product Line']];
 	},
 	getFirstLastPageStore:function(){
-		return [['First Page','First Page'],['Last Page','Last Page']];
+		return [['None','None'],['First Page','First Page'],['Last Page','Last Page']];
 	},
 	getTopMidBottomStore:function(){
-		return [['Top','Top'],['Mid','Mid'],['Bottom','Bottom']];
+		return [['None','None'],['Top','Top'],['Mid','Mid'],['Bottom','Bottom']];
 	},
 	getExcelStore:function(){
-		return [['One Sheet in a file','One Sheet in a file'],['Multiple order sheets in a file','Multiple order sheets in a file']];
+		return [['None','None'],['One Sheet in a file','One Sheet in a file'],['Multiple order sheets in a file','Multiple order sheets in a file']];
 	},
 	getYesNoStore:function(){
-		return [['Yes','Yes'],['No','No']];
+		return [['None','None'],['Yes','Yes'],['No','No']];
 	},
 	getSiteStore:function(){
 		return [['Nansha','Nansha'],['Panyu','Panyu'],['Suzhou','Suzhou'],['Vietnam','Vietnam']];
@@ -669,12 +669,35 @@ Ext.define('AOC.util.Helper',{
 	getDefaultCaptureLogicStore:function(){
 		return new Ext.data.JsonStore({
 			data:[
+		       {name:'None'},
 			   {name:'Default Value'}  ,{name:'Capture below field name (Order Form) '},{name:'Capture from field location (Order Form)'},
 			   {name:'Capture right next to field name (Order Form)'},{name:'Capture below field name (Attachment)'},{name:'Capture right next to field name (Attachment)'},
 			   {name:'Capture from field location (Attachment)'},{name:'Complicated Logic'}, {name:'N/A'}  
 			],
 			fields:'name'
 		})
+	},
+	getBillToSiteStore:function(){
+		return new Ext.data.JsonStore({
+		   data:[
+		         {name:'None'},
+		       {name:'Default Value'},{name:'Bill To Address'},{name:'PO# (Please fill in "Bill/Ship Mapping Table")'},
+		       {name:'Email Subject (Please fill in "Bill/Ship Mapping Table")'},
+		       {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
+		   ],
+		   fields:'name'
+	   });
+	},
+	getShipToSiteStore:function(){
+		return new Ext.data.JsonStore({
+		   data:[
+		         {name:'None'},
+		         {name:'Default Value'},{name:'Ship To Address'},{name:'PO#'},
+		         {name:'Email Subject'},{name:'Shipping Mark'},
+		         {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
+		   ],
+		   fields:'name'
+	   });
 	},
 	showMask:function(msg){
 		Ext.getBody().mask(msg ? msg : AOCLit.pleaseWait);
@@ -692,4 +715,10 @@ Ext.define('AOC.util.Helper',{
 			combo.setValue('');
 		}
 	},
+	selectCombo:function(field){
+		var value = field.getValue();
+		if(value == 'None'){
+			field.setValue('');
+		}
+	}
 });

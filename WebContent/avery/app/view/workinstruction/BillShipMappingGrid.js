@@ -15,7 +15,7 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
 			store: Ext.data.StoreManager.lookup('wiBillShipMappingStore') == null ? Ext.create('AOC.store.WIBillShipMappingStore',{storeId:'wiBillShipMappingStore'}) : Ext.data.StoreManager.lookup('wiBillShipMappingStore'),
 			viewConfig : {
 				stripeRows: true,
-				columnLines: true,
+//				columnLines: true,
 				enableTextSelection: true
 			},
 			plugins: [{

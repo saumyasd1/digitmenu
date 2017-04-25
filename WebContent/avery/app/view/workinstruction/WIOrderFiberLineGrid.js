@@ -6,7 +6,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 	viewConfig:{
 		forceFit:true,
 		stripeRows:true,
-		columnLines:true,
+//		columnLines:true,
 		enableTextSelection:true
 	},
 	store:new Ext.data.JsonStore({
@@ -160,8 +160,9 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
                     },
                     regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
                     regexText: 'Only PNG and JPEG image formats are accepted',
+                    gridType:'systemLevel',
                     listeners:{
-                    	change:'onSystemFilesChanged',
+                    	change:'onFilesChanged',
                     	afterrender:function(cmp){
                             cmp.fileInputEl.set({
                                 accept:'image/*'

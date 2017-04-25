@@ -138,11 +138,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				form = wiFormPanel.getForm(),
 				values = form.getValues();
 		
-			if(Ext.isEmpty(values.assignee)){
-				Helper.showToast('validation', 'Please select Assigne before submit form.');
-				return;
-			}else if(Ext.isEmpty(values.status)){
+			 if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before submit form.');
+				return;
+			}else if(Ext.isEmpty(values.assignee)){
+				Helper.showToast('validation', 'Please select Assigne before submit form.');
 				return;
 			}else{
 				var obj = {
@@ -189,12 +189,13 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
 		}
-		if(Ext.isEmpty(values.assignee)){
-			Helper.showToast('validation', 'Please select Assigne before save WI form.');
-			return;
-		}
+		
 		if(Ext.isEmpty(values.status && values.status != '1')){
 			Helper.showToast('validation', 'Please select Status \"WI Initialized\" before proceed WI form.');
+			return;
+		}
+		if(Ext.isEmpty(values.assignee)){
+			Helper.showToast('validation', 'Please select Assigne before save WI form.');
 			return;
 		}
 		Ext.getBody().mask(AOCLit.pleaseWait);
@@ -620,7 +621,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     onFilesChanged:function(obj, value){
     	var me = this,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];
-    	    rec = obj.getWidgetRecord();
+    	    rec = obj.getWidgetRecord(),
+    	    gridType = obj.gridType;
     	    
 	    if(!file){
 			return;
@@ -634,12 +636,19 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
         }
         
         fileReader.readAsDataURL(file);
-        if(AOCRuntime.getCurrentWiMode() == 'edit'){
-        	file.recordId = rec.get('parentId');
-		}else{
-			file.recordId = rec.get('id');
-		}
-        file.fileType = 'AocField';
+        
+        if(gridType == 'aocField'){
+        	if(AOCRuntime.getCurrentWiMode() == 'edit'){
+            	file.recordId = rec.get('parentId');
+    		}else{
+    			file.recordId = rec.get('id');
+    		}
+        	file.fileType = 'AocField';
+        }else{
+        	file.recordId = rec.get('defaultId');
+        	file.fileType = 'SystemLevel';
+        }
+        
         var len = me.fileArray.length;
         for(var i =0;i<len;i++){
         	if(me.fileArray[i].recordId == rec.get('id')){
@@ -705,6 +714,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 		assigneeCombo.setDisabled(false);
 		assigneeCombo.store.load({params:{id:val.toString()}});
+	},
+	onComboSelect:function(field, e){
+		Helper.selectCombo(field);
 	}
    
 });

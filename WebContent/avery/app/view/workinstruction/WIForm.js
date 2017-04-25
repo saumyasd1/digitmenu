@@ -141,7 +141,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	                	flex:1,
 	                	store:Helper.getProductLineStore(),
 	                	listeners:{
-	                		blur:'onWIComboBlur'
+	                		blur:'onWIComboBlur',
+	                		select:'onComboSelect'
 	                	}
                 	 },
                 	 {
@@ -351,6 +352,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						column:3,
 						reference:'atoNato',
 						width:600,
+						margin:'0 0 5 0',
 						fieldLabel:'ATO/NATO',
 						items:[
 						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
@@ -362,6 +364,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						xtype:'radiogroup',
 						column:2,
 						width:500,
+						margin:'0 0 5 0',
 						reference:'glidCustomerItem',
 						fieldLabel:'GLID/Customer Item #? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
 						items:[
@@ -373,6 +376,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						xtype:'radiogroup',
 						column:2,
 						width:350,
+						margin:'0 0 5 0',
 		            	reference:'isOrderWithAttachment',
 						fieldLabel:'Is Order with Attachment? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
 						items:[
@@ -539,7 +543,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	fieldLabel:'Does the above Email Subject rule only apply to this Data Structure for this Factory?',
 			    	    	editable:false,
 							disabled:true,
-			    	    	store:Helper.getYesNoStore()
+			    	    	store:Helper.getYesNoStore(),
+			    	    	listeners:{
+			    	    		select:'onComboSelect'
+			    	    	}
 					    }
 					]
 				},
@@ -656,7 +663,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	store:Helper.getFileNameContentStore(),
 	    	    	    	editable:false,
 	    					disabled:true,
-	    	    	    	flex:1
+	    	    	    	flex:1,
+	    	    	    	listeners:{
+	    	    	    		select:'onComboSelect'
+	    	    	    	}
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
@@ -715,7 +725,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   fieldLabel:'First Page/Last Page',
 						   editable:false,
 						   flex:1,
-						   store:Helper.getFirstLastPageStore()
+						   store:Helper.getFirstLastPageStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   },
 					   {
 						   xtype:'combo',
@@ -725,7 +738,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   editable:false,
 						   margin:'0 0 0 10',
 						   flex:1,
-						   store:Helper.getTopMidBottomStore()
+						   store:Helper.getTopMidBottomStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   },
 					   {
 						   xtype:'textfield',
@@ -744,7 +760,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   reference:'orderExcelSheet',
 						   margin:'0 0 0 10',
 						   flex:1,
-						   store:Helper.getExcelStore()
+						   store:Helper.getExcelStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   }
 					]
 	    	    },
@@ -793,7 +812,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    	    	editable:false,
 	    					disabled:true,
 	    	    	    	store:Helper.getFileNameContentStore(),
-	    	    	    	flex:1
+	    	    	    	flex:1,
+	    	    	    	listeners:{
+	    	    	    		select:'onComboSelect'
+	    	    	    	}
 	    	    	    },
 	    	    	    {
 	    	    	    	xtype:'textfield',
@@ -852,7 +874,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   fieldLabel:'First Page/Last Page',
 						   editable:false,
 						   flex:1,
-						   store:Helper.getFirstLastPageStore()
+						   store:Helper.getFirstLastPageStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   },
 					   {
 						   xtype:'combo',
@@ -862,7 +887,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   editable:false,
 						   flex:1,
 						   margin:'0 0 0 10',
-						   store:Helper.getTopMidBottomStore()
+						   store:Helper.getTopMidBottomStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   },
 					   {
 						   xtype:'textfield',
@@ -881,7 +909,10 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   margin:'0 10',
 						   editable:false,
 						   flex:1,
-						   store:Helper.getExcelStore()
+						   store:Helper.getExcelStore(),
+						   listeners:{
+							   select:'onComboSelect'
+						   }
 					   }
 					]
 	    	    }

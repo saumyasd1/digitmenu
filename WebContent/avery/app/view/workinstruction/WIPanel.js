@@ -44,7 +44,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						reference:'wiaocfieldgrid',
 						border:'solid 1px #ccc;',
 						margin:'20 0',
-						height:'auto'
+						height:500,
+						scrollable:true
 					}
 				])
 		    },
@@ -61,31 +62,20 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 		    	width:550,
 		    	items:[
-//		    	    { boxLabel:'LLKK', name:'llkk', inputValue:'true'},
-//		    	    { boxLabel:'Factory Transfer', name:'factoryTransfer', inputValue:'true'},
-//		    	    { boxLabel:'Shipment Sample', name:'shipmentSample', inputValue:'true'},
 		    	    { boxLabel:'Size Check', name:'sizeCheck', inputValue:'true'},
 		    	    { boxLabel:'Fabric Check', name:'fabricCheck', inputValue:'true'},
-//		    	    { boxLabel:'Local Billing', name:'localBilling', inputValue:'true'},
-//		    	    { boxLabel:'Waive MOA', name:'waiveMOA', inputValue:'true'},
 		    	    { boxLabel:'Waive MOQ', name:'waiveMOQ', inputValue:'true'}
 		    	]
 		    },
 		    {
 		    	xtype:'wiorderfiberlinegrid',
 		    	reference:'wiorderfiberlinegrid',
-		    	height:'auto',
+		    	height:300,
 		    	scrollable:true,
 		    	margin:'20 0',
 		    	border:'solid 1px #ccc;'
 		    },
 		    me.getOthersItems(),
-		    {
-		    	xtype:'container',
-		    	itemId:'imageContainer',
-		    	reference:'imageContainer',
-		    	margin:'0 0 20 0'
-		    },
 		    me.getUploadOrderFileItems(),
 		    me.getUploadAttachementItems(),
 		    me.getSampleFileItems(),
@@ -578,12 +568,13 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	flex:1,
     	    	    	queryMode:'local',
     	    	    	store:new Ext.data.JsonStore({
-    	    	    		data:[{name:'"SMS" would be stated in the Oracle item Description in "PX Item Spec"'},
+    	    	    		data:[{name:'None'},{name:'"SMS" would be stated in the Oracle item Description in "PX Item Spec"'},
     	    	    		      {name:'Others(please specify below)'}],
     	    	    		fields:['name']
     	    	    	}),
     	    	    	listeners:{
-    	    	    		blur:'onWIComboBlur'
+    	    	    		blur:'onWIComboBlur',
+    	    	    		select:'onComboSelect'
 	                	}
     	    	    },
     	    	    {
@@ -769,14 +760,10 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					   displayField:'name',
 					   valueField:'name',
 					   queryMode:'local',
-					   store:new Ext.data.JsonStore({
-						   data:[
-						       {name:'Default Value'},{name:'Bill To Address'},{name:'PO# (Please fill in "Bill/Ship Mapping Table")'},
-						       {name:'Email Subject (Please fill in "Bill/Ship Mapping Table")'},
-						       {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
-						   ],
-						   fields:'name'
-					   })
+					   store:Helper.getBillToSiteStore(),
+					   listeners:{
+						   select:'onComboSelect'
+					   }
 				   },
 				   {
 				    	xtype:'combo',
@@ -788,15 +775,11 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	    	displayField:'name',
 		    	    	valueField:'name',
 		    	    	queryMode:'local',
-		    	    	store:new Ext.data.JsonStore({
-						   data:[
-						       {name:'Default Value'},{name:'Ship To Address'},{name:'PO#'},
-						       {name:'Email Subject'},{name:'Shipping Mark'},
-						       {name :'Others (Please specify & fill in "Bill/Ship Mapping Table")'}
-						   ],
-						   fields:'name'
-		    	    	}),
-				    	flex:1
+		    	    	store:Helper.getShipToSiteStore(),
+				    	flex:1,
+				    	listeners:{
+						   select:'onComboSelect'
+				    	}
 				    }
 				]
 		    },

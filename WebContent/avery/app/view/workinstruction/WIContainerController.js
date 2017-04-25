@@ -250,6 +250,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				    	itemId:'editWIMenuItem',
 				    	scope:me,
 				    	handler:me.onEditWIFormMenuItemClick
+				    },
+				    {
+				    	text:'Clone WI Form',
+				    	iconCls:'fa fa-pencil-square-o',
+				    	itemId:'cloneWIMenuItem',
+				    	scope:me,
+				    	handler:me.onEditWIFormMenuItemClick
 				    }
 				],
 				listeners:{

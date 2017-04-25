@@ -6,7 +6,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 	viewConfig:{
 		forceFit:true,
 		stripeRows:true,
-		columnLines:true,
+//		columnLines:true,
 		enableTextSelection:true
 	},
 	initComponent:function(){
@@ -144,6 +144,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
                     },
                     regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
                     regexText: 'Only PNG and JPEG image formats are accepted',
+                    gridType:'aocField',
                     listeners:{
                     	change:'onFilesChanged',
                     	afterrender:function(cmp){

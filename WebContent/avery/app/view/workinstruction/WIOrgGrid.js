@@ -14,7 +14,7 @@ Ext.define('AOC.view.workinstruction.WIOrgGrid', {
 			store: Ext.data.StoreManager.lookup('wiOrgStore') == null ? Ext.create('AOC.store.WIOrgStore',{storeId:'wiOrgStore'}) : Ext.data.StoreManager.lookup('wiOrgStore'),
 			viewConfig : {
 				stripeRows: true,
-				columnLines: true,
+//				columnLines: true,
 				enableTextSelection: true
 			},
 			plugins: [{

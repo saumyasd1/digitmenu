@@ -5,7 +5,7 @@ Ext.define('AOC.view.workinstruction.WISystemGrid',{
 	cls:'wi-grid',
 	viewConfig:{
 		stripeRows:true,
-		columnLines:true,
+//		columnLines:true,
 		enableTextSelection:true
 	},
 	requires:['AOC.view.ux.RadioModel'],
