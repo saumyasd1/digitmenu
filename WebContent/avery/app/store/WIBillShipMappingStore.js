@@ -4,10 +4,10 @@ Ext.define('AOC.store.WIBillShipMappingStore', {
 	autoLoad:false,
 	proxy: {
         type: 'rest',
-        url : applicationContext+ '/rest/wiorg/billshipmapping',
+        url : applicationContext+ '/rest/wibillship',
         reader: {
             type: 'json',
-            rootProperty: 'billshipmapping'
+            rootProperty: 'data'
         }
     }
 });

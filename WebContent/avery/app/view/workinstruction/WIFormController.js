@@ -710,7 +710,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		var me = this,
 			refs = me.getReferences(),
 			assigneeCombo = refs.assigneeCombo,
-			val = assigneeCombo.getValue();
+			val = field.getValue();
 		
 		assigneeCombo.setDisabled(false);
 		assigneeCombo.store.load({params:{id:val.toString()}});
