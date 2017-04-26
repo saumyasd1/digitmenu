@@ -473,8 +473,8 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
             	 width:150,
             	 cls:'file-box',
             	 html:[
-           	       '<a class="download-attachment-link" style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,18)+'</a>',
-           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+file.fileType+'" filePath="'+file.filePath+'"></i>',
+           	       '<a class="download-attachment-link" style="cursor:pointer;text-decoration:underline;letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>" fileName="'+name+'" filePath="'+file.filePath+'">'+Ext.util.Format.ellipsis(name,18)+'</a>',
+           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+file.fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
            	       '<div style="clear:both"></div>',
            	     ]
              }

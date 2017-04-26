@@ -124,7 +124,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				renderer:function(value, metadata, rec){
 					if(rec.get('fileName')){
 						var filePath = rec.get('filePath') ? rec.get('filePath')+'/'+rec.get('fileName') : rec.get('fileContent');
-						return '<a style="letter-spacing:.15px;color:#2c3e50;" href="'+filePath+'" data-qtip="<font color=#3892d3>'+rec.get('fileName')+'</font>" target="_blank"><img src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img></a>'
+						return '<div class="view-image-preview" filePath="'+filePath+'" style="letter-spacing:.15px;color:#2c3e50;cursor:pointer;" data-qtip="<font color=#3892d3>'+rec.get('fileName')+'</font>"><img src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img></div>'
 					}
 				}
 			},

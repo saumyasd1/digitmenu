@@ -37,6 +37,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     			fileType = el.getAttribute('fileType'),
     			fPath = el.getAttribute('filePath'),
     			filePath = fPath+'/'+fileName,
+    			fileId = el.getAttribute('fileId'),
     			parent = el.parent('.file-box');
     		
     		var orderFileImageContainer = refs.orderFileImageContainer,
@@ -53,18 +54,37 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     			sampleFileContainer.remove(Ext.get(parent).component);
     		}
     		if(AOCRuntime.getCurrentWiMode() == 'edit'){
-    			this.deleteFile(filePath);
+    			this.deleteFile(filePath,fileId);
     		}
     		else{
     			this.removeFileFromFileArray(fileName);
     		}
+    	}else if(el.hasCls('download-attachment-link')){
+    		var fileName = el.getAttribute('fileName'),
+				fPath = el.getAttribute('filePath'),
+				filePath = fPath+'/'+fileName;
+    		
+    		this.downloadFile(filePath);
     	}
     },
-    deleteFile:function(filePath){
+    downloadFile:function(filePath){
+		var form = Ext.create('Ext.form.Panel', { 
+			standardSubmit: true,   
+			url : applicationContext+'/rest/wifiles/download' ,
+			
+		});
+		form.submit({
+			getParams: function() {
+				return Ext.apply({}, {filePath:encodeURIComponent(filePath)});
+			},
+			method : 'GET'
+		});
+    },
+    deleteFile:function(filePath, fileId){
     	Ext.Ajax.request({
     		method:'GET',
     		url:applicationContext+'/rest/wifiles/delete',
-    		params:{filePath:encodeURIComponent(filePath)},
+    		params:{filePath:encodeURIComponent(filePath), id:fileId.toString()},
     		success:function(response){
     			var msg = JSON.parse(response.responseText);
     			Helper.showToast('success',message);
@@ -72,7 +92,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		failure:function(msg){
     			Helper.showToast('failure',msg);
     		}
-
     	})
     },
     removeFileFromFileArray:function(fileName){
