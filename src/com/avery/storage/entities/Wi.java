@@ -250,7 +250,7 @@ public class Wi extends MainAbstractEntity {
 
 	@OneToMany(mappedBy = "varWi", fetch = FetchType.LAZY)
 	private List<WiFiles> listWiFiles;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "assignee_id")
 	private WiUser varWiUser;
@@ -378,6 +378,9 @@ public class Wi extends MainAbstractEntity {
 			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
 			@FormDataParam("fileType") String fileType, @FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
+		if (fileName.length() > 50)
+			return Response.ok("The filename is too long " + fileName, MediaType.TEXT_PLAIN)
+					.status(Status.REQUEST_ENTITY_TOO_LARGE).build();
 		// InputStream in =
 		// this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
 		// Properties props = new Properties();

@@ -1,7 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,7 +16,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -27,8 +25,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
@@ -117,12 +115,11 @@ public class WiFiles extends MainAbstractEntity {
 
 			return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
 					.header("content-disposition", "attachment; filename=\"" + getEncoded(fileName) + "\"").build();
-		} catch (WebApplicationException ex) {
-			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Problem when downloading the file -> " + e);
+			return Response.ok("There was some problem when downloading the file", MediaType.TEXT_PLAIN)
+					.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.TEXT_PLAIN_TYPE).build();
 		}
 	}
 
@@ -133,7 +130,8 @@ public class WiFiles extends MainAbstractEntity {
 
 	@GET
 	@Path("/delete")
-	public Response deleteFile(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("filePath") String filePath){
+	public Response deleteFile(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("filePath") String filePath,
+			@QueryParam("id") String entityId) {
 		Response.ResponseBuilder rb = null;
 		Map responseMap = new HashMap();
 		boolean fileExist = false;
@@ -141,18 +139,34 @@ public class WiFiles extends MainAbstractEntity {
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
 		try {
+			filePath = URLDecoder.decode(filePath, "UTF-8");
 			File file = new File(filePath);
 			fileExist = file.exists();
-			if(fileExist == false)
-				return Response.ok("The specified file does not exist", MediaType.TEXT_PLAIN).status(Status.NOT_FOUND).build();
+			if (fileExist == false)
+				return Response.ok("The specified file does not exist", MediaType.TEXT_PLAIN).status(Status.NOT_FOUND)
+						.build();
 			fileDeleted = file.delete();
+			WiFilesService wiFilesService = (WiFilesService) SpringConfig.getInstance().getBean("wiFilesService");
+			// read existing entity from database
+			WiFiles wiFiles = wiFilesService.read(Long.parseLong(entityId));
+			if (wiFiles == null) {
+				return Response.ok("Data entity doesn't exist").status(Status.BAD_REQUEST)
+						.type(MediaType.TEXT_PLAIN_TYPE).build();
+			}
+			// prepare response
+			wiFilesService.delete(wiFiles);
 			responseMap.put("success", fileDeleted);
+			if (fileDeleted == true)
+				responseMap.put("message", "File was deleted successfully");
+			else
+				responseMap.put("message", "There was some problem deleting the file");
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppLogger.getSystemLogger().error("There was some problem while deleting the file -> "+e);
-			return Response.ok("Ërror while deleting the file", MediaType.TEXT_PLAIN).status(Status.INTERNAL_SERVER_ERROR).build();
+			AppLogger.getSystemLogger().error("There was some problem while deleting the file -> " + e);
+			return Response.ok("Ërror while deleting the file", MediaType.TEXT_PLAIN)
+					.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 		return rb.build();
 	}
