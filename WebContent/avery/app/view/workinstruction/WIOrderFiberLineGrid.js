@@ -137,7 +137,10 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				dataIndex:'file',
 				renderer:function(value, metadata, rec){
 					if(rec.get('fileName')){
-						var filePath = rec.get('filePath') ? rec.get('filePath')+'/'+rec.get('fileName') : rec.get('fileContent');
+						var str = rec.get('filePath') ? rec.get('filePath') :'',
+							fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+							
+						var filePath = fPath ? fPath+'/'+rec.get('fileName') : rec.get('fileContent');
 						return '<img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img>';
 					}
 				}
