@@ -44,7 +44,8 @@ public class WiOrgDaoImpl extends GenericDaoImpl<WiOrg, Long> implements WiOrgDa
 				.add(Projections.property("shippingMethod"), "shippingMethod")
 				.add(Projections.property("freightTerm"), "freightTerm")
 				.add(Projections.property("billToCode"), "billToCode")
-				.add(Projections.property("shipToCode"), "shipToCode");
+				.add(Projections.property("shipToCode"), "shipToCode")
+				.add(Projections.property("defaultSelected"), "defaultSelected");
 		try {
 			session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(WiOrg.class).createAlias("varWiOrgInfo", "varWiOrgInfo")

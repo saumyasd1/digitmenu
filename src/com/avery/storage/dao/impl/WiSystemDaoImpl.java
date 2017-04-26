@@ -48,7 +48,8 @@ public class WiSystemDaoImpl extends GenericDaoImpl<WiSystem, Long> implements W
 				.add(Projections.property("shipMark"),"shipMark")
 				.add(Projections.property("invoiceLineInstruction"),"invoiceLineInstruction")
 				.add(Projections.property("variableDataBreakdown"),"variableDataBreakdown")
-				.add(Projections.property("defaultOrg"),"defaultOrg");
+				.add(Projections.property("defaultOrg"),"defaultOrg")
+				.add(Projections.property("defaultSelected"), "defaultSelected");
 		try{
 			session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(WiSystem.class)
