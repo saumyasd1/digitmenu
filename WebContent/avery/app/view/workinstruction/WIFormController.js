@@ -35,6 +35,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	if(el.hasCls('delete-file')){
     		var fileName = el.getAttribute('fileName'),
     			fileType = el.getAttribute('fileType'),
+    			fPath = el.getAttribute('filePath'),
+    			filePath = fPath+'/'+fileName,
     			parent = el.parent('.file-box');
     		
     		var orderFileImageContainer = refs.orderFileImageContainer,
@@ -50,9 +52,28 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		else if(fileType == 'Sample'){
     			sampleFileContainer.remove(Ext.get(parent).component);
     		}
-    		
-    		this.removeFileFromFileArray(fileName);
+    		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+    			this.deleteFile(filePath);
+    		}
+    		else{
+    			this.removeFileFromFileArray(fileName);
+    		}
     	}
+    },
+    deleteFile:function(filePath){
+    	Ext.Ajax.request({
+    		method:'GET',
+    		url:applicationContext+'/rest/wifiles/delete',
+    		params:{filePath:encodeURIComponent(filePath)},
+    		success:function(response){
+    			var msg = JSON.parse(response.responseText);
+    			Helper.showToast('success',message);
+    		},
+    		failure:function(msg){
+    			Helper.showToast('failure',msg);
+    		}
+
+    	})
     },
     removeFileFromFileArray:function(fileName){
     	var me = this,
@@ -136,8 +157,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				refs = me.getReferences(),
 				wiFormPanel = refs.wIForm,
 				form = wiFormPanel.getForm(),
-				values = form.getValues();
-		
+				values = form.getValues(),
+				userInfo = AOCRuntime.getUser();
+			
+			values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
+			
 			 if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before submit form.');
 				return;
@@ -177,7 +201,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			wiFormPanel = refs.wIForm,
 			form = wiFormPanel.getForm(),
 			values = form.getValues(),
-			mode = wiFormPanel.mode;
+			mode = wiFormPanel.mode,
+			userInfo = AOCRuntime.getUser();
 		
 		Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
 		Ext.apply(values, {listWiSystem:me.processGridData(refs.wiSystemGrid)});
@@ -189,7 +214,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		if(AOCRuntime.getCurrentWiMode() == 'edit'){
 			values.id =  AOCRuntime.getWiId().toString();
 		}
-		
+		values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
 		if(Ext.isEmpty(values.status && values.status != '1')){
 			Helper.showToast('validation', 'Please select Status \"WI Initialized\" before proceed WI form.');
 			return;
@@ -712,6 +737,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			assigneeCombo = refs.assigneeCombo,
 			val = field.getValue();
 		
+		assigneeCombo.reset();
 		assigneeCombo.setDisabled(false);
 		assigneeCombo.store.load({params:{id:val.toString()}});
 	},

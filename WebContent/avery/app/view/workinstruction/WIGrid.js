@@ -92,7 +92,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		    }, 
 		    {
 		    	text:'Name',
-		    	dataIndex:'factoryName',
+		    	dataIndex:'structureName',
 		    	flex:1.5
 		    },
 		    {

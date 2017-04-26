@@ -18,7 +18,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.setReadOnlyView(false);
 		me.showHideSaveSubmitBtn(true);
 		
-		me.loadAssigneeCombo();
 		me.loadStatusCombo();
 		me.resetFileCont();
 		view.getLayout().setActiveItem(1);
@@ -52,9 +51,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	resetFileCont:function(){
 		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
-			formRefs = wiFormPanel.getReferences(),
+			formRefs = me.getFormReference(),
 			orderFileImageContainer = formRefs.orderFileImageContainer,
 			attchmentContainer = formRefs.attchmentContainer,
 			sampleFileContainer = formRefs.sampleFileContainer;
@@ -275,8 +272,14 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			editWIMenuItem = menu.queryById('editWIMenuItem'),
 			status = record.get('status');
 		
-		if((status == AOCLit.wiInitializedStatus || status == AOCLit.wiBAQueryAskedStatus
-				|| status == AOCLit.wiCSManagerDisapprovedStatus) && AOCRuntime.getUser().role == AOCLit.csRoleId){
+//		if((status == AOCLit.wiInitializedStatus || status == AOCLit.wiBAQueryAskedStatus
+//				|| status == AOCLit.wiCSManagerDisapprovedStatus) && AOCRuntime.getUser().role == AOCLit.csRoleId){
+//			editWIMenuItem.setDisabled(false);
+//		}else{
+//			editWIMenuItem.setDisabled(true);
+//		}
+		if(AOCRuntime.getUser().role == AOCLit.csRoleId || AOCRuntime.getUser().role == AOCLit.csSupervisorRoleId
+				|| AOCRuntime.getUser().role == AOCLit.csSpecialistRoleId){
 			editWIMenuItem.setDisabled(false);
 		}else{
 			editWIMenuItem.setDisabled(true);
@@ -297,6 +300,19 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiSubmitBtn.setDisabled(false);
 		}
 	},
+	//View/Edit/Clone actions 
+	onViewWIFormMenuItemClick:function(menuItem, e){
+		var me = this;
+	
+		AOCRuntime.setCurrentWiMode('view');
+		me.setReadOnlyView(true);
+		me.resetFileCont();
+		me.loadWIForm();
+		
+//		me.loadAssigneeCombo();
+		me.loadStatusCombo();
+		me.showHideSaveSubmitBtn(false);
+	},
 	onCloneWIFormMenuItemClick:function(){
 		var me = this;
 		
@@ -304,7 +320,8 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.setReadOnlyView(false);
 		me.loadWIForm();
 		
-		me.loadAssigneeCombo();
+//		me.loadAssigneeCombo();
+		me.resetFileCont();
 		me.loadStatusCombo();
 		me.showHideSaveSubmitBtn(true);
 	},
@@ -312,13 +329,16 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		var me = this;
 		
 		AOCRuntime.setCurrentWiMode('edit');
+		me.resetFileCont();
 		me.setReadOnlyView(false);
 		me.loadWIForm();
 		
-		me.loadAssigneeCombo();
+//		me.loadAssigneeCombo();
 		me.loadStatusCombo();
 		me.showHideSaveSubmitBtn(true);
 	},
+	//End of Edit/View/Clone actions
+	
 	loadWIForm:function(){
 		var me = this,
 			view = me.getView(),
@@ -336,6 +356,79 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		me.loadWiFormData(wId);
 		view.getLayout().setActiveItem(1);
 	},
+	loadGridInEditMode:function(wId, gridType){
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel,
+			formRefs = wiFormPanel.getReferences(),
+			grid = formRefs[gridType];
+	
+		if(gridType == 'wiOrgGrid'){
+			grid.show(); 
+		}
+		grid.store.load({
+			params:{id:wId},
+			callback:function(records, operation, success){
+				//To Do after store load
+			}
+		});
+	},
+	loadWiFormData:function(wId){
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel;
+		
+		Ext.getBody().mask('Loading...');
+		Ext.Ajax.request({
+			url:applicationContext+'/rest/wi/wiorderdetail',
+			params:{ id: wId },
+			method: 'GET',
+			success:function(response){
+				var detail = JSON.parse(response.responseText),
+					schemaIdentification = detail.formdata.listWiSchemaIdentification;
+				
+				delete detail.formdata.listWiSchemaIdentification;
+				AOCRuntime.setSchemaIdentificationId(schemaIdentification.id);
+				delete schemaIdentification.id;
+				Ext.apply(detail.formdata,schemaIdentification);
+				var form = wiFormPanel.getReferences().wIForm;
+				detail.formdata.status='';
+				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));
+				Ext.getBody().unmask();
+			},
+			failure:function(){
+				Ext.getBody().unmask();
+			}
+		});
+	},
+	setReadOnlyView:function(readOnlyFlag){
+		var me = this,
+			refs = me.getReferences(),
+			wiFormPanel = refs.wiFormPanel,
+			wIForm = wiFormPanel.getReferences().wIForm,
+			textBoxArray = wIForm.query('[xtype = textfield]'),
+			textAreaArray = wIForm.query('[xtype = textarea]'),
+			comboArray = wIForm.query('[xtype = combo]'),
+			radioGroupArray = wIForm.query('[xtype = radiogroup]'),
+			gridArray = wiFormPanel.query('[xtype=grid]'),
+			tempArray = [].concat(textBoxArray)
+						  .concat(comboArray)
+						  .concat(radioGroupArray)
+						  .concat(textAreaArray);
+		
+		var len = tempArray.length;
+		for(var i = 0; i < len; i++){
+			if(tempArray[i].name != 'assignee' || tempArray[i].name != 'status'){
+				tempArray[i].setReadOnly(readOnlyFlag);
+			}
+		}
+		var length = gridArray.length;
+		for(var i = 0; i < length; i++){
+			gridArray[i].setDisabled(readOnlyFlag);
+		}
+	},
+	
+	
 	getAttachmentList:function(wId){
 		var me = this;
 		Ext.Ajax.request({
@@ -380,90 +473,12 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
             	 width:150,
             	 cls:'file-box',
             	 html:[
-           	       '<a class="download-attachment-link" style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,20)+'</a>'
-//	           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+file.name+'" fileType="'+file.fileType+'"></i>',
-//	           	       '<div style="clear:both"></div>'
+           	       '<a class="download-attachment-link" style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,18)+'</a>',
+           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+file.fileType+'" filePath="'+file.filePath+'"></i>',
+           	       '<div style="clear:both"></div>',
            	     ]
              }
         );
-	},
-	onViewWIFormMenuItemClick:function(menuItem, e){
-		var me = this;
-	
-		AOCRuntime.setCurrentWiMode('view');
-		me.setReadOnlyView(true);
-		me.loadWIForm();
-		
-		me.loadAssigneeCombo();
-		me.loadStatusCombo();
-		me.showHideSaveSubmitBtn(false);
-	},
-	setReadOnlyView:function(readOnlyFlag){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
-			wIForm = wiFormPanel.getReferences().wIForm,
-			textBoxArray = wIForm.query('[xtype = textfield]'),
-			textAreaArray = wIForm.query('[xtype = textarea]'),
-			comboArray = wIForm.query('[xtype = combo]'),
-			radioGroupArray = wIForm.query('[xtype = radiogroup]'),
-			tempArray = [].concat(textBoxArray)
-						  .concat(comboArray)
-						  .concat(radioGroupArray)
-						  .concat(textAreaArray);
-		
-		var len = tempArray.length;
-		for(var i = 0; i < len; i++){
-			if(tempArray[i].name == 'assignee' || tempArray[i].name == 'status'){
-				return;
-			}
-			tempArray[i].setReadOnly(readOnlyFlag);
-		}
-	},
-	loadWiFormData:function(wId){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel;
-		
-		Ext.getBody().mask('Loading...');
-		Ext.Ajax.request({
-			url:applicationContext+'/rest/wi/wiorderdetail',
-			params:{ id: wId },
-			method: 'GET',
-			success:function(response){
-				var detail = JSON.parse(response.responseText),
-					schemaIdentification = detail.formdata.listWiSchemaIdentification;
-				
-				delete detail.formdata.listWiSchemaIdentification;
-				AOCRuntime.setSchemaIdentificationId(schemaIdentification.id);
-				delete schemaIdentification.id;
-				Ext.apply(detail.formdata,schemaIdentification);
-				var form = wiFormPanel.getReferences().wIForm;
-				detail.formdata.status='';
-				form.getForm().loadRecord(new Ext.data.Record(detail.formdata));
-				Ext.getBody().unmask();
-			},
-			failure:function(){
-				Ext.getBody().unmask();
-			}
-		});
-	},
-	loadGridInEditMode:function(wId, gridType){
-		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
-			formRefs = wiFormPanel.getReferences(),
-			grid = formRefs[gridType];
-	
-		if(gridType == 'wiOrgGrid'){
-			grid.show(); 
-		}
-		grid.store.load({
-			params:{id:wId},
-			callback:function(records, operation, success){
-				//To Do after store load
-			}
-		});
 	}
 	
 });

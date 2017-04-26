@@ -512,8 +512,8 @@ Ext.define('AOC.lang.lit',{
     wiBAQueryAskedStatus:9,
     wiCSManagerDisapprovedStatus:4,
     csRoleId:1,
-    csManagerRoleId:2,
-    baTeamRoleId:3,
+    csSupervisorRoleId:2,
+    csSpecialistRoleId:3,
     technicalTeamRoleId:4,
         	
     //UserManagement
