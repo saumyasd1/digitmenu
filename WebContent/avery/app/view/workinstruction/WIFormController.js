@@ -661,7 +661,26 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		me.addFileInBox(obj, sampleFileContainer,'Sample' );
 	},
     
+	//order fiber line grid
+	onWIOrderFiberLineCellClick:function(obj , td , cellIndex , record , tr , rowIndex , e , eOpts){
+		var el = Ext.get(e.target);
+		if(el.hasCls('view-image-preview')){
+			var filePath = el.getAttribute('filePath');
+			this.showImagePreview(filePath);
+		}
+	},
     //AOCField Grid
+	onAOCFieldGridCellClick:function(obj , td , cellIndex , record , tr , rowIndex , e , eOpts){
+		var el = Ext.get(e.target);
+		if(el.hasCls('view-image-preview')){
+			var filePath = el.getAttribute('filePath');
+			this.showImagePreview(filePath);
+		}	
+	},
+	showImagePreview:function(filePath){
+		var win = Ext.create('AOC.view.workinstruction.ImageViewerWindow',{fileSrc:filePath});
+		win.show();
+	},
     onFilesChanged:function(obj, value){
     	var me = this,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];

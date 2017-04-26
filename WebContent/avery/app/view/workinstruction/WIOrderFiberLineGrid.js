@@ -37,9 +37,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 			],
 			selModel: 'cellmodel',
 			listeners:{
-				afterrender:function(grid){
-					
-				}
+				cellclick:'onWIOrderFiberLineCellClick'
 			}
 		});
 		me.callParent(arguments);
@@ -140,7 +138,7 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 				renderer:function(value, metadata, rec){
 					if(rec.get('fileName')){
 						var filePath = rec.get('filePath') ? rec.get('filePath')+'/'+rec.get('fileName') : rec.get('fileContent');
-						return '<a style="letter-spacing:.15px;color:#2c3e50;" href="'+filePath+'" data-qtip="<font color=#3892d3>'+rec.get('fileName')+'</font>" target="_blank"><img src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img></a>'
+						return '<img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img>';
 					}
 				}
 			},

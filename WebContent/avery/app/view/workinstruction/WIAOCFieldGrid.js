@@ -51,7 +51,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			store: Ext.data.StoreManager.lookup('wiAOCFieldStore') == null ? Ext.create('AOC.store.WIAOCFieldStore',{storeId:'wiAOCFieldStore'}) : Ext.data.StoreManager.lookup('wiAOCFieldStore'),
 			listeners:{
 //				afterrender:'onAOCFieldGridAfterRender',
-//				cellclick:'onAOCFieldGridCellClick'
+				cellclick:'onAOCFieldGridCellClick'
 			}
 		});
 		me.callParent(arguments);
@@ -124,7 +124,7 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 				renderer:function(value, metadata, rec){
 					if(rec.get('fileName')){
 						var filePath = rec.get('filePath') ? rec.get('filePath')+'/'+rec.get('fileName') : rec.get('fileContent');
-						return '<div class="view-image-preview" filePath="'+filePath+'" style="letter-spacing:.15px;color:#2c3e50;cursor:pointer;" data-qtip="<font color=#3892d3>'+rec.get('fileName')+'</font>"><img src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img></div>'
+						return '<img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img>'
 					}
 				}
 			},
