@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,6 +33,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.WiFilesMixIn;
 import com.avery.storage.service.WiFilesService;
@@ -95,7 +98,7 @@ public class WiFiles extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
-	
+
 	@GET
 	@Path("/download")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
@@ -128,6 +131,31 @@ public class WiFiles extends MainAbstractEntity {
 		return uri.toASCIIString();
 	}
 
+	@GET
+	@Path("/delete")
+	public Response deleteFile(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("filePath") String filePath){
+		Response.ResponseBuilder rb = null;
+		Map responseMap = new HashMap();
+		boolean fileExist = false;
+		boolean fileDeleted = false;
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		try {
+			File file = new File(filePath);
+			fileExist = file.exists();
+			if(fileExist == false)
+				return Response.ok("The specified file does not exist", MediaType.TEXT_PLAIN).status(Status.NOT_FOUND).build();
+			fileDeleted = file.delete();
+			responseMap.put("success", fileDeleted);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppLogger.getSystemLogger().error("There was some problem while deleting the file -> "+e);
+			return Response.ok("Ërror while deleting the file", MediaType.TEXT_PLAIN).status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return rb.build();
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public String getFilePath() {
