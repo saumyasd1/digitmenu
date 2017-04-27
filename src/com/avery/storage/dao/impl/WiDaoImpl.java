@@ -395,6 +395,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		try {
 			session = getSessionFactory().getCurrentSession();
 			Map<String, String> inputDataMap = ApplicationUtils.convertJSONtoMaps(data);
+			Date now = new Date();
 			wiId = Long.parseLong(inputDataMap.get("id"));
 			String status = inputDataMap.get("status");
 			long assignee = Long.parseLong(inputDataMap.get("assignee"));
@@ -405,6 +406,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			wiObj.setVarWiUser(wiUserObj);
 			wiObj.setStatus(status);
 			wiObj.setLastModifiedBy(lastModifiedBy);
+			wiObj.setLastModifiedDate(now);
 			session.update(wiObj);
 			sendNotificationToAssignee(wiId, assignee, status);
 		} catch (IOException e) {

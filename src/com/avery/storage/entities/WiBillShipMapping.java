@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  *
  */
 @Entity
-@Table(name = "wi_billShipMapping")
+@Table(name = "wi_billshipmapping")
 @Path("wibillship")
 public class WiBillShipMapping extends MainAbstractEntity {
 
