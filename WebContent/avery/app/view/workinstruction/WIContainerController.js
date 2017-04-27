@@ -469,7 +469,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		imageContainer.add(
              {
             	 xtype:'box',
-            	 style:'float:left;border:solid 1px #ccc;padding:5px;margin-right:5px;',
+            	 style:'float:left;border:solid 1px #ccc;padding:3px;margin-right:5px;',
             	 width:150,
             	 cls:'file-box',
             	 html:[

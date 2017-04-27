@@ -86,11 +86,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		url:applicationContext+'/rest/wifiles/delete',
     		params:{filePath:encodeURIComponent(filePath), id:fileId.toString()},
     		success:function(response){
-    			var msg = JSON.parse(response.responseText);
-    			Helper.showToast('success',message);
+    			var data = JSON.parse(response.responseText);
+    			Helper.showToast('success',data.message);
     		},
     		failure:function(msg){
-    			Helper.showToast('failure',msg);
+    			Helper.showToast('failure', msg);
     		}
     	})
     },
@@ -160,7 +160,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		var me = this;
 		Ext.Msg.show({
 		    title:'Submit WI',
-		    message: 'Are you sure, you want to submit WI form?',
+		    message: 'Make sure that you have save all changes before submit WI form.All unsaved changes will be lost afte submit.',
 		    buttons: Ext.Msg.YESNO,
 		    icon: Ext.Msg.QUESTION,
 		    fn: function(btn) {
@@ -223,44 +223,46 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			mode = wiFormPanel.mode,
 			userInfo = AOCRuntime.getUser();
 		
-		Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
-		Ext.apply(values, {listWiSystem:me.processGridData(refs.wiSystemGrid)});
-		Ext.apply(values, {listWiOrg:me.processGridData(refs.wiOrgGrid)});
-		Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
-		Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
-		Ext.apply(values, {listWiBillShipMapping:me.processGridData(refs.billShipMappingGrid, true)});
-		
-		if(AOCRuntime.getCurrentWiMode() == 'edit'){
-			values.id =  AOCRuntime.getWiId().toString();
-		}
-		values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
-		if(Ext.isEmpty(values.status && values.status != '1')){
-			Helper.showToast('validation', 'Please select Status \"WI Initialized\" before proceed WI form.');
-			return;
-		}
-		if(Ext.isEmpty(values.assignee)){
-			Helper.showToast('validation', 'Please select Assigne before save WI form.');
-			return;
-		}
-		Ext.getBody().mask(AOCLit.pleaseWait);
-		Ext.Ajax.request({
-			url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
-			jsonData:values,
-			method:AOCRuntime.getCurrentWiMode() == 'edit' ? 'PUT':'POST',
-			success:function(response){
-				var data = JSON.parse(response.responseText);
-				form.reset();
-				me.uploadFiles(data.id);
-			},
-			failure:function(){
-				Ext.getBody().unmask();
+		if(form.isValid()){
+			Ext.apply(values, {listWiSchemaIdentification:me.getSchemaIdentificationParams(values)});
+			Ext.apply(values, {listWiSystem:me.processGridData(refs.wiSystemGrid)});
+			Ext.apply(values, {listWiOrg:me.processGridData(refs.wiOrgGrid)});
+			Ext.apply(values, {listWiAocField:me.processGridData(refs.wiaocfieldgrid)});
+			Ext.apply(values, {listWiSystemLevel:me.processGridData(refs.wiorderfiberlinegrid, true)});
+			Ext.apply(values, {listWiBillShipMapping:me.processGridData(refs.billShipMappingGrid, true)});
+			
+			if(AOCRuntime.getCurrentWiMode() == 'edit'){
+				values.id =  AOCRuntime.getWiId().toString();
 			}
-		});
+			values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
+			values.assignee = AOCRuntime.userInfo.id;
+			if(Ext.isEmpty(values.status)){
+				Helper.showToast('validation', 'Please select Status before proceed WI form.');
+				return;
+			}
+			if(Ext.isEmpty(values.assignee)){
+				Helper.showToast('validation', 'Please select Assigne before save WI form.');
+				return;
+			}
+			Ext.getBody().mask(AOCLit.pleaseWait);
+			Ext.Ajax.request({
+				url:AOCRuntime.getCurrentWiMode() == 'edit' ? applicationContext+'/rest/wi/update' : applicationContext+'/rest/wi',
+				jsonData:values,
+				method:AOCRuntime.getCurrentWiMode() == 'edit' ? 'PUT':'POST',
+				success:function(response){
+					var data = JSON.parse(response.responseText);
+					form.reset();
+					me.uploadFiles(data.id);
+				},
+				failure:function(){
+					Ext.getBody().unmask();
+				}
+			});
+		}else{
+			Helper.showToast('validation', 'Please fill form correctly.');
+		}
 		
 		console.log(values);
-	},
-	getRadioCheckBoxValue:function(values){
-		
 	},
 	uploadFiles:function(wId, filePath){
     	var me = this;
@@ -602,9 +604,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
              imageContainer.add(
 	             {
 	            	 xtype:'box',
-	            	 style:'float:left;border:solid 1px #ccc;padding:5px;margin-right:5px;',
+	            	 style:'float:left;border:solid 1px #ccc;padding:3px;margin-right:5px;',
 	            	 width:150,
-	            	// itemId:name,
 	            	 cls:'file-box',
 	            	 html:[
             	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,20)+'</a>',

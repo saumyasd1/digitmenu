@@ -132,7 +132,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 	getUploadOrderFileItems:function(){
 		return {
 		   xtype:'fieldcontainer',
-		   margin:'0 0 5 0',
+		   margin:'10 0 5 0',
 		   layout:'hbox',
 		   items:[
 				{   
@@ -313,12 +313,15 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					width:550,
 					margin:'0 0 5 0',
 					labelSeparator:'',
+					defaults:{
+						name:'sizeValidationStructure'
+					},
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 					labelWidth:400,
 					items:[
-					  { boxLabel:'Yes',inputValue:'Yes',name:'sizeValidationStructure'},
-					  { boxLabel:'No',inputValue:'No',name:'sizeValidationStructure'}
+					  { boxLabel:'Yes',inputValue:'Yes'},
+					  { boxLabel:'No',inputValue:'No'}
 					]
 				},
 				{
@@ -348,9 +351,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 					labelWidth:400,
+					defaults:{
+						name:'fiberContentValidationStructure'
+					},
 					items:[
-					  { boxLabel:'Yes',inputValue:'Yes',name:'fiberContentValidationStructure'},
-					  { boxLabel:'No',inputValue:'No',name:'fiberContentValidationStructure'}
+					  { boxLabel:'Yes',inputValue:'Yes'},
+					  { boxLabel:'No',inputValue:'No'}
 					]
 				},
 				{
@@ -379,9 +385,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 					labelWidth:400,
+					defaults:{
+						name:'cooValidationStructure'
+					},
 					items:[
-					  { boxLabel:'Yes',inputValue:'Yes',name:'cooValidationStructure'},
-					  { boxLabel:'No',inputValue:'No',name:'cooValidationStructure'}
+					  { boxLabel:'Yes',inputValue:'Yes'},
+					  { boxLabel:'No',inputValue:'No'}
 					]
 				},
 				{
@@ -425,21 +434,27 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						column:2,
 						margin:'0 0 5 0',
 						anchor:'80%',
+						defaults:{
+							name:'orderPlacementMethod'
+						},
 						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
 						items:[
-						    { boxLabel: 'Direct Email Form Customer', name:'orderPlacementMethod', inputValue:'1'},
-						    { boxLabel: 'Email Forwarded by CS', name:'orderPlacementMethod', inputValue:'2'}
+						    { boxLabel: 'Direct Email Form Customer', inputValue:'1'},
+						    { boxLabel: 'Email Forwarded by CS', inputValue:'2'}
 						]
 					},
 					{
 						xtype:'radiogroup',
 						column:2,
 						margin:'0 0 5 0',
+						defaults:{
+							name:'aocWaive'
+						},
 						width:550,
 						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
 						items:[
-						    { boxLabel: 'Yes', name:'aocWaive', inputValue:'Yes'},
-						    { boxLabel: 'No', name:'aocWaive', inputValue:'No'}
+						    { boxLabel: 'Yes', inputValue:'Yes'},
+						    { boxLabel: 'No', inputValue:'No'}
 						]
 					}
     	    	]
@@ -470,9 +485,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						reference:'sampleBulkOrderPresentWI',
 						width:550,
 						margin:'0 0 5 0',
+						defaults:{
+							name:'sampleBulkOrderPresentWI'
+						},
 						items:[
-						  { boxLabel:'Yes', inputValue:'Yes', name:'sampleBulkOrderPresentWI'},
-						  { boxLabel:'No', inputValue:'No', name:'sampleBulkOrderPresentWI'}
+						  { boxLabel:'Yes', inputValue:'Yes'},
+						  { boxLabel:'No', inputValue:'No'}
 						]
 					},
 					{
@@ -480,10 +498,13 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Is the sample order required to waive MOQ?',
 						reference:'sampleOrderRequiredMOQ',
 						width:550,
+						defaults:{
+							name:'sampleOrderRequiredMOQ'
+						},
 						margin:'0 0 5 0',
 						items:[
-						  {boxLabel:'Yes',inputValue:'Yes',name:'sampleOrderRequiredMOQ'},
-						  {boxLabel:'No',inputValue:'No',name:'sampleOrderRequiredMOQ'}
+						  {boxLabel:'Yes',inputValue:'Yes'},
+						  {boxLabel:'No',inputValue:'No'}
 						]
 					},
 					{
@@ -492,9 +513,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						reference:'sampleItemRequiredWI',
 						width:550,
 						margin:'0 0 5 0',
+						defaults:{
+							name:'sampleItemRequiredWI'
+						},
 						items:[
-						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemRequiredWI'},
-						  { boxLabel:'No',inputValue:'No',name:'sampleItemRequiredWI'}
+						  { boxLabel:'Yes',inputValue:'Yes'},
+						  { boxLabel:'No',inputValue:'No'}
 						]
 					},
 					{
@@ -503,9 +527,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						reference:'sampleItemApproved',
 						width:550,
 						margin:'0 0 5 0',
+						defaults:{
+							name:'sampleItemApproved'
+						},
 						items:[
-						  { boxLabel:'Yes',inputValue:'Yes',name:'sampleItemApproved'},
-						  { boxLabel:'No',inputValue:'No',name:'sampleItemApproved'}
+						  { boxLabel:'Yes',inputValue:'Yes'},
+						  { boxLabel:'No',inputValue:'No'}
 						]
 					}
     	    	]
@@ -609,9 +636,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Discount Price',
 						reference:'discountPrice',
 						margin:'0 0 5 0',
+						defaults:{
+							name:'discountPrice'
+						},
 						items:[
-						  { boxLabel:'Yes',inputValue:'Yes',name:'discountPrice'},
-						  { boxLabel:'No',inputValue:'No',name:'discountPrice'}
+						  { boxLabel:'Yes',inputValue:'Yes'},
+						  { boxLabel:'No',inputValue:'No'}
 						]
 					},
 					{
@@ -619,9 +649,12 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Pricing Aggrement',
 						reference:'pricingAggrement',
 						margin:'0 0 5 0',
+						defaults:{
+							name:'pricingAggrement'
+						},
 						items:[
-						  { boxLabel:'Yes',inputValue:'Yes',name:'pricingAggrement'},
-						  { boxLabel:'No',inputValue:'No',name:'pricingAggrement'}
+						  { boxLabel:'Yes',inputValue:'Yes'},
+						  { boxLabel:'No',inputValue:'No'}
 						]
 					}
 				]
@@ -655,7 +688,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Order grouping - how the order lines should be grouped from order form to AOC?',
 						name:'internalInformation',
 						reference:'internalInformation',
-    	    	    	maxLength:200,
+    	    	    	maxLength:250,
 						flex:1
 					},
 					{
@@ -664,7 +697,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						name:'orderGrouping',
 						reference:'orderGrouping',
 						margin:'0 0 0 10',
-    	    	    	maxLength:200,
+    	    	    	maxLength:250,
 						flex:1
 					}
 		    	]
@@ -786,7 +819,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    {
 		    	xtype:'billshipmappinggrid',
 		    	reference:'billShipMappingGrid',
-		    	height:'auto',
+		    	height:400,
+		    	scrollable:true,
 		    	margin:'20 0',
 		    	style:'border:solid 1px #ccc;'
 		    }

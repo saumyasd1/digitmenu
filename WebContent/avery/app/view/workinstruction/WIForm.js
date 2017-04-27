@@ -12,7 +12,6 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	viewModel: {
         type: 'wiformviewmodel'
     },
-    bodyPadding:10,
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -54,18 +53,8 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        	xtype:'form',
 	        	reference:'wIForm',
 	        	scrollable:true,
-	        	bodyPadding:'0 20',
-	        	layout:{
-	        		type:'anchor'
-	        	},
+	        	bodyPadding:'10 20',
 	        	border:false,
-	        	listeners:{
-	        		afterrender:function(a, b, c){
-	        			
-	        		}
-	        	},
-	        	beforeLayout:function(){
-	        	},
 	        	items:[
 	        	    me.getProfileHeaderItems(),
 	        	    me.getWorkingInstructionItems()
@@ -161,8 +150,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	        	  defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					labelWidth:150
+					labelAlign:AOC.config.Settings.form.topLabelAlign
 	        	  },
 	              items:[
                      {
@@ -354,10 +342,13 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						width:600,
 						margin:'0 0 5 0',
 						fieldLabel:'ATO/NATO',
+						defaults:{
+							name:'atoNato'
+						},
 						items:[
-						    { boxLabel: 'ATO', name:'atoNato', inputValue:'ATO'},
-						    { boxLabel: 'NATO', name:'atoNato', inputValue:'NATO'},
-						    { boxLabel: 'Both ATO&NATO', name:'atoNato', inputValue:'Both ATO&NATO'}
+						    { boxLabel: 'ATO', inputValue:'ATO'},
+						    { boxLabel: 'NATO', inputValue:'NATO'},
+						    { boxLabel: 'Both ATO&NATO', inputValue:'Both ATO&NATO'}
 						]
 			         },
 			         {
@@ -366,22 +357,29 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						width:500,
 						margin:'0 0 5 0',
 						reference:'glidCustomerItem',
+						defaults:{
+							name:'glidCustomerItem'
+						},
 						fieldLabel:'GLID/Customer Item #? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in either Internal Item # or Customer Item # that would be provided in the order form'),
 						items:[
-						    { boxLabel: 'Customer Item #', name:'glidCustomerItem', inputValue:'Customer Item#'},
-						    { boxLabel: 'GLID', name:'glidCustomerItem', inputValue:'GLID'}
+						    { boxLabel: 'Customer Item #', inputValue:'Customer Item#'},
+						    { boxLabel: 'GLID', inputValue:'GLID'}
 						]
 			         },
 			         {
 						xtype:'radiogroup',
 						column:2,
 						width:350,
+						defaults:{
+							name:'isOrderWithAttachment'
+						},
 						margin:'0 0 5 0',
+						scope:me,
 		            	reference:'isOrderWithAttachment',
 						fieldLabel:'Is Order with Attachment? '+Ext.String.format(AOCLit.wiInfoIconText, 'Pls fill in Yes/No, Yes - Order is come with a supplementary attachment'),
 						items:[
-						    { boxLabel: 'Yes', name:'isOrderWithAttachment', inputValue:'Yes'},
-						    { boxLabel: 'No', name:'isOrderWithAttachment', inputValue:'No'}
+						    { boxLabel: 'Yes', inputValue:'Yes'},
+						    { boxLabel: 'No', inputValue:'No'}
 						]
 			         }
 				  ]
@@ -392,6 +390,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	   }
 	},
 	getSystemOrg:function(){
+		var me = this;
 		return {
 		   margin:'15 0',
 		   layout:{
@@ -429,22 +428,34 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 		    	items:[
 					{
 						xtype:'radiogroup',
+						defaults:{
+							name:'aocDefaultOneBillToSite'
+						},
 						fieldLabel:'Should AOC default one Bill to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Bill to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneBillToSite',
 						margin:'0 0 5 0',
+						scope:me,
 						items:[
-						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneBillToSite'},
-						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneBillToSite'}
-						]
+						  {boxLabel:'Yes',inputValue:'Yes'},
+						  {boxLabel:'No',inputValue:'No'}
+						],
+						listeners:{
+							scope:me,
+							change:function(field){
+							}
+						}
 					},
  	                {
 						xtype:'radiogroup',
 						fieldLabel:'Should AOC default one Ship to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, 'For Yes, please mention the corresponding Ship to Site# in org table.  For No, please mention the logic in Bill / Ship Information'),
 						reference:'aocDefaultOneShipToSite',
 						margin:'0 0 5 0',
+						defaults:{
+							name:'aocDefaultOneShipToSite'
+						},
 						items:[
-						  {boxLabel:'Yes',inputValue:'Yes',name:'aocDefaultOneShipToSite'},
-						  {boxLabel:'No',inputValue:'No',name:'aocDefaultOneShipToSite'}
+						  {boxLabel:'Yes',inputValue:'Yes'},
+						  {boxLabel:'No',inputValue:'No'}
 						]
 					}
 		    	]
@@ -494,9 +505,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:230,
 							margin:'0 0 5 0',
+							defaults:{
+								name:'emailSubjectRequired'
+							},
 							items:[
-							    {boxLabel:'Required', name:'emailSubjectRequired', inputValue:'1'},
-							    {boxLabel:'Not Required', name:'emailSubjectRequired', inputValue:'2', checked:true}
+							    {boxLabel:'Required', inputValue:'1'},
+							    {boxLabel:'Not Required', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onEmailSubjectRequiredRadioChange'
@@ -561,6 +575,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					hideLabel:true,
 					name:'emailSubjectDataStructureOtherRule',
 					flex:1,
+					maxLength:250,
 					margin:'0 0 15 0'
 				},
 				{
@@ -575,9 +590,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:230,
 							margin:'0 0 5 0',
+							defaults:{
+								name:'emailBodyRequired'
+							},
 							items:[
-							    {boxLabel:'Required', name:'emailBodyRequired', inputValue:'1'},
-							    {boxLabel:'Not Required', name:'emailBodyRequired', inputValue:'2', checked:true}
+							    {boxLabel:'Required', inputValue:'1'},
+							    {boxLabel:'Not Required', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onEmailBodyRequiredRadioChange'
@@ -630,9 +648,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							column:2,
 							width:230,
 							margin:'0 0 5 0',
+							defaults:{
+								name:'orderFileRequired'
+							},
 							items:[
-							    {boxLabel:'Required', name:'orderFileRequired', inputValue:'1'},
-							    {boxLabel:'Not Required', name:'orderFileRequired', inputValue:'2', checked:true}
+							    {boxLabel:'Required', inputValue:'1'},
+							    {boxLabel:'Not Required', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onOrderRequiredRadioChange'
@@ -693,10 +714,13 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	xtype:'radiogroup',
     		    	    	column:2,
     		    	    	width:300,
+    		    	    	defaults:{
+								name:'orderFileType'
+							},
 							margin:'0 0 5 0',
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'orderFileType', inputValue:'1', checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'orderFileType', inputValue:'2'}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', inputValue:'1', checked:true},
+    		    	    	    {boxLabel:'If Excel', inputValue:'2'}
     		    	    	],
     		    	    	listeners:{
     		    	    		change:'onOrderRadioChange'
@@ -778,10 +802,13 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 							xtype:'radiogroup',
 							column:2,
 							width:230,
+							defaults:{
+								name:'attachmentFileRequired'
+							},
 							margin:'0 0 5 0',
 							items:[
-							    {boxLabel:'Required', name:'attachmentFileRequired', inputValue:'1'},
-							    {boxLabel:'Not Required', name:'attachmentFileRequired', inputValue:'2', checked:true}
+							    {boxLabel:'Required', inputValue:'1'},
+							    {boxLabel:'Not Required', inputValue:'2', checked:true}
 							],
 							listeners:{
 								change:'onAttachmentRequiredRadioChange'
@@ -843,9 +870,12 @@ Ext.define('AOC.view.workinstruction.WIForm',{
     		    	    	column:2,
     		    	    	width:300,
 							margin:'0 0 5 0',
+							defaults:{
+								name:'attachmentFileType'
+							},
     		    	    	items:[
-    		    	    	    {boxLabel:'If Text/Html/Pdf', name:'attachmentFileType', inputValue:'1', checked:true},
-    		    	    	    {boxLabel:'If Excel', name:'attachmentFileType', inputValue:'2'}
+    		    	    	    {boxLabel:'If Text/Html/Pdf', inputValue:'1', checked:true},
+    		    	    	    {boxLabel:'If Excel', inputValue:'2'}
     		    	    	],
     		    	    	listeners:{
     		    	    		change:'onAttachmentRadioChange'
