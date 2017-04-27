@@ -52,13 +52,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	resetFileCont:function(){
 		var me = this,
 			formRefs = me.getFormReference(),
-			orderFileImageContainer = formRefs.orderFileImageContainer,
-			attchmentContainer = formRefs.attchmentContainer,
-			sampleFileContainer = formRefs.sampleFileContainer;
+			orderFileImageContainer = formRefs.orderFileImageContainer;
 		
 		orderFileImageContainer.removeAll();
-		attchmentContainer.removeAll();
-		sampleFileContainer.removeAll();
 	},
 	loadDefaultGrid:function(){
 		var me = this,
@@ -405,12 +401,19 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		var me = this,
 			refs = me.getReferences(),
 			wiFormPanel = refs.wiFormPanel,
-			wIForm = wiFormPanel.getReferences().wIForm,
+			formRefs = me.getFormReference(),
+			wIForm = formRefs.wIForm,
+			assigneeCombo = formRefs.assigneeCombo,
+			uploadSection = formRefs.uploadSection,
+			wiOrgGrid = formRefs.wiOrgGrid,
+			wiSystemGrid = formRefs.wiSystemGrid,
+			wiaocfieldgrid = formRefs.wiaocfieldgrid,
+			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid,
+			billShipMappingGrid = formRefs.billShipMappingGrid,
 			textBoxArray = wIForm.query('[xtype = textfield]'),
 			textAreaArray = wIForm.query('[xtype = textarea]'),
 			comboArray = wIForm.query('[xtype = combo]'),
 			radioGroupArray = wIForm.query('[xtype = radiogroup]'),
-			gridArray = wiFormPanel.query('[xtype=grid]'),
 			tempArray = [].concat(textBoxArray)
 						  .concat(comboArray)
 						  .concat(radioGroupArray)
@@ -418,14 +421,20 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		
 		var len = tempArray.length;
 		for(var i = 0; i < len; i++){
-			if(tempArray[i].name != 'assignee' || tempArray[i].name != 'status'){
+			if(tempArray[i].name == 'assignee' || tempArray[i].name == 'status'){
+				tempArray[i].setReadOnly(false);
+			}else{
 				tempArray[i].setReadOnly(readOnlyFlag);
 			}
 		}
-		var length = gridArray.length;
-		for(var i = 0; i < length; i++){
-			gridArray[i].setDisabled(readOnlyFlag);
-		}
+		
+		assigneeCombo.setDisabled(true);
+		uploadSection.setDisabled(readOnlyFlag);
+//		wiOrgGrid.setDisabled(readOnlyFlag);
+//		wiSystemGrid.setDisabled(readOnlyFlag);
+//		wiaocfieldgrid.setDisabled(readOnlyFlag);
+//		wiorderfiberlinegrid.setDisabled(readOnlyFlag);
+//		billShipMappingGrid.setDisabled(readOnlyFlag);
 	},
 	
 	
@@ -448,20 +457,10 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			wiFormPanel = refs.wiFormPanel,
 			formRefs = wiFormPanel.getReferences(),
 			orderFileImageContainer = formRefs.orderFileImageContainer,
-    		attchmentContainer = formRefs.attchmentContainer,
-    		sampleFileContainer = formRefs.sampleFileContainer,
     		len = fileList.length;
 		
 		for(var i=0;i<len;i++){
-			if(fileList[i].fileType == 'Order'){
-				me.setImagePreview(orderFileImageContainer,fileList[i] );
-    		}
-			else if(fileList[i].fileType == 'Attachment'){
-				me.setImagePreview(attchmentContainer,fileList[i] );
-    		}
-			else if(fileList[i].fileType == 'Sample'){
-				me.setImagePreview(sampleFileContainer,fileList[i] );
-    		}
+			me.setImagePreview(orderFileImageContainer,fileList[i] );
 		}
 	},
 	setImagePreview:function(imageContainer, file){

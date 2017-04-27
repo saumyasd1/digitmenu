@@ -77,8 +77,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    me.getOthersItems(),
 		    me.getUploadOrderFileItems(),
-		    me.getUploadAttachementItems(),
-		    me.getSampleFileItems(),
 		    me.getAssigneeField()
 		]
 	},
@@ -134,85 +132,61 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		   xtype:'fieldcontainer',
 		   margin:'10 0 5 0',
 		   layout:'hbox',
+		   reference:'uploadSection',
 		   items:[
-				{   
-					xtype:'fileuploadfield',
-					buttonText:'Upload Order File',
-					name: 'orderfile',
-					width:150,
-					reference: 'orderfileattachment',
-					hideLabel:true,
-					buttonOnly:true,
-					itemId:'orderfileattachment',
-					listeners:{
-						'change':'onOrderFileAttachmentChange'
-					}
-				},
-				{
-			    	xtype:'container',
-			    	itemId:'orderFileImageContainer',
-			    	reference:'orderFileImageContainer',
-			    	flex:1,
-			    	margin:'0 0 0 10'
-			    }
-		   ]
-	   };
-	},
-	getUploadAttachementItems:function(){
-		return {
-		   xtype:'fieldcontainer',
-		   margin:'0 0 5 0',
-		   layout:'hbox',
-		   items:[
-				{   
-					xtype:'fileuploadfield',
-					buttonText:'Upload Attachment',
-					name: 'attachment',
-					width:150,
-					reference: 'attachment',
-					hideLabel:true,
-					buttonOnly:true,
-					itemId:'attachment',
-					listeners:{
-						'change':'onAttachmentChange'
-					}
-				},
-				{
-			    	xtype:'container',
-			    	itemId:'attchmentContainer',
-			    	reference:'attchmentContainer',
-			    	flex:1,
-			    	margin:'0 0 0 10'
-			    }
-		   ]
-	   };
-	},
-	getSampleFileItems:function(){
-		return {
-		   xtype:'fieldcontainer',
-		   margin:'0 0 5 0',
-		   layout:'hbox',
-		   items:[
-				{   
-					xtype:'fileuploadfield',
-					buttonText:'Upload Sample File',
-					name: 'sampleFile',
-					width:150,
-					buttonOnly:true,
-					reference: 'sampleFile',
-					hideLabel:true,
-					itemId:'sampleFile',
-					listeners:{
-						'change':'onSampleFileChange'
-					}
-				},
-				{
-			    	xtype:'container',
-			    	itemId:'sampleFileContainer',
-			    	reference:'sampleFileContainer',
-			    	flex:1,
-			    	margin:'0 0 0 10'
-			    }
+	          {
+	        	  xtype:'panel',
+	        	  flex:.5,
+	        	  items:[
+        	         {   
+						xtype:'fileuploadfield',
+						buttonText:'Upload Order File',
+						name: 'orderfile',
+						width:150,
+						reference: 'orderfileattachment',
+						hideLabel:true,
+						margin:'0 0 5 0',
+						buttonOnly:true,
+						itemId:'orderfileattachment',
+						listeners:{
+							'change':'onOrderFileAttachmentChange'
+						}
+        	         }, {   
+						xtype:'fileuploadfield',
+						buttonText:'Upload Attachment',
+						name: 'attachment',
+						width:150,
+						reference: 'attachment',
+						margin:'0 0 5 0',
+						hideLabel:true,
+						buttonOnly:true,
+						itemId:'attachment',
+						listeners:{
+							'change':'onAttachmentChange'
+						}
+        	         }, {   
+						xtype:'fileuploadfield',
+						buttonText:'Upload Sample File',
+						name: 'sampleFile',
+						width:150,
+						margin:'0 0 5 0',
+						buttonOnly:true,
+						reference: 'sampleFile',
+						hideLabel:true,
+						itemId:'sampleFile',
+						listeners:{
+							'change':'onSampleFileChange'
+						}
+        	         }
+	        	  ]
+	          },
+	          {
+				xtype:'container',
+				itemId:'orderFileImageContainer',
+				reference:'orderFileImageContainer',
+				flex:3,
+				margin:'0 0 0 10'
+	          }
 		   ]
 	   };
 	},
@@ -437,7 +411,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						defaults:{
 							name:'orderPlacementMethod'
 						},
-						fieldLabel:'Should AOC waive all SKU MOQ for this structure?',
+						fieldLabel:'Order Placement Method',
 						items:[
 						    { boxLabel: 'Direct Email Form Customer', inputValue:'1'},
 						    { boxLabel: 'Email Forwarded by CS', inputValue:'2'}
@@ -469,6 +443,63 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	text:'2. Sample/Bulk'
     	    },
     	    {
+				xtype:'radiogroup',
+				fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
+				reference:'sampleBulkOrderPresentWI',
+				width:550,
+				margin:'0 0 5 0',
+				defaults:{
+					name:'sampleBulkOrderPresentWI'
+				},
+				labelSeparator:'',
+				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+				labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+				labelWidth:430,
+				items:[
+				  { boxLabel:'Yes', inputValue:'Yes'},
+				  { boxLabel:'No', inputValue:'No'}
+				]
+			},
+			{
+    	    	xtype:'label',
+    	    	style:'font-weight:bold;color:#2c3e50;font-size:13px;text-decoration:underline;',
+    	    	text:'If above field value is yes, how can we identify if the order is Bulk/Sample order based on the order form'
+    	    },
+    	    {
+    	    	xtype:'fieldcontainer',
+    	    	flex:1,
+    	    	margin:'10 0 5 0',
+    	    	layout:{
+    	    		type:'hbox',
+    	    		align:'stretch' 	
+    	    	},
+    	    	defaults:{
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign
+				},
+    	    	items:[
+    	    	    {
+    	    	    	xtype:'textarea',
+    	    	    	name:'bulkOrderIdentified',
+    	    	    	fieldLabel:'Bulk Order can be identified if',
+    	    	    	reference:'bulkOrderIdentified',
+    	    	    	maxLength:250,
+    	    	    	flex:1
+    	    	    },
+    	    	    {
+    	    	    	xtype:'textarea',
+    	    	    	name:'sampleOrderIdentified',
+    	    	    	fieldLabel:'Sample Order can be identified if',
+    	    	    	reference:'sampleOrderIdentified',
+    	    	    	margin:'0 0 0 10',
+    	    	    	maxLength:250,
+    	    	    	flex:1
+    	    	    }
+    	    	    
+    	    	]
+    	    },
+    	    {
     	    	xtype:'fieldcontainer',
     	    	flex:1,
     	    	margin:'0 0 5 0',
@@ -479,20 +510,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelWidth:430
 				},
     	    	items:[
-					{
-						xtype:'radiogroup',
-						fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
-						reference:'sampleBulkOrderPresentWI',
-						width:550,
-						margin:'0 0 5 0',
-						defaults:{
-							name:'sampleBulkOrderPresentWI'
-						},
-						items:[
-						  { boxLabel:'Yes', inputValue:'Yes'},
-						  { boxLabel:'No', inputValue:'No'}
-						]
-					},
 					{
 						xtype:'radiogroup',
 						fieldLabel:'Is the sample order required to waive MOQ?',
@@ -535,40 +552,6 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						  { boxLabel:'No',inputValue:'No'}
 						]
 					}
-    	    	]
-    	    },
-    	    {
-    	    	xtype:'fieldcontainer',
-    	    	flex:1,
-    	    	margin:'0 0 5 0',
-    	    	layout:{
-    	    		type:'hbox',
-    	    		align:'stretch' 	
-    	    	},
-    	    	defaults:{
-					labelSeparator:'',
-					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
-				},
-    	    	items:[
-    	    	    {
-    	    	    	xtype:'textarea',
-    	    	    	name:'bulkOrderIdentified',
-    	    	    	fieldLabel:'Bulk Order can be identified if',
-    	    	    	reference:'bulkOrderIdentified',
-    	    	    	maxLength:250,
-    	    	    	flex:1
-    	    	    },
-    	    	    {
-    	    	    	xtype:'textarea',
-    	    	    	name:'sampleOrderIdentified',
-    	    	    	fieldLabel:'Sample Order can be identified if',
-    	    	    	reference:'sampleOrderIdentified',
-    	    	    	margin:'0 0 0 10',
-    	    	    	maxLength:250,
-    	    	    	flex:1
-    	    	    }
-    	    	    
     	    	]
     	    },
     	    {

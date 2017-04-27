@@ -40,23 +40,14 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     			fileId = el.getAttribute('fileId'),
     			parent = el.parent('.file-box');
     		
-    		var orderFileImageContainer = refs.orderFileImageContainer,
-	    		attchmentContainer = refs.attchmentContainer,
-	    		sampleFileContainer = refs.sampleFileContainer;
+    		var orderFileImageContainer = refs.orderFileImageContainer;
     		
-    		if(fileType == 'Order'){
-    			orderFileImageContainer.remove(Ext.get(parent).component)
-    		}
-    		else if(fileType == 'Attachment'){
-    			attchmentContainer.remove(Ext.get(parent).component);
-    		}
-    		else if(fileType == 'Sample'){
-    			sampleFileContainer.remove(Ext.get(parent).component);
-    		}
     		if(AOCRuntime.getCurrentWiMode() == 'edit'){
+    			orderFileImageContainer.remove(Ext.get(parent).component);
     			this.deleteFile(filePath,fileId);
     		}
-    		else{
+    		else if(AOCRuntime.getCurrentWiMode() == 'add'){
+    			orderFileImageContainer.remove(Ext.get(parent).component);
     			this.removeFileFromFileArray(fileName);
     		}
     	}else if(el.hasCls('download-attachment-link')){
@@ -179,7 +170,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				values = form.getValues(),
 				userInfo = AOCRuntime.getUser();
 			
-			values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
 			
 			 if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before submit form.');
@@ -191,7 +181,8 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				var obj = {
 					assignee : values.assignee,
 					status:values.status,
-					id: AOCRuntime.getWiId().toString()
+					id: AOCRuntime.getWiId().toString(),
+					lastModifiedBy : userInfo.firstName +' '+userInfo.lastName
 				};
 			
 				Helper.showMask();
@@ -271,8 +262,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		fileArray = this.fileArray,
     		formData = new FormData(),
     		orderFileImageContainer = refs.orderFileImageContainer,
-    		attchmentContainer = refs.attchmentContainer,
-    		sampleFileContainer = refs.sampleFileContainer,
     		url =applicationContext+'/rest/wi/fileupload',
     		len = fileArray.length;
     		
@@ -303,8 +292,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        			if(fileArray.length == 0){
 	    					me.totalCount = 1;
 	    					orderFileImageContainer.removeAll();
-	    					attchmentContainer.removeAll();
-	    					sampleFileContainer.removeAll();
 	    					me.fileArray = [];
 	    					
     						Helper.showToast('success','Record has been save successfully.');
@@ -321,8 +308,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	}else{
     		me.totalCount = 1;
     		orderFileImageContainer.removeAll();
-			attchmentContainer.removeAll();
-			sampleFileContainer.removeAll();
     		me.fileArray = [];
     		Helper.showToast('success','Record has been save successfully.');
 			me.onBackBtnClick();
@@ -608,7 +593,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	            	 width:150,
 	            	 cls:'file-box',
 	            	 html:[
-            	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,20)+'</a>',
+            	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,15)+'</a>',
             	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'"></i>',
             	       '<div style="clear:both"></div>'
             	     ]
@@ -619,7 +604,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	},
 	addFileInBox:function(obj, imageContainer, fileType){
 		var me = this;
-		
+			refs = me.getReferences(),
+			orderFileImageContainer = refs.orderFileImageContainer;
+			
 		if(me.totalCount <= me.maxFileCount){
 			var file = obj.getEl().down('input[type=file]').dom.files[0];
 			
@@ -634,32 +621,20 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			file.fileType = fileType;
 			me.fileArray.push(file);
 			me.totalCount++;
-			me.setImagePreview(file, imageContainer);
+			me.setImagePreview(file, orderFileImageContainer);
 			obj.reset();
 		}else{
 			Helper.showToast('validation','You can not add more than '+me.maxFileCount);
 		}
 	},
 	onOrderFileAttachmentChange:function(obj, value){
-		var me = this,
-			refs = me.getReferences(),
-			orderFileImageContainer = refs.orderFileImageContainer;
-		
-		me.addFileInBox(obj, orderFileImageContainer,'Order');
+		this.addFileInBox(obj,'Order');
 	},
 	onAttachmentChange:function(obj, value){
-		var me = this;
-			refs = me.getReferences(),
-			attchmentContainer = refs.attchmentContainer;
-		
-		me.addFileInBox(obj, attchmentContainer,'Attachment');
+		this.addFileInBox(obj,'Attachment');
 	},
 	onSampleFileChange:function(obj, value){
-		var me = this,
-			refs = me.getReferences(),
-			sampleFileContainer = refs.sampleFileContainer;
-		
-		me.addFileInBox(obj, sampleFileContainer,'Sample' );
+		this.addFileInBox(obj,'Sample' );
 	},
     
 	//order fiber line grid
