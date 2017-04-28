@@ -41,8 +41,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     			parent = el.parent('.file-box'),
     			mainCont = parent.parent().component;
     		
-    		//var orderFileImageContainer = refs.orderFileImageContainer;
-    		
     		if(AOCRuntime.getCurrentWiMode() == 'edit'){
     			mainCont.remove(Ext.get(parent).component);
     			this.deleteFile(filePath, fileId);
@@ -228,9 +226,11 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 			
 			if(AOCRuntime.getCurrentWiMode() == 'edit'){
 				values.id =  AOCRuntime.getWiId().toString();
+				values.status = AOCRuntime.getCurrentStatusId();
 			}
 			values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
 			values.assignee = userInfo.role;//later will use user id instead of role
+			
 			if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before proceed WI form.');
 				return;
@@ -478,6 +478,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	
 	//System/Org Grid
 	onSystemGridBeforeEdit:function(e, editor){
+		if(AOCRuntime.getCurrentWiMode() == 'view'){
+			return false;
+		}
 		var me = this,
 			currentRecord = editor.record,
 			systemName = currentRecord.get('systemName'),
@@ -736,9 +739,13 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	    			file.recordId = rec.get('id');
 	    		}
 	        	file.fileType = 'AocField';
-	        }else{
+	        }else if(gridType == 'systemLevel'){
 	        	file.recordId = rec.get('defaultId');
 	        	file.fileType = 'SystemLevel';
+	        }
+	        else if(gridType == 'billShipMapping'){
+	        	file.recordId = rec.get('defaultId');
+	        	file.fileType = 'BillShipMapping';
 	        }
 	        
 	        var len = me.fileArray.length;

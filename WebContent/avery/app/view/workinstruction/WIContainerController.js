@@ -84,52 +84,52 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'1'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'2'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'3'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'4'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'5'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'6'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'7'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'8'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'9'
 			    },
 			    {
 			    	'addressEmailSubject':'','beginendwith':'','keywording':'', 'orgCode':'', 'billToCode':'',
 			        'shipToCode':'','shippingMethod':'','freightTerm':'','packingInstruction':'','shippingInstruction':'',
-			        'endCustomer':'','manufacturingNote':'','csr':''
+			        'endCustomer':'','manufacturingNote':'','csr':'','defaultId':'10'
 			    }
 			];
 		billShipMappingGrid.store.loadData(data);
@@ -390,6 +390,9 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 				
 				delete detail.formdata.listWiSchemaIdentification;
 				AOCRuntime.setSchemaIdentificationId(schemaIdentification.id);
+				//set status for edit scenario
+				AOCRuntime.setCurrentStatusId(detail.formdata.status);
+				
 				delete schemaIdentification.id;
 				Ext.apply(detail.formdata,schemaIdentification);
 				var form = wiFormPanel.getReferences().wIForm;
@@ -404,25 +407,30 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	setReadOnlyView:function(readOnlyFlag){
 		var me = this,
-			refs = me.getReferences(),
-			wiFormPanel = refs.wiFormPanel,
 			formRefs = me.getFormReference(),
 			wIForm = formRefs.wIForm,
+			
 			assigneeCombo = formRefs.assigneeCombo,
 			uploadSection = formRefs.uploadSection,
-			wiOrgGrid = formRefs.wiOrgGrid,
-			wiSystemGrid = formRefs.wiSystemGrid,
-			wiaocfieldgrid = formRefs.wiaocfieldgrid,
-			wiorderfiberlinegrid = formRefs.wiorderfiberlinegrid,
-			billShipMappingGrid = formRefs.billShipMappingGrid,
+			
+			fieldImageCont = Ext.select('.field-image-cont').elements,
+			len = fieldImageCont.length,
+			
+			//all textfield/textarea/combo/radiogroup reference
 			textBoxArray = wIForm.query('[xtype = textfield]'),
 			textAreaArray = wIForm.query('[xtype = textarea]'),
 			comboArray = wIForm.query('[xtype = combo]'),
 			radioGroupArray = wIForm.query('[xtype = radiogroup]'),
+			
 			tempArray = [].concat(textBoxArray)
 						  .concat(comboArray)
 						  .concat(radioGroupArray)
 						  .concat(textAreaArray);
+			
+		//enable/disable all field image section
+		for(var i=0; i<len; i++){
+			Ext.get(fieldImageCont[i]).component.setDisabled(readOnlyFlag);
+		}
 		
 		var len = tempArray.length;
 		for(var i = 0; i < len; i++){
@@ -435,11 +443,6 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		
 		assigneeCombo.setDisabled(true);
 		uploadSection.setDisabled(readOnlyFlag);
-//		wiOrgGrid.setDisabled(readOnlyFlag);
-//		wiSystemGrid.setDisabled(readOnlyFlag);
-//		wiaocfieldgrid.setDisabled(readOnlyFlag);
-//		wiorderfiberlinegrid.setDisabled(readOnlyFlag);
-//		billShipMappingGrid.setDisabled(readOnlyFlag);
 	},
 	
 	

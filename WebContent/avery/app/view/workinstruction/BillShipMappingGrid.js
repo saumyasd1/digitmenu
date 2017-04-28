@@ -15,22 +15,21 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
 			store: Ext.data.StoreManager.lookup('wiBillShipMappingStore') == null ? Ext.create('AOC.store.WIBillShipMappingStore',{storeId:'wiBillShipMappingStore'}) : Ext.data.StoreManager.lookup('wiBillShipMappingStore'),
 			viewConfig : {
 				stripeRows: true,
-//				columnLines: true,
 				enableTextSelection: true
 			},
 			plugins: [{
 				ptype: 'cellediting',
-				clicksToEdit:1
+				clicksToEdit:1,
+				listeners:{
+		    		 beforeedit:function(e, editor){
+		    			 if(AOCRuntime.getCurrentWiMode() == 'view'){
+		    				 return false;
+		    			 }
+		    			 return true;
+		    		 }
+				}
 			}],
-//			tools:[
-//				{
-//					type:'plus',
-//					//callback:'',
-//					tooltip:'Add More Row'
-//				}   
-//			],
 			listeners:{
-//				select:'onOrgGridRowSelect'
 			}
 		});
 		this.callParent(arguments);
@@ -145,6 +144,51 @@ Ext.define('AOC.view.workinstruction.BillShipMappingGrid', {
             	editor:'textfield',
             	cellWrap:true,
             	flex:1.5
+            },
+            {
+				text:'File',
+				flex:.8,
+				dataIndex:'file',
+				sortable:false,
+                menuDisabled:true,
+				renderer:function(value, metadata, rec){
+					if(rec.get('fileName')){
+						var str = rec.get('filePath') ? rec.get('filePath') :'',
+							fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+							
+						var filePath = fPath ? fPath+'/'+rec.get('fileName') : rec.get('fileContent');
+						return '<img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img>'
+					}
+				}
+			},
+			{
+                text: '',
+                xtype: 'widgetcolumn',
+                width:40,
+                sortable:false,
+                menuDisabled:true,
+                widget: {
+                    xtype: 'filefield',
+                    name: 'file',
+                    width:30,
+                    buttonOnly:true,
+                    buttonConfig:{
+                    	iconCls:'fa fa-upload aoc-icon',
+                    	cls:'aoc-btn', 
+                    	text:''
+                    },
+                    regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+                    regexText: 'Only PNG and JPEG image formats are accepted',
+                    gridType:'billShipMapping',
+                    listeners:{
+                    	change:'onFilesChanged',
+                    	afterrender:function(cmp){
+                            cmp.fileInputEl.set({
+                                accept:'image/*'
+                            });
+                        }
+                    }
+                }
             }
         ];
     }

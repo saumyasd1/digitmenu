@@ -19,6 +19,9 @@ Ext.define('AOC.view.workinstruction.WIAOCFieldGrid',{
 			    	 clicksToEdit:1,
 			    	 listeners:{
 			    		 beforeedit:function(e, editor){
+			    			 if(AOCRuntime.getCurrentWiMode() == 'view'){
+		    					return false;
+			    			 }
 			    			 var rec  = editor.grid.store.getAt(editor.rowIdx);
 			    			 if(editor.field != 'fieldValueExample'){return;}
 			    			 

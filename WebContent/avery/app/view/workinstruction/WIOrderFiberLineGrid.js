@@ -32,7 +32,15 @@ Ext.define('AOC.view.workinstruction.WIOrderFiberLineGrid',{
 			plugins:[
 			     {
 			    	 ptype:'cellediting',
-			    	 clicksToEdit:1
+			    	 clicksToEdit:1,
+			    	 listeners:{
+			    		 beforeedit:function(e, editor){
+			    			 if(AOCRuntime.getCurrentWiMode() == 'view'){
+			    				 return false;
+			    			 }
+			    			 return true;
+			    		 }
+					}
 			     }    
 			],
 			selModel: 'cellmodel',

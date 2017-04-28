@@ -14,7 +14,10 @@ Ext.define('AOC.model.WIBillShipMappingModel',{
 		{name: 'shippingInstruction', type:'string'},
 		{name: 'endCustomer', type:'string'},
 		{name: 'manufacturingNote', type:'string'},
-		{name: 'csr', type:'string'}
+		{name: 'csr', type:'string'},
+		{name: 'fileName', type:'string'},
+		{name: 'filePath', type:'string'},
+		{name: 'fileContent', type:'string'}
     ]
 });
 
