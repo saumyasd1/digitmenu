@@ -230,7 +230,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				values.id =  AOCRuntime.getWiId().toString();
 			}
 			values.lastModifiedBy = userInfo.firstName +' '+userInfo.lastName;
-			values.assignee = AOCRuntime.userInfo.id;
+			values.assignee = userInfo.role;//later will use user id instead of role
 			if(Ext.isEmpty(values.status)){
 				Helper.showToast('validation', 'Please select Status before proceed WI form.');
 				return;
