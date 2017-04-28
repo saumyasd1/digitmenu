@@ -53,12 +53,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 		var me = this,
 			formRefs = me.getFormReference(),
 			orderFileImageContainer = formRefs.orderFileImageContainer,
-			emailSubjectImageContainer = formRefs.emailSubjectImageContainer,
-			emailBodyImageContainer = formRefs.emailBodyImageContainer;
+			imageWrrapper = Ext.select('.image-wrapper').elements,
+			len = imageWrrapper.length;
 		
+		for(var i=0; i<len; i++){
+			Ext.get(imageWrrapper[i]).component.removeAll();
+		}
 		orderFileImageContainer.removeAll();
-		emailSubjectImageContainer.removeAll();
-		emailBodyImageContainer.removeAll();
 	},
 	loadDefaultGrid:function(){
 		var me = this,
@@ -464,24 +465,57 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
     		len = fileList.length;
 		
 		for(var i=0;i<len;i++){
-			me.setImagePreview(orderFileImageContainer,fileList[i] );
+			var file = fileList[i];
+			if(file.fileType == 'Order' || file.fileType == 'Attachment' || file.fileType == 'Sample'){
+				me.setImagePreview(orderFileImageContainer, file);
+			}else{
+				var imageCont = formRefs[file.fileType];
+				me.setImagePreview(imageCont, file );
+			}
 		}
 	},
 	setImagePreview:function(imageContainer, file){
-		var name = file.fileName;
+		var me = this;
 		imageContainer.add(
              {
             	 xtype:'box',
             	 style:'float:left;border:solid 1px #ccc;padding:3px;margin-right:5px;',
             	 width:150,
             	 cls:'file-box',
-            	 html:[
-           	       '<a class="download-attachment-link" style="cursor:pointer;text-decoration:underline;letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>" fileName="'+name+'" filePath="'+file.filePath+'">'+Ext.util.Format.ellipsis(name,18)+'</a>',
-           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+file.fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
-           	       '<div style="clear:both"></div>',
-           	     ]
+            	 html:me.getImagePreviewHtml(file)
+//            	 html:[
+//           	       '<a class="download-attachment-link" style="cursor:pointer;text-decoration:underline;letter-spacing:.15px;color:#2c3e50;margin-right:5px;" data-qtip="<font color=#3892d3>'+name+'</font>" fileName="'+name+'" filePath="'+file.filePath+'">'+Ext.util.Format.ellipsis(name,18)+'</a>',
+//           	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+file.fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
+//           	       '<div style="clear:both"></div>',
+//           	     ]
              }
         );
+	},
+	getImagePreviewHtml:function(file){
+		var name = file.fileName,
+			fileType = file.fileType,
+			str = file.filePath ? file.filePath :'',
+			fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'',
+			filePath = fPath ? fPath+'/'+name : '',
+			type = file.fileContentType,
+			imgIndex = type ? type.indexOf('image') : '',
+			html = '';
+			
+		if(!Ext.isEmpty(imgIndex) && imgIndex > -1){
+			html = [
+			        '<img filePath="'+file.filePath+'" class="view-image-preview" src="'+filePath+'" style="width:120px;height:60px;float:left;border:solid 1px #ccc;border-radius:4px;margin-right:5px;cursor:pointer;"></img>',
+			        '<i class="fa fa-times delete-file"style="margin-top:20px;font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
+			        '<div style="clear:both"></div>'
+		        ];
+		}else{
+			html = [
+     	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+filePath+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>" fileName="'+name+'" filePath="'+file.filePath+'">'+Ext.util.Format.ellipsis(name,15)+'</a>',
+    	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
+    	       '<div style="clear:both"></div>',
+    	     ];
+		}
+		return html;
+		
 	}
 	
 });
