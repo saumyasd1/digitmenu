@@ -21,7 +21,9 @@ Ext.define('AOC.config.Settings',{
         	actionIcon:'fa fa-ellipsis-v'	
         }
     },
-    
+    wiConfig:{
+    	textAreaMaxLength:1000
+    },
     form:{
     	defaultLabelAlign:'left',
     	topLabelAlign:'top',

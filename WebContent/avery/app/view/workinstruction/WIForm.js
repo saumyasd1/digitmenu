@@ -547,6 +547,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	reference:'emailSubjectKeyWording',
 					    	fieldLabel:'Key Wordings',
 					    	flex:1,
+					    	maxLength:200,
 							disabled:true,
 					    	margin:'0 10'
 					    },
@@ -575,7 +576,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					hideLabel:true,
 					name:'emailSubjectDataStructureOtherRule',
 					flex:1,
-					maxLength:250,
+					maxLength:Settings.wiConfig.textAreaMaxLength,
 					margin:'0 0 5 0'
 				},
 				{

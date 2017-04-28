@@ -506,7 +506,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			
 		if(!Ext.isEmpty(imgIndex) && imgIndex > -1){
 			html = [
-			        '<img filePath="'+file.filePath+'" class="view-image-preview" src="'+filePath+'" style="width:120px;height:60px;float:left;border:solid 1px #ccc;border-radius:4px;margin-right:5px;cursor:pointer;"></img>',
+			        '<img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:120px;height:60px;float:left;border:solid 1px #ccc;border-radius:4px;margin-right:5px;cursor:pointer;"></img>',
 			        '<i class="fa fa-times delete-file"style="margin-top:20px;font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'" filePath="'+file.filePath+'" fileId="'+file.id+'"></i>',
 			        '<div style="clear:both"></div>'
 		        ];

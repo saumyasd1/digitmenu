@@ -207,7 +207,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			    	name:'specialRulesRemark',
 			    	margin:'0 0 5 0',
 					labelSeparator:'',
-					maxLength:250,
+					maxLength:Settings.wiConfig.textAreaMaxLength,
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 			    },
@@ -277,7 +277,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 							fieldLabel:'Link',
 							name:'link',
 							reference:'link',
-							maxLength:250
+							maxLength:Settings.wiConfig.textAreaMaxLength
 						},
 					    {
 					    	xtype:'textarea',
@@ -285,7 +285,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					    	fieldLabel:'Folder Layers',
 					    	margin:'0 0 0 10',
 					    	name:'folderLayers',
-							maxLength:250,
+							maxLength:Settings.wiConfig.textAreaMaxLength,
 					    	reference:'folderLayers'
 					    }
 					]
@@ -577,7 +577,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	name:'bulkOrderIdentified',
     	    	    	fieldLabel:'Bulk Order can be identified if',
     	    	    	reference:'bulkOrderIdentified',
-    	    	    	maxLength:250,
+    	    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
     	    	    	flex:1
     	    	    },
     	    	    {
@@ -586,7 +586,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	    	fieldLabel:'Sample Order can be identified if',
     	    	    	reference:'sampleOrderIdentified',
     	    	    	margin:'0 0 0 10',
-    	    	    	maxLength:250,
+    	    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
     	    	    	flex:1
     	    	    }
     	    	    
@@ -764,7 +764,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						fieldLabel:'Order grouping - how the order lines should be grouped from order form to AOC?',
 						name:'internalInformation',
 						reference:'internalInformation',
-    	    	    	maxLength:250,
+    	    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
 						flex:1
 					},
 					{
@@ -773,7 +773,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 						name:'orderGrouping',
 						reference:'orderGrouping',
 						margin:'0 0 0 10',
-    	    	    	maxLength:250,
+    	    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
 						flex:1
 					}
 		    	]
@@ -832,7 +832,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	flex:1,
 		    	margin:'0 0 5 0',
 		    	labelSeparator:'',
-    	    	maxLength:250,
+    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 		    },
@@ -883,7 +883,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	reference:'attachmentProcess',
 		    	flex:1,
 		    	margin:'0 0 5 0',
-    	    	maxLength:250,
+    	    	maxLength:Settings.wiConfig.textAreaMaxLength,
 		    	labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign

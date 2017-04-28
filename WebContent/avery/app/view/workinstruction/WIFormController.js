@@ -706,6 +706,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		win.show();
 	},
     onFilesChanged:function(obj, value){
+    	if(AOCRuntime.getCurrentWiMode() == 'view'){
+    		return;
+    	}
     	var me = this,
     	 	file = obj.getEl().down('input[type=file]').dom.files[0];
     	    rec = obj.getWidgetRecord(),
@@ -762,9 +765,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     onAssigneeComboChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-//			store = field.store,
-//		    record = store.findRecord('id', field.getValue()),
-//		    roleId = record.get('roleId')
 			statusCombo = refs.statusCombo;
 		
 		statusCombo.store.load({params:{id:field.getValue()}});
