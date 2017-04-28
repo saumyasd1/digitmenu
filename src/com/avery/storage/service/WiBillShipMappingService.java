@@ -1,5 +1,9 @@
 package com.avery.storage.service;
 
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +26,11 @@ public class WiBillShipMappingService extends GenericEntityService<WiBillShipMap
 	@Autowired
 	public void setWiBillShipMappingDao(WiBillShipMappingDao wiBillShipMappingDao) {
 		this.wiBillShipMappingDao = wiBillShipMappingDao;
+	}
+
+	@Transactional
+	public Map getEntitiesByWiId(Long entityId) {
+		return getWiBillShipMappingDao().getEntitiesByWiId(entityId);
 	}
 	
 }

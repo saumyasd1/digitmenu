@@ -11,8 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -114,6 +117,29 @@ public class WiBillShipMapping extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Error in fetching roles list ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("getlist")
+	public Response getEntitiesByWiId(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id) {
+		Map<?, ?> entitiesMap = null;
+		Response.ResponseBuilder rb = null;
+		try {
+			Long entityId = Long.parseLong(id);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.addMixIn(WiBillShipMapping.class, WiBillShipMappingMixIn.class);
+			WiBillShipMappingService wiBillShipMappingService = (WiBillShipMappingService) SpringConfig.getInstance()
+					.getBean("wiBillShipMappingService");
+			entitiesMap = wiBillShipMappingService.getEntitiesByWiId(entityId);
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}

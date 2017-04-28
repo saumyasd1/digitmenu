@@ -4,7 +4,7 @@ Ext.define('AOC.store.WIBillShipMappingStore', {
 	autoLoad:false,
 	proxy: {
         type: 'rest',
-        url : applicationContext+ '/rest/wibillship',
+        url : applicationContext+ '/rest/wibillship/getlist',
         reader: {
             type: 'json',
             rootProperty: 'data'
