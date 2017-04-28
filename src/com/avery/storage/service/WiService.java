@@ -45,8 +45,8 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	}
 
 	@Transactional
-	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType) {
-		return wiDao.saveFileData(wiId, directoryPath, fileName, fileType);
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType, String fileContentType) {
+		return wiDao.saveFileData(wiId, directoryPath, fileName, fileType, fileContentType);
 	}
 
 	@Transactional

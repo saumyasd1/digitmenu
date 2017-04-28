@@ -64,6 +64,9 @@ public class WiFiles extends MainAbstractEntity {
 	@Column(name = "fileType", length = 100)
 	private String fileType;
 
+	@Column(name = "fileContentType", length = 100)
+	private String fileContentType;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_id")
 	Wi varWi;
@@ -194,6 +197,14 @@ public class WiFiles extends MainAbstractEntity {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+	
+	public String getFileContentType() {
+		return fileContentType;
+	}
+
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
 	}
 
 	public Wi getVarWi() {

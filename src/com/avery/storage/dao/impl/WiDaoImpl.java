@@ -363,7 +363,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 	}
 
 	@Override
-	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType) {
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType, String fileContentType) {
 		Session session = null;
 		Criteria criteria = null;
 		Wi wiObj = new Wi();
@@ -375,6 +375,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 			wiFilesObj.setFilePath(directoryPath);
 			wiFilesObj.setFileName(fileName);
 			wiFilesObj.setFileType(fileType);
+			wiFilesObj.setFileContentType(fileContentType);
 			session.save(wiFilesObj);
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error("Error while uploading the file ", ex);

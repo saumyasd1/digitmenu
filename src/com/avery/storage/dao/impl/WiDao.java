@@ -17,7 +17,7 @@ public interface WiDao extends GenericDao<Wi, Long> {
 
 	public Long update(String data) throws Exception;
 
-	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType);
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType, String fileContentType);
 
 	public boolean submitWi(String data);
 }

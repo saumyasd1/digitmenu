@@ -33,6 +33,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.avery.app.config.PropertiesConfig;
@@ -374,40 +375,33 @@ public class Wi extends MainAbstractEntity {
 	@POST
 	@Path("/fileupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(@Context UriInfo ui, @Context HttpHeaders hh, @FormDataParam("file") InputStream is,
-			@FormDataParam("fileName") String fileName, @FormDataParam("id") String entityId,
-			@FormDataParam("fileType") String fileType, @FormDataParam("wiId") String wiId) {
+	public Response uploadFile(@Context UriInfo ui, @Context HttpHeaders hh,
+			@FormDataParam("file") FormDataBodyPart file, @FormDataParam("fileName") String fileName,
+			@FormDataParam("id") String entityId, @FormDataParam("fileType") String fileType,
+			@FormDataParam("wiId") String wiId) {
 		Response.ResponseBuilder rb = null;
+		String fileContentType = file.getMediaType().getType();
+		InputStream is = file.getEntityAs(InputStream.class);
 		if (fileName.length() > 50)
 			return Response.ok("The filename is too long " + fileName, MediaType.TEXT_PLAIN)
 					.status(Status.REQUEST_ENTITY_TOO_LARGE).build();
-		// InputStream in =
-		// this.getClass().getClassLoader().getResourceAsStream("application-system.properties");
-		// Properties props = new Properties();
 		String defaultDirectoryPath = PropertiesConfig.getString(PropertiesConstants.WIFILES_PATH);
 		String filePath = null;
 		boolean isAocFileType = false;
 		boolean isSystemLevel = false;
 		boolean successFlag = false;
-		String directoryName = defaultDirectoryPath.substring(defaultDirectoryPath.lastIndexOf("/"));
 		try {
-			// props.load(in);
-			if (fileType.equalsIgnoreCase("Order")) {
-				filePath = defaultDirectoryPath + File.separator + "order";
-			} else if (fileType.equalsIgnoreCase("Attachment")) {
-				filePath = defaultDirectoryPath + File.separator + "attachment";
-			} else if (fileType.equalsIgnoreCase("Sample")) {
-				filePath = defaultDirectoryPath + File.separator + "sample";
-			} else if (fileType.equalsIgnoreCase("AocField")) {
-				filePath = defaultDirectoryPath + File.separator + "aocfield" + File.separator + wiId;
-				isAocFileType = true;
-			} else if (fileType.equalsIgnoreCase("SystemLevel")) {
-				filePath = defaultDirectoryPath + File.separator + "systemlevel" + File.separator + wiId;
-				isSystemLevel = true;
-			} else {
+			if (fileType == null | "".equals(fileType)) {
 				AppLogger.getSystemLogger().error("Error in uploading the file -> Wrong filetype");
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
 						.status(Status.INTERNAL_SERVER_ERROR).build();
+			} else {
+				filePath = defaultDirectoryPath + File.separator + fileType + File.separator + wiId;
+			}
+			if (fileType.equalsIgnoreCase("AocField")) {
+				isAocFileType = true;
+			} else if (fileType.equalsIgnoreCase("SystemLevel")) {
+				isSystemLevel = true;
 			}
 			new File(filePath).mkdir();
 			File targetFile = new File(filePath + File.separatorChar + fileName);
@@ -422,7 +416,7 @@ public class Wi extends MainAbstractEntity {
 			} else if (isSystemLevel) {
 				successFlag = wiSystemLevelService.saveFileData(entityId, wiId, filePath, fileName);
 			} else {
-				successFlag = wiService.saveFileData(entityId, filePath, fileName, fileType);
+				successFlag = wiService.saveFileData(entityId, filePath, fileName, fileType, fileContentType);
 			}
 			if (successFlag == false)
 				return Response.ok("There was some problem in uploading the file", MediaType.TEXT_PLAIN)
