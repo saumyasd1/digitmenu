@@ -205,11 +205,52 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 			    	xtype:'textarea',
 			    	fieldLabel:'Please specify any other special rules/Remark',
 			    	name:'specialRulesRemark',
+			    	margin:'0 0 5 0',
 					labelSeparator:'',
 					maxLength:250,
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign
 			    },
+			    {
+				   xtype:'fieldcontainer',
+				   margin:'0 0 5 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'specialRulesFileImageUploadField',
+								width:150,
+								reference: 'specialRulesFileImageUploadField',
+								hideLabel:true,
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						itemId:'specialRulesFileImageContainer',
+						cls:'image-wrapper',
+						reference:'specialRulesFileImageContainer',
+						flex:3
+			          }
+				   ]
+				},
 			    {
 			    	xtype:'label',
 			    	text:'Upload factory\'s original incoming email in pdf with order files in their original format and other materials to google drive (remarks: remind to create different sub-folders to keep files of different WI#)',
@@ -248,6 +289,46 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					    	reference:'folderLayers'
 					    }
 					]
+				},
+				{
+				   xtype:'fieldcontainer',
+				   margin:'0 0 10 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'folderLinkFileImageUploadField',
+								width:150,
+								reference: 'folderLinkFileImageUploadField',
+								hideLabel:true,
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						itemId:'folderLinkFileImageContainer',
+						cls:'image-wrapper',
+						reference:'folderLinkFileImageContainer',
+						flex:3
+			          }
+				   ]
 				},
 				{
 					xtype:'textfield',
@@ -443,27 +524,39 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
     	    	text:'2. Sample/Bulk'
     	    },
     	    {
-				xtype:'radiogroup',
-				fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
-				reference:'sampleBulkOrderPresentWI',
-				width:550,
-				margin:'0 0 5 0',
-				defaults:{
-					name:'sampleBulkOrderPresentWI'
+    	    	xtype:'fieldcontainer',
+    	    	flex:1,
+    	    	margin:'10 0 5 0',
+    	    	layout:{
+    	    		type:'hbox'	
+    	    	},
+    	    	defaults:{
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:430,
+					width:550
 				},
-				labelSeparator:'',
-				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-				labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-				labelWidth:430,
-				items:[
-				  { boxLabel:'Yes', inputValue:'Yes'},
-				  { boxLabel:'No', inputValue:'No'}
-				]
-			},
+    	    	items:[
+					{
+						xtype:'radiogroup',
+						fieldLabel:'Is there any sample/bulk order that would be ordered in this WI?',
+						reference:'sampleBulkOrderPresentWI',
+						margin:'0 0 5 0',
+						defaults:{
+							name:'sampleBulkOrderPresentWI'
+						},
+						items:[
+						  { boxLabel:'Yes', inputValue:'Yes'},
+						  { boxLabel:'No', inputValue:'No'}
+						]
+					}
+    	    	]
+    	    },
 			{
     	    	xtype:'label',
-    	    	style:'font-weight:bold;color:#2c3e50;font-size:13px;text-decoration:underline;',
-    	    	text:'If above field value is yes, how can we identify if the order is Bulk/Sample order based on the order form'
+    	    	style:'font-weight:bold;color:#808080;font-size:13px;font-style:italic;',
+    	    	text:'If above field(sample/bulk order) value is yes, how can we identify if the order is Bulk/Sample order based on the order form'
     	    },
     	    {
     	    	xtype:'fieldcontainer',
@@ -610,8 +703,8 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:200,
-					width:325
+					labelWidth:150,
+					width:275
 				},
 				items:[
 					{
@@ -654,7 +747,7 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    },
 		    {
 		    	xtype:'fieldcontainer',
-		    	margin:'0 0 20 0',
+		    	margin:'0 0 5 0',
 		    	flex:1,
 		    	layout:{
 		    		type:'hbox',
@@ -686,6 +779,46 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 		    	]
 		    },
 		    {
+			   xtype:'fieldcontainer',
+			   margin:'0 0 10 0',
+			   layout:'hbox',
+			   cls:'field-image-cont',
+			   items:[
+		          {
+		        	  xtype:'panel',
+		        	  flex:.3,
+		        	  items:[
+	        	         {   
+							xtype:'fileuploadfield',
+							buttonText:'Upload Image',
+							name: 'orderGroupingFileImageUploadField',
+							width:150,
+							reference: 'orderGroupingFileImageUploadField',
+							hideLabel:true,
+							buttonOnly:true,
+							regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+		                    regexText: 'Only PNG and JPEG image formats are accepted',
+							listeners:{
+								change:'onFieldImageUploadChange',
+								afterrender:function(cmp){
+		                            cmp.fileInputEl.set({
+		                                accept:'image/*'
+		                            });
+		                        }
+							}
+	        	         }
+		        	  ]
+		          },
+		          {
+					xtype:'container',
+					itemId:'orderGroupingFileImageContainer',
+					cls:'image-wrapper',
+					reference:'orderGroupingFileImageContainer',
+					flex:3
+		          }
+			   ]
+			},
+		    {
 		    	xtype:'label',
 		    	text:'2. Order Information',
 		    	style:'font-weight:bold;color:#2c3e50;font-size:15px;',
@@ -704,17 +837,97 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 		    },
 		    {
+			   xtype:'fieldcontainer',
+			   margin:'0 0 10 0',
+			   layout:'hbox',
+			   cls:'field-image-cont',
+			   items:[
+		          {
+		        	  xtype:'panel',
+		        	  flex:.3,
+		        	  items:[
+	        	         {   
+							xtype:'fileuploadfield',
+							buttonText:'Upload Image',
+							name: 'attachmentIdentifierFileImageUpload',
+							width:150,
+							reference: 'attachmentIdentifierFileImageUpload',
+							hideLabel:true,
+							buttonOnly:true,
+							regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+		                    regexText: 'Only PNG and JPEG image formats are accepted',
+							listeners:{
+								change:'onFieldImageUploadChange',
+								afterrender:function(cmp){
+		                            cmp.fileInputEl.set({
+		                                accept:'image/*'
+		                            });
+		                        }
+							}
+	        	         }
+		        	  ]
+		          },
+		          {
+					xtype:'container',
+					itemId:'attachmentIdentifierFileImageContainer',
+					cls:'image-wrapper',
+					reference:'attachmentIdentifierFileImageContainer',
+					flex:3
+		          }
+			   ]
+			},
+		    {
 		    	xtype:'textarea',
 		    	fieldLabel:'If there is an additional attachment, please specify the process on how we can map the order information/data between order form and attachment ',
 		    	name:'attachmentProcess',
 		    	reference:'attachmentProcess',
 		    	flex:1,
-		    	margin:'0 0 20 0',
+		    	margin:'0 0 5 0',
     	    	maxLength:250,
 		    	labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				labelAlign:AOC.config.Settings.form.topLabelAlign
 		    },
+		    {
+			   xtype:'fieldcontainer',
+			   margin:'0 0 10 0',
+			   layout:'hbox',
+			   cls:'field-image-cont',
+			   items:[
+		          {
+		        	  xtype:'panel',
+		        	  flex:.3,
+		        	  items:[
+	        	         {   
+							xtype:'fileuploadfield',
+							buttonText:'Upload Image',
+							name: 'attachmentProcessFileImageUpload',
+							width:150,
+							reference: 'attachmentProcessFileImageUpload',
+							hideLabel:true,
+							buttonOnly:true,
+							regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+		                    regexText: 'Only PNG and JPEG image formats are accepted',
+							listeners:{
+								change:'onFieldImageUploadChange',
+								afterrender:function(cmp){
+		                            cmp.fileInputEl.set({
+		                                accept:'image/*'
+		                            });
+		                        }
+							}
+	        	         }
+		        	  ]
+		          },
+		          {
+					xtype:'container',
+					itemId:'attachmentProcessFileImageContainer',
+					cls:'image-wrapper',
+					reference:'attachmentProcessFileImageContainer',
+					flex:3
+		          }
+			   ]
+			},
 		    {
 		    	xtype:'label',
 		    	text:'3. Bill/Ship Information',
@@ -752,6 +965,46 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				    }
 				]
 		    },
+		    {
+			   xtype:'fieldcontainer',
+			   margin:'0 0 10 0',
+			   layout:'hbox',
+			   cls:'field-image-cont',
+			   items:[
+		          {
+		        	  xtype:'panel',
+		        	  flex:.3,
+		        	  items:[
+	        	         {   
+							xtype:'fileuploadfield',
+							buttonText:'Upload Image',
+							name: 'billShipToSiteNumberFileImageUploadField',
+							width:150,
+							reference: 'billShipToSiteNumberFileImageUploadField',
+							hideLabel:true,
+							buttonOnly:true,
+							regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+		                    regexText: 'Only PNG and JPEG image formats are accepted',
+							listeners:{
+								change:'onFieldImageUploadChange',
+								afterrender:function(cmp){
+		                            cmp.fileInputEl.set({
+		                                accept:'image/*'
+		                            });
+		                        }
+							}
+	        	         }
+		        	  ]
+		          },
+		          {
+					xtype:'container',
+					itemId:'billShipToSiteNumberFileImageContainer',
+					cls:'image-wrapper',
+					reference:'billShipToSiteNumberFileImageContainer',
+					flex:3
+		          }
+			   ]
+			},
 		    {
 		    	xtype:'fieldcontainer',
 		    	flex:1,
@@ -799,6 +1052,46 @@ Ext.define('AOC.view.workinstruction.WIPanel',{
 				    }
 				]
 		    },
+		    {
+			   xtype:'fieldcontainer',
+			   margin:'0 0 10 0',
+			   layout:'hbox',
+			   cls:'field-image-cont',
+			   items:[
+		          {
+		        	  xtype:'panel',
+		        	  flex:.3,
+		        	  items:[
+	        	         {   
+							xtype:'fileuploadfield',
+							buttonText:'Upload Image',
+							name: 'billShipToSiteFileImageUploadField',
+							width:150,
+							reference: 'billShipToSiteFileImageUploadField',
+							hideLabel:true,
+							buttonOnly:true,
+							regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+		                    regexText: 'Only PNG and JPEG image formats are accepted',
+							listeners:{
+								change:'onFieldImageUploadChange',
+								afterrender:function(cmp){
+		                            cmp.fileInputEl.set({
+		                                accept:'image/*'
+		                            });
+		                        }
+							}
+	        	         }
+		        	  ]
+		          },
+		          {
+					xtype:'container',
+					itemId:'billShipToSiteFileImageContainer',
+					cls:'image-wrapper',
+					reference:'billShipToSiteFileImageContainer',
+					flex:3
+		          }
+			   ]
+			},
 		    {
 		    	xtype:'billshipmappinggrid',
 		    	reference:'billShipMappingGrid',

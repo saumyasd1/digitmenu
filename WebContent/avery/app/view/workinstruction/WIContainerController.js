@@ -52,9 +52,13 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	resetFileCont:function(){
 		var me = this,
 			formRefs = me.getFormReference(),
-			orderFileImageContainer = formRefs.orderFileImageContainer;
+			orderFileImageContainer = formRefs.orderFileImageContainer,
+			emailSubjectImageContainer = formRefs.emailSubjectImageContainer,
+			emailBodyImageContainer = formRefs.emailBodyImageContainer;
 		
 		orderFileImageContainer.removeAll();
+		emailSubjectImageContainer.removeAll();
+		emailBodyImageContainer.removeAll();
 	},
 	loadDefaultGrid:function(){
 		var me = this,

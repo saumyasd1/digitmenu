@@ -38,16 +38,17 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     			fPath = el.getAttribute('filePath'),
     			filePath = fPath+'/'+fileName,
     			fileId = el.getAttribute('fileId'),
-    			parent = el.parent('.file-box');
+    			parent = el.parent('.file-box'),
+    			mainCont = parent.parent().component;
     		
-    		var orderFileImageContainer = refs.orderFileImageContainer;
+    		//var orderFileImageContainer = refs.orderFileImageContainer;
     		
     		if(AOCRuntime.getCurrentWiMode() == 'edit'){
-    			orderFileImageContainer.remove(Ext.get(parent).component);
-    			this.deleteFile(filePath,fileId);
+    			mainCont.remove(Ext.get(parent).component);
+    			this.deleteFile(filePath, fileId);
     		}
     		else if(AOCRuntime.getCurrentWiMode() == 'add'){
-    			orderFileImageContainer.remove(Ext.get(parent).component);
+    			mainCont.remove(Ext.get(parent).component);
     			this.removeFileFromFileArray(fileName);
     		}
     	}else if(el.hasCls('download-attachment-link')){
@@ -56,6 +57,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 				filePath = fPath+'/'+fileName;
     		
     		this.downloadFile(filePath);
+    	}else if(el.hasCls('view-image-preview')){
+			var filePath = el.getAttribute('filePath');
+			this.showImagePreview(filePath);
     	}
     },
     downloadFile:function(filePath){
@@ -92,7 +96,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	
     	for(var i=0; i<len; i++){
     		if(fileArray[i].name === fileName){
-    			fileArray.splice(i,1);
+    			fileArray.splice(i, 1);
     			break;
     		}
     	}
@@ -589,52 +593,93 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
              imageContainer.add(
 	             {
 	            	 xtype:'box',
-	            	 style:'float:left;border:solid 1px #ccc;padding:3px;margin-right:5px;',
+	            	 style:'float:left;margin-right:5px;border:solid 1px #ccc;padding:3px;',
 	            	 width:150,
 	            	 cls:'file-box',
-	            	 html:[
-            	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,15)+'</a>',
-            	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'"></i>',
-            	       '<div style="clear:both"></div>'
-            	     ]
+	            	 html:me.getImagePreviewHtml(file, fileContent)
 	             }
              );
          }
          fileReader.readAsDataURL(file);
 	},
+	getImagePreviewHtml:function(file, fileContent){
+		var name = file.name,
+			fileType = file.fileType,
+			type = file.type,
+			imgIndex = type ? type.indexOf('image') : '',
+			html = '';
+			
+		if(imgIndex > -1){
+			html = [
+			        '<img filePath="'+fileContent+'" class="view-image-preview" src="'+fileContent+'" style="width:120px;height:60px;float:left;border:solid 1px #ccc;border-radius:4px;margin-right:5px;cursor:pointer;"></img>',
+			        '<i class="fa fa-times delete-file"style="margin-top:20px;font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'"></i>',
+			        '<div style="clear:both"></div>'
+		        ];
+		}else{
+			html = [
+     	       '<a style="letter-spacing:.15px;color:#2c3e50;margin-right:5px;" href="'+fileContent+'" target="_blank" data-qtip="<font color=#3892d3>'+name+'</font>">'+Ext.util.Format.ellipsis(name,15)+'</a>',
+    	       '<i class="fa fa-times delete-file"style="font-size:16px;color#2c3e50;cursor:pointer; float:right;" fileName="'+name+'" fileType="'+fileType+'"></i>',
+    	       '<div style="clear:both"></div>',
+    	     ];
+		}
+		return html;
+		
+	},
 	addFileInBox:function(obj, imageContainer, fileType){
+		var me = this;
+			file = obj.getEl().down('input[type=file]').dom.files[0];
+		
+		if(!file){
+			return;
+		}
+		if(!me.isFileRemaining){
+			me.isFileRemaining = true;
+		}
+		var ext = file.name.lastIndexOf('.') > 0 ? file.name.substring(1 + file.name.lastIndexOf('.')) : '';
+		file.extension = ext;
+		file.fileType = fileType;
+		me.fileArray.push(file);
+		me.totalCount++;
+		me.setImagePreview(file, imageContainer);
+		obj.reset();
+	},
+	checkTotalFile:function(obj, fileType){
 		var me = this;
 			refs = me.getReferences(),
 			orderFileImageContainer = refs.orderFileImageContainer;
 			
-		if(me.totalCount <= me.maxFileCount){
-			var file = obj.getEl().down('input[type=file]').dom.files[0];
-			
-			if(!file){
-				return;
-			}
-			if(!me.isFileRemaining){
-				me.isFileRemaining = true;
-			}
-			var ext = file.name.lastIndexOf('.') > 0 ? file.name.substring(1 + file.name.lastIndexOf('.')) : '';
-			file.extension = ext;
-			file.fileType = fileType;
-			me.fileArray.push(file);
-			me.totalCount++;
-			me.setImagePreview(file, orderFileImageContainer);
-			obj.reset();
+		if(me.totalCount <= me.maxFileCount){	
+			this.addFileInBox(obj, orderFileImageContainer, fileType);
 		}else{
 			Helper.showToast('validation','You can not add more than '+me.maxFileCount);
 		}
 	},
 	onOrderFileAttachmentChange:function(obj, value){
-		this.addFileInBox(obj,'Order');
+		this.checkTotalFile(obj, 'Order');
 	},
 	onAttachmentChange:function(obj, value){
-		this.addFileInBox(obj,'Attachment');
+		this.checkTotalFile(obj, 'Attachment');
 	},
 	onSampleFileChange:function(obj, value){
-		this.addFileInBox(obj,'Sample' );
+		this.checkTotalFile(obj, 'Sample' );
+	},
+	onFieldImageUploadChange:function(obj, value){
+		var me = this;
+			refs = me.getReferences(),
+			imageCont = Ext.get(Ext.get(obj.el.parent('.field-image-cont')).query('.image-wrapper')[0]).component,
+			file = obj.getEl().down('input[type=file]').dom.files[0];
+			
+		if(file){
+			var type = file.type,
+				imgIndex = type ? type.indexOf('image') : '';
+				
+			if(imgIndex > -1){
+				this.addFileInBox(obj, imageCont, imageCont.itemId );
+			}else{
+				Helper.showToast('validation','You can upload only image');
+				obj.reset();
+			}
+		}
 	},
     
 	//order fiber line grid
@@ -666,70 +711,46 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	    if(!file){
 			return;
 		}
-	    var fileName = file.name;
-    	var fileReader = new window.FileReader();
-        fileReader.onload = function(e,b){
-            var fileContent = e.target.result;
-            rec.set('fileName',fileName);
-            rec.set('fileContent',fileContent);
-        }
-        
-        fileReader.readAsDataURL(file);
-        
-        if(gridType == 'aocField'){
-        	if(AOCRuntime.getCurrentWiMode() == 'edit'){
-            	file.recordId = rec.get('parentId');
-    		}else{
-    			file.recordId = rec.get('id');
-    		}
-        	file.fileType = 'AocField';
-        }else{
-        	file.recordId = rec.get('defaultId');
-        	file.fileType = 'SystemLevel';
-        }
-        
-        var len = me.fileArray.length;
-        for(var i =0;i<len;i++){
-        	if(me.fileArray[i].recordId == rec.get('id')){
-        		me.fileArray.splice(i,1);
-        		break;
-        	}
-        }
-        me.fileArray.push(file);
-        obj.reset();
-    },
-    onSystemFilesChanged:function(obj, value){
-    	var me = this,
-    	 	file = obj.getEl().down('input[type=file]').dom.files[0];
-    	    rec = obj.getWidgetRecord();
-    	    
-	    if(!file){
-			return;
-		}
-	    var fileName = file.name;
-    	var fileReader = new window.FileReader();
-        fileReader.onload = function(e,b){
-            var fileContent = e.target.result;
-            rec.set('fileName',fileName);
-            rec.set('fileContent',fileContent);
-        }
-        
-        fileReader.readAsDataURL(file);
-        if(AOCRuntime.getCurrentWiMode() == 'edit'){
-        	file.recordId = rec.get('defaultId');
+	    var type = file.type,
+			imgIndex = type ? type.indexOf('image') : '';
+			
+	    if(imgIndex == -1){
+			obj.reset();
+			Ext.Msg.alert('','Please attach only image');
+			return false;
 		}else{
-			file.recordId = rec.get('defaultId');
+		    var fileName = file.name;
+	    	var fileReader = new window.FileReader();
+	        fileReader.onload = function(e,b){
+	            var fileContent = e.target.result;
+	            rec.set('fileName',fileName);
+	            rec.set('fileContent',fileContent);
+	        }
+	        
+	        fileReader.readAsDataURL(file);
+	        
+	        if(gridType == 'aocField'){
+	        	if(AOCRuntime.getCurrentWiMode() == 'edit'){
+	            	file.recordId = rec.get('parentId');
+	    		}else{
+	    			file.recordId = rec.get('id');
+	    		}
+	        	file.fileType = 'AocField';
+	        }else{
+	        	file.recordId = rec.get('defaultId');
+	        	file.fileType = 'SystemLevel';
+	        }
+	        
+	        var len = me.fileArray.length;
+	        for(var i =0;i<len;i++){
+	        	if(me.fileArray[i].recordId == rec.get('id')){
+	        		me.fileArray.splice(i,1);
+	        		break;
+	        	}
+	        }
+	        me.fileArray.push(file);
+	        obj.reset();
 		}
-        file.fileType = 'SystemLevel';
-        var len = me.fileArray.length;
-        for(var i =0;i<len;i++){
-        	if(me.fileArray[i].recordId == rec.get('defaultId')){
-        		me.fileArray.splice(i,1);
-        		break;
-        	}
-        }
-        me.fileArray.push(file);
-        obj.reset();
     },
     onAssigneeComboChange:function(field, newValue, oldValue){
 		var me = this,

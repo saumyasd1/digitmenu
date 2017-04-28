@@ -576,7 +576,49 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					name:'emailSubjectDataStructureOtherRule',
 					flex:1,
 					maxLength:250,
-					margin:'0 0 15 0'
+					margin:'0 0 5 0'
+				},
+				{
+				   xtype:'fieldcontainer',
+				   margin:'0 0 10 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'emailSubjectImageUploadField',
+								width:150,
+								reference: 'emailSubjectImageUploadField',
+								hideLabel:true,
+								margin:'0 0 5 0',
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						cls:'image-wrapper',
+						itemId:'emailSubjectImageContainer',
+						reference:'emailSubjectImageContainer',
+						flex:3,
+						margin:'0 0 0 10'
+			          }
+				   ]
 				},
 				{
 			    	xtype:'box',
@@ -606,6 +648,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 				{
 					xtype:'fieldcontainer',
 					flex:1,
+					margin:'0 0 5 0',
 					reference:'emailBodyFieldCont',
 					layout:{
 						type:'hbox',
@@ -635,6 +678,46 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					    	flex:1
 					    }
 					]
+				},
+				{
+				   xtype:'fieldcontainer',
+				   margin:'0 0 10 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'emailBodyImageUploadField',
+								width:150,
+								reference: 'emailBodyImageUploadField',
+								hideLabel:true,
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						itemId:'emailBodyImageContainer',
+						cls:'image-wrapper',
+						reference:'emailBodyImageContainer',
+						flex:3
+			          }
+				   ]
 				},
 				{
 					xtype:'box',
@@ -730,7 +813,7 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	    	    },
 	    	    {
 	    	    	xtype:'fieldcontainer',
-	    	    	margin:'0 0 15 0',
+	    	    	margin:'0 0 5 0',
 	    	    	flex:1,
 	    	    	defaults:{
 						labelSeparator:'',
@@ -791,6 +874,46 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 					   }
 					]
 	    	    },
+	    	    {
+				   xtype:'fieldcontainer',
+				   margin:'0 0 10 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'orderFileTypeImageUploadField',
+								width:150,
+								reference: 'orderFileTypeImageUploadField',
+								hideLabel:true,
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						itemId:'orderFileTypeImageContainer',
+						cls:'image-wrapper',
+						reference:'orderFileTypeImageContainer',
+						flex:3
+			          }
+				   ]
+				},
 	    	    {
 					xtype:'box',
 					html:'Attachment File <i class="fa fa-info-circle" data-qtip="<font color=#3892d3>'+ orderFileTypeQtipTitle +'</font>" ></i>',
@@ -945,7 +1068,47 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 						   }
 					   }
 					]
-	    	    }
+	    	    },
+	    	    {
+				   xtype:'fieldcontainer',
+				   margin:'0 0 10 0',
+				   layout:'hbox',
+				   cls:'field-image-cont',
+				   items:[
+			          {
+			        	  xtype:'panel',
+			        	  flex:.3,
+			        	  items:[
+		        	         {   
+								xtype:'fileuploadfield',
+								buttonText:'Upload Image',
+								name: 'attachmentFileImageUploadField',
+								width:150,
+								reference: 'attachmentFileImageUploadField',
+								hideLabel:true,
+								buttonOnly:true,
+								regex: /(.)+((\.png)|(\.jpg)|(\.jpeg)(\w)?)$/i,
+			                    regexText: 'Only PNG and JPEG image formats are accepted',
+								listeners:{
+									change:'onFieldImageUploadChange',
+									afterrender:function(cmp){
+			                            cmp.fileInputEl.set({
+			                                accept:'image/*'
+			                            });
+			                        }
+								}
+		        	         }
+			        	  ]
+			          },
+			          {
+						xtype:'container',
+						itemId:'attachmentFileImageContainer',
+						cls:'image-wrapper',
+						reference:'attachmentFileImageContainer',
+						flex:3
+			          }
+				   ]
+				}
 			]
 		};
 	}
