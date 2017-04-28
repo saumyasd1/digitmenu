@@ -66,6 +66,9 @@ public class WiOrg extends MainAbstractEntity {
 	
 	@Column(name = "defaultSelected")
 	private boolean defaultSelected;
+	
+	@Column(name = "orgExistFlag", length = 10)
+	private String orgExistFlag;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_id")
@@ -171,6 +174,14 @@ public class WiOrg extends MainAbstractEntity {
 
 	public void setDefaultSelected(boolean defaultSelected) {
 		this.defaultSelected = defaultSelected;
+	}
+
+	public String getOrgExistFlag() {
+		return orgExistFlag;
+	}
+
+	public void setOrgExistFlag(String orgExistFlag) {
+		this.orgExistFlag = orgExistFlag;
 	}
 
 	public Wi getVarWi() {
