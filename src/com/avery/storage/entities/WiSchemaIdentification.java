@@ -41,7 +41,7 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 
 	}
 
-	@Column(name = "emailSubjectDataStructureOtherRule", length = 250)
+	@Column(name = "emailSubjectDataStructureOtherRule", length = 1000)
 	private String emailSubjectDataStructureOtherRule;
 
 	@Column(name = "attachmentFormat", length = 100)

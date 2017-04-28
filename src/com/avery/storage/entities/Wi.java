@@ -78,19 +78,19 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "sampleItemRequiredWI", length = 10)
 	private String sampleItemRequiredWI;
 
-	@Column(name = "internalInformation", length = 250)
+	@Column(name = "internalInformation", length = 1000)
 	private String internalInformation;
 
 	@Column(name = "aocWaive", length = 10)
 	private String aocWaive;
 
-	@Column(name = "link", length = 250)
+	@Column(name = "link", length = 1000)
 	private String link;
 
 	@Column(name = "structureName", length = 100)
 	private String structureName;
 
-	@Column(name = "sampleOrderIdentified", length = 250)
+	@Column(name = "sampleOrderIdentified", length = 1000)
 	private String sampleOrderIdentified;
 
 	@Column(name = "orderPlacementMethod", length = 50)
@@ -99,7 +99,7 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "sampleItemApproved", length = 10)
 	private String sampleItemApproved;
 
-	@Column(name = "bulkOrderIdentified", length = 250)
+	@Column(name = "bulkOrderIdentified", length = 1000)
 	private String bulkOrderIdentified;
 
 	@Column(name = "factoryEmailDomain", length = 50)
@@ -135,10 +135,10 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "site", length = 50)
 	private String site;
 
-	@Column(name = "attachmentProcess", length = 250)
+	@Column(name = "attachmentProcess", length = 1000)
 	private String attachmentProcess;
 
-	@Column(name = "specialRulesRemark", length = 500)
+	@Column(name = "specialRulesRemark", length = 1000)
 	private String specialRulesRemark;
 
 	@Column(name = "customerItemIdentifier", length = 50)
@@ -174,7 +174,7 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "fabricContentValidationSKUFieldName", length = 100)
 	private String fabricContentValidationSKUFieldName;
 
-	@Column(name = "orderGrouping", length = 250)
+	@Column(name = "orderGrouping", length = 1000)
 	private String orderGrouping;
 
 	@Column(name = "pricingAggrement", length = 10)
@@ -183,7 +183,7 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "sizeValidationSKUFieldName", length = 100)
 	private String sizeValidationSKUFieldName;
 
-	@Column(name = "folderLayers", length = 250)
+	@Column(name = "folderLayers", length = 1000)
 	private String folderLayers;
 
 	@Column(name = "system", length = 50)
@@ -195,7 +195,7 @@ public class Wi extends MainAbstractEntity {
 	@Column(name = "shipToSite", length = 250)
 	private String shipToSite;
 
-	@Column(name = "attachmentIdentifier", length = 250)
+	@Column(name = "attachmentIdentifier", length = 1000)
 	private String attachmentIdentifier;
 
 	@Column(name = "shipToSiteNumber", length = 250)
