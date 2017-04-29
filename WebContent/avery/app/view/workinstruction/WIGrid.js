@@ -19,7 +19,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 	            rootProperty:'wi'
 	        },
 	        headers: {
-	            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
+	            Authorization: 'Basic YWRtaW46aW5kaWdvMQ=='
 	        }
 	    }
 	}),

@@ -153,7 +153,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		var me = this;
 		Ext.Msg.show({
 		    title:'Submit WI',
-		    message: 'Make sure that you have save all changes before submit WI form.All unsaved changes will be lost afte submit.',
+		    message: 'Make sure that you have save all changes before submit WI form.All unsaved changes will be lost after submit.',
 		    buttons: Ext.Msg.YESNO,
 		    icon: Ext.Msg.QUESTION,
 		    fn: function(btn) {
