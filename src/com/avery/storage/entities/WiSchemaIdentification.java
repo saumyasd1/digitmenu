@@ -115,63 +115,30 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 
 	@Column(name = "emailSubjectIdentificationType", length = 100)
 	private String emailSubjectIdentificationType;
-	
+
 	@Column(name = "orderFileNameContent", length = 50)
 	private String orderFileNameContent;
-	
+
 	@Column(name = "emailBodyIdentificationType", length = 100)
 	private String emailBodyIdentificationType;
 
 	@Column(name = "attachmentFileNameContent", length = 50)
 	private String attachmentFileNameContent;
-	
+
 	@Column(name = "emailBodyKeyWording", length = 100)
 	private String emailBodyKeyWording;
-	
+
 	@Column(name = "orderFileTypeFormat", length = 100)
 	private String orderFileTypeFormat;
-	
-	public String getOrderFileTypeFormat() {
-		return orderFileTypeFormat;
-	}
-
-	public void setOrderFileTypeFormat(String orderFileTypeFormat) {
-		this.orderFileTypeFormat = orderFileTypeFormat;
-	}
 
 	@Column(name = "emailSubjectKeyWording", length = 100)
 	private String emailSubjectKeyWording;
-	
-	public String getEmailBodyIdentificationType() {
-		return emailBodyIdentificationType;
-	}
 
-	public void setEmailBodyIdentificationType(String emailBodyIdentificationType) {
-		this.emailBodyIdentificationType = emailBodyIdentificationType;
-	}
+	@Column(name = "attachmentFileType", length = 10)
+	private String attachmentFileType;
 
-	public String getEmailBodyKeyWording() {
-		return emailBodyKeyWording;
-	}
-
-	public void setEmailBodyKeyWording(String emailBodyKeyWording) {
-		this.emailBodyKeyWording = emailBodyKeyWording;
-	}
-
-	public String getEmailSubjectKeyWording() {
-		return emailSubjectKeyWording;
-	}
-
-	public void setEmailSubjectKeyWording(String emailSubjectKeyWording) {
-		this.emailSubjectKeyWording = emailSubjectKeyWording;
-	}
-	public String getEmailSubjectIdentificationType() {
-		return emailSubjectIdentificationType;
-	}
-
-	public void setEmailSubjectIdentificationType(String emailSubjectIdentificationType) {
-		this.emailSubjectIdentificationType = emailSubjectIdentificationType;
-	}
+	@Column(name = "orderFileType", length = 10)
+	private String orderFileType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wi_Id")
@@ -199,9 +166,9 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	public String getEmailSubjectDataStructureOtherRule() {
 		return emailSubjectDataStructureOtherRule;
 	}
@@ -394,12 +361,28 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 		this.attachmentFileRequired = attachmentFileRequired;
 	}
 
+	public String getEmailSubjectIdentificationType() {
+		return emailSubjectIdentificationType;
+	}
+
+	public void setEmailSubjectIdentificationType(String emailSubjectIdentificationType) {
+		this.emailSubjectIdentificationType = emailSubjectIdentificationType;
+	}
+
 	public String getOrderFileNameContent() {
 		return orderFileNameContent;
 	}
 
 	public void setOrderFileNameContent(String orderFileNameContent) {
 		this.orderFileNameContent = orderFileNameContent;
+	}
+
+	public String getEmailBodyIdentificationType() {
+		return emailBodyIdentificationType;
+	}
+
+	public void setEmailBodyIdentificationType(String emailBodyIdentificationType) {
+		this.emailBodyIdentificationType = emailBodyIdentificationType;
 	}
 
 	public String getAttachmentFileNameContent() {
@@ -410,6 +393,46 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 		this.attachmentFileNameContent = attachmentFileNameContent;
 	}
 
+	public String getEmailBodyKeyWording() {
+		return emailBodyKeyWording;
+	}
+
+	public void setEmailBodyKeyWording(String emailBodyKeyWording) {
+		this.emailBodyKeyWording = emailBodyKeyWording;
+	}
+
+	public String getOrderFileTypeFormat() {
+		return orderFileTypeFormat;
+	}
+
+	public void setOrderFileTypeFormat(String orderFileTypeFormat) {
+		this.orderFileTypeFormat = orderFileTypeFormat;
+	}
+
+	public String getEmailSubjectKeyWording() {
+		return emailSubjectKeyWording;
+	}
+
+	public void setEmailSubjectKeyWording(String emailSubjectKeyWording) {
+		this.emailSubjectKeyWording = emailSubjectKeyWording;
+	}
+
+	public String getAttachmentFileType() {
+		return attachmentFileType;
+	}
+
+	public void setAttachmentFileType(String attachmentFileType) {
+		this.attachmentFileType = attachmentFileType;
+	}
+
+	public String getOrderFileType() {
+		return orderFileType;
+	}
+
+	public void setOrderFileType(String orderFileType) {
+		this.orderFileType = orderFileType;
+	}
+
 	public Wi getVarWi() {
 		return varWi;
 	}
@@ -417,5 +440,4 @@ public class WiSchemaIdentification extends MainAbstractEntity {
 	public void setVarWi(Wi varWi) {
 		this.varWi = varWi;
 	}
-
 }

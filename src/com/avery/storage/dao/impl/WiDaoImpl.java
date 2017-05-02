@@ -14,6 +14,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -66,6 +67,7 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 				.add(Projections.property("lastModifiedDate"), "lastModifiedDate");
 		criteria = session.createCriteria(Wi.class).createAlias("varWiUser", "varWiUser");
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Wi.class));
+		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<Wi> list = criteria.list();
 		HashMap<String, Map> wiStatusList = ApplicationUtils.wiStatusCode;
 		if (wiStatusList == null)
