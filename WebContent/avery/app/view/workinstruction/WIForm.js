@@ -8,10 +8,17 @@ Ext.define('AOC.view.workinstruction.WIForm',{
 	   'AOC.view.workinstruction.WIPanel',
 	   'AOC.view.workinstruction.WIAOCFieldGrid'
 	],
+	tools: [{
+        type: 'print',
+        handler: function() {
+            window.print();
+        }
+    }],
 	controller:'wiformcontroller',
 	viewModel: {
         type: 'wiformviewmodel'
     },
+    totalCount:1,
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{

@@ -14,7 +14,7 @@ Ext.define('AOC.view.MainMenu',{
         me.callParent(arguments);
         me.on({
             itemclick: me.onItemClickMenu,
-            //afterrender:me.selectFirst
+            afterrender:me.selectFirst
         });
     },
     buildMarkup : function(){

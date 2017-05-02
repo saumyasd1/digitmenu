@@ -4,7 +4,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	fileArray:[],
 	aocFieldAttachArray :[],
 	maxFileCount:6,
-	totalCount:1,
+	//totalCount:1,
 	//Back button click
 	onBackBtnClick:function(btn){
 		var view = this.getView();
@@ -34,7 +34,6 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     	
     	if(el.hasCls('delete-file')){
     		var fileName = el.getAttribute('fileName'),
-    			fileType = el.getAttribute('fileType'),
     			fPath = el.getAttribute('filePath'),
     			filePath = fPath+'/'+fileName,
     			fileId = el.getAttribute('fileId'),
@@ -43,7 +42,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
     		
     		if(AOCRuntime.getCurrentWiMode() == 'edit'){
     			mainCont.remove(Ext.get(parent).component);
-    			this.deleteFile(filePath, fileId);
+    			if(fileId){
+    				this.deleteFile(filePath, fileId);
+    			}
     		}
     		else if(AOCRuntime.getCurrentWiMode() == 'add'){
     			mainCont.remove(Ext.get(parent).component);
@@ -262,6 +263,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	uploadFiles:function(wId, filePath){
     	var me = this;
     		refs = me.getReferences(),
+    		view = me.getView(),
     		xhttp = new XMLHttpRequest(),
     		fileArray = this.fileArray,
     		formData = new FormData(),
@@ -294,7 +296,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        		case 200:
 	        			fileArray.pop();
 	        			if(fileArray.length == 0){
-	    					me.totalCount = 1;
+	        				view.totalCount = 1;
 	    					orderFileImageContainer.removeAll();
 	    					me.fileArray = [];
 	    					
@@ -310,7 +312,7 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 	        	}
 	        }
     	}else{
-    		me.totalCount = 1;
+    		view.totalCount = 1;
     		orderFileImageContainer.removeAll();
     		me.fileArray = [];
     		Helper.showToast('success','Record has been save successfully.');
@@ -629,7 +631,9 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		
 	},
 	addFileInBox:function(obj, imageContainer, fileType){
-		var me = this;
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView(),
 			file = obj.getEl().down('input[type=file]').dom.files[0];
 		
 		if(!file){
@@ -642,16 +646,17 @@ Ext.define('AOC.view.workinstruction.WIFormController',{
 		file.extension = ext;
 		file.fileType = fileType;
 		me.fileArray.push(file);
-		me.totalCount++;
+		view.totalCount++;
 		me.setImagePreview(file, imageContainer);
 		obj.reset();
 	},
 	checkTotalFile:function(obj, fileType){
 		var me = this;
 			refs = me.getReferences(),
+			view = me.getView(),
 			orderFileImageContainer = refs.orderFileImageContainer;
 			
-		if(me.totalCount <= me.maxFileCount){	
+		if(view.totalCount <= me.maxFileCount){	
 			this.addFileInBox(obj, orderFileImageContainer, fileType);
 		}else{
 			Helper.showToast('validation','You can not add more than '+me.maxFileCount);

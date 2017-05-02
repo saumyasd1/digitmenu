@@ -8,21 +8,6 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		stripeRows: true,
 		enableTextSelection: true
 	},
-	store:new Ext.data.JsonStore({
-		fields:['id','factoryName','assigneeFirstName','assigneeLastName','status'],
-		autoLoad:true,
-		proxy: {
-			type: 'rest',
-	        url: applicationContext+'/rest/wi',
-	        reader: {
-	            type: 'json',
-	            rootProperty:'wi'
-	        },
-	        headers: {
-	            Authorization: 'Basic YWRtaW46aW5kaWdvMQ=='
-	        }
-	    }
-	}),
 	initComponent:function(){
 		var me = this;
 		Ext.apply(me,{
@@ -31,6 +16,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 				height: AOC.config.Settings.config.defaultTbarHeight,
 				items : me.buildtbar()
 			},
+			store: Ext.data.StoreManager.lookup('wiGridStore') == null ? Ext.create('AOC.store.WIGridStore',{storeId:'wiGridStore'}) : Ext.data.StoreManager.lookup('wiGridStore'),
 			listeners:{
 				afterrender:function(grid){
 					
@@ -62,17 +48,11 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 	   	    	 text:'',
 	   	    	 scale:'medium',
 	   	    	 cls:'aoc-btn',
-	   	    	 tooltip:'<font color="blue">Quick Refresh</font>',
+	   	    	 tooltip:'<font color="blue">Refresh</font>',
 	   	    	 iconCls:'fa fa-refresh aoc-icon',
 	   	    	 handler:'onWiGridRefreshBtnClick'
    	     	}
-			//'->'
-//			{
-//				xtype: 'customsearchfield',
-//				width: 200,
-//				emptyText: "Search by WI Track # "
-//			}
-		]
+		];
 	},
 	buildColumns:function(){
 		return [
@@ -108,7 +88,7 @@ Ext.define('AOC.view.workinstruction.WIGrid',{
 		    	dataIndex:'assignee',
 		    	flex:1.5,
 		    	renderer:function(value, metadata, record){
-		    		return record.get('assigneeFirstName')+' '+ record.get('assigneeLastName');
+		    		return record.get('assigneeFirstName')+' '+ (record.get('assigneeLastName') != null ? record.get('assigneeLastName') : '');
 		    	}
 		    },
 			{  

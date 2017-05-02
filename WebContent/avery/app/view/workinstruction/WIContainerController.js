@@ -11,8 +11,10 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 	},
 	createNewWI:function(btn){
 		var me = this,
-			view = me.getView();
+			view = me.getView(),
+			refs = me.getReferences();
 		
+		refs.wiFormPanel.totalCount = 1;
 		AOCRuntime.setCurrentWiMode('add');
 		me.loadDefaultGrid();
 		me.setReadOnlyView(false);
@@ -471,6 +473,7 @@ Ext.define('AOC.view.workinstruction.WIContainerController',{
 			var file = fileList[i];
 			if(file.fileType == 'Order' || file.fileType == 'Attachment' || file.fileType == 'Sample'){
 				me.setImagePreview(orderFileImageContainer, file);
+				wiFormPanel.totalCount++;
 			}else{
 				var imageCont = formRefs[file.fileType];
 				me.setImagePreview(imageCont, file );
