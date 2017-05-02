@@ -53,5 +53,10 @@ public class WiService extends GenericEntityService<Wi, Long> {
 	public boolean submitWi(String data) {
 		return getWiDao().submitWi(data);
 	}
+	
+	@Transactional
+	public boolean checkDuplicateStructureName(String structureName, String entityId){
+		return getWiDao().checkDuplicateStructureName(structureName, entityId);
+	}
 
 }

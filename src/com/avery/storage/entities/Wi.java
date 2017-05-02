@@ -45,6 +45,7 @@ import com.avery.storage.MixIn.WiSchemaIdentificationMixIn;
 import com.avery.storage.service.WiAocFieldService;
 import com.avery.storage.service.WiService;
 import com.avery.storage.service.WiSystemLevelService;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -305,11 +306,19 @@ public class Wi extends MainAbstractEntity {
 		Map responseMap = new HashMap();
 		try {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			HashMap<String, Object> entitiesMap = ApplicationUtils.convertJSONtoObjectMaps(data);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			Long wiId = wiService.create(data);
-			responseMap.put("success", "true");
-			responseMap.put("id", wiId);
-			responseMap.put("msg", "Data has been saved successfully");
+			String structureName = (String) entitiesMap.get("structureName");
+			boolean duplicateStructureNameFlag = wiService.checkDuplicateStructureName(structureName, null);
+			if (duplicateStructureNameFlag) {
+				responseMap.put("success", false);
+				responseMap.put("message", "WI with structure name " + structureName + " already exist");
+			} else {
+				Long wiId = wiService.create(data);
+				responseMap.put("success", true);
+				responseMap.put("id", wiId);
+				responseMap.put("message", "Data has been saved successfully");
+			}
 			mapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
@@ -329,11 +338,20 @@ public class Wi extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			HashMap<String, Object> entitiesMap = ApplicationUtils.convertJSONtoObjectMaps(data);
 			WiService wiService = (WiService) SpringConfig.getInstance().getBean("wiService");
-			Long wiId = wiService.update(data);
-			responseMap.put("success", "true");
-			responseMap.put("id", wiId);
-			responseMap.put("msg", "Data has been saved successfully");
+			String structureName = (String) entitiesMap.get("structureName");
+			boolean duplicateStructureNameFlag = wiService.checkDuplicateStructureName(structureName,
+					(String) entitiesMap.get("id"));
+			if (duplicateStructureNameFlag) {
+				responseMap.put("success", false);
+				responseMap.put("message", "WI with structure name " + structureName + " already exist");
+			} else {
+				Long wiId = wiService.update(data);
+				responseMap.put("success", true);
+				responseMap.put("id", wiId);
+				responseMap.put("message", "Data has been updated successfully");
+			}
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {

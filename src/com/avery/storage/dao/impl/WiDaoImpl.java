@@ -12,8 +12,10 @@ import java.util.Map;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -60,7 +62,8 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList().add(Projections.property("id"), "id")
-				.add(Projections.property("structureName"), "structureName").add(Projections.property("status"), "status")
+				.add(Projections.property("structureName"), "structureName")
+				.add(Projections.property("status"), "status")
 				.add(Projections.property("varWiUser.firstName"), "assigneeFirstName")
 				.add(Projections.property("varWiUser.lastName"), "assigneeLastName")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
@@ -301,21 +304,23 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 	@Override
 	public Map getDataForViewForm(Long entityId) throws Exception {
 		Map entitiesMap = new HashMap();
-		List list = new ArrayList();
+		List wiList = new ArrayList();
+		List schemaIdentList = new ArrayList();
 		Session session = null;
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.addMixIn(Wi.class, WiMixIn.class);
 		mapper.addMixIn(WiSchemaIdentification.class, WiSchemaIdentificationMixIn.class);
 		session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(Wi.class).add(Restrictions.eq("id", entityId));
-		list = criteria.list();
-		Object obj = criteria.list().get(0);
+		wiList = criteria.list();
+		Object obj = wiList.get(0);
 		Map<String, Object> map = mapper.convertValue(obj, Map.class);
 		Criteria schemaIdentCriteria = session.createCriteria(WiSchemaIdentification.class)
 				.createAlias("varWi", "varWi").add(Restrictions.eq("varWi.id", entityId));
-		if (schemaIdentCriteria.list().size() == 0)
+		schemaIdentList = schemaIdentCriteria.list();
+		if (schemaIdentList.size() == 0)
 			throw new ArrayIndexOutOfBoundsException();
-		map.put("listWiSchemaIdentification", schemaIdentCriteria.list().get(0));
+		map.put("listWiSchemaIdentification", schemaIdentList.get(0));
 		entitiesMap.put("formdata", map);
 		return entitiesMap;
 	}
@@ -365,7 +370,8 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 	}
 
 	@Override
-	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType, String fileContentType) {
+	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType,
+			String fileContentType) {
 		Session session = null;
 		Criteria criteria = null;
 		Wi wiObj = new Wi();
@@ -450,5 +456,21 @@ public class WiDaoImpl extends GenericDaoImpl<Wi, Long> implements WiDao {
 				+ "\n---------------------------------------------------------------------";
 		SendNotification sendNotification = new SendNotification();
 		sendNotification.send(fromUserName, fromUserPass, toUserName, subject, mailBody);
+	}
+
+	@Override
+	public boolean checkDuplicateStructureName(String structureName, String entityId) {
+		Session session = null;
+		Criteria criteria = null;
+		List list = new ArrayList();
+		session = getSessionFactory().getCurrentSession();
+		Conjunction conjunction = Restrictions.conjunction();
+		conjunction.add(Restrictions.eq("structureName", structureName));
+		if (NumberUtils.isNumber(entityId))
+			conjunction.add(Restrictions.ne("id", Long.parseLong(entityId)));
+		criteria = session.createCriteria(Wi.class);
+		criteria.add(conjunction);
+		list = criteria.list();
+		return list.size() > 0;
 	}
 }

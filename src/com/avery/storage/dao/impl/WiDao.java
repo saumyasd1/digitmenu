@@ -20,4 +20,6 @@ public interface WiDao extends GenericDao<Wi, Long> {
 	public boolean saveFileData(String wiId, String directoryPath, String fileName, String fileType, String fileContentType);
 
 	public boolean submitWi(String data);
+
+	public boolean checkDuplicateStructureName(String structureName, String entityId);
 }
