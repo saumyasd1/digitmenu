@@ -21,7 +21,7 @@ public interface UserDao extends GenericDao<User, Long> {
 
 	public List<User> getSortedList();
 
-	public String getApplicationDefaultTimeZone();
+	public String getApplicationDefaultTimeZone() throws Exception;
 
 	public List<Menu> getMenuRole(String roleId);
 

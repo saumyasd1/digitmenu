@@ -50,7 +50,7 @@ public class UserService extends GenericEntityService<User, Long> {
 	}
 
 	@Transactional
-	public String getApplicationDefaultTimeZone() {
+	public String getApplicationDefaultTimeZone() throws Exception {
 		return getUserDao().getApplicationDefaultTimeZone();
 	}
 

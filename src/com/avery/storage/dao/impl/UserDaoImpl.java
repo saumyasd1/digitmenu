@@ -2,11 +2,12 @@ package com.avery.storage.dao.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
@@ -221,27 +222,47 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@Override
-	public String getApplicationDefaultTimeZone() {
+	public String getApplicationDefaultTimeZone() throws Exception {
 		Session session = null;
-		String timeZone;
+		String result = "";
 		try {
+			AppLogger.getSystemLogger().debug(
+					"Getting timezone offset from datbase ");
 			session = getSessionFactory().getCurrentSession();
-			String s = "select defaultTimeZone from GlobalConfiguration";
-			Query q = session.createQuery(s);
-			List results = q.list();
-			timeZone = (String) results.get(0);
-			return timeZone;
-		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while fetching data from the database", ex);
-			return TimeZone.getDefault().getID();
+			String s = "SELECT TIMEDIFF( UTC_TIMESTAMP, NOW())";
+			SQLQuery query = session.createSQLQuery(s);
+			List<Date> list = query.list();
+			Iterator<Date> itr = list.iterator();
+			while (itr.hasNext()) {
+				Date date = (Date) itr.next();
+				String dateToString = date.toString();
+				String dateToSubString = dateToString.substring(0, dateToString.length() - 3);
+				result = "GMT-" + dateToSubString;
+				AppLogger.getSystemLogger().debug(
+						"Timezone offset of database  is "+result +".");
+				return result;
+			}
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while fetching data from the database", e);
-			// throw new
-			// WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-			// .entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-			return TimeZone.getDefault().getID();
+			try {
+				String q1 = "SELECT TIMEDIFF( NOW(),UTC_TIMESTAMP)";
+				SQLQuery query = session.createSQLQuery(q1);
+				List<Date> list = query.list();
+				Iterator<Date> itr = list.iterator();
+				while (itr.hasNext()) {
+					Date date = (Date) itr.next();
+					String dateToString = date.toString();
+					String dateToSubString = dateToString.substring(0,
+							dateToString.length() - 3);
+					result = "GMT+" + dateToSubString;
+					AppLogger.getSystemLogger().debug(
+							"Timezone offset of database  is "+result +".");
+					return result;
+				}
+			} catch (Exception ex) {
+				throw new Exception("Error while get time zone from database "
+						+ e.getMessage(), e);
+			}
 		}
+		return result;
 	}
 }

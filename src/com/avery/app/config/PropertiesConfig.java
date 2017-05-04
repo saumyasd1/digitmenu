@@ -19,7 +19,11 @@ public class PropertiesConfig {
 		try {
 			DefaultConfigurationBuilder configBuilder = new DefaultConfigurationBuilder(
 					PathConfig.getPropertiesConfigPath());
+			
+			
+			
 			config = configBuilder.getConfiguration();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ExceptionInInitializerError(

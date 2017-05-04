@@ -31,7 +31,7 @@ public class PathConfig {
 		return "file:" + getResourcesPath() + File.separatorChar
 				+ "application.properties";
 	}
-
+	
 	public static void setWorkingDirectory(String workingDirectory) {
 		PathConfig.workingDirectory = workingDirectory;
 	}

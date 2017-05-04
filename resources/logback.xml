@@ -14,8 +14,8 @@
 	<variable name="applicationLogFile" value="logs/app-sys" />
 	<variable name="applicationAuditLogFile" value="logs/app-sys-audit" />
 	<variable name="applicationDBLogFile" value="logs/app-sys-db" />
-	<variable name="applicationLoggingLevel" value="INFO" />
-	<variable name="hibernateLoggingLevel" value="INFO" />
+	<variable name="applicationLoggingLevel" value="info" />
+	<variable name="hibernateLoggingLevel" value="debug" />
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
@@ -54,7 +54,7 @@
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 5MB -->
-				<maxFileSize>5MB</maxFileSize>
+				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<MaxHistory>7</MaxHistory>
 		</rollingPolicy>
