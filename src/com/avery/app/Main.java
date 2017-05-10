@@ -12,7 +12,6 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.entities.User;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.UserService;
-import com.avery.storage.service.WiStatusService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
 
@@ -104,7 +103,7 @@ public class Main {
 			averyUser.setJobTitle(user.getJobTitle());
 			userService.update(averyUser);
 		}else{
-			userService.create(averyUser);
+		//	userService.create(averyUser);
 		}
 		
 		String timeZone = userService.getApplicationDefaultTimeZone();
@@ -114,9 +113,6 @@ public class Main {
 		CodeService codeService = (CodeService) SpringConfig
 				.getInstance().getBean("codeService");
 		ApplicationUtils.statusCode=codeService.getStatusCodes();
-		
-		WiStatusService wiStatusService = (WiStatusService) SpringConfig.getInstance().getBean("wiStatusService");
-		ApplicationUtils.wiStatusCode = wiStatusService.getStatusCodes();
 	}
 
 }
