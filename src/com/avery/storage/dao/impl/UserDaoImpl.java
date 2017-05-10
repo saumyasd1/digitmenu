@@ -46,8 +46,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
 	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap = new HashMap();
 		Criteria criteria = null;
 		int totalCount = 0;
@@ -57,10 +56,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
-		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber)
-				: 0;
-		int pageSize = (limit != null && !"".equals(limit)) ? Integer
-				.parseInt(limit) : 0;
+		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
+		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
 		if (pageNO != 0) {
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
@@ -133,27 +130,23 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException,
-			Exception {
+	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException, Exception {
 		Session session = null;
 		Criteria criteria = null;
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils
-					.convertJSONtoMaps(queryString);
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 			if (dateType != null && !dateType.equals("")) {
 				String sDate = searchMap.get("fromDate");
 				String eDate = searchMap.get("toDate");
-				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria,
-						dateType, sDate, eDate);
+				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			String email = searchMap.get("email");
 			if (email != null && !"".equals(email)) {
-				criteria.add(Restrictions.ilike("email", email,
-						MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("email", email, MatchMode.ANYWHERE));
 			}
 		}
 		return criteria;
@@ -165,28 +158,19 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		Criteria criteria = null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			criteria = session
-					.createCriteria(User.class, "u")
-					.setProjection(
-							Projections
-									.projectionList()
-									.add(Projections.property("id"), ("id"))
-									.add(Projections.property("firstName"),
-											"firstName")
-									.add(Projections.property("lastName"),
-											"lastName")
-									.add(Projections.property("middleName"),
-											"middleName"))
+			criteria = session.createCriteria(User.class, "u")
+					.setProjection(Projections.projectionList().add(Projections.property("id"), ("id"))
+							.add(Projections.property("firstName"), "firstName")
+							.add(Projections.property("lastName"), "lastName")
+							.add(Projections.property("middleName"), "middleName"))
 					.setResultTransformer(Transformers.aliasToBean(User.class));
 			criteria.addOrder(Order.asc("firstName"));
 		} catch (WebApplicationException ex) {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return criteria.list();
 	}

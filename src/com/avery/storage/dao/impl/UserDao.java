@@ -13,16 +13,16 @@ import com.avery.storage.entities.User;
  */
 public interface UserDao extends GenericDao<User, Long> {
 
-	public Boolean checkDuplicate(String email) throws Exception;
+	Boolean checkDuplicate(String email) throws Exception;
 
-	public User findUserByEmail(String email) throws Exception;
+	User findUserByEmail(String email) throws Exception;
 
-	public boolean checkDuplicateUser(User userObj) throws Exception;
+	boolean checkDuplicateUser(User userObj) throws Exception;
 
-	public List<User> getSortedList();
+	List<User> getSortedList();
 
 	public String getApplicationDefaultTimeZone() throws Exception;
 
-	public List<Menu> getMenuRole(String roleId);
+	List<Menu> getMenuRole(String roleId);
 
 }
