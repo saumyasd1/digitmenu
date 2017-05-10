@@ -4,5 +4,7 @@ import com.avery.storage.dao.GenericDao;
 import com.avery.storage.entities.MenuRole;
 
 public interface MenuRoleDao extends GenericDao<MenuRole, Long> {
+	
+	public void deleteMenuRole(Long entityId);
 
 }
