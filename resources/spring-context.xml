@@ -46,7 +46,7 @@
 				<prop key="hibernate.c3p0.max_statements">50</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.use_outer_join">true</prop>
-				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop>-->
 				<!-- <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop> -->
 			</props>
 		</property>
@@ -58,9 +58,6 @@
 		<property name="username" value="root" />
 		<property name="password" value="adeptia" />
 	</bean>
-	<bean id="averyUser" class="com.avery.storage.entities.User"
-		p:id="1" p:firstName="Admin" p:email="admin@averydennison.com"
-		p:password="a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95"
-		p:status="100" p:gender="Male" p:role="admin">
+	<bean id="averyUser" class="com.avery.storage.entities.User">
 	</bean>
 </beans> 
