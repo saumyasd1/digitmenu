@@ -489,33 +489,7 @@ Ext.define('AOC.lang.lit',{
     customerOrderQtyNotZeroMessage:'Customer Order Qty can not be zero.',
     "maxAdditionalFieldAllowed":4,
     "resubmitNotPermissible":'Resumbit not allowed via web order',
-    //WI Instruction
-    wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font color= #3892d3> {0} </font>" class="fa fa-info-circle"></i>',
-    wiDefaultCaptureCompIconText:'<i data-qtip="<font color= #3892d3> i.e. if field location is always/100% standard, please select Capture from Field location as first priority i.e. if field location can be varied, please select capture from (Field Name) as second priority </font>" class="fa fa-info-circle"></i>',
-    wiFieldValueLocationIconText:'<i data-qtip="<font color= #3892d3> i) If (Default Value), please provide the default value directly (i.e. Made in China)<br>ii) If (Capture from field name), please provide us the field/column name directly and the corresponding range if any (i.e. Customer PO: +3 column + 3 row)<br>iii) If (Capture from field location), please provide us the possible field location/cell range directly (i.e. A1:A6) </font>" class="fa fa-info-circle"></i>',
-    wiExplanationRulesIconText:'<i data-qtip="<font color= #3892d3> i.e. For the first sentence, please first use (Capture after xyz.), (Capture before abc.) and (Capture between xyz and abc) if only certain information in the cell/field has to be captured<br>i.e. If you want to capture (China) as COO in the special instruction field (RN: 123, CA:abc, COO: China;), please write (Capture between COO: and ;) </font>" class="fa fa-info-circle"></i>',
-    wiExplanationRulesIconText1:'<i data-qtip="<font color= #3892d3> <b>EXAMPLE ONLY:</b><br>i) Capture Style # in order form under each item code<br>	ii) Based on the style #, find the corresponding attachment file<br>iii) In the attachment file, you could find COO under table A<br> iv) Add (MADE IN) before the COO if (MADE IN) did not be mentioned in the field, eg. CHINA -> MADE IN CHINA, MADE IN CHINA -> MADE IN CHINA </font>" class="fa fa-info-circle"></i>',
-    wiLegacyFieldIconText:'<i data-qtip="<font color= #3892d3> COO, ColorName, Color Code... (Please list all and provide the exact field name)<br>	i.e. SIZE, SIZE_OPTIONAL, SOURCING_SIZE </font>" class="fa fa-info-circle"></i>',
-    //system grid dataindex
-    systemName:'systemName',
-    defaultOrg:'defaultOrg',
-    csrName:'csrName',
-    packingInstruction:'packingInstruction',
-    manufacturing:'manufacturing',
-    invoiceLineInstruction:'invoiceLineInstruction',
-    variableDataBreakdown:'variableDataBreakdown',
-    splitByShipSet:'splitByShipSet',
-    shipMark:'shipMark',
-    artWorkHold:'artWorkHold',
-    //wi status
-    wiInitializedStatus:1,
-    wiBAQueryAskedStatus:9,
-    wiCSManagerDisapprovedStatus:4,
-    csRoleId:1,
-    csSupervisorRoleId:2,
-    csSpecialistRoleId:3,
-    technicalTeamRoleId:4,
-        	
+    
     //UserManagement
     roleName:'Role Name',
     users:'Add User(s)',
@@ -532,5 +506,6 @@ Ext.define('AOC.lang.lit',{
     webOrder:'Web Order',
     deleteRoleMsg:'Role deleted successfully',
     delRoleMsg:'<b>Are you sure you want to delete the role?</b>',
-    adminDelMsg:'Super Admin can not be deleted.'
+    adminDelMsg:'Super Admin can not be deleted.',
+    tickTabMsg:'Please select atleast one tab'
 });
