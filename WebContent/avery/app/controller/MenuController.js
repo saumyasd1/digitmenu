@@ -12,8 +12,7 @@ Ext.define('AOC.controller.MenuController', {
         'AddressStore',
         'OrderQueueStore',
         'OrderCharts',
-        'HomePageOders',
-        'Roles'
+        'HomePageOders'
     ],
     views: [
         'base.BaseToolbar',
