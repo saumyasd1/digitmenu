@@ -14,19 +14,15 @@ Ext.define('AOC.view.MainMenu',{
         me.callParent(arguments);
         me.on({
             itemclick: me.onItemClickMenu,
-            afterrender:me.selectFirst
+            refresh:me.selectFirst
         });
     },
     buildMarkup : function(){
         return Ext.create('Ext.XTemplate',
 			'<tpl for=".">',
 				'<div  class="section-wrap">',
-//					'<div class="section-wrap-img"><img src="avery/resources/images/{image}"/></div>',
 					'<div class="section-wrap-img {image}" style="color:#2c3e50; font-size:15px;"></div>',
 					'<div class="section-wrap-text">{title}</div>',
-//					'<tpl if="values.count!=0">',
-//						'<div class="section-wrap-count"><span class="count-text">{count}</span></div>',
-//					'</tpl>',
 				'</div>',
 			'</tpl>'
 		);
@@ -37,5 +33,6 @@ Ext.define('AOC.view.MainMenu',{
     },
     selectFirst:function(cmp){
 		cmp.getSelectionModel().select(cmp.getStore().getAt(0));
+		this.fireEvent('clickmenu', cmp, cmp.getStore().getAt(0));
     }
 });
