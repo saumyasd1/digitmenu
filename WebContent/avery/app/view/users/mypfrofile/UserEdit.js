@@ -7,11 +7,13 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     hidefield:true,
     editMode:false,
     rec: null,
+    bodyPadding:7,
     ID:null,
     updateUserLogoId: Ext.id(), 
     initComponent: function () {
         Ext.apply(this, {
-            items: this.buildItems()
+            items: this.buildItems(),
+            buttons:this.buildButtons()
         });
         this.callParent(arguments);
     },
@@ -58,17 +60,13 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
     },
     buildItems: function () {
         var me = this,
-            //imageUrl = me.rec.get('imageUrl'),
-            //id = me.rec.get('id'),
             maxCharText =  AOCLit.maximumNChar;
         return [{
             xtype: 'form',
             itemId: 'editform',
-           layout:'fit',
-          
-          scrollable:'y',
-             padding: '30 0 0 20',
-            mode:me.editMode,
+            layout:'fit',
+            padding: '30 0 0 20',
+            mode: me.editMode,
             items: [{
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
@@ -98,7 +96,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         labelSeparator: ' ',
                         labelWidth : 165,
                         width: 615,
-                        margin:'0 0 20 0',
+                        margin:'0 0 15 0',
                         listeners: {
                             'blur': 'notifyByImage',
                             'focus': 'hideMandatoryMessage'
@@ -133,7 +131,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         xtype: 'radiogroup',
                         fieldLabel : AOCLit.iam,
                         margin:'-4 0 4 0',
-                        items: [{boxLabel :AOCLit.male,name : 'gender',width: 100, inputValue :'Male', checked : true }, {boxLabel : AOCLit.female,name : 'gender',width: 100, inputValue : 'Female'}]
+                        items: [{boxLabel :AOCLit.male,name : 'gender',width: 100, inputValue :'Male' }, {boxLabel : AOCLit.female,name : 'gender',width: 100, inputValue : 'Female'}]
                     },{
                         name: 'email',
                         fieldLabel: AOCLit.emailAddress,
@@ -146,18 +144,29 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
                         maxLengthText : maxCharText.replace("$$$$", 64)
                     },
                     {
-                        xtype: 'combobox',
-                        itemId: 'role',
+                        xtype: 'combo',
                         editable : false,
                         fieldLabel: AOCLit.role,
-						name: 'roleId',
+						name: 'role',
 						flex:1,
 						displayField: 'roleName',
 						reference:'roleName',
 						valueField: 'id',
 						store:Ext.create('AOC.store.RoleStore'),
-						
+						queryMode : 'local'
                     },
+                    {
+						xtype:'combo',
+						name: 'siteId',
+						fieldLabel: AOCLit.site,
+						allowBlank: false,
+						flex:1,
+						displayField: 'name',
+						reference:'siteName',
+						valueField: 'id',
+						store:Ext.create('AOC.store.SiteStore'),
+						queryMode : 'local'
+					},
                     {
                    	    xtype: 'textfield',
                         inputType: 'password',
@@ -188,13 +197,7 @@ Ext.define('AOC.view.users.myprofile.UserEdit', {
 	                	name:'id'
                     }]
                 }]
-            },
-            {
-            	xtype :'tbspacer',
-            	width :100
-    		},
-            { buttons:this.buildButtons()
-    			}]
+            }]
    
         }];
     }
