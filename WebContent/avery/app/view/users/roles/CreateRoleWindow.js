@@ -12,7 +12,6 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
         type: 'anchor'
     },
     draggable: true,
-    editMode: false,
     initComponent: function () {
         Ext.apply(this, {
             items: this.buildItem(),
@@ -20,16 +19,28 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
         });
         this.callParent(arguments);
     },
-    buildButtons: function () {
-        return [{
-            text: AOCLit.Save,
-            handler: 'onSavebtnClick'
-        }, {
-            text: AOCLit.close,
-            handler: 'onClosebtnClick'
-        }];
+    afterRender:function(){
+    	this.callParent(arguments);
+		var me = this;
+		if(me.mode=='edit'){
+			Ext.getBody().mask('Loading...');
+			Ext.Ajax.request({
+				url:applicationContext+'/rest/role/menuroles/'+ me.recordId,
+				method: 'GET',
+				success:function(response){
+					var	form = me.down('form');
+					var detail = JSON.parse(response.responseText);
+					form.loadRecord(new Ext.data.Record(detail.data));
+					Ext.getBody().unmask();
+				},
+				failure:function(){
+					Ext.getBody().unmask();
+				}
+				});
+			}
     },
     buildItem: function () {
+    	var me = this;
         return [{
             xtype: 'form',
             itemId: 'rolePanel',
@@ -51,8 +62,9 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
                     itemId: 'RNItemId',
                     name: 'roleName',
                     fieldLabel: AOCLit.roleName,
-                    allowBlank: false,
+                    allowBlank: me.mode=='edit'  ? true :false,
                     reference: 'roleName',
+                    hidden:me.mode=='edit',
                     flex: 0.5,
                     margin: '20 10 5 10'
                 }]
@@ -60,6 +72,7 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
                 xtype: 'fieldset',
                 title: AOCLit.setPermission,
                 margin: '20 10 5 10',
+                title:me.mode=='edit'  ?  '': AOCLit.setPermission,
                 items: [{
                     xtype: 'fieldcontainer',
                     layout: 'hbox',
@@ -76,43 +89,53 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
                         items: [{
                             boxLabel: 'Home Screen',
                             width: 150,
-                            name: 'Home',
+                            name: 'home',
                             inputValue: '1'
                         }, {
                             boxLabel: 'Task Manager',
                             width: 150,
-                            name: 'TaskManager',
+                            name: 'taskmanager',
                             inputValue: '2'
                         }, {
                             boxLabel: 'Email Queue',
                             width: 150,
-                            name: 'EmailQueue',
+                            name: 'emailqueue',
                             inputValue: '3'
                         }, {
                             boxLabel: 'Order Queue',
                             width: 150,
-                            name: 'OrderQueue',
+                            name: 'orderqueue',
                             inputValue: '4'
-                        }, {
-                            boxLabel: 'Web Order',
-                            width: 150,
-                            name: 'WebOrder',
-                            inputValue: '5'
                         }, {
                             boxLabel: 'Partner',
                             width: 150,
-                            name: 'Partner',
-                            inputValue: '6'
+                            name: 'partner',
+                            inputValue: '5'
                         }, {
                             boxLabel: 'Address',
                             width: 150,
-                            name: 'Address',
+                            name: 'address',
+                            inputValue: '6'
+                        },
+                        {
+                            boxLabel: 'Web Order',
+                            width: 150,
+                            name: 'weborder',
                             inputValue: '7'
                         }]
                     }]
                 }]
 
             }]
+        }];
+    },
+    buildButtons: function () {
+        return [{
+            text: AOCLit.Save,
+            handler: 'onSavebtnClick'
+        }, {
+            text: AOCLit.close,
+            handler: 'onClosebtnClick'
         }];
     }
 });

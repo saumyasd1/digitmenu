@@ -35,12 +35,13 @@ Ext.define('AOC.view.users.roles.RoleGrid', {
             text: 'View Users',
             sortable: true,
             flex: 0.5,
+            hidden:true,
             align: 'center',
             renderer: function (v, metadata, record) {
                 return '<i style="font-size:16px; color:black; cursor:pointer;" class="viewuser fa fa-user-circle-o" ></i>';
             }
         }, {
-            text: 'Edit Permissions',
+            text: 'Set Permissions',
             sortable: true,
             flex: 0.5,
             align: 'center',
@@ -51,6 +52,7 @@ Ext.define('AOC.view.users.roles.RoleGrid', {
             text: 'Delete',
             flex: 0.1,
             data: '',
+            hidden:true,
             align: 'center',
             renderer: function (v, cell, record) {
                 return '<i style="cursor:pointer;font-size:16px;" class="deleterole fa fa-trash"></i>';
@@ -71,17 +73,10 @@ Ext.define('AOC.view.users.roles.RoleGrid', {
                 text: 'Add Role',
                 itemId: 'newRole',
                 handler: 'createRoleWindow',
-                hidden: false,
+                hidden: true,
                 iconAlign: 'left',
                 ui: 'blue',
                 cls: 'blue-btn'
-            },
-            '->', {
-                xtype: 'customsearchfield',
-                searchCriteria: '',
-                store: Ext.data.StoreManager.lookup(me.store),
-                width: 200,
-                emptyText: 'Search by Role Name'
             }
         ];
     },
