@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -25,16 +26,20 @@ private RoleDao roleDao;
 	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
 	}
-	
 	@Transactional
 	public void addMenuRole(String data,Long entityId){
 		getRoleDao().addMenuRole(data,entityId);
 	}
-	
-	
 	@Transactional
 	public List<User> getUsers(Long roleId) {
 		return getRoleDao().getUsers(roleId);
 	}
-
+	@Transactional
+	public Map getMenuRoles(Long roleId) {
+		return getRoleDao().getMenuRoles(roleId);
+	}
+	@Transactional
+	public void editMenuRole(String data,Long entityId){
+		getRoleDao().editMenuRole(data,entityId);
+	}
 }
