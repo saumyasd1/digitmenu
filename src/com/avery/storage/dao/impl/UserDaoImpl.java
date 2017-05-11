@@ -93,7 +93,6 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
 	@Override
 	public User findUserByEmail(String email) throws Exception {
-		System.out.println("email  " + email);
 		Session session = null;
 		Criteria criteria = null;
 		User user = null;
@@ -108,7 +107,6 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
 	@Override
 	public int findUserBySiteId(int siteId) throws Exception {
-		System.out.println("siteId  " + siteId);
 		Session session = null;
 		Criteria criteria = null;
 		User user = null;
