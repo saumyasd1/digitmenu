@@ -507,5 +507,7 @@ Ext.define('AOC.lang.lit',{
     deleteRoleMsg:'Role deleted successfully',
     delRoleMsg:'<b>Are you sure you want to delete the role?</b>',
     adminDelMsg:'Super Admin can not be deleted.',
-    tickTabMsg:'Please select atleast one tab'
+    tickTabMsg:'Please select atleast one tab',
+    userInfoInvalid:'Please fill mandatory values',
+    uploadPhoto:'Upload Photo'
 });
