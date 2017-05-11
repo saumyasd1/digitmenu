@@ -18,6 +18,11 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
 	},
     initComponent : function(){
     	var me=this;
+    		userInfo = AOCRuntime.getUser(),
+    		roleId = userInfo.role,
+    		siteId = userInfo.siteId,
+    		userId = userInfo.id,
+			userEmailId = userInfo.email;
         Ext.apply(this,{
             columns : this.buildColumns(),
     		dockedItems : this.buildDockedItems(),
@@ -26,6 +31,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
     		listeners:{
     	        activate:function(obj){
 					me.down('pagingtoolbar').bindStore(obj.getStore());
+					obj.getStore().proxy.extraParams = { siteId:siteId,roleId:roleId,userId:userId,userEmailId:userEmailId };
 				}
 			},		
             tbar: { 
