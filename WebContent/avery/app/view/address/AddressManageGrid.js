@@ -9,6 +9,12 @@ Ext.define('AOC.view.address.AddressManageGrid', {
 	recordBeingEdit:null,
 	initComponent : function(){
 	var me=this;
+		userInfo = AOCRuntime.getUser(),
+		roleId = userInfo.role,
+		siteId = userInfo.siteId,
+		userId = userInfo.id,
+		userEmailId = userInfo.email;
+
     Ext.apply(this,{
         columns : this.buildColumns(),
 		columnLines:false,
@@ -21,6 +27,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
               listeners:{
             	  activate:function(obj){
              			 obj.down('pagingtoolbar').bindStore(obj.getStore());
+             			 obj.getStore().proxy.extraParams = { siteId:siteId,roleId:roleId,userId:userId,userEmailId:userEmailId };
              		 }
               },
         dockedItems : this.buildDockedItems(),
