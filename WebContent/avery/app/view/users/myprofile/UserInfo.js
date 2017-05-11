@@ -99,8 +99,6 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
         					return 'Super Admin';
         				} else if (value == 2) {
         					return 'Site Manager';
-        				} else if (value == 3) {
-        					return 'CSR Specialist';
         				} else {
         					return 'CSR';
         				}
