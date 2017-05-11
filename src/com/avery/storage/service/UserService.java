@@ -11,9 +11,9 @@ import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.User;
 
 /**
- * 28 DEC -2015
+ * 24 APR -2017
  * 
- * @author Amit Trivedi
+ * @author Saumya Dixit
  */
 @Component
 public class UserService extends GenericEntityService<User, Long> {
@@ -45,17 +45,27 @@ public class UserService extends GenericEntityService<User, Long> {
 	}
 
 	@Transactional
+	public int findUserBySiteId(int siteId) throws Exception {
+		return getUserDao().findUserBySiteId(siteId);
+	}
+	
+	@Transactional
 	public List<User> getSortedList() {
 		return getUserDao().getSortedList();
 	}
 
 	@Transactional
-	public String getApplicationDefaultTimeZone() throws Exception {
+	public String getApplicationDefaultTimeZone() {
 		return getUserDao().getApplicationDefaultTimeZone();
 	}
 
 	public List<Menu> getMenuRole(String roleId) {
 		return getUserDao().getMenuRole(roleId);
+	}
+	
+	@Transactional
+	public List<User> getUser(String siteId) {
+		return getUserDao().getUser(siteId);
 	}
 
 }
