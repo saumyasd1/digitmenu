@@ -22,8 +22,8 @@ Ext.define('AOC.view.users.roles.RoleController', {
             userWin.show();
         } else if (el.hasCls('editpermission')) {
             var id = record.get('id'),
-            	roleName = record.data.roleName;
-            var editPermissionWin = Ext.create('AOC.view.users.roles.CreateRoleWindow', {
+            	roleName = record.data.roleName,
+                editPermissionWin = Ext.create('AOC.view.users.roles.CreateRoleWindow', {
                 recordId: id,
                 mode:'edit',
                 title:'Set Permissions for '+ roleName,
