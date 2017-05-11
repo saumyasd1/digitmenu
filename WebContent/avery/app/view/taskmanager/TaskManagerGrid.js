@@ -9,28 +9,34 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
     reserveScrollbar:true,
     requires:['AOC.store.TaskManagerStore','AOC.view.taskmanager.TaskManagerController'],
 	columnLines:false,
-	store:Ext.create('AOC.store.TaskManagerStore', {
-		storeId:'TaskManagerStoreId'
-	}),
 	viewConfig : {
 		stripeRows : true,
 		enableTextSelection : true
 	},
     initComponent : function(){
     	var me=this;
-		this.columns = this.buildColumns();
-		this.dockedItems = this.buildDockedItems();
+    		me.columns = this.buildColumns();
+    		me.dockedItems = this.buildDockedItems();
+			userInfo = AOCRuntime.getUser(),
+			roleId = userInfo.role,
+			siteId = userInfo.siteId,
+			userId = userInfo.id,
+			userEmailId = userInfo.email;
 		
         Ext.apply(me,{
     		listeners:{
     	        activate:function(obj){
 					me.down('pagingtoolbar').bindStore(obj.getStore());
+					obj.getStore().proxy.extraParams = { siteId:siteId,roleId:roleId,userId:userId,userEmailId:userEmailId };
 				}
 			},		
             tbar: { 
 				height: 50,
 				items : me.buildTbar()
-			}
+			},
+			store:Ext.create('AOC.store.TaskManagerStore', {	
+				storeId:'TaskManagerStoreId'
+			})
         });
 	   me.callParent(arguments);
 	},
