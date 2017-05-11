@@ -17,24 +17,24 @@ Ext.define('AOC.view.users.manage.UserController', {
 	           listeners:{
                 	'afterrender':function(){
                 		var me = this;
-                		me.mask(AOCLit.pleaseWaitTitle);
-                		var form = this.down('form'),
-                		roleName = form.lookupReference('roleName'),
-                		siteCombo = form.lookupReference('siteName'),
-                		siteStore = siteCombo.store,
-                		userInfo = AOCRuntime.getUser(),
-                		roleId = userInfo.role,
-                		siteId = userInfo.siteId,
-                		store = roleName.store;
-                		store.load({params:{role:roleId}});
-                		siteStore.load({params:{siteId:siteId}})
-                		this.unmask();
+                			me.mask(AOCLit.pleaseWaitTitle),
+                			form = this.down('form'),
+                			roleName = form.lookupReference('roleName'),
+                			siteCombo = form.lookupReference('siteName'),
+                			siteStore = siteCombo.store,
+                			userInfo = AOCRuntime.getUser(),
+                			roleId = userInfo.role,
+                			siteId = userInfo.siteId,
+                			store = roleName.store;
+                			store.load({params:{role:roleId}});
+                			siteStore.load({params:{siteId:siteId}})
+                			me.unmask();
                 	}
                 },
 	           items: [{
-	               xtype: 'useredit',
-	               showPasswordField: true,
-	               hidefield: false
+		               xtype: 'useredit',
+		               showPasswordField: true,
+		               hidefield: false
 	           }]
 	       });
 	   }
