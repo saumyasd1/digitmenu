@@ -1,7 +1,6 @@
 Ext.define('AOC.store.PartnerManagementStore', {
 	extend : 'Ext.data.Store',
 	model:'AOC.model.PartnerManagementModel',
-	//remoteSort: true,
 	totalCount:'total',
 	pageSize:pageSize,
 	storeId:'PartnerManagementStoreId',
