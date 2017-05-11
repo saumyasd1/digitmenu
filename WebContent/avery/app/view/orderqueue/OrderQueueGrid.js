@@ -17,7 +17,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 	},
     initComponent : function(){
 		var me=this;
-		this.fieldArray = [];
+			userInfo = AOCRuntime.getUser(),
+			roleId = userInfo.role,
+			siteId = userInfo.siteId,
+			userId = userInfo.id,
+			userEmailId = userInfo.email,
+			me.fieldArray = [];
         Ext.apply(this,{
             columns : this.buildColumns(),
 			dockedItems : this.buildDockedItems(),
@@ -37,6 +42,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 				cellclick:'onCellClickToView',
 				activate:function(obj){
 					me.down('pagingtoolbar').bindStore(obj.getStore());
+					obj.getStore().proxy.extraParams = { siteId:siteId,roleId:roleId,userId:userId,userEmailId:userEmailId };
+					
 				}
 			}
         });
