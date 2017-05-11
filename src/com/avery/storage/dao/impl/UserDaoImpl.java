@@ -1,13 +1,13 @@
 package com.avery.storage.dao.impl;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
-import org.hibernate.SQLQuery;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
@@ -34,11 +34,12 @@ import com.avery.storage.entities.MenuRole;
 import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 28 DEC -2015
+ * 24 APR -2017
  * 
- * @author Amit Trivedi
+ * @author Saumya Dixit
  */
 @SuppressWarnings("unchecked")
 @Repository
@@ -46,7 +47,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
 	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
+			throws Exception {
 		Map entitiesMap = new HashMap();
 		Criteria criteria = null;
 		int totalCount = 0;
@@ -56,18 +58,18 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
-		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
-		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
+		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber)
+				: 0;
+		int pageSize = (limit != null && !"".equals(limit)) ? Integer
+				.parseInt(limit) : 0;
 		if (pageNO != 0) {
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
 		}
 		if (queryMap.getFirst("id") != null) {
 			String id = (String) queryMap.getFirst("id");
-			Long csrId = Long.parseLong(id);
-			criteria.add(Restrictions.eq("id", csrId));
-			System.out.println(csrId);
-
+			Long userId = Long.parseLong(id);
+			criteria.add(Restrictions.eq("id", userId));
 		}
 
 		entitiesMap.put("totalCount", totalCount);
@@ -98,9 +100,25 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		if (email != null && !"".equals(email)) {
-			user = (User) criteria.add(Restrictions.eq("email", email)).uniqueResult();
-		}
+			user = (User) criteria.add(Restrictions.eq("email", email))
+					.uniqueResult();
+			}
 		return user;
+	}
+
+	@Override
+	public int findUserBySiteId(int siteId) throws Exception {
+		System.out.println("siteId  " + siteId);
+		Session session = null;
+		Criteria criteria = null;
+		User user = null;
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(User.class);
+		if (siteId != 0 && !"".equals(siteId)) {
+			user = (User) criteria.add(Restrictions.eq("siteId", siteId))
+					.uniqueResult();
+		}
+		return siteId;
 	}
 
 	@Override
@@ -130,14 +148,16 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException, Exception {
+	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException,
+			Exception {
 		Session session = null;
 		Criteria criteria = null;
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
+			Map<String, String> searchMap = ApplicationUtils
+					.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 			if (dateType != null && !dateType.equals("")) {
 				String sDate = searchMap.get("fromDate");
@@ -158,30 +178,33 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		Criteria criteria = null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(User.class, "u")
-					.setProjection(Projections.projectionList().add(Projections.property("id"), ("id"))
-							.add(Projections.property("firstName"), "firstName")
-							.add(Projections.property("lastName"), "lastName")
-							.add(Projections.property("middleName"), "middleName"))
+			criteria = session
+					.createCriteria(User.class, "u")
+					.setProjection(
+							Projections.projectionList()
+									.add(Projections.property("id"), ("id"))
+									.add(Projections.property("firstName"),"firstName")
+									.add(Projections.property("lastName"),"lastName")
+									.add(Projections.property("middleName"),"middleName"))
 					.setResultTransformer(Transformers.aliasToBean(User.class));
 			criteria.addOrder(Order.asc("firstName"));
 		} catch (WebApplicationException ex) {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return criteria.list();
 	}
 
 	public List<Menu> getMenuRole(String roleId) {
-		System.out.println("roleId   " + roleId);
 		Session session = null;
 		Criteria criteria = null;
 		Menu menu = null;
 		List<Menu> menulist = new ArrayList<Menu>();
-		System.out.println("roleId  1 ::  " + roleId);
 		List<MenuRole> menuRoleList = new ArrayList<MenuRole>();
 		session = getSessionFactory().openSession();
 		criteria = session.createCriteria(MenuRole.class);
@@ -206,47 +229,60 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@Override
-	public String getApplicationDefaultTimeZone() throws Exception {
+	public List<User> getUser(String siteId) {
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
 		Session session = null;
-		String result = "";
-		try {
-			AppLogger.getSystemLogger().debug(
-					"Getting timezone offset from datbase ");
-			session = getSessionFactory().getCurrentSession();
-			String s = "SELECT TIMEDIFF( UTC_TIMESTAMP, NOW())";
-			SQLQuery query = session.createSQLQuery(s);
-			List<Date> list = query.list();
-			Iterator<Date> itr = list.iterator();
-			while (itr.hasNext()) {
-				Date date = (Date) itr.next();
-				String dateToString = date.toString();
-				String dateToSubString = dateToString.substring(0, dateToString.length() - 3);
-				result = "GMT-" + dateToSubString;
-				AppLogger.getSystemLogger().debug(
-						"Timezone offset of database  is "+result +".");
-				return result;
+		Criteria criteria = null;
+		User user = null;
+		List<User> userlist = new ArrayList<User>();
+		List<User> userList = new ArrayList<User>();
+		Integer userSiteId = Integer.parseInt(siteId);
+		session = getSessionFactory().openSession();
+		criteria = session.createCriteria(User.class);
+		Conjunction disCriteria = Restrictions.conjunction();
+		disCriteria.add(Restrictions.eq("siteId", userSiteId));
+		criteria.add(disCriteria);
+		userList = criteria.list();
+		for (User userIter : userList) {
+			if (userIter != null) {
+				user = userIter;
+				user.setId(user.getId());
+				user.setRole(user.getRole());
+				user.setSiteId(user.getSiteId());
+				userlist.add(user);
 			}
-		} catch (Exception e) {
-			try {
-				String q1 = "SELECT TIMEDIFF( NOW(),UTC_TIMESTAMP)";
-				SQLQuery query = session.createSQLQuery(q1);
-				List<Date> list = query.list();
-				Iterator<Date> itr = list.iterator();
-				while (itr.hasNext()) {
-					Date date = (Date) itr.next();
-					String dateToString = date.toString();
-					String dateToSubString = dateToString.substring(0,
-							dateToString.length() - 3);
-					result = "GMT+" + dateToSubString;
-					AppLogger.getSystemLogger().debug(
-							"Timezone offset of database  is "+result +".");
-					return result;
-				}
-			} catch (Exception ex) {
-				throw new Exception("Error while get time zone from database "
-						+ e.getMessage(), e);
-			}
+
 		}
-		return result;
+		responseMap.put("userList", userlist);
+		try {
+			mapper.writeValue(writer, userlist);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return userlist;
+	}
+
+	@Override
+	public String getApplicationDefaultTimeZone() {
+		Session session = null;
+		String timeZone;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			String s = "select defaultTimeZone from GlobalConfiguration";
+			Query q = session.createQuery(s);
+			List results = q.list();
+			timeZone = (String) results.get(0);
+			return timeZone;
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while fetching data from the database", ex);
+			return TimeZone.getDefault().getID();
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while fetching data from the database", e);
+			return TimeZone.getDefault().getID();
+		}
 	}
 }
