@@ -8,10 +8,17 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 	emptyText : AOCLit.emptyDataMsg,
 	recordBeingEdit : null,
 	initComponent : function() {
-		var me = this;
+		var me = this,
+			userInfo = AOCRuntime.getUser(),
+			roleId = userInfo.role,
+			siteId = userInfo.siteId,
+			userId = userInfo.id,
+			userEmailId = userInfo.email;
 		Ext.apply(this, {
 			columns : this.buildColumns(),
 			columnLines : false,
+			store:Ext.create('AOC.store.UserStore', {
+					storeId:'UserStoreId'}),
 			tbar : {
 				height : AOC.config.Settings.config.defaultTbarHeight,
 				items : me.buildtbar()
@@ -19,34 +26,9 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 			dockedItems : this.buildDockedItems(),
 			listeners : {
 				activate : function(obj) {
-					var roleStoreId = Ext.data.StoreManager
-							.lookup('RoleStoreId');
-
-					var store = Ext.data.StoreManager.lookup('UserStoreId'),
-					userInfo = AOCRuntime.getUser(),
-            		roleId = userInfo.role,
-            		siteId = userInfo.siteId;
-					if (store == null) {
-						store = Ext.create('AOC.store.UserStore', {
-							extend : 'Ext.data.Store',
-							model : 'AOC.model.UserModel',
-							autoLoad : true,
-							pageSize : pageSize,
-							storeId : 'UserStoreId',
-							proxy : {
-								type : 'rest',
-								url : applicationContext + '/rest/users',
-								reader : {
-									type : 'json',
-									rootProperty : 'users',
-									totalProperty : 'totalCount'
-								}
-							}
-						});
-						obj.bindStore(store);
-						me.down('pagingtoolbar').bindStore(store);
-					}
-					store.load();
+					me.down('pagingtoolbar').bindStore(obj.getStore());
+	             	obj.getStore().proxy.extraParams = { siteId:siteId,roleId:roleId,userId:userId,userEmailId:userEmailId };
+	             	obj.getStore().load();
 				}
 			},
 			viewConfig : {
@@ -91,8 +73,6 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 					return 'Super Admin';
 				} else if (value == 2) {
 					return 'Site Manager';
-				} else if (value == 3) {
-					return 'CSR Specialist';
 				} else {
 					return 'CSR';
 				}
