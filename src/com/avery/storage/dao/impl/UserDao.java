@@ -7,9 +7,9 @@ import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.User;
 
 /**
- * 28 DEC -2015
+ * 24 APR -2017
  * 
- * @author Amit Trivedi
+ * @author Saumya Dixit
  */
 public interface UserDao extends GenericDao<User, Long> {
 
@@ -17,12 +17,15 @@ public interface UserDao extends GenericDao<User, Long> {
 
 	User findUserByEmail(String email) throws Exception;
 
-	boolean checkDuplicateUser(User userObj) throws Exception;
+    boolean checkDuplicateUser(User userObj) throws Exception;
 
 	List<User> getSortedList();
 
-	public String getApplicationDefaultTimeZone() throws Exception;
+	String getApplicationDefaultTimeZone();
+	
+	int findUserBySiteId(int siteId) throws Exception;
 
 	List<Menu> getMenuRole(String roleId);
+	List<User> getUser(String siteId);
 
 }
