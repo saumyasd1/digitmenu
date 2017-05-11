@@ -9,9 +9,9 @@ Ext.define('AOC.view.users.roles.CreateRoleWindowController', {
     onSavebtnClick: function () {
         var me = this,
             refs = me.getReferences(),
-            view = me.getView();
-        form = refs.createRoleForm;
-        mode = view.mode,
+            view = me.getView(),
+        	form = refs.createRoleForm,
+        	mode = view.mode,
             roleManagementGrid = AOCRuntime.getActiveGrid(),
             url = '',
             valueObj = '',
@@ -19,7 +19,6 @@ Ext.define('AOC.view.users.roles.CreateRoleWindowController', {
             msg = '';
         if (mode == 'edit') {
             url = applicationContext + '/rest/role/editpermissions/' + view.recordId; //Provide roleId for particular record
-            form.updateRecord();
             method = 'POST';
             valueObj = form.getValues(false, true, false, true);
             length = Object.keys(valueObj).length;
@@ -62,6 +61,9 @@ Ext.define('AOC.view.users.roles.CreateRoleWindowController', {
                             view.close();
                         }
                     });
+                }
+                else{
+                	Helper.showToast('failure',AOCLit.userInfoInvalid);
                 }
         }
     }
