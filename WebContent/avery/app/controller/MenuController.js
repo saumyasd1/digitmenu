@@ -320,7 +320,7 @@ Ext.define('AOC.controller.MenuController', {
         Helper.deleteCookie("authorization");
         Helper.deleteCookie("userinfo");
         Helper.deleteCookie('menuList');
-        me.changeViewportCard(0);
+        window.location.reload();
     },
     onClickEditProfile: function () {
         var me = this,
@@ -384,7 +384,7 @@ Ext.define('AOC.controller.MenuController', {
                     me.updateProfileInfo();
                     var message = (activeForm.xtype == 'useredit') ? personalInformation : password;
                     message = message + savedSuccessfully;
-                    Helper.fadeoutMessage('Success', message);
+                    Helper.showToast('Success', message);
                 },
                 failure: function (rsp) {
                     Ext.getBody().unmask();
