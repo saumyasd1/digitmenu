@@ -204,7 +204,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		Menu menu = null;
 		List<Menu> menulist = new ArrayList<Menu>();
 		List<MenuRole> menuRoleList = new ArrayList<MenuRole>();
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(MenuRole.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("role", roleId));
@@ -237,7 +237,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		List<User> userlist = new ArrayList<User>();
 		List<User> userList = new ArrayList<User>();
 		Integer userSiteId = Integer.parseInt(siteId);
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("siteId", userSiteId));
