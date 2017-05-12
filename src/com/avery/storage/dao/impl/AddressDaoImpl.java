@@ -159,7 +159,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		List<Address> addresslist = new ArrayList<Address>();
 		List<Address> addressList = new ArrayList<Address>();
 		Integer userSiteId = Integer.parseInt(siteId);
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(Address.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("siteId", userSiteId));
