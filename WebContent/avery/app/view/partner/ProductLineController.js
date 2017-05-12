@@ -188,14 +188,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				    		}
 				    	Ext.getBody().unmask();
 				    	createproductline.destroy();
-				    	AOC.util.Helper.fadeoutMessage('Success',Msg);
+				    	Helper.showToast('Success',Msg);
 			  			productline.store.load();
 				  		
 		        },
 		        failure: function(response, opts) {
 		        	Msg=response.responseText;
 		        	Msg=Msg.replace("Exception:"," ");
-		        	Ext.Msg.alert('Alert Message',Msg);
+		        	Helper.showToast('validation',Msg);
 		        	Ext.getBody().unmask();
 		        	createproductline.destroy();
               }
@@ -262,7 +262,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		 	      			win.show();
 				        },
 				        failure: function(response, opts) {
-				        	AOC.util.Helper.fadeoutMessage('Failure','Error while trying to fetch partner data structure information from the server.');
+				        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
 		                }
 		        	});
  	      			 
@@ -279,8 +279,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
      							method:'DELETE',
      							url:applicationContext+'/rest/productLines/'+id,
      				        success : function(response, opts) {
-     				        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.deleteProdLineMsg);
-     							//Ext.Msg.alert('Alert Message','<b>Product Line Deleted Succesfully</b>');
+     				        	Helper.showToast('Success',AOCLit.deleteProdLineMsg);
      							me.runTime.getActiveGrid().store.load();
      				        },
      				        failure: function(response, opts) {
@@ -403,7 +402,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			    	}
 			    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
 			    		if(jsonString.length==0){
-			    			AOC.util.Helper.fadeoutMessage('Success','No System Configured for the selected site. Please select another site');
+			    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
 			    			Ext.getBody().unmask();
 			    			return false;
 			    		}
@@ -562,7 +561,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    							orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
 		    							//orgOrderStore.commit();
 		    						}else{
-		    							AOC.util.Helper.fadeoutMessage('Success','Cannot add any more rows.');
+		    							Helper.showToast('validation','Cannot add any more rows.');
 		    						}
 		    					}
 		    				}
