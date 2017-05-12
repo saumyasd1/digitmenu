@@ -363,7 +363,6 @@ public class Partner extends MainAbstractEntity {
 			} else {
 				mapper.writeValue(writer, entitiesMap);
 			}
-		//	mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
