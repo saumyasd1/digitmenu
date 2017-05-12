@@ -88,9 +88,6 @@ public class MenuRoleDaoImpl extends GenericDaoImpl<MenuRole, Long> implements M
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		
-	
-		
 	}
 	
 }
