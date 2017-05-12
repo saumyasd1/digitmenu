@@ -153,13 +153,9 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 	@Override
 	public List<Address> getAddress(String siteId) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
 		Session session = null;
 		Criteria criteria = null;
 		Address address = null;
-		 Partner partnerObj=new Partner();
-			Org orgObj=new Org();
 		List<Address> addresslist = new ArrayList<Address>();
 		List<Address> addressList = new ArrayList<Address>();
 		Integer userSiteId = Integer.parseInt(siteId);
@@ -177,8 +173,6 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				address.setPartnerId(address.getVarPartner().getId());
 				address.setPartnerName(address.getVarPartner().getPartnerName());
 				address.setOrgCodeName(address.getVarOrgCode().getName());
-//				address.setVarOrgCode(address.getVarOrgCode().getId());
-//				address.setVarPartner(address.getVarPartner().getId());
 				address.setSystem(address.getSystem());
 				addresslist.add(address);
 			}
