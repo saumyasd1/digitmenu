@@ -83,8 +83,7 @@ Ext.define('AOC.view.users.manage.UserController', {
                         jsonData: parameters,
                         url: url,
                         success: function (response, opts) {
-                            var jsonString = Ext.JSON
-                                .decode(response.responseText);
+                            var jsonString = Ext.JSON.decode(response.responseText);
                             var valueExist = jsonString.valueExist;
                             if (valueExist) {
                                 Ext.getBody().unmask();
@@ -94,8 +93,7 @@ Ext.define('AOC.view.users.manage.UserController', {
                             }
                             Ext.getBody().unmask();
                             win.destroy();
-                            AOC.util.Helper.fadeoutMessage(
-                                'Success', Msg);
+                            Helper.showToast('Success', Msg);
                             grid.store.load();
                         },
                         failure: function (response, opts) {
@@ -190,7 +188,7 @@ Ext.define('AOC.view.users.manage.UserController', {
                                                 url: applicationContext + '/rest/users/' + ID,
                                                 success: function (response, opts) {
 
-                                                    AOC.util.Helper.fadeoutMessage('Success', Msg);
+                                                    Helper.showToast('Success', Msg);
                                                     me.runTime.getActiveGrid().store.load();
                                                 },
                                                 failure: function (response, opts) {}
