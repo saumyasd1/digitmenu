@@ -129,7 +129,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		List<Partner> partnerlist = new ArrayList<Partner>();
 		List<Partner> partnerList = new ArrayList<Partner>();
 		Integer userSiteId = Integer.parseInt(siteId);
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(Partner.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("siteId", userSiteId));
