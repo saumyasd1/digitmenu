@@ -130,7 +130,7 @@ Ext.define('AOC.view.address.AddressController', {
 			var parameters=Ext.JSON.encode(valueObj);
 			if(length>0){
 			if(panel.getForm().isValid()){
-				AOC.util.Helper.fadeoutMessage('Success',Msg);
+				Helper.showToast('Success',Msg);
 	  		}
 			}
 		}
@@ -208,7 +208,7 @@ Ext.define('AOC.view.address.AddressController', {
 		        success : function(response, opts) {
 		        	    Ext.getBody().unmask();
 		        	    createaddress.destroy();
-		        	    AOC.util.Helper.fadeoutMessage('Success',Msg);
+		        	    Helper.showToast('Success',Msg);
 			  			grid.store.load();
 				  		
 		        },
@@ -272,7 +272,7 @@ Ext.define('AOC.view.address.AddressController', {
                 							method:'DELETE',
                 							url:applicationContext+'/rest/address/'+ID,
                 				        success : function(response, opts) {
-                				            AOC.util.Helper.fadeoutMessage('Success',AOCLit.deleteAddMsg);
+                				        	Helper.showToast('Success',AOCLit.deleteAddMsg);
                 				           me.runTime.getActiveGrid().store.load();
                 				        },
                 				        failure: function(response, opts) {
@@ -362,7 +362,7 @@ Ext.define('AOC.view.address.AddressController', {
 			  else{
 				  org.disable();
 				  var msg=AOCLit.orgCountMsg;
-				  AOC.util.Helper.fadeoutMessage('Success',msg); 
+				  Helper.showToast('Success',msg); 
 			  }
 		  });
 	  },
@@ -408,7 +408,7 @@ Ext.define('AOC.view.address.AddressController', {
 			   else{
 					  system.disable();
 					  var msg=AOCLit.systemCountMsg;
-					  AOC.util.Helper.fadeoutMessage('Success',msg);
+					  Helper.showToast('Success',msg);
 		    			
 				  }
 		  });
@@ -498,7 +498,7 @@ Ext.define('AOC.view.address.AddressController', {
 							method:'DELETE',
 							url:applicationContext+'/rest/address/'+ID,
 				        success : function(response, opts) {
-							Ext.Msg.alert('Alert Message',AOCLit.deleteAddMsg);
+							Helper.showToast('Success',AOCLit.deleteAddMsg);
 							me.runTime.getActiveGrid().store.load();
 				        },
 				        failure: function(response, opts) {
