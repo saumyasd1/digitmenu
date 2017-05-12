@@ -685,7 +685,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'orderedDate',
 			width: 90,
 			xtype:'datecolumn',
-			format:AOCLit.dateFormat,
 			editor: 'datefield',
 			renderer : function(value, meta,record) {
             	return Helper.onOrdererDateRenderer(value, meta,record);
@@ -695,7 +694,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.requestedDeliveryDate,
 			dataIndex: 'requestedDeliveryDate',
 			width: 102,
-			format:AOCLit.dateFormat,
 			xtype:'datecolumn',
 			editor: {
 				xtype:'datefield',
@@ -712,7 +710,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.promiseDate,
 			dataIndex: 'promiseDate',
 			xtype: 'datecolumn',   
-			format:AOCLit.dateFormat,
 			width: 88,
 			editor: {
 				xtype:'datefield',
