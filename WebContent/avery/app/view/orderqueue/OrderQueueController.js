@@ -192,7 +192,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 					var rec = e.record;
 					var orderInMailBody=(Ext.isEmpty(rec.get('orderInMailBody'))) ? false : rec.get('orderInMailBody');
 					if(orderInMailBody){
-						Ext.Msg.alert('', AOCLit.resubmitNotPermissible);
+						Helper.showToast('validation', AOCLit.resubmitNotPermissible);
 						return false;
 					}
 					var con=AOC.app.getController('MenuController');
@@ -450,7 +450,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 				
 			},1000);
 		}else{
-			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectAttachmentFileMsg);
+			Helper.showToast('failure', AOCLit.selectAttachmentFileMsg);
 		}
 	}
 });
