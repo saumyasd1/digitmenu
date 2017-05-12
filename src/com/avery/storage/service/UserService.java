@@ -59,6 +59,7 @@ public class UserService extends GenericEntityService<User, Long> {
 		return getUserDao().getApplicationDefaultTimeZone();
 	}
 
+	@Transactional
 	public List<Menu> getMenuRole(String roleId) {
 		return getUserDao().getMenuRole(roleId);
 	}
