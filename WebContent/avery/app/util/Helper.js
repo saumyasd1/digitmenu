@@ -549,7 +549,10 @@ Ext.define('AOC.util.Helper',{
 		}
 	},
 	onOrderLineDateRenderer:function(v, metadata, record){
-		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
+		var orderedDate = record.get('orderedDate')+'T00:00:00';
+		v = v+'T00:00:00';
+		v = new Date(v);
+		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(new Date(orderedDate))) > new Date(Ext.util.Format.dateRenderer()(v))
 				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 			metadata.style = AOCLit.cellColor;
 			return Ext.Date.format(v, AOCLit.dateFormat);
@@ -561,7 +564,8 @@ Ext.define('AOC.util.Helper',{
 			metadata.style = AOCLit.cellColor;
         }
         else{
-        	return Ext.Date.format(value,'Y-m-d');
+        	value = value+'T00:00:00';
+        	return Ext.Date.format(new Date(value),AOCLit.dateFormat);
         }
 	},
 	onAtoColumnRenderer:function(value, metadata, record){
