@@ -77,7 +77,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 		    		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
 		    				    success : function(response, opts) {
 		    				    	assignCsrWin.unmask();
-	    					  		Ext.Msg.alert('Success','CSR assigned successfully');
+	    					  		Helper.showToast('Success','CSR assigned successfully');
 	    					  		assignCsrWin.close();
 	    					  		taskManagerGrid.store.load();
 	    				        },
