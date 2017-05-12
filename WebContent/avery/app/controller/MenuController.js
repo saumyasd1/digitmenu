@@ -375,7 +375,7 @@ Ext.define('AOC.controller.MenuController', {
                 success: function (res) {
                     Ext.getBody().unmask();
                     var userInfo = Ext.decode(res.responseText);
-                    me.runtime.setUser(userInfo);
+                    me.runtime.setUser(userInfo.user);
                     me.updateHeaderUserName();
                     Helper.setCookie("userinfo", JSON.stringify(userInfo), 30);
                     me.selectProrfileCard(0);
