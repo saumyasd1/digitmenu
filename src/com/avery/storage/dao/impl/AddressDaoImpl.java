@@ -1,5 +1,7 @@
 package com.avery.storage.dao.impl;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -28,8 +31,10 @@ import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
+import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
@@ -144,5 +149,49 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 
 		return entitiesMap;
 	}
+	
+	@Override
+	public List<Address> getAddress(String siteId) {
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		Session session = null;
+		Criteria criteria = null;
+		Address address = null;
+		 Partner partnerObj=new Partner();
+			Org orgObj=new Org();
+		List<Address> addresslist = new ArrayList<Address>();
+		List<Address> addressList = new ArrayList<Address>();
+		Integer userSiteId = Integer.parseInt(siteId);
+		session = getSessionFactory().openSession();
+		criteria = session.createCriteria(Address.class);
+		Conjunction disCriteria = Restrictions.conjunction();
+		disCriteria.add(Restrictions.eq("siteId", userSiteId));
+		criteria.add(disCriteria);
+		addressList = criteria.list();
+		for (Address addressIter : addressList) {
+			if (addressIter != null) {
+				address = addressIter;
+				address.setId(address.getId());
+				address.setOrgCodeId(address.getVarOrgCode().getId());
+				address.setPartnerId(address.getVarPartner().getId());
+				address.setPartnerName(address.getVarPartner().getPartnerName());
+				address.setOrgCodeName(address.getVarOrgCode().getName());
+//				address.setVarOrgCode(address.getVarOrgCode().getId());
+//				address.setVarPartner(address.getVarPartner().getId());
+				address.setSystem(address.getSystem());
+				addresslist.add(address);
+			}
+
+		}
+		try {
+			responseMap.put("address", addresslist);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return addresslist;
+	}
+	
 	
 }
