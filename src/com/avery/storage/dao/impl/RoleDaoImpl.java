@@ -150,7 +150,7 @@ RoleDao {
 		String role = Long.toString(roleId);
 		List<User> userlist = new ArrayList<User>();
 		List<User> userList = new ArrayList<User>();
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("role", role));
@@ -205,7 +205,7 @@ RoleDao {
 		Session session = null;
 		Criteria criteria = null;
 		MenuRole menu = null;
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(MenuRole.class);
 
 		String role = Long.toString(roleId);
