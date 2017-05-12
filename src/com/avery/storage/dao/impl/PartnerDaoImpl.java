@@ -123,13 +123,9 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 	@Override
 	public List<Partner> getPartner(String siteId) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
 		Session session = null;
 		Criteria criteria = null;
 		Partner partner = null;
-		 Partner partnerObj=new Partner();
-			Org orgObj=new Org();
 		List<Partner> partnerlist = new ArrayList<Partner>();
 		List<Partner> partnerList = new ArrayList<Partner>();
 		Integer userSiteId = Integer.parseInt(siteId);
