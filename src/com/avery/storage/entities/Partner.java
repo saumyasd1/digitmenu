@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -115,19 +116,19 @@ public class Partner extends MainAbstractEntity {
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy = "varPartner", fetch = FetchType.LAZY)
-	List<Address> addressList = new ArrayList<Address>();
-	
-	public List<Address> getAddressList() {
-		return addressList;
-	}
-
-
-
-	public void setAddressList(List<Address> addressList) {
-		this.addressList = addressList;
-	}
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy = "varPartner", fetch = FetchType.LAZY)
+//	List<Address> addressList = new ArrayList<Address>();
+//	
+//	public List<Address> getAddressList() {
+//		return addressList;
+//	}
+//
+//
+//
+//	public void setAddressList(List<Address> addressList) {
+//		this.addressList = addressList;
+//	}
 
 
 
@@ -326,10 +327,14 @@ public class Partner extends MainAbstractEntity {
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?, ?> entitiesMap=null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		List<Partner> partnerList = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
+			String siteId = null;
+			siteId = queryParamMap.getFirst("siteId");
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
 			mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
@@ -342,7 +347,23 @@ public class Partner extends MainAbstractEntity {
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find partners");
 			mapper.setTimeZone(TimeZone.getDefault());
-			mapper.writeValue(writer, entitiesMap);
+			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
+				mapper.writeValue(writer, entitiesMap);
+			} else if (!siteId.isEmpty()) {
+				if (Integer.parseInt(siteId) != 1) {
+					partnerList = partnerService.getPartner(siteId);
+					try {
+						responseMap.put("partners",partnerList);
+						mapper.writeValue(writer, responseMap);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+			} else {
+				mapper.writeValue(writer, entitiesMap);
+			}
+		//	mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
