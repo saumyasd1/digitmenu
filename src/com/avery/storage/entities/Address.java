@@ -1,7 +1,10 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -372,21 +375,41 @@ public class Address extends MainAbstractEntity {
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?,?> entitiesMap=null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		List<Address> addressList = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
+			String siteId = null;
+			siteId = queryParamMap.getFirst("siteId");
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
 			mapper.addMixIn(Org.class, OrgMixIn.class);
 			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
-			//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			AddressService addressService = (AddressService) SpringConfig
 					.getInstance().getBean("addressService");
 			entitiesMap = addressService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find addresses");
 			mapper.setTimeZone(TimeZone.getDefault());
-			mapper.writeValue(writer, entitiesMap);
+			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
+				mapper.writeValue(writer, entitiesMap);
+			} else if (!siteId.isEmpty()) {
+				if (Integer.parseInt(siteId) != 1) {
+					addressList = addressService.getAddress(siteId);
+					try {
+						responseMap.put("address", addressList);
+						mapper.writeValue(writer, responseMap);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+			} else {
+				mapper.writeValue(writer, entitiesMap);
+			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -537,4 +560,10 @@ public class Address extends MainAbstractEntity {
 		}
 	}
 	
+	public static Comparator<Address> addressIdComparator = new Comparator<Address>() {
+		@Override
+		public int compare(Address address1, Address address2) {
+			return (int) (address1.getId() - address2.getId());
+		}
+	};
 }
