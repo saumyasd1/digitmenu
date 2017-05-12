@@ -33,16 +33,16 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	        	var jsonValue=Ext.decode(response.responseText);
 	        	var status=jsonValue.status;
 	        	if(status=='success'){
-	        		Ext.Msg.alert('Success',AOCLit.orderValidation);
+	        		Helper.showToast('Success',AOCLit.orderValidation);
 	        	}
 	        	else{
-	        		Ext.Msg.alert('', AOCLit.validateErrorMsg);
+	        		Helper.showToast('failure', AOCLit.validateErrorMsg);
 	        	}
 		  		Ext.getBody().unmask();
 		  		//Helper.loadOrderLineGridStore(me.getView().store, id);
 	        },
 	        failure: function(response, opts) {
-	        	Ext.Msg.alert('Failure', AOCLit.validateErrorMsg);
+	        	Helper.showToast('failure', AOCLit.validateErrorMsg);
 	        	Ext.getBody().unmask();
 	        }
 	    }); 
@@ -176,11 +176,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	grid.validationColumnMissing = false;
     	
     	if(!me.isSalesOrderSubmittedFlag){
-    		Ext.Msg.alert(AOCLit.warningTitle,AOCLit.salesOrderWarning);
+    		Helper.showToast('validation',AOCLit.salesOrderWarning);
     		return ;
     	}
     	if(grid.editingPlugin.editing){
-    		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.editingModeTitle);
+    		Helper.showToast('validation', AOCLit.editingModeTitle);
     		return;
     	}
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
@@ -194,24 +194,24 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	
     	//For Invalid Combo 
     	if(grid.invalidComboColumn){
-    		Ext.Msg.alert(AOCLit.warningTitle, grid.invalidComboColumn);
+    		Helper.showToast('validation', grid.invalidComboColumn);
     		return;
     	}
     	
     	//If customer order qty is zero
     	if(isCustomerOrderQantityIsZero){
-    		Ext.Msg.alert(AOCLit.warningTitle, AOCLit.customerOrderQtyNotZeroMessage);
+    		Helper.showToast('validation', AOCLit.customerOrderQtyNotZeroMessage);
     		return;
     	}
     	
     	//if mandatoryColumn Missing
     	if(grid.mandatoryColumnMissing){
-    		Ext.Msg.alert(AOCLit.warningTitle, grid.mandatoryColumnMissing);
+    		Helper.showToast('validation', grid.mandatoryColumnMissing);
 			return;
 		}
     	//if mandatoryValidation Missing
     	if(grid.mandatoryValidationColumnMissing){
-    		Ext.Msg.alert(AOCLit.warningTitle, grid.mandatoryValidationColumnMissing);
+    		Helper.showToast('validation', grid.mandatoryValidationColumnMissing);
 			grid.showMandatoryValidationField=true;
 			return;
     	}
@@ -223,7 +223,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		});
 		
 		if(records.length > 0){
-			Ext.Msg.alert('', AOCLit.changeOrderLineStatusAlert);
+			Helper.showToast('validation', AOCLit.changeOrderLineStatusAlert);
 			return;
 		}
 		
@@ -307,18 +307,18 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	                	grid.openedRecordIndex = '';
 	                	Ext.getBody().unmask();
 	                	Helper.loadOrderLineGridStore(grid.store, id);
-		        		Ext.Msg.alert('', AOCLit.salesOrderCreationMsg);
+		        		Helper.showToast('Success', AOCLit.salesOrderCreationMsg);
 		        	}
 		        	else{
 		        		Helper.loadOrderLineGridStore(grid.store, id);
-		        		Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
+		        		Helper.showToast('failure',AOCLit.submitSalesOrderErrorMsg);
 		        		proceed=false;
 		        		Ext.getBody().unmask();
 		        	}
 	        },
 	        failure: function(response, opts) {s
 	        	proceed=false;
-	        	Ext.Msg.alert('',AOCLit.submitSalesOrderErrorMsg);
+	        	Helper.showToast('failure',AOCLit.submitSalesOrderErrorMsg);
 	        	Ext.getBody().unmask();
             }
 		});
@@ -337,7 +337,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	        jsonData:obj,
     		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
 		        success : function(response, opts) {
-			  		Ext.Msg.alert('',AOCLit.updateOrdLineDetailMsg);
+			  		Helper.showToast('Success',AOCLit.updateOrdLineDetailMsg);
 			  		grid.openedRecordIndex ='';
 			  		Ext.getBody().unmask();
 			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
@@ -466,7 +466,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 			comboValue = comboField.getValue();
 				
       		if(comboValue == '' || comboValue == null){
-      			Ext.Msg.alert(AOCLit.warningTitle, AOCLit.selectValueDrpMsg);
+      			Helper.showToast('validation', AOCLit.selectValueDrpMsg);
       			return false;
       		}
       		innerGridType = 'bulkUpdateVariableHeaderrGrid';
