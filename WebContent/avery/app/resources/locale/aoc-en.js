@@ -335,6 +335,7 @@ Ext.define('AOC.lang.lit',{
     "orderCancelSuccessAlert":'Order cancelled successfully',
     "emailMovedToTaskManagerSuccessAlert":'Email moved to Task Manager successfully',
     "success":"Success",
+    "submitSalesOrderErrorMsg":'Error while submitting sales order',
     "emailDisregardSuccessAlert":'Email disregarded successfully',
     "orderLineMandatoryFieldMissingAlt":'One of the mandatory fields is empty. Please ensure that all mandatory fields are filled before proceeding.',
     //Partner
