@@ -139,7 +139,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                                     method: 'DELETE',
                                     url: applicationContext + '/rest/partners/' + id,
                                     success: function(response, opts) {
-                                        AOC.util.Helper.fadeoutMessage('Success', AOCLit.delPartnerMsg);
+                                        Helper.showToast('Success', AOCLit.delPartnerMsg);
                                         AOCRuntime.getActiveGrid().store.load();
                                     },
                                     failure: function(response, opts) {}
