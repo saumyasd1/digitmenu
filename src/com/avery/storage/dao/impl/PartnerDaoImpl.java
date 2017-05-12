@@ -1,5 +1,7 @@
 package com.avery.storage.dao.impl;
 
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,12 +22,14 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
@@ -115,4 +119,49 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		}
 		return partnerExist;
 	}
+	
+	@Override
+	public List<Partner> getPartner(String siteId) {
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		Session session = null;
+		Criteria criteria = null;
+		Partner partner = null;
+		 Partner partnerObj=new Partner();
+			Org orgObj=new Org();
+		List<Partner> partnerlist = new ArrayList<Partner>();
+		List<Partner> partnerList = new ArrayList<Partner>();
+		Integer userSiteId = Integer.parseInt(siteId);
+		session = getSessionFactory().openSession();
+		criteria = session.createCriteria(Partner.class);
+		Conjunction disCriteria = Restrictions.conjunction();
+		disCriteria.add(Restrictions.eq("siteId", userSiteId));
+		criteria.add(disCriteria);
+		partnerList = criteria.list();
+		for (Partner partnerIter : partnerList) {
+			if (partnerIter != null) {
+				partner = partnerIter;
+				partner.setId(partner.getId());
+				partner.setPartnerName(partner.getPartnerName());
+				partner.setAddress1(partner.getAddress1());
+				partner.setAddress2(partner.getAddress2());
+				partner.setAddress3(partner.getAddress3());
+				partner.setEmailDomain(partner.getEmailDomain());
+				partner.setEmailId(partner.getEmailId());
+				partnerlist.add(partner);
+			}
+
+		}
+		try {
+			responseMap.put("partners", partnerlist);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return partnerlist;
+	}
+	
+	
+	
 }
