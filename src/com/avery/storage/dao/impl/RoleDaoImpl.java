@@ -209,7 +209,7 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		Session session = null;
 		Criteria criteria = null;
 		MenuRole menu = null;
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(MenuRole.class);
 
 		String role = Long.toString(roleId);
