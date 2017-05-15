@@ -235,7 +235,6 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 			List<OrderFileAttachment> resList = new ArrayList<OrderFileAttachment>();
 			while (itr.hasNext()) {
 				Long orderFileAttachmentId = (Long) itr.next();
-				// System.out.println(ll);
 				crit = session.createCriteria(OrderFileAttachment.class);
 				ProjectionList proj = Projections.projectionList();
 				proj.add(Projections.property("id").as("id"));
@@ -319,7 +318,6 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 				q.setString("status", ApplicationConstants.ORDEREMAILQUEUE_DISREGARDED_STATUS);
 				q.setLong("id", entityId);
 				q.executeUpdate();
-				System.out.println("All Disregard");
 			} else {
 				if (!orderEmailQueue.getStatus().equals(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS)) {
 					String s = "update OrderEmailQueue set status=:status where id =:id ";
@@ -328,7 +326,6 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 					q.setLong("id", entityId);
 					q.executeUpdate();
 				}
-				System.out.println("Not All Disregard");
 			}
 
 		} catch (WebApplicationException ex) {
