@@ -126,14 +126,12 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 			String orgCode = (String) queryMap.getFirst("orgCodeName");
 			String orgUniqueName = orgCode;
 			criteria.add(Restrictions.eq("varOrgCode.name", orgUniqueName));
-			System.out.println(orgUniqueName);
 
 		}
 		if (queryMap.getFirst("partnerName") != null) {
 			String partnerName = (String) queryMap.getFirst("partnerName");
 			String partnerUniqueName = partnerName;
 			criteria.add(Restrictions.eq("varPartner.partnerName", partnerUniqueName));
-			System.out.println(partnerUniqueName);
 
 		}
 
@@ -141,7 +139,6 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 			String partnerId = (String) queryMap.getFirst("partnerId");
 			Long partnerUniqueId = Long.parseLong(partnerId);
 			criteria.add(Restrictions.eq("varPartner.id", partnerUniqueId));
-			System.out.println(partnerUniqueId);
 
 		}
 		entitiesMap.put("totalCount", totalCount);
