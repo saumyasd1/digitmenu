@@ -28,10 +28,10 @@ public class TestShiro {
 			ae.printStackTrace();
 		}
 
-		System.out.println("Authenticated :: " + currentUser.isAuthenticated());
-		System.out.println("Admin Role :: " + currentUser.hasRole("admin"));
+		//System.out.println("Authenticated :: " + currentUser.isAuthenticated());
+		//System.out.println("Admin Role :: " + currentUser.hasRole("admin"));
 		Session session = currentUser.getSession();
-		System.out.println(session.getId().toString());
+		//System.out.println(session.getId().toString());
 	}
 
 }
