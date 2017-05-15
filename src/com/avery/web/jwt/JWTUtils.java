@@ -61,18 +61,18 @@ public class JWTUtils {
 		Map<String, Object> claimsMap = new HashMap<String, Object>();
 		claimsMap.put("user", "ajain");
 		claimsMap.put("role", "admin");
-		System.out.println(jwt = createJWT("1234", "aman", "test token",
-				1000 * 60 * 60, claimsMap));
+		//System.out.println(jwt = createJWT("1234", "aman", "test token",
+			//	1000 * 60 * 60, claimsMap));
 
 		Claims claims = parseJWT(jwt);
-		System.out.println("ID: " + claims.getId());
-		System.out.println("Subject: " + claims.getSubject());
-		System.out.println("Issuer: " + claims.getIssuer());
-		System.out.println("Expiration: " + claims.getExpiration());
+		//System.out.println("ID: " + claims.getId());
+		//System.out.println("Subject: " + claims.getSubject());
+		//System.out.println("Issuer: " + claims.getIssuer());
+		//System.out.println("Expiration: " + claims.getExpiration());
 		Set<Entry<String, Object>> entries = claims.entrySet();
 		for (Entry<String, Object> entry : entries) {
-			System.out.println("Claim --> key:" + entry.getKey() + ", value:"
-					+ entry.getValue());
+		//	System.out.println("Claim --> key:" + entry.getKey() + ", value:"
+			//		+ entry.getValue());
 		}
 	}
 }
