@@ -761,12 +761,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	 * @param orderQueueId
 	 * @return additional file count for order queue
 	 */
+	@Override
 	public int getAdditionalFileCount(Long orderQueueId) {
 		int additionalFileCount = 0;
 		Session session = null;
 		Criteria criteria = null;
 		try {
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderLine.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderQueueId));
 			criteria.add(Restrictions.isNotNull("additionalFileId"));
@@ -789,9 +790,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			return set.size();
 		} catch (Exception e) {
 			return 0;
-		}
-		finally{
-			session.close();
 		}
 	}
 }
