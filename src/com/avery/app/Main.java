@@ -72,8 +72,8 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		new Main("/Users/amanjain/Desktop/AJ/workspace/AveryDennisonWeb_Git")
 				.boot();
-		System.out.println("*** Booted Successfully ***");
-		System.out.println(PathConfig.getLogbackConfigPath());
+		//System.out.println("*** Booted Successfully ***");
+		//System.out.println(PathConfig.getLogbackConfigPath());
 		//PersonService personService = (PersonService) SpringConfig
 				//.getInstance().getBean("personService");
 
