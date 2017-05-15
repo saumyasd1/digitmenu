@@ -77,7 +77,7 @@ public class HSQLDatabase implements EmbeddedDatabase {
 	@Override
 	public void shutdown() {
 		// TODO Auto-generated method stub
-		System.out.println("*** Shutdown DB ***");
+		//System.out.println("*** Shutdown DB ***");
 	}
 
 }
