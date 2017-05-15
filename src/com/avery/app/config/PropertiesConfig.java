@@ -65,14 +65,14 @@ public class PropertiesConfig {
 
 	public static void main(String[] args) throws Exception {
 
-		System.out.println(PropertiesConfig.getString("sysPropName"));
-		System.out.println(PropertiesConfig.getString("propName"));
-		System.out.println(PropertiesConfig.getList("propName").size());
-		System.out.println(PropertiesConfig.getInteger("propName123"));
+		//System.out.println(PropertiesConfig.getString("sysPropName"));
+		//System.out.println(PropertiesConfig.getString("propName"));
+		//System.out.println(PropertiesConfig.getList("propName").size());
+		//System.out.println(PropertiesConfig.getInteger("propName123"));
 		// System.out.println(PropertiesConfigurator.getInstance().getInt(
 		// "propName123"));
-		System.out.println(System.getProperty("sysPropName"));
-		System.out.println(System.getProperty("propName"));
+		//System.out.println(System.getProperty("sysPropName"));
+		//System.out.println(System.getProperty("propName"));
 	}
 
 }
