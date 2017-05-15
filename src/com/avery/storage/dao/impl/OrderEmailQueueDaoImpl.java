@@ -102,7 +102,6 @@ OrderEmailQueueDao {
 
 		List<OrderEmailQueue> list = criteria.list();
 	
-		//System.out.println("TotalCount------------->"+list.size());
 		// getting colorCode, iconName and values as required at the GUI
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
 		if (statusList == null)
@@ -124,7 +123,6 @@ OrderEmailQueueDao {
 			// orderqueue count added for the emailqueue screen "view order"
 			// button
 			long trackId = orderQueue.getId();
-			//System.out.println(trackId);
 			int orderQueueCount = getOrderQueueCountByTrackId(trackId);
 			orderQueue.setOrderQueueCount(orderQueueCount);
 			
