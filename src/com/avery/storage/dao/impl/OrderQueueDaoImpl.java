@@ -2,8 +2,6 @@ package com.avery.storage.dao.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,17 +31,11 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderFileAttachment;
-import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.OrderLine;
-import com.avery.storage.entities.RBO;
-import com.avery.storage.entities.SalesOrder;
-import com.avery.storage.service.CodeService;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -86,7 +78,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 
 		entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
-		//entitiesMap.put("partner", criteria1.list());
 		return entitiesMap;
 	}
 
@@ -94,21 +85,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	@Transactional
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap = new HashMap();
-		/*Session session = null;
-		session = getSessionFactory().getCurrentSession();*/
 		int totalCount = 0;
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
 		
 		//Adding search map criteria for OrderQueue Screen
-		//Criteria criteria = session.createCriteria(OrderQueue.class);// getCriteria(queryMap);
 		Criteria criteria = getCriteria(queryMap);
-		/*String queryString=(String) queryMap.getFirst("query");
-		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-		*//*String partnerName=searchMap.get("partnerName");
-		if(partnerName!=null && !"".equals(partnerName)){
-			criteria.add(Restrictions.ilike("partner.partnerName", partnerName,MatchMode.ANYWHERE));
-		}*/
+		
 		// Following code adds partner name, rboname, productline and
 		// emailqueueid in the order queue
 		ProjectionList proj = Projections.projectionList();
@@ -153,15 +136,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
 			Long queueId = Long.parseLong(emailQueueId);
 			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-			System.out.println(queueId);
-
 		}
 		if (queryMap.getFirst("senderEmailId") != null) {
 			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
 			String senderEmail = senderEmailId;
 			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
-			System.out.println(senderEmail);
-
 		}
 
 		// total count was returning 0 so, placed above set projection
@@ -177,7 +156,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 
 		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		criteria.addOrder(Order.desc("lastModifiedDate"));
-
 		List<OrderQueue> list = criteria.list();
 
 		// getting colorCode, iconName and values as required at the GUI
@@ -212,7 +190,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	@Override
 	public void submitOrderToSystem(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
 		try{
@@ -256,7 +233,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	@Override
 	public void cancelOrder(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
 		String commentString="";
@@ -277,7 +253,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			session.update(orderQueueObj);
 			orderQueueObj.postUpdateOp();
 			commentString="";
-			String status=orderQueueObj.getStatus();
 			String comment=orderQueueObj.getComment();
 			if(!"".equals(comment)){
 				commentString=",comment=:comment ";
@@ -363,12 +338,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			if(Subject!=null && !"".equals(Subject)){
 				criteria.add(Restrictions.ilike("orderemailqueue.subject",Subject,MatchMode.ANYWHERE));
 			}
-			/*String Status=searchMap.get("status");
-			if (Status != null && !"".equals(Status)) {
-			String[] status = Status.split(",");
-			criteria.add(Restrictions.in("status", status));
-			}*/
-			
 			String Status=searchMap.get("Status");
 			if (Status != null && !"".equals(Status)) {
 			String[] status = Status.split(",");
@@ -384,14 +353,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
 			HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 			}
-			/*String EmailBody=searchMap.get("EmailBody");
-			if(EmailBody!=null && !"".equals(EmailBody)){
-				criteria.add(Restrictions.ilike("emailBody",EmailBody,MatchMode.ANYWHERE));
-			}
-			String OrderSource=searchMap.get("OrderSource");
-			if(OrderSource!=null && !"".equals(OrderSource)){
-				criteria.add(Restrictions.eq("orderSource",OrderSource));
-			}*/
 			String partnerDataStructure=searchMap.get("partnerDataStructure");
 			if(partnerDataStructure!=null && !"".equals(partnerDataStructure)){
 				//criteria.createAlias("productLine", "productLine");
@@ -425,19 +386,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				Long Id=Long.parseLong(emailQueueId);
 				criteria.add(Restrictions.eq("orderemailqueue.id",Id));
 			}
-			
-			
 		}
-		/*else{
-			 Date date = new Date();
-		        String todate = HibernateUtils.sdfDate.format(date);
-		        Calendar cal = Calendar.getInstance();
-		        cal.add(Calendar.DATE, -7);
-		        Date todate1 = cal.getTime();    
-		        String strDate = HibernateUtils.sdfDate.format(todate1);
-		    String endDate = HibernateUtils.sdfDate.format(date);
-		    //criteria=HibernateUtils.getCriteriaBasedOnDate(criteria, "receivedDate", strDate, endDate);
-		}*/
 		return criteria;
 	}
 	
@@ -500,31 +449,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String emailQueueId=(String) queryMap.getFirst("emailQueueId");
 			Long queueId = Long.parseLong(emailQueueId);
 			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-			System.out.println(queueId);
-			
 		}
 		if(queryMap.getFirst("senderEmailId") != null){
 			String senderEmailId=(String) queryMap.getFirst("senderEmailId");
 			String senderEmail = senderEmailId;
 			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
-			System.out.println(senderEmail);
-			
 		}
 		if(queryMap.getFirst("receivedDate") != null){
 			Date receivedDate=(Date) queryMap.getFirst("receivedDate");
 			Date receivedEmailDate = receivedDate;
 			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
-			System.out.println(receivedEmailDate);
-			
 		}
-	   
-	   
-	   
-	   List<OrderQueue> list = criteria.list();
-
-		
-		
-		
 		String queryString=(String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		if(queryString!=null){
@@ -594,28 +529,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String emailQueueId=(String) queryMap.getFirst("emailQueueId");
 			Long queueId = Long.parseLong(emailQueueId);
 			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-			System.out.println(queueId);
-			
 		}
 		if(queryMap.getFirst("senderEmailId") != null){
 			String senderEmailId=(String) queryMap.getFirst("senderEmailId");
 			String senderEmail = senderEmailId;
 			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
-			System.out.println(senderEmail);
-			
 		}
 		if(queryMap.getFirst("receivedDate") != null){
 			Date receivedDate=(Date) queryMap.getFirst("receivedDate");
 			Date receivedEmailDate = receivedDate;
 			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
-			System.out.println(receivedEmailDate);
-			
 		}
-		
-      List<OrderQueue> list = criteria.list();
-
-		
-		
 		
 		String queryString=(String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
@@ -662,7 +586,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	@Override
 	public void identifyEmail(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
 		ObjectReader updater=null;
 		Session session = null;
 		try{
@@ -704,12 +627,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Criteria criteria = session.createCriteria(OrderFileAttachment.class);
 		return entitiesMap;
 	}
-	
-	
 	//implementation of get mail body path method
 	@Override
 	public String getMailBodyPath(long trackid){
-		String mailBodyPath = "";
 		Session session = null;
 		try {
 			session = getSessionFactory().getCurrentSession();
@@ -721,12 +641,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			List list = criteria.list();
 			String dir = "";
 			dir = (String) list.get(0);
-			/*mailBodyPath = dir+File.separatorChar+"CompleteEmail.html";
-			File file = new File(mailBodyPath);
-			if(!file.exists()){
-				return dir+File.separatorChar+"CompleteEmail.pdf";
-			}*/
-			//System.out.println(mailBodyPath);
 			return dir;
 
 		} catch (WebApplicationException ex) {
@@ -763,7 +677,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	 */
 	@Override
 	public int getAdditionalFileCount(Long orderQueueId) {
-		int additionalFileCount = 0;
 		Session session = null;
 		Criteria criteria = null;
 		try {
