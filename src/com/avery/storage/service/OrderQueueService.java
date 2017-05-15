@@ -84,4 +84,10 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public String getOrderFilePathByOrderFileQueueId(long orderFileQueueId){
 		return getOrderQueueDao().getOrderFilePath(orderFileQueueId);
 	}
+	
+	//Method for getting order file count (@Saumya)
+	@Transactional
+	public int getAdditionalFileCount(Long orderQueueId){
+		return getOrderQueueDao().getAdditionalFileCount(orderQueueId);
+	}
 }
