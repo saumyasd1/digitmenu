@@ -209,7 +209,7 @@ public class RestClient {
 				"http://www.espncricinfo.com",
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON,
 				GET_OPERATION, null, null, null, null, null, null);
-		System.out.println(response.readEntity(String.class));
+		//System.out.println(response.readEntity(String.class));
 	}
 
 }
