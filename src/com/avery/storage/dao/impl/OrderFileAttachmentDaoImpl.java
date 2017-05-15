@@ -217,7 +217,7 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 		Session session = null;
 		Criteria criteria = null;
 		try {
-			session = getSessionFactory().openSession();
+			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderLine.class);
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderFileQueueId));
 			criteria.add(Restrictions.isNotNull("additionalFileId"));
@@ -258,9 +258,7 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 					e);
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		} finally {
-			session.close();
-		}
+		} 
 		return entitiesMap;
 	}
 
