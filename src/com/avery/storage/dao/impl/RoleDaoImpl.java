@@ -147,7 +147,7 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		String role = Long.toString(roleId);
 		List<User> userlist = new ArrayList<User>();
 		List<User> userList = new ArrayList<User>();
-		session = getSessionFactory().openSession();
+		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(User.class);
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("role", role));
