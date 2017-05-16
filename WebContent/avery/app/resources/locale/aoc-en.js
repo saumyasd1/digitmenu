@@ -511,5 +511,6 @@ Ext.define('AOC.lang.lit',{
     tickTabMsg:'Please select atleast one tab',
     userInfoInvalid:'Please fill mandatory values',
     uploadPhoto:'Upload Photo',
-    invalidImgFormat:'Please select a valid image format'
+    invalidImgFormat:'Please select a valid image format',
+    userExistMsg:'An entry already exist for given email address'
 });
