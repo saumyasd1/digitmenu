@@ -147,7 +147,7 @@ Ext.define('AOC.controller.MenuController', {
                     if (obj['menuList']) {
                         sectionStore.loadData(obj['menuList']);
                     }
-                    
+
                     Ext.getBody().unmask();
                     me.loadSectionStore();
                     me.loadStores();
@@ -172,9 +172,8 @@ Ext.define('AOC.controller.MenuController', {
     updateHeaderUserName: function () {
         var me = this,
             userInfo = me.runtime.getUser(),
-            name = userInfo.firstName;
-
-        name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
+            name = userInfo.firstName,
+            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
         Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
     },
     onClickMainMenu: function (cmp, rec) {
@@ -298,11 +297,11 @@ Ext.define('AOC.controller.MenuController', {
     updateProfileInfo: function () {
         var me = this,
             user = me.runtime.getUser(),
-            name = user.firstName;
-
-        mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
+            name = user.firstName,
+            mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
             userinfo = mainprofilewrapper.down('userinfo');
         name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
+
         userinfo.down('#name').setValue(name);
         userinfo.down('#gender').setValue(user.gender);
         userinfo.down('#email').setValue(user.email);
@@ -433,12 +432,12 @@ Ext.define('AOC.controller.MenuController', {
             }
         });
     },
-    loadSectionStore: function(){
-    	 var me = this,
-    	 	 sectionStore = me.getSectionsStore(),
-    	 	menuList = Helper.getCookie('menuList') ? JSON.parse(Helper.getCookie('menuList')) : '';
-         if (menuList) {
-        	 sectionStore.loadData(menuList);
-         }
+    loadSectionStore: function () {
+        var me = this,
+            sectionStore = me.getSectionsStore(),
+            menuList = Helper.getCookie('menuList') ? JSON.parse(Helper.getCookie('menuList')) : '';
+        if (menuList) {
+            sectionStore.loadData(menuList);
+        }
     }
 });
