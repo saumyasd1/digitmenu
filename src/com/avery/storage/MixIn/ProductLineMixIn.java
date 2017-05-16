@@ -30,12 +30,6 @@ public abstract class ProductLineMixIn {
 	public abstract Date getCreatedDate();
 	
 	@JsonIgnore
-	public abstract String getLastModifiedBy();
-	
-	@JsonIgnore
-	public abstract Date getLastModifiedDate();
-	
-	@JsonIgnore
 	public abstract List<OrderSystemInfo> getListOrderSystemInfo();
 
 	@JsonIgnore
