@@ -15,7 +15,7 @@ Web Application for Avery Dennison Project
            # app.working.dir.path = C:/Users/Deepak/git/AveryDennisonWeb 
 #Step 11 : If Already Sencha and ruby installed , please open cmd and run the command sencha app watch till in your given project path like ('C:\Users\Deepak\git\AveryDennisonWeb\WebContent\avery') , If Not Installed please install both first          
 #Step 12 : If It executes properly 	Then, 
-#Step 11 : Refresh the project and then Clean and Build your Project and then Run. It will run properly.
+#Step 13 : Refresh the project and then Clean and Build your Project and then Run. It will run properly.
 
 #for War file deployment
 #Step for War : You can export your project into war format , then you can directly put into your application server (apache tomcat)
