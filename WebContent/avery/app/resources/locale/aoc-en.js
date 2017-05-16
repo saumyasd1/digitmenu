@@ -510,5 +510,6 @@ Ext.define('AOC.lang.lit',{
     adminDelMsg:'Super Admin can not be deleted.',
     tickTabMsg:'Please select atleast one tab',
     userInfoInvalid:'Please fill mandatory values',
-    uploadPhoto:'Upload Photo'
+    uploadPhoto:'Upload Photo',
+    invalidImgFormat:'Please select a valid image format'
 });
