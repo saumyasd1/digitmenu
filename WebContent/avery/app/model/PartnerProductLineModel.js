@@ -44,6 +44,8 @@ Ext.define('AOC.model.PartnerProductLineModel',{
 		{name: 'localBilling',mapping:'localBilling',type:'boolean'},
 		{name: 'shipmentSample',mapping:'shipmentSample',type:'boolean'},
 		{name: 'factoryTransfer',mapping:'factoryTransfer',type:'boolean'},
+		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
+		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'}
 		
 			    ]
 
