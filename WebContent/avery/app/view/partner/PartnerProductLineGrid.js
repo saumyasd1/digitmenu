@@ -85,6 +85,16 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            text : AOCLit.splitShipSetBy,
 				            dataIndex:'splitShipSetBy',
 				            flex:1
+                        },
+                        {
+                            text: AOCLit.lastmodifiedby,
+                            dataIndex: 'lastModifiedBy',
+                            flex:1
+                        }, 
+                        {
+                            text: AOCLit.lastmodifieddate,
+                            dataIndex: 'lastModifiedDate',
+                            flex:1
                         }
                       
         ];
