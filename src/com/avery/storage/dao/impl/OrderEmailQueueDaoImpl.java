@@ -119,12 +119,9 @@ OrderEmailQueueDao {
 			Map<String, String> statusCodes = statusList.get(status);
 			if (statusCodes == null)
 				throw new Exception("No data found in the status table for status:: \"" + status + "\".");
-			String iconName = statusCodes.get("iconName");
-			String colorCode = statusCodes.get("colorCode");
-			String codeValue = statusCodes.get("codeValue");
-			orderQueue.setIconName(iconName);
-			orderQueue.setColorCode(colorCode);
-			orderQueue.setCodeValue(codeValue);
+			orderQueue.setIconName(statusCodes.get("iconName"));
+			orderQueue.setColorCode(statusCodes.get("colorCode"));
+			orderQueue.setCodeValue(statusCodes.get("codeValue"));
 
 			// orderqueue count added for the emailqueue screen "view order"
 			// button
