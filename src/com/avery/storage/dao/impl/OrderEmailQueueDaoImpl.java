@@ -85,7 +85,13 @@ OrderEmailQueueDao {
 
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
-
+		String siteId = (String) queryMap.getFirst("siteId");
+		String roleId = (String) queryMap.getFirst("roleId");
+		if(roleId.equals("1") && siteId.equals("1")){
+			//criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId))); // need to be added or change as per the requirements
+		}else{
+			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
+		}
 
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 
