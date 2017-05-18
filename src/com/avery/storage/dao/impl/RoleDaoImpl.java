@@ -173,12 +173,11 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		Session session = getSessionFactory().getCurrentSession();
 		int totalCount = 0;
 		Criteria criteria = session.createCriteria(Role.class);
-		
-		
-		if(queryMap.getFirst("id") != null){
-			criteria.add(Restrictions.ne("id", 1 ) );
+
+		if (queryMap.getFirst("id") != null) {
+			criteria.add(Restrictions.ne("id", 1));
 		}
-		
+
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
@@ -209,8 +208,8 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		Session session = null;
 		Criteria criteria = null;
 		MenuRole menu = null;
-		//session = getSessionFactory().getCurrentSession();
-		try{
+		// session = getSessionFactory().getCurrentSession();
+		try {
 			session = getSessionFactory().openSession();
 			criteria = session.createCriteria(MenuRole.class);
 
@@ -237,19 +236,18 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 			}
 			Map<String, String> map = new HashMap<String, String>();
 			for (String i : menuArrList) {
-				map.put(i.toLowerCase().toString().split("\\:")[0], i.toLowerCase()
-						.toString().split("\\:")[1]);
+				map.put(i.toLowerCase().toString().split("\\:")[0], i
+						.toLowerCase().toString().split("\\:")[1]);
 			}
 			return map;
-			
-		}finally{
+
+		} finally {
 			session.close();
-			}
+		}
 	}
 
 	@Override
 	public void editMenuRole(String data, Long entityId) {
-
 		ObjectMapper mapper = new ObjectMapper();
 		boolean home = false, emailqueue = false, taskmanager = false, orderqueue = false, weborder = false, partner = false, address = false;
 		Session session = null;
@@ -258,7 +256,6 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
 		Menu menuObj = new Menu();
-		MenuRole menuRoleObj = new MenuRole();
 		String rId = Long.toString(entityId);
 		Map<String, String> jsonMap = null;
 		try {
@@ -271,11 +268,15 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		home = Boolean.parseBoolean((String) jsonMap.get("home"));
 		if (home == true) {
 			Long currentMenuId = Long.parseLong("1");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 1;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("1");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -286,21 +287,25 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 			}
 
 		} else {
-			Long currentMenuId = Long.parseLong("1");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			int menuObj2 = 1;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		taskmanager = Boolean.parseBoolean((String) jsonMap.get("taskmanager"));
 		if (taskmanager == true) {
 			Long currentMenuId = Long.parseLong("2");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 2;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("2");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -310,21 +315,25 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				AppLogger.getSystemLogger().info("Value already exists in database...");
 			}
 		} else {
-			Long currentMenuId = Long.parseLong("2");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			int menuObj2 = 2;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		emailqueue = Boolean.parseBoolean((String) jsonMap.get("emailqueue"));
 		if (emailqueue == true) {
 			Long currentMenuId = Long.parseLong("3");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 3;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("3");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -334,21 +343,25 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				AppLogger.getSystemLogger().info("Value already exists in database...");
 			}
 		} else {
-			Long currentMenuId = Long.parseLong("3");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			int menuObj2 = 3;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		orderqueue = Boolean.parseBoolean((String) jsonMap.get("orderqueue"));
 		if (orderqueue == true) {
 			Long currentMenuId = Long.parseLong("4");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 4;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("4");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -360,19 +373,23 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		} else {
 			rId = Long.toString(entityId);
 			int menuObj2 = 4;
-			String queryString = "delete from MenuRole where roleId = " + rId
+			String s = "delete from MenuRole where roleId = " + rId
 					+ "and menuMasterId=" + menuObj2;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		weborder = Boolean.parseBoolean((String) jsonMap.get("weborder"));
 		if (weborder == true) {
 			Long currentMenuId = Long.parseLong("5");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 5;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("5");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -382,21 +399,25 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				AppLogger.getSystemLogger().info("Value already exists in database...");
 			}
 		} else {
-			Long currentMenuId = Long.parseLong("5");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			int menuObj2 = 5;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		partner = Boolean.parseBoolean((String) jsonMap.get("partner"));
 		if (partner == true) {
 			Long currentMenuId = Long.parseLong("6");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 6;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("6");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -406,21 +427,25 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				AppLogger.getSystemLogger().info("Value already exists in database...");
 			}
 		} else {
-			Long currentMenuId = Long.parseLong("6");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
-			Query query = session.createQuery(queryString);
-			query.executeUpdate();
+			int menuObj2 = 6;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
 		}
 		address = Boolean.parseBoolean((String) jsonMap.get("address"));
 		if (address == true) {
 			Long currentMenuId = Long.parseLong("7");
-			String queryString = "select distinct id from MenuRole where menuMasterId="
-					+ currentMenuId + "and roleId=" + rId;
-			Query query = session.createQuery(queryString);
-			List list = query.list();
+			menuObj.setId(currentMenuId);
+			int menuObj2 = 7;
+			String st = "select distinct id from MenuRole where menuMasterId="
+					+ menuObj2 + "and roleId=" + rId;
+			Query qt = session.createQuery(st);
+			List list = qt.list();
 			if (list.isEmpty()) {
+				MenuRole menuRoleObj = new MenuRole();
+				currentMenuId = Long.parseLong("7");
 				menuObj.setId(currentMenuId);
 				menuRoleObj.setMenu(menuObj);
 				menuRoleObj.setRole(Long.toString(entityId));
@@ -430,13 +455,193 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				AppLogger.getSystemLogger().info("Value already exists in database...");
 			}
 		} else {
-			Long currentMenuId = Long.parseLong("7");
 			rId = Long.toString(entityId);
-			String queryString = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + currentMenuId;
+			int menuObj2 = 7;
+			String s = "delete from MenuRole where roleId = " + rId
+					+ "and menuMasterId=" + menuObj2;
+			Query q = session.createQuery(s);
+			q.executeUpdate();
+		}
+		/*
+
+		ObjectMapper mapper = new ObjectMapper();
+		boolean home = false, emailqueue = false, taskmanager = false, orderqueue = false, weborder = false, partner = false, address = false;
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		Menu menuObj = new Menu();
+		MenuRole menuRoleObj = new MenuRole();
+		String roleId = Long.toString(entityId);
+		Map<String, String> jsonMap = null;
+		Date date = new Date(); 
+		try {
+			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		home = Boolean.parseBoolean((String) jsonMap.get("home"));
+		taskmanager = Boolean.parseBoolean((String) jsonMap.get("taskmanager"));
+		emailqueue = Boolean.parseBoolean((String) jsonMap.get("emailqueue"));
+		orderqueue = Boolean.parseBoolean((String) jsonMap.get("orderqueue"));
+		weborder = Boolean.parseBoolean((String) jsonMap.get("weborder"));
+		partner = Boolean.parseBoolean((String) jsonMap.get("partner"));
+		address = Boolean.parseBoolean((String) jsonMap.get("address"));
+
+		 Home checks edit and delete info starts
+		if (home == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 1 and roleId = " + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(1);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId= 1 " ;
 			Query query = session.createQuery(queryString);
 			query.executeUpdate();
 		}
-	}
+		 Home checks edit and delete info ends
+		
+		 taskmanager checks edit and delete info starts
+		if (taskmanager == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 2 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(2);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId = 2" ;
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 taskmanager checks edit and delete info ends
+		 emailqueue checks edit and delete info starts	
+		if (emailqueue == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId= 3 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(3);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			Long currentMenuId = Long.parseLong("3");
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId = 3 ";
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 emailqueue checks edit and delete info ends
+		
+		 orderqueue checks edit and delete info starts
+		if (orderqueue == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 4 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(4);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId = 4 ";
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 orderqueue checks edit and delete info ends
+		 weborder checks edit and delete info starts
+		if (weborder == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 5 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(5);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId +" menuMasterId = 5 ";
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 weborder checks edit and delete info ends
+		 partner checks edit and delete info starts
+		if (partner == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 6 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(6);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId = 6 ";
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 partner checks edit and delete info ends
+		 address checks edit and delete info starts
+		if (address == true) {
+			String queryString = "select distinct id from MenuRole where menuMasterId = 7 and roleId=" + roleId;
+			Query query = session.createQuery(queryString);
+			List list = query.list();
+			if (list.isEmpty()) {
+				menuObj.setId(7);
+				menuRoleObj.setMenu(menuObj);
+				menuRoleObj.setRole(roleId);
+				menuRoleObj.setCreatedDate(date);
+				session.save(menuRoleObj);
+			} else {
+				AppLogger.getSystemLogger().info("Value already exists in database...");
+			}
+		} else {
+			String queryString = "delete from MenuRole where roleId = " + roleId + "and menuMasterId = 7 ";
+			Query query = session.createQuery(queryString);
+			query.executeUpdate();
+		}
+		 address checks edit and delete info ends
+	*/}
+	/*public int lastId(){
+		int id = 0;
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		String queryString = "select id from MenuRole ";
+		Query query = session.createQuery(queryString);
+		id= query.list();
+		return id;
+	}*/
 
 }
