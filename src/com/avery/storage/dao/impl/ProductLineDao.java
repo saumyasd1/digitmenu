@@ -21,7 +21,7 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 
 	public ProductLine update(String productLineData,Long id) throws Exception;
 	
-	public List getAllDistantPartners() throws Exception;
+	public List getAllDistantPartners(MultivaluedMap queryMap) throws Exception;
 	
 	public List getAllRBOByPartner(int partnerId) throws Exception;
 	
