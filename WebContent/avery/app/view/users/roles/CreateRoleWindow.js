@@ -81,7 +81,7 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
                         labelSeparator: '',
                         labelStyle: Settings.config.defaultFieldSetLabelStyle,
                         labelAlign: Settings.form.defaultLabelAlign,
-                    },
+                    }, // do not edit name config and input values
                     items: [{
                         xtype: 'checkboxgroup',
                         columns: 4,
@@ -106,21 +106,21 @@ Ext.define('AOC.view.users.roles.CreateRoleWindow', {
                             width: 150,
                             name: 'orderqueue',
                             inputValue: '4'
-                        }, {
-                            boxLabel: 'Partner',
-                            width: 150,
-                            name: 'partner',
-                            inputValue: '5'
-                        }, {
-                            boxLabel: 'Address',
-                            width: 150,
-                            name: 'address',
-                            inputValue: '6'
                         },
                         {
                             boxLabel: 'Web Order',
                             width: 150,
                             name: 'weborder',
+                            inputValue: '5'
+                        }, {
+                            boxLabel: 'Partner',
+                            width: 150,
+                            name: 'partner',
+                            inputValue: '6'
+                        }, {
+                            boxLabel: 'Address',
+                            width: 150,
+                            name: 'address',
                             inputValue: '7'
                         }]
                     }]
