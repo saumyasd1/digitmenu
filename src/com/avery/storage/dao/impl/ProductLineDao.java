@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.avery.storage.dao.GenericDao;
-import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
 
 public interface ProductLineDao extends GenericDao<ProductLine, Long>{
