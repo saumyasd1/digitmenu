@@ -209,36 +209,42 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		Session session = null;
 		Criteria criteria = null;
 		MenuRole menu = null;
-		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(MenuRole.class);
+		//session = getSessionFactory().getCurrentSession();
+		try{
+			session = getSessionFactory().openSession();
+			criteria = session.createCriteria(MenuRole.class);
 
-		String role = Long.toString(roleId);
-		List<MenuRole> menuRolelist = new ArrayList<MenuRole>();
-		List<MenuRole> menuRoleList = new ArrayList<MenuRole>();
+			String role = Long.toString(roleId);
+			List<MenuRole> menuRolelist = new ArrayList<MenuRole>();
+			List<MenuRole> menuRoleList = new ArrayList<MenuRole>();
 
-		Conjunction disCriteria = Restrictions.conjunction();
-		disCriteria.add(Restrictions.eq("role", role));
-		criteria.add(disCriteria);
-		menuRoleList = criteria.list();
-		List<String> menuArrList = new ArrayList<String>();
-		for (MenuRole menuRole : menuRoleList) {
-			if (menuRole != null) {
-				menu = menuRole;
-				menu.setId(menuRole.getMenu().getId());
-				menu.setRole(menuRole.getRole());
-				menuRolelist.add(menu);
-				menuArrList.add(StringUtils.capitalize(menuRole.getMenu()
-						.getTitle().replaceAll("\\s+", ""))
-						+ ":" + menuRole.getMenu().getId());
+			Conjunction disCriteria = Restrictions.conjunction();
+			disCriteria.add(Restrictions.eq("role", role));
+			criteria.add(disCriteria);
+			menuRoleList = criteria.list();
+			List<String> menuArrList = new ArrayList<String>();
+			for (MenuRole menuRole : menuRoleList) {
+				if (menuRole != null) {
+					menu = menuRole;
+					menu.setId(menuRole.getMenu().getId());
+					menu.setRole(menuRole.getRole());
+					menuRolelist.add(menu);
+					menuArrList.add(StringUtils.capitalize(menuRole.getMenu()
+							.getTitle().replaceAll("\\s+", ""))
+							+ ":" + menuRole.getMenu().getId());
+				}
+
 			}
-
-		}
-		Map<String, String> map = new HashMap<String, String>();
-		for (String i : menuArrList) {
-			map.put(i.toLowerCase().toString().split("\\:")[0], i.toLowerCase()
-					.toString().split("\\:")[1]);
-		}
-		return map;
+			Map<String, String> map = new HashMap<String, String>();
+			for (String i : menuArrList) {
+				map.put(i.toLowerCase().toString().split("\\:")[0], i.toLowerCase()
+						.toString().split("\\:")[1]);
+			}
+			return map;
+			
+		}finally{
+			session.close();
+			}
 	}
 
 	@Override
