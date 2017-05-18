@@ -23,6 +23,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	maximumOrderFileCount:4,
 	maxAttachmentCount:4,
 	isResubmit:false,
+	autoScroll:true,
 	requires:['AOC.store.WebformStore'],
 	
 	defaults:{
@@ -81,7 +82,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						displayField:'partnerName',
 						listeners:{
 							'change':'onPartnerChange',
-							'focus': 'notifyByMessage'
+							'focus': 'notifyByMessage',
+							'afterrender':'afterRenderPartnerCombo'
 						}
 					},
 					{
