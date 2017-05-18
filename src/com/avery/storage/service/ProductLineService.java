@@ -59,8 +59,8 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 	}
 	
 	@Transactional 
-	public List getAllDistantPartners() throws Exception{
-		return getProductLineDao().getAllDistantPartners();
+	public List getAllDistantPartners(MultivaluedMap queryMap) throws Exception{
+		return getProductLineDao().getAllDistantPartners(queryMap);
 	}
 	
 	@Transactional
