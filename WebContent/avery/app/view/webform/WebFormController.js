@@ -1,7 +1,6 @@
 Ext.define('AOC.view.webform.WebFormController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.webFormMain',
-  
     runTime : AOC.config.Runtime,
     fileArray:[],
     totalFileCount:0,
@@ -498,5 +497,18 @@ Ext.define('AOC.view.webform.WebFormController', {
 		if(fileType=='Order File Type'){
 			return false;
 		}
-	}
+	},
+	afterRenderPartnerCombo: function(obj){
+        var userInfo = AOCRuntime.getUser(),
+        roleId = userInfo.role,
+        siteId = userInfo.siteId,
+        userId = userInfo.id,
+        userEmailId = userInfo.email;
+    obj.getStore().proxy.extraParams = {
+        siteId: siteId,
+        roleId: roleId,
+        userId: userId,
+        userEmailId: userEmailId
+    };
+}
 });
