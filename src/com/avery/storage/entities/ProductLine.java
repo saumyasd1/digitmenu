@@ -1446,10 +1446,12 @@ public class ProductLine extends MainAbstractEntity{
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			MultivaluedMap<String, String> queryParamMap = ui
+					.getQueryParameters();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			list = productLineService.getAllDistantPartners();
+			list = productLineService.getAllDistantPartners(queryParamMap);
 			if (list == null)
 				throw new Exception("Unable to find Partners");
 			mapper.writeValue(writer,list);
