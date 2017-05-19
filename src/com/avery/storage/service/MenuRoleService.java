@@ -1,7 +1,5 @@
 package com.avery.storage.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +19,4 @@ public class MenuRoleService extends GenericEntityService<MenuRole, Long> {
 	public void setMenuRoleDao(MenuRoleDao menuRoleDao) {
 		this.menuRoleDao = menuRoleDao;
 	}
-	
-	@Transactional
-	public void deleteMenuRole(Long entityId){
-		getMenuRoleDao().deleteMenuRole(entityId);
-	}
-
 }
