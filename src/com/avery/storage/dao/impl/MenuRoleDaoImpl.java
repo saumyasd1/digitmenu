@@ -60,34 +60,4 @@ public class MenuRoleDaoImpl extends GenericDaoImpl<MenuRole, Long> implements M
 		return entitiesMap;
 	}
 	
-	@Override
-	public void deleteMenuRole(Long entityId) {
-		ObjectMapper mapper = new ObjectMapper();
-		Long currentObjId=0L;
-		Session session = null;
-		try{
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRole=null;
-			menuRole=(MenuRole) session.get(MenuRole.class,entityId);
-			String s = "DELETE from MenuRole where roleId=:entityId";
-			Query q = session.createQuery(s);
-			q.setLong("entityId",entityId);
-			q.executeUpdate();
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
-	
 }
