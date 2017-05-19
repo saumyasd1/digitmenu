@@ -27,10 +27,6 @@ private RoleDao roleDao;
 		this.roleDao = roleDao;
 	}
 	@Transactional
-	public void addMenuRole(String data,Long entityId){
-		getRoleDao().addMenuRole(data,entityId);
-	}
-	@Transactional
 	public List<User> getUsers(Long roleId) {
 		return getRoleDao().getUsers(roleId);
 	}
