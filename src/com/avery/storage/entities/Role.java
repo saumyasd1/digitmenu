@@ -3,7 +3,6 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,6 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.MenuRoleMixIn;
-import com.avery.storage.service.MenuRoleService;
 import com.avery.storage.service.RoleService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,31 +49,6 @@ public class Role extends MainAbstractEntity {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
-	}
-
-	@Override
-	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
-		Long id;
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			Role role = mapper.readValue(data, Role.class);
-			role.setCreatedDate(new Date());
-			RoleService roleService = (RoleService) SpringConfig.getInstance().getBean("roleService");
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			id = roleService.create(role);
-			roleService.addMenuRole(data, id);
-			responseMap.put("id", id);
-			mapper.writeValue(writer, responseMap);
-			return Response.ok(id).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
 	}
 
 	@Override
@@ -145,32 +118,6 @@ public class Role extends MainAbstractEntity {
 		return rb.build();
 	}
 
-	@Override
-	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
-		Response.ResponseBuilder rb = null;
-		try {
-			RoleService roleService = (RoleService) SpringConfig.getInstance().getBean("roleService");
-			Role role = roleService.read(Long.parseLong(id));
-			MenuRoleService menuRoleService = (MenuRoleService) SpringConfig.getInstance().getBean("menuRoleService");
-			MenuRole menuRole = menuRoleService.read(Long.parseLong(id));
-			if (role == null) {
-				throw new WebApplicationException(
-						Response.status(Status.BAD_REQUEST).entity("Data entity with id \"" + id + "\" doesn't exist")
-								.type(MediaType.TEXT_PLAIN_TYPE).build());
-			}
-			// prepare response
-			menuRoleService.deleteMenuRole(Long.parseLong(id));
-			roleService.delete(role);
-			return Response.ok(id).build();
-		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error in deleting Data entity with id " + id, ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error("Error in deleting data entity with id " + id, e);
-			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
 
 	@GET
 	@Path("/users/{roleid}")
