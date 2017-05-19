@@ -10,8 +10,6 @@ import com.avery.storage.entities.User;
 
 public interface RoleDao extends GenericDao<Role, Long>{
 	
-	public void addMenuRole(String data, Long entityId);
-	
 	public List<User> getUsers(Long roleId);
 	
 	public Map getMenuRoles(Long roleId);
