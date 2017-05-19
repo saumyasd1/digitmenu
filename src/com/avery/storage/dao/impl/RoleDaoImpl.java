@@ -18,6 +18,7 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
@@ -37,105 +38,72 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 
 	@Override
 	public void addMenuRole(String data, Long entityId) {
-
-		ObjectMapper mapper = new ObjectMapper();
-		boolean home = false, emailqueue = false, taskmanager = false, orderqueue = false, weborder = false, partner = false, address = false;
-		Session session = null;
-		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-				false);
-		Map<String, String> jsonMap = null;
-		try {
-			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		home = Boolean.parseBoolean((String) jsonMap.get("home"));
-		if (home == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("1");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		taskmanager = Boolean.parseBoolean((String) jsonMap.get("taskmanager"));
-		if (taskmanager == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("2");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		emailqueue = Boolean.parseBoolean((String) jsonMap.get("emailqueue"));
-		if (emailqueue == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("3");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		orderqueue = Boolean.parseBoolean((String) jsonMap.get("orderqueue"));
-		if (orderqueue == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("4");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		weborder = Boolean.parseBoolean((String) jsonMap.get("weborder"));
-		if (weborder == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("5");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		partner = Boolean.parseBoolean((String) jsonMap.get("partner"));
-		if (partner == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("6");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
-		address = Boolean.parseBoolean((String) jsonMap.get("address"));
-		if (address == true) {
-			session = getSessionFactory().getCurrentSession();
-			MenuRole menuRoleObj = new MenuRole();
-			Menu menuObj = new Menu();
-			Long currentMenuId = Long.parseLong("7");
-			menuObj.setId(currentMenuId);
-			menuRoleObj.setMenu(menuObj);
-			menuRoleObj.setRole(Long.toString(entityId));
-			menuRoleObj.setCreatedDate(new Date());
-			session.save(menuRoleObj);
-		}
+		//for future enhancement it is required
+		/*
+		 * ObjectMapper mapper = new ObjectMapper(); boolean home = false,
+		 * emailqueue = false, taskmanager = false, orderqueue = false, weborder
+		 * = false, partner = false, address = false; Session session = null;
+		 * mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		 * mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+		 * false); Map<String, String> jsonMap = null; try { jsonMap =
+		 * ApplicationUtils.convertJSONtoMaps(data); } catch (IOException e) {
+		 * e.printStackTrace(); } catch (Exception e) { e.printStackTrace(); }
+		 * home = Boolean.parseBoolean((String) jsonMap.get("home")); if (home
+		 * == true) { session = getSessionFactory().getCurrentSession();
+		 * MenuRole menuRoleObj = new MenuRole(); Menu menuObj = new Menu();
+		 * Long currentMenuId = Long.parseLong("1");
+		 * menuObj.setId(currentMenuId); menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * taskmanager = Boolean.parseBoolean((String)
+		 * jsonMap.get("taskmanager")); if (taskmanager == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("2"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * emailqueue = Boolean.parseBoolean((String)
+		 * jsonMap.get("emailqueue")); if (emailqueue == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("3"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * orderqueue = Boolean.parseBoolean((String)
+		 * jsonMap.get("orderqueue")); if (orderqueue == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("4"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * weborder = Boolean.parseBoolean((String) jsonMap.get("weborder")); if
+		 * (weborder == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("5"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * partner = Boolean.parseBoolean((String) jsonMap.get("partner")); if
+		 * (partner == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("6"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 * address = Boolean.parseBoolean((String) jsonMap.get("address")); if
+		 * (address == true) { session =
+		 * getSessionFactory().getCurrentSession(); MenuRole menuRoleObj = new
+		 * MenuRole(); Menu menuObj = new Menu(); Long currentMenuId =
+		 * Long.parseLong("7"); menuObj.setId(currentMenuId);
+		 * menuRoleObj.setMenu(menuObj);
+		 * menuRoleObj.setRole(Long.toString(entityId));
+		 * menuRoleObj.setCreatedDate(new Date()); session.save(menuRoleObj); }
+		 */
 	}
 
 	@Override
@@ -234,10 +202,9 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 				}
 
 			}
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Boolean> map = new HashMap<String, Boolean>();
 			for (String i : menuArrList) {
-				map.put(i.toLowerCase().toString().split("\\:")[0], i
-						.toLowerCase().toString().split("\\:")[1]);
+				map.put(i.toLowerCase().toString().split("\\:")[0], true);
 			}
 			return map;
 
@@ -246,6 +213,7 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		}
 	}
 
+	@Transactional
 	@Override
 	public void editMenuRole(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -256,8 +224,9 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
 		Menu menuObj = new Menu();
-		String rId = Long.toString(entityId);
+		String roleId = Long.toString(entityId);
 		Map<String, String> jsonMap = null;
+		Date date = new Date();
 		try {
 			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
 		} catch (IOException e) {
@@ -265,204 +234,40 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Long> implements RoleDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		List<Long> mnlist = new ArrayList<Long>();
 		home = Boolean.parseBoolean((String) jsonMap.get("home"));
-		if (home == true) {
-			Long currentMenuId = Long.parseLong("1");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 1;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("1");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 1;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (home == true)
+			mnlist.add(1L);
 		taskmanager = Boolean.parseBoolean((String) jsonMap.get("taskmanager"));
-		if (taskmanager == true) {
-			Long currentMenuId = Long.parseLong("2");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 2;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("2");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 2;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (taskmanager == true)
+			mnlist.add(2L);
 		emailqueue = Boolean.parseBoolean((String) jsonMap.get("emailqueue"));
-		if (emailqueue == true) {
-			Long currentMenuId = Long.parseLong("3");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 3;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("3");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 3;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (emailqueue == true)
+			mnlist.add(3L);
 		orderqueue = Boolean.parseBoolean((String) jsonMap.get("orderqueue"));
-		if (orderqueue == true) {
-			Long currentMenuId = Long.parseLong("4");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 4;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("4");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 4;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (orderqueue == true)
+			mnlist.add(4L);
 		weborder = Boolean.parseBoolean((String) jsonMap.get("weborder"));
-		if (weborder == true) {
-			Long currentMenuId = Long.parseLong("5");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 5;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("5");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 5;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (weborder == true)
+			mnlist.add(5L);
 		partner = Boolean.parseBoolean((String) jsonMap.get("partner"));
-		if (partner == true) {
-			Long currentMenuId = Long.parseLong("6");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 6;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("6");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 6;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
-		}
+		if (partner == true)
+			mnlist.add(6L);
 		address = Boolean.parseBoolean((String) jsonMap.get("address"));
-		if (address == true) {
-			Long currentMenuId = Long.parseLong("7");
-			menuObj.setId(currentMenuId);
-			int menuObj2 = 7;
-			String st = "select distinct id from MenuRole where menuMasterId="
-					+ menuObj2 + "and roleId=" + rId;
-			Query qt = session.createQuery(st);
-			List list = qt.list();
-			if (list.isEmpty()) {
-				MenuRole menuRoleObj = new MenuRole();
-				currentMenuId = Long.parseLong("7");
-				menuObj.setId(currentMenuId);
-				menuRoleObj.setMenu(menuObj);
-				menuRoleObj.setRole(Long.toString(entityId));
-				menuRoleObj.setCreatedDate(new Date());
-				session.save(menuRoleObj);
-			} else {
-				AppLogger.getSystemLogger().info("Value already exists in database...");
-			}
-		} else {
-			rId = Long.toString(entityId);
-			int menuObj2 = 7;
-			String s = "delete from MenuRole where roleId = " + rId
-					+ "and menuMasterId=" + menuObj2;
-			Query q = session.createQuery(s);
-			q.executeUpdate();
+		if (address == true)
+			mnlist.add(7L);
+		String sql = "delete from MenuRole where roleId = " + roleId;
+		Query query = session.createQuery(sql);
+		query.executeUpdate();
+
+		for (int i = 0; i < mnlist.size(); i++) {
+			MenuRole menuRoleObj = new MenuRole();
+			menuObj.setId(mnlist.get(i));
+			menuRoleObj.setMenu(menuObj);
+			menuRoleObj.setRole(roleId);
+			menuRoleObj.setCreatedDate(date);
+			session.save(menuRoleObj);
 		}
-	
 	}
 
 }
