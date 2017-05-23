@@ -6,16 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.ws.rs.Path;
@@ -28,12 +24,12 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.AddressMixIn;
-import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.RboMixIn;
@@ -43,9 +39,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 
 
@@ -421,6 +414,15 @@ public class Partner extends MainAbstractEntity {
 			String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String,Object> responseMap=new HashMap<String,Object>();
+		String[] str=data.replace("{", "").replace("}", "").split(",");
+		String userId="";
+		for(String tmp:str){
+			if(tmp.contains("userId")){
+				String[]tmp1=tmp.split(":");
+				userId=tmp1[1];
+			}
+		}
+		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -445,6 +447,8 @@ public class Partner extends MainAbstractEntity {
 				responseMap.put("valueExist",true);
 				mapper.writeValue(writer, responseMap);
 			}else{
+				String username=partnerService.getUsernameById(userId);
+				partner.setLastModifiedBy(username);
 				partnerService.update(partner);
 				responseMap.put("valueExist",false);
 				responseMap.put("productline",partner);
