@@ -1,12 +1,10 @@
 package com.avery.storage.dao.impl;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -20,16 +18,12 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
-import com.avery.storage.entities.OrderLine;
-import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.RBO;
-import com.avery.storage.entities.SalesOrder;
+import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
@@ -158,6 +152,14 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		return partnerlist;
 	}
 	
-	
+	public String getUsernameById(String userid){
+		String username=null;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(User.class);
+		User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
+		username=currentuser.getFirstName()+currentuser.getLastName();
+		return username;
+		
+	}
 	
 }
