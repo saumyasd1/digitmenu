@@ -1,7 +1,7 @@
 Ext.define('AOC.view.users.manage.Wrapper', {
     extend : 'Ext.Container',
     alias  : 'widget.profileinfowrapper',
-    requires : ['AOC.view.users.myprofile.UserEdit',
+    requires : [
                 'AOC.view.users.myprofile.UserInfo',
                 'AOC.view.users.myprofile.ChangePassword',
                 'AOC.view.users.myprofile.Toolbar'
