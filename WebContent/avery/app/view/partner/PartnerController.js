@@ -11,6 +11,9 @@ Ext.define('AOC.view.partner.PartnerController', {
     		partnerManagementGrid = AOCRuntime.getActiveGrid(),
     		form = refs.createPartnerForm,
     		editMode = view.editMode,
+    		userInfo = AOCRuntime.getUser();
+    		userId = userInfo.id,
+    		userIdObj = {userId:userId},
     		url = '',
     		valueObj ='',
     		method ='',
@@ -21,7 +24,8 @@ Ext.define('AOC.view.partner.PartnerController', {
             url = applicationContext + '/rest/partners/' + view.partnerId;
             form.updateRecord();
             method = 'PUT';
-            valueObj = form.getRecord().getChanges();
+            valueObj = form.getRecord().getChanges(false, true, false, true);
+            valueObj = Object.assign({},valueObj,userIdObj);
             length = Object.keys(valueObj).length;
             msg = AOCLit.updatePartnerMsg;
         } else {
@@ -58,7 +62,7 @@ Ext.define('AOC.view.partner.PartnerController', {
                     },
                     failure: function(response, opts) {
                     	msg = response.responseText;
-                    	msg = Msg.replace("Exception:", " ");
+                    	msg = msg.replace("Exception:", " ");
                         Helper.showToast('failure', msg);
                         view.unmask();
                         view.close();
