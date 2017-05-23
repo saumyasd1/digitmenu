@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.PartnerDao;
-import com.avery.storage.entities.Address;
 import com.avery.storage.entities.Partner;
 
 
@@ -35,6 +34,9 @@ public class PartnerService extends GenericEntityService<Partner, Long>{
 	public List<Partner> getPartner(String siteId) {
 		return getPartnerDao().getPartner(siteId);
 	}
-
+	@Transactional
+	public String getUsernameById(String userid) throws Exception {
+		return partnerDao.getUsernameById(userid);
+	}
 
 }
