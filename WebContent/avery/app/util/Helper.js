@@ -662,13 +662,14 @@ Ext.define('AOC.util.Helper',{
         Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
     },
     getFilePath:function(value, metadata, rec){
-    	  if(rec.get('fileName')){
-    	   var str = rec.get('filePath') ? rec.get('filePath') :'',
-    	    fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'',
-    	    fileName = rec.get('fileName');
-    	    
-    	   var filePath = rec.get('fileContent') ? rec.get('fileContent') : fPath+'/'+fileName;
-    	   return '<div style="border:solid 1px #ccc;padding:2px;"><img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img><span class="fa fa-times delete-image" fileName="'+fileName+'" style="font-size14px;color#2c3e50;position:relative;float:right;right:5px;top:9px;cursor:pointer;"></span></div>';
+    	var userinfo = AOCRuntime.getUser();
+    		fileName = userinfo.fileName,
+    		filePath = userinfo.filePath;
+    	  if(fileName){
+    	   var str = filePath ? filePath :'',
+    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+    		   filePath = fPath+'\\'+fileName;
+    		 return filePath;
     	  }
     	 },
 });
