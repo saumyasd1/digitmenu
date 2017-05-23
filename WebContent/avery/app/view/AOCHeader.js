@@ -39,7 +39,7 @@ Ext.define('AOC.view.AOCHeader', {
                 flex: 1
             }, {
                 xtype: 'image',
-                src: settings.buttonIcons.defaultUserImg,
+                src: Helper.getFilePath(),
                 border: true,
                 style: {
                     "border-radius": "50%",
