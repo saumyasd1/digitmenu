@@ -641,5 +641,34 @@ Ext.define('AOC.util.Helper',{
 			metadata.style = AOCLit.mandatoryValidationCellColor;
 		}
 		return value;
-	}
+	},
+	updateProfileInfo: function () {
+        var user = AOCRuntime.getUser(),
+            name = user.firstName,
+            mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
+            userinfo = mainprofilewrapper.down('userinfo');
+        name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
+
+        userinfo.down('#name').setValue(name);
+        userinfo.down('#gender').setValue(user.gender);
+        userinfo.down('#email').setValue(user.email);
+        userinfo.down('#jobTitle').setValue(user.jobTitle);
+        userinfo.down('#role').setValue(user.role);
+    },
+    updateHeaderUserName: function () {
+        var userInfo = AOCRuntime.getUser(),
+            name = userInfo.firstName,
+            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
+        Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
+    },
+    getFilePath:function(value, metadata, rec){
+    	  if(rec.get('fileName')){
+    	   var str = rec.get('filePath') ? rec.get('filePath') :'',
+    	    fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'',
+    	    fileName = rec.get('fileName');
+    	    
+    	   var filePath = rec.get('fileContent') ? rec.get('fileContent') : fPath+'/'+fileName;
+    	   return '<div style="border:solid 1px #ccc;padding:2px;"><img filePath="'+filePath+'" class="view-image-preview" src="'+filePath+'" style="width:30px;height:30px;border:solid 1px #ccc;border-radius:50%;"></img><span class="fa fa-times delete-image" fileName="'+fileName+'" style="font-size14px;color#2c3e50;position:relative;float:right;right:5px;top:9px;cursor:pointer;"></span></div>';
+    	  }
+    	 },
 });
