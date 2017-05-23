@@ -7,6 +7,7 @@ Ext.define('AOC.lang.lit',{
     "from":'From',
     "dateTime":'Date-Time',
     //OrderLineExpandableGri
+    "commentOnOrderLine":'In order form remark and COO column has different value',
     "atoMandatory":'ATO Mandatory',
     "bulkSample":'Bulk Sample',
     "custPO":'Customer PO#',
