@@ -52,7 +52,7 @@ public interface PropertiesConstants {
 	
 	String FILEATTACHMENT_PATH="app.fileattachment.path";
 	
-	String WIFILES_PATH = "app.wifiles.path";
+	String PIC_PATH = "app.picfiles.path";
 	
 
 }
