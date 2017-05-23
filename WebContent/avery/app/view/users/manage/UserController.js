@@ -38,6 +38,12 @@ Ext.define('AOC.view.users.manage.UserController', {
                                     ID: id,
                                     title:'Edit User'
                                 });
+                                var refs = win.getReferences(),
+                                	profileImage = refs.profileImage,
+                                	userId = AOCRuntime.getUser().id;
+                                if(id == userId){
+                                	profileImage.setSrc(Helper.getFilePath());
+                                }
                                 win.down('form').loadRecord(currentRecord);
                                 win.show();
                                 callout.destroy();
