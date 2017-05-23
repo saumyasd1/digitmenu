@@ -25,7 +25,7 @@ Ext.define('AOC.view.partner.PartnerController', {
             form.updateRecord();
             method = 'PUT';
             valueObj = form.getRecord().getChanges(false, true, false, true);
-            valueObj = Object.assign({},valueObj,userIdObj);
+            Ext.apply(valueObj,userIdObj);
             length = Object.keys(valueObj).length;
             msg = AOCLit.updatePartnerMsg;
         } else {
