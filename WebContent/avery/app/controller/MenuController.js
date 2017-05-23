@@ -310,6 +310,9 @@ Ext.define('AOC.controller.MenuController', {
                  title : 'Edit Profile'
         	});
         win.down('form').getForm().setValues(userinfo);
+        var refs = win.getReferences(),
+    		profileImage = refs.profileImage;
+    		profileImage.setSrc(Helper.getFilePath());
         if(userId == 1){
 	        win.down('#site').setHidden(true);
         }
