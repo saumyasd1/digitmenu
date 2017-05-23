@@ -22,17 +22,15 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
-import com.avery.app.config.SpringConfig;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderFileAttachment;
-import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.OrgInfo;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SystemInfo;
-import com.avery.storage.service.ProductLineService;
+import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -326,54 +324,58 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 		Session session = getSessionFactory().getCurrentSession();
 		ProductLine pk = (ProductLine) session.get(getType(), id);
 		ObjectMapper mapper = new ObjectMapper();
-		HashMap<String, Object> productLineMap = null;
+		HashMap<String,Object> productLineMap=null;
+		//To get userid from productLineData
+		String[] str=productLineData.replace("{", "").replace("}", "").split("\"userId\":");
+		String[] str1=str[1].split(",");
+		String userId=str1[0].toString();
+		
+		// To get current username based on id
+		String username=null;
+		Criteria criteria = session.createCriteria(User.class);
+		User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userId))).uniqueResult();
+		username=currentuser.getFirstName()+currentuser.getLastName();
+		//.....................
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
 		ObjectReader updater = mapper.readerForUpdating(pk);
 		// build updated entity object from input data
 		pk = updater.readValue(productLineData);
-		productLineMap = ApplicationUtils
-				.convertJSONtoObjectMaps(productLineData);
-
-		int rboId = (productLineMap.get("rboId") == null ? 0
-				: (int) productLineMap.get("rboId"));
-		if (rboId != 0) {
-			RBO rbo = new RBO();
+		productLineMap=ApplicationUtils.convertJSONtoObjectMaps(productLineData);
+		
+		int rboId=(productLineMap.get("rboId")==null?0:(int)productLineMap.get("rboId"));
+		if(rboId!=0){
+			RBO rbo=new RBO();
 			rbo.setId(rboId);
-			pk.setRbo(rbo);
+			pk.setRbo(rbo);	
 		}
 		pk.setLastModifiedDate(new Date());
-		pk = saveOrUpdateAdvancedProperties(pk, productLineMap);
+		pk.setLastModifiedBy(username);
+		pk=saveOrUpdateAdvancedProperties(pk,productLineMap);
 		update(pk);
-		List ordersystemList = (ArrayList) productLineMap
-				.get("orderSystemInfo");
-		if (productLineMap.get("siteChanged") == null ? false
-				: (boolean) productLineMap.get("siteChanged")) {
+		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
+		if(productLineMap.get("siteChanged")==null?false:(boolean)productLineMap.get("siteChanged")){
 			String hql = "delete from OrderSystemInfo where varProductLine.id=:id";
-			org.hibernate.Query query = session.createQuery(hql);
-			query.setLong("id", id);
-			int rowCount = query.executeUpdate();
-
-			for (int i = 0; i < ordersystemList.size(); i++) {
-				LinkedHashMap systemMap = (LinkedHashMap) ordersystemList
-						.get(i);
-				addOrderSystemInfo(session, systemMap, pk);
+		    org.hibernate.Query query = session.createQuery(hql);
+		    query.setLong("id",id);
+		    int rowCount = query.executeUpdate();
+			
+			for(int i=0;i<ordersystemList.size();i++){
+				LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
+				addOrderSystemInfo(session,systemMap,pk);
 			}
-		} else {
-			for (int i = 0; i < ordersystemList.size(); i++) {
-				LinkedHashMap systemMap = (LinkedHashMap) ordersystemList
-						.get(i);
-				if (systemMap.get("newRecord") == null ? false
-						: (boolean) systemMap.get("newRecord"))
-					addOrderSystemInfo(session, systemMap, pk);
+		}else{
+			for(int i=0;i<ordersystemList.size();i++){
+				LinkedHashMap systemMap=(LinkedHashMap) ordersystemList.get(i);
+				if(systemMap.get("newRecord")==null?false:(boolean)systemMap.get("newRecord"))
+					addOrderSystemInfo(session,systemMap,pk);
 				else
-					updateOrderSystemInfo(session, systemMap);
+					updateOrderSystemInfo(session,systemMap);
 			}
-
+			
 		}
 		// session.getTransaction().commit();
-		return pk;
-	}
+		return pk;}
 
 	private OrderSystemInfo addOrderSystemInfo(Session session, Map systemMap,
 			ProductLine pk) throws Exception {
