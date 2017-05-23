@@ -5,119 +5,108 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
     ],
     alias: 'widget.userinfo',
     padding: '30 20 30 20',
+    controller:'adduserwindow',
     initComponent: function () {
         Ext.apply(this, {
             items: this.buildItems()
         });
         this.callParent(arguments);
     },
-    listeners:{
-	afterrender : function(cmp){
-	     cmp.updateLayout();
-	}
-    },
     buildItems: function () {
         var me = this,
-            imageUrl,
-            userGender,
-            settings = AOC.config.Settings,
-            runtime=AOC.config.Runtime,
-            userImageHtml = '';
-        if(me.rec){
-            imageUrl = me.rec.get('imageUrl');
-            userGender = me.rec.get('gender');
-        }
-        else{
-              imageUrl = runtime.getUser().imageUrl;
-              userGender = runtime.getUser().gender;
-        	}
-        if(Ext.isEmpty(imageUrl))
-            imageUrl= settings.buttonIcons.defaultUserImg,
-	    userImageHtml ='<img class="profile-img-inner-div" id="viewformImg" src="'+ imageUrl+'?_dc='+new Date().getTime()+'"/>';
+            maxCharText = AOCLit.maximumNChar;
         return [{
-            xtype: 'container',
-            itemId: 'userdetaildisplay',
-            layout: {
-                type: 'hbox'
-            },
-            height: (!Ext.isEmpty(me.rec)) ? 295 :350,
+            xtype: 'form',
+            itemId: 'editform',
+            layout: 'hbox',
+            reference: 'addEditUserWinForm',
+            mode: me.mode,
             items: [{
-                xtype: 'component',
-                itemId: 'imgComponent',
-                html: '<div class="container-border profile-img-outer-div" id="userimg">'+userImageHtml+'</div>',
-                margin: '0 100 0 200'
+                xtype: 'tbspacer',
+                width: 150
             }, {
-                xtype: 'form',
-                margin : '0 0 0 0',
-                itemId: 'userinfoform',
+                xtype: 'fieldcontainer',
+                layout: 'vbox',
+                items: [{
+                    xtype: 'image',
+                    anchor: '40%',
+                    reference:'profileImage',
+                    margin:'15 0 0 0',
+                    width: 160,
+                    height: 160,
+                    style: {
+                        border: 'solid 1.5px #ddd; border-radius:160px;'
+                    }
+                }, {
+                    xtype: 'fileuploadfield',
+                    buttonText: AOCLit.uploadPhoto,
+                    margin: '10 0 0 35',
+                    buttonOnly: true,
+                    hidden:true,
+                    listeners:{
+						'change':'onClickUpdatePhoto'
+					}
+                }]
+            }, {
+                xtype: 'tbspacer',
+                width: 150
+            }, {
+                xtype: 'fieldcontainer',
+                anchor: '60%',
                 layout: {
-                    type: 'vbox'
+                    type: 'vbox',
+                    align: 'stretch'
                 },
                 defaults: {
                     xtype: 'displayfield',
-                    fieldCls       : 'profile-info-field',
-                    cls    : 'profile-info-form-item',
-                    labelClsExtra       : 'profile-info-field-lbl',
-                    labelWidth: 200,
-                    labelSeparator: ' '
+                    labelWidth: 165,
+                    width: 615,
+                    margin: '0 0 5 0',
+                    labelSeparator: '',
+                    labelStyle: Settings.config.defaultFormLabelStyle,
+                    labelAlign: Settings.form.defaultLabelAlign
+
                 },
-                items: [{
-                    fieldLabel: name,
-                    name: 'name',
-                    itemId: 'name',
-                    renderer : function(v){
-                    	var html='<span class="user-info-name-wrap">'+Ext.util.Format.htmlEncode(v)+'</span>';
-                    	return v;
-                    }
-                },{
-                    fieldLabel:AOCLit.iam,
+                items: 
+                	[{
+                      name: 'firstName',
+                      fieldLabel: AOCLit.firstName,
+                      itemId:'name'
+                }, { 
+                	fieldLabel:AOCLit.iam,
                     name: 'gender',
                     itemId: 'gender',
                     renderer : function(v){
                     	return Ext.util.Format.htmlEncode(v);
                     }
-                }, {
-                    fieldLabel:AOCLit.emailAddress,
-                    name: 'email',
-                    itemId: 'email',
-                    renderer : function(v){
-                    	return Ext.util.Format.htmlEncode(v);
-                    }
                 },{
-                    fieldLabel: AOCLit.jobTitle,
                     name: 'jobTitle',
-                    itemId: 'jobTitle',
+                    fieldLabel: AOCLit.jobTitle,
+                    itemId:'jobTitle',
                     renderer : function(v){
                     	return Ext.util.Format.htmlEncode(v);
                     }
                 },{
+                    name: 'email',
+                    fieldLabel: AOCLit.emailAddress,
+                    itemId:'email'
+                }, {
                     fieldLabel: AOCLit.role,
                     name: 'role',
                     itemId: 'role',
-                    renderer : function(value, metadata, record) {
-        				if (value == 1) {
-        					return 'Super Admin';
-        				} else if (value == 2) {
-        					return 'Site Manager';
-        				} else {
-        					return 'CSR';
-        				}
-        			}
-                },{
-                    xtype: 'hiddenfield',
-                    name: 'id'
+                    renderer : function(v){
+                    	if(v==1){
+                    		return 'Super Admin';
+                    	}
+                    	else if(v==2){
+                    		return 'Site Manager'
+                    	}
+                    	else {
+                    		return 'CSR';
+                    	}
+                    }
                 }]
             }]
-
         }];
-    },
-    buildAddMarkup: function (imageUrl) {
-        var me = this,
-            t = '<div class="container-border profile-img-change-outer-div" id="userchangeimg"><img class="container-border profile-img-inner-div" src="'+applicationContext+'/' + imageUrl + '"/>' +
-                '<div class="container-border profile-img-change-action-div entityactionbar-add-wrapper">' +
-                '<span class="profile-change-pic ">Change Picture</span>' +
-                '<span class="ai-circle-add profile-change-circle"></span>' +
-                '</div> </div>';
-        return Ext.String.format(t);
     }
 });
