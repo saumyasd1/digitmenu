@@ -140,7 +140,8 @@ Ext.define('AOC.controller.MenuController', {
                     Helper.setCookie("authorization", obj["token"], tokenExpires);
                     var userInfo = obj["userinfo"];
                     me.runtime.setUser(userInfo);
-                    me.updateHeaderUserName();
+                    Helper.updateHeaderUserName();
+                    Helper.updateProfileInfo();
                     Helper.setCookie("userinfo", JSON.stringify(userInfo), tokenExpires);
                     Helper.setCookie("menuList", JSON.stringify(obj['menuList']), tokenExpires);
                     var sectionStore = me.getSectionsStore();
@@ -168,13 +169,6 @@ Ext.define('AOC.controller.MenuController', {
     changeViewportCard: function (index) {
         var activeCard = Ext.ComponentQuery.query("viewport")[0];
         activeCard.getLayout().setActiveItem(index);
-    },
-    updateHeaderUserName: function () {
-        var me = this,
-            userInfo = me.runtime.getUser(),
-            name = userInfo.firstName,
-            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
-        Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
     },
     onClickMainMenu: function (cmp, rec) {
         var me = this,
@@ -264,7 +258,6 @@ Ext.define('AOC.controller.MenuController', {
                         } else {
                             manageRoles.hide();
                             manageUsers.hide();
-
                         }
                     }
                 }
@@ -291,22 +284,8 @@ Ext.define('AOC.controller.MenuController', {
         me.selectProrfileCard(0);
         me.updateTopToolBar(true, profileInfo);
         me.updateBottomToolBar(false);
-        me.updateProfileInfo();
+        Helper.updateProfileInfo();
         me.selectMenuItem(null);
-    },
-    updateProfileInfo: function () {
-        var me = this,
-            user = me.runtime.getUser(),
-            name = user.firstName,
-            mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
-            userinfo = mainprofilewrapper.down('userinfo');
-        name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
-
-        userinfo.down('#name').setValue(name);
-        userinfo.down('#gender').setValue(user.gender);
-        userinfo.down('#email').setValue(user.email);
-        userinfo.down('#jobTitle').setValue(user.jobTitle);
-        userinfo.down('#role').setValue(user.role);
     },
     onManageUserMenuItemClick: function () {
         this.selectCard('users');
@@ -323,17 +302,24 @@ Ext.define('AOC.controller.MenuController', {
     },
     onClickEditProfile: function () {
         var me = this,
-            mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
-            userinfo = mainprofilewrapper.down('useredit');
-
-        userinfo.getForm().setValues(me.runtime.getUser());
-        me.selectProrfileCard(1);
-        me.updateTopToolBar(false);
-        me.updateBottomToolBar(true);
+        	userinfo = me.runtime.getUser(),
+        	userId = userinfo.id,
+        	win = Ext.create('AOC.view.users.myprofile.AddUserWindow',{
+        		 mode  : 'edit',
+        		 ID    :  userId,
+                 title : 'Edit Profile'
+        	});
+        win.down('form').getForm().setValues(userinfo);
+        if(userId == 1){
+	        win.down('#site').setHidden(true);
+        }
+        win.down('#site').setDisabled(true);
+        win.down('#role').setHidden(true);
+        win.show();
     },
     onClickChangePassword: function () {
         var me = this;
-        me.selectProrfileCard(2);
+        me.selectProrfileCard(1);
         me.updateTopToolBar(false, changedPassword);
         me.updateBottomToolBar(true);
     },
@@ -361,7 +347,7 @@ Ext.define('AOC.controller.MenuController', {
             activeForm = mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0].getLayout().getActiveItem();
 
         Ext.getBody().mask(pleaseWait);
-        if (activeForm.xtype == 'useredit' || activeForm.xtype == 'changepassword') {
+        if (activeForm.xtype == 'changepassword') {
             Ext.Ajax.request({
                 method: 'PUT',
                 type: 'rest',
@@ -375,13 +361,13 @@ Ext.define('AOC.controller.MenuController', {
                     Ext.getBody().unmask();
                     var userInfo = Ext.decode(res.responseText);
                     me.runtime.setUser(userInfo.user);
-                    me.updateHeaderUserName();
-                    Helper.setCookie("userinfo", JSON.stringify(userInfo), 30);
+                    Helper.updateHeaderUserName();
+                    Helper.setCookie("userinfo", JSON.stringify(userInfo.user), 30);
                     me.selectProrfileCard(0);
                     me.updateTopToolBar(true, profileInfo);
                     me.updateBottomToolBar(false);
-                    me.updateProfileInfo();
-                    var message = (activeForm.xtype == 'useredit') ? personalInformation : password;
+                    Helper.updateProfileInfo();
+                    var message = (activeForm.xtype == 'createuser') ? personalInformation : password;
                     message = message + savedSuccessfully;
                     Helper.showToast('Success', message);
                 },
