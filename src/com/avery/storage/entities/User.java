@@ -3,6 +3,9 @@ package com.avery.storage.entities;
 import static com.avery.utils.ApplicationConstants.ID;
 import static com.avery.utils.ApplicationConstants.PASSWORD;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +18,9 @@ import java.util.TimeZone;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -29,13 +34,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.service.UserService;
 import com.avery.utils.HashPassword;
+import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -391,6 +400,38 @@ public class User extends MainAbstractEntity {
 			return (int) (user1.getId() - user2.getId());
 		}
 	};
+	
+
+	@POST
+	@Path("/pictureupload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response savepicture(@FormDataParam("fileName") String picname,@FormDataParam("file") InputStream userimage,@FormDataParam("roleId") int roleId,@FormDataParam("userId") String userId) throws Exception {
+		Response.ResponseBuilder rb = null;
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		Map<String, String> responseMap = new HashMap<String, String>();
+		String uploadDir = PropertiesConfig.getString(PropertiesConstants.PIC_PATH);;
+		if(roleId==1)uploadDir =uploadDir+"\\1";
+		if(roleId==2)uploadDir =uploadDir+"\\2";
+		if(roleId==3)uploadDir =uploadDir+"\\3";
+		String extens=picname.substring(picname.lastIndexOf("."),picname.length());
+		String filename=userId+extens;
+		try
+	    {
+			File targetFile = new File(uploadDir,filename);
+			FileUtils.copyInputStreamToFile(userimage,targetFile);
+			responseMap.put("upload","Successful");
+	        mapper.writeValue(writer, responseMap);
+	        rb = Response.ok(writer.toString());
+	    } catch (IOException e) 
+	    {
+	    	responseMap.put("upload", "Unsuccessful");
+	        mapper.writeValue(writer, responseMap);
+	        rb = Response.ok(writer.toString());
+	    }	
+		return rb.build();
+    }
+	
 	/* Business Logic Ends */
 
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
