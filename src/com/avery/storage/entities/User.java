@@ -90,6 +90,11 @@ public class User extends MainAbstractEntity {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+	
+	@Column(name = "fileName", length = 100)
+	private String fileName;
+	@Column(name = "filePath")
+	private String filePath;
 
 	/* Business Logic Starts */
 
@@ -414,12 +419,20 @@ public class User extends MainAbstractEntity {
 		if(roleId==1)uploadDir =uploadDir+"\\1";
 		if(roleId==2)uploadDir =uploadDir+"\\2";
 		if(roleId==3)uploadDir =uploadDir+"\\3";
+		uploadDir=uploadDir+"\\"+userId;
 		String extens=picname.substring(picname.lastIndexOf("."),picname.length());
 		String filename=userId+extens;
 		try
 	    {
+			//to store image in file
 			File targetFile = new File(uploadDir,filename);
 			FileUtils.copyInputStreamToFile(userimage,targetFile);
+			//to store fileName and filePath in DB
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			User user=userService.read(Long.parseLong(userId));
+			user.setFileName(filename);
+			user.setFilePath(uploadDir);
+			userService.update(user);
 			responseMap.put("upload","Successful");
 	        mapper.writeValue(writer, responseMap);
 	        rb = Response.ok(writer.toString());
@@ -521,6 +534,19 @@ public class User extends MainAbstractEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
 }
