@@ -1,7 +1,7 @@
 Ext.define('AOC.view.users.myprofile.Wrapper', {
     extend : 'Ext.Container',
     alias  : 'widget.profileinfowrapper',
-    requires : ['AOC.view.users.myprofile.UserEdit',
+    requires : [
                 'AOC.view.users.myprofile.UserInfo',
                 'AOC.view.users.myprofile.ChangePassword',
                 'AOC.view.users.myprofile.Toolbar'
@@ -30,12 +30,10 @@ Ext.define('AOC.view.users.myprofile.Wrapper', {
 	        xtype      : 'container',
 	        itemId     : 'mainprofilewrapper',
 	        layout     : 'card',
-	        flex:1,
+	        flex	   :  1,
 	        activeItem : 0,
     	        items      : [{
     	            xtype : 'userinfo'
-    	        },{
-    	            xtype : 'useredit'
     	        },{
     	            xtype : 'changepassword'
     	        }]
