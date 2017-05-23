@@ -58,6 +58,21 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  width:30,
 			  align:'center',
 			  locked:true
+		},{
+            header: Settings.config.defaultIcons.commentColumnIcon,
+            width: 40,
+            dataIndex: 'Comments',
+            tooltip: 'Comments',
+            baseCls: 'custom-action',
+            renderer: function (value, metadata, rec) {
+               var comment = Ext.String.htmlEncode(rec.data.comment);
+            	if(comment){
+                    metadata.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+                    return Settings.config.defaultIcons.commentColumnIcon;
+            	}else{
+            		return '';
+            	}
+            }
 		},
 		{
 			text: AOCLit.atoMandatory,
@@ -1041,7 +1056,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 100,
 			editor: 'textfield',
 			type:'address',
-			hidden:true
+			hidden:true,
+			renderer: function (value, metadata, rec) {
+	               var comment = Ext.String.htmlEncode(rec.data.comment);
+	            	if(comment){
+	            		metadata.style = AOCLit.cellColor;
+	            	}
+	            	return value;
+	            }
 		},
 		{
 			text: AOCLit.productionLine,
