@@ -185,13 +185,22 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false;
+    		isCommentExist = false;
     	store.each(function(record, index){
+    		if(record.get('comment')){
+    			isCommentExist = true;
+	    	}
     		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
     		return me.validInvalidCombo(record, index, grid);
     	});
     	
+    	//For comment column if value exist in comment column
+    	if(isCommentExist ){
+    		Helper.showToast('failure',AOCLit.commentOnOrderLine);
+    		return;
+    	}
     	//For Invalid Combo 
     	if(grid.invalidComboColumn){
     		Helper.showToast('validation', grid.invalidComboColumn);
