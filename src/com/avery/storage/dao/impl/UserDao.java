@@ -19,7 +19,7 @@ public interface UserDao extends GenericDao<User, Long> {
 
     boolean checkDuplicateUser(User userObj) throws Exception;
 
-	List<User> getSortedList();
+    List<User> getSortedList(int siteId,int roleId);
 
 	String getApplicationDefaultTimeZone();
 	
