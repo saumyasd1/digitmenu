@@ -171,21 +171,26 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@Override
-	public List<User> getSortedList() {
+	public List<User> getSortedList(int siteId,int roleId) {
 		Session session = null;
 		Criteria criteria = null;
+		List<User> listofcsr=null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			criteria = session
-					.createCriteria(User.class, "u")
+			criteria = session.createCriteria(User.class)
 					.setProjection(
 							Projections.projectionList()
 									.add(Projections.property("id"), ("id"))
 									.add(Projections.property("firstName"),"firstName")
 									.add(Projections.property("lastName"),"lastName")
-									.add(Projections.property("middleName"),"middleName"))
-					.setResultTransformer(Transformers.aliasToBean(User.class));
+									.add(Projections.property("middleName"),"middleName"));
+			Conjunction disCriteria = Restrictions.conjunction();
+			disCriteria.add(Restrictions.eq("role", "3"));
+			if(roleId!=1)disCriteria.add(Restrictions.eq("siteId", siteId));
+			criteria.add(disCriteria);
 			criteria.addOrder(Order.asc("firstName"));
+			criteria.setResultTransformer(Transformers.aliasToBean(User.class));
+			listofcsr=criteria.list();
 		} catch (WebApplicationException ex) {
 			throw ex;
 		} catch (Exception e) {
@@ -195,7 +200,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		return criteria.list();
+		return listofcsr;
 	}
 
 	public List<Menu> getMenuRole(String roleId) {
