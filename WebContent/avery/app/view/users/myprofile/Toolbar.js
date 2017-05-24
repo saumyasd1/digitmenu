@@ -13,7 +13,7 @@ Ext.define('AOC.view.users.myprofile.Toolbar', {
         pack  : 'start',
         align : 'stretch'
     },
-    cls      : 'container-border',
+    cls      : 'aoc-panel',
     style   : {
         "background-color" : "#ffffff",
         "padding"          : "10px 20px 10px 20px"
@@ -42,35 +42,43 @@ Ext.define('AOC.view.users.myprofile.Toolbar', {
                 pack  : 'end'
             },
             items   : [{
-                xtype:'bluebutton',
+                xtype:'button',
                 itemId: 'changepasswordbtn',
                 hidden:true,
                 margin  : '0 0 0 10',
+                ui: 'blue',
+                cls: 'blue-btn',
                 text    :'Change Password',
                 scope: me,
                 handler: me.onClickChangePassword
               },{
-                  xtype:'bluebutton',
+                  xtype:'button',
                   itemId: 'editbutton',
                   margin  : '0 0 0 10',
                   text    :'Edit',
+                  ui: 'blue',
+                  cls: 'blue-btn',
                   scope: me,
                   hidden:true,
                   handler: me.onClickEdit
               },{
-                xtype   : 'plainbutton',
+                xtype   : 'button',
                 margin  : '0 0 0 10',
+                ui		: 'blue',
+                cls		: 'blue-btn',
                 scope   : me,
-                hidden:true,
+                hidden	:true,
                 itemId  : 'cancel',
                 text    :'Cancel',
                 handler : me.onClickCancel
             },{
-                xtype   : 'whitebutton',
+                xtype   : 'button',
                 margin  : '0 0 0 10',
                 scope   : me,
+                ui		: 'blue',
+                cls		: 'blue-btn',
                 text    :'Save',
-                hidden:true,
+                hidden	:true,
                 itemId  : 'save',
                 handler : me.onClickSave
             }
