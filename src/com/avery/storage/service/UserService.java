@@ -50,8 +50,8 @@ public class UserService extends GenericEntityService<User, Long> {
 	}
 	
 	@Transactional
-	public List<User> getSortedList() {
-		return getUserDao().getSortedList();
+	public List<User> getSortedList(int siteId,int roleId) {
+		return getUserDao().getSortedList(siteId,roleId);
 	}
 
 	@Transactional
