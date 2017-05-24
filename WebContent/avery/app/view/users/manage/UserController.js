@@ -62,7 +62,12 @@ Ext.define('AOC.view.users.manage.UserController', {
 	                                                    Helper.showToast('Success', Msg);
 	                                                    me.runTime.getActiveGrid().store.load();
                                                 },
-                                                failure: function (response, opts) {}
+                                                failure: function (response, opts) {
+                                                    msg = response.responseText;
+                                                    Helper.showToast('failure', msg);
+                                                    view.unmask();
+                                                    view.close();
+                                                }
                                             });
                                         }
                                     });
