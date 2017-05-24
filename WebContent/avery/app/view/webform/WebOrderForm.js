@@ -12,8 +12,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	itemId:'weborderformItemId',
 	bodyPadding: '10',
 	requires: [
-	    'AOC.lang.lit',
-	    'AOC.store.UniquePartnerStore'
+	    'AOC.lang.lit'
 	],
 	border:false,
 	attachmentFileNameExtension_1:null,
@@ -77,12 +76,12 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						name:'partnerName',
 						editable:false,
 						allowBlank : false,
+						queryMode:'local',
 						margin:'0 0 0 155',
 						flex:1,
 						displayField:'partnerName',
 						listeners:{
 							'change':'onPartnerChange',
-							'focus': 'notifyByMessage',
 							'afterrender':'afterRenderPartnerCombo'
 						}
 					},
@@ -101,8 +100,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank : false, 
 						disabled:true,
 						listeners:{
-							'change':'onRBOChange',
-							'focus': 'notifyByMessage'
+							'change':'onRBOChange'
 						}
 					},
 					{
@@ -118,8 +116,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank : false, 
 						disabled:true,
 						listeners:{
-							'change':'onDataStructureSelection',
-							'focus': 'notifyByMessage'
+							'change':'onDataStructureSelection'
 						}
 					}
 				]
@@ -149,10 +146,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank: false,
 						blankText : 'Sender Email is required',
 						listeners:{
-							 blur : this.notifyByImage,
-							'focus': 'notifyByMessage'
+							 blur : this.notifyByImage
 						 }
-						
 					},
 					{
 						xtype:'textfield',
@@ -168,8 +163,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						maxLength : '100',
 						blankText : AOCLit.emailSubReq,
 						listeners:{
-						  blur : this.notifyByImage,
-						'focus': 'notifyByMessage'
+						  blur : this.notifyByImage
 						}
 					}
 				]
@@ -202,8 +196,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						blankText :'Email Body is required',
 						//margin:'0 50 0 0',
 						listeners:{
-							blur : this.notifyByImage,
-							'focus': 'notifyByMessage'
+							blur : this.notifyByImage
 						}
 					},
 					{ 
@@ -221,8 +214,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						blankText :'Order File Type is required',
 						listeners:{
 							'change':'onOrderFileChange',
-							blur : this.notifyByImage,
-							'focus': 'notifyByMessage'
+							blur : this.notifyByImage
 						}
 					}
 				]
@@ -247,10 +239,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						fieldLabel:'Additional DataFile Key',
 						itemId:'additionalDataFileKey',
 						disabled:true,
-						hidden:true,
-						listeners:{
-							'focus': 'notifyByMessage'
-						}
+						hidden:true
 					},
 					{   
 						xtype:'fileuploadfield',
@@ -265,8 +254,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						hidden:true,
 						listeners:{
 							'change':'onAttachmentChange',
-							blur : this.notifyByImage,
-							'focus': 'notifyByMessage'
+							blur : this.notifyByImage
 						}
 					}
 				]
