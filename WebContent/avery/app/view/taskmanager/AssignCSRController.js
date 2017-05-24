@@ -33,7 +33,17 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
 	else{
 		Ext.Msg.alert(AOCLit.warningTitle,'Please select CSR');
 		return ;
-	}
-    	
+	  }
+    },
+    onAfterRenderCSRList: function(obj){
+        var userInfo = AOCRuntime.getUser(),
+        roleId = userInfo.role,
+        siteId = userInfo.siteId;
+    obj.getStore().proxy.extraParams = {
+        siteId: siteId,
+        roleId: roleId
+    };
+    obj.getStore().load();
+
     }
 });
