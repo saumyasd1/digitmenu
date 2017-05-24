@@ -165,6 +165,7 @@ public class User extends MainAbstractEntity {
 						.getPassword()));
 				user.setCreatedDate(new Date());
 				user.setLastModifiedDate(new Date());
+				user.setStatus(100);
 				id = userService.create(user);
 				responseMap.put("valueExist", false);
 				responseMap.put("id", id);
