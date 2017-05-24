@@ -343,7 +343,7 @@ public class User extends MainAbstractEntity {
 	@GET
 	@Path("/csrlist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh) {
+	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh,@QueryParam("siteId") int siteId,@QueryParam("roleId") int roleId) {
 		Response.ResponseBuilder rb = null;
 		List<User> csrList = null;
 		try {
@@ -352,7 +352,7 @@ public class User extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
-			csrList = userService.getSortedList();
+			csrList = userService.getSortedList(siteId,roleId);
 			if (csrList == null || csrList.isEmpty())
 				throw new Exception("Unable to find csr");
 			mapper.writeValue(writer, csrList);
