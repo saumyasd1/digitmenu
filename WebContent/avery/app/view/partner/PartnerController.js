@@ -12,8 +12,8 @@ Ext.define('AOC.view.partner.PartnerController', {
     		form = refs.createPartnerForm,
     		editMode = view.editMode,
     		userInfo = AOCRuntime.getUser();
-    	 	currentUserName = userInfo.firstName+ '' + userInfo.lastName,
-    		userNameObj = {currentUserName:currentUserName},
+    		userId = userInfo.id,
+    		userIdObj = {userId:userId},
     		url = '',
     		valueObj ='',
     		method ='',
@@ -25,7 +25,7 @@ Ext.define('AOC.view.partner.PartnerController', {
             form.updateRecord();
             method = 'PUT';
             valueObj = form.getRecord().getChanges(false, true, false, true);
-            Ext.apply(valueObj,userNameObj);
+            Ext.apply(valueObj,userIdObj);
             length = Object.keys(valueObj).length;
             msg = AOCLit.updatePartnerMsg;
         } else {
