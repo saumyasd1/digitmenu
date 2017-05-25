@@ -63,6 +63,12 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             dataIndex: 'firstName',
             flex: 0.5
 
+        },{
+            text: 'Middle Name',
+            width: 120,
+            sortable: true,
+            dataIndex: 'middleName',
+            flex: 0.5
         }, {
             text: 'Last Name',
             width: 120,
