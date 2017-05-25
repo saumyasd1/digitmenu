@@ -71,7 +71,7 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                 items: 
                 	[{
                       name: 'firstName',
-                      fieldLabel: AOCLit.firstName,
+                      fieldLabel: AOCLit.name,
                       itemId:'name'
                 }, { 
                 	fieldLabel:AOCLit.iam,
