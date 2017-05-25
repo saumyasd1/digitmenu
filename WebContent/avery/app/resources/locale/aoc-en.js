@@ -35,6 +35,7 @@ Ext.define('AOC.lang.lit',{
     "personalInformation":'Personal Information',
     "name":'Name',
     "firstName": 'First Name',
+    "middleName":'Middle Name',
     "lastName": 'Last Name',
     "maximumNChar": 'Maximum $$$$ characters allowed.',
     "splCharNotAllowed": 'Special characters are not allowed',
