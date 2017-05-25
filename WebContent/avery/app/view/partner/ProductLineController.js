@@ -71,7 +71,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
 			methodMode='PUT';
-			userId = AOCRuntime.getUser().id,
+			userInfo = AOCRuntime.getUser();
+    	 	currentUserName = userInfo.firstName+ '' + userInfo.lastName,
 			valueObj=form.getValues(false,true,false,true);
 			length=Object.keys(valueObj).length;
 			Msg=AOCLit.updateProdLineMsg;
@@ -90,8 +91,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					fiberpercentagecheck:valueObj.fiberpercentagecheck? valueObj.fiberpercentagecheck: false,
 					orderSystemInfo:orderSystemInfo,
 					productLineType:productLineValue,
-					userId:userId,
-					siteChanged:site.siteChanged
+					siteChanged:site.siteChanged,
+					currentUserName:currentUserName
 		    	};
 		}
 		else{
