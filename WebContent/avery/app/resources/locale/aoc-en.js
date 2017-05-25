@@ -25,7 +25,7 @@ Ext.define('AOC.lang.lit',{
     "averyRegion":'Avery Region',
     "averyRoundupQty":'Avery Roundup Qty',
     //User
-    "iam":'I am',
+    "iam":'Gender',
     "emailAddress": 'Email Address',
     "jobTitle": 'Job Title',
     "role": 'Role',
