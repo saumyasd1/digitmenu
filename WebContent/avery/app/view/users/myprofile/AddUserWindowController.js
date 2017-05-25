@@ -6,6 +6,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     fileArray:[],
     SaveDetails: function () {
         var me = this,
+        	userinfo = AOCRuntime.getUser(),
             refs = me.getReferences(),
             view = me.getView(),
         	form = refs.addEditUserWinForm,
@@ -15,6 +16,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         	firstName = userInfo.firstName,
         	mode = view.mode,
             userGrid = AOCRuntime.getActiveGrid(),
+            currentUserName = userinfo.firstName+ '' + userinfo.lastName,
+            userIdObj = {currentUserName:currentUserName},
             url = '',
             valueObj = '',
             method = '',
@@ -23,6 +26,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             url = applicationContext + '/rest/users/' + view.ID; //Provide roleId for particular record
             method = 'PUT';
             valueObj = form.getValues(false, true, false, true);
+            Ext.apply(valueObj,userIdObj);
             length = Object.keys(valueObj).length;
             msg = AOCLit.updateUserMsg;
         } else {
