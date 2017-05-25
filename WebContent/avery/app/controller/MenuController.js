@@ -309,6 +309,7 @@ Ext.define('AOC.controller.MenuController', {
         		 ID    :  userId,
                  title : 'Edit Profile'
         	});
+        win.down('#roledisplayfield').setHidden(false);
         win.down('form').getForm().setValues(userinfo);
         var refs = win.getReferences(),
     		profileImage = refs.profileImage;
