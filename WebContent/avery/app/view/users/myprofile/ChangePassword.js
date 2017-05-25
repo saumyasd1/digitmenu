@@ -11,8 +11,8 @@
         		    	return false;
         		    	}
         		    if (field.initialPassField) {
-        		     var win=field.up('window');
-              		 var pwd = win.down('#'+field.initialPassField);
+        		     var form=field.up('form');
+              		 var pwd = form.down('#'+field.initialPassField);
               		  if(val && val == pwd.getValue()){
               		  field.vtypeText =AOCLit.newPasswordFailureMsg;
               		    	return false;
@@ -21,8 +21,8 @@
         		    },
         		    password : function(val, field) {
         		    if (field.initialPassField) {
-        		    	var win=field.up('window');
-                 		 var pwd = win.down('#'+field.initialPassField);
+        		    	var form=field.up('form');
+                 		 var pwd = form.down('#'+field.initialPassField);
         		    	return (val == pwd.getValue());
         		    }
         		        return true;
