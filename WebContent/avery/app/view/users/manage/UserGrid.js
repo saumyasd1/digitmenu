@@ -96,6 +96,19 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             sortable: true,
             dataIndex: 'email',
             flex: 0.5
+        },{
+            text: 'Last Modified By',
+            width: 120,
+            sortable: true,
+            dataIndex: 'lastModifiedBy',
+            flex: 0.5
+        
+        },{
+            text: 'Last Modified Date',
+            width: 120,
+            sortable: true,
+            dataIndex: 'lastModifiedDate',
+            flex: 0.5
         }];
     },
     buildtbar: function () {
