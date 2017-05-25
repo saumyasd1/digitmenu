@@ -96,10 +96,18 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                       maxLengthText: maxCharText.replace("$$$$", 64),
                       regex: new RegExp(AOC.config.Settings.getNameRegex()),
                       regexText: AOCLit.splCharNotAllowed
-                }, {
+                },{
+                    name: 'middleName',
+                    fieldLabel: AOCLit.middleName,
+                    maxLength: 64,
+                    maxLengthText: maxCharText.replace("$$$$", 64),
+                    regex: new RegExp(AOC.config.Settings.getNameRegex()),
+                    regexText: AOCLit.splCharNotAllowed
+                },{
                     name: 'lastName',
                     fieldLabel: AOCLit.lastName,
                     maxLength: 64,
+                    allowBlank: false,
                     maxLengthText: maxCharText.replace("$$$$", 64),
                     regex: new RegExp(AOC.config.Settings.getNameRegex()),
                     regexText: AOCLit.splCharNotAllowed
@@ -142,6 +150,25 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     store: Ext.create('AOC.store.RoleStore'),
                     queryMode: 'local'
                 }, {
+                	xtype:'displayfield',
+                    fieldLabel: AOCLit.role,
+                    hidden:true,
+                    name: 'roledisplayfield',
+                    itemId: 'roledisplayfield',
+                    renderer : function(){
+                    	var me = this,
+                    		roleId = AOCRuntime.getUser().role;
+                    	if(roleId==1){
+                    		return 'Super Admin';
+                    	}
+                    	else if(roleId==2){
+                    		return 'Site Manager'
+                    	}
+                    	else {
+                    		return 'CSR';
+                    	}
+                    }
+                },{
                     xtype: 'combo',
                     name: 'siteId',
                     itemId:'site',
