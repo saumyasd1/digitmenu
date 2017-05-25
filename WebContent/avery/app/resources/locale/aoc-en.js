@@ -33,6 +33,7 @@ Ext.define('AOC.lang.lit',{
     "female": 'Female',
     "pleaseWait": 'Please wait...',
     "personalInformation":'Personal Information',
+    "name":'Name',
     "firstName": 'First Name',
     "lastName": 'Last Name',
     "maximumNChar": 'Maximum $$$$ characters allowed.',
