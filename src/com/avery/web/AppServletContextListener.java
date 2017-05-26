@@ -32,7 +32,7 @@ public class AppServletContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
 			String appWorkingDirPath = null;
-			//TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+			TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 			// fetch via system environment variable
 			appWorkingDirPath = System
 					.getenv(PropertiesConstants.PROPERTIES_APP_WORKING_DIR_PATH);

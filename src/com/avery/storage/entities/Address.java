@@ -385,7 +385,6 @@ public class Address extends MainAbstractEntity {
 			entitiesMap = addressService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find addresses");
-			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {

@@ -341,7 +341,6 @@ public class Partner extends MainAbstractEntity {
 			entitiesMap = partnerService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find partners");
-			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {

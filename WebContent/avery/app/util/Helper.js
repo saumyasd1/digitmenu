@@ -561,7 +561,7 @@ Ext.define('AOC.util.Helper',{
 			metadata.style = AOCLit.cellColor;
         }
         else{
-        	return Ext.Date.format(value,'Y-m-d');
+        	return Ext.Date.format(value, AOCLit.dateFormat);
         }
 	},
 	onAtoColumnRenderer:function(value, metadata, record){
