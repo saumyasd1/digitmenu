@@ -132,11 +132,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     allowBlank: false,
                     regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/	
                 }, {
-                    name: 'jobTitle',
-                    fieldLabel: AOCLit.jobTitle,
-                    maxLength: 64,
-                    maxLengthText: maxCharText.replace("$$$$", 64)
-                }, {
                     xtype: 'combo',
                     editable: false,
                     fieldLabel: AOCLit.role,
