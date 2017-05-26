@@ -81,13 +81,6 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                     	return Ext.util.Format.htmlEncode(v);
                     }
                 },{
-                    name: 'jobTitle',
-                    fieldLabel: AOCLit.jobTitle,
-                    itemId:'jobTitle',
-                    renderer : function(v){
-                    	return Ext.util.Format.htmlEncode(v);
-                    }
-                },{
                     name: 'email',
                     fieldLabel: AOCLit.emailAddress,
                     itemId:'email'
