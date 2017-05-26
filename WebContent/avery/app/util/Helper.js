@@ -652,7 +652,6 @@ Ext.define('AOC.util.Helper',{
         userinfo.down('#name').setValue(name);
         userinfo.down('#gender').setValue(user.gender);
         userinfo.down('#email').setValue(user.email);
-        userinfo.down('#jobTitle').setValue(user.jobTitle);
         userinfo.down('#role').setValue(user.role);
     },
     updateHeaderUserName: function () {
