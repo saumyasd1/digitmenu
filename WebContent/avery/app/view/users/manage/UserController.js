@@ -116,12 +116,14 @@ Ext.define('AOC.view.users.manage.UserController', {
         });
     },
     buildMenuTpl: function () {
-        var me = this;
+        var me = this,
+        	userinfo = AOCRuntime.getUser(),
+        	roleId = userinfo.role;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit">Edit</div>',
+            '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="edit">Edit</div>',
             '<div style="width: 140px !important;border-bottom: none{[this.getDeleteUserStyle(values)]};" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="deleteuser">Delete</div>', {
                 isDeleteEnable: function (v) {
-                    if (v.id == 1) {							//(Krishna)Check for Super Admin
+                    if (v.id == 1 || v.role == roleId) {							
                         return 'order-profile-menu-item';
                     }
                     return 'user-profile-menu-item';
