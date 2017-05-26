@@ -406,7 +406,6 @@ public class User extends MainAbstractEntity {
 			return (int) (user1.getId() - user2.getId());
 		}
 	};
-	
 
 	@POST
 	@Path("/pictureupload")
@@ -416,17 +415,20 @@ public class User extends MainAbstractEntity {
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
 		Map<String, String> responseMap = new HashMap<String, String>();
-		String uploadDir = PropertiesConfig.getString(PropertiesConstants.PIC_PATH);;
-		if(roleId==1)uploadDir =uploadDir+"\\1";
-		if(roleId==2)uploadDir =uploadDir+"\\2";
-		if(roleId==3)uploadDir =uploadDir+"\\3";
-		uploadDir=uploadDir+"\\"+userId;
+		String uploadDir = PropertiesConfig.getString(PropertiesConstants.PIC_PATH);
+		if(roleId==1)uploadDir =uploadDir+"/1";
+		if(roleId==2)uploadDir =uploadDir+"/2";
+		if(roleId==3)uploadDir =uploadDir+"/3";
+		uploadDir=uploadDir+"/"+userId;
 		String extens=picname.substring(picname.lastIndexOf("."),picname.length());
 		String filename=userId+extens;
 		try
 	    {
 			//to store image in file
 			File targetFile = new File(uploadDir,filename);
+			if(targetFile.exists()){
+				 targetFile.delete();
+			}
 			FileUtils.copyInputStreamToFile(userimage,targetFile);
 			//to store fileName and filePath in DB
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
