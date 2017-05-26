@@ -116,13 +116,12 @@ Ext.define('AOC.view.users.manage.UserController', {
         });
     },
     buildMenuTpl: function () {
-        var me = this,
-        	userinfo = AOCRuntime.getUser(),
-        	roleId = userinfo.role;
         return Ext.create('Ext.XTemplate',
             '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="edit">Edit</div>',
             '<div style="width: 140px !important;border-bottom: none{[this.getDeleteUserStyle(values)]};" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="deleteuser">Delete</div>', {
                 isDeleteEnable: function (v) {
+                	var userinfo = AOCRuntime.getUser(),
+                	roleId = userinfo.role;
                     if (v.id == 1 || v.role == roleId) {							
                         return 'order-profile-menu-item';
                     }
