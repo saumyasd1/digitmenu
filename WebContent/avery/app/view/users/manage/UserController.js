@@ -46,12 +46,15 @@ Ext.define('AOC.view.users.manage.UserController', {
                             profileImage = refs.profileImage,
                             userId = AOCRuntime.getUser().id;
                         if (id == userId) {
-                            if (id == 1) {
-                                win.down('#site').setHidden(true);
-                            }
                             win.down('#site').setDisabled(true);
                             win.down('#role').setHidden(true);
                             win.down('#roledisplayfield').setHidden(false);
+                        }
+                        else{
+                        	if(userId == 1){
+	                        	win.down('#newPassword').setHidden(false);
+	                        	win.down('#confirmPassword').setHidden(false);
+                        	}
                         }
                         profileImage.setSrc(Helper.getFilePath(currentRecord));
                         win.down('form').loadRecord(currentRecord);
