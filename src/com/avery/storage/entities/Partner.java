@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -35,6 +36,7 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.RboMixIn;
 import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.PartnerService;
+import com.avery.storage.service.UserService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -319,7 +321,7 @@ public class Partner extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> entitiesMap=null;
+		Map<?, ?> entitiesMap=new HashMap();;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		List<Partner> partnerList = null;
 		try {
@@ -336,26 +338,53 @@ public class Partner extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
+			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {				
 			entitiesMap = partnerService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find partners");
-			mapper.setTimeZone(TimeZone.getDefault());
-			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
-				mapper.writeValue(writer, entitiesMap);
-			} else if (!siteId.isEmpty()) {
-				if (Integer.parseInt(siteId) != 1) {
-					partnerList = partnerService.getPartner(siteId);
-					try {
-						responseMap.put("partners",partnerList);
-						mapper.writeValue(writer, responseMap);
-					} catch (Exception e) {
-						e.printStackTrace();
+			else{
+				List listofPL=(List) entitiesMap.get("partners");
+				List listOfPR=new LinkedList<Partner>();
+				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
+				for(int i=0;i<listofPL.size();i++)
+				{
+					Partner currentPartner=(Partner) listofPL.get(i);
+					String lastmodifiedUserId=currentPartner.getLastModifiedBy();
+					if(lastmodifiedUserId!=null)
+					{
+					String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+					currentPartner.setLastModifiedBy(LastModifiedByName);
 					}
-					
+					listOfPR.add(currentPartner);
 				}
-			} else {
-				mapper.writeValue(writer, entitiesMap);
-			}
+				responseMap.put("partners", listOfPR);
+				mapper.writeValue(writer, responseMap);
+				}}
+			
+			else if (!siteId.isEmpty()) 
+			{
+					partnerList = partnerService.getPartner(siteId);
+					UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+					if(!partnerList.isEmpty()){
+					for(int i=0;i<partnerList.size();i++)
+					{
+						Partner currentPartner=(Partner) partnerList.get(i);
+						String lastmodifiedUserId=currentPartner.getLastModifiedBy();
+						if(lastmodifiedUserId!=null)
+						{
+						String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+						currentPartner.setLastModifiedBy(LastModifiedByName);
+						}
+					}
+					if (partnerList == null || partnerList.isEmpty())
+						throw new Exception("Unable to find partners");
+					else responseMap.put("partners",partnerList);
+						mapper.writeValue(writer, responseMap);					
+			} }
+			if(entitiesMap.containsKey("totalCount"))
+			responseMap.put("totalCount", entitiesMap.get("totalCount"));
+			if(entitiesMap.containsKey("rbo"))
+			responseMap.put("rbo", entitiesMap.get("rbo"));
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -414,6 +443,7 @@ public class Partner extends MainAbstractEntity {
 			String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String,Object> responseMap=new HashMap<String,Object>();
+		//To get userid from Data
 		String[] str=data.replace("{", "").replace("}", "").split(",");
 		String userId="";
 		for(String tmp:str){
@@ -447,8 +477,7 @@ public class Partner extends MainAbstractEntity {
 				responseMap.put("valueExist",true);
 				mapper.writeValue(writer, responseMap);
 			}else{
-				String username=partnerService.getUsernameById(userId);
-				partner.setLastModifiedBy(username);
+				partner.setLastModifiedBy(userId);
 				partnerService.update(partner);
 				responseMap.put("valueExist",false);
 				responseMap.put("productline",partner);
