@@ -186,6 +186,13 @@ public class User extends MainAbstractEntity {
 			String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
+		String[] str=data.replace("{", "").replace("}", "").split(",");
+		String userId="";
+		for(String tmp:str){
+			if(tmp.contains("userId")){
+				String[]tmp1=tmp.split(":");
+				userId=tmp1[1];
+			}}
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -221,6 +228,7 @@ public class User extends MainAbstractEntity {
 				}
 				user.setLastModifiedDate(new Date());
 				user.setCreatedDate(createdDate);
+				user.setLastModifiedBy(userId);
 				userService.update(user);
 				responseMap.put("valueExist", false);
 				responseMap.put("user", user);
