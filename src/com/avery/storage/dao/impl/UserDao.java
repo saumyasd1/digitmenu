@@ -28,5 +28,7 @@ public interface UserDao extends GenericDao<User, Long> {
 	List<Menu> getMenuRole(String roleId);
 	
 	List<User> getUser(String siteId);
+	
+	public String getUsernameById(String userid);
 
 }
