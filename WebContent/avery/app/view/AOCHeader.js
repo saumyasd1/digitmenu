@@ -39,7 +39,8 @@ Ext.define('AOC.view.AOCHeader', {
                 flex: 1
             }, {
                 xtype: 'image',
-                src: Helper.getFilePath(),
+                itemId:'profileImage',
+                src:Helper.getFilePath(),
                 border: true,
                 style: {
                     "border-radius": "50%",
