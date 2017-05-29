@@ -34,9 +34,5 @@ public class PartnerService extends GenericEntityService<Partner, Long>{
 	public List<Partner> getPartner(String siteId) {
 		return getPartnerDao().getPartner(siteId);
 	}
-	@Transactional
-	public String getUsernameById(String userid) throws Exception {
-		return partnerDao.getUsernameById(userid);
-	}
-
+	
 }
