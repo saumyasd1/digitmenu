@@ -247,8 +247,8 @@ Ext.define('AOC.controller.MenuController', {
                     beforeshow: function (menu) {
                         var manageRoles = menu.queryById('manageRoles'),
                             manageUsers = menu.queryById('manageUsers'),
-                            user = AOCRuntime.getUser();
-                        role = user.role;
+                            user = AOCRuntime.getUser(),
+                        	role = user.role;
                         if (role == 1) {
                             manageRoles.show();
                             manageUsers.show();
