@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -113,22 +114,51 @@ public class User extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
-			entitiesMap = userService.readWithCriteria(queryParamMap);
+			Map responseMap=new HashMap();
+			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {				
+				entitiesMap = userService.readWithCriteria( queryParamMap);
+				if (entitiesMap == null || entitiesMap.isEmpty())
+					throw new Exception("Unable to find partners");
+				else{
+					List listofPL=(List) entitiesMap.get("users");
+					List listOfPR=new LinkedList<Partner>();
+					for(int i=0;i<listofPL.size();i++)
+					{
+						User currentuser=(User) listofPL.get(i);
+						String lastmodifiedUserId=currentuser.getLastModifiedBy();
+						if(lastmodifiedUserId!=null)
+						{
+						String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+						currentuser.setLastModifiedBy(LastModifiedByName);
+						}
+						listOfPR.add(currentuser);
+					}
+					Collections.sort(listOfPR, userIdComparator);
+					responseMap.put("users", listOfPR);
+					}}
+				
+				else if (!siteId.isEmpty()) 
+				{
+						userList = userService.getUser(siteId);
+						if(!userList.isEmpty()){
+						for(int i=0;i<userList.size();i++)
+						{
+							User currentPartner=(User) userList.get(i);
+							String lastmodifiedUserId=currentPartner.getLastModifiedBy();
+							if(lastmodifiedUserId!=null)
+							{
+							String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+							currentPartner.setLastModifiedBy(LastModifiedByName);
+							}
+						}
+						if (userList == null || userList.isEmpty())
+							throw new Exception("Unable to find users");
+						else responseMap.put("users",userList);			
+				} }
+				if(entitiesMap.containsKey("totalCount"))
+				responseMap.put("totalCount", entitiesMap.get("totalCount"));
+				mapper.writeValue(writer, responseMap);
 			
-						if (entitiesMap == null || entitiesMap.isEmpty())
-				throw new Exception("Unable to find users");
-			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
-				mapper.writeValue(writer, entitiesMap);
-			} else if (!siteId.isEmpty()) {
-				if (Integer.parseInt(siteId) != 1) {
-					userList = userService.getUser(siteId);
-					Collections.sort(userList, userIdComparator);
-					mapper.writeValue(writer, userList);
-				}
-			} else {
-				mapper.writeValue(writer, entitiesMap);
-			}
-		
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
