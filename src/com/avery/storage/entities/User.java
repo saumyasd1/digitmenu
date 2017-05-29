@@ -102,7 +102,7 @@ public class User extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> entitiesMap = null;
+		Map<?, ?> entitiesMap = new HashMap();
 		List<User> userList = null;
 		try {
 			StringWriter writer = new StringWriter();
