@@ -11,7 +11,4 @@ public interface PartnerDao extends GenericDao<Partner, Long>{
 
 	public List<Partner> getPartner(String siteId);
 
-	public String getUsernameById(String userid);
-
-
-}
+	}
