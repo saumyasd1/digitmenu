@@ -94,7 +94,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 			criteria.setMaxResults(pageSize);
 		}
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("productlines", new LinkedHashSet(criteria.list()));
+		entitiesMap.put("productlines", criteria.list());
 		return entitiesMap;
 
 	}
@@ -329,13 +329,6 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 		String[] str=productLineData.replace("{", "").replace("}", "").split("\"userId\":");
 		String[] str1=str[1].split(",");
 		String userId=str1[0].toString();
-		
-		// To get current username based on id
-		String username=null;
-		Criteria criteria = session.createCriteria(User.class);
-		User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userId))).uniqueResult();
-		username=currentuser.getFirstName()+currentuser.getLastName();
-		//.....................
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
 		ObjectReader updater = mapper.readerForUpdating(pk);
@@ -350,7 +343,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 			pk.setRbo(rbo);	
 		}
 		pk.setLastModifiedDate(new Date());
-		pk.setLastModifiedBy(username);
+		pk.setLastModifiedBy(userId);
 		pk=saveOrUpdateAdvancedProperties(pk,productLineMap);
 		update(pk);
 		List ordersystemList=(ArrayList)productLineMap.get("orderSystemInfo");
