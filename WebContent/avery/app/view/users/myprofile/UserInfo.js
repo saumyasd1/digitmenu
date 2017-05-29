@@ -34,7 +34,6 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                     margin:'15 0 0 0',
                     width: 160,
                     height: 160,
-                    src:Helper.getFilePath(),
                     style: {
                         border: 'solid 1.5px #ddd; border-radius:160px;'
                     }
