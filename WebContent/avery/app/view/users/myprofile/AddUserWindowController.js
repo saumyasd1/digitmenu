@@ -13,7 +13,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         	profileImage = refs.profileImage,
         	userInfo = AOCRuntime.getUser(),
         	role = userInfo.role,
-        	firstName = userInfo.firstName,
         	mode = view.mode,
             userGrid = AOCRuntime.getActiveGrid(),
             userId = userinfo.id,
@@ -66,8 +65,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	                        Helper.updateHeaderUserName();
 	                        Helper.updateProfileInfo();
 	                        Helper.setCookie("userinfo", JSON.stringify(jsonString.user), 30);
+	                        window.location.reload();
                         }
-                        window.location.reload();
+                        
                     },
                     failure: function (response, opts) {
                         msg = response.responseText;
