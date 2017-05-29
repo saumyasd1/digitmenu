@@ -68,5 +68,8 @@ public class UserService extends GenericEntityService<User, Long> {
 	public List<User> getUser(String siteId) {
 		return getUserDao().getUser(siteId);
 	}
-
+	@Transactional
+	public String getUsernameById(String userid) throws Exception {
+		return userDao.getUsernameById(userid);
+	}
 }
