@@ -73,7 +73,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		}
 
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("users", new LinkedHashSet(criteria.list()));
+		entitiesMap.put("users",criteria.list());
 		return entitiesMap;
 	}
 
