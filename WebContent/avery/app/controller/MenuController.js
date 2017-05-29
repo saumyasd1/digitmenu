@@ -316,6 +316,8 @@ Ext.define('AOC.controller.MenuController', {
     		profileImage.setSrc(Helper.getFilePath());
         if(userId == 1){
 	        win.down('#site').setHidden(true);
+	        win.down('#newPassword').setHidden(false);
+	        win.down('#confirmPassword').setHidden(false);
         }
         win.down('#site').setDisabled(true);
         win.down('#role').setHidden(true);
