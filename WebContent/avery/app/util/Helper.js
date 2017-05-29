@@ -667,7 +667,7 @@ Ext.define('AOC.util.Helper',{
     	  if(fileName){
     	   var str = filePath ? filePath :'',
     		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
-    		   filePath = fPath+'\\'+fileName;
+    		   filePath = fPath+'/'+fileName;
     		 return filePath;
     	  }
     	 },
