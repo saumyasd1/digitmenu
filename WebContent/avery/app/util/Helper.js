@@ -660,15 +660,28 @@ Ext.define('AOC.util.Helper',{
             name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
         Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
     },
-    getFilePath:function(value, metadata, rec){
-    	var userinfo = AOCRuntime.getUser();
-    		fileName = userinfo.fileName,
-    		filePath = userinfo.filePath;
-    	  if(fileName){
-    	   var str = filePath ? filePath :'',
-    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
-    		   filePath = fPath+'/'+fileName;
-    		 return filePath;
-    	  }
-    	 },
+    getFilePath:function(record){
+    	if(record){
+    		var data = record.data,
+    			fileName = data.fileName,
+    			filePath = data.filePath;
+    		 if(fileName){
+    	    	   var str = filePath ? filePath :'',
+    	    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+    	    		   filePath = fPath+'/'+fileName;
+    	    		 return filePath;
+    	    	  }
+    	}
+    	else{
+	    	var userinfo = AOCRuntime.getUser();
+	    		fileName = userinfo.fileName,
+	    		filePath = userinfo.filePath;
+	    	  if(fileName){
+	    	   var str = filePath ? filePath :'',
+	    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+	    		   filePath = fPath+'/'+fileName;
+	    		 return filePath;
+	    	  }
+	    	 }
+    	}
 });
