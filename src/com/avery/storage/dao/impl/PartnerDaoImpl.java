@@ -72,7 +72,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 			//partner.setOrderQueueCount(getCountBasedOnPartnerId(OrderQueue.class,id,"partner.id"));
 		}
         entitiesMap.put("totalCount", totalCount);
-        entitiesMap.put("partners", new LinkedHashSet(criteria.list()));
+        entitiesMap.put("partners",criteria.list());
         criteria = session.createCriteria(RBO.class);
         entitiesMap.put("rbo", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
@@ -150,16 +150,6 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 		}
 		
 		return partnerlist;
-	}
-	
-	public String getUsernameById(String userid){
-		String username=null;
-		Session session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(User.class);
-		User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
-		username=currentuser.getFirstName()+currentuser.getLastName();
-		return username;
-		
-	}
+	}	
 	
 }
