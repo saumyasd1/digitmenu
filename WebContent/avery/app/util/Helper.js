@@ -646,9 +646,10 @@ Ext.define('AOC.util.Helper',{
         var user = AOCRuntime.getUser(),
             name = user.firstName,
             mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
-            userinfo = mainprofilewrapper.down('userinfo');
+            userinfo = mainprofilewrapper.down('userinfo'),
+            profileImage = userinfo.getReferences().profileImage;
         name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
-
+        profileImage.setSrc(Helper.getFilePath());
         userinfo.down('#name').setValue(name);
         userinfo.down('#gender').setValue(user.gender);
         userinfo.down('#email').setValue(user.email);
@@ -657,8 +658,11 @@ Ext.define('AOC.util.Helper',{
     updateHeaderUserName: function () {
         var userInfo = AOCRuntime.getUser(),
             name = userInfo.firstName,
-            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name;
-        Ext.ComponentQuery.query('viewport aocheader')[0].updateUserName(name);
+            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name,
+    		aocheader = Ext.ComponentQuery.query('viewport aocheader')[0];
+    		profileImage = aocheader.down('#profileImage'),
+    	profileImage.setSrc(Helper.getFilePath());
+    	aocheader.updateUserName(name);
     },
     getFilePath:function(record){
     	if(record){
