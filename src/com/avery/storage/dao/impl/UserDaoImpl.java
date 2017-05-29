@@ -288,4 +288,21 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			return TimeZone.getDefault().getID();
 		}
 	}
+	
+	public String getUsernameById(String userid){
+		String username=null;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(User.class);
+		User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
+		if(currentuser.getMiddleName()!=null)
+		{
+			username=currentuser.getFirstName()+" "+currentuser.getMiddleName()+" "+currentuser.getLastName();
+		}
+		else
+		{
+		username=currentuser.getFirstName()+" "+currentuser.getLastName();
+		}
+		return username;
+		
+	}
 }
