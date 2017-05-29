@@ -46,7 +46,6 @@ Ext.define('AOC.view.users.manage.UserController', {
                             profileImage = refs.profileImage,
                             userId = AOCRuntime.getUser().id;
                         if (id == userId) {
-                            profileImage.setSrc(Helper.getFilePath());
                             if (id == 1) {
                                 win.down('#site').setHidden(true);
                             }
@@ -54,6 +53,7 @@ Ext.define('AOC.view.users.manage.UserController', {
                             win.down('#role').setHidden(true);
                             win.down('#roledisplayfield').setHidden(false);
                         }
+                        profileImage.setSrc(Helper.getFilePath(currentRecord));
                         win.down('form').loadRecord(currentRecord);
                         win.show();
                         callout.destroy();
