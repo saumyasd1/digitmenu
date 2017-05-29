@@ -67,6 +67,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	                        Helper.updateProfileInfo();
 	                        Helper.setCookie("userinfo", JSON.stringify(jsonString.user), 30);
                         }
+                        window.location.reload();
                     },
                     failure: function (response, opts) {
                         msg = response.responseText;
