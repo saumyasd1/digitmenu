@@ -19,7 +19,7 @@ public interface OrderEmailQueueDao extends GenericDao<OrderEmailQueue, Long>{
 	
 	public void identifyEmail(String data, Long entityId);
 	
-	public void assignCsrValue(Long entityId, String csrId);
+	public void assignCsrValue(Long entityId, String csrId,String userId);
 	
 	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate);
 	
