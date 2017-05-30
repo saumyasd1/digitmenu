@@ -311,9 +311,10 @@ Ext.define('AOC.controller.MenuController', {
         	});
         win.down('#roledisplayfield').setHidden(false);
         win.down('form').getForm().setValues(userinfo);
-        var refs = win.getReferences(),
-    		profileImage = refs.profileImage;
-    		profileImage.setSrc(Helper.getFilePath());
+        win.down('#newPassword').setValue('');
+//        var refs = win.getReferences(),
+    		//profileImage = refs.profileImage;
+    		//profileImage.setSrc(Helper.getFilePath());
         if(userId == 1){
 	        win.down('#site').setHidden(true);
 	        win.down('#newPassword').setHidden(false);
