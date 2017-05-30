@@ -141,7 +141,7 @@ OrderEmailQueueDao {
 
 		}
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("emailqueue", new LinkedHashSet(list));
+		entitiesMap.put("emailqueue",list);
 		return entitiesMap;
 	}
 	
@@ -374,13 +374,14 @@ OrderEmailQueueDao {
 	}
 	
 	@Override
-	public void assignCsrValue(Long entityId, String csrId){
+	public void assignCsrValue(Long entityId, String csrId,String userId){
 		Session session = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
 			OrderEmailQueue orderEmailQueueObj=null;
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			orderEmailQueueObj.setAssignCSR(csrId);
+			orderEmailQueueObj.setLastModifiedBy(userId);
 			orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 			orderEmailQueueObj.setLastModifiedDate(new Date());//last modified date added on assign csr click
 			String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
