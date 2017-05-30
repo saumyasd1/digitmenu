@@ -118,6 +118,30 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						listeners:{
 							'change':'onDataStructureSelection'
 						}
+					},
+					{
+						xtype:'combo',
+						displayField:'csrName',
+						reference:'csrCombo',
+						name:'assignCSR',
+						emptyText:'CSR Name',
+						reference:'assignCSR',
+						valueField:'id',
+						queryMode:'local',
+						disabled:true,
+						store:Ext.create('AOC.store.AssignCSRStore'),
+						typeAhead:true,
+						triggerAction:'all',
+						flex:1,
+						tabIndex:9,
+						enableKeyEvents:true,
+						margin:'0 0 0 10',
+						listeners:{
+							blur:function(combo,e){
+								Helper.clearCSRCombo(combo,e);
+							},
+							afterrender:'onAfterRenderCSRList'
+						}
 					}
 				]
 			},
