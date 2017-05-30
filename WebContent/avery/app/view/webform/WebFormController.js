@@ -127,7 +127,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 				attachementField.allowBlank = attachmentRequired ? false : true;
 				additionalDataFileKey[attachmentRequired ? 'show' : 'hide']();
 				additionalDataFileKey[attachmentRequired ? 'enable' : 'disable']();
-			 
+				
+				view.lookupReference('assignCSR').enable();
 				view.lookupReference('emailBody').enable();
 				view.lookupReference('email').enable();
 				view.lookupReference('subject').enable();
@@ -135,6 +136,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 			 }else{
 				view.lookupReference('subject').disable();
 				view.lookupReference('emailBody').disable();
+				view.lookupReference('assignCSR').disable();
 				view.lookupReference('email').disable();
 				view.lookupReference('subject').disable();
 				view.orderFileNameExtension=null;
@@ -474,8 +476,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 		webOrderAttachmentInfoGrid.store.removeAll();
 		webOrderAttachmentInfoGrid.getView().refresh();
 	},
-	notifyByMessage: function(config){
-	},
     backButton:function(){
     	var con = AOC.app.getController('MenuController');
 		con.selectCard('orderqueueview');
@@ -510,5 +510,16 @@ Ext.define('AOC.view.webform.WebFormController', {
         userId: userId,
         userEmailId: userEmailId
     };
-}
+   },
+   onAfterRenderCSRList: function(obj){
+	    var userInfo = AOCRuntime.getUser(),
+	    roleId = userInfo.role,
+	    siteId = userInfo.siteId;
+	obj.getStore().proxy.extraParams = {
+	    siteId: siteId,
+	    roleId: roleId
+	};
+	obj.getStore().load();
+	
+	}
 });
