@@ -5,10 +5,18 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
     ],
     alias: 'widget.userinfo',
     padding: '30 20 30 20',
+    viewModel:'main',
     controller:'adduserwindow',
     initComponent: function () {
         Ext.apply(this, {
-            items: this.buildItems()
+            items: this.buildItems(),
+            listeners:{
+            	afterrender:function(){
+            		var me = this,
+            			filePath = Helper.getFilePath();
+            		me.getViewModel().set('userImageSrc',filePath);
+            	}
+            }
         });
         this.callParent(arguments);
     },
@@ -34,6 +42,9 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                     margin:'15 0 0 0',
                     width: 160,
                     height: 160,
+                    bind:{
+                    	src:'{userImageSrc}'
+                    },
                     style: {
                         border: 'solid 1.5px #ddd; border-radius:160px;'
                     }
