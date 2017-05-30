@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -31,6 +32,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -57,6 +59,7 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -174,7 +177,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> entitiesMap = null;
+		Map<?, ?> entitiesMap = new HashMap();
+		Map responcemap=new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -190,9 +194,31 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			entitiesMap = orderEmailQueueService
 					.readWithCriteria(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
+			{
 				throw new Exception("Unable to find any data");
+			}
+			else
+			{
+				List orderEmailQueuelsit=new LinkedList();
+				List lsitOforderEmailQueue=(List) entitiesMap.get("emailqueue");
+				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+				if(!lsitOforderEmailQueue.isEmpty())
+				for(int i=0;i<lsitOforderEmailQueue.size();i++)
+				{
+					OrderEmailQueue orderQueue=(OrderEmailQueue) lsitOforderEmailQueue.get(i);
+					String lastmodifiedId=orderQueue.getLastModifiedBy();
+					try{String LastModifiedByName=userService.getUsernameById(lastmodifiedId);
+					orderQueue.setLastModifiedBy(LastModifiedByName);
+					orderEmailQueuelsit.add(orderQueue);}
+					catch(Exception e){
+						orderEmailQueuelsit.add(orderQueue);
+					}
+				}
+				responcemap.put("emailqueue", orderEmailQueuelsit);
+				responcemap.put("totalCount", entitiesMap.get("totalCount"));
+			}
 			mapper.setTimeZone(TimeZone.getDefault());
-			mapper.writeValue(writer, entitiesMap);
+			mapper.writeValue(writer, responcemap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -474,6 +500,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response assignCsr(@Context UriInfo ui, @Context HttpHeaders hh,
 			@PathParam("id") String orderEmailQueueId,
+			@QueryParam("userId") String userId,
 			@PathParam("csrid") String csrId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		Response.ResponseBuilder rb = null;
@@ -484,7 +511,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
 			orderEmailQueueService.assignCsrByEmailQueueId(
-					orderEmailQueueEntityId, csrId);
+					orderEmailQueueEntityId, csrId,userId);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
 			entitiesMap.put("success", true);
