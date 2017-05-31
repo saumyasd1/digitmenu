@@ -80,13 +80,13 @@ Ext.define('AOC.view.AOCLogin',{
 									change :function( cmp, newValue, oldValue){}
 								}
 							
-							},
-							{
-								xtype:'component',
-								flex:1,
-								margin:'7 0 0 0',
-								html:'<div class="forget-pws-text">Forgot Password?</div>'
 							}
+//							{
+//								xtype:'component',
+//								flex:1,
+//								margin:'7 0 0 0',
+//								html:'<div class="forget-pws-text">Forgot Password?</div>'
+//							}
 						]
 					},
 					{
