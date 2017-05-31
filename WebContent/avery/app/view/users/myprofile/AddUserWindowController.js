@@ -65,7 +65,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	                        Helper.updateHeaderUserName();
 	                        Helper.updateProfileInfo();
 	                        Helper.setCookie("userinfo", JSON.stringify(jsonString.user), 30);
-	                        //window.location.reload();
+	                        window.location.reload();
                         }
                         
                     },
@@ -93,9 +93,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             userInfo = AOCRuntime.getUser(),
             roleId = userInfo.role,
             siteId = userInfo.siteId,
-            store = roleName.store,
-            filePath = Helper.getFilePath();
-        win.getViewModel().set('userImageSrc',filePath);
+            store = roleName.store;
         store.load({
             params: {
                 role: roleId
@@ -142,7 +140,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         fileReader.onload = function (e, b) {
             var fileContent = e.target.result;
             imageContainer.setSrc(fileContent);
-            me.getViewModel().set('userImageSrc',fileContent);
         }
         fileReader.readAsDataURL(file);
     },
