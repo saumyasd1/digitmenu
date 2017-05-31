@@ -5,7 +5,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
     controller: 'adduserwindow',
     reference: 'addEditUserWin',
     mode: 'add',
-    viewModel:'main',
     bodyPadding: 7,
     title: 'Add User',
     layout: {
@@ -54,9 +53,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     reference:'profileImage',
                     margin: me.mode == 'edit'? '20 0 0 0' : '35 0 0 0',
                     width: 160,
-                    bind:{
-                    	src:'{userImageSrc}'
-                    },
                     height: 160,
                     style: {
                         border: 'solid 1.5px #ddd; border-radius:160px;'
