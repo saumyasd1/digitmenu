@@ -104,6 +104,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								allowBlank: false,
 								flex:1,
 								displayField: 'name',
+								queryMode :'local',
 								reference:'siteName',
 								valueField: 'id',
 								store:Ext.create('AOC.store.SiteStore'),
@@ -121,13 +122,12 @@ Ext.define('AOC.view.address.AddAddress',{
 								fieldLabel:'System',
 								allowBlank: false,
 								flex:1,
-								//queryMode :'local',
+								queryMode :'local',
 								displayField: 'name',
 								reference:'systemName',
 								disabled:true,
 								valueField: 'id',
 								margin:'0 0 0 10',
-								//  store: 'SiteStore',
 								store:Ext.create('AOC.store.SystemStore'),
 								listeners : {
 									blur:function(combo,e){
