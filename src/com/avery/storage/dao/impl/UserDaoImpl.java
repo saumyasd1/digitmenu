@@ -292,18 +292,24 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	public String getUsernameById(String userid){
 		
 		String username=null;
-		Session session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(User.class);
-		if(userid.matches("^[0-9]*$")){
-			User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
-			if(currentuser.getMiddleName()!=null)
-			{
-				username=currentuser.getFirstName()+" "+currentuser.getMiddleName()+" "+currentuser.getLastName();
-			}else{
-				username=currentuser.getFirstName()+" "+currentuser.getLastName();
-			}
+		if(userid == null){
+			username = "";
+			AppLogger.getSystemLogger().error(
+					"Error while fetching User Name for lastModifiedBy / createdBy : ","Userid is null lastModifiedBy / createdBy .");
 		}else{
-			username = userid;
+			Session session = getSessionFactory().getCurrentSession();
+			Criteria criteria = session.createCriteria(User.class);
+			if(userid.matches("^[0-9]*$")){
+				User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
+				if(currentuser.getMiddleName()!=null)
+				{
+					username=currentuser.getFirstName()+" "+currentuser.getMiddleName()+" "+currentuser.getLastName();
+				}else{
+					username=currentuser.getFirstName()+" "+currentuser.getLastName();
+				}
+			}else{
+				username = userid;
+			}
 		}
 		return username;
 	}
