@@ -916,7 +916,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:'comboColumnRenderer'
 		}, 
 		{
-			text: AOCLit.shipMark,
+			text: AOCLit.shipMark + ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3> ^ is a char for next line in legacy </font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'shipMark',
 			width: 150,
 			editor: 'textfield',
