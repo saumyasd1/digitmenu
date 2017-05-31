@@ -217,11 +217,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                     return '';
                 }
             }
-        }, {
-            text: AOCLit.submittedBy,
-            width: 100,
-            dataIndex: 'SubmittedBy'
-        }, {
+        },
+//        {
+//            text: AOCLit.submittedBy,
+//            width: 100,
+//            dataIndex: 'SubmittedBy'
+//        }, 
+        {
             text: AOCLit.submittedDate,
             width: 150,
             dataIndex: 'submittedDate'
