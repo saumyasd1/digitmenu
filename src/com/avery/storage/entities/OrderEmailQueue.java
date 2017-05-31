@@ -182,33 +182,26 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			MultivaluedMap<String, String> queryParamMap = ui
-					.getQueryParameters();
+			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			mapper.addMixIn(Partner.class, PartnerMixIn.class);
 			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
-			mapper.addMixIn(OrderFileAttachment.class,
-					OrderFileAttachmentMixIn.class);
+			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			entitiesMap = orderEmailQueueService
-					.readWithCriteria(queryParamMap);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			entitiesMap = orderEmailQueueService.readWithCriteria(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty()) {
 				throw new Exception("Unable to find any data");
 			} else {
 				List orderEmailQueuelsit = new LinkedList();
-				List lsitOforderEmailQueue = (List) entitiesMap
-						.get("emailqueue");
-				UserService userService = (UserService) SpringConfig
-						.getInstance().getBean("userService");
+				List lsitOforderEmailQueue = (List) entitiesMap.get("emailqueue");
+				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 				if (!lsitOforderEmailQueue.isEmpty())
 					for (int i = 0; i < lsitOforderEmailQueue.size(); i++) {
-						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue
-								.get(i);
+						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue.get(i);
 						String lastmodifiedId = orderQueue.getLastModifiedBy();
 						try {
-							String LastModifiedByName = userService
-									.getUsernameById(lastmodifiedId);
+							String LastModifiedByName = userService.getUsernameById(lastmodifiedId);
 							orderQueue.setLastModifiedBy(LastModifiedByName);
 							orderEmailQueuelsit.add(orderQueue);
 						} catch (Exception e) {
@@ -226,10 +219,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 
@@ -238,23 +229,19 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@GET
 	@Path("/unidentified")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUnidentified(@Context UriInfo ui, @Context HttpHeaders hh)
-			throws Exception {
+	public Response getUnidentified(@Context UriInfo ui, @Context HttpHeaders hh) throws Exception {
 		Response.ResponseBuilder rb = null;
 		Map<?, ?> entitiesMap = null;
 		try {
-			MultivaluedMap<String, String> queryParamMap = ui
-					.getQueryParameters();
+			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(Partner.class, PartnerMixIn.class);
 			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
-			mapper.addMixIn(OrderFileAttachment.class,
-					OrderFileAttachmentMixIn.class);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			entitiesMap = orderEmailQueueService
-					.getWithUnidentifiedStatus(queryParamMap);
+			mapper.addMixIn(OrderFileAttachment.class, OrderFileAttachmentMixIn.class);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
 			mapper.setTimeZone(TimeZone.getDefault());
@@ -264,10 +251,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -277,28 +262,23 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		Long id;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			OrderEmailQueue orderEmailQueue = mapper.readValue(data,
-					OrderEmailQueue.class);
+			OrderEmailQueue orderEmailQueue = mapper.readValue(data, OrderEmailQueue.class);
 			// orderEmailQueue.setCreatedDate(new Date());
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			id = orderEmailQueueService.create(orderEmailQueue);
 			return Response.ok(id).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@Override
-	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
-			String data) {
+	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id, String data) {
 		Response.ResponseBuilder rb = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -307,17 +287,14 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 			// toggle this property value based on your input JSON data
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			// read existing entity from database
-			OrderEmailQueue orderEmailQueue = orderEmailQueueService.read(Long
-					.parseLong(id));
+			OrderEmailQueue orderEmailQueue = orderEmailQueueService.read(Long.parseLong(id));
 			if (orderEmailQueue == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("data entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			ObjectReader updater = mapper.readerForUpdating(orderEmailQueue);
 			// build updated entity object from input data
@@ -328,16 +305,12 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.writeValue(writer, orderEmailQueue);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating data entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in updating data entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating data entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in updating data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -350,29 +323,22 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			OrderEmailQueue orderEmailQueue = orderEmailQueueService
-					.read(entityId);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			OrderEmailQueue orderEmailQueue = orderEmailQueueService.read(entityId);
 			if (orderEmailQueue == null)
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("Data entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("Data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			mapper.writeValue(writer, orderEmailQueue);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching data entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in fetching data entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching data entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 
@@ -382,100 +348,82 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
 		Response.ResponseBuilder rb = null;
 		try {
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			// read existing entity from database
-			OrderEmailQueue orderEmailQueue = orderEmailQueueService.read(Long
-					.parseLong(id));
+			OrderEmailQueue orderEmailQueue = orderEmailQueueService.read(Long.parseLong(id));
 			if (orderEmailQueue == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("Data entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("Data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			// prepare response
 			orderEmailQueueService.delete(orderEmailQueue);
 			return Response.ok(id).build();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting Data entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in deleting Data entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting data entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in deleting data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@PUT
 	@Path("cancelemail/{id:[0-9]+}")
-	public Response cancelEmail(@Context UriInfo ui, @Context HttpHeaders hh,
-			String data, @PathParam("id") String orderEmailQueueId) {
+	public Response cancelEmail(@Context UriInfo ui, @Context HttpHeaders hh, String data,
+			@PathParam("id") String orderEmailQueueId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		try {
-			OrderEmailQueueService orderQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			orderQueueService.cancelEmail(data, orderEmailQueueEntityId);
 			return Response.ok().build();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while cancelling email",
-					ex);
+			AppLogger.getSystemLogger().error("Error while cancelling email", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger()
-					.error("Error while cancelling email", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while cancelling email", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@PUT
 	@Path("disregardemail/{id:[0-9]+}")
-	public Response disregardEmail(@Context UriInfo ui,
-			@Context HttpHeaders hh, String data,
+	public Response disregardEmail(@Context UriInfo ui, @Context HttpHeaders hh, String data,
 			@PathParam("id") String orderEmailQueueId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		try {
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			orderEmailQueueService
-					.disregardEmail(data, orderEmailQueueEntityId);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			orderEmailQueueService.disregardEmail(data, orderEmailQueueEntityId);
 			return Response.ok().build();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while disregarding email",
-					ex);
+			AppLogger.getSystemLogger().error("Error while disregarding email", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error("Error while disregarding email",
-					e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while disregarding email", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@PUT
 	@Path("identified/{id:[0-9]+}")
-	public Response identifyEmail(@Context UriInfo ui, @Context HttpHeaders hh,
-			String data, @PathParam("id") String orderEmailQueueId) {
+	public Response identifyEmail(@Context UriInfo ui, @Context HttpHeaders hh, String data,
+			@PathParam("id") String orderEmailQueueId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		Response.ResponseBuilder rb = null;
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			// toggle this property value based on your input JSON dataR
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			orderEmailQueueService.identifyEmail(data, orderEmailQueueEntityId);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
@@ -483,16 +431,12 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while processing order",
-					ex);
+			AppLogger.getSystemLogger().error("Error while processing order", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger()
-					.error("Error while processing order", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while processing order", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -500,36 +444,29 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@GET
 	@Path("/assigncsr/{id:[0-9]+}/{csrid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response assignCsr(@Context UriInfo ui, @Context HttpHeaders hh,
-			@PathParam("id") String orderEmailQueueId,
-			@QueryParam("userId") String userId,
-			@PathParam("csrid") String csrId) {
+	public Response assignCsr(@Context UriInfo ui, @Context HttpHeaders hh, @PathParam("id") String orderEmailQueueId,
+			@QueryParam("userId") String userId, @PathParam("csrid") String csrId) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		Response.ResponseBuilder rb = null;
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			orderEmailQueueService.assignCsrByEmailQueueId(
-					orderEmailQueueEntityId, csrId, userId);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId, userId);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
 			entitiesMap.put("success", true);
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while processing Request",
-					ex);
+			AppLogger.getSystemLogger().error("Error while processing Request", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger()
-					.error("Error while processing order", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while processing order", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -537,8 +474,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@POST
 	@Path("/createweborder")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response createWebOrder(@Context UriInfo uriInfo,
-			@Context HttpHeaders hh, FormDataMultiPart formParams) {
+	public Response createWebOrder(@Context UriInfo uriInfo, @Context HttpHeaders hh, FormDataMultiPart formParams) {
 		Response.ResponseBuilder rb = null;
 		OrderEmailQueue orderemailQueueObj = new OrderEmailQueue();
 		Long OrderEmailQueueId;
@@ -548,16 +484,14 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			String emailid = formParams.getField("email").getValue();
 			String emailBody = formParams.getField("emailBody").getValue();
 			orderemailQueueObj.setSenderEmailId(emailid);
-			String subject = StringEscapeUtils.unescapeHtml(formParams
-					.getField("subject").getValue());// decoding chinese subject
+			String subject = StringEscapeUtils.unescapeHtml(formParams.getField("subject").getValue());// decoding
+																										// chinese
+																										// subject
 			orderemailQueueObj.setSubject(subject);
-			orderemailQueueObj
-					.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+			orderemailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
 			orderemailQueueObj.setCreatedDate(date);
-			orderemailQueueObj
-					.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
-			orderemailQueueObj
-					.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
+			orderemailQueueObj.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
+			orderemailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
 			// orderemailQueueObj.setMailBody(emailBody); /*value not required
 			// in mailbody column as html file is being created*/
 			orderemailQueueObj.setOrderMail(false);
@@ -566,32 +500,26 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			orderemailQueueObj.setCreatedDate(now);
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			OrderEmailQueueId = orderEmailQueueService
-					.create(orderemailQueueObj);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			OrderEmailQueueId = orderEmailQueueService.create(orderemailQueueObj);
 			OrderEmailQueue orderEmailQueue = new OrderEmailQueue();
 			orderEmailQueue.setId(OrderEmailQueueId);
-			String productLineId = formParams.getField("dataStructureName")
-					.getValue();
+			String productLineId = formParams.getField("dataStructureName").getValue();
 			ProductLine productLineObj = new ProductLine();
 			productLineObj.setId(Long.parseLong(productLineId));
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
-			Map<String, List<FormDataBodyPart>> fieldsByName = formParams
-					.getFields();
+			Map<String, List<FormDataBodyPart>> fieldsByName = formParams.getFields();
 			// orderFileAttachmentService.insertEmailBody(orderEmailQueue,
 			// emailBody, productLineObj);
-			String defaultFilePath = PropertiesConfig
-					.getString(PropertiesConstants.FILEATTACHMENT_PATH);
+			String defaultFilePath = PropertiesConfig.getString(PropertiesConstants.FILEATTACHMENT_PATH);
 			UUID uniqueUUId = UUID.randomUUID();
 			String uniqueString = uniqueUUId.toString();
 			filePath = defaultFilePath + File.separator + uniqueString;
 			new File(filePath).mkdir();
-			orderFileAttachmentService.insertEmailBody(orderEmailQueue,
-					emailBody, productLineObj, filePath);
-			addAttachments(orderEmailQueue, productLineObj, fieldsByName,
-					formParams, filePath);
+			orderFileAttachmentService.insertEmailBody(orderEmailQueue, emailBody, productLineObj, filePath);
+			addAttachments(orderEmailQueue, productLineObj, fieldsByName, formParams, filePath);
 			sendAcknowledgement(emailid, OrderEmailQueueId);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
@@ -599,49 +527,37 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while processing order",
-					ex);
+			AppLogger.getSystemLogger().error("Error while processing order", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger()
-					.error("Error while processing order", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while processing order", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
 
-	private void addAttachments(OrderEmailQueue orderemailQueue,
-			ProductLine productLineObj,
-			Map<String, List<FormDataBodyPart>> fieldsByName,
-			FormDataMultiPart formParams, String filePath) throws Exception {
+	private void addAttachments(OrderEmailQueue orderemailQueue, ProductLine productLineObj,
+			Map<String, List<FormDataBodyPart>> fieldsByName, FormDataMultiPart formParams, String filePath)
+			throws Exception {
 		String fileExtension = null, fileName, type;
 		String fileContentType = null, additionalDataFileKey = null;
 		InputStream stream = null;
 		OrderFileAttachment orderFileAttachment = null;
-		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
-				.getInstance().getBean("orderFileAttachmentService");
+		OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig.getInstance()
+				.getBean("orderFileAttachmentService");
 		String count = "0";
-		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName
-				.entrySet()) {
+		for (Map.Entry<String, List<FormDataBodyPart>> entry : fieldsByName.entrySet()) {
 			String field = entry.getKey();
 			FormDataBodyPart formdata = entry.getValue().get(0);
-			if (formdata != null
-					&& (field.startsWith("orderFileType") || field
-							.startsWith("attachment"))) {
-				stream = ((FormDataBodyPart) formParams.getField(field))
-						.getEntityAs(InputStream.class);
-				fileName = ((FormDataBodyPart) formParams.getField(field))
-						.getContentDisposition().getFileName();
-				type = ((FormDataBodyPart) formParams.getField(field))
-						.getMediaType().toString();
+			if (formdata != null && (field.startsWith("orderFileType") || field.startsWith("attachment"))) {
+				stream = ((FormDataBodyPart) formParams.getField(field)).getEntityAs(InputStream.class);
+				fileName = ((FormDataBodyPart) formParams.getField(field)).getContentDisposition().getFileName();
+				type = ((FormDataBodyPart) formParams.getField(field)).getMediaType().toString();
 
 				if (!type.equalsIgnoreCase(MediaType.TEXT_PLAIN)) {
 
-					fileExtension = fileName.substring(
-							fileName.lastIndexOf(".") + 1, fileName.length());
+					fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
 					if (field.startsWith("orderFileType")) {
 						fileContentType = ApplicationConstants.DEFAULT_ORDER_CONTENT_TYPE;
@@ -649,29 +565,24 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					} else {
 						count = field.replace("attachment", "");
 						// additionalDataFileKey
-						if (formParams
-								.getField("additionalDataFileKey" + count) != null)
-							additionalDataFileKey = formParams.getField(
-									"additionalDataFileKey" + count).getValue();
+						if (formParams.getField("additionalDataFileKey" + count) != null)
+							additionalDataFileKey = formParams.getField("additionalDataFileKey" + count).getValue();
 						else
 							additionalDataFileKey = null;
 						fileContentType = ApplicationConstants.DEFAULT_ADDITIONAL_CONTENT_TYPE;
 					}
 					orderFileAttachment = new OrderFileAttachment();
-					File targetFile = new File(filePath + File.separator
-							+ fileName);
+					File targetFile = new File(filePath + File.separator + fileName);
 					FileUtils.copyInputStreamToFile(stream, targetFile);
 					orderFileAttachment.setFileName(fileName);
 					orderFileAttachment.setFileExtension(fileExtension);
 					orderFileAttachment.setFileContentType(fileContentType);
 					orderFileAttachment.setCreatedDate(new Date());
-					orderFileAttachment
-							.setAdditionalDataFileKey(additionalDataFileKey);
+					orderFileAttachment.setAdditionalDataFileKey(additionalDataFileKey);
 					orderFileAttachment.setVarProductLine(productLineObj);
 					orderFileAttachment.setVarOrderEmailQueue(orderemailQueue);
 					orderFileAttachment.setFilePath(filePath);
-					orderFileAttachment
-							.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+					orderFileAttachment.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 					orderFileAttachmentService.create(orderFileAttachment);
 				}
 			}
@@ -687,20 +598,16 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	 * @param emailqueueid
 	 * @throws MessagingException
 	 */
-	public void sendAcknowledgement(String toUSerName, long emailqueueid)
-			throws MessagingException {
+	public void sendAcknowledgement(String toUSerName, long emailqueueid) throws MessagingException {
 		final String userName = ApplicationConstants.TEST_NOTIFICATION_EMAILID;
 		final String password = ApplicationConstants.TEST_NOTIFICATION_PASSWORD;
 		// AcknowledgementService acknowledgementService = new
 		// AcknowledgementService();
 		String subject = "Order Acknowledgement";
-		String body = "This is a system generated Email, please do not reply.\n\n"
-				+ "Dear Customer,\n\n"
+		String body = "This is a system generated Email, please do not reply.\n\n" + "Dear Customer,\n\n"
 				+ "Thank you for placing your orders to Avery Dennison. Our customer service team is processing your orders and will contact "
 				+ "you for more details or delivery schedule. Should have any enquiry, please feel free to contact our customer service "
-				+ "representatives for assistance.\n\n"
-				+ "Your EmailQueue Id for Order Tracking is : "
-				+ emailqueueid
+				+ "representatives for assistance.\n\n" + "Your EmailQueue Id for Order Tracking is : " + emailqueueid
 				+ "\n\nBest Regards,\nAvery Dennison Customer Service Team\n\n"
 				+ "---------------------------------------------------------------------\n"
 				+ "The information transmitted is intended only for the person or entity to which it is addressed and may contain confidential "
@@ -714,19 +621,16 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			Properties properties = new Properties();
 			properties.put("mail.smtp.host", "smtp.gmail.com");
 			properties.put("mail.smtp.socketFactory.port", "465");
-			properties.put("mail.smtp.socketFactory.class",
-					"javax.net.ssl.SSLSocketFactory");
+			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			properties.put("mail.smtp.auth", "true");
 			properties.put("mail.smtp.port", "465");
 
 			// Get the Session object.
-			Session session = Session.getInstance(properties,
-					new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(userName,
-									password);
-						}
-					});
+			Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(userName, password);
+				}
+			});
 
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
@@ -735,8 +639,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			message.setFrom(new InternetAddress(userName));
 
 			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					toUSerName));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(toUSerName));
 
 			// Set Subject: header field
 			message.setSubject(subject);
@@ -752,14 +655,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			// EmailManager.log.debug("Sent message successfully.");
 			// acknowledgementService.updateAcknowledgementDate(emailqueueid,
 			// acknowledgementDate);
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			orderEmailQueueService.updateAcknowledgementDate(emailqueueid,
-					acknowledgementDate);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			orderEmailQueueService.updateAcknowledgementDate(emailqueueid, acknowledgementDate);
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
-			throw new MessagingException("Error while sending mail from:\""
-					+ userName + "\" to:\"" + toUSerName + "\".", mex);
+			throw new MessagingException(
+					"Error while sending mail from:\"" + userName + "\" to:\"" + toUSerName + "\".", mex);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -768,10 +670,22 @@ public class OrderEmailQueue extends MainAbstractEntity {
 
 	@POST
 	@Path("/newweborder")
-	public Response createNewWebOrder(@Context UriInfo ui,
-			@Context HttpHeaders hh, String data) {
+	public Response createNewWebOrder(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
 		Map<String, String> jsonMap = null;
 		Response.ResponseBuilder rb = null;
+		String[] str = data.replace("{", "").replace("\"", "").replace("}", "").split(",");
+		String assignCSR = "";
+		String lastModifiedId = "";
+		for (String tmp : str) {
+			if (tmp.contains("assignCSR")) {
+				String[] tmp1 = tmp.split(":");
+				assignCSR = tmp1[1];
+			}
+			if (tmp.contains("userId")) {
+				String[] tmp1 = tmp.split(":");
+				lastModifiedId = tmp1[1];
+			}
+		}
 		OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
 		Date now = new Date();
 		Long orderEmailQueueId = 0L;
@@ -780,8 +694,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		long productlineId = 0L;
 
 		try {
-			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
-					.getInstance().getBean("orderQueueService");
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+					.getBean("orderQueueService");
 
 			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
 
@@ -789,82 +703,65 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			String emailBody = jsonMap.get("emailBody");
 			String dataStructureId = jsonMap.get("dataStructureName");
 			String oldOrderFileDeleted = jsonMap.get("oldOrderFileDeleted");
-			boolean isOldOrderFileDeleted = Boolean
-					.parseBoolean(oldOrderFileDeleted == null
-							|| oldOrderFileDeleted.equals("") ? "false"
-							: oldOrderFileDeleted);
+			boolean isOldOrderFileDeleted = Boolean.parseBoolean(
+					oldOrderFileDeleted == null || oldOrderFileDeleted.equals("") ? "false" : oldOrderFileDeleted);
 			String resubmitFlag = jsonMap.get("isResubmit");
-			boolean isResubmit = Boolean.parseBoolean(resubmitFlag == null
-					|| resubmitFlag.equals("") ? "false" : resubmitFlag);
-			String oldOrderFileId = jsonMap.get("oldOrderFileId") != null ? jsonMap
-					.get("oldOrderFileId") : null;
-			String oldAdditionalFileId = jsonMap.get("oldAdditionalFileId") != null ? jsonMap
-					.get("oldAdditionalFileId") : null;
-			String oldOrderQueueId = jsonMap.get("oldOrderId") != null ? jsonMap
-					.get("oldOrderId") : null;
+			boolean isResubmit = Boolean
+					.parseBoolean(resubmitFlag == null || resubmitFlag.equals("") ? "false" : resubmitFlag);
+			String oldOrderFileId = jsonMap.get("oldOrderFileId") != null ? jsonMap.get("oldOrderFileId") : null;
+			String oldAdditionalFileId = jsonMap.get("oldAdditionalFileId") != null ? jsonMap.get("oldAdditionalFileId")
+					: null;
+			String oldOrderQueueId = jsonMap.get("oldOrderId") != null ? jsonMap.get("oldOrderId") : null;
 			productlineId = Long.parseLong(dataStructureId);
 			ProductLine productLineObj = new ProductLine();
 			productLineObj.setId(productlineId);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			orderEmailQueueObj
-					.setAssignCSR(ApplicationConstants.DEFAULT_CSR_ID);
-			orderEmailQueueObj
-					.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
+			orderEmailQueueObj.setAssignCSR(assignCSR);
+			orderEmailQueueObj.setLastModifiedBy(lastModifiedId);
+			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
 			if (isResubmit) {
-				orderEmailQueueObj
-						.setStatus(ApplicationConstants.Order_Email_Processed);
+				orderEmailQueueObj.setStatus(ApplicationConstants.Order_Email_Processed);
 			} else {
-				orderEmailQueueObj
-						.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
+				orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 			}
 			orderEmailQueueObj.setOrderMail(false);
 			orderEmailQueueObj.setReceivedDate(now);
 			orderEmailQueueObj.setCreatedDate(now);
 			orderEmailQueueObj.setSenderEmailId(jsonMap.get("email"));
 			orderEmailQueueObj.setSubject(jsonMap.get("subject"));
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
-			orderEmailQueueId = orderEmailQueueService
-					.create(orderEmailQueueObj);
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
+			orderEmailQueueId = orderEmailQueueService.create(orderEmailQueueObj);
 			orderEmailQueueObj.setId(orderEmailQueueId);
 
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
-			String defaultFilePath = PropertiesConfig
-					.getString(PropertiesConstants.FILEATTACHMENT_PATH);
+			String defaultFilePath = PropertiesConfig.getString(PropertiesConstants.FILEATTACHMENT_PATH);
 			UUID uniqueUUId = UUID.randomUUID();
 			String uniqueString = uniqueUUId.toString();
 			filePath = defaultFilePath + File.separator + uniqueString;
 			new File(filePath).mkdir();
-			orderFileAttachmentService.insertEmailBody(orderEmailQueueObj,
-					emailBody, productLineObj, filePath);
+			orderFileAttachmentService.insertEmailBody(orderEmailQueueObj, emailBody, productLineObj, filePath);
 
-			if (oldOrderFileId != null && !"".equals(oldOrderFileId)
-					&& !isOldOrderFileDeleted) {
+			if (oldOrderFileId != null && !"".equals(oldOrderFileId) && !isOldOrderFileDeleted) {
 				OrderFileAttachment orderFileAttachmentObj = orderFileAttachmentService
 						.read(Long.parseLong(oldOrderFileId));
 				orderFileAttachmentObj.setId(0);
 				orderFileAttachmentObj.setCreatedDate(now);
-				orderFileAttachmentObj
-						.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+				orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 				// orderQueue.setPrevOrderQueueId(Integer.parseInt(oldOrderQueueId));
-				orderFileAttachmentObj
-						.setVarOrderEmailQueue(orderEmailQueueObj);
+				orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
 				orderFileAttachmentObj.setVarProductLine(productLineObj);
-				Long orderFileAttachmentId = orderFileAttachmentService
-						.create(orderFileAttachmentObj);
+				Long orderFileAttachmentId = orderFileAttachmentService.create(orderFileAttachmentObj);
 				orderFileAttachmentObj.setId(orderFileAttachmentId);
 				if (isResubmit) {
-					OrderQueue orderQueue = orderQueueService.read(Long
-							.parseLong(oldOrderQueueId));
+					OrderQueue orderQueue = orderQueueService.read(Long.parseLong(oldOrderQueueId));
 					orderQueue.setId(0);
 					orderQueue.setCreatedDate(now);
 					orderQueue.setComment("");
-					orderQueue
-							.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
-					orderQueue
-							.setVarOrderFileAttachment(orderFileAttachmentObj);
+					orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+					orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
 					orderQueue.setVarProductLine(productLineObj);
 					int prevOrderId = Integer.parseInt(oldOrderQueueId);
 					orderQueue.setPrevOrderQueueId(prevOrderId);
@@ -873,15 +770,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			}
 
 			if (oldAdditionalFileId != null && !"".equals(oldAdditionalFileId)) {
-				String[] oldAdditionalFileIdList = oldAdditionalFileId
-						.split(",");
+				String[] oldAdditionalFileIdList = oldAdditionalFileId.split(",");
 				for (int i = 0; i < oldAdditionalFileIdList.length; i++) {
 					OrderFileAttachment orderFileAttachmentObj = orderFileAttachmentService
 							.read(Long.parseLong(oldAdditionalFileIdList[i]));
 					orderFileAttachmentObj.setId(0L);
 					orderFileAttachmentObj.setVarProductLine(productLineObj);
-					orderFileAttachmentObj
-							.setVarOrderEmailQueue(orderEmailQueueObj);
+					orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
 					orderFileAttachmentService.create(orderFileAttachmentObj);
 				}
 			}
@@ -892,13 +787,10 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while creating the order queue", e);
+			AppLogger.getSystemLogger().error("Error while creating the order queue", e);
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -906,34 +798,28 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@POST
 	@Path("/fileupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response webOrderFileUpload(
-			@Context UriInfo uriInfo,
-			@Context HttpHeaders hh,
-			@FormDataParam("file") InputStream file,
-			@FormDataParam("fileName") String fileName,
-			@FormDataParam("emailQueueId") String emailQueueId,
-			@FormDataParam("filePath") String filePath,
+	public Response webOrderFileUpload(@Context UriInfo uriInfo, @Context HttpHeaders hh,
+			@FormDataParam("file") InputStream file, @FormDataParam("fileName") String fileName,
+			@FormDataParam("emailQueueId") String emailQueueId, @FormDataParam("filePath") String filePath,
 			@FormDataParam("dataStructureName") String dataStructureName,
 			@FormDataParam("additionalDataFileKey") String additionalDataFileKey,
 			@FormDataParam("fileContentType") String fileContentType,
 			@FormDataParam("sendAcknowledgementFlag") String sendAcknowledgementFlag,
-			@FormDataParam("email") String emailId,
-			@FormDataParam("isResubmit") String resubmitFlag,
+			@FormDataParam("email") String emailId, @FormDataParam("isResubmit") String resubmitFlag,
 			@FormDataParam("oldOrderId") String oldOrderId) {
 		Response.ResponseBuilder rb = null;
 		long orderEmailQueueId = 0L;
 		long productLineId = 0L;
 		String fileExtension = null;
 		Date now = new Date();
-		boolean isResubmit = Boolean.parseBoolean(resubmitFlag == null
-				|| resubmitFlag.equals("") ? "false" : resubmitFlag);
+		boolean isResubmit = Boolean
+				.parseBoolean(resubmitFlag == null || resubmitFlag.equals("") ? "false" : resubmitFlag);
 		int prevOrderQueueId = 0;
 		try {
 			if (oldOrderId != null && !"".equals(oldOrderId)) {
 				prevOrderQueueId = Integer.parseInt(oldOrderId);
 			}
-			fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1,
-					fileName.length());
+			fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
 			orderEmailQueueId = Long.parseLong(emailQueueId);
 			productLineId = Long.parseLong(dataStructureName);
@@ -949,39 +835,33 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			orderFileAttachmentObj.setFileExtension(fileExtension);
 			orderFileAttachmentObj.setFileContentType(fileContentType);
 			orderFileAttachmentObj.setCreatedDate(new Date());
-			orderFileAttachmentObj
-					.setAdditionalDataFileKey(additionalDataFileKey);
+			orderFileAttachmentObj.setAdditionalDataFileKey(additionalDataFileKey);
 			orderFileAttachmentObj.setFilePath(filePath);
-			orderFileAttachmentObj
-					.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
+			orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 			orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
 			orderFileAttachmentObj.setVarProductLine(productLineObj);
 
 			OrderFileAttachmentService orderFileAttachmentService = (OrderFileAttachmentService) SpringConfig
 					.getInstance().getBean("orderFileAttachmentService");
-			Long orderFileAttachmentId = orderFileAttachmentService
-					.create(orderFileAttachmentObj);
+			Long orderFileAttachmentId = orderFileAttachmentService.create(orderFileAttachmentObj);
 			orderFileAttachmentObj.setId(orderFileAttachmentId);
-			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
-					.getInstance().getBean("orderQueueService");
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
+					.getBean("orderQueueService");
 			if (fileContentType.equals("Order") && isResubmit) {
 				OrderQueue orderQueue = new OrderQueue();
 				orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
 				orderQueue.setVarProductLine(productLineObj);
 				orderQueue.setCreatedDate(now);
 				orderQueue.setComment("");
-				orderQueue
-						.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
+				orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
 				orderQueue.setPrevOrderQueueId(prevOrderQueueId);
 				orderQueueService.create(orderQueue);
 			}
-			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
-					.getInstance().getBean("orderEmailQueueService");
+			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
+					.getBean("orderEmailQueueService");
 			if (sendAcknowledgementFlag.equalsIgnoreCase("true")) {
-				OrderEmailQueue emailQueueObj = orderEmailQueueService
-						.read(orderEmailQueueId);
-				emailQueueObj
-						.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
+				OrderEmailQueue emailQueueObj = orderEmailQueueService.read(orderEmailQueueId);
+				emailQueueObj.setStatus(ApplicationConstants.NEW_WEB_ORDER_STATUS);
 				orderEmailQueueService.update(emailQueueObj);
 				sendAcknowledgement(emailId, orderEmailQueueId);
 			}
@@ -992,16 +872,12 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while uploading the file",
-					ex);
+			AppLogger.getSystemLogger().error("Error while uploading the file", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error("Error while uploading the file",
-					e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while uploading the file", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -1187,8 +1063,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		return emailSubjectProductLineMatch;
 	}
 
-	public void setEmailSubjectProductLineMatch(
-			String emailSubjectProductLineMatch) {
+	public void setEmailSubjectProductLineMatch(String emailSubjectProductLineMatch) {
 		this.emailSubjectProductLineMatch = emailSubjectProductLineMatch;
 	}
 
@@ -1220,8 +1095,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		return listOrderFileAttachment;
 	}
 
-	public void setListOrderFileAttachment(
-			List<OrderFileAttachment> listOrderFileAttachment) {
+	public void setListOrderFileAttachment(List<OrderFileAttachment> listOrderFileAttachment) {
 		this.listOrderFileAttachment = listOrderFileAttachment;
 	}
 
