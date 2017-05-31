@@ -110,7 +110,6 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     buildtbar: function () {
         var me = this;
         return [
-
             {
                 xtype: 'tbtext',
                 itemId: 'addressManagetextItemId',
@@ -121,7 +120,12 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 iconCls: 'fa fa-plus',
                 cls: 'blue-btn',
                 ui: 'blue',
-                handler: 'openAddAddressWindow'
+                handler: 'openAddAddressWindow',
+                listeners:{
+                	'afterrender':function(combo){
+                		if(AOCRuntime.getUser().role == 3) combo.setHidden(true);
+                	}
+                }
             },
             '->', {
                 xtype: 'customsearchfield',
