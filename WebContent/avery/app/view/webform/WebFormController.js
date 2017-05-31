@@ -248,7 +248,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 			}else{
 				url=applicationContext+'/rest/emailqueue/newweborder';
 			}
-			var fieldParams = form.getValues(false,false,false,true);
+			var fieldParams = form.getValues(false,false,false,true),
+				userId = AOCRuntime.getUser().id,
+				userIdObj = { userId:userId };
+			Ext.apply(fieldParams,userIdObj);
+			
 			if(webOrderFormView.isResubmit){
 				fieldParams.isResubmit = 'true';
 			}
