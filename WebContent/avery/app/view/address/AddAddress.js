@@ -19,6 +19,8 @@ Ext.define('AOC.view.address.AddAddress',{
 			buttons:this.buildButtons(),
 			listeners:{
 				'afterrender':function(obj){
+					var userinfo = AOCRuntime.getUser(),
+						roleId = userinfo.role;
 					if(me.rec!=null){
 						if(me.rec.data!=null){
 							var partnerName = me.lookupReference('partnerName');
@@ -44,15 +46,21 @@ Ext.define('AOC.view.address.AddAddress',{
 							me.down('form').loadRecord(me.rec);
 						}
 					}
+					if(roleId== 3){
+						me.setReadOnlyView(true);
+					}
 				}
 			}
 		});
 		this.callParent(arguments);
 	},
 	buildButtons : function(){
+		 var me = this,
+     		 roleId = AOCRuntime.getUser().role;
 		return [
 			{
 				text : AOCLit.Save,
+				hidden: roleId ==3? true : false,
 				handler : 'saveAddressDetails'
 			},
 			{
@@ -73,6 +81,7 @@ Ext.define('AOC.view.address.AddAddress',{
 				xtype:'form',
 				itemId:'listPanel',
 				border:false,
+				reference:'addressForm',
 				anchor:'100%',
 				scrollable : true,
 				items:[
@@ -89,7 +98,7 @@ Ext.define('AOC.view.address.AddAddress',{
 						},
 						items:[
 							{
-								xtype:'combo',
+								xtype:'combobox',
 								name: 'siteId',
 								fieldLabel:'Site',
 								allowBlank: false,
@@ -103,7 +112,7 @@ Ext.define('AOC.view.address.AddAddress',{
 										Helper.clearCombo(combo,e);
 									},
 									select : 'onSiteSelect',
-									'focus' : 'HideMandatoryMessage'
+									'afterrender':'onAfterRenderSiteCombo'
 								}
 							},
 							{
@@ -124,9 +133,7 @@ Ext.define('AOC.view.address.AddAddress',{
 									blur:function(combo,e){
 										Helper.clearCombo(combo,e);
 									},
-									select : 'onSystemSelect',
-								//     blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
+									select : 'onSystemSelect'
 								}
 							}
 						]
@@ -156,9 +163,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								listeners : {
 									blur:function(combo,e){
 										Helper.clearCombo(combo,e);
-									},
-								//	 blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
+									}
 								}
 							},
 							{
@@ -196,7 +201,7 @@ Ext.define('AOC.view.address.AddAddress',{
 						},
 						items:[
 							{
-								xtype:'combo',
+								xtype:'combobox',
 								name: 'shippingMethod',
 								fieldLabel:AOCLit.shippingMethod,
 								queryMode :'local',
@@ -217,7 +222,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								}
 							},
 							{
-								xtype:'combo',
+								xtype:'combobox',
 								name: 'freightTerms',
 								fieldLabel:'Freight Terms',
 								flex:1,
@@ -253,11 +258,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								xtype:'textfield',
 								name: 'description',
 								flex:1,
-								fieldLabel:AOCLit.Description,
-								listeners : {
-									blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
-								}
+								fieldLabel:AOCLit.Description
 							},
 							{
 								xtype:'textfield',
@@ -302,12 +303,7 @@ Ext.define('AOC.view.address.AddAddress',{
 								regex: /[a-zA-Z0-9]+/,
 								fieldLabel:AOCLit.siteNumber,
 								allowBlank: false,
-								flex:1,
-								listeners : {
-									blur : this.notifyByImage,
-									'focus' : 'HideMandatoryMessage'
-								}
-								
+								flex:1
 							}
 						]
 					},
@@ -535,10 +531,19 @@ Ext.define('AOC.view.address.AddAddress',{
 		orgStore.setProxy(proxy);
 		orgStore.load();
 	},
-	notifyByImage : function(config){
-		if(config.isValid())
-			config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.successImageSrc+');background-repeat:no-repeat;background-position:right;');
-		else
-			config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.errorIcon+');background-repeat:no-repeat;background-position:right;');
-	 }
+	 setReadOnlyView: function (readOnlyFlag) {
+		    var me = this,
+		        refs = me.getReferences(),
+		        addressForm = refs.addressForm,
+		        textFieldArray = addressForm.query('[xtype = textfield]'),
+		        comboArray = addressForm.query('[xtype = combobox]'),
+		        tempArray = [].concat(textFieldArray)
+		        .concat(comboArray);
+
+		    var len = tempArray.length;
+		    for (var i = 0; i < len; i++) {
+		            tempArray[i].setReadOnly(readOnlyFlag);
+		    }
+		}
+
 });
