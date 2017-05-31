@@ -183,7 +183,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 
 		String siteId = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		
+		if (!siteId.equals("1") && !roleId.equals("1")) {
+			criteria.add(Restrictions.eq("orderemailqueue.siteId",
+					Integer.parseInt(siteId)));
+		}
 		// total count was returning 0 so, placed above set projection
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 
@@ -206,60 +209,28 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
 		if (statusList == null)
 			throw new Exception("Unable to fetch Status List");
-		if (siteId.equals("1") && roleId.equals("1")) {
 
-			for (OrderQueue orderQueue : list) {
-				String status = orderQueue.getStatus();
-				int comparisonSiteId = orderQueue.getSiteId();
+		for (OrderQueue orderQueue : list) {
+			String status = orderQueue.getStatus();
+			int comparisonSiteId = orderQueue.getSiteId();
 
-				if (status == null | status.equals(""))
-					throw new Exception(
-							"Unidentified value found for the statuscode");
-				Map<String, String> statusCodes = statusList.get(status);
-				if (statusCodes == null)
-					throw new Exception(
-							"No data found in the status table for status:: "
-									+ status);
-				orderQueue.setIconName(statusCodes.get("iconName"));
-				orderQueue.setColorCode(statusCodes.get("colorCode"));
-				orderQueue.setCodeValue(statusCodes.get("codeValue"));
+			if (status == null | status.equals(""))
+				throw new Exception(
+						"Unidentified value found for the statuscode");
+			Map<String, String> statusCodes = statusList.get(status);
+			if (statusCodes == null)
+				throw new Exception(
+						"No data found in the status table for status:: "
+								+ status);
+			orderQueue.setIconName(statusCodes.get("iconName"));
+			orderQueue.setColorCode(statusCodes.get("colorCode"));
+			orderQueue.setCodeValue(statusCodes.get("codeValue"));
 
-				int additionalFileCount = 0;
-				Long orderQueueId = orderQueue.getId();
-				additionalFileCount = getAdditionalFileCount(orderQueueId);
-				orderQueue.setAdditionalFileCount(additionalFileCount);
+			int additionalFileCount = 0;
+			Long orderQueueId = orderQueue.getId();
+			additionalFileCount = getAdditionalFileCount(orderQueueId);
+			orderQueue.setAdditionalFileCount(additionalFileCount);
 
-			}
-		} else {
-			Iterator itr = list.iterator();
-			int count = 0;
-			while (itr.hasNext()) {
-				OrderQueue orderQueue = (OrderQueue) itr.next();
-				String status = orderQueue.getStatus();
-				int comparisonSiteId = orderQueue.getSiteId();
-				if (comparisonSiteId == Integer.parseInt(siteId)) {
-					if (status == null | status.equals(""))
-						throw new Exception(
-								"Unidentified value found for the statuscode");
-					Map<String, String> statusCodes = statusList.get(status);
-					if (statusCodes == null)
-						throw new Exception(
-								"No data found in the status table for status:: "
-										+ status);
-					orderQueue.setIconName(statusCodes.get("iconName"));
-					orderQueue.setColorCode(statusCodes.get("colorCode"));
-					orderQueue.setCodeValue(statusCodes.get("codeValue"));
-
-					int additionalFileCount = 0;
-					Long orderQueueId = orderQueue.getId();
-					additionalFileCount = getAdditionalFileCount(orderQueueId);
-					orderQueue.setAdditionalFileCount(additionalFileCount);
-					count++;
-				} else {
-					itr.remove();
-				}
-			}
-			totalCount = count;
 		}
 		entitiesMap.put("orders", new LinkedHashSet(list));
 		entitiesMap.put("totalCount", totalCount);
