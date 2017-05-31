@@ -3,7 +3,6 @@ Ext.define('AOC.view.AOCHeader', {
     alias: 'widget.aocheader',
     height: 60,
     cls: 'aoc-header',
-    viewModel:'main',
     requires: ['AOC.config.Settings'],
     initComponent: function () {
         var settings = AOC.config.Settings,
@@ -47,9 +46,6 @@ Ext.define('AOC.view.AOCHeader', {
                     "border-radius": "50%",
                     "border": "1px solid #d4d4d4;"
                 },
-                bind:{
-                	src:'{userImageSrc}'
-                },
                 margin: '10 0 10 0',
                 width: 40,
                 height: 40
@@ -72,10 +68,8 @@ Ext.define('AOC.view.AOCHeader', {
         this.callParent(arguments);
     },
     onRender: function () {
-        var me = this,
-        	filePath = Helper.getFilePath();
+        var me = this;
         me.callParent(arguments);
-        me.getViewModel().set('userImageSrc',filePath);
         me.el.on({
             scope: me,
             delegate: '.header-profile-menu-icon',
