@@ -320,7 +320,7 @@ Ext.define('AOC.view.address.AddressController', {
                             "id": ""
                         };
                         win = Ext.create('AOC.view.address.AddAddress', {
-                            title: AOCLit.editAddress,
+                            title: title,
                             rec: currentRecord,
                             editMode: mode,
                             ID: id,
@@ -332,10 +332,8 @@ Ext.define('AOC.view.address.AddressController', {
                             }
                         });
                         win.show();
-                        //me.setReadOnlyView(true);
                     }
                     callout.destroy();
-
                 },
                 deleteaddress: function (cmp) {
                     currentRecord = e.record;
@@ -525,9 +523,9 @@ Ext.define('AOC.view.address.AddressController', {
     buildMenuTpl: function () {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 140px !important;border-bottom: none !important;{[this.getEditAddressStyle(values)]}" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="edit"">Edit</div>',
-            '<div style="width: 140px !important;border-bottom: none !important;{[this.getViewAddressStyle(values)]}" class="user-profile-menu-callout {[this.isViewEnableDisable(values)]}"  event="viewAddress"">View</div>',
-            '<div style="width: 140px !important;border-bottom: none {[this.getDeleteAddressStyle(values)]}" class="user-profile-menu-callout {[this.isDeleteEnableDisable(values)]}"  event="deleteaddress"">Delete</div>', {
+            '<div style="width: 140px !important;border-bottom: none !important;{[this.getEditAddressStyle(values)]}" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="edit">Edit</div>',
+            '<div style="width: 140px !important;border-bottom: none !important;{[this.getViewAddressStyle(values)]}" class="user-profile-menu-callout {[this.isViewEnableDisable(values)]}"  event="viewAddress">View</div>',
+            '<div style="width: 140px !important;border-bottom: none {[this.getDeleteAddressStyle(values)]}" class="user-profile-menu-callout {[this.isDeleteEnableDisable(values)]}"  event="deleteaddress">Delete</div>', {
                 isEditEnableDisable: function (v) {
                     if (AOCRuntime.getUser().role == 3) {
                         return 'order-profile-menu-item';
@@ -563,7 +561,7 @@ Ext.define('AOC.view.address.AddressController', {
                         return Helper.getEnableMenuItemStyle();
                     }
                     return Helper.getDisableMenuItemStyle();
-                },
+                }
             }
         );
     },
