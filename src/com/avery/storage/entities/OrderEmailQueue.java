@@ -178,7 +178,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?, ?> entitiesMap = new HashMap();
-		Map responcemap=new HashMap();
+		Map responcemap = new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -193,27 +193,29 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					.getInstance().getBean("orderEmailQueueService");
 			entitiesMap = orderEmailQueueService
 					.readWithCriteria(queryParamMap);
-			if (entitiesMap == null || entitiesMap.isEmpty())
-			{
+			if (entitiesMap == null || entitiesMap.isEmpty()) {
 				throw new Exception("Unable to find any data");
-			}
-			else
-			{
-				List orderEmailQueuelsit=new LinkedList();
-				List lsitOforderEmailQueue=(List) entitiesMap.get("emailqueue");
-				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-				if(!lsitOforderEmailQueue.isEmpty())
-				for(int i=0;i<lsitOforderEmailQueue.size();i++)
-				{
-					OrderEmailQueue orderQueue=(OrderEmailQueue) lsitOforderEmailQueue.get(i);
-					String lastmodifiedId=orderQueue.getLastModifiedBy();
-					try{String LastModifiedByName=userService.getUsernameById(lastmodifiedId);
-					orderQueue.setLastModifiedBy(LastModifiedByName);
-					orderEmailQueuelsit.add(orderQueue);}
-					catch(Exception e){
-						orderEmailQueuelsit.add(orderQueue);
+			} else {
+				List orderEmailQueuelsit = new LinkedList();
+				List lsitOforderEmailQueue = (List) entitiesMap
+						.get("emailqueue");
+				UserService userService = (UserService) SpringConfig
+						.getInstance().getBean("userService");
+				if (!lsitOforderEmailQueue.isEmpty())
+					for (int i = 0; i < lsitOforderEmailQueue.size(); i++) {
+						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue
+								.get(i);
+						String lastmodifiedId = orderQueue.getLastModifiedBy();
+						try {
+							String LastModifiedByName = userService
+									.getUsernameById(lastmodifiedId);
+							orderQueue.setLastModifiedBy(LastModifiedByName);
+							orderEmailQueuelsit.add(orderQueue);
+						} catch (Exception e) {
+							AppLogger.getSystemLogger().error(
+									"Error in Finding user name for last modified by  " + e);
+						}
 					}
-				}
 				responcemap.put("emailqueue", orderEmailQueuelsit);
 				responcemap.put("totalCount", entitiesMap.get("totalCount"));
 			}
@@ -511,7 +513,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig
 					.getInstance().getBean("orderEmailQueueService");
 			orderEmailQueueService.assignCsrByEmailQueueId(
-					orderEmailQueueEntityId, csrId,userId);
+					orderEmailQueueEntityId, csrId, userId);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
 			entitiesMap.put("success", true);
