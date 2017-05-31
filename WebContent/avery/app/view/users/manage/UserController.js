@@ -42,7 +42,6 @@ Ext.define('AOC.view.users.manage.UserController', {
 	                            ID: id,
 	                            title: 'Edit User'
                             });
-                        win.getViewModel().set('userImageSrc',Helper.getFilePath());
                         var refs = win.getReferences(),
                             profileImage = refs.profileImage,
                             userId = AOCRuntime.getUser().id;
@@ -57,7 +56,7 @@ Ext.define('AOC.view.users.manage.UserController', {
 	                        	win.down('#confirmPassword').setHidden(false);
                         	}
                         }
-//                        profileImage.setSrc(Helper.getFilePath(currentRecord));
+                        profileImage.setSrc(Helper.getFilePath(currentRecord));
                         win.down('form').loadRecord(currentRecord);
                         win.show();
                         callout.destroy();
