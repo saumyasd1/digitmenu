@@ -29,7 +29,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return [
 			{
 				text : AOCLit.Save,
-				handler : 'onSaveDetails'
+				handler : 'onSaveDetails',
+				hidden: AOCRuntime.getUser().role == 3 ? true : false 
 			},
 			{
 				text : AOCLit.Cancel,
@@ -56,6 +57,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				xtype:'form',
 				itemId:'listPanel',
 				scrollable:true,
+				reference:'partnerProfileForm',
 				anchor:'100%',
 				border:false,
 				items:[
@@ -104,7 +106,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								valueField:'id',
 								blankText : 'RBO Name is required',
 								listeners : {
-									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
 								}
 							}
@@ -139,7 +140,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								siteChanged:false,
 								enforceMaxLength: true,
 								listeners : {
-									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage',
 									'change':'onSiteSelect'
 								}
@@ -157,7 +157,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								labelAlign:Settings.form.defaultLabelAlign,
 								labelWidth:150,
 								listeners : {
-									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
 								}
 							}
@@ -216,7 +215,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								value:'HTL',
 								blankText : AOCLit.prodLineReq,
 								listeners : {
-									blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage',
 									change:'onProductLineComboChange'
 								}
@@ -258,7 +256,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
 								blankText : AOCLit.prodLineReq,
 								listeners : {
-									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
 								}
 							},
@@ -272,7 +269,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								blankText : AOCLit.CSRReq,
 								margin:'0 0 0 10',
 								listeners : {
-									 blur : this.notifyByImage,
 									'focus' : 'HideMandatoryMessage'
 								}
 							}
@@ -560,6 +556,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								animCollapse: false,
 								collapsible: true,
 								collapsed :true,
+								reference:'emailSubjectMatchForm',
 								titleCollapse: true,
 								width:'100%',
 								items:[ 
@@ -616,6 +613,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								animCollapse: false,
 								collapsible: true,
 								collapsed :true,
+								reference:'emailMatchForm',
 								title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">Email Match</p>',
 								style:'border:solid 1px #ccc;margin-bottom:5px;padding:5px;',
 								titleCollapse: true,
@@ -672,6 +670,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								animCollapse: false,
 								collapsible: true,
 								collapsed :true,
+								reference:'fileMatchForm',
 								title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">File Match</p>',
 								style:'border:solid 1px #ccc;margin-bottom:5px;padding:5px;',
 								titleCollapse: true,
@@ -692,24 +691,34 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 											{
 												xtype:'textfield',
 												itemId:'RBO',
+												reference:'rbo',
 												name: 'rbo',
 												fieldLabel:'RBO',
+												allowBlank:true,
 												bind:'{fileRBOMatch}'
 											},
 											{
 												xtype:'textfield',
-												//itemId:'Sheet',
+												itemId:'firstSheet',
 												margin:'0 0 0 10',
 												name: 'sheet',
+												prevItemRef: 'rbo',
 												fieldLabel:'Sheet',
-												bind:'{fileRBOSheetMatch}'
+												bind:'{fileRBOSheetMatch}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											},
 											{
 												xtype:'textfield',
 												margin:'0 0 0 10',
 												name: 'cell',
+												prevItemRef: 'rbo',
 												fieldLabel:'Cell',
-												bind:'{fileRBOCellMatch}'
+												bind:'{fileRBOCellMatch}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											}
 										]
 									},
@@ -729,23 +738,33 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'ProductLine',
 												name: 'rbo',
+												allowBlank:true,
+												reference:'productline',
 												fieldLabel:'Product Line',
 												bind:'{fileProductlineMatch}'
 											},
 											{
 												xtype:'textfield',
-												//itemId:'Sheet',
+												itemId:'secondSheet',
 												margin:'0 0 0 10',
 												name: 'sheet',
+												prevItemRef: 'productline',
 												fieldLabel:'Sheet',
-												bind:'{fileProductlineSheetMatch}'
+												bind:'{fileProductlineSheetMatch}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											},
 											{
 												xtype:'textfield',
 												name: 'cell',
 												margin:'0 0 0 10',
+												prevItemRef: 'productline',
 												fieldLabel:'Cell',
-												bind:'{fileProductlineCellMatch}'
+												bind:'{fileProductlineCellMatch}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											}
 										]
 									},
@@ -765,23 +784,33 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 												xtype:'textfield',
 												itemId:'OrderMatch',
 												name: 'orderMatch',
+												allowBlank:true,
+												reference:'ordermatch',
 												fieldLabel:'Order Match',
 												bind:'{fileOrderMatch}'
 											},
 											{
 												xtype:'textfield',
-												//itemId:'Sheet',
+												itemId:'thirdSheet',
 												name: 'sheet',
 												margin:'0 0 0 10',
+												prevItemRef: 'ordermatch',
 												fieldLabel:'Sheet',
-												bind:'{fileOrderMatchSheet}'
+												bind:'{fileOrderMatchSheet}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											},
 											{
 												xtype:'textfield',
 												name: 'cell',
 												margin:'0 0 0 10',
+												prevItemRef: 'ordermatch',
 												fieldLabel:'Cell',
-												bind:'{fileOrderMatchCell}'
+												bind:'{fileOrderMatchCell}',
+												listeners: {
+													'change': 'onChangeOfSheetCellField'
+												}
 											}
 										]
 									}
@@ -796,6 +825,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								animCollapse: false,
 								collapsible: true,
 								collapsed :true,
+								reference:'fileMatchAdditionalForm',
 								title: '<p style="color:#2c3e50;font-size:13px;font-weight:bold;">File Match Additional</p>',
 								style:'border:solid 1px #ccc;margin-bottom:5px;padding:5px;',
 								titleCollapse: true,
