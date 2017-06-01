@@ -53,6 +53,10 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
 			}
 		}
+		String siteId = (String) queryMap.getFirst("siteId");
+		if (!siteId.equals("1")) {
+			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
+		}
 			totalCount=HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 			 criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
