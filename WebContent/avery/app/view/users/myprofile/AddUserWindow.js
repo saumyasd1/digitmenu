@@ -203,6 +203,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     hidden:me.mode=='edit'? true : false,
                     vtype: 'password',
                     initialPassField: 'newPassword'
+                }, {
+                    xtype: 'hidden',
+                    name: 'id'
                 }]
             }]
         }];
