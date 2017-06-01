@@ -1,15 +1,12 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,12 +30,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.AddressMixIn;
 import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.AddressService;
-import com.avery.storage.service.PartnerService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -393,7 +388,6 @@ public class Address extends MainAbstractEntity {
 			entitiesMap = addressService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find addresses");
-			mapper.setTimeZone(TimeZone.getDefault());
 			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
 				mapper.writeValue(writer, entitiesMap);
 			} else if (!siteId.isEmpty()) {
