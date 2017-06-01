@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -337,7 +338,7 @@ public class Partner extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
-			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {				
+			/**if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {	*/			
 			entitiesMap = partnerService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find partners");
@@ -358,28 +359,7 @@ public class Partner extends MainAbstractEntity {
 				}
 				responseMap.put("partners", listOfPR);
 				mapper.writeValue(writer, responseMap);
-				}}
-			
-			else if (!siteId.isEmpty()) 
-			{
-					partnerList = partnerService.getPartner(siteId);
-					UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-					if(!partnerList.isEmpty()){
-					for(int i=0;i<partnerList.size();i++)
-					{
-						Partner currentPartner=(Partner) partnerList.get(i);
-						String lastmodifiedUserId=currentPartner.getLastModifiedBy();
-						if(lastmodifiedUserId!=null)
-						{
-						String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
-						currentPartner.setLastModifiedBy(LastModifiedByName);
-						}
-					}
-					if (partnerList == null || partnerList.isEmpty())
-						throw new Exception("Unable to find partners");
-					else responseMap.put("partners",partnerList);
-						mapper.writeValue(writer, responseMap);					
-			} }
+				}
 			if(entitiesMap.containsKey("totalCount"))
 			responseMap.put("totalCount", entitiesMap.get("totalCount"));
 			if(entitiesMap.containsKey("rbo"))
