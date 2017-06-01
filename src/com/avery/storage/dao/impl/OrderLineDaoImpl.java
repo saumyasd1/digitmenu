@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -17,13 +16,11 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
-import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
@@ -31,7 +28,6 @@ import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
-import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -111,7 +107,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
-			mapper.setTimeZone(TimeZone.getDefault());
 			session = getSessionFactory().getCurrentSession();
 			String t=null;
 			boolean insertShipAddress=false,insertBillAddress=false;
@@ -256,7 +251,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
-			mapper.setTimeZone(TimeZone.getDefault());
 			for(OrderLine orderLine:entities){
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(jsonData);
