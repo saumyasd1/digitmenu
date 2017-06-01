@@ -163,7 +163,8 @@ Ext.define('AOC.view.address.AddAddress',{
 								listeners : {
 									blur:function(combo,e){
 										Helper.clearCombo(combo,e);
-									}
+									},
+									afterrender:'onAfterRenderPartnerCombo'
 								}
 							},
 							{
