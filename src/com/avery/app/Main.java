@@ -106,10 +106,6 @@ public class Main {
 		//	userService.create(averyUser);
 		}
 		
-		String timeZone = userService.getApplicationDefaultTimeZone();
-		if (timeZone != null && !"".equals(timeZone))
-			TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
-		
 		CodeService codeService = (CodeService) SpringConfig
 				.getInstance().getBean("codeService");
 		ApplicationUtils.statusCode=codeService.getStatusCodes();
