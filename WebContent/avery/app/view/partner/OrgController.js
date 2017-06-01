@@ -52,6 +52,9 @@ Ext.define('AOC.view.partner.OrgController', {
 		}
 	},
 	OnBeforeEdit:function(editor,context){
+		if(AOCRuntime.getUser().role == 3){
+			return false;
+		}else{
 		  var grid=editor.grid,record=context.record,
 		  freightTermsData=record.get('freightTermsData'),orgCodeId=record.get('orgCodeId'),
 		  shippingMethodData=record.get('shippingMethodData');
@@ -71,7 +74,7 @@ Ext.define('AOC.view.partner.OrgController', {
 			  
 			  grid.columns[4].getEditor().bindStore(shippingMethodDataArray);
 		  }
-			  
+		}
 	},
 	validationRendered:function(value,metadata){
     	var me=this.getView();
