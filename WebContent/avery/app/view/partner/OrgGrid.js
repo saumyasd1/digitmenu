@@ -137,11 +137,13 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				menuDisabled  :true,
 				baseCls:'custom-action',
 				handler: function(grid, rowIndex, colIndex) {
-					 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
-						if(btn=='yes'){
-							grid.getStore().removeAt(rowIndex);
-						} 
-					 });
+					if(AOCRuntime.getUser().role != 3){
+						 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
+							if(btn=='yes'){
+								grid.getStore().removeAt(rowIndex);
+							} 
+						 });
+					}
 			    }
 			}
         ];
