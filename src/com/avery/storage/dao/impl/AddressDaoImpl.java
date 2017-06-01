@@ -82,9 +82,11 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 			if (siteNumber != null && !"".equals(siteNumber)) {
 				criteria.add(Restrictions.ilike("siteNumber", siteNumber, MatchMode.ANYWHERE));
 			}
-
 		}
-
+		String siteId = (String) queryMap.getFirst("siteId");
+		if (!siteId.equals("1")) {
+			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
+		}
 		int totalCount = 0;
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("varOrgCode.name"), "orgCodeName")
