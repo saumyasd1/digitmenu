@@ -4,6 +4,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
     runTime : AOC.config.Runtime,
     active:false,
     requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
+    init: function () {
+        var me = this;
+        me.menuTpl = me.buildMenuTpl();
+    },
     onSaveDetails:function(){
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
@@ -223,7 +227,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	      var me = this;
 	      var callout = Ext.widget('callout', {
 	          cls: 'white more-menu-item-callout extra',
-	          html: me.buildMenuTpl.apply("{}"),
+	          html: me.menuTpl.apply(record.data),
 	          target: e.target,
 	          calloutArrowLocation: 'top-left',
 	          relativePosition: 't-b',
@@ -267,6 +271,42 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		                }
 		        	});
  	      			 
+                	callout.destroy();
+                },
+                viewPartnerDataStructure:function(cmp){
+      				var data = e.record,
+      					id=data.id;
+ 	      			 Ext.Ajax.request({
+						method:'GET',
+						url:applicationContext+'/rest/productLines/'+id,
+						success : function(response, opts) {
+							var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
+							var viewModel=Ext.create('Ext.app.ViewModel',{
+								data:jsonString
+							});
+							var win = Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
+		 	      			if(!win){
+								win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+			 	      				partnerName:me.getView().partnerName,
+			 	      			    editMode:true,
+			 	      			    viewModel:viewModel,
+			 	      			    title:'View Partner Data Structure',
+			 	      			    rec:jsonString,
+			 	      			    productlineId:id,
+			 	      			    listeners: {
+					     	        	'close':function( panel, eOpts ) {
+					     	        		 Ext.getBody().unmask();
+					     	        		 win.destroy();
+					     	            }
+			 	      			    }
+			 	      			});
+		 	      			}
+		 	      			win.show();
+				        },
+				        failure: function(response, opts) {
+				        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
+		                }
+		        	});
                 	callout.destroy();
                 },
                 deleteproductline: function(cmp){
@@ -326,10 +366,47 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	  buildMenuTpl : function(){
 	    	  var me=this;
 	    	 return Ext.create('Ext.XTemplate',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
-	              '</tpl>',
-	              '<div style="width: 140px !important;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deleteproductline"">Delete</div>',
-	              '</tpl>'
+	    	      '<div style="width: 140px !important;border-bottom: none !important;{[this.getEditAddressStyle(values)]};" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="edit">Edit</div>',
+	    	      '<div style="width: 140px !important;border-bottom: none !important;{[this.getViewAddressStyle(values)]}" class="user-profile-menu-callout {[this.isViewEnableDisable(values)]}"  event="viewPartnerDataStructure">View</div>',
+	              '<div style="width: 140px !important;border-bottom: none {[this.getDeleteAddressStyle(values)]}" class="user-profile-menu-callout {[this.isDeleteEnableDisable(values)]}"  event="deleteproductline">Delete</div>',
+	              {
+	    		 	isEditEnableDisable: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return 'order-profile-menu-item';
+	                    }
+	                    return 'user-profile-menu-item';
+	                },
+	                getEditAddressStyle: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return Helper.getDisableMenuItemStyle();
+	                    }
+	                    return Helper.getEnableMenuItemStyle();
+	                },
+	                isDeleteEnableDisable: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return 'order-profile-menu-item';
+	                    }
+	                    return 'user-profile-menu-item';
+	                },
+	                getDeleteAddressStyle: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return Helper.getDisableMenuItemStyle();
+	                    }
+	                    return Helper.getEnableMenuItemStyle();
+	                },
+	    		 	isViewEnableDisable: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return 'user-profile-menu-item';
+	                    }
+	                    return 'order-profile-menu-item';
+	                },
+	                getViewAddressStyle: function (v) {
+	                    if (AOCRuntime.getUser().role == 3) {
+	                        return Helper.getEnableMenuItemStyle();
+	                    }
+	                    return Helper.getDisableMenuItemStyle();
+	                } 
+	              }
 	          );
 	       },
 	  backButton:function() {
@@ -498,6 +575,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			border:true,
 	    			margin : '0 0 0 0',
 	    			anchor:'100%',
+	    			readOnly : AOCRuntime.getUser().role == 3 ? true : false,
 	    			boxLabel  : selectedSystemArray.name,
 	    			reference  : selectedSystemArray.name,
                     name      :selectedSystemArray.name,
@@ -558,11 +636,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    				hidden:true,
 		    				listeners:{
 		    					click:function(cmp, pressed){
-		    						if(orgOrderStore.getCount() < totalOrgConfigured){
+		    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
 		    							orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
 		    							//orgOrderStore.commit();
 		    						}else{
-		    							Helper.showToast('validation','Cannot add any more rows.');
+		    							if(AOCRuntime.getUser().role != 3){
+		    								Helper.showToast('validation','Cannot add any more rows.');
+		    							}
 		    						}
 		    					}
 		    				}
@@ -588,10 +668,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    	onElClick:function(e, target){
 	    		var me = this,
 	    			el = Ext.get(target);
-	    		if(el.hasCls('activeBtn')){
-	    			var isToggleOff = el.hasCls('fa-toggle-off');
-	    			
-	    			me.setActiveBox(isToggleOff, el);
+	    		if(AOCRuntime.getUser().role != 3 ){
+		    		if(el.hasCls('activeBtn')){
+		    			var isToggleOff = el.hasCls('fa-toggle-off');
+		    			me.setActiveBox(isToggleOff, el);
+		    		  }
 	    		}
 	    	},
 	    	setActiveBox:function(active, el){
@@ -619,10 +700,12 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    	afterWindowRender:function(win){
 	    		win.el.on('click', this.onElClick, this);
 	    		
-	    		var me=this,view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
+	    		var me=this,roleId = AOCRuntime.getUser().role,
+	    			view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
 	    		mixed=view.lookupReference('mixed'),
 	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
 	    		me.setActiveBox(data.active);
+	    		
 	    		if(data.productLineType=='MIXED'){
 	    			unique.setValue(false);
 	    			mixed.setValue(true);
@@ -657,6 +740,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			var viewmodel=view.getViewModel();
 	    			view.setViewModel(viewmodel);
 	    			view.down('#AdditionalData').updateLayout();
+	    		}
+	    		if(roleId == 3){
+	    			me.setReadOnlyView(true);
+	    			me.setButtonDisabled(true);
 	    		}
 	    		
 	    	},
@@ -825,6 +912,83 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			        store.loadPage(1);
 			        cmp.setValue('');
 			        cmp.orderedTriggers[0].hide();
-			    }
-	    	
+			    },
+			    setReadOnlyView: function (readOnlyFlag) {
+				    var me = this,
+				        refs = me.getReferences(),
+				        partnerProfileForm = refs.partnerProfileForm,
+				        advancePropertiesForm = refs.advancePropertiesForm,
+				        orderForm = refs.orderForm,
+				        additionalData = refs.additionalData,
+				        emailSubjectMatchForm = refs.emailSubjectMatchForm,
+				        emailMatchForm = refs.emailMatchForm,
+				        fileMatchForm =refs.fileMatchForm,
+				        fileMatchAdditionalForm = refs.fileMatchAdditionalForm,
+
+				        //Partner Profile section
+				        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
+				        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
+				        partnerRadioArray = partnerProfileForm.query('[xtype = radio]'),
+				        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
+				        //Advanced properties 
+				        advancedPropRadioGroup = advancePropertiesForm.query('[xtype = radiogroup]'),
+				        advancedPropButton = advancePropertiesForm.query('[xtype  = button]'),
+				        //Order Form
+				        orderTextFieldArray = orderForm.query('[xtype = textfield]'),
+				        orderComboArray 	= orderForm.query('[xtype = combo]'),
+				        //Additional data section
+				        additionalDataTextFieldArray = additionalData.query('[xtype = textfield]'),
+				        additionalDataComboArray = additionalData.query('[xtype = combo]'),
+				        //Email Subject Match section
+				        emailSubjectMatchTextFieldArray = emailSubjectMatchForm.query('[xtype = textfield]'),
+				        //Email Match form section
+				        emailMatchTextFieldArray = emailMatchForm.query('[xtype = textfield]'),
+				        //File Match form section
+				        fileMatchTextFieldArray = fileMatchForm.query('[xtype = textfield]'),
+				        //File Match additional form section 
+				        fileMatchAdditionalTextFieldArray = fileMatchAdditionalForm.query('[xtype = textfield]'),
+				        
+				        tempArray = [].concat(partnerTextFieldArray)
+				        			  .concat(partnerComboArray)
+			    					  .concat(partnerRadioArray)
+			    	                  .concat(partnerCheckboxArray)
+			    	                  .concat(advancedPropRadioGroup)
+			    	                  .concat(additionalDataComboArray)
+			    	                  .concat(orderTextFieldArray)
+			    	                  .concat(orderComboArray)
+			    	                  .concat(additionalDataTextFieldArray)
+			    	                  .concat(emailSubjectMatchTextFieldArray)
+			    	                  .concat(emailMatchTextFieldArray)
+			    	                  .concat(fileMatchTextFieldArray)
+			    	                  .concat(fileMatchAdditionalTextFieldArray);
+				    
+				    var len = tempArray.length;
+				    for (var i = 0; i < len; i++) {
+				            tempArray[i].setReadOnly(readOnlyFlag);
+				    }
+				},
+				setButtonDisabled: function(readOnlyFlag){
+				    var me = this,
+				        refs = me.getReferences(),
+				        partnerProfileForm = refs.partnerProfileForm,
+				        advancePropertiesForm = refs.advancePropertiesForm,
+				        advancedPropButton = advancePropertiesForm.query('[xtype  = button]'),
+				        tempArray = [].concat(advancedPropButton);
+				    var len = tempArray.length;
+				    for (var i = 0; i < len; i++) {
+				            tempArray[i].setDisabled(readOnlyFlag);
+				    }
+				
+				},
+				onChangeOfSheetCellField:function( obj, newValue, oldValue, eOpts ){
+					var me = this,
+						refs = me.getView().getReferences(),
+						fileMatchForm = refs.fileMatchForm,
+						cmpReference = refs[obj.prevItemRef],
+						textfieldValue = cmpReference.getValue();
+					if(textfieldValue == '') {
+						cmpReference.allowBlank = false;
+						cmpReference.validateValue(textfieldValue);
+					} 
+				}
 });
