@@ -22,6 +22,12 @@ Ext.define('AOC.view.partner.SystemGrid', {
 					me.getView().on('beforerefresh',function(){
 			        	me.isSystemGridNotValid=false;
 			        });
+				},
+				'beforeedit': function(){
+					if(AOCRuntime.getUser().role == 3){
+						return false;
+					}
+					return true;
 				}
 			}
 		});
