@@ -624,10 +624,18 @@ Ext.define('AOC.view.address.AddressController', {
 	    var userInfo = AOCRuntime.getUser(),
 	    	userId = userInfo.id,
 	    	siteId = userInfo.siteId;
-	obj.getStore().proxy.extraParams = {
+	    obj.getStore().proxy.extraParams = {
 	    siteId: siteId,
 	    userId: userId
 	};
 	obj.getStore().load();
+    },
+    onAfterRenderPartnerCombo:function(obj){
+	    var userInfo = AOCRuntime.getUser(),
+	    	siteId = userInfo.siteId;
+	    obj.getStore().proxy.extraParams = {
+	    siteId: siteId
+	    };
+	    obj.getStore().load();
     }
 });
