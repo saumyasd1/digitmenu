@@ -263,7 +263,6 @@ public class OrderQueue extends MainAbstractEntity {
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			mapper.setDateFormat(ApplicationUtils.df);
-			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, orderQueue);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
