@@ -123,14 +123,18 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	                     	width :10
 	             		},
 				     {
-			              //icon:  AOC.config.Settings.buttonIcons.addImage,
 			              text:'New',
 			              itemId : 'newPartner',
 			              handler:'createproductline',
 			              iconCls:'fa fa-plus',
 			              cls:'blue-btn',
 			              ui:'blue',
-			              hidden:false
+			              hidden:false,
+			              listeners:{
+			                	'afterrender':function(obj){
+			                		if(AOCRuntime.getUser().role == 3) obj.setHidden(true);
+			                	}
+			                }
 		              },
 		          '->',
 		          {
@@ -145,7 +149,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		    				xtype:'button',
 		    				refrence:'advancesearchbutton',
 		    				text:AOCLit.advSearchText,
-		    				//icon   :  AOC.config.Settings.buttonIcons.advSearchIcon,
 		    				iconCls:'fa fa-search',
 		    				iconAlign: "right",
 		    				ui:'blue',
@@ -154,7 +157,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 		    			 },
 		    			 {
 		 					hidden:true, 
-		 					//icon   :  AOC.config.Settings.buttonIcons.clearSearchIcon,
 		 					iconCls:'fa fa-times',
 							ui:'blue',
 							cls:'blue-btn',
