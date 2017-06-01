@@ -212,7 +212,6 @@ public class OrderEmailQueue extends MainAbstractEntity {
 				responcemap.put("emailqueue", orderEmailQueuelsit);
 				responcemap.put("totalCount", entitiesMap.get("totalCount"));
 			}
-			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, responcemap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -244,7 +243,6 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
-			mapper.setTimeZone(TimeZone.getDefault());
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
