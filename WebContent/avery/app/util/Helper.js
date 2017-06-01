@@ -549,25 +549,22 @@ Ext.define('AOC.util.Helper',{
 		}
 	},
 	onOrderLineDateRenderer:function(v, metadata, record){
-		var orderedDate = record.get('orderedDate')+'T00:00:00';
-		v = v+'T00:00:00';
-		v = new Date(v);
-		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(new Date(orderedDate))) > new Date(Ext.util.Format.dateRenderer()(v))
-				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
-			metadata.style = AOCLit.cellColor;
-			return Ext.Date.format(v, AOCLit.dateFormat);
-		}
-		return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
-	},
-	onOrdererDateRenderer:function(value, metadata,record){
-		if(value=='' || value == null) {
-			metadata.style = AOCLit.cellColor;
-        }
-        else{
-        	value = value+'T00:00:00';
-        	return Ext.Date.format(new Date(value),AOCLit.dateFormat);
-        }
-	},
+ 		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
+ 				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+ 			metadata.style = AOCLit.cellColor;
+ 			return Ext.Date.format(v, AOCLit.dateFormat);
+ 		}
+ 		return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+ 	},
+ 	onOrdererDateRenderer:function(value, metadata,record){
+ 		if(value=='' || value == null) {
+  			metadata.style = AOCLit.cellColor;
+          }
+          else{
+        	return Ext.Date.format(value,'Y-m-d');
+         	return Ext.Date.format(value, AOCLit.dateFormat);
+          }
+  	},
 	onAtoColumnRenderer:function(value, metadata, record){
 		if(value == '' || value == null) {
 			metadata.style = AOCLit.cellColor;
