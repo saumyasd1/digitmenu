@@ -161,12 +161,12 @@ Ext.define('AOC.view.home.HomePageController', {
 	    obj.getStore().load();
 	},
 	onAfterRenderCSRList: function(obj){
-		var userInfo = AOCRuntime.getUser(),
-		    roleId = userInfo.role,
-		    siteId = userInfo.siteId;
+		var  me = this,
+			refs = me.getReferences(),
+			siteCombo = refs.siteCombo,
+			siteComboValue = siteCombo.getValue();
 		obj.getStore().proxy.extraParams = {
-		    siteId: siteId,
-		    roleId: roleId
+		    siteId: siteComboValue
 		};
 		obj.getStore().load();
 	},
@@ -178,7 +178,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteComboValue = siteCombo.getValue(),
 			csrComboValue = csrCombo.getValue(),
 			prevItemRef = obj.prevItemRef;
-			values = (prevItemRef=='siteCombo')? {filterSiteId : siteComboValue,filterCsrCode:'' } : {filterSiteId : siteComboValue, filterCsrCode: csrComboValue} ,
+			values = (prevItemRef=='siteCombo')? {filterSiteId : siteComboValue,filterCsrCode:'' } : {filterSiteId : siteComboValue, filterCsrCode: csrComboValue};
 			store = Ext.create('AOC.store.HomePageOders');
 		store.proxy.setFilterParam('query');
         store.setRemoteFilter(true);
@@ -194,5 +194,8 @@ Ext.define('AOC.view.home.HomePageController', {
             value: Ext.JSON.encode(values)
         });			
         csrCombo.enable();
+        if(prevItemRef == 'siteCombo' && (oldValue!= newValue)){
+        	csrCombo.reset();
+        }
 	}
 });
