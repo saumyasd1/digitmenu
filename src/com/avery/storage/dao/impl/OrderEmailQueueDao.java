@@ -23,6 +23,6 @@ public interface OrderEmailQueueDao extends GenericDao<OrderEmailQueue, Long>{
 	
 	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate);
 	
-	Set<OrderEmailQueue> getList(int lastDays,Set<String> status)throws Exception;
+	Set<OrderEmailQueue> getList(int lastDays,Set<String> status,MultivaluedMap<String, String> queryParamMap)throws Exception;
 
 }
