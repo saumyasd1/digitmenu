@@ -400,7 +400,10 @@ Ext.define('AOC.controller.MenuController', {
         rec ? cmp.getSelectionModel().select(rec) : cmp.getSelectionModel().deselectAll();
     },
     loadStores: function () {
-        Ext.getStore('HomePageOders').load();
+    	var currentUserSiteId = AOCRuntime.getUser().siteId, 
+    		homeListStore = Ext.getStore('HomePageOders');
+    	homeListStore.proxy.extraParams = { siteId: currentUserSiteId };
+    	homeListStore.load();
         Helper.loadVariableComboStore('FreightTerms');
         Helper.loadVariableComboStore('ShippingMethod');
         Helper.loadVariableComboStore('CSR');
