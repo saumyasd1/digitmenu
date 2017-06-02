@@ -83,7 +83,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   					blur:function(combo,e){
   						Helper.clearCSRCombo(combo,e);
   					},
-  					'afterrender':'onAfterRenderCSRList',
+  					'focus':'onAfterRenderCSRList',
   					'change':'onChangeSiteCSRCodeCombo'
   				}
                },
