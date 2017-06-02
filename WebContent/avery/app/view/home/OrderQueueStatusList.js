@@ -40,6 +40,53 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
     	    	 text:'Order Queue Status',
     	    	 style:AOC.config.Settings.config.tabHeaderTitleStyle
     	     },
+    	     {
+  				xtype:'combobox',
+  				name: 'siteId',
+  				fieldLabel:'Site',
+      	    	labelStyle:Settings.config.defaultFormLabelStyle,
+      	    	labelSeparator:'',
+      	    	prevItemRef:'siteCombo',
+      	    	labelWidth:40,
+      	    	editable:false,
+      	    	margin:'0 70 0 250',
+  				displayField: 'name',
+  				queryMode :'local',
+  				reference:'siteCombo',
+  				valueField: 'id',
+  				store:Ext.create('AOC.store.SiteStore'),
+  				listeners : {
+  					'afterrender':'onAfterRenderSiteCombo',
+  					'change':'onChangeSiteCSRCodeCombo'
+  				}
+  			},
+               {
+  				xtype:'combo',
+  				fieldLabel:'CSR Code ',
+      	    	labelStyle:Settings.config.defaultFormLabelStyle,
+      	    	labelSeparator:'',
+      	    	labelWidth:70,
+  				displayField:'csrName',
+  				prevItemRef:'csrCombo',
+  				margin:'0 0 0 0',
+  				reference:'csrCombo',
+  				name:'assignCSR',
+  				reference:'csrCombo',
+  				disabled:true,
+  				valueField:'id',
+  				queryMode:'local',
+  				store:Ext.create('AOC.store.AssignCSRStore'),
+  				typeAhead:true,
+  				enableKeyEvents:true,
+  				margin:'0 10 0 10',
+  				listeners:{
+  					blur:function(combo,e){
+  						Helper.clearCSRCombo(combo,e);
+  					},
+  					'afterrender':'onAfterRenderCSRList',
+  					'change':'onChangeSiteCSRCodeCombo'
+  				}
+               },
     	     '->',
     	     {
     	    	xtype:'combo',
