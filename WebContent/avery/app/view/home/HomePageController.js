@@ -4,7 +4,6 @@ Ext.define('AOC.view.home.HomePageController', {
     runTime: AOC.config.Runtime,
     onRefreshClick:function(btn){
     	var view = this.getView();
-    	
     	view.store.load();
     },
     onOrderQueueStatusCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
@@ -150,5 +149,50 @@ Ext.define('AOC.view.home.HomePageController', {
 		me.refreshinterval = setInterval(function(){
 			me.onRefreshClick();
 		},secs);
+	},
+	onAfterRenderSiteCombo: function(obj){
+	    var userInfo = AOCRuntime.getUser(),
+	    	userId = userInfo.id,
+	    	siteId = userInfo.siteId;
+	    obj.getStore().proxy.extraParams = {
+		    siteId: siteId,
+		    userId: userId
+	    };
+	    obj.getStore().load();
+	},
+	onAfterRenderCSRList: function(obj){
+		var userInfo = AOCRuntime.getUser(),
+		    roleId = userInfo.role,
+		    siteId = userInfo.siteId;
+		obj.getStore().proxy.extraParams = {
+		    siteId: siteId,
+		    roleId: roleId
+		};
+		obj.getStore().load();
+	},
+	onChangeSiteCSRCodeCombo: function( obj, newValue, oldValue, eOpts ){
+		var me = this,
+			refs = me.getView().getReferences(),
+			siteCombo = refs.siteCombo,
+			csrCombo = refs.csrCombo,
+			siteComboValue = siteCombo.getValue(),
+			csrComboValue = csrCombo.getValue(),
+			prevItemRef = obj.prevItemRef;
+			values = (prevItemRef=='siteCombo')? {filterSiteId : siteComboValue,filterCsrCode:'' } : {filterSiteId : siteComboValue, filterCsrCode: csrComboValue} ,
+			store = Ext.create('AOC.store.HomePageOders');
+		store.proxy.setFilterParam('query');
+        store.setRemoteFilter(true);
+        if (!store.proxy.hasOwnProperty('filterParam')) {
+            store.proxy.setFilterParam('query');
+        }
+        store.proxy.encodeFilters = function(filters) {
+            return filters[0].getValue();
+        };
+        store.filter({
+            id: 'query',
+            property: 'query',
+            value: Ext.JSON.encode(values)
+        });			
+        csrCombo.enable();
 	}
 });
