@@ -21,6 +21,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -98,11 +99,12 @@ public class OrderTrend {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchHomeList(@Context UriInfo ui, @Context HttpHeaders hh)
 			throws JsonParseException, JsonMappingException, IOException {
+		MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.writeValue(writer, buildGridData());
+			mapper.writeValue(writer, buildGridData(queryParamMap));
 			return Response.ok(writer.toString()).build();
 		} catch (WebApplicationException aep) {
 			throw aep;
@@ -178,13 +180,13 @@ public class OrderTrend {
 		return list;
 	}
 
-	public static List<Map<String, Object>> buildGridData() throws Exception {
+	public static List<Map<String, Object>> buildGridData(MultivaluedMap<String, String> queryParamMap) throws Exception {
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
 				.getBean("orderQueueService");
 		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet());
 		OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
 				.getBean("orderEmailQueueService");
-		Set<OrderEmailQueue> emailQueueSet = orderEmailQueueService.getList(30, emailQueueStatusMap.keySet());
+		Set<OrderEmailQueue> emailQueueSet = orderEmailQueueService.getList(30, emailQueueStatusMap.keySet(),queryParamMap);
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		Map<String, Object> recievedMap = buildMap("Order Received", "11");
 		list.add(recievedMap);
