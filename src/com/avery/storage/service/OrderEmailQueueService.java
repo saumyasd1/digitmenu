@@ -61,7 +61,7 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 	}
 	
 	@Transactional
-	public Set<OrderEmailQueue> getList(int lastDays,Set<String> status)throws Exception{
-		return getOrderEmailQueueDao().getList(lastDays,status);
+	public Set<OrderEmailQueue> getList(int lastDays,Set<String> status,MultivaluedMap<String, String> queryParamMap)throws Exception{
+		return getOrderEmailQueueDao().getList(lastDays,status,queryParamMap);
 	}
 }
