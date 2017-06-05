@@ -120,7 +120,8 @@ public class OrderTrend {
 	public static List<Map<String, Object>> buildChartData(int day) throws Exception {
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
 				.getBean("orderQueueService");
-		Set<OrderQueue> set = orderQueueService.getList(day, statusMap.keySet());
+		MultivaluedMap queryParamMap=(MultivaluedMap) new HashMap();
+		Set<OrderQueue> set = orderQueueService.getList(day, statusMap.keySet(),queryParamMap);
 		switch (day) {
 		case 1: {
 			return buildDataList(set, day, 24);
@@ -183,7 +184,7 @@ public class OrderTrend {
 	public static List<Map<String, Object>> buildGridData(MultivaluedMap<String, String> queryParamMap) throws Exception {
 		OrderQueueService orderQueueService = (OrderQueueService) SpringConfig.getInstance()
 				.getBean("orderQueueService");
-		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet());
+		Set<OrderQueue> set = orderQueueService.getList(30, statusMap.keySet(),queryParamMap);
 		OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
 				.getBean("orderEmailQueueService");
 		Set<OrderEmailQueue> emailQueueSet = orderEmailQueueService.getList(30, emailQueueStatusMap.keySet(),queryParamMap);
