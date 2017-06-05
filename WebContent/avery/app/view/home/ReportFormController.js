@@ -114,5 +114,12 @@ Ext.define('AOC.view.home.ReportFormController', {
     		rboCombo.reset();
     		statusCombo.reset();
     	}
+    },
+    onPartnerAfterRender: function(obj){
+	    var userInfo = AOCRuntime.getUser(),
+	    	siteId = userInfo.siteId;
+	    obj.getStore().proxy.extraParams = {
+		    siteId: siteId
+		};
     }
 })
