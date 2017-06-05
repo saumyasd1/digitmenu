@@ -41,7 +41,8 @@ Ext.define('AOC.view.home.ReportForm',{
 						displayField:'partnerName',
 						emptyText:'Select Partner',
 						listeners:{
-							'change':'onPartnerChange'
+							'change':'onPartnerChange',
+							'afterrender':'onPartnerAfterRender'
 						}
 					},
 					{
