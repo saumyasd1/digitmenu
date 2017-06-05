@@ -406,17 +406,16 @@ Ext.define('AOC.controller.MenuController', {
     		currentUserSiteId = userInfo.siteId, 
     		homeListStore = Ext.getStore('HomePageOders');
     	if(currentUserRoleId == 3){
-    		var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId},
-    			store = Ext.create('AOC.store.HomePageOders');
-    		store.proxy.setFilterParam('query');
-            store.setRemoteFilter(true);
-            if (!store.proxy.hasOwnProperty('filterParam')) {
-                store.proxy.setFilterParam('query');
+    		var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId};
+    		homeListStore.proxy.setFilterParam('query');
+    		homeListStore.setRemoteFilter(true);
+            if (!homeListStore.proxy.hasOwnProperty('filterParam')) {
+            	homeListStore.proxy.setFilterParam('query');
             }
-            store.proxy.encodeFilters = function(filters) {
+            homeListStore.proxy.encodeFilters = function(filters) {
                 return filters[0].getValue();
             };
-            store.filter({
+            homeListStore.filter({
                 id: 'query',
                 property: 'query',
                 value: Ext.JSON.encode(values)
