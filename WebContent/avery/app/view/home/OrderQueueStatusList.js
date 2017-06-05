@@ -46,7 +46,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   				fieldLabel:'Site',
       	    	labelStyle:Settings.config.defaultFormLabelStyle,
       	    	labelSeparator:'',
-      	    	prevItemRef:'siteCombo',
+      	    	currentItemRef:'siteCombo',
       	    	labelWidth:40,
       	    	editable:false,
       	    	margin:'0 70 0 250',
@@ -62,12 +62,12 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   			},
                {
   				xtype:'combo',
-  				fieldLabel:'CSR Code ',
+  				fieldLabel:'CSR Code',
       	    	labelStyle:Settings.config.defaultFormLabelStyle,
       	    	labelSeparator:'',
       	    	labelWidth:70,
   				displayField:'csrName',
-  				prevItemRef:'csrCombo',
+  				currentItemRef:'csrCombo',
   				margin:'0 0 0 0',
   				reference:'csrCombo',
   				name:'assignCSR',
@@ -83,7 +83,8 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   					blur:function(combo,e){
   						Helper.clearCSRCombo(combo,e);
   					},
-  					'focus':'onAfterRenderCSRList',
+  					'afterrender':'onAfterRenderCSRCombo',
+  					'focus':'onFocusCSRcombo',
   					'change':'onChangeSiteCSRCodeCombo'
   				}
                },
