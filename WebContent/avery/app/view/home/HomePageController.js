@@ -185,7 +185,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			csrComboValue = csrCombo.getValue(),
 			currentItemRef = obj.currentItemRef,
 			values = (currentItemRef=='siteCombo')? {filterSiteId : siteComboValue,filterCsrCode:'' } : {filterSiteId : siteComboValue, filterCsrCode: csrComboValue};
-			store = Ext.create('AOC.store.HomePageOders');
+			store = me.getView().store;
 		store.proxy.setFilterParam('query');
         store.setRemoteFilter(true);
         if (!store.proxy.hasOwnProperty('filterParam')) {
