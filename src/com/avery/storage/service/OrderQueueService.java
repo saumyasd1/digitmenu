@@ -38,8 +38,8 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	}
 	
 	@Transactional
-	public Set<OrderQueue> getList(int lastDays,Set<String> status)throws Exception{
-		return getOrderQueueDao().getList(lastDays,status);
+	public Set<OrderQueue> getList(int lastDays,Set<String> status,MultivaluedMap<String, String> queryParamMap)throws Exception{
+		return getOrderQueueDao().getList(lastDays,status,queryParamMap);
 	}
 		
 	@Transactional
