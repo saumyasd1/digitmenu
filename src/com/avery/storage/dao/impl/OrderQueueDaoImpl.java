@@ -347,8 +347,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Set<OrderQueue> getList(int lastDays, Set<String> status)
+	public Set<OrderQueue> getList(int lastDays, Set<String> status,MultivaluedMap<String, String> queryParamMap)
 			throws Exception {
+		String queryString=(String) queryParamMap.getFirst("query");
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		ProjectionList projectionList = Projections.projectionList();
@@ -362,7 +363,26 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
 		HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate",
 				startDate, endDate);
-		criteria.add(Restrictions.in("status", status));
+		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
+		.createAlias("varOrderFileAttachment.varOrderEmailQueue", "varOrderEmailQueue");
+		//.add(Restrictions.eq("varOrderEmailQueue.id", trackId));
+		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
+		if(queryString!=null){
+			String filterSiteId = (String) searchMap.get("filterSiteId");
+			if (filterSiteId!=null && !"".equals(filterSiteId)) {
+				criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(filterSiteId)));
+			}
+			String filterCsrCode = (String) searchMap.get("filterCsrCode");
+			if (filterCsrCode!=null && !"".equals(filterCsrCode)) {
+				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR",filterCsrCode));
+			}}
+			else
+			{
+				String siteId =(String) queryParamMap.getFirst("siteId");
+				if(siteId!=null)
+				if (!siteId.equals("1")) {
+					criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(siteId)));
+			}}
 		// criteria.add(Restrictions.between("createdDate", startDate,
 		// endDate));
 		criteria.setProjection(projectionList);
