@@ -15,7 +15,7 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	
 	public void cancelOrder(String data, Long entityId);
 	
-	Set<OrderQueue> getList(int lastDays,Set<String> status)throws Exception;
+	Set<OrderQueue> getList(int lastDays,Set<String> status,MultivaluedMap<String, String> queryParamMap)throws Exception;
 	
 	public List getAllEntitiesListWithCriteria(MultivaluedMap queryMap) throws Exception;
 	
