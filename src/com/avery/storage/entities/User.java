@@ -133,7 +133,7 @@ public class User extends MainAbstractEntity {
 						}
 						listOfPR.add(currentuser);
 					}
-					Collections.sort(listOfPR, userIdComparator);
+					//Collections.sort(listOfPR, userIdComparator);
 					responseMap.put("users", listOfPR);
 					}}
 				
