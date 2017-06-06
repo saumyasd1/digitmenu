@@ -59,6 +59,7 @@ import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.storage.service.SiteService;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -212,6 +213,9 @@ public class OrderQueue extends MainAbstractEntity {
 
 	@Transient
 	private String orderSource;
+	
+	@Transient
+	private String siteName;
 
 	/* Business Logic Starts*/
 	@Override
@@ -241,7 +245,8 @@ public class OrderQueue extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map orderQueue = null;
+		Map orderQueue = new HashMap();
+		Map responceMap = new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -262,8 +267,21 @@ public class OrderQueue extends MainAbstractEntity {
 			orderQueue = orderQueueService.readWithCriteria(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			List<Site> siteList = siteService.readAll();
+			List listOfTask=(List) orderQueue.get("orders");
+			for (int i = 0; i < listOfTask.size(); i++) {
+				OrderQueue orderQueue1 = (OrderQueue) listOfTask.get(i);
+				if(orderQueue1.getSiteId()!=0)
+				{
+					int siteId=orderQueue1.getSiteId();
+					orderQueue1.setSitename(siteList.get(siteId-1).getName());
+				}
+			}
+			responceMap.put("orders", listOfTask);
+			responceMap.put("totalCount", orderQueue.get("totalCount"));
 			mapper.setDateFormat(ApplicationUtils.df);
-			mapper.writeValue(writer, orderQueue);
+			mapper.writeValue(writer, responceMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -1135,4 +1153,11 @@ public class OrderQueue extends MainAbstractEntity {
 		this.listSalesOrderLine = listSalesOrderLine;
 	}
 
+	public void setSitename(String siteName) {
+		this.siteName = siteName;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
 }
