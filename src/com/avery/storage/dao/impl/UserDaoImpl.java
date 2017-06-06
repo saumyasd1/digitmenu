@@ -290,27 +290,24 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 	
 	public String getUsernameById(String userid){
-		
 		String username=null;
-		if(userid.isEmpty()){
-			return "";
-		}
-		if(userid == null){
-			return "";
-		}
+		long id;
+		try
+		{
+			id=Long.valueOf(userid);
 			Session session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(User.class);
-			if(userid.matches("^[0-9]*$")){
-				User currentuser =(User)criteria.add(Restrictions.eq("id", Long.valueOf(userid))).uniqueResult();
-				if(currentuser.getMiddleName()!=null)
-				{
-					username=currentuser.getFirstName()+" "+currentuser.getMiddleName()+" "+currentuser.getLastName();
-				}else{
-					username=currentuser.getFirstName()+" "+currentuser.getLastName();
-				}
-			}else{
-				username = userid;
-			}
+			User currentuser =(User)criteria.add(Restrictions.eq("id",id)).uniqueResult();
+					if(currentuser.getMiddleName()!=null)
+					{
+						username=currentuser.getFirstName()+" "+currentuser.getMiddleName()+" "+currentuser.getLastName();
+					}else{
+						username=currentuser.getFirstName()+" "+currentuser.getLastName();
+					}
+		}catch(Exception e)
+		{
+			username=userid;
+		}		
 		return username;
 	}
 
