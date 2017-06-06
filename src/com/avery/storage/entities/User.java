@@ -96,6 +96,12 @@ public class User extends MainAbstractEntity {
 	private String fileName;
 	@Column(name = "filePath")
 	private String filePath;
+	
+	@Column(name = "systemCsrCodeOwner", length = 150)
+	private String systemCsrCodeOwner;
+	
+	@Column(name = "systemCsrNonCodeOwner", length = 150)
+	private String systemCsrNonCodeOwner;
 
 	/* Business Logic Starts */
 
@@ -590,4 +596,20 @@ public class User extends MainAbstractEntity {
 		this.filePath = filePath;
 	}
 
+	public String getSystemCsrCodeOwner() {
+		return systemCsrCodeOwner;
+	}
+
+	public void setSystemCsrCodeOwner(String systemCsrCodeOwner) {
+		this.systemCsrCodeOwner = systemCsrCodeOwner;
+	}
+
+	public String getSystemCsrNonCodeOwner() {
+		return systemCsrNonCodeOwner;
+	}
+
+	public void setSystemCsrNonCodeOwner(String systemCsrNonCodeOwner) {
+		this.systemCsrNonCodeOwner = systemCsrNonCodeOwner;
+	}
+	
 }
