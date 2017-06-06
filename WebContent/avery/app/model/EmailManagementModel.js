@@ -19,7 +19,8 @@ Ext.define('AOC.model.EmailManagementModel',{
 		{name:'comment',mapping:'comment', type:'string'},
 		{name:'subject', type:'string'},
 		{name:'listOrderFileAttachment'},{name:'iconName'},{name:'colorCode'},
-		{name:'Email Body',mapping:'mailBody'}
+		{name:'Email Body',mapping:'mailBody'},
+		{name: 'siteName', mapping:'siteName',type: 'string'}
     ]
 });
 
