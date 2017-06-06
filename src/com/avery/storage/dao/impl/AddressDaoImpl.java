@@ -145,7 +145,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 
 		}
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("address", new LinkedHashSet(list));
+		entitiesMap.put("address",list);
 
 		return entitiesMap;
 	}
