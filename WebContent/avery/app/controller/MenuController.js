@@ -365,18 +365,25 @@ Ext.define('AOC.controller.MenuController', {
                 },
                 scope: me,
                 success: function (res) {
-                    Ext.getBody().unmask();
-                    var userInfo = Ext.decode(res.responseText);
-                    me.runtime.setUser(userInfo.user);
-                    Helper.updateHeaderUserName();
-                    Helper.setCookie("userinfo", JSON.stringify(userInfo.user), 30);
-                    me.selectProrfileCard(0);
-                    me.updateTopToolBar(true, profileInfo);
-                    me.updateBottomToolBar(false);
-                    Helper.updateProfileInfo();
-                    var message = (activeForm.xtype == 'createuser') ? personalInformation : password;
-                    message = message + savedSuccessfully;
-                    Helper.showToast('Success', message);
+                	if(activeForm.down('#newPassword').value == "" || activeForm.down('#confirmPassword').value == "" || activeForm.down('#currentPassword').value == "" ){
+                		Helper.showToast('validation',AOCLit.editFieldEntryMsg);
+                		Ext.getBody().unmask();
+                	}
+                	else{
+	                    Ext.getBody().unmask();
+	                    var userInfo = Ext.decode(res.responseText);
+	                    me.runtime.setUser(userInfo.user);
+	                    Helper.updateHeaderUserName();
+	                    Helper.setCookie("userinfo", JSON.stringify(userInfo.user), 30);
+	                    me.selectProrfileCard(0);
+	                    me.updateTopToolBar(true, profileInfo);
+	                    me.updateBottomToolBar(false);
+	                    Helper.updateProfileInfo();
+	                    var message = (activeForm.xtype == 'createuser') ? personalInformation : password;
+	                    message = message + savedSuccessfully;
+	                    Helper.showToast('Success', message);
+	                    activeForm.reset();
+                	}
                 },
                 failure: function (rsp) {
                     Ext.getBody().unmask();
