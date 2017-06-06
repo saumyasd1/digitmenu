@@ -147,6 +147,17 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 text: AOCLit.CSRName,
                 width: 120,
                 dataIndex: 'csrName'
+            },{
+                text: AOCLit.siteName,
+                sortable: true,
+                width: 120,
+                dataIndex: 'siteName',
+                align: 'left',
+                listeners: {
+                	'afterrender': function(obj){
+                		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
+                	}
+                }
             }, {
                 text: AOCLit.receivedDate,
                 width: 150,
