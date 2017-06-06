@@ -232,7 +232,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			orderQueue.setAdditionalFileCount(additionalFileCount);
 
 		}
-		entitiesMap.put("orders", new LinkedHashSet(list));
+		entitiesMap.put("orders",list);
 		entitiesMap.put("totalCount", totalCount);
 		return entitiesMap;
 	}
