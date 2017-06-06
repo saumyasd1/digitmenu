@@ -63,6 +63,7 @@ OrderEmailQueueDao {
 				.add(Projections.property("senderEmailId"), "senderEmailId")
 				.add(Projections.property("subject"), "subject")
 				.add(Projections.property("toMailId"), "toMailId")
+				.add(Projections.property("siteId"), "siteId")
 				.add(Projections.property("status"), "status")
 				.add(Projections.property("ccMailId"), "ccMailId")
 				.add(Projections.property("receivedDate"), "receivedDate")
@@ -159,6 +160,7 @@ OrderEmailQueueDao {
 				.add(Projections.property("subject"), "subject")
 				//.add(Projections.property("toMailId"), "toMailId")
 				.add(Projections.property("status"), "status")
+				.add(Projections.property("siteId"), "siteId")
 				.add(Projections.property("ccMailId"), "ccMailId")
 				.add(Projections.property("receivedDate"), "receivedDate")
 				.add(Projections.property("readDate"), "readDate")
@@ -226,7 +228,7 @@ OrderEmailQueueDao {
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		entitiesMap.put("emailqueue", new LinkedHashSet(list));
+		entitiesMap.put("emailqueue",list);
 		entitiesMap.put("totalCount", totalCount);
 		return entitiesMap;
 	}
