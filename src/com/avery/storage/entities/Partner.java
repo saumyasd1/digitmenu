@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -36,6 +37,7 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.RboMixIn;
 import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.PartnerService;
+import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,6 +106,9 @@ public class Partner extends MainAbstractEntity {
 	
 	@Column(name = "orgCode", length = 50)
 	private String orgCode;
+	
+	@Transient
+	private String siteName;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -289,6 +294,14 @@ public class Partner extends MainAbstractEntity {
 	public void setVarProductLine(List<ProductLine> varProductLine) {
 		this.varProductLine = varProductLine;
 	}
+	
+	public void setSitename(String siteName) {
+		this.siteName = siteName;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
 
 //	public List<SalesOrder> getListSalesOrderLine() {
 //		return listSalesOrderLine;
@@ -345,6 +358,8 @@ public class Partner extends MainAbstractEntity {
 			else{
 				List listofPL=(List) entitiesMap.get("partners");
 				List listOfPR=new LinkedList<Partner>();
+				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+				List<Site> siteList = siteService.readAll();
 				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
 				for(int i=0;i<listofPL.size();i++)
 				{
@@ -354,6 +369,11 @@ public class Partner extends MainAbstractEntity {
 					{
 					String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
 					currentPartner.setLastModifiedBy(LastModifiedByName);
+					}
+					if(currentPartner.getSiteId()!=null)
+					{
+						int siteId1=currentPartner.getSiteId();
+						currentPartner.setSitename(siteList.get(siteId1-1).getName());
 					}
 					listOfPR.add(currentPartner);
 				}
