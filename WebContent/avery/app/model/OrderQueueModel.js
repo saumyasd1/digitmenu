@@ -110,6 +110,11 @@ Ext.define('AOC.model.OrderQueueModel',{
 	    type: 'string'
 	},
 	{name:'iconName'},
-	{name:'colorCode'}
+	{name:'colorCode'},
+	{
+		name: 'siteName', 
+		mapping:'siteName',
+		type: 'string'
+	}
     ]
 });
