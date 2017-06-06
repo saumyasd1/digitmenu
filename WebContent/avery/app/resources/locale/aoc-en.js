@@ -6,6 +6,7 @@ Ext.define('AOC.lang.lit',{
     //TaskManger
     "from":'From',
     "dateTime":'Date-Time',
+    "siteName":'Site Name',
     //OrderLineExpandableGri
     "commentOnOrderLine":'In order form remark and COO column has different value',
     "atoMandatory":'ATO Mandatory',
