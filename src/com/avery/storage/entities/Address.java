@@ -39,6 +39,7 @@ import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.AddressService;
 import com.avery.storage.service.PartnerService;
+import com.avery.storage.service.SiteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -393,8 +394,22 @@ public class Address extends MainAbstractEntity {
 			entitiesMap = addressService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find addresses");
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			List<Site> siteList = siteService.readAll();
+			List listOfTask=(List) entitiesMap.get("address");
+			for (int i = 0; i < listOfTask.size(); i++) {
+				Address addresh = (Address) listOfTask.get(i);
+				if(addresh.getSiteId()!=0)
+				{
+					int siteId1=addresh.getSiteId();
+					addresh.setSiteName(siteList.get(siteId1-1).getName());
+				}
+			}
+			Map responceMap=new HashMap();;
+			responceMap.put("address", listOfTask);
+			responceMap.put("totalCount", entitiesMap.get("totalCount"));
 			mapper.setTimeZone(TimeZone.getDefault());
-				mapper.writeValue(writer, entitiesMap);
+				mapper.writeValue(writer, responceMap);
 			
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
