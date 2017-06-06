@@ -185,6 +185,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             renderer: function (v, metadata, rec) {
                 return Helper.getSatus(rec);
             }
+        },{
+            text: AOCLit.siteName,
+            sortable: true,
+            dataIndex: 'siteName',
+            align: 'left',
+            width: 150,
+            listeners: {
+            	'afterrender': function(obj){
+            		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
+            	}
+            }
         }, {
             text: AOCLit.receivedDate,
             width: 150,
