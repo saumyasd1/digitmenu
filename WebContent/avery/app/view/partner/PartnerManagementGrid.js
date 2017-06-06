@@ -86,6 +86,14 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             sortable: true,
             dataIndex: 'phone',
             flex: 0.5
+        },{
+        	text:AOCLit.siteName,
+        	sortable:true,
+        	dataIndex:'siteName',
+        	flex:0.5,
+            listeners: {
+            	'afterrender': Helper.siteNameForSuperAdminOnly
+            }
         }, {
             text: AOCLit.lastmodifiedby,
             dataIndex: 'lastModifiedBy',

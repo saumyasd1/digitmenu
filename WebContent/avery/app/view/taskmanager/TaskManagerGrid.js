@@ -132,9 +132,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
             align: 'left',
             flex: 0.6,
             listeners: {
-            	'afterrender': function(obj){
-            		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
-            	}
+            	'afterrender': Helper.siteNameForSuperAdminOnly
             }
         }, {
             text: AOCLit.lastModifiedBy,

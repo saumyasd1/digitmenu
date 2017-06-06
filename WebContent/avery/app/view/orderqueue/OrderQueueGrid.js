@@ -192,9 +192,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             align: 'left',
             width: 150,
             listeners: {
-            	'afterrender': function(obj){
-            		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
-            	}
+            	'afterrender': Helper.siteNameForSuperAdminOnly
             }
         }, {
             text: AOCLit.receivedDate,

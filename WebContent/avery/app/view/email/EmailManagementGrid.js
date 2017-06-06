@@ -154,9 +154,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 dataIndex: 'siteName',
                 align: 'left',
                 listeners: {
-                	'afterrender': function(obj){
-                		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
-                	}
+                	'afterrender': Helper.siteNameForSuperAdminOnly
                 }
             }, {
                 text: AOCLit.receivedDate,

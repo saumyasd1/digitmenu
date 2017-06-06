@@ -87,6 +87,16 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 				            flex:1
                         },
                         {
+                            text: AOCLit.siteName,
+                            sortable: true,
+                            flex:1,
+                            dataIndex: 'siteName',
+                            align: 'left',
+                            listeners: {
+                            	'afterrender': Helper.siteNameForSuperAdminOnly
+                            }
+                        },
+                        {
                             text: AOCLit.lastmodifiedby,
                             dataIndex: 'lastModifiedBy',
                             flex:1
