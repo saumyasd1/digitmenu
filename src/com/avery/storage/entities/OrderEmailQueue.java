@@ -59,6 +59,7 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
+import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
@@ -173,6 +174,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 
 	@Transient
 	private String csrName;
+	
+	@Transient
+	private String siteName;
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -196,17 +200,25 @@ public class OrderEmailQueue extends MainAbstractEntity {
 				List orderEmailQueuelsit = new LinkedList();
 				List lsitOforderEmailQueue = (List) entitiesMap.get("emailqueue");
 				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+				List<Site> siteList = siteService.readAll();
 				if (!lsitOforderEmailQueue.isEmpty())
 					for (int i = 0; i < lsitOforderEmailQueue.size(); i++) {
 						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue.get(i);
 						String lastmodifiedId = orderQueue.getLastModifiedBy();
-						try {
+						if(lastmodifiedId!=null)
+						{
 							String LastModifiedByName = userService.getUsernameById(lastmodifiedId);
 							orderQueue.setLastModifiedBy(LastModifiedByName);
 							orderEmailQueuelsit.add(orderQueue);
-						} catch (Exception e) {
-							AppLogger.getSystemLogger().error(
-									"Error in Finding user name for last modified by  " + e);
+						}else
+						{
+							orderEmailQueuelsit.add(orderQueue);
+						}
+						if(orderQueue.getSiteId()!=null)
+						{
+							int siteId=orderQueue.getSiteId();
+							orderQueue.setSitename(siteList.get(siteId-1).getName());
 						}
 					}
 				responcemap.put("emailqueue", orderEmailQueuelsit);
@@ -230,7 +242,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUnidentified(@Context UriInfo ui, @Context HttpHeaders hh) throws Exception {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> entitiesMap = null;
+		Map<?, ?> entitiesMap = new HashMap();
+		Map responceMap = new HashMap();
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
@@ -243,7 +256,20 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			entitiesMap = orderEmailQueueService.getWithUnidentifiedStatus(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
-			mapper.writeValue(writer, entitiesMap);
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			List<Site> siteList = siteService.readAll();
+			List listOfTask=(List) entitiesMap.get("emailqueue");
+			for (int i = 0; i < listOfTask.size(); i++) {
+				OrderEmailQueue orderQueue = (OrderEmailQueue) listOfTask.get(i);
+				if(orderQueue.getSiteId()!=null)
+				{
+					int siteId=orderQueue.getSiteId();
+					orderQueue.setSitename(siteList.get(siteId-1).getName());
+				}
+			}
+			responceMap.put("emailqueue", listOfTask);
+			responceMap.put("totalCount", entitiesMap.get("totalCount"));
+			mapper.writeValue(writer, responceMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -1100,9 +1126,19 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	public Integer getSiteId() {
 		return siteId;
 	}
-
+	
 	public void setSiteId(Integer siteId) {
 		this.siteId = siteId;
 	}
+	
+	public void setSitename(String siteName) {
+		this.siteName = siteName;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
+
+
 
 }
