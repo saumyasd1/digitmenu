@@ -9,7 +9,8 @@ Ext.define('AOC.model.TaskManagerModel',{
 		{name: 'csrName', mapping:'csrName',type: 'string'},
 		{name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
 		{name:'lastModifiedDate',mapping:'lastModifiedDate',type:'string'},
-		{name:'iconName'},{name:'colorCode'}
+		{name:'iconName'},{name:'colorCode'},
+		{name: 'siteName', mapping:'siteName',type: 'string'}
 		]
 });
 
