@@ -125,6 +125,17 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
             dataIndex: 'createdDate',
             align: 'right',
             flex: 0.6
+        },{
+            text: AOCLit.siteName,
+            sortable: true,
+            dataIndex: 'siteName',
+            align: 'left',
+            flex: 0.6,
+            listeners: {
+            	'afterrender': function(obj){
+            		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
+            	}
+            }
         }, {
             text: AOCLit.lastModifiedBy,
             dataIndex: 'lastModifiedBy',
