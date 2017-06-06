@@ -684,5 +684,8 @@ Ext.define('AOC.util.Helper',{
 	    		 return filePath;
 	    	  }
 	    	 }
-    	}
+    	},
+	siteNameForSuperAdminOnly:function(obj){
+		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
+	}
 });
