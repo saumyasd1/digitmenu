@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -49,6 +50,7 @@ import com.avery.storage.MixIn.RboMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.ProductLineService;
+import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,6 +72,9 @@ public class ProductLine extends MainAbstractEntity{
 
 	@Column(name = "active")
 	private Boolean active;
+	
+	@Column(name = "site")
+	private Integer site;
 	
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchLocation", length = 100)
@@ -267,6 +272,9 @@ public class ProductLine extends MainAbstractEntity{
 	
 	@Column(name="orderInMailBody")
 	private Boolean orderInMailBody;
+	
+	@Transient
+	private String siteName;
 	
 	/*These columns are removed from the database and hence commented in the pojo*/
 	
@@ -1176,6 +1184,23 @@ public class ProductLine extends MainAbstractEntity{
 	public void setSizeCheck(Boolean sizeCheck) {
 		this.sizeCheck = sizeCheck;
 	}
+	
+	public void setSitename(String siteName) {
+		this.siteName = siteName;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
+	
+	public void setSite(Integer site) {
+		this.site = site;
+	}
+	
+	public Integer getSite() {
+		return site;
+	}
+
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -1368,6 +1393,8 @@ public class ProductLine extends MainAbstractEntity{
 				throw new Exception("Unable to find Product Line");
 			List listofPL=(List) productline.get("productlines");
 			List listOfPLR=new LinkedList<ProductLine>();
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			List<Site> siteList = siteService.readAll();
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
 			for(int i=0;i<listofPL.size();i++)
 			{
@@ -1377,6 +1404,11 @@ public class ProductLine extends MainAbstractEntity{
 				{
 				String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
 				currentProductline.setLastModifiedBy(LastModifiedByName);
+				}
+				if(currentProductline.getSite()!=0)
+				{
+					int siteId1=(int) currentProductline.getSite();
+					currentProductline.setSitename(siteList.get(siteId1-1).getName());
 				}
 				listOfPLR.add(currentProductline);
 			}
