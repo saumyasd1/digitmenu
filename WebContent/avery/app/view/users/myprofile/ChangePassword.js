@@ -60,7 +60,7 @@
                  labelWidth: 200,
                  validator:me.checkCurrentPassword
              }, {
-        	 xtype: 'textfield',
+            	 xtype: 'textfield',
                  inputType: 'password',
                  itemId: 'newPassword',
                  name: 'password',
@@ -79,7 +79,7 @@
                      scope: me
                  }
              },{
-        	 xtype: 'textfield',
+            	 xtype: 'textfield',
                  inputType: 'password',
                  itemId: 'confirmPassword',
                  name: 'confirmPassword',
