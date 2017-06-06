@@ -98,6 +98,14 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 width: 150,
                 dataIndex: 'email',
                 flex: 1
+            },{
+            	text:AOCLit.siteName,
+            	sortable:true,
+            	dataIndex:'siteName',
+            	flex:1,
+                listeners: {
+                	'afterrender': Helper.siteNameForSuperAdminOnly
+                }
             }, {
                 text: AOCLit.siteType,
                 width: 150,

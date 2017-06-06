@@ -44,7 +44,8 @@ Ext.define('AOC.model.AddressModel',{
 		{name: 'phone2', mapping:'phone2',type: 'string'},
 		{name: 'fax', mapping:'fax',type: 'string'},
 		{name: 'email', mapping:'email',type: 'string'},
-		{name: 'siteType', mapping:'siteType',type: 'string'}
+		{name: 'siteType', mapping:'siteType',type: 'string'},
+		{name: 'siteName', mapping:'siteName',type: 'string'}
 	    ]
 });
 
