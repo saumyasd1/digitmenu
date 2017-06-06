@@ -28,7 +28,8 @@ Ext.define('AOC.config.Runtime',{
         wiId:null,
         currentWiMode:null,
         schemaIdentificationId:null,
-        currentStatusId:null
+        currentStatusId:null,
+        currentUserSystemId:null
     },
     constructor : function(config){
         this.initConfig(config);
