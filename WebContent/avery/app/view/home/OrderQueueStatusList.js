@@ -62,7 +62,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   			},
                {
   				xtype:'combo',
-  				fieldLabel:'CSR Code',
+  				fieldLabel:'CSR Name',
       	    	labelStyle:Settings.config.defaultFormLabelStyle,
       	    	labelSeparator:'',
       	    	labelWidth:70,
