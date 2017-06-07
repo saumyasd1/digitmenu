@@ -90,6 +90,15 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
             sortable: true,
             dataIndex: 'csrName',
             flex: 0.5
+        },{
+            text: AOCLit.siteName,
+            sortable: true,
+            dataIndex: 'siteName',
+            align: 'left',
+            flex: 0.6,
+            listeners: {
+            	'afterrender': Helper.siteNameForSuperAdminOnly
+            }
         }, {
             text: AOCLit.from,
             sortable: true,
@@ -125,15 +134,6 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
             dataIndex: 'createdDate',
             align: 'right',
             flex: 0.6
-        },{
-            text: AOCLit.siteName,
-            sortable: true,
-            dataIndex: 'siteName',
-            align: 'left',
-            flex: 0.6,
-            listeners: {
-            	'afterrender': Helper.siteNameForSuperAdminOnly
-            }
         }, {
             text: AOCLit.lastModifiedBy,
             dataIndex: 'lastModifiedBy',
