@@ -1405,7 +1405,7 @@ public class ProductLine extends MainAbstractEntity{
 				String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
 				currentProductline.setLastModifiedBy(LastModifiedByName);
 				}
-				if(currentProductline.getSite()!=0)
+				if(currentProductline.getSite() != null && currentProductline.getSite()!=0 )
 				{
 					int siteId1=(int) currentProductline.getSite();
 					currentProductline.setSitename(siteList.get(siteId1-1).getName());
