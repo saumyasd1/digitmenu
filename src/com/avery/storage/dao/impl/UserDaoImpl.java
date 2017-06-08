@@ -182,6 +182,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 							Projections.projectionList()
 									.add(Projections.property("id"), ("id"))
 									.add(Projections.property("firstName"),"firstName")
+									.add(Projections.property("systemCsrCodeOwner"),"systemCsrCodeOwner")
 									.add(Projections.property("lastName"),"lastName")
 									.add(Projections.property("middleName"),"middleName"));
 			Conjunction disCriteria = Restrictions.conjunction();
