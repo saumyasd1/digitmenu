@@ -4,12 +4,27 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     runTime: AOC.config.Runtime,
     helper: AOC.util.Helper,
     fileArray:[],
+    getSystemCsrCodeValues:function(grid){
+    	var store = grid.store;
+    	var yesArray = [],
+    		noArray = [];
+    	
+    	store.each(function(rec, index){
+    		if(rec.get('codeOwner') == 'Y'){
+    			yesArray.push(rec.get('csrCodeComboId'));
+    		}else if((rec.get('codeOwner') == 'N')){
+    			noArray.push(rec.get('csrCodeComboId'));
+    		}
+    	});
+    	return {yes:yesArray.join(),no:noArray.join()};
+    },
     SaveDetails: function () {
         var me = this,
         	userinfo = AOCRuntime.getUser(),
             refs = me.getReferences(),
             view = me.getView(),
         	form = refs.addEditUserWinForm,
+        	systemCsrCodeGrid = refs.systemCsrCodeGrid,
         	profileImage = refs.profileImage,
         	userInfo = AOCRuntime.getUser(),
         	role = userInfo.role,
@@ -21,6 +36,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             valueObj = '',
             method = '',
             msg = '';
+        
+        var obj =me.getSystemCsrCodeValues(systemCsrCodeGrid);
+        
         if (mode == 'edit') {
             url = applicationContext + '/rest/users/' + view.ID; //Provide roleId for particular record
             method = 'PUT';
@@ -35,6 +53,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             length = 1;
             msg = AOCLit.addUserMsg;
         }
+        valueObj.systemCsrCodeOwner =  obj.yes;
+        valueObj.systemCsrNonCodeOwner =  obj.no;
         var parameters = Ext.JSON.encode(valueObj);
         if (length == 0) {
             Helper.showToast('failure', AOCLit.tickTabMsg);
@@ -181,5 +201,127 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		recordId = me.getView().down('form').getValues().id,
     		userId = AOCRuntime.getUser().id;
     	if(recordId!=userId) obj.setHidden(true);
+    },
+    onSiteSelected:function(field){
+    	var me = this,
+    		refs = this.getReferences(),
+    		systemCombo = refs.systemName,
+    		siteId = field.getValue(),
+    		systemStore = Ext.StoreManager.lookup('userSystemStore'),
+    		proxy = new Ext.data.proxy.Rest({
+				url: applicationContext+'/rest/system/site/'+ siteId,
+				appendId: true,
+				reader: {
+					type : 'json'
+				},
+				autoLoad:true
+		});
+    	systemStore.setProxy(proxy);
+    	systemStore.load();
+    	systemCombo.setDisabled(false);
+    },
+    onSystemSelected:function(field){
+    	var me = this,
+			refs = this.getReferences(),
+			orgCodeCombo = refs.orgCode,
+    		systemId = field.getValue(),
+			orgStore = Ext.StoreManager.lookup('userOrgStore');
+    	AOCRuntime.setCurrentUserSystemId(systemId);
+    	var proxy = new Ext.data.proxy.Rest({
+    		url: applicationContext+'/rest/org/system/'+ systemId,
+    		appendId: true,
+    		reader      : {
+    			type          : 'json'
+    		},
+    		autoLoad:true
+    	});
+    	orgStore.setProxy(proxy);
+    	orgStore.load();
+    	orgCodeCombo.setDisabled(false);
+    },
+    onOrgSelected:function(field){
+    	var me = this,
+			refs = this.getReferences(),
+			csrCodeCombo = refs.csrCode,
+    		orgId = field.getValue(),
+    		systemId = AOCRuntime.getCurrentUserSystemId();
+    	var store = Ext.StoreManager.lookup('userCsrCodeStore');
+    	store.load({params:{org:orgId,system:systemId}});
+    	csrCodeCombo.setDisabled(false);
+    },
+    onSystemCsrCodeAddRowBtnClick:function(){
+		var me = this,
+			refs = me.getReferences(),
+			grid = refs.systemCsrCodeGrid,
+			store = grid.store,
+			rec = new Ext.data.Record({'system':'', 'orgCode':'', 'csrCode':''}),
+		    rowIdx = store.getCount();
+		store.insert(rowIdx, rec);
+		grid.editingPlugin.startEditByPosition({
+			row:rowIdx,
+			column:0
+		});
+	},
+	onSystemCsrCodeCellClick:function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+		var el = Ext.get(e.target);
+		if(el.hasCls('delete-row')){
+	        grid.store.remove(record);
+		}
+    },
+    onSiteChange: function(obj, newValue, oldValue, eOpts){
+    	var me = this,	
+    		refs = me.getView().getReferences(),
+    		systemCsrCodeGrid = refs.systemCsrCodeGrid,
+    		systemCsrCodeGridStore = systemCsrCodeGrid.store;
+    	systemCsrCodeGridStore.removeAll();
+    },
+    insertDataIntoGrid: function(obj){
+    	var me = this,
+    		systemCsrCodeGridView = me.getReferences().systemCsrCodeGrid,
+    		systemCsrCodeGridStore = systemCsrCodeGridView.store,
+    		refs =  me.getView().getReferences(),
+    		systemCombo = refs.systemName,
+    		orgCodeCombo = refs.orgCode,
+    		csrCodeCombo = refs.csrCode,
+    		codeOwner = refs.codeOwner,
+    		systemComboValue = systemCombo.getRawValue(),
+    		orgCodeComboValue = orgCodeCombo.getRawValue(),
+    		csrCodeComboValue = csrCodeCombo.getRawValue(),
+    		csrCodeComboId = csrCodeCombo.getValue(),
+    		codeOwnerComboValue = codeOwner.getRawValue(),
+    	obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId};
+    	systemCsrCodeGridStore.insert(0,(new Ext.data.Record(obj)));
+    	systemCombo.reset();
+    	orgCodeCombo.reset();
+    	csrCodeCombo.reset();
+    	codeOwner.reset();
+    	orgCodeCombo.setDisabled(true);
+    	csrCodeCombo.setDisabled(true);
+    	codeOwner.setDisabled(true);
+    },
+    onSelectCsrCode: function(combo){
+    	var me = this,
+    		csrComboValue = combo.getRawValue(),
+    		refs = me.getReferences(),
+    		systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
+    		systemCombo = refs.systemName,
+    		orgCodeCombo = refs.orgCode,
+    		csrCodeCombo = refs.csrCode,
+    		codeOwner = refs.codeOwner;
+    	systemCsrCodeGridStore.each(function(rec, index){
+    		if(rec.get('csrCode') == csrComboValue ){
+    			Helper.showToast('failure',AOCLit.csrCodeExist);
+    			systemCombo.reset();
+    			orgCodeCombo.reset();
+    			csrCodeCombo.reset();
+    		}
+    	});
+    	codeOwner.setDisabled(false);
+    },
+    onSelectCodeOwner: function(combo){
+    	var me = this,
+			refs = this.getReferences(),
+			insertBtn = refs.insertBtn;
+		insertBtn.setDisabled(false);
     }
 });
