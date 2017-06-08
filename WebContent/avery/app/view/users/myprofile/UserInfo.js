@@ -59,7 +59,7 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                 },
                 defaults: {
                     xtype: 'displayfield',
-                    labelWidth: 165,
+                    labelWidth: 180,
                     width: 615,
                     margin: '0 0 5 0',
                     labelSeparator: '',
@@ -98,6 +98,16 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                     		return 'CSR';
                     	}
                     }
+                },
+                {	
+                	name:'csrCodeOwnerName',
+                	fieldLabel:AOCLit.csrCodeOwnerName,
+                	itemId:'csrCodeOwnerName'
+                },
+                {	
+                	name:'csrNonCodeOwnerName',
+                	fieldLabel:AOCLit.csrNonCodeOwnerName,
+                	itemId:'csrNonCodeOwnerName'
                 }]
             }]
         }];
