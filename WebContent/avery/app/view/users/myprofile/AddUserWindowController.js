@@ -282,7 +282,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	systemCombo.reset();
     	orgCodeCombo.reset();
     	csrCodeCombo.reset();
-    	codeOwner.reset();
+    	codeOwnerCombo.reset();
     	orgCodeCombo.setDisabled(true);
     	csrCodeCombo.setDisabled(true);
     	codeOwnerCombo.setDisabled(true);
