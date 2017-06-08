@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.TimeZone;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -43,6 +45,7 @@ import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.HashPassword;
 import com.avery.utils.PropertiesConstants;
@@ -83,6 +86,12 @@ public class User extends MainAbstractEntity {
 	Integer status;
 	@Column(name = "middleName", length = 64)
 	private String middleName;
+	
+	@Transient
+	private String csrCodeOwnerName;
+	
+	@Transient
+	private String csrNonCodeOwnerName;
 	
 	public User() {
 	}
@@ -391,6 +400,7 @@ public class User extends MainAbstractEntity {
 		Response.ResponseBuilder rb = null;
 		List<User> csrList = null;
 		try {
+			List<User> actualCsrList=new ArrayList<User>();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -399,7 +409,32 @@ public class User extends MainAbstractEntity {
 			csrList = userService.getSortedList(siteId,roleId);
 			if (csrList == null || csrList.isEmpty())
 				throw new Exception("Unable to find csr");
-			mapper.writeValue(writer, csrList);
+			SystemCsrCodeService systemCsrCodeService=(SystemCsrCodeService) SpringConfig.getInstance().getBean("systemCsrCodeService");
+			
+			for(User user : csrList){
+				String csrCodeOwner = user.getSystemCsrCodeOwner();
+				if(csrCodeOwner != null){
+					String csrCode = systemCsrCodeService.getSystemcsrcodeById(csrCodeOwner);
+					if(csrCode != null){
+					String[] csrCodeOwnerList = csrCode.split(",");
+			    	for(String csrCodeOwnerName : csrCodeOwnerList){
+			    		User userModified = new User();
+			    		userModified.setId(user.getId());
+			    		userModified.setFirstName(user.getFirstName());
+			    		userModified.setLastName(user.getLastName());
+			    		userModified.setMiddleName(user.getMiddleName());
+			    		userModified.setSystemCsrCodeOwner(user.getSystemCsrCodeOwner());
+			    		userModified.setcsrCodeOwnerName(csrCodeOwnerName);
+			    		actualCsrList.add(userModified);
+			    	}}else{
+			    		actualCsrList.add(user);
+			    	}
+				}else{
+					actualCsrList.add(user);
+				}
+				
+			}
+			mapper.writeValue(writer, actualCsrList);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -611,5 +646,19 @@ public class User extends MainAbstractEntity {
 	public void setSystemCsrNonCodeOwner(String systemCsrNonCodeOwner) {
 		this.systemCsrNonCodeOwner = systemCsrNonCodeOwner;
 	}
+	public void setcsrCodeOwnerName(String csrCodeOwnerName) {
+		this.csrCodeOwnerName = csrCodeOwnerName;
+	}
 	
+	public String getcsrCodeOwnerName() {
+		return csrCodeOwnerName;
+	}
+	
+	public void setcsrNonCodeOwnerName(String csrNonCodeOwnerName) {
+		this.csrNonCodeOwnerName = csrNonCodeOwnerName;
+	}
+	
+	public String getcsrNonCodeOwnerName() {
+		return csrNonCodeOwnerName;
+	}
 }
