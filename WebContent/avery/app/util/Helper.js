@@ -651,6 +651,8 @@ Ext.define('AOC.util.Helper',{
         userinfo.down('#gender').setValue(user.gender);
         userinfo.down('#email').setValue(user.email);
         userinfo.down('#role').setValue(user.role);
+        userinfo.down('#csrCodeOwnerName').setValue(user.csrCodeOwnerName);
+        userinfo.down('#csrNonCodeOwnerName').setValue(user.csrNonCodeOwnerName);
     },
     updateHeaderUserName: function () {
         var userInfo = AOCRuntime.getUser(),
