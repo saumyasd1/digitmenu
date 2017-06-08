@@ -25,12 +25,6 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
             listeners: {
                 cellClick: 'onSystemCsrCodeCellClick'
             },
-//            tools:[
-//               {
-//            	   type:'plus',
-//            	   handler:'onSystemCsrCodeAddRowBtnClick'
-//               }
-//            ],
             viewConfig: {
                 stripeRows: true,
                 enableTextSelection: true
