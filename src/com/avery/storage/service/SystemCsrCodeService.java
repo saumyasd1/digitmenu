@@ -29,4 +29,9 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 		return getSystemCsrCodeDao().getBySystemAndOrgCodeId(systemId, orgId);
 	}
 	
+	@Transactional
+	public String getSystemcsrcodeById(String id){
+		return systemCsrCodeDao.getSystemcsrcodeById(id);
+	}
+	
 }
