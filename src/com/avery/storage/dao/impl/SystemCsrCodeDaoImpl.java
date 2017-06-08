@@ -48,7 +48,7 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 			.add(Projections.property("varSystemInfo.id"), "systemId")
 			.add(Projections.property("varSystemInfo.name"), "systemName")
 			.add(Projections.property("varOrg.id"), "orgCodeId")
-			.add(Projections.property("varOrg.name"), "orgCodeName");
+			.add(Projections.property("varOrg.name"), "orgCode");
 		criteria = session.createCriteria(SystemCsrCode.class)
 				.createAlias("varSystemInfo", "varSystemInfo")
 				.createAlias("varOrg", "varOrg");
