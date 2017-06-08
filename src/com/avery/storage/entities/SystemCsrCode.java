@@ -68,7 +68,7 @@ public class SystemCsrCode extends MainAbstractEntity {
 	
 	private transient String systemName;
 	
-	private transient String orgCodeName;
+	private transient String orgCode;
 
 	/* Business Logic Starts */
 
@@ -232,12 +232,12 @@ public class SystemCsrCode extends MainAbstractEntity {
 		this.systemName = systemName;
 	}
 
-	public String getOrgCodeName() {
-		return orgCodeName;
+	public String getOrgCode() {
+		return orgCode;
 	}
 
-	public void setOrgCodeName(String orgCodeName) {
-		this.orgCodeName = orgCodeName;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 
 }
