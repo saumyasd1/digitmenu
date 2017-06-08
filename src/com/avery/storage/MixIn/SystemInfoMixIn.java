@@ -7,6 +7,7 @@ import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Site;
+import com.avery.storage.entities.SystemCsrCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class SystemInfoMixIn {
@@ -34,5 +35,8 @@ public abstract class SystemInfoMixIn {
 	
 	@JsonIgnore
 	public abstract List<Org> getOrgList();
+	
+	@JsonIgnore
+	public abstract List<SystemCsrCode> getVarSystemCsrCode();
 
 }

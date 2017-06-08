@@ -1,18 +1,21 @@
 package com.avery.storage.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -24,21 +27,51 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
-		return null;
+		Map<String, Object> entitiesMap = new HashMap<String, Object>();
+		String systemCsrCombinedCodes = (String) queryMap.getFirst("systemCsrCombinedCodes");
+		StringTokenizer st = new StringTokenizer(systemCsrCombinedCodes, ",");
+		List<Long> list = new ArrayList<Long>();
+		while(st.hasMoreTokens()){
+			try{
+				list.add(Long.parseLong(st.nextToken()));
+			}
+			catch(NumberFormatException nfe){
+				throw new NumberFormatException();
+			}
+		}
+		Session session = null;
+		Criteria criteria = null;
+		session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("csrCode"), "csrCode")
+			.add(Projections.property("id"), "id")
+			.add(Projections.property("varSystemInfo.id"), "systemId")
+			.add(Projections.property("varSystemInfo.name"), "systemName")
+			.add(Projections.property("varOrg.id"), "orgCodeId")
+			.add(Projections.property("varOrg.name"), "orgCodeName");
+		criteria = session.createCriteria(SystemCsrCode.class)
+				.createAlias("varSystemInfo", "varSystemInfo")
+				.createAlias("varOrg", "varOrg");
+		criteria.add(Restrictions.in("id", list));
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SystemCsrCode.class));
+		entitiesMap.put("data", criteria.list());
+		return entitiesMap;
 	}
 
 	@Override
-	public Map<String, Object> getBySystemAndOrgCodeId(int systemId, int orgId) {	
+	public Map<String, Object> getBySystemAndOrgCodeId(long systemId, long orgId) {	
 		Map<String, Object> entitiesMap = new HashMap<String, Object>();
 		Session session = null;
 		Criteria criteria = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(SystemCsrCode.class);
+			criteria = session.createCriteria(SystemCsrCode.class)
+					.createAlias("varSystemInfo", "varSystemInfo")
+					.createAlias("varOrg", "varOrg");
 			Conjunction conjunction = Restrictions.conjunction();
 			conjunction.add(Restrictions.eq("isActive", "true"))
-					   .add(Restrictions.eq("systemId", systemId))
-					   .add(Restrictions.eq("orgId", orgId));
+					   .add(Restrictions.eq("varSystemInfo.id", systemId))
+					   .add(Restrictions.eq("varOrg.id", orgId));
 			criteria.add(conjunction);
 			entitiesMap.put("data", criteria.list());
 		}
@@ -47,6 +80,14 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 			throw new WebApplicationException();
 		}
 		return entitiesMap;
+	}
+	
+	@Override
+	public List<SystemCsrCode> readAll(){
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(SystemCsrCode.class)
+				.add(Restrictions.eq("isActive", "true"));
+		return criteria.list();
 	}
 
 }

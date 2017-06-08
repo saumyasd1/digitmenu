@@ -62,6 +62,9 @@ public class SystemInfo extends MainAbstractEntity{
 	@OneToMany(mappedBy="system",fetch=FetchType.LAZY)
 	private List<Org> orgList;
 	
+	@OneToMany(mappedBy = "varSystemInfo", fetch = FetchType.LAZY)
+	private List<SystemCsrCode> varSystemCsrCode;
+	
 	public List<Org> getOrgList() {
 		return orgList;
 	}
@@ -99,7 +102,14 @@ public class SystemInfo extends MainAbstractEntity{
 		this.comment = comment;
 	}
 
-	
+	public List<SystemCsrCode> getVarSystemCsrCode() {
+		return varSystemCsrCode;
+	}
+
+	public void setVarSystemCsrCode(List<SystemCsrCode> varSystemCsrCode) {
+		this.varSystemCsrCode = varSystemCsrCode;
+	}
+
 	@GET
 	@Path("/site/{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -117,7 +127,7 @@ public class SystemInfo extends MainAbstractEntity{
 					.getInstance().getBean("systemInfoService");
 			systems = systemInfoService.readAllBySiteId(entityId);
 			if (systems == null)
-				throw new Exception("Unable to find Order Line");
+				throw new Exception("Unable to find Systems");
 			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, systems);
 			rb = Response.ok(writer.toString());

@@ -62,6 +62,9 @@ public class Org extends MainAbstractEntity {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varOrgCode", fetch = FetchType.LAZY)
 	List<Address> addressList = new ArrayList<Address>();
+	
+	@OneToMany(mappedBy = "varOrg", fetch = FetchType.LAZY)
+	private List<Org> varOrg;
 
 	public List<Address> getAddressList() {
 		return addressList;
@@ -85,21 +88,26 @@ public class Org extends MainAbstractEntity {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public String getComment() {
 		return comment;
 	}
 
-
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 	
+	public List<Org> getVarOrg() {
+		return varOrg;
+	}
+
+	public void setVarOrg(List<Org> varOrg) {
+		this.varOrg = varOrg;
+	}
+
 	@GET
 	@Path("/system/{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)

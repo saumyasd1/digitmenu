@@ -7,5 +7,5 @@ import com.avery.storage.entities.SystemCsrCode;
 
 public interface SystemCsrCodeDao extends GenericDao<SystemCsrCode, Long>{
 
-	public Map<String, Object> getBySystemAndOrgCodeId(int systemId, int orgId);
+	public Map<String, Object> getBySystemAndOrgCodeId(long systemId, long orgId);
 }
