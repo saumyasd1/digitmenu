@@ -175,8 +175,17 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     reference: 'siteName',
                     valueField: 'id',
                     store: Ext.create('AOC.store.SiteStore'),
-                    queryMode: 'local'
+                    queryMode: 'local',
+                    listeners:{
+                    	select:'onSiteSelected',
+                    	change:'onSiteChange'
+                    }
                 }, {
+                	xtype:'systemcsrcodegrid',
+                	reference:'systemCsrCodeGrid',
+                	style:'border:solid 1px #ccc;'
+                }, 
+                {
                     xtype: 'textfield',
                     inputType: 'password',
                     itemId: 'newPassword',
