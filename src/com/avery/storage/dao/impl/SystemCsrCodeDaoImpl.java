@@ -89,5 +89,33 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 				.add(Restrictions.eq("isActive", "true"));
 		return criteria.list();
 	}
-
+	@Override
+	public String getSystemcsrcodeById(String id)
+	{		
+		String[] Systemcsrcode=id.split(",");
+		String systemCsrCodeName="";
+		String sendName="";
+		Long []sysemcsrcodeId=new Long[Systemcsrcode.length];
+		try{
+		for(int k=0;k<Systemcsrcode.length;k++)
+		{
+			sysemcsrcodeId[k]=Long.parseLong(Systemcsrcode[k]);
+		}
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(SystemCsrCode.class)
+				.add(Restrictions.in("id",sysemcsrcodeId));
+		List<SystemCsrCode> systemcsrcodelist=criteria.list();
+			for(int j=0;j<systemcsrcodelist.size();j++)
+			{
+				systemCsrCodeName=systemCsrCodeName+",";
+				SystemCsrCode systemCsrCode=(SystemCsrCode) systemcsrcodelist.get(j);
+				systemCsrCodeName=systemCsrCodeName+systemCsrCode.getCsrCode();
+			}
+			sendName=systemCsrCodeName.substring(1);
+		}catch(Exception e)
+		{
+			systemCsrCodeName="";
+		}
+		return sendName;
+	}
 }
