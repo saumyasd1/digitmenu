@@ -44,6 +44,8 @@ Ext.define('AOC.view.users.manage.UserController', {
                             });
                         var refs = win.getReferences(),
                             profileImage = refs.profileImage,
+                            systemCsrCodeGrid = refs.systemCsrCodeGrid,
+                            systemCsrCodeGridStore = systemCsrCodeGrid.store,
                             userId = AOCRuntime.getUser().id;
                         if (id == userId) {
                             win.down('#site').setDisabled(true);
@@ -58,6 +60,36 @@ Ext.define('AOC.view.users.manage.UserController', {
                         }
                         profileImage.setSrc(Helper.getFilePath(currentRecord));
                         win.down('form').loadRecord(currentRecord);
+                        
+                        var systemCsrCodeOwner = data.systemCsrCodeOwner,
+                        	systemCsrNonCodeOwner = data.systemCsrNonCodeOwner;
+                        var	systemCsrCombinedCodes ='';
+                        if((!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null) && (!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null)){
+                            systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
+                        }
+                        else{
+                        	if(!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null){
+                        		systemCsrCombinedCodes = systemCsrCodeOwner;
+                        	}
+                        	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
+                        		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+                        	}
+                        }
+                        if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
+                            Ext.Ajax.request({
+                            	url:applicationContext+'/rest/systemcsrcode',
+                            	method:'GET',
+                            	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
+                            	success: function (response, opts) {
+                            		var systemCsrGridData = Ext.JSON.decode(response.responseText);
+                            		systemCsrCodeGridStore.loadData(systemCsrGridData.data);
+                                },
+                                failure: function (response, opts) {
+                                    msg = response.responseText;
+                                    Helper.showToast('failure', msg);
+                                }
+                            });
+                        }
                         win.show();
                         callout.destroy();
                     },
@@ -90,8 +122,7 @@ Ext.define('AOC.view.users.manage.UserController', {
             });
         callout.show();
         var heightAbove = e.getY() - Ext.getBody().getScroll().top,
-            heightBelow = Ext.Element
-            .getViewportHeight() - heightAbove;
+            heightBelow = Ext.Element.getViewportHeight() - heightAbove;
 
         if (heightBelow < (callout.getHeight() + 40)) {
             callout.calloutArrowLocation = 'bottom-left';
@@ -110,8 +141,7 @@ Ext.define('AOC.view.users.manage.UserController', {
             delegate: 'div.user-profile-menu-item',
             click: function (e, element) {
                 var el = Ext.get(element),
-                    event = el
-                    .getAttribute('event');
+                    event = el.getAttribute('event');
                 if (event && !el.hasCls('edit-menu-disabled')) {
                     me.fireEvent(event);
                 }
