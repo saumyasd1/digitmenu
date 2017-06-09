@@ -14,17 +14,17 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	store.each(function(rec, index){
     		if(rec.get('codeOwner') == 'Y'){
     			if(mode == 'edit'){
-        			yesArray.push(rec.get('csrCodeComboId'));
+        			yesArray.push(rec.get('id'));
     			}
     			else{
-        			yesArray.push(rec.get('csrCodeComboId'));
+        			yesArray.push(rec.get('id'));
     			}
     		}else if((rec.get('codeOwner') == 'N')){
     			if(mode == 'edit'){
         			noArray.push(rec.get('id'));
     			}
     			else{
-        			noArray.push(rec.get('csrCodeComboId'));
+        			noArray.push(rec.get('id'));
     			}
     		}
     	});
@@ -314,7 +314,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		csrCodeComboValue = csrCodeCombo.getRawValue(),
     		csrCodeComboId = csrCodeCombo.getValue(),
     		codeOwnerComboValue = codeOwner.getRawValue(),
-    	obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId};
+    	obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId,id:csrCodeComboId};
     	systemCsrCodeGridStore.insert(0,(new Ext.data.Record(obj)));
     	systemCombo.reset();
     	orgCodeCombo.reset();

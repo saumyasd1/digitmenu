@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,24 +121,33 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 	}
 	
 	@Override
-	public boolean updateOwnerStatus(String systemCsrCodeOwner){
+	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner){
 		boolean flag = false;
 		Session session = null;
-		String[] systemCsrCodeOwnerArray = null;
+		List<String> list = new ArrayList<String>();
+		List<String> newList = new ArrayList<String>();
+		if(oldSystemCsrCodeOwner!=null && !"".equals(oldSystemCsrCodeOwner.trim()))
+			list.addAll(Arrays.asList(oldSystemCsrCodeOwner.split(",")));
+		if(systemCsrCodeOwner!=null && !"".equals(systemCsrCodeOwner.trim()))
+			list.addAll(Arrays.asList(systemCsrCodeOwner.split(",")));
+		if(systemCsrCodeOwner!=null && !"".equals(systemCsrCodeOwner.trim()))
+			newList.addAll(Arrays.asList(systemCsrCodeOwner.split(",")));
 		try{
-			if(systemCsrCodeOwner!= null && !"".equals(systemCsrCodeOwner.trim()))
-				systemCsrCodeOwnerArray = systemCsrCodeOwner.split(",");
-			else
-				return true;
 			session = getSessionFactory().getCurrentSession();
-			for(int i = 0;i<systemCsrCodeOwnerArray.length;i++){
-				SystemCsrCode systemCsrCode = (SystemCsrCode) session.get(SystemCsrCode.class, Long.parseLong(systemCsrCodeOwnerArray[i]));
-				systemCsrCode.setHasOwner("true");
+			for(int i = 0;i<list.size();i++){
+				String currentId = list.get(i);
+				SystemCsrCode systemCsrCode = (SystemCsrCode) session.get(SystemCsrCode.class, Long.parseLong(currentId));
+				if(newList.contains(currentId))
+					systemCsrCode.setHasOwner("true");
+				else
+					systemCsrCode.setHasOwner("false");
 				session.update(systemCsrCode);
 			}
+			flag = true;
 		}
 		catch(Exception e){
-			
+			AppLogger.getSystemLogger().error("Some error occured while updating the owner status");
+			e.printStackTrace();
 		}
 		return flag;
 	}

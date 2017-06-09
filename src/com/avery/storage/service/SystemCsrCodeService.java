@@ -35,8 +35,8 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 	}
 	
 	@Transactional
-	public boolean updateOwnerStatus(String systemCsrCodeOwner){
-		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner);
+	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner){
+		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner);
 	}
 	
 }

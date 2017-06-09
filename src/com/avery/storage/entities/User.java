@@ -214,7 +214,7 @@ public class User extends MainAbstractEntity {
 				user.setStatus(100);
 				id = userService.create(user);
 				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
-				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner);
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, "");
 				responseMap.put("valueExist", false);
 				responseMap.put("id", id);
 				mapper.writeValue(writer, responseMap);
@@ -252,6 +252,7 @@ public class User extends MainAbstractEntity {
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
 			User user = userService.read(Long.parseLong(id));
+			String oldSystemCsrCodeOwner = user.getSystemCsrCodeOwner();
 			String password = user.getPassword();
 			Date createdDate = user.getCreatedDate();
 			ObjectReader updater = mapper.readerForUpdating(user);
@@ -281,7 +282,7 @@ public class User extends MainAbstractEntity {
 				user.setLastModifiedBy(userId);
 				userService.update(user);
 				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
-				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner);
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner);
 				responseMap.put("valueExist", false);
 				responseMap.put("user", user);
 				mapper.writeValue(writer, responseMap);
