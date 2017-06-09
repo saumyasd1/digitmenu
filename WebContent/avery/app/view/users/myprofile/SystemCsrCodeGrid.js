@@ -58,7 +58,7 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
              width: 120,
              sortable: true,
              dataIndex: 'codeOwner',
-             flex: 0.5,
+             flex: 0.5
         }, {
             text: 'Remove Row',
             width: 120,
