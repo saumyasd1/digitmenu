@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -200,6 +199,8 @@ public class User extends MainAbstractEntity {
 			User user = mapper.readValue(data, User.class);
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
+			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
+					.getBean("systemCsrCodeService");
 			boolean userExist = userService.checkDuplicateUser(user);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			if (userExist) {
@@ -212,6 +213,8 @@ public class User extends MainAbstractEntity {
 				user.setLastModifiedDate(new Date());
 				user.setStatus(100);
 				id = userService.create(user);
+				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner);
 				responseMap.put("valueExist", false);
 				responseMap.put("id", id);
 				mapper.writeValue(writer, responseMap);
@@ -246,6 +249,8 @@ public class User extends MainAbstractEntity {
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
+			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
+					.getBean("systemCsrCodeService");
 			User user = userService.read(Long.parseLong(id));
 			String password = user.getPassword();
 			Date createdDate = user.getCreatedDate();
@@ -275,6 +280,8 @@ public class User extends MainAbstractEntity {
 				user.setCreatedDate(createdDate);
 				user.setLastModifiedBy(userId);
 				userService.update(user);
+				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner);
 				responseMap.put("valueExist", false);
 				responseMap.put("user", user);
 				mapper.writeValue(writer, responseMap);

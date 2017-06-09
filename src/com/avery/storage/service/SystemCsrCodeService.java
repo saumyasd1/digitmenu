@@ -34,4 +34,9 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 		return systemCsrCodeDao.getSystemcsrcodeById(id);
 	}
 	
+	@Transactional
+	public boolean updateOwnerStatus(String systemCsrCodeOwner){
+		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner);
+	}
+	
 }

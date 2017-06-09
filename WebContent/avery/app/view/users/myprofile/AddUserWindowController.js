@@ -333,7 +333,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		systemCombo = refs.systemName,
     		orgCodeCombo = refs.orgCode,
     		csrCodeCombo = refs.csrCode,
-    		codeOwner = refs.codeOwner;
+    		codeOwner = refs.codeOwner,
+    		hasOwner = combo.getSelectedRecord().data.hasOwner,
+    		insertBtn = refs.insertBtn;
     	codeOwner.setDisabled(false);
     	systemCsrCodeGridStore.each(function(rec, index){
     		if(rec.get('csrCode') == csrComboValue ){
@@ -346,10 +348,15 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     			codeOwner.setDisabled(true);
     		}
     	});
+    	if(hasOwner == 'true'){
+    		codeOwner.setValue('N');
+    		codeOwner.setDisabled(true);
+    		insertBtn.setDisabled(false);
+    	}
     },
     onSelectCodeOwner: function(combo){
     	var me = this,
-			refs = this.getReferences(),
+			refs = me.getReferences(),
 			insertBtn = refs.insertBtn;
 		insertBtn.setDisabled(false);
     }

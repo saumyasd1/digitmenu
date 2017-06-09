@@ -54,6 +54,9 @@ public class SystemCsrCode extends MainAbstractEntity {
 	@Column(name = "isActive", length = 10)
 	private String isActive;
 	
+	@Column(name = "hasOwner", length = 10)
+	private String hasOwner;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId")
 	private SystemInfo varSystemInfo;
@@ -190,6 +193,14 @@ public class SystemCsrCode extends MainAbstractEntity {
 
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	
+	public String getHasOwner() {
+		return hasOwner;
+	}
+
+	public void setHasOwner(String hasOwner) {
+		this.hasOwner = hasOwner;
 	}
 
 	public SystemInfo getVarSystemInfo() {

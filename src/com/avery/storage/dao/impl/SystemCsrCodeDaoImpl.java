@@ -118,4 +118,27 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 		}
 		return sendName;
 	}
+	
+	@Override
+	public boolean updateOwnerStatus(String systemCsrCodeOwner){
+		boolean flag = false;
+		Session session = null;
+		String[] systemCsrCodeOwnerArray = null;
+		try{
+			if(systemCsrCodeOwner!= null && !"".equals(systemCsrCodeOwner.trim()))
+				systemCsrCodeOwnerArray = systemCsrCodeOwner.split(",");
+			else
+				return true;
+			session = getSessionFactory().getCurrentSession();
+			for(int i = 0;i<systemCsrCodeOwnerArray.length;i++){
+				SystemCsrCode systemCsrCode = (SystemCsrCode) session.get(SystemCsrCode.class, Long.parseLong(systemCsrCodeOwnerArray[i]));
+				systemCsrCode.setHasOwner("true");
+				session.update(systemCsrCode);
+			}
+		}
+		catch(Exception e){
+			
+		}
+		return flag;
+	}
 }

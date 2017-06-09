@@ -9,5 +9,7 @@ public interface SystemCsrCodeDao extends GenericDao<SystemCsrCode, Long>{
 
 	public Map<String, Object> getBySystemAndOrgCodeId(long systemId, long orgId);
 	
-	String getSystemcsrcodeById(String id);
+	public String getSystemcsrcodeById(String id);
+	
+	public boolean updateOwnerStatus(String systemCsrCodeOwner);
 }
