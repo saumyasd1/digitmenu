@@ -286,6 +286,51 @@ Ext.define('AOC.controller.MenuController', {
         me.updateBottomToolBar(false);
         Helper.updateProfileInfo();
         me.selectMenuItem(null);
+        
+        var user = AOCRuntime.getUser();
+        	mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
+        	userinfo = mainprofilewrapper.down('userinfo'),
+        	systemCsrCodeOwner = user.systemCsrCodeOwner,
+        	systemCsrNonCodeOwner = user.systemCsrNonCodeOwner,
+        	systemCsrCombinedCodes ='';
+	    if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
+	        systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
+	    }
+	    else{
+	    	if(!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null){
+	    		systemCsrCombinedCodes = systemCsrCodeOwner;
+	    	}
+	    	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
+	    		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+	    	}
+	    }
+	    Ext.Ajax.request({
+	    	url:applicationContext+'/rest/systemcsrcode',
+	    	method:'GET',
+	    	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
+	    	success: function (response, opts) {
+	    		var systemCsrGridData = Ext.JSON.decode(response.responseText),
+	    			gridData = systemCsrGridData.data,
+	    			csrCodeOwnerArray = [],
+	    			csrCodeNonOwnerArray = [];
+	    		for(i=0;i<gridData.length;i++){
+	    			csrCodes = gridData[i].csrCode;
+	    			csrId = gridData[i].id;
+	    			if(systemCsrCodeOwner.indexOf(csrId).toString() != -1){
+	    				csrCodeOwnerArray.push(csrCodes);
+	    			}
+	    			else if(systemCsrNonCodeOwner.indexOf(csrId).toString() != -1){
+	    				csrCodeNonOwnerArray.push(csrCodes);
+	    			}
+	    		}
+	    		userinfo.down('#csrCodeOwnerName').setValue(csrCodeOwnerArray);
+	    		userinfo.down('#csrNonCodeOwnerName').setValue(csrCodeNonOwnerArray);
+	        },
+	        failure: function (response, opts) {
+	            msg = response.responseText;
+	            Helper.showToast('failure', msg);
+	        }
+	    });
     },
     onManageUserMenuItemClick: function () {
         this.selectCard('users');
