@@ -5,15 +5,27 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     helper: AOC.util.Helper,
     fileArray:[],
     getSystemCsrCodeValues:function(grid){
-    	var store = grid.store;
+    	var store = grid.store,
+    		me = this,
+    		mode = me.getView().mode;
     	var yesArray = [],
     		noArray = [];
     	
     	store.each(function(rec, index){
     		if(rec.get('codeOwner') == 'Y'){
-    			yesArray.push(rec.get('csrCodeComboId'));
+    			if(mode == 'edit'){
+        			yesArray.push(rec.get('id'));
+    			}
+    			else{
+        			yesArray.push(rec.get('csrCodeComboId'));
+    			}
     		}else if((rec.get('codeOwner') == 'N')){
-    			noArray.push(rec.get('csrCodeComboId'));
+    			if(mode == 'edit'){
+        			noArray.push(rec.get('id'));
+    			}
+    			else{
+        			noArray.push(rec.get('csrCodeComboId'));
+    			}
     		}
     	});
     	return {yes:yesArray.join(),no:noArray.join()};
