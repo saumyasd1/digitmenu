@@ -188,6 +188,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			Conjunction disCriteria = Restrictions.conjunction();
 			disCriteria.add(Restrictions.eq("role", "3"));
 			if(roleId!=1)disCriteria.add(Restrictions.eq("siteId", siteId));
+			criteria.add(Restrictions.isNotNull("systemCsrCodeOwner"));
 			criteria.add(disCriteria);
 			criteria.addOrder(Order.asc("firstName"));
 			criteria.setResultTransformer(Transformers.aliasToBean(User.class));
