@@ -64,7 +64,7 @@ Ext.define('AOC.view.users.manage.UserController', {
                         var systemCsrCodeOwner = data.systemCsrCodeOwner,
                         	systemCsrNonCodeOwner = data.systemCsrNonCodeOwner;
                         var	systemCsrCombinedCodes ='';
-                        if((!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null) && (!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null)){
+                        if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
                             systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
                         }
                         else{
@@ -81,8 +81,25 @@ Ext.define('AOC.view.users.manage.UserController', {
                             	method:'GET',
                             	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
                             	success: function (response, opts) {
-                            		var systemCsrGridData = Ext.JSON.decode(response.responseText);
-                            		systemCsrCodeGridStore.loadData(systemCsrGridData.data);
+                            		var systemCsrGridData = Ext.JSON.decode(response.responseText),
+                            			gridData = systemCsrGridData.data,
+                            			rec = currentRecord,
+                            			yes = systemCsrCodeOwner,
+                            			no = systemCsrNonCodeOwner,
+                            			grid = systemCsrCodeGrid;
+                            		if(yes!=null)
+                            			yes = systemCsrCodeOwner.split(',');
+                            		if(no!=null)
+                            			no = systemCsrNonCodeOwner.split(',');
+                            		for(i=0;i<gridData.length;i++){
+                                		if(yes.indexOf(systemCsrGridData.data[i].id.toString()) != -1){
+                                			gridData[i].codeOwner = 'Y'
+                                		}
+                                		else{
+                                			gridData[i].codeOwner = 'N'
+                                		}
+                            		}
+                            		systemCsrCodeGridStore.loadData(gridData);
                                 },
                                 failure: function (response, opts) {
                                     msg = response.responseText;
