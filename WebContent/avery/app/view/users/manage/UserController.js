@@ -21,8 +21,7 @@ Ext.define('AOC.view.users.manage.UserController', {
     },
     onClickMenu: function (obj, rowIndex, colIndex, item, e, record) {
         var me = this;
-        var callout = Ext.widget(
-            'callout', {
+        var callout = Ext.widget('callout', {
                 cls: 'white more-menu-item-callout extra',
                 html: me.menuTpl.apply(record.data),
                 target: e.target,
