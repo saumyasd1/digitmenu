@@ -410,22 +410,24 @@ public class User extends MainAbstractEntity {
 			if (csrList == null || csrList.isEmpty())
 				throw new Exception("Unable to find csr");
 			SystemCsrCodeService systemCsrCodeService=(SystemCsrCodeService) SpringConfig.getInstance().getBean("systemCsrCodeService");
-			
 			for(User user : csrList){
+				int i=0;
 				String csrCodeOwner = user.getSystemCsrCodeOwner();
 				if(csrCodeOwner != null){
 					String csrCode = systemCsrCodeService.getSystemcsrcodeById(csrCodeOwner);
-					if(csrCode != null){
+					if(csrCode != null && csrCode != ""){
 					String[] csrCodeOwnerList = csrCode.split(",");
+					String[] csrCodeOwnerIdList = csrCodeOwner.split(",");
 			    	for(String csrCodeOwnerName : csrCodeOwnerList){
 			    		User userModified = new User();
 			    		userModified.setId(user.getId());
 			    		userModified.setFirstName(user.getFirstName());
 			    		userModified.setLastName(user.getLastName());
 			    		userModified.setMiddleName(user.getMiddleName());
-			    		userModified.setSystemCsrCodeOwner(user.getSystemCsrCodeOwner());
+			    		userModified.setSystemCsrCodeOwner(csrCodeOwnerIdList[i]);
 			    		userModified.setcsrCodeOwnerName(csrCodeOwnerName);
 			    		actualCsrList.add(userModified);
+			    		i++;
 			    	}}else{
 			    		actualCsrList.add(user);
 			    	}
