@@ -67,11 +67,13 @@ Ext.define('AOC.view.users.manage.UserController', {
                             systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
                         }
                         else{
-                        	if(!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null){
-                        		systemCsrCombinedCodes = systemCsrCodeOwner;
-                        	}
-                        	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
-                        		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+                        	if(systemCsrCodeOwner != null){
+                        		if(!Ext.isEmpty(systemCsrCodeOwner.trim())){
+                            		systemCsrCombinedCodes = systemCsrCodeOwner;
+                            	}
+                            	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
+                            		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+                            	}
                         	}
                         }
                         if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
