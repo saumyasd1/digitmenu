@@ -14,7 +14,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	store.each(function(rec, index){
     		if(rec.get('codeOwner') == 'Y'){
     			if(mode == 'edit'){
-        			yesArray.push(rec.get('id'));
+        			yesArray.push(rec.get('csrCodeComboId'));
     			}
     			else{
         			yesArray.push(rec.get('csrCodeComboId'));
