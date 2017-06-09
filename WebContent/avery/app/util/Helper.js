@@ -644,8 +644,9 @@ Ext.define('AOC.util.Helper',{
             name = user.firstName,
             mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
             userinfo = mainprofilewrapper.down('userinfo'),
-            profileImage = userinfo.getReferences().profileImage;
-        name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
+            profileImage = userinfo.getReferences().profileImage,
+            name = (!Ext.isEmpty(user.lastName)) ? name + ' ' + user.lastName : name;
+        
         profileImage.setSrc(Helper.getFilePath());
         userinfo.down('#name').setValue(name);
         userinfo.down('#gender').setValue(user.gender);
