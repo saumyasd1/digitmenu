@@ -223,6 +223,39 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									}
 							}
 						]
+					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype:'combobox',
+								name: 'siteId',
+								displayField: 'name',
+								valueField:'id',
+								fieldLabel:'Site',
+								flex:1,
+								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
+								listeners:{
+									specialkey:'getAdvancedSearchResults',
+									afterrender:function(field){
+										if(AOCRuntime._user.role == '1'){
+											field.show();
+										}
+										else{
+											field.hide();
+										}
+									}
+								}
+							}
+
+						]
 					},	
 					{
 
