@@ -180,12 +180,19 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId",
 					senderEmail));
 		}
+		String queryString = (String) queryMap.getFirst("query");
+		Map<String, String> searchMap = ApplicationUtils
+				.convertJSONtoMaps(queryString);
+		String siteId=(String) searchMap.get("siteId");
+		if(siteId!=null && !"".equals(siteId)){
+			criteria.add(Restrictions.eq("orderemailqueue.siteId",Integer.parseInt(siteId)));
+		}
 
-		String siteId = (String) queryMap.getFirst("siteId");
+		String siteId1 = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if (!siteId.equals("1") && !roleId.equals("1")) {
-			criteria.add(Restrictions.eq("orderemailqueue.siteId",
-					Integer.parseInt(siteId)));
+		if (!siteId1.equals("1") && !roleId.equals("1")) {
+			criteria.add(Restrictions.eq("siteId",
+					Integer.parseInt(siteId1)));
 		}
 		// total count was returning 0 so, placed above set projection
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
