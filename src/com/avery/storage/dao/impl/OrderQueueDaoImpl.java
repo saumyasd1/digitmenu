@@ -179,19 +179,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			String senderEmail = senderEmailId;
 			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId",
 					senderEmail));
-		}
-		String queryString = (String) queryMap.getFirst("query");
-		Map<String, String> searchMap = ApplicationUtils
-				.convertJSONtoMaps(queryString);
-		String siteId=(String) searchMap.get("siteId");
-		if(siteId!=null && !"".equals(siteId)){
-			criteria.add(Restrictions.eq("orderemailqueue.siteId",Integer.parseInt(siteId)));
-		}
-
+		}		
+		
 		String siteId1 = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
 		if (!siteId1.equals("1") && !roleId.equals("1")) {
-			criteria.add(Restrictions.eq("siteId",
+			criteria.add(Restrictions.eq("orderemailqueue.siteId",
 					Integer.parseInt(siteId1)));
 		}
 		// total count was returning 0 so, placed above set projection
@@ -487,6 +480,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 				Long Id = Long.parseLong(emailQueueId);
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
+			String siteId = searchMap.get("siteId");
+			if (Subject != null && !"".equals(siteId)) {
+				criteria.add(Restrictions.eq("orderemailqueue.siteId",Integer.parseInt(siteId)));
+		}
 		}
 		return criteria;
 	}
