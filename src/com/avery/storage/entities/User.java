@@ -123,13 +123,10 @@ public class User extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
-			String siteId = null;
-			siteId = queryParamMap.getFirst("siteId");
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
-			Map responseMap=new HashMap();
-			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {				
+			Map responseMap=new HashMap();			
 				entitiesMap = userService.readWithCriteria( queryParamMap);
 				if (entitiesMap == null || entitiesMap.isEmpty())
 					throw new Exception("Unable to find partners");
@@ -149,26 +146,7 @@ public class User extends MainAbstractEntity {
 					}
 					//Collections.sort(listOfPR, userIdComparator);
 					responseMap.put("users", listOfPR);
-					}}
-				
-				else if (!siteId.isEmpty()) 
-				{
-						userList = userService.getUser(siteId);
-						if(!userList.isEmpty()){
-						for(int i=0;i<userList.size();i++)
-						{
-							User currentPartner=(User) userList.get(i);
-							String lastmodifiedUserId=currentPartner.getLastModifiedBy();
-							if(lastmodifiedUserId!=null)
-							{
-							String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
-							currentPartner.setLastModifiedBy(LastModifiedByName);
-							}
-						}
-						if (userList == null || userList.isEmpty())
-							throw new Exception("Unable to find users");
-						else responseMap.put("users",userList);			
-				} }
+					}
 				if(entitiesMap.containsKey("totalCount"))
 				responseMap.put("totalCount", entitiesMap.get("totalCount"));
 				mapper.writeValue(writer, responseMap);
