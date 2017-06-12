@@ -136,17 +136,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 renderer: function (v, metadata, rec) {
                     return Helper.getSatus(rec);
                 }
-            }, {
-                text: AOCLit.ccMailId,
-                width: 180,
-                dataIndex: 'CC',
-                renderer: function (v, metaData) {
-                    return me.tipRenderer(v, metaData);
-                }
-            }, {
-                text: AOCLit.CSRName,
-                width: 120,
-                dataIndex: 'csrName'
             },{
                 text: AOCLit.siteName,
                 sortable: true,
@@ -156,7 +145,18 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 listeners: {
                 	'afterrender': Helper.siteNameForSuperAdminOnly
                 }
-            }, {
+            },{
+                text: AOCLit.CSRName,
+                width: 120,
+                dataIndex: 'csrName'
+            },{
+                text: AOCLit.ccMailId,
+                width: 180,
+                dataIndex: 'CC',
+                renderer: function (v, metaData) {
+                    return me.tipRenderer(v, metaData);
+                }
+            },{
                 text: AOCLit.receivedDate,
                 width: 150,
                 dataIndex: 'receivedDate'
