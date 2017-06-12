@@ -55,7 +55,6 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		criteria = getCriteria(queryMap);
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
-		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
 		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber)
@@ -71,7 +70,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			Long userId = Long.parseLong(id);
 			criteria.add(Restrictions.eq("id", userId));
 		}
-
+		if (queryMap.getFirst("siteId") != null) {
+		String siteId=(String) queryMap.getFirst("siteId");
+		if (!siteId.equals("1"))
+			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
+		}
+		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		entitiesMap.put("totalCount", totalCount);
 		entitiesMap.put("users",criteria.list());
 		return entitiesMap;
