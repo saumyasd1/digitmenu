@@ -208,7 +208,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									name:'assignCSR',
 									valueField:'id',
 									queryMode:'local',
-									store:Ext.create('AOC.store.AssignCSRStore'),
+									store:Ext.create('AOC.store.AssignCSRStore',{storeId:'assignCSRStore'}),
 									typeAhead:true,
 									tabIndex:10,
 									triggerAction:'all',
@@ -218,6 +218,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									listeners:{
 										blur:function(combo,e){
 											Helper.clearCSRCombo(combo,e);
+										},
+										afterrender:function(combo){
+											combo.store.load({params:{siteId:AOCRuntime._user.siteId}})
 										},
 										specialkey:'getAdvancedSearchResults'
 									}

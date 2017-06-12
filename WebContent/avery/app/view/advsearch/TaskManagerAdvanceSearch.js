@@ -124,7 +124,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								name:'assignCSR',
 								valueField:'id',
 								queryMode:'local',
-								store:Ext.create('AOC.store.AssignCSRStore'),
+								store:Ext.create('AOC.store.AssignCSRStore',{storeId:'assignCSRStore'}),
 								typeAhead:true,
 								triggerAction:'all',
 								width:275,
@@ -134,6 +134,9 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								listeners:{
 									blur:function(combo,e){
 										Helper.clearCSRCombo(combo,e);
+									},
+									afterrender:function(combo){
+										combo.store.load({params:{siteId:AOCRuntime._user.siteId}})
 									},
 									specialkey:'getAdvancedSearchResults'
 								}
