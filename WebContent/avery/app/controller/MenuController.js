@@ -297,40 +297,42 @@ Ext.define('AOC.controller.MenuController', {
 	        systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
 	    }
 	    else{
-	    	if(!Ext.isEmpty(systemCsrCodeOwner.trim()) && systemCsrCodeOwner != null){
+	    	if(systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())){
 	    		systemCsrCombinedCodes = systemCsrCodeOwner;
 	    	}
-	    	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
+	    	else if(systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim())){
 	    		systemCsrCombinedCodes = systemCsrNonCodeOwner;
 	    	}
 	    }
-	    Ext.Ajax.request({
-	    	url:applicationContext+'/rest/systemcsrcode',
-	    	method:'GET',
-	    	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
-	    	success: function (response, opts) {
-	    		var systemCsrGridData = Ext.JSON.decode(response.responseText),
-	    			gridData = systemCsrGridData.data,
-	    			csrCodeOwnerArray = [],
-	    			csrCodeNonOwnerArray = [];
-	    		for(i=0;i<gridData.length;i++){
-	    			csrCodes = gridData[i].csrCode;
-	    			csrId = gridData[i].id;
-	    			if(systemCsrCodeOwner.indexOf(csrId).toString() != -1){
-	    				csrCodeOwnerArray.push(csrCodes);
-	    			}
-	    			else if(systemCsrNonCodeOwner.indexOf(csrId).toString() != -1){
-	    				csrCodeNonOwnerArray.push(csrCodes);
-	    			}
-	    		}
-	    		userinfo.down('#csrCodeOwnerName').setValue(csrCodeOwnerArray);
-	    		userinfo.down('#csrNonCodeOwnerName').setValue(csrCodeNonOwnerArray);
-	        },
-	        failure: function (response, opts) {
-	            msg = response.responseText;
-	            Helper.showToast('failure', msg);
-	        }
-	    });
+	    if(systemCsrCombinedCodes!=null && !Ext.isEmpty(systemCsrCombinedCodes.trim())){
+		    Ext.Ajax.request({
+		    	url:applicationContext+'/rest/systemcsrcode',
+		    	method:'GET',
+		    	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
+		    	success: function (response, opts) {
+		    		var systemCsrGridData = Ext.JSON.decode(response.responseText),
+		    			gridData = systemCsrGridData.data,
+		    			csrCodeOwnerArray = [],
+		    			csrCodeNonOwnerArray = [];
+		    		for(i=0;i<gridData.length;i++){
+		    			csrCodes = gridData[i].csrCode;
+		    			csrId = gridData[i].id;
+		    			if(systemCsrCodeOwner.indexOf(csrId).toString() != -1){
+		    				csrCodeOwnerArray.push(csrCodes);
+		    			}
+		    			else if(systemCsrNonCodeOwner.indexOf(csrId).toString() != -1){
+		    				csrCodeNonOwnerArray.push(csrCodes);
+		    			}
+		    		}
+		    		userinfo.down('#csrCodeOwnerName').setValue(csrCodeOwnerArray);
+		    		userinfo.down('#csrNonCodeOwnerName').setValue(csrCodeNonOwnerArray);
+		        },
+		        failure: function (response, opts) {
+		            msg = response.responseText;
+		            Helper.showToast('failure', msg);
+		        }
+		    });
+	    }
     },
     onManageUserMenuItemClick: function () {
         this.selectCard('users');
