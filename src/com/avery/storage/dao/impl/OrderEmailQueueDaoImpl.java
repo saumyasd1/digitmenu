@@ -562,6 +562,10 @@ OrderEmailQueueDao {
 			if(ccMailId!=null && !"".equals(ccMailId)){
 				criteria.add(Restrictions.ilike("ccMailId",ccMailId,MatchMode.ANYWHERE));
 			}
+			String siteId=searchMap.get("siteId");
+			if(siteId!=null && !"".equals(siteId)){
+				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
+			}
 		}
 		/*else{
 			 Date date = new Date();
