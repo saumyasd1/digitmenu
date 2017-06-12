@@ -123,7 +123,27 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
-							}
+							},{
+								xtype:'combobox',
+								name: 'siteId',
+								displayField: 'name',
+								valueField:'id',
+								margin:'0 0 0 10',
+								fieldLabel:'Site',
+								flex:1,
+								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
+								listeners:{
+									specialkey:'getAdvancedSearchResults',
+									afterrender:function(field){
+										if(AOCRuntime._user.role == '1'){
+											field.show();
+										}
+										else{
+											field.hide();
+										}
+									}
+								}
+							}, 
 						]
 					},
 					{ 

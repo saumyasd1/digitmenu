@@ -8,7 +8,7 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 	requires : ['Ext.window.MessageBox'],
 	
 	layout:'fit',
-	width: 330,
+	width: 500,
 	title:AOCLit.advancedSearchWindowTitle,
 	
 	initComponent:function(){
@@ -32,19 +32,53 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 				},
 		        items:[
 					{
-						xtype : 'textfield',
-						itemId: 'partnernamevalue',
-						fieldLabel: AOCLit.partnerName,
-						name:'partnerName',
-						width:300,
-						selectOnTab : true,
-						tabIndex:1,
-						enableKeyEvents:true,
-						margin:'5 0 0 0',
-						listeners:{
-							specialkey:'getAdvancedSearchResults'
-						}
-					},					
+
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 10 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'textfield',
+								itemId: 'partnernamevalue',
+								fieldLabel: AOCLit.partnerName,
+								name:'partnerName',
+								flex:1,
+								selectOnTab : true,
+								tabIndex:1,
+								enableKeyEvents:true,
+//								margin:'5 0 0 0',
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
+							},
+							{
+								xtype:'combobox',
+								name: 'siteId',
+								displayField: 'name',
+								valueField:'id',
+								fieldLabel:'Site',
+								flex:1,
+								margin:'0 0 0 10',
+								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
+								listeners:{
+									specialkey:'getAdvancedSearchResults',
+									afterrender:function(field){
+										if(AOCRuntime._user.role == '1'){
+											field.show();
+										}
+										else{
+											field.hide();
+										}
+									}
+								}
+							}
+						]
+					},
 					{
 
 						xtype: 'fieldcontainer',
