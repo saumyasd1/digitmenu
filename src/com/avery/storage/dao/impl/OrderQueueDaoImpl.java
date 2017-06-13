@@ -47,8 +47,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Repository
-public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
-		implements OrderQueueDao {
+public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implements OrderQueueDao {
 
 	// Note:- This method is not currently being used but maybe used later so,
 	// it needs to be kept
@@ -57,44 +56,27 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		Map entitiesMap = new HashMap();
 		Session session = null;
 		session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session
-				.createCriteria(OrderQueue.class)
+		Criteria criteria = session.createCriteria(OrderQueue.class)
 				.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue",
 						"orderemailqueue")
-				.createAlias("varProductLine", "varProductLine")
+				.createAlias("varProductLine",
+						"varProductLine")
 				.createAlias("varProductLine.varPartner", "partner")
 				.setProjection(
-						Projections
-								.projectionList()
-								.add(Projections.property("orderemailqueue.id"),
-										"emailQueueId")
-								.add(Projections
-										.property("orderemailqueue.senderEmailId"),
-										"senderEmailId")
-								.add(Projections
-										.property("partner.partnerName"),
-										"partnerName")
-								.add(Projections.property("id"), "id")
-								.add(Projections.property("subject"), "subject")
-								.add(Projections.property("poNumber"),
-										"poNumber")
-								.add(Projections.property("prevOrderQueueId"),
-										"prevOrderQueueId")
+						Projections.projectionList().add(Projections.property("orderemailqueue.id"), "emailQueueId")
+								.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
+								.add(Projections.property("partner.partnerName"), "partnerName")
+								.add(Projections.property("id"), "id").add(Projections.property("subject"), "subject")
+								.add(Projections.property("poNumber"), "poNumber")
+								.add(Projections.property("prevOrderQueueId"), "prevOrderQueueId")
 								.add(Projections.property("status"), "status")
-								.add(Projections.property("submittedBy"),
-										"submittedBy")
-								.add(Projections.property("submittedDate"),
-										"submittedDate")
-								.add(Projections
-										.property("feedbackAcknowledgementDate"),
-										"feedbackAcknowledgementDate")
-								.add(Projections.property("lastModifiedBy"),
-										"lastModifiedBy")
-								.add(Projections.property("lastModifiedDate"),
-										"lastModifiedDate"))
-				.setResultTransformer(
-						Transformers.aliasToBean(OrderQueue.class));
+								.add(Projections.property("submittedBy"), "submittedBy")
+								.add(Projections.property("submittedDate"), "submittedDate")
+								.add(Projections.property("feedbackAcknowledgementDate"), "feedbackAcknowledgementDate")
+								.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
+								.add(Projections.property("lastModifiedDate"), "lastModifiedDate"))
+				.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 
 		entitiesMap.put("orders", new LinkedHashSet(criteria.list()));
 		return entitiesMap;
@@ -102,8 +84,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 
 	@Override
 	@Transactional
-	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Map entitiesMap = new HashMap();
 		int totalCount = 0;
 		String limit = (String) queryMap.getFirst("limit");
@@ -116,92 +97,60 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		// emailqueueid in the order queue
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
-				.add(Projections.property("orderemailqueue.senderEmailId"),
-						"senderEmailId")
-				.add(Projections.property("partner.partnerName"), "partnerName")
-				.add(Projections.property("id"), "id")
+				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
+				.add(Projections.property("orderemailqueue.siteId"), "siteId")
+				.add(Projections.property("partner.partnerName"), "partnerName").add(Projections.property("id"), "id")
 				.add(Projections.property("orderemailqueue.subject"), "subject")
-				.add(Projections.property("orderemailqueue.orderSource"),
-						"orderSource")
-				.add(Projections.property("orderemailqueue.receivedDate"),
-						"receivedDate")
-				.add(Projections.property("comment"), "comment")
-				.add(Projections.property("error"), "error")
+				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
+				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
+				.add(Projections.property("comment"), "comment").add(Projections.property("error"), "error")
 				.add(Projections.property("poNumber"), "poNumber")
-				.add(Projections.property("prevOrderQueueId"),
-						"prevOrderQueueId")
-				.add(Projections.property("status"), "status")
-				.add(Projections.property("submittedBy"), "submittedBy")
+				.add(Projections.property("prevOrderQueueId"), "prevOrderQueueId")
+				.add(Projections.property("status"), "status").add(Projections.property("submittedBy"), "submittedBy")
 				.add(Projections.property("submittedDate"), "submittedDate")
-				.add(Projections.property("feedbackAcknowledgementDate"),
-						"feedbackAcknowledgementDate")
+				.add(Projections.property("feedbackAcknowledgementDate"), "feedbackAcknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
-				.add(Projections.property("lastModifiedDate"),
-						"lastModifiedDate")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate")
 				.add(Projections.property("rbo.rboName"), "rboName")
-				.add(Projections.property("varProductLine.productLineType"),
-						"productLineType")
-				.add(Projections.property("varProductLine.defaultSystem"),
-						"defaultSystem")
+				.add(Projections.property("varProductLine.productLineType"), "productLineType")
+				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
-				.add(Projections.property("partner.siteId"), "siteId")
+				// .add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("listOrgInfo.orgCodeId"), "orgCodeId")
 				.add(Projections.property("createdDate"), "createdDate")
 
-				.add(Projections.property("varOrderFileAttachment.fileName"),
-						"orderFileName")
-				.add(Projections.property("orderemailqueue.mailBody"),
-						"mailBody")
-				.add(Projections.property("varProductLine.orderInMailBody"),
-						"orderInMailBody")
+				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName")
+				.add(Projections.property("orderemailqueue.mailBody"), "mailBody")
+				.add(Projections.property("varProductLine.orderInMailBody"), "orderInMailBody")
 				.add(Projections.property("rbo.id"), "rboId");
 		// getting filename of order file
 
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
-				.createAlias("varOrderFileAttachment.varOrderEmailQueue",
-						"orderemailqueue")
-				.createAlias("varOrderFileAttachment.varProductLine",
-						"varProductLine")
-				.createAlias("varProductLine.listOrderSystemInfo",
-						"listOrderSystemInfo")
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+				.createAlias("varProductLine.listOrderSystemInfo", "listOrderSystemInfo")
 				.createAlias("listOrderSystemInfo.listOrgInfo", "listOrgInfo")
-				.createAlias("varProductLine.varPartner", "partner")
-				.createAlias("varProductLine.rbo", "rbo");
-
-		if (queryMap.getFirst("emailQueueId") != null) {
-			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
-			Long queueId = Long.parseLong(emailQueueId);
-			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-		}
-		if (queryMap.getFirst("senderEmailId") != null) {
-			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
-			String senderEmail = senderEmailId;
-			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId",
-					senderEmail));
-		}		
+				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo");
 		
 		String siteId1 = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
 		if (!siteId1.equals("1") && !roleId.equals("1")) {
-			criteria.add(Restrictions.eq("orderemailqueue.siteId",
-					Integer.parseInt(siteId1)));
+			criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(siteId1)));
 		}
+
 		// total count was returning 0 so, placed above set projection
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 
 		String pageNumber = pageNo == null ? "" : pageNo;
-		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber)
-				: 0;
-		int pageSize = (limit != null && !"".equals(limit)) ? Integer
-				.parseInt(limit) : 0;
+		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
+		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
 		if (pageNO != 0) {
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
 		}
 
-		criteria.setProjection(proj).setResultTransformer(
-				Transformers.aliasToBean(OrderQueue.class));
+		criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
 
@@ -215,13 +164,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			int comparisonSiteId = orderQueue.getSiteId();
 
 			if (status == null | status.equals(""))
-				throw new Exception(
-						"Unidentified value found for the statuscode");
+				throw new Exception("Unidentified value found for the statuscode");
 			Map<String, String> statusCodes = statusList.get(status);
 			if (statusCodes == null)
-				throw new Exception(
-						"No data found in the status table for status:: "
-								+ status);
+				throw new Exception("No data found in the status table for status:: " + status);
 			orderQueue.setIconName(statusCodes.get("iconName"));
 			orderQueue.setColorCode(statusCodes.get("colorCode"));
 			orderQueue.setCodeValue(statusCodes.get("codeValue"));
@@ -232,7 +178,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			orderQueue.setAdditionalFileCount(additionalFileCount);
 
 		}
-		entitiesMap.put("orders",list);
+		entitiesMap.put("orders", list);
 		entitiesMap.put("totalCount", totalCount);
 		return entitiesMap;
 	}
@@ -244,12 +190,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		Session session = null;
 		try {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			session = getSessionFactory().getCurrentSession();
 			OrderQueue orderQueueObj = null;
-			orderQueueObj = (OrderQueue) session
-					.get(OrderQueue.class, entityId);
+			orderQueueObj = (OrderQueue) session.get(OrderQueue.class, entityId);
 			updater = mapper.readerForUpdating(orderQueueObj);
 			orderQueueObj = updater.readValue(data);
 			orderQueueObj.preUpdateOp();
@@ -262,22 +206,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			q.setLong("id", entityId);
 			q.executeUpdate();
 			String orderLineUpdateQueryString = "update OrderLine set status=:value where orderQueueForOrderLine=:id";
-			Query orderLineUpdateQuery = session
-					.createQuery(orderLineUpdateQueryString);
+			Query orderLineUpdateQuery = session.createQuery(orderLineUpdateQueryString);
 			orderLineUpdateQuery.setString("value", status);
 			orderLineUpdateQuery.setLong("id", entityId);
 			orderLineUpdateQuery.executeUpdate();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", ex);
+			AppLogger.getSystemLogger().error("Error while Performing bulk update ", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 
 	}
@@ -290,12 +229,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		String commentString = "";
 		try {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			session = getSessionFactory().getCurrentSession();
 			OrderQueue orderQueueObj = null;
-			orderQueueObj = (OrderQueue) session
-					.get(OrderQueue.class, entityId);
+			orderQueueObj = (OrderQueue) session.get(OrderQueue.class, entityId);
 			updater = mapper.readerForUpdating(orderQueueObj);
 			orderQueueObj = updater.readValue(data);
 			if (orderQueueObj.getComment() != null)
@@ -311,8 +248,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			if (!"".equals(comment)) {
 				commentString = ",comment=:comment ";
 			}
-			String s = "update OrderLine set status=:value " + commentString
-					+ " where orderQueueID=:id";
+			String s = "update OrderLine set status=:value " + commentString + " where orderQueueID=:id";
 			Query q = session.createQuery(s);
 			q.setString("value", ApplicationConstants.ORDERLINE_CANCEL_STATUS);
 			if (!"".equals(comment)) {
@@ -321,22 +257,17 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			q.setLong("id", entityId);
 			q.executeUpdate();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", ex);
+			AppLogger.getSystemLogger().error("Error while Performing bulk update ", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while Performing bulk update ", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while Performing bulk update ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 
 	}
 
-	private int getCountBasedOnOrderId(Class clazz, Long OrderId,
-			String propertyName) throws Exception {
+	private int getCountBasedOnOrderId(Class clazz, Long OrderId, String propertyName) throws Exception {
 		int count = 0;
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(clazz);
@@ -347,9 +278,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Set<OrderQueue> getList(int lastDays, Set<String> status,MultivaluedMap<String, String> queryParamMap)
+	public Set<OrderQueue> getList(int lastDays, Set<String> status, MultivaluedMap<String, String> queryParamMap)
 			throws Exception {
-		String queryString=(String) queryParamMap.getFirst("query");
+		String queryString = (String) queryParamMap.getFirst("query");
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		ProjectionList projectionList = Projections.projectionList();
@@ -361,68 +292,60 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		endDate.setMinutes(0);
 		endDate.setSeconds(0);
 		Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
-		HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate",
-				startDate, endDate);
+		HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
-		.createAlias("varOrderFileAttachment.varOrderEmailQueue", "varOrderEmailQueue");
-		//.add(Restrictions.eq("varOrderEmailQueue.id", trackId));
-		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-		if(queryString!=null){
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "varOrderEmailQueue");
+		// .add(Restrictions.eq("varOrderEmailQueue.id", trackId));
+		Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
+		if (queryString != null) {
 			String filterSiteId = (String) searchMap.get("filterSiteId");
-			if (filterSiteId!=null && !"".equals(filterSiteId)) {
+			if (filterSiteId != null && !"".equals(filterSiteId)) {
 				criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(filterSiteId)));
 			}
 			String filterCsrCode = (String) searchMap.get("filterCsrCode");
-			if (filterCsrCode!=null && !"".equals(filterCsrCode)) {
-				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR",filterCsrCode));
-			}}
-			else
-			{
-				String siteId =(String) queryParamMap.getFirst("siteId");
-				if(siteId!=null)
+			if (filterCsrCode != null && !"".equals(filterCsrCode)) {
+				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR", filterCsrCode));
+			}
+		} else {
+			String siteId = (String) queryParamMap.getFirst("siteId");
+			if (siteId != null)
 				if (!siteId.equals("1")) {
 					criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(siteId)));
-			}}
+				}
+		}
 		// criteria.add(Restrictions.between("createdDate", startDate,
 		// endDate));
 		criteria.setProjection(projectionList);
-		criteria.setResultTransformer(Transformers
-				.aliasToBean(OrderQueue.class));
+		criteria.setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		return new HashSet<OrderQueue>(criteria.list());
 	}
 
-	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException,
-			Exception {
+	public Criteria getCriteria(MultivaluedMap queryMap) throws IOException, Exception {
 		Session session = null;
 		Criteria criteria = null;
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(OrderQueue.class);
 		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils
-					.convertJSONtoMaps(queryString);
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 			if (dateType != null && !dateType.equals("")) {
 				String sDate = searchMap.get("fromDate") + " 00:00:00";
 				String eDate = searchMap.get("toDate") + " 00:00:00";
-				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria,
-						dateType, sDate, eDate);
+				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			String partnerName = searchMap.get("PartnerName");
 			if (partnerName != null && !"".equals(partnerName)) {
 				// criteria.createAlias("partner", "partner");
-				criteria.add(Restrictions.ilike("partner.partnerName",
-						partnerName, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.ANYWHERE));
 			}
 			String RBOName = searchMap.get("RBOName");
 			if (RBOName != null && !"".equals(RBOName)) {
-				criteria.add(Restrictions.ilike("rbo.rboName", RBOName,
-						MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("rbo.rboName", RBOName, MatchMode.ANYWHERE));
 			}
 			String Subject = searchMap.get("Subject");
 			if (Subject != null && !"".equals(Subject)) {
-				criteria.add(Restrictions.ilike("orderemailqueue.subject",
-						Subject, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("orderemailqueue.subject", Subject, MatchMode.ANYWHERE));
 			}
 			String Status = searchMap.get("Status");
 			if (Status != null && !"".equals(Status)) {
@@ -437,42 +360,34 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 				endDate.setMinutes(0);
 				endDate.setSeconds(0);
 				Date startDate = DateUtils.getPreviousDate(endDate, lastDays);
-				HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate",
-						startDate, endDate);
+				HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 			}
 			String partnerDataStructure = searchMap.get("partnerDataStructure");
-			if (partnerDataStructure != null
-					&& !"".equals(partnerDataStructure)) {
+			if (partnerDataStructure != null && !"".equals(partnerDataStructure)) {
 				// criteria.createAlias("productLine", "productLine");
 				Long productLineId = Long.parseLong(partnerDataStructure);
-				criteria.add(Restrictions
-						.eq("varProductLine.id", productLineId));
+				criteria.add(Restrictions.eq("varProductLine.id", productLineId));
 			}
 			String SenderEmailID = searchMap.get("SenderEmailID");
 			if (SenderEmailID != null && !"".equals(SenderEmailID)) {
-				criteria.add(Restrictions.ilike(
-						"orderemailqueue.senderEmailId", SenderEmailID,
-						MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("orderemailqueue.senderEmailId", SenderEmailID, MatchMode.ANYWHERE));
 			}
 			String OrderTrackingID = searchMap.get("orderQueueId");
 			if (OrderTrackingID != null && !"".equals(OrderTrackingID)) {
 				Long Id = Long.parseLong(OrderTrackingID);
 				Disjunction disCriteria = Restrictions.disjunction();
 				disCriteria.add(Restrictions.eq("id", Id));
-				disCriteria.add(Restrictions.eq("prevOrderQueueId",
-						Id.intValue()));
+				disCriteria.add(Restrictions.eq("prevOrderQueueId", Id.intValue()));
 				criteria.add(disCriteria);
 			}
 			String PONumber = searchMap.get("ponumber");
 			if (PONumber != null && !"".equals(PONumber)) {
-				criteria.add(Restrictions.ilike("poNumber", PONumber,
-						MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("poNumber", PONumber, MatchMode.ANYWHERE));
 			}
 
 			String assignCSR = searchMap.get("assignCSR");
 			if (assignCSR != null && !"".equals(assignCSR)) {
-				criteria.add(Restrictions.ilike("orderemailqueue.assignCSR",
-						assignCSR, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("orderemailqueue.assignCSR", assignCSR, MatchMode.ANYWHERE));
 			}
 
 			String emailQueueId = searchMap.get("emailQueueId");
@@ -480,17 +395,18 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 				Long Id = Long.parseLong(emailQueueId);
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
-			String siteId = searchMap.get("siteId");
-			if (Subject != null && !"".equals(siteId)) {
-				criteria.add(Restrictions.eq("orderemailqueue.siteId",Integer.parseInt(siteId)));
-		}
+			
+			if (searchMap.get("filterSiteId") != null && !searchMap.get("filterSiteId").equals("")) {
+				String filterSiteId = (String) searchMap.get("filterSiteId");
+				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));
+			}
+
 		}
 		return criteria;
 	}
 
 	@Override
-	public List getAllEntitiesListWithCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public List getAllEntitiesListWithCriteria(MultivaluedMap queryMap) throws Exception {
 		Criteria criteria = getCriteria(queryMap);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List list = criteria.list();
@@ -498,64 +414,45 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 	}
 
 	@Override
-	public List<OrderQueue> getAllEntitiesListForDailyReport(
-			MultivaluedMap queryMap) throws Exception {
+	public List<OrderQueue> getAllEntitiesListForDailyReport(MultivaluedMap queryMap) throws Exception {
 		Criteria criteria = getDailyReportCriteria(queryMap);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
 		return list;
 	}
 
-	public Criteria getDailyReportCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Criteria getDailyReportCriteria(MultivaluedMap queryMap) throws Exception {
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
-				.add(Projections.property("orderemailqueue.receivedDate"),
-						"receivedDate")
-				.add(Projections.property("orderemailqueue.senderEmailId"),
-						"senderEmailId")
-				.add(Projections.property("orderemailqueue.orderSource"),
-						"orderSource")
-				.add(Projections.property("partner.partnerName"), "partnerName")
-				.add(Projections.property("id"), "id")
+				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
+				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
+				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
+				.add(Projections.property("partner.partnerName"), "partnerName").add(Projections.property("id"), "id")
 				.add(Projections.property("orderemailqueue.subject"), "subject")
-				.add(Projections.property("comment"), "comment")
-				.add(Projections.property("error"), "error")
+				.add(Projections.property("comment"), "comment").add(Projections.property("error"), "error")
 				.add(Projections.property("poNumber"), "poNumber")
-				.add(Projections.property("prevOrderQueueId"),
-						"prevOrderQueueId")
-				.add(Projections.property("status"), "status")
-				.add(Projections.property("submittedBy"), "submittedBy")
+				.add(Projections.property("prevOrderQueueId"), "prevOrderQueueId")
+				.add(Projections.property("status"), "status").add(Projections.property("submittedBy"), "submittedBy")
 				.add(Projections.property("submittedDate"), "submittedDate")
 				.add(Projections.property("createdDate"), "createdDate")
-				.add(Projections.property("feedbackAcknowledgementDate"),
-						"feedbackAcknowledgementDate")
+				.add(Projections.property("feedbackAcknowledgementDate"), "feedbackAcknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
-				.add(Projections.property("lastModifiedDate"),
-						"lastModifiedDate")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate")
 				.add(Projections.property("rbo.rboName"), "rboName")
-				.add(Projections.property("varProductLine.productLineType"),
-						"productLineType")
+				.add(Projections.property("varProductLine.productLineType"), "productLineType")
 				.add(Projections.property("partner.id"), "partnerId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
-				.add(Projections.property("varOrderFileAttachment.fileName"),
-						"orderFileName");
+				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
-				.createAlias("varOrderFileAttachment.varOrderEmailQueue",
-						"orderemailqueue")
-				.createAlias("varOrderFileAttachment.varProductLine",
-						"varProductLine")
-				.createAlias("varProductLine.varPartner", "partner")
-				.createAlias("varProductLine.rbo", "rbo")
-				.setProjection(proj)
-				.setResultTransformer(
-						Transformers.aliasToBean(OrderQueue.class));
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo")
+				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy" + " 00:00:00");
 		String strDate = HibernateUtils.sdfDate.format(now);
-		criteria = HibernateUtils.getCriteriaBasedOnDate(criteria,
-				"orderemailqueue.receivedDate", strDate, strDate);
+		criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, "orderemailqueue.receivedDate", strDate, strDate);
 
 		if (queryMap.getFirst("emailQueueId") != null) {
 			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
@@ -565,32 +462,27 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		if (queryMap.getFirst("senderEmailId") != null) {
 			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
 			String senderEmail = senderEmailId;
-			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId",
-					senderEmail));
+			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
 		}
 		if (queryMap.getFirst("receivedDate") != null) {
 			Date receivedDate = (Date) queryMap.getFirst("receivedDate");
 			Date receivedEmailDate = receivedDate;
-			criteria.add(Restrictions.eq("orderemailqueue.receivedDate",
-					receivedEmailDate));
+			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
 		}
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils
-					.convertJSONtoMaps(queryString);
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 
 			if (dateType != null && !"".equals(dateType)) {
 				String partner = searchMap.get("PartnerName");
 				String partnerName = partner;
-				criteria.add(Restrictions.ilike("partner.partnerName",
-						partnerName, MatchMode.EXACT));
+				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.EXACT));
 			}
 			String PartnerName = searchMap.get("partnerName");
 			if (PartnerName != null && !"".equals(PartnerName)) {
-				criteria.add(Restrictions.ilike("partner.partnerName",
-						PartnerName, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("partner.partnerName", PartnerName, MatchMode.ANYWHERE));
 			}
 			if (dateType != null && !"".equals(dateType)) {
 				String rbo = searchMap.get("RBOName");
@@ -607,52 +499,35 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		return criteria;
 	}
 
-	public Criteria getOpenReportCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Criteria getOpenReportCriteria(MultivaluedMap queryMap) throws Exception {
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
-				.add(Projections.property("orderemailqueue.receivedDate"),
-						"receivedDate")
-				.add(Projections.property("orderemailqueue.senderEmailId"),
-						"senderEmailId")
-				.add(Projections.property("orderemailqueue.orderSource"),
-						"orderSource")
-				.add(Projections.property("partner.partnerName"), "partnerName")
-				.add(Projections.property("id"), "id")
+				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
+				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
+				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
+				.add(Projections.property("partner.partnerName"), "partnerName").add(Projections.property("id"), "id")
 				.add(Projections.property("orderemailqueue.subject"), "subject")
-				.add(Projections.property("comment"), "comment")
-				.add(Projections.property("error"), "error")
+				.add(Projections.property("comment"), "comment").add(Projections.property("error"), "error")
 				.add(Projections.property("poNumber"), "poNumber")
-				.add(Projections.property("prevOrderQueueId"),
-						"prevOrderQueueId")
-				.add(Projections.property("status"), "status")
-				.add(Projections.property("submittedBy"), "submittedBy")
+				.add(Projections.property("prevOrderQueueId"), "prevOrderQueueId")
+				.add(Projections.property("status"), "status").add(Projections.property("submittedBy"), "submittedBy")
 				.add(Projections.property("submittedDate"), "submittedDate")
 				.add(Projections.property("createdDate"), "createdDate")
-				.add(Projections.property("feedbackAcknowledgementDate"),
-						"feedbackAcknowledgementDate")
+				.add(Projections.property("feedbackAcknowledgementDate"), "feedbackAcknowledgementDate")
 				.add(Projections.property("lastModifiedBy"), "lastModifiedBy")
-				.add(Projections.property("lastModifiedDate"),
-						"lastModifiedDate")
+				.add(Projections.property("lastModifiedDate"), "lastModifiedDate")
 				.add(Projections.property("rbo.rboName"), "rboName")
-				.add(Projections.property("varProductLine.productLineType"),
-						"productLineType")
+				.add(Projections.property("varProductLine.productLineType"), "productLineType")
 				.add(Projections.property("partner.id"), "partnerId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
-				.add(Projections.property("varOrderFileAttachment.fileName"),
-						"orderFileName");
+				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName");
 		Criteria criteria = session.createCriteria(OrderQueue.class);
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
-				.createAlias("varOrderFileAttachment.varOrderEmailQueue",
-						"orderemailqueue")
-				.createAlias("varOrderFileAttachment.varProductLine",
-						"varProductLine")
-				.createAlias("varProductLine.varPartner", "partner")
-				.createAlias("varProductLine.rbo", "rbo")
-				.setProjection(proj)
-				.setResultTransformer(
-						Transformers.aliasToBean(OrderQueue.class));
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
+				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
+				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo")
+				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 
 		if (queryMap.getFirst("emailQueueId") != null) {
 			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
@@ -662,38 +537,32 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		if (queryMap.getFirst("senderEmailId") != null) {
 			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
 			String senderEmail = senderEmailId;
-			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId",
-					senderEmail));
+			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
 		}
 		if (queryMap.getFirst("receivedDate") != null) {
 			Date receivedDate = (Date) queryMap.getFirst("receivedDate");
 			Date receivedEmailDate = receivedDate;
-			criteria.add(Restrictions.eq("orderemailqueue.receivedDate",
-					receivedEmailDate));
+			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
 		}
 
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils
-					.convertJSONtoMaps(queryString);
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 			if (dateType != null && !dateType.equals("")) {
 				String sDate = searchMap.get("fromDate");
 				String eDate = searchMap.get("toDate");
-				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria,
-						dateType, sDate, eDate);
+				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			if (dateType != null && !"".equals(dateType)) {
 				String partner = searchMap.get("PartnerName");
 				String partnerName = partner;
-				criteria.add(Restrictions.ilike("partner.partnerName",
-						partnerName, MatchMode.EXACT));
+				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.EXACT));
 			}
 			String PartnerName = searchMap.get("partnerName");
 			if (PartnerName != null && !"".equals(PartnerName)) {
-				criteria.add(Restrictions.ilike("partner.partnerName",
-						PartnerName, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("partner.partnerName", PartnerName, MatchMode.ANYWHERE));
 			}
 			if (dateType != null && !"".equals(dateType)) {
 				String rbo = searchMap.get("RBOName");
@@ -711,8 +580,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 	}
 
 	@Override
-	public List<OrderQueue> getAllEntitiesListForOpenReport(
-			MultivaluedMap queryMap) throws Exception {
+	public List<OrderQueue> getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception {
 		Criteria criteria = getOpenReportCriteria(queryMap);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
@@ -726,12 +594,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		Session session = null;
 		try {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			session = getSessionFactory().getCurrentSession();
 			OrderFileAttachment OrderFileAttachmentObj = null;
-			OrderFileAttachmentObj = (OrderFileAttachment) session.get(
-					OrderFileAttachment.class, entityId);
+			OrderFileAttachmentObj = (OrderFileAttachment) session.get(OrderFileAttachment.class, entityId);
 			updater = mapper.readerForUpdating(OrderFileAttachmentObj);
 			OrderFileAttachmentObj = updater.readValue(data);
 			OrderFileAttachmentObj.preUpdateOp();
@@ -744,16 +610,12 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			q.setLong("id", entityId);
 			q.executeUpdate();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error("Error while processing order",
-					ex);
+			AppLogger.getSystemLogger().error("Error while processing order", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger()
-					.error("Error while processing order", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while processing order", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 
 	}
@@ -773,30 +635,22 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		Session session = null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			Criteria criteria = session
-					.createCriteria(OrderFileAttachment.class)
+			Criteria criteria = session.createCriteria(OrderFileAttachment.class)
 					.createAlias("varOrderEmailQueue", "varOrderEmailQueue")
 					.add(Restrictions.eq("varOrderEmailQueue.id", trackid))
-					.setProjection(
-							Projections.projectionList().add(
-									Projections.property("filePath"),
-									"filePath"));
+					.setProjection(Projections.projectionList().add(Projections.property("filePath"), "filePath"));
 			List list = criteria.list();
 			String dir = "";
 			dir = (String) list.get(0);
 			return dir;
 
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error while fetching mailbody path", ex);
+			AppLogger.getSystemLogger().error("Error while fetching mailbody path", ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error while fetching mailbody path", e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error while fetching mailbody path", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 
 	}
@@ -809,11 +663,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 		session = getSessionFactory().getCurrentSession();
 		String filePath = "";
 		String fileName = "";
-		OrderQueue orderQueue = (OrderQueue) session.get(OrderQueue.class,
-				orderFileQueueId);
+		OrderQueue orderQueue = (OrderQueue) session.get(OrderQueue.class, orderFileQueueId);
 
-		OrderFileAttachment orderFileAttachment = orderQueue
-				.getVarOrderFileAttachment();
+		OrderFileAttachment orderFileAttachment = orderQueue.getVarOrderFileAttachment();
 		filePath = orderFileAttachment.getFilePath();
 		fileName = orderFileAttachment.getFileName();
 		orderFilePath = filePath + File.separator + fileName;
@@ -834,8 +686,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long>
 			criteria.add(Restrictions.eq("varOrderFileQueue.id", orderQueueId));
 			criteria.add(Restrictions.isNotNull("additionalFileId"));
 			ProjectionList projections = Projections.projectionList();
-			projections.add(Projections.property("additionalFileId"),
-					"additionalFileId");
+			projections.add(Projections.property("additionalFileId"), "additionalFileId");
 			criteria.setProjection(projections);
 			List<String> list = criteria.list();
 			if (list == null | list.size() == 0)
