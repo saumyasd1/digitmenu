@@ -1,7 +1,6 @@
 Ext.define('AOC.store.UserStore', {
 	extend : 'Ext.data.Store',
 	model:'AOC.model.UserModel',
-	remoteSort: true,
 	totalCount:'total',
 	pageSize:pageSize,
 	storeId:'UserStoreId',
@@ -14,5 +13,9 @@ Ext.define('AOC.store.UserStore', {
             totalProperty: 'totalCount'
         }
     },
+    sorters: [{
+ 		property:'lastModifiedDate',
+ 		direction:'DESC'
+	}]
 });
 
