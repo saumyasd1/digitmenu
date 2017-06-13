@@ -243,7 +243,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								displayField: 'name',
 								valueField:'id',
 								fieldLabel:'Site',
-								flex:1,
+								width:275,
 								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
