@@ -69,6 +69,37 @@ Ext.define('AOC.view.email.EmailManagementController', {
 					
 					AOC.app.fireEvent('changemainview','orderqueueview', id);
 					callout.destroy();
+				},
+				assignCSR:function(){
+					currentRecord = e.record;
+					var id = currentRecord.get('id'),
+						assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
+						callback:function(rec){
+							var emailPanel = Ext.ComponentQuery.query('#emailManagementItemId')[0],
+								emailGrid = emailPanel.queryById('emailManagementGrid');
+							
+							assignCsrWin.mask(AOCLit.pleaseWaitTitle);
+		    		    	Ext.Ajax.request({
+		    		    		method:'GET',
+		    		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
+		    		    		params:{
+		    		    			userId: AOCRuntime.getUser().id
+		    		    		},
+		    				    success : function(response, opts) {
+		    				    	assignCsrWin.unmask();
+	    					  		Helper.showToast('Success','CSR assigned successfully');
+	    					  		assignCsrWin.close();
+	    					  		emailGrid.store.load();
+	    				        },
+	    				        failure: function(response, opts) {
+	    				        	assignCsrWin.unmask();
+								}
+							});
+						},
+						recordId:id
+					});
+					assignCsrWin.show();
+					callout.destroy();
 				}
             }
         });
@@ -106,8 +137,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-			'<div style="width:180px !important; {[this.getViewMailMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getViewMailEnableDisableClass(values)]}" event="viewMail"">View Mail</div>',
+			'<div style="width: 180px !important; {[this.getViewMailMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getViewMailEnableDisableClass(values)]}" event="viewMail"">View Mail</div>',
             '<div style="width: 180px !important;{[this.getViewOrderMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getViewOrderEnableDisableClass(values)]}" event="viewOrder"> View Order </div>',
+            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>',
         	'<div style="width: 180px !important;border-bottom: none{[this.getMoveToTaskManagerMenuItemStyle(values)]}" class="user-profile-menu-callout {[this.getMoveToTaskManagerEnableDisableClass(values)]}" event="cancelMail"> Move To Task Manager</div>',
         	{
         		compiled:true,
