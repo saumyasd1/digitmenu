@@ -239,7 +239,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						items:[
 							{
 								xtype:'combobox',
-								name: 'siteId',
+								name: 'filterSiteId',
 								displayField: 'name',
 								valueField:'id',
 								fieldLabel:'Site',
