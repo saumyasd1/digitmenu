@@ -116,7 +116,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								displayField: 'name',
 								valueField:'id',
 								fieldLabel:'Site',
-								flex:1,
+								width:275,
 								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
@@ -127,13 +127,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 										else{
 											field.hide();
 										}
-//											var store = field.store,
-//												obj = {All:'All'},
-//												index = store.find('All', 'All','', false, false, true);
-//											
-//											if(index == -1){
-//												store.insert(0,new Ext.data.Record(obj));
-//											}
 									}
 								}
 							},
