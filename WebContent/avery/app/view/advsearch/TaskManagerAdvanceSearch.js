@@ -127,7 +127,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								store:Ext.create('AOC.store.AssignCSRStore',{storeId:'assignCSRStore'}),
 								typeAhead:true,
 								triggerAction:'all',
-								width:275,
+								flex:1,
 								margin:'0 0 0 10',
 								enableKeyEvents:true,
 								tabIndex:6,
@@ -159,7 +159,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								displayField: 'name',
 								valueField:'id',
 								fieldLabel:'Site',
-								flex:1,
+								width:275,
 								store: Ext.create('AOC.store.SiteStore',{storeId:'siteStore'}),
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
