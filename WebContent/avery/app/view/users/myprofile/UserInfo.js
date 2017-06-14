@@ -102,12 +102,14 @@ Ext.define('AOC.view.users.myprofile.UserInfo', {
                 {	
                 	name:'csrCodeOwnerName',
                 	fieldLabel:AOCLit.csrCodeOwnerName,
-                	itemId:'csrCodeOwnerName'
+                	itemId:'csrCodeOwnerName',
+                	hidden:true
                 },
                 {	
                 	name:'csrNonCodeOwnerName',
                 	fieldLabel:AOCLit.csrNonCodeOwnerName,
-                	itemId:'csrNonCodeOwnerName'
+                	itemId:'csrNonCodeOwnerName',
+                	hidden:true
                 }]
             }]
         }];
