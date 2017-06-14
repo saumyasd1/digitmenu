@@ -38,7 +38,8 @@ Ext.define('AOC.view.partner.CreatePartner', {
     	    '->',
     	    {
     	    	 text: 'Save',
-    	    	 handler: 'onSaveBtnClick'
+    	    	 handler: 'onSaveBtnClick',
+    	    	 hidden:AOCRuntime.getUser().role == 3 ? true : false,
     	    },
     	    {
 	   	    	 text: 'Cancel',
