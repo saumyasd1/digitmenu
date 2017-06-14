@@ -16,6 +16,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
     },
     initComponent: function() {
         var me = this;
+        	roleId = AOCRuntime.getUser().role;
         Ext.apply(me, {
             items: me.buildItem(),
             buttons : me.buildButtons(),
@@ -24,6 +25,9 @@ Ext.define('AOC.view.partner.CreatePartner', {
                     if (me.rec != null) {
                         me.down('form').loadRecord(me.rec);
                     }
+                    if(roleId== 3){
+						me.setReadOnlyView(true);
+					}
                 }
             }
         });
@@ -78,11 +82,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 maxLength: '250',
                 margin:'0 0 5 0',
                 blankText: AOCLit.partnerNameReq,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
                 xtype: 'textfield',
@@ -94,11 +94,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 margin:'0 0 5 0',
                 blankText: AOCLit.addReq,
                 maxLength: 500,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
                 xtype: 'textfield',
@@ -110,11 +106,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 margin:'0 0 5 0',
                 blankText: AOCLit.contactPersonReq,
                 maxLength: 100,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
 
@@ -128,12 +120,20 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 blankText: AOCLit.phoneReqMsg,
                 maxLength: 20,
                 regex: /^(\d+-?)+\d+$/,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }]
         }]
-    }
+    },
+    setReadOnlyView: function (readOnlyFlag) {
+	    var me = this,
+	        refs = me.getReferences(),
+	        createPartnerForm = refs.createPartnerForm,
+	        textFieldArray = createPartnerForm.query('[xtype = textfield]'),
+	        tempArray = [].concat(textFieldArray);
+
+	    var len = tempArray.length;
+	    for (var i = 0; i < len; i++) {
+	            tempArray[i].setReadOnly(readOnlyFlag);
+	    }
+	}
 });
