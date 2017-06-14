@@ -2,6 +2,10 @@ Ext.define('AOC.view.partner.PartnerController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.partnerMain',
     requires: ['AOC.view.advsearch.PartnerAdvanceSearch'],
+    init: function () {
+        var me = this;
+        me.menuTpl = me.buildMenuTpl();
+    },
     onSaveBtnClick: function() {
     	var me = this,
     		refs = me.getReferences(),
@@ -98,7 +102,7 @@ Ext.define('AOC.view.partner.PartnerController', {
         var me = this;
         var callout = Ext.widget('callout', {
             cls: 'white more-menu-item-callout extra',
-            html: me.buildMenuTpl.apply("{}"),
+            html: me.menuTpl.apply(record.data),
             target: e.target,
             calloutArrowLocation: 'top-left',
             relativePosition: 't-b',
@@ -107,6 +111,29 @@ Ext.define('AOC.view.partner.PartnerController', {
             listeners: {
                 afterrender: me.onAfterRenderEditCallout,
                 edit: function(cmp) {
+                    var data = e.record;
+                    var win = Ext.ComponentQuery.query('#createpartnerItemId')[0];
+                    if (!win) {
+                        var id = data.id;
+                        var partnerName = data.get('PartnerName');
+                        win = Ext.create('AOC.view.partner.CreatePartner', {
+                            editMode: true,
+                            rec: data,
+                            partnerId: id,
+                            partnerName: partnerName,
+                            title:AOCLit.editPartner,
+                            listeners: {
+                                'close': function(panel, eOpts) {
+                                    Ext.getBody().unmask();
+                                    win.destroy();
+                                }
+                            }
+                        });
+                        win.show();
+                    }
+                    callout.destroy();
+                },
+                viewPartner:function(cmp) {
                     var data = e.record;
                     var win = Ext.ComponentQuery.query('#createpartnerItemId')[0];
                     if (!win) {
@@ -222,12 +249,36 @@ Ext.define('AOC.view.partner.PartnerController', {
     buildMenuTpl: function() {
         var me = this;
         return Ext.create('Ext.XTemplate',
-            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="edit"">Edit</div>',
-            '</tpl>',
-            '<div style="width: 180px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="deletepartner"">Delete</div>',
-            '</tpl>',
-            '<div style="width: 180px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="productLine"">Partner Data Structure</div>',
-            '</tpl>'
+            '<div style="width: 180px !important;border-bottom: none !important;{[this.getEditPartnerStyle(values)]}" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="edit"">Edit</div>',
+            '<div style="width: 180px !important;border-bottom: none !important;{[this.getViewPartnerStyle(values)]}" class="user-profile-menu-callout {[this.isViewEnableDisable(values)]}"  event="viewPartner">View</div>',
+            '<div style="width: 180px !important;border-bottom: none !important;{[this.getEditPartnerStyle(values)]}" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="deletepartner"">Delete</div>',
+            '<div style="width: 180px !important;border-bottom: none {[this.getEditPartnerStyle(values)]}" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="productLine"">Partner Data Structure</div>',
+            {
+        	isEditEnableDisable: function (v) {
+                if (AOCRuntime.getUser().role == 3) {
+                    return 'order-profile-menu-item';
+                }
+                return 'user-profile-menu-item';
+            },
+        	getEditPartnerStyle: function (v) {
+                if (AOCRuntime.getUser().role == 3) {
+                    return Helper.getDisableMenuItemStyle();
+                }
+                return Helper.getEnableMenuItemStyle();
+            },
+        	 getViewPartnerStyle: function (v) {
+                 if (AOCRuntime.getUser().role == 3) {
+                     return Helper.getEnableMenuItemStyle();
+                 }
+                 return Helper.getDisableMenuItemStyle();
+             },
+             isViewEnableDisable: function (v) {
+                 if (AOCRuntime.getUser().role == 3) {
+                     return 'user-profile-menu-item';
+                 }
+                 return 'order-profile-menu-item';
+             }
+            }
         );
     },
     openAdvancedSearchWindow:function(){
@@ -289,5 +340,4 @@ Ext.define('AOC.view.partner.PartnerController', {
     notifyByImage: function(config) {
         Helper.notifyByImage(config);
     }
-
 });
