@@ -92,6 +92,12 @@ public class User extends MainAbstractEntity {
 	@Transient
 	private String csrNonCodeOwnerName;
 	
+	@Transient
+	private String siteName;
+	
+	@Transient
+	private String roleName;
+	
 	public User() {
 	}
 
@@ -649,4 +655,21 @@ public class User extends MainAbstractEntity {
 	public String getcsrNonCodeOwnerName() {
 		return csrNonCodeOwnerName;
 	}
+	
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+
 }
