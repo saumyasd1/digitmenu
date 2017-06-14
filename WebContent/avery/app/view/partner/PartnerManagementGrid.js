@@ -118,7 +118,12 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
                 iconAlign: 'left',
                 ui: 'blue',
                 cls: 'blue-btn',
-                hidden: false
+                hidden: false,
+                listeners:{
+                	'afterrender':function(combo){
+                		if(AOCRuntime.getUser().role == 3) combo.setHidden(true);
+                	}
+                }
             },
             '->', {
                 xtype: 'customsearchfield',
