@@ -28,7 +28,11 @@ import javax.ws.rs.core.UriInfo;
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MixIn.MenuMixIn;
 import com.avery.storage.entities.Menu;
+import com.avery.storage.entities.Role;
+import com.avery.storage.entities.Site;
 import com.avery.storage.entities.User;
+import com.avery.storage.service.RoleService;
+import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.HashPassword;
 import com.avery.web.jwt.JWTUtils;
@@ -119,6 +123,17 @@ public class Login {
 					if (!isCallFromExternalApp) {
 						responseMap.put("success", true);
 					}
+					int userSiteId=user.getSiteId();
+					String UserRoleId=user.getRole();
+					SiteService siteService= (SiteService) SpringConfig.getInstance().getBean("siteService");
+					List listOfSite=siteService.readAll();
+					Site site=(Site) listOfSite.get(userSiteId-1);
+					user.setSiteName(site.getName());
+					RoleService roleService= (RoleService) SpringConfig.getInstance().getBean("roleService");
+					List listOfRole=roleService.readAll();
+					Role role=(Role) listOfRole.get(Integer.parseInt(UserRoleId)-1);
+					user.setRoleName(role.getRoleName());
+					
 					responseMap.put("userinfo", user);
 					String roleId = user.getRole();
 					List<Menu> menuData = userService.getMenuRole(roleId);
