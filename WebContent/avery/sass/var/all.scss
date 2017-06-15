@@ -1,0 +1,169 @@
+/*
+ * This is is imported by virtue of "sass.var" in "app.json".
+ */
+
+$enable-font-awesome: dynamic(true);
+.x-window-header-title-default > .x-title-text-default:after,.x-panel-header-title-default > .x-title-text-default:after,
+.x-panel-header-title-default-framed > .x-title-text-default-framed:after {
+    font-family: ext-watermark;
+    font-size: 25.5px;
+    content: '' !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #9cc6e5;
+}
+.x-webkit .x-form-text {
+    min-height: 30px !important;
+}
+.x-grid-row {
+    height: 32px !important;
+}
+.aoc-header{
+	background:#fff;
+}
+.x-toast .x-window-header{
+	background-color:transparent !important;
+	border-width:0px !important; 
+}	
+.heading-text {
+    width: 100%;
+    text-align: center;
+    font-family: San Serif,Helvetica, Arial;
+    font-size: 18px;
+    color: #2F3338;
+    line-height: 21px;
+}
+.forget-pws-text {
+    padding: 0px 0px 0px 0px !important;
+    font-family: San Serif, Helvetica, Arial;
+    font-size: 13px;
+    color: rgba(47, 51, 55, 0.6);
+    line-height: 16px;
+}
+.login-panel .x-webkit .x-form-text {
+    height: 38px !important;
+}
+.header-right-text {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 60px;
+}
+.header-pipe-icon {
+    width: 100%;
+    text-align: center;
+    color: rgb(212, 212, 212);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 60px;
+}
+.header-user-name-text {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 60px;
+}
+.x-docked-bottom{
+	background:#fff !important;
+}
+.x-menu-item-icon-default.aoc-menu-icon{
+	font-size:16px;color:#2c3e50;top:5px;
+}
+.x-menu-default.aoc-action-menu{border-radius:4px;}
+.aoc-action-menu .x-menu-item-link{padding:3px;}
+.aoc-action-menu .x-menu-item-link .x-menu-item-text{color:#2c3e50;}
+.aoc-action-menu .x-menu-item-icon{font-size:16px;color:#2c3e50;}
+.x-btn{
+	padding: 5px 3px 5px 3px !important;
+}
+.x-btn.aoc-btn{
+	border-width:0px;
+	background-image: none !important;
+	color:#2c3e50;
+	background-color:transparent !important;
+}
+.aoc-btn:hover{
+    color:#ccc;
+}
+.aoc-btn .aoc-icon{
+	font-size:16px;
+	width:16px !important;
+	height:16px;
+}
+.success-icon{
+	color:#4BDE4B;
+}
+.failure-icon{
+	color:#ff0000;
+}
+.warning-icon{
+	color:orange;
+}
+.aoc-panel .x-toolbar .x-btn .x-btn-icon-el{
+	height:16px;font-size:16px;color:#2c3e50;
+}
+.aoc-panel .x-toolbar .x-btn.blue-btn .x-btn-icon-el{
+    color:#fff;
+}
+.x-btn.blue-btn.x-toolbar-item{
+	background-color:#65beed !important;
+	border-color:#65beed !important;
+	color:#fff !important;
+	background-image:none !important;
+}
+.x-btn.blue-btn.x-toolbar-item.x-btn-over{
+	background-color:#65beed !important;
+	border-color:#65beed !important ;
+}
+.x-btn.blue-btn.x-toolbar-item.x-btn-over .x-btn-inner,.x-btn.blue-btn.x-toolbar-item .x-btn-inner{
+	color:#fff;
+}
+.x-btn.blue-btn.x-toolbar-item.x-btn-focus.x-btn-pressed{
+	box-shadow:#65beed 0px -1px 0px 0px !important;
+}
+.aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small{color:#fff;}
+.blue-btn.x-btn-over{box-shadow: 0px 0px 4px 0px #65beed;}
+.x-btn{border-radius:2px !important;}
+.x-panel-header-default .x-tool-img{
+	background-color:transparent !important;
+}
+.aoc-wi-form .x-form-invalid-field-default {
+    background-color: rgba(255, 59, 0, 0.37);
+}
+.aoc-wi-form .x-form-item-default.x-item-disabled {
+    opacity: 0.6 !important;
+}
+.x-column-header {
+    border-right: 1px solid #cecece;
+    color: #666666;
+    font: 300 13px/15px helvetica, arial, verdana, sans-serif;
+    outline: 0;
+    background-color: #ededed;
+}
+.x-column-header-text {
+    text-align: center;
+    white-space: normal !important;
+}
+.wi-grid .x-grid-row-radio{
+	margin:0px auto;
+}
+.gray-out-row{
+	opacity: 0.5;
+    background: #ccc;
+}
+.x-grid-td {
+    vertical-align: middle !important;
+}
+.main-menu-list .section-wrap .section-wrap-text{color:#2c3e50 !important;}
+.main-menu-list .section-wrap-text{ padding-top:0px !important;}
+.main-menu-list .section-wrap-selected .section-wrap-img,
+.main-menu-list .section-wrap-selected .section-wrap-text,
+.main-menu-list .section-wrap .section-wrap-text:hover,
+.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
+.orderline-expandable-grid .x-grid-inner-locked{border-right-color:#ccc !important;}
+.x-grid-item-selected {
+    background-color: #f9f4be !important;
+}

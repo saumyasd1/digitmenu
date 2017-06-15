@@ -456,6 +456,7 @@ public class Address extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			// toggle this property value based on your input JSON data

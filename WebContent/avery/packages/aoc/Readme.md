@@ -1,2 +1,0 @@
-# aoc - Read Me
-

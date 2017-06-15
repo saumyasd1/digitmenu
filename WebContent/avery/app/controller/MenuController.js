@@ -6,19 +6,9 @@ Ext.define('AOC.controller.MenuController', {
         'AOC.view.taskmanager.TaskManager'
     ],
     stores: [
-        'Sections',
-        'PartnerManagementStore',
-        'EmailManagementStore',
-        'AddressStore',
-        'OrderQueueStore',
-        'OrderCharts',
-        'HomePageOders'
     ],
     views: [
-        'base.BaseToolbar',
-        'Viewport',
-        'users.manage.User',
-        'users.roles.Role'
+        
     ],
     refs: [{
         selector: 'viewport #toolbarviewitemid',
@@ -27,19 +17,13 @@ Ext.define('AOC.controller.MenuController', {
         selector: 'viewport',
         ref: 'viewport'
     }, {
-        selector: 'viewport canwas maincontainer',
-        ref: 'mainCard'
-    }, {
-        selector: 'viewport #AOCContainer',
-        ref: 'mainContainer'
-    }, {
         selector: 'viewport #EmailManagementitemId',
         ref: 'emailManagementgrid'
     }, {
         selector: 'viewport #taskManageritemId',
         ref: 'taskManagerGrid'
     }, {
-        selector: 'viewport #OrderQueueGridItemId',
+        selector: 'viewport orderqueuegrid',
         ref: 'orderQueueGrid'
     }, {
         selector: 'viewport #PartnerMangementitemId',
@@ -51,35 +35,23 @@ Ext.define('AOC.controller.MenuController', {
         selector: 'viewport #archiveManageGriditemId',
         ref: 'archiveManagegrid'
     }, {
-        ref: 'mainMenu',
-        selector: 'viewport canwas mainmenu'
-    }, {
         ref: 'orderQueueViewContainer',
-        selector: 'viewport canwas maincontainer orderqueueview'
+        selector: 'viewport app-main orderqueueview'
     }, {
         ref: 'clearOrderQueueAdvSearch',
         selector: 'viewport orderqueuegrid #clearadvanedsearch'
+    }, {
+    	ref:'appMain',
+    	selector:'viewport app-main'
     }],
-    menuInstructions: AOC.config.MenuInstructions,
     init: function () {
         var me = this;
         me.control({
-            'viewport canwas mainmenu': {
-                clickmenu: me.onClickMainMenu
-            },
             'viewport aocheader': {
                 clickprofilemenu: me.onClickProfileMenu
             },
             'viewport aoclogin': {
                 login: me.onClickLogIn
-            },
-            'viewport canwas profileinfowrapper #toptoolbar': {
-                edit: me.onClickEditProfile,
-                changepassword: me.onClickChangePassword
-            },
-            'viewport canwas profileinfowrapper #bottomtoolbar': {
-                save: me.onClickSaveProfile,
-                cancel: me.onClickCancelProfile
             }
         });
 
@@ -92,16 +64,18 @@ Ext.define('AOC.controller.MenuController', {
         });
 
         me.runtime = AOC.config.Runtime;
-        me.loadSectionStore();
     },
+    changeTabPanel:function(tabIndex){
+    	var appMain = this.getAppMain();
 
-    onChangeMainView: function (xtype, emailQueueId) {
-        this.selectCard(xtype);
+        appMain.setActiveTab(tabIndex);
+    },
+    onChangeMainView: function (xtype, emailQueueId, tabIndex) {
         if (xtype == 'orderqueueview') {
             var store = this.getOrderQueueGrid().getStore(),
-                mainMenu = this.getMainMenu();
+                appMain = this.getAppMain();
 
-            mainMenu.getSelectionModel().select(mainMenu.getStore().getAt(3), false, true); //select tab
+            appMain.setActiveTab(tabIndex);
             this.getOrderQueueViewContainer().getLayout().setActiveItem(0); //set default item
 
             //filter order queue grid for respective emailqueue id
@@ -140,17 +114,11 @@ Ext.define('AOC.controller.MenuController', {
                     Helper.setCookie("authorization", obj["token"], tokenExpires);
                     var userInfo = obj["userinfo"];
                     me.runtime.setUser(userInfo);
-                    Helper.updateHeaderUserName();
-                    Helper.updateProfileInfo();
+                    
                     Helper.setCookie("userinfo", JSON.stringify(userInfo), tokenExpires);
-                    Helper.setCookie("menuList", JSON.stringify(obj['menuList']), tokenExpires);
-                    var sectionStore = me.getSectionsStore();
-                    if (obj['menuList']) {
-                        sectionStore.loadData(obj['menuList']);
-                    }
+                    Helper.updateProfileInfo();
 
                     Ext.getBody().unmask();
-                    me.loadSectionStore();
                     me.loadStores();
                     me.changeViewportCard(1);
                 },
@@ -278,67 +246,20 @@ Ext.define('AOC.controller.MenuController', {
         }
     },
     onProfileMenuItemClick: function () {
-        var me = this,
-            topToolbar = Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
-        me.selectCard('profileinfowrapper');
-        me.selectProrfileCard(0);
-        me.updateTopToolBar(true, profileInfo);
-        me.updateBottomToolBar(false);
-        Helper.updateProfileInfo();
-        me.selectMenuItem(null);
-        
-        var user = AOCRuntime.getUser();
-        	mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0],
-        	userinfo = mainprofilewrapper.down('userinfo'),
-        	systemCsrCodeOwner = user.systemCsrCodeOwner,
-        	systemCsrNonCodeOwner = user.systemCsrNonCodeOwner,
-        	systemCsrCombinedCodes ='';
-	    if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
-	        systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
-	    }
-	    else{
-	    	if(systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())){
-	    		systemCsrCombinedCodes = systemCsrCodeOwner;
-	    	}
-	    	else if(systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim())){
-	    		systemCsrCombinedCodes = systemCsrNonCodeOwner;
-	    	}
-	    }
-	    if(systemCsrCombinedCodes!=null && !Ext.isEmpty(systemCsrCombinedCodes.trim())){
-		    Ext.Ajax.request({
-		    	url:applicationContext+'/rest/systemcsrcode',
-		    	method:'GET',
-		    	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
-		    	success: function (response, opts) {
-		    		var systemCsrGridData = Ext.JSON.decode(response.responseText),
-		    			gridData = systemCsrGridData.data,
-		    			csrCodeOwnerArray = [],
-		    			csrCodeNonOwnerArray = [];
-		    		for(i=0;i<gridData.length;i++){
-		    			csrCodes = gridData[i].csrCode;
-		    			csrId = gridData[i].id;
-		    			if(systemCsrCodeOwner.indexOf(csrId).toString() != -1){
-		    				csrCodeOwnerArray.push(csrCodes);
-		    			}
-		    			else if(systemCsrNonCodeOwner.indexOf(csrId).toString() != -1){
-		    				csrCodeNonOwnerArray.push(csrCodes);
-		    			}
-		    		}
-		    		userinfo.down('#csrCodeOwnerName').setValue(csrCodeOwnerArray);
-		    		userinfo.down('#csrNonCodeOwnerName').setValue(csrCodeNonOwnerArray);
-		        },
-		        failure: function (response, opts) {
-		            msg = response.responseText;
-		            Helper.showToast('failure', msg);
-		        }
-		    });
-	    }
+        var win = Ext.create('AOC.view.users.myprofile.AddUserWindow',{
+        	title:'My Profile', 
+        	mode:'view'
+    	});
+        var viewPort = this.getViewport();
+        viewPort.add(win).showBy(Ext.getBody());
     },
     onManageUserMenuItemClick: function () {
-        this.selectCard('users');
+    	var win = Ext.create('AOC.view.users.manage.Wrapper',{title:'Manage Users'});
+    	win.show();
     },
     onManageRoleMenuItemClick: function () {
-        this.selectCard('roles');
+    	var win = Ext.create('AOC.view.users.roles.ManageRoleWindow',{title:'Manage Roles'});
+    	win.show();
     },
     onLogout: function () {
         var me = this;
@@ -347,105 +268,19 @@ Ext.define('AOC.controller.MenuController', {
         Helper.deleteCookie('menuList');
         window.location.reload();
     },
-    onClickEditProfile: function () {
-        var me = this,
-        	userinfo = me.runtime.getUser(),
-        	userId = userinfo.id,
-        	win = Ext.create('AOC.view.users.myprofile.AddUserWindow',{
-        		 mode  : 'edit',
-        		 ID    :  userId,
-                 title : 'Edit Profile'
-        	});
-        win.down('#roledisplayfield').setHidden(false);
-        win.down('form').getForm().setValues(userinfo);
-        win.down('#newPassword').setValue('');
-        var refs = win.getReferences(),
-    		profileImage = refs.profileImage;
-    		profileImage.setSrc(Helper.getFilePath());
-        if(userId == 1){
-	        win.down('#site').setHidden(true);
-	        win.down('#newPassword').setHidden(false);
-	        win.down('#confirmPassword').setHidden(false);
-        }
-        win.down('#site').setDisabled(true);
-        win.down('#role').setHidden(true);
-        win.show();
-    },
-    onClickChangePassword: function () {
-        var me = this;
-        me.selectProrfileCard(1);
-        me.updateTopToolBar(false, changedPassword);
-        me.updateBottomToolBar(true);
-    },
+    
     selectProrfileCard: function (index) {
         var mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0];
         mainprofilewrapper.getLayout().setActiveItem(index);
     },
-    updateTopToolBar: function (flag, title) {
-        var topToolbar = Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
-        topToolbar.down('#changepasswordbtn').setVisible(flag);
-        topToolbar.down('#editbutton').setVisible(flag);
-        if (!Ext.isEmpty(title)) {
-            topToolbar.updateTitle(title);
-        }
-    },
-    updateBottomToolBar: function (flag) {
-        var bottomToolbar = Ext.ComponentQuery.query('profileinfowrapper #bottomtoolbar')[0];
-        bottomToolbar.down('#cancel').setVisible(flag);
-        bottomToolbar.down('#save').setVisible(flag);
-    },
-    onClickSaveProfile: function (cmp) {
-        var me = this,
-            user = me.runtime.getUser(),
-            id = user.id,
-            activeForm = mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0].getLayout().getActiveItem();
-
-        Ext.getBody().mask(pleaseWait);
-        if (activeForm.xtype == 'changepassword') {
-            Ext.Ajax.request({
-                method: 'PUT',
-                type: 'rest',
-                jsonData: activeForm.getValues(),
-                url: Settings.getBaseUserUrl() + '/' + id,
-                headers: {
-                    "Authorization": "Basic YWRtaW46aW5kaWdvMQ=="
-                },
-                scope: me,
-                success: function (res) {
-                	if(activeForm.down('#newPassword').value == "" || activeForm.down('#confirmPassword').value == "" || activeForm.down('#currentPassword').value == "" ){
-                		Helper.showToast('validation',AOCLit.editFieldEntryMsg);
-                		Ext.getBody().unmask();
-                	}
-                	else{
-	                    Ext.getBody().unmask();
-	                    var userInfo = Ext.decode(res.responseText);
-	                    me.runtime.setUser(userInfo.user);
-	                    Helper.updateHeaderUserName();
-	                    Helper.setCookie("userinfo", JSON.stringify(userInfo.user), 30);
-	                    me.selectProrfileCard(0);
-	                    me.updateTopToolBar(true, profileInfo);
-	                    me.updateBottomToolBar(false);
-	                    Helper.updateProfileInfo();
-	                    var message = (activeForm.xtype == 'createuser') ? personalInformation : password;
-	                    message = message + savedSuccessfully;
-	                    Helper.showToast('Success', message);
-	                    activeForm.reset();
-                	}
-                },
-                failure: function (rsp) {
-                    Ext.getBody().unmask();
-                    Ext.Msg.alert(weFacedError + "save information", rsp.responseText, null, me, null);
-                    return;
-                }
-            });
-        }
-    },
-    onClickCancelProfile: function (cmp) {
-        var me = this;
-        me.selectProrfileCard(0);
-        me.updateTopToolBar(true, profileInfo);
-        me.updateBottomToolBar(false);
-    },
+//    updateTopToolBar: function (flag, title) {
+//        var topToolbar = Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
+//        topToolbar.down('#changepasswordbtn').setVisible(flag);
+//        topToolbar.down('#editbutton').setVisible(flag);
+//        if (!Ext.isEmpty(title)) {
+//            topToolbar.updateTitle(title);
+//        }
+//    },
     selectMenuItem: function (xtype) {
         var cmp = Ext.ComponentQuery.query('viewport canwas mainmenu')[0],
             store = cmp.getStore(),
@@ -454,31 +289,7 @@ Ext.define('AOC.controller.MenuController', {
         rec ? cmp.getSelectionModel().select(rec) : cmp.getSelectionModel().deselectAll();
     },
     loadStores: function () {
-    	var userInfo = AOCRuntime.getUser(),
-    		currentUserRoleId = userInfo.role,
-    		currentUserId = userInfo.id,
-    		currentUserSiteId = userInfo.siteId, 
-    		homeListStore = Ext.getStore('HomePageOders');
-    	if(currentUserRoleId == 3){
-    		var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId};
-    		homeListStore.proxy.setFilterParam('query');
-    		homeListStore.setRemoteFilter(true);
-            if (!homeListStore.proxy.hasOwnProperty('filterParam')) {
-            	homeListStore.proxy.setFilterParam('query');
-            }
-            homeListStore.proxy.encodeFilters = function(filters) {
-                return filters[0].getValue();
-            };
-            homeListStore.filter({
-                id: 'query',
-                property: 'query',
-                value: Ext.JSON.encode(values)
-            });			
-    	}
-    	else{
-    		homeListStore.proxy.extraParams = { siteId: currentUserSiteId };
-    		homeListStore.load();
-    	}
+        Ext.getStore('HomePageOders').load();
         Helper.loadVariableComboStore('FreightTerms');
         Helper.loadVariableComboStore('ShippingMethod');
         Helper.loadVariableComboStore('CSR');
@@ -502,13 +313,5 @@ Ext.define('AOC.controller.MenuController', {
                 AOCRuntime.setTimeZone(timeZone);
             }
         });
-    },
-    loadSectionStore: function () {
-        var me = this,
-            sectionStore = me.getSectionsStore(),
-            menuList = Helper.getCookie('menuList') ? JSON.parse(Helper.getCookie('menuList')) : '';
-        if (menuList) {
-            sectionStore.loadData(menuList);
-        }
     }
 });

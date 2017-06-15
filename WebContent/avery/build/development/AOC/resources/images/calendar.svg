@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>calendar</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="icons" sketch:type="MSArtboardGroup" transform="translate(-154.000000, -43.000000)" fill="#2F3338">
+            <g id="Group" sketch:type="MSLayerGroup" transform="translate(155.000000, 44.000000)">
+                <path d="M6,2 L6,2 L6,1 L10,1 L10,2 L6,2 Z M3,2 L1,2 L1,2 L1,15 L15,15 L15,2 L13,2 M13,2 L13,1 L15.0010434,1 C15.5527519,1 16,1.44892021 16,2.00748397 L16,14.992516 C16,15.5489341 15.5553691,16 14.9991283,16 L1.00087166,16 C0.448105505,16 0,15.5510798 0,14.992516 L0,2.00748397 C0,1.45106594 0.442660332,1 0.998956561,1 L3,1 L3,2 L13,2 Z" id="Shape" sketch:type="MSShapeGroup"></path>
+                <rect id="Rectangle-531" sketch:type="MSShapeGroup" x="1" y="5" width="14" height="1"></rect>
+                <rect id="Rectangle-531" sketch:type="MSShapeGroup" x="4" y="0" width="1" height="3" rx="1"></rect>
+                <rect id="Rectangle-531-Copy" sketch:type="MSShapeGroup" x="11" y="0" width="1" height="3" rx="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

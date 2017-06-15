@@ -519,5 +519,11 @@ Ext.define('AOC.lang.lit',{
     userExistMsg:'An entry already exist for given email address',
     csrCodeOwnerName:'CSR Code Owner name',
     csrNonCodeOwnerName:'CSR Non-Code Owner name',
-    csrCodeExist:'An entry already exist for selected CSR code'
+    csrCodeExist:'An entry already exist for selected CSR code',
+    tablist:{
+    	taskManagerTabIndex:1,
+    	emailQueueTabIndex:2,
+    	orderQueueTabIndex:3,
+    	webOrderTabIndex:4
+	}
 });

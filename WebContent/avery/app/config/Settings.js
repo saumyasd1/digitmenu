@@ -38,12 +38,12 @@ Ext.define('AOC.config.Settings',{
          cross:'fa fa-times'
     },
     buttonIcons : {
-         logoImage:'avery/resources/images/logo_avery.gif',
+         logoImage:'resources/images/logo_avery.gif',
          logout:'avery/resources/images/logout.png',
          settings:'avery/resources/images/settings.png',
          notification:'avery/resources/images/notification.png',
          arrowDown:'avery/resources/images/arrow-down.png',
-         backIcon:'avery/resources/images/arrow-lef.svg',
+         backIcon:'resources/images/arrow-lef.svg',
          tick:'avery/resources/images/tick.svg',
          warning:'avery/resources/images/warning.svg',
          watch:'avery/resources/images/watch.png',
@@ -57,7 +57,7 @@ Ext.define('AOC.config.Settings',{
          success:'avery/resources/images/success.jpg',
          invalid_field:'avery/resources/images/invalid_field.jpg',
          addImage:'avery/resources/images/add.png',
-         menuIcon:'avery/resources/images/menuList.png',
+         menuIcon:'resources/images/menuList.png',
          editIcon:'avery/resources/images/edit.png',
          BackIcon:'avery/resources/images/backButton.png',
          commentIcon:'avery/resources/images/comment.png',

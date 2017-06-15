@@ -52,7 +52,7 @@ int pageSize=100;
 <body>
 <div  id="loading">
 		<div id="loading-text">
-		<div><img style="width:60px;height:60px" src="avery/resources/images/logo_avery.gif"></div>
+		<div><img style="width:60px;height:60px" src="resources/images/logo_avery.gif"></div>
 			Loading...
 		</div>
 	</div>
