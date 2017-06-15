@@ -119,7 +119,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								tabIndex:5,
 								typeAhead:true,
 								enableKeyEvents:true,
-								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId'),
+								store: Ext.data.StoreManager.lookup('AssignCSRStore'),
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -191,7 +191,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'assignCSR',
 								valueField:'id',
 								queryMode:'local',
-								store:Ext.create('AOC.store.AssignCSRStore'),
+								store:Ext.data.StoreManager.lookup('AssignCSRStore') != null ?  Ext.data.StoreManager.lookup('AssignCSRStore') : Ext.create('AOC.store.AssignCSRStore'),
 								typeAhead:true,
 								triggerAction:'all',
 								flex:1,

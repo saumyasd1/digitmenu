@@ -2,7 +2,7 @@ Ext.define('AOC.store.AssignCSRStore', {
 	extend : 'Ext.data.Store',
 	model:'AOC.model.AssignCSRModel',
 	remoteSort: true,
-	storeId:'AssignCSRStore',
+	//storeId:'AssignCSRStore',
 	proxy:{
 		type:'ajax',
 		url: applicationContext+'/rest/users/csrlist',
