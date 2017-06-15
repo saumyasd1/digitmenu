@@ -41,10 +41,26 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
     	    	 style:AOC.config.Settings.config.tabHeaderTitleStyle
     	     },'->',
     	     {
+   				xtype:'displayfield',
+   				itemId:'siteDisplay',
+   				fieldLabel:'Site',
+   				width:220,
+       	    	labelStyle:Settings.config.defaultFormLabelStyle,
+       	    	labelSeparator:'',
+       	    	currentItemRef:'siteDisplayfield',
+       	    	labelWidth:80,
+       	    	editable:false,
+   				reference:'siteDisplayfield',
+   				hidden:true,
+   				listeners : {
+  					'afterrender':'onAfterRenderSiteDisplayfield'
+  				}
+     	     },
+    	     {
   				xtype:'combobox',
   				name: 'siteId',
   				fieldLabel:'Site',
-  				width:280,
+  				width:220,
       	    	labelStyle:Settings.config.defaultFormLabelStyle,
       	    	labelSeparator:'',
       	    	currentItemRef:'siteCombo',
@@ -59,32 +75,33 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
   					'afterrender':'onAfterRenderSiteCombo',
   					'change':'onChangeSiteCSRCodeCombo'
   				}
-    	     }, {
+    	     }, 
+    	     {
   				xtype:'combo',
   				fieldLabel:'CSR Code',
       	    	labelStyle:Settings.config.defaultFormLabelStyle,
       	    	labelSeparator:'',
       	    	labelWidth:80,
-  				width:280,
+  				width:300,
   				displayField:'csrName',
   				currentItemRef:'csrCombo',
+  				editable:false,
   				reference:'csrCombo',
   				name:'assignCSR',
-  				disabled:true,
   				valueField:'id',
   				queryMode:'local',
   				store:Ext.create('AOC.store.AssignCSRStore'),
-  				typeAhead:true,
+//  				typeAhead:true,
   				enableKeyEvents:true,
   				listeners:{
   					blur:function(combo,e){
   						Helper.clearCSRCombo(combo,e);
   					},
-  					'afterrender':'onAfterRenderCSRCombo',
   					'focus':'onFocusCSRcombo',
   					'change':'onChangeSiteCSRCodeCombo'
   				}
-    	     }, {
+    	     }, 
+    	     {
     	    	xtype:'combo',
     	    	displayField:'Name',
     	    	fieldLabel:'Refresh Rate',
@@ -107,7 +124,8 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
     	    	listeners:{
     	    		select:'onRefreshRateComboSelect'
     	    	}
-    	     }, {
+    	     },
+    	     {
     	    	 text:'',
     	    	 scale:'medium',
     	    	 cls:'aoc-btn',
