@@ -72,15 +72,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	var activeIndex = panel.items.indexOf(this.getView());
     	var currentRecord=this.runTime.getOrderQueueActiveRecord();
         panel.getLayout().setActiveItem(parseInt(activeIndex)-1);
-        //var ordeQueueGrid=panel.down('#OrderQueueGridItemId');
-        //var currentRecord=this.runTime.getOrderQueueActiveRecord();
-        //var row = ordeQueueGrid.getView().getRow(currentRecord);
-//        var el = Ext.fly(row);
-//        if(el)
-//        el.highlight("#c1ddf1", {
-//            attr: "backgroundColor",
-//            duration: 5000
-//        });
         this.getView().destroy();
     },
     radioButtonClick:function(obj,newValue,oldValue){
@@ -117,34 +108,33 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     	}
     },
     saveSalesOrder:function(){
-    	       var grid=this.getView();me=this;
-    	       var store=grid.store,
-    	       parms ='';
-    	       var updatedRecords=store.getModifiedRecords();
-    	       Ext.each(updatedRecords,function(record){
-    	           var obj=record.getChanges( ) ;
-    	           obj.id=record.id;
-    	           if(parms=='')
-    	               parms=parms+Ext.encode(obj);
-    	           else 
-    	               parms=parms+'@@@'+Ext.encode(obj);
-    	             
-    	            });
-    	       Ext.Ajax.request({
-    	           method:'PUT',
-    	            jsonData:parms,
-    	              url : applicationContext+'/rest/salesorders/bulkupdate',
-    	                success : function(response, opts) {
-    	                      Ext.Msg.alert(AOCLit.updateSalesOrderMsg);
-    	                      Ext.getBody().unmask();
-    	                      me.getView().store.load();
-    	                },
-    	                failure: function(response, opts) {
-    	                    Ext.getBody().unmask();
-    	              }
-    	             }); 
-    	       
-    	   
+       var grid=this.getView();me=this;
+       var store=grid.store,
+       parms ='';
+       var updatedRecords=store.getModifiedRecords();
+       
+       Ext.each(updatedRecords,function(record){
+           var obj=record.getChanges( ) ;
+           obj.id=record.id;
+           if(parms=='')
+               parms=parms+Ext.encode(obj);
+           else 
+               parms=parms+'@@@'+Ext.encode(obj);
+             
+        });
+       	Ext.Ajax.request({
+           method:'PUT',
+            jsonData:parms,
+              url : applicationContext+'/rest/salesorders/bulkupdate',
+                success : function(response, opts) {
+                      Ext.Msg.alert(AOCLit.updateSalesOrderMsg);
+                      Ext.getBody().unmask();
+                      me.getView().store.load();
+                },
+                failure: function(response, opts) {
+                    Ext.getBody().unmask();
+              }
+         }); 
     },
     saveSalesOrderDetails:function(){
      	var grid=this.getView(),me=this;
@@ -207,23 +197,23 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
     submitOrder:function(){
         var id = this.runTime.getOrderQueueId(),
         me = this;
-    var parameters = '{\"status\":\"' + AOCLit.submitToOracleStatus + '\"';
-    parameters = parameters + '}';
-    Ext.Ajax.request({
-        url: applicationContext + '/rest/orders/submittosystem/' + id,
-        method: 'PUT',
-        jsonData: parameters,
-        success: function(response, opts) {
-        	me.getView().lookupReference('submitOrder').hide();
-    		me.getView().lookupReference('lastTab').hide();
-            Ext.Msg.alert('Alert',AOCLit.submitOrderMsg);
-            me.getView().store.load();
-            Ext.getBody().unmask();
-        },
-        failure: function(response, opts) {
-            Ext.getBody().unmask();
-        }
-    });
+	    var parameters = '{\"status\":\"' + AOCLit.submitToOracleStatus + '\"';
+	    parameters = parameters + '}';
+	    Ext.Ajax.request({
+	        url: applicationContext + '/rest/orders/submittosystem/' + id,
+	        method: 'PUT',
+	        jsonData: parameters,
+	        success: function(response, opts) {
+	        	me.getView().lookupReference('submitOrder').hide();
+	    		me.getView().lookupReference('lastTab').hide();
+	            Ext.Msg.alert('Alert',AOCLit.submitOrderMsg);
+	            me.getView().store.load();
+	            Ext.getBody().unmask();
+	        },
+	        failure: function(response, opts) {
+	            Ext.getBody().unmask();
+	        }
+	    });
     },
     cancelSalesOrderLine:function(){
     	Ext.getBody().mask('Validating....');
@@ -245,6 +235,6 @@ Ext.define('AOC.view.orderqueue.SalesOrderViewController', {
 		        failure: function(response, opts) {
 		        	Ext.getBody().unmask();
 	          }
-    		  }); 
+    	}); 
     }
 });
