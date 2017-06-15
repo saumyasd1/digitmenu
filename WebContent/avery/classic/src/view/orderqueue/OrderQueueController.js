@@ -16,6 +16,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
   getReportView:function(obj){
 		var win=Ext.create('AOC.view.base.NewBaseWindow',{
 			title:'Report',
+			width:700,
 			items:[{
 				xtype:'reportform'
 			}]

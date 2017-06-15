@@ -37,7 +37,7 @@
          var me = this;
          return [{
              xtype: 'form',
-             itemId: 'changepasswordform',
+             reference:'changePasswordForm',
              layout: {
                  type: 'vbox',
                  align:'stretch'

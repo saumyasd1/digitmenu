@@ -15,22 +15,20 @@ Ext.define('AOC.view.home.ReportForm',{
         me.callParent(arguments);
         me.helper = AOC.util.Helper;
     },
+    bodyPadding:10,
 
     buildItems : function(){
         var me = this;
-        var tz = Ext.Date.getTimezone(new Date());
-        var serverTz = AOCRuntime.getTimeZone();
         return [
             {
 				xtype: 'fieldcontainer',
 	            layout: 'hbox',
-	            margin : '20 0 0 10',
 	            items:[
 					{
 						xtype:'combo',
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
-						store:'PartnerManagementStore',
+						store : Ext.data.StoreManager.lookup('partnerStoreId') != null ? Ext.data.StoreManager.lookup('partnerStoreId') : Ext.create('AOC.store.PartnerManagementStore',{storeId:'partnerStoreId'}),
 						valueField:'id',
 						name:'partnerName',
 						editable:false,
@@ -88,14 +86,6 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    	}
 	                    }
 					}
-//					{
-//						xtype:'combo',
-//						name:'timeZone',
-//						reference:'timeZone',
-//						editable:false,
-//						margin:'0 20 0 0',
-//						store:[[serverTz, serverTz],[tz, tz]],
-//					}
 				]
 	        },
 			{
@@ -142,7 +132,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						allowBlank : true,
 						selectOnTab : true,
 						listeners : {
-							render : function(datefield) {
+							afterrender : function(datefield) {
 								datefield.setValue(new Date());
 							}
 						}
@@ -157,10 +147,10 @@ Ext.define('AOC.view.home.ReportForm',{
 						allowBlank : true,
 						selectOnTab : true,
 						listeners : {
-							render : function(datefield) {
+							afterrender : function(datefield) {
 								datefield.setValue(new Date());
 							},
-							'focus': 'notifyByMessage'
+							focus: 'notifyByMessage'
 						}
 					}
 				]
@@ -172,7 +162,7 @@ Ext.define('AOC.view.home.ReportForm',{
 	    	text:'Get Report',
 	    	formBind:true,
 	    	listeners:{
-	    		'click':'getReport'
+	    		click:'getReport'
 	    	}
          }
      ]
