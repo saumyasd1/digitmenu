@@ -140,7 +140,6 @@ Ext.define('AOC.view.home.HomePageController', {
 				break;
 		}
 	},
-	
 	refreshGridByInterval:function(secs){
 		var me = this;
 		if(me.refreshinterval){
@@ -155,25 +154,30 @@ Ext.define('AOC.view.home.HomePageController', {
 	    	userId = userInfo.id,
 	    	siteId = userInfo.siteId,
 	    	roleId = userInfo.role;
-	    if(roleId == 3){
-	    	obj.setHidden(true);
-	    }
-	    else{
 		    obj.getStore().proxy.extraParams = {
 			    siteId: siteId,
 			    userId: userId
 		    };
 		    obj.getStore().load();
-	    }
 	},
 	onFocusCSRcombo: function(obj){
 		var me = this,
 			refs = me.getReferences(),
 			siteCombo = refs.siteCombo,
-			siteComboValue = siteCombo.getValue();
-		obj.getStore().proxy.extraParams = {
-		    siteId: siteComboValue
-		};
+			siteComboValue = siteCombo.getValue(),
+			userinfo = AOCRuntime.getUser(),
+			roleId = userinfo.role,
+			siteId = userinfo.siteId;
+		if(roleId != 1){
+			obj.getStore().proxy.extraParams = {
+			    siteId: siteId
+			};
+		}
+		else {
+			obj.getStore().proxy.extraParams = {
+			    siteId: siteComboValue
+			};
+		}
 		obj.getStore().load();
 	},
 	onChangeSiteCSRCodeCombo: function( obj, newValue, oldValue, eOpts ){
@@ -204,7 +208,20 @@ Ext.define('AOC.view.home.HomePageController', {
         	csrCombo.reset();
         }
 	},
-	onAfterRenderCSRCombo: function(combo){
-			if(AOCRuntime.getUser().role == 3) combo.setHidden(true);
+	onAfterRenderSiteDisplayfield: function(field){
+		var me = this,
+			refs = me.getReferences(),
+			userObj = AOCRuntime.getUser(),
+			roleId = userObj.role,
+			siteCombo = refs.siteCombo,
+			csrCombo = refs.csrCombo,
+			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
+			siteName = userObj.siteName;
+		if(roleId != 1){
+			field.setHidden(false);
+			field.setValue(siteName);
+			siteCombo.setHidden(true);
+			csrCombo.setValue(systemCsrNonCodeOwner);
 		}
+	}
 });
