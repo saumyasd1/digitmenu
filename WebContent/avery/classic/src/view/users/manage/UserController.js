@@ -20,7 +20,8 @@ Ext.define('AOC.view.users.manage.UserController', {
         win.close();
     },
     onClickMenu: function (obj, rowIndex, colIndex, item, e, record) {
-        var me = this;
+        var me = this,
+        	gridView = me.getView();
         var callout = Ext.widget('callout', {
                 cls: 'white more-menu-item-callout extra',
                 html: me.menuTpl.apply(record.data),
@@ -32,13 +33,13 @@ Ext.define('AOC.view.users.manage.UserController', {
                 listeners: {
                     afterrender: me.onAfterRenderEditCallout,
                     edit: function (cmp) {
-                        var me = this,
-                            currentRecord = e.record,
+                        var currentRecord = e.record,
                             data = currentRecord.data,
                             id = data.id,
                             win = Ext.create('AOC.view.users.myprofile.AddUserWindow', {
 	                            mode: 'edit',
 	                            ID: id,
+	                            gridView: gridView,
 	                            title: 'Edit User'
                             });
                         var refs = win.getReferences(),
