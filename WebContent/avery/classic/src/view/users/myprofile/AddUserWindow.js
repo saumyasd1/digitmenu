@@ -346,12 +346,14 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                 {	
                 	name:'csrCodeOwnerName',
                 	fieldLabel:AOCLit.csrCodeOwnerName,
-                    bind:'{userInfo.csrCodeOwnerName}'
+                    bind:'{userInfo.csrCodeOwnerName}',
+                    hidden:true
                 },
                 {	
                 	name:'csrNonCodeOwnerName',
                 	fieldLabel:AOCLit.csrNonCodeOwnerName,
-                    bind:'{userInfo.csrNonCodeOwnerName}'
+                    bind:'{userInfo.csrNonCodeOwnerName}',
+                    hidden:true
                 }]
             }]
         }];
