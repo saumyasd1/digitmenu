@@ -4,6 +4,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 	emptyText:AOCLit.emptyDataMsg,
 	requires:['AOC.view.home.HomePageController'],
 	controller:'homepagecontroller',
+	frame:true,
 	initComponent : function(){
 		var me=this;
 		Ext.apply(this,{
@@ -12,10 +13,6 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 	        store:'HomePageOders',
 	        columnLines:false,
 	        rowLines: false,
-	        tbar: { 
-				height: AOC.config.Settings.config.defaultTbarHeight,
-				items : me.buildTbar()
-			},
 	        viewConfig : {
 	            stripeRows: false,
 	            getRowClass: function(record,num) {
@@ -32,108 +29,6 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 	},
 	listeners:{
         cellclick:'onOrderQueueStatusCellClick'
-    },
-    buildTbar:function(){
-    	return [
-    	     {
-    	    	 xtype:'tbtext',
-    	    	 text:'Order Queue Status',
-    	    	 style:AOC.config.Settings.config.tabHeaderTitleStyle
-    	     },'->',
-    	     {
-   				xtype:'displayfield',
-   				itemId:'siteDisplay',
-   				fieldLabel:'Site',
-   				width:220,
-       	    	labelStyle:Settings.config.defaultFormLabelStyle,
-       	    	labelSeparator:'',
-       	    	currentItemRef:'siteDisplayfield',
-       	    	labelWidth:80,
-       	    	editable:false,
-   				reference:'siteDisplayfield',
-   				hidden:true,
-   				listeners : {
-  					'afterrender':'onAfterRenderSiteDisplayfield'
-  				}
-     	     },
-    	     {
-  				xtype:'combobox',
-  				name: 'siteId',
-  				fieldLabel:'Site',
-  				width:220,
-      	    	labelStyle:Settings.config.defaultFormLabelStyle,
-      	    	labelSeparator:'',
-      	    	currentItemRef:'siteCombo',
-      	    	labelWidth:80,
-      	    	editable:false,
-  				displayField: 'name',
-  				queryMode :'local',
-  				reference:'siteCombo',
-  				valueField: 'id',
-  				store:Ext.create('AOC.store.SiteStore'),
-  				listeners : {
-  					'afterrender':'onAfterRenderSiteCombo',
-  					'change':'onChangeSiteCSRCodeCombo'
-  				}
-    	     }, 
-    	     {
-  				xtype:'combo',
-  				fieldLabel:'CSR Code',
-      	    	labelStyle:Settings.config.defaultFormLabelStyle,
-      	    	labelSeparator:'',
-      	    	labelWidth:80,
-  				width:300,
-  				displayField:'csrName',
-  				currentItemRef:'csrCombo',
-  				editable:false,
-  				reference:'csrCombo',
-  				name:'assignCSR',
-  				valueField:'id',
-  				queryMode:'local',
-  				store:Ext.create('AOC.store.AssignCSRStore'),
-//  				typeAhead:true,
-  				enableKeyEvents:true,
-  				listeners:{
-  					blur:function(combo,e){
-  						Helper.clearCSRCombo(combo,e);
-  					},
-  					'focus':'onFocusCSRcombo',
-  					'change':'onChangeSiteCSRCodeCombo'
-  				}
-    	     }, 
-    	     {
-    	    	xtype:'combo',
-    	    	displayField:'Name',
-    	    	fieldLabel:'Refresh Rate',
-    	    	labelStyle:Settings.config.defaultFormLabelStyle,
-    	    	labelSeparator:'',
-    	    	labelWidth:100,
-    	    	valueField:'id',
-    	    	value:0,
-    	    	queryMode:'local',
-    	    	reference:'refreshRateCombo',
-    	    	name:'refreshRateCombo',
-    	    	editable:false,
-    	    	store:new Ext.data.JsonStore({
-    	    		data:[
-    	    		    {Name:'Don\'t Refresh',id:0},
-    	    		    {Name:'5 min', id:5},{Name:'10 min',id:10},{Name:'15 min', id:15}    
-    	    		],
-    	    		fields:['Name','id']
-    	    	}),
-    	    	listeners:{
-    	    		select:'onRefreshRateComboSelect'
-    	    	}
-    	     },
-    	     {
-    	    	 text:'',
-    	    	 scale:'medium',
-    	    	 cls:'aoc-btn',
-    	    	 tooltip:'<font color="blue">Quick Refresh</font>',
-    	    	 iconCls:'fa fa-refresh aoc-icon',
-    	    	 handler:'onRefreshClick'
-    	     }
-    	];
     },
 	buildColumns : function(){
     	var me=this;

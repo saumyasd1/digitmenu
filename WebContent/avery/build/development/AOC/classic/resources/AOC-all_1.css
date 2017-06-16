@@ -120,75 +120,76 @@
     font-size: 16px;
     width: 16px !important;
     height: 16px;
+    color: #2c3e50 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:96 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:97 */
 .success-icon {
     color: #4bde4b;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:99 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:100 */
 .failure-icon {
     color: red;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:102 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:103 */
 .warning-icon {
     color: orange;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:105 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:106 */
 .aoc-panel .x-toolbar .x-btn .x-btn-icon-el {
     height: 16px;
     font-size: 16px;
     color: #2c3e50;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:108 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:109 */
 .aoc-panel .x-toolbar .x-btn.blue-btn .x-btn-icon-el {
     color: #fff;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:111 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:112 */
 .x-btn.blue-btn.x-toolbar-item {
     background-color: #65beed !important;
     border-color: #65beed !important;
     color: #fff !important;
     background-image: none !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:117 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:118 */
 .x-btn.blue-btn.x-toolbar-item.x-btn-over {
     background-color: #65beed !important;
     border-color: #65beed !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:121 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:122 */
 .x-btn.blue-btn.x-toolbar-item.x-btn-over .x-btn-inner,
 .x-btn.blue-btn.x-toolbar-item .x-btn-inner {
     color: #fff;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:124 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:125 */
 .x-btn.blue-btn.x-toolbar-item.x-btn-focus.x-btn-pressed {
     box-shadow: #65beed 0px -1px 0px 0px !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:127 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:128 */
 .aoc-panel .x-toolbar .x-btn .x-btn-icon-el-blue-small {
     color: #fff;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:128 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:129 */
 .blue-btn.x-btn-over {
     box-shadow: 0px 0px 4px 0px #65beed;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:129 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:130 */
 .x-btn {
     border-radius: 2px !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:130 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:131 */
 .x-panel-header-default .x-tool-img {
     background-color: transparent !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:133 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:134 */
 .aoc-wi-form .x-form-invalid-field-default {
     background-color: rgba(255, 59, 0, 0.37);
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:136 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:137 */
 .aoc-wi-form .x-form-item-default.x-item-disabled {
     opacity: 0.6 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:139 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:140 */
 .x-column-header {
     border-right: 1px solid #cecece;
     color: #666;
@@ -196,44 +197,44 @@
     outline: 0;
     background-color: #ededed;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:146 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:147 */
 .x-column-header-text {
     text-align: center;
     white-space: normal !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:150 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:151 */
 .wi-grid .x-grid-row-radio {
     margin: 0px auto;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:153 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:154 */
 .gray-out-row {
     opacity: 0.5;
     background: #ccc;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:157 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:158 */
 .x-grid-td {
     vertical-align: middle !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:160 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:161 */
 .main-menu-list .section-wrap .section-wrap-text {
     color: #2c3e50 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:161 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:162 */
 .main-menu-list .section-wrap-text {
     padding-top: 0px !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:162 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:163 */
 .main-menu-list .section-wrap-selected .section-wrap-img,
 .main-menu-list .section-wrap-selected .section-wrap-text,
 .main-menu-list .section-wrap .section-wrap-text:hover,
 .main-menu-list .section-over .section-wrap-img {
     color: #3892d3 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:166 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:167 */
 .orderline-expandable-grid .x-grid-inner-locked {
     border-right-color: #ccc !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:167 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:168 */
 .x-grid-item-selected {
     background-color: #f9f4be !important;
 }

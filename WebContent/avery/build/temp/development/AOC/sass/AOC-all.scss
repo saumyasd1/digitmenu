@@ -95,6 +95,7 @@ $include-aoc-view-email-emailmanagementcontroller: dynamic(true);;
 $include-aoc-view-email-emailmanagementgrid: dynamic(true);;
 $include-aoc-view-home-homepagecontroller: dynamic(true);;
 $include-aoc-view-home-homepagewrapper: dynamic(true);;
+$include-aoc-view-home-homewrappercontroller: dynamic(true);;
 $include-aoc-view-home-orderqueuestatuslist: dynamic(true);;
 $include-aoc-view-home-reportform: dynamic(true);;
 $include-aoc-view-home-reportformcontroller: dynamic(true);;
@@ -148,7 +149,6 @@ $include-aoc-view-users-myprofile-changepasswordwin: dynamic(true);;
 $include-aoc-view-users-myprofile-changepasswordwincontroller: dynamic(true);;
 $include-aoc-view-users-myprofile-systemcsrcodegrid: dynamic(true);;
 $include-aoc-view-users-myprofile-toolbar: dynamic(true);;
-$include-aoc-view-users-myprofile-userinfo: dynamic(true);;
 $include-aoc-view-users-roles-createrolewindow: dynamic(true);;
 $include-aoc-view-users-roles-createrolewindowcontroller: dynamic(true);;
 $include-aoc-view-users-roles-managerolewindow: dynamic(true);;
@@ -1733,7 +1733,6 @@ $relative-image-path-for-uis: $AOC-resource-path;
 @import '../../../../../sass/src/view/orderqueue/OrderLineContainer';
 @import '../../../../../sass/src/view/ux/RadioModel';
 @import '../../../../../sass/src/view/users/myprofile/Toolbar';
-@import '../../../../../sass/src/view/users/myprofile/UserInfo';
 
 /* including package AOC */
 $AOC-resource-root: '' !default;
