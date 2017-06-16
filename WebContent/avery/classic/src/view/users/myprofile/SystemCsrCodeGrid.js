@@ -4,6 +4,7 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
     cls: 'aoc-panel',
     emptyText: AOCLit.emptyDataMsg,
     recordBeingEdit: null,
+    hidden:true,
     initComponent: function () {
         var me = this;
 
@@ -17,10 +18,6 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
                 items: me.buildtbar()
             },
             store:Ext.create('AOC.store.SystemCsrCodeStore'),
-//            plugins:{
-//            	ptype: 'cellediting',
-//    	        clicksToEdit: 1
-//            },
             listeners: {
                 cellClick: 'onSystemCsrCodeCellClick'
             },
