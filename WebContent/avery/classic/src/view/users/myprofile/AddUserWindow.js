@@ -192,7 +192,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     reference: 'roleName',
                     valueField: 'id',
                     store: Ext.create('AOC.store.RoleStore'),
-                    queryMode: 'local'
+                    queryMode: 'local',
+                    listeners:{
+                    	change:'onRoleChange'
+                    }
                 }, {
                 	xtype:'displayfield',
                     fieldLabel: AOCLit.role,
