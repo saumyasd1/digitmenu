@@ -41,7 +41,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         	userInfo = AOCRuntime.getUser(),
         	role = userInfo.role,
         	mode = view.mode,
-            userGrid = AOCRuntime.getActiveGrid(),
+            userGrid = view.gridView,
             userId = userinfo.id,
             userIdObj = {userId:userId},
             url = '',
