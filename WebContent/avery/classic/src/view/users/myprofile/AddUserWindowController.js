@@ -424,5 +424,19 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     onClickChangePassword:function(){
     	var win = Ext.create('AOC.view.users.myprofile.ChangePasswordWin');
     	win.show();
+    },
+    onRoleChange: function(combo){
+    	var me = this,
+    		view = me.getView(),
+    		refs = me.getReferences(),
+    		roleComboValue = combo.getValue(),
+    		systemCsrCodeGrid = refs.systemCsrCodeGrid;
+    	if(roleComboValue == 3){
+    		systemCsrCodeGrid.setHidden(false);
+    		view.center();
+    	}
+    	else{
+    		systemCsrCodeGrid.setHidden(true);
+    	}
     }
 });
