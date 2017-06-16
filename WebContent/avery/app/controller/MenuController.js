@@ -302,6 +302,19 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadCodeStore('orderline');
         Helper.loadCodeStore('orderemailqueue');
         this.getTimeZone();
+        this.loadCsrList();
+    },
+    loadCsrList:function(){
+    	var userInfo = AOCRuntime.getUser(),
+	        roleId = userInfo.role,
+	        siteId = userInfo.siteId,
+	        store = Ext.data.StoreManager.lookup('AssignCSRStore') != null ?  Ext.data.StoreManager.lookup('AssignCSRStore') : Ext.create('AOC.store.AssignCSRStore',{storeId:'AssignCSRStore'});
+    	
+        store.proxy.extraParams = {
+	        siteId: siteId,
+	        roleId: roleId
+	    };
+        store.load();
     },
     getTimeZone: function () {
         Ext.Ajax.request({

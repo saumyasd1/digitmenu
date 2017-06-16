@@ -30,11 +30,8 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 				name:'CSR',
 				valueField:'id',
 				queryMode:'local',
-				store:Ext.create('AOC.store.AssignCSRStore'),
-				typeAhead:true,
-				listeners:{
-					'afterrender':'onAfterRenderCSRList'
-				}
+				store:Ext.data.StoreManager.lookup('AssignCSRStore'),
+				typeAhead:true
 			}
 		];
 	},
@@ -42,7 +39,6 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 		return [
 	        '->',
 			{
-				//xtype:'whitebutton',
 				text:'Assign',
 				handler:'onSaveBtnClicked'
 			}

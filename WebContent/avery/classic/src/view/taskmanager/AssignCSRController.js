@@ -37,13 +37,13 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
     },
     onAfterRenderCSRList: function(obj){
         var userInfo = AOCRuntime.getUser(),
-        roleId = userInfo.role,
-        siteId = userInfo.siteId;
-    obj.getStore().proxy.extraParams = {
-        siteId: siteId,
-        roleId: roleId
-    };
-    obj.getStore().load();
-
+	        roleId = userInfo.role,
+	        siteId = userInfo.siteId;
+	    obj.getStore().proxy.extraParams = {
+	        siteId: siteId,
+	        roleId: roleId
+	    };
+	    obj.getStore().load();
+	
     }
 });

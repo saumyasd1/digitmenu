@@ -124,7 +124,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								name:'assignCSR',
 								valueField:'id',
 								queryMode:'local',
-								store:Ext.create('AOC.store.AssignCSRStore'),
+								store:Ext.data.StoreManager.lookup('AssignCSRStore'),
 								typeAhead:true,
 								triggerAction:'all',
 								width:275,

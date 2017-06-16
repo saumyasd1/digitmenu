@@ -120,9 +120,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								tabIndex:5,
 								enableKeyEvents:true,
 								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
-										listeners:{
-											specialkey:'getAdvancedSearchResults'
-										}
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							},
 							{
 								xtype : 'combo',
@@ -137,9 +137,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId'),
-										listeners:{
-											specialkey:'getAdvancedSearchResults'
-										}
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
 						]
 					},
@@ -208,7 +208,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									name:'assignCSR',
 									valueField:'id',
 									queryMode:'local',
-									store:Ext.create('AOC.store.AssignCSRStore'),
+									store:Ext.data.StoreManager.lookup('AssignCSRStore'),
 									typeAhead:true,
 									tabIndex:10,
 									triggerAction:'all',
