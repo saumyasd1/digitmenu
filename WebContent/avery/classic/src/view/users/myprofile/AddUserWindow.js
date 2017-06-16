@@ -294,19 +294,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     style: {
                         border: 'solid 1.5px #ddd; border-radius:50%;'
                     }
-                }
-//                {
-//                    xtype: 'fileuploadfield',
-//                    buttonText: AOCLit.uploadPhoto,
-//                    margin: '10 0 0 35',
-//                    width:90,
-//                    buttonOnly: true,
-//                    hidden:true,
-//                    listeners:{
-//						'change':'onClickUpdatePhoto'
-//					}
-//                }
-                ]
+                }]
             }, {
                 xtype: 'fieldcontainer',
                 anchor: '60%',
