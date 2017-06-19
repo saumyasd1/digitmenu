@@ -20,7 +20,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
 	    	          if (btn === 'yes') {
 		    	      		obj = {
 		    	      			name:csrCombo.getRawValue(),
-		    	      			assignCSRId:csrCombo.getValue(),
+		    	      			assignCSRId:comboValue,
 		    	      			recordId:view.recordId
 		    	      		};
 		    	      	if(Ext.isFunction(view.callback)){
