@@ -391,13 +391,13 @@ OrderEmailQueueDao {
 			Query q = session.createQuery(s);
 			q.setString("value",ApplicationConstants.ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS);
 			q.setLong("id",entityId);
+			q.executeUpdate();
 			Long csrEntityId = Long.parseLong(csrId);
 			User user = (User) session.get(User.class, csrEntityId);
 			String toUserName = user.getEmail();
 			String csrName = user.getFirstName();
 			CSRAcknowledgementService csrAcknowledgementService = new CSRAcknowledgementService();
 			csrAcknowledgementService.sendNotificationToCSR(entityId, toUserName, csrName);
-			q.executeUpdate();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while processing order", ex);
