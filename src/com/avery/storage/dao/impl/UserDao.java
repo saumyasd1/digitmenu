@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.avery.storage.dao.GenericDao;
 import com.avery.storage.entities.Menu;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.User;
 
 /**
@@ -19,7 +20,7 @@ public interface UserDao extends GenericDao<User, Long> {
 
     boolean checkDuplicateUser(User userObj) throws Exception;
 
-    List<User> getSortedList(int siteId,int roleId);
+    List<SystemCsrCode> getSortedList(int siteId);
 
 	String getApplicationDefaultTimeZone();
 	
