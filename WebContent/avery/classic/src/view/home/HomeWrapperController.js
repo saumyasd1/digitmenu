@@ -102,10 +102,10 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			};
 			
 		//If site combo enable(for Super Admin)
-		if(currentItemRef && currentItemRef == 'siteCombo'){
-			values.filterSiteId = siteComboValue;
+		if(siteCombo && siteCombo.isVisible()){
+			values.filterSiteId = siteComboValue.toString();
 		}else{
-			values.filterSiteId = currentUserSiteId;
+			values.filterSiteId = currentUserSiteId.toString();
 		}
 		
 		//For role CSR(either csr clerk or csr manager)
@@ -115,6 +115,7 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 		//CSR Clerk functionality
 		if(length > 1 && currentItemRef != 'siteCombo'){
 			values.multiSelectFlag = true;
+			values.filterCsrCode = csrComboValueString;
 		}
 		
 		//CSR Manager functionality
