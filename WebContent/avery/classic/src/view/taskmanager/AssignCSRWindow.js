@@ -28,7 +28,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 				fieldLabel:'CSR',
 				reference:'csrCombo',
 				name:'CSR',
-				valueField:'id',
+				valueField:'userId',
 				queryMode:'local',
 				store:Ext.data.StoreManager.lookup('AssignCSRStore'),
 				typeAhead:true
