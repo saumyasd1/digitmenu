@@ -218,6 +218,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 						if(orderQueue.getSiteId()!=null)
 						{
 							int siteId=orderQueue.getSiteId();
+							if(siteId > 0 && siteId <= siteList.size())
 							orderQueue.setSitename(siteList.get(siteId-1).getName());
 						}
 					}
@@ -264,6 +265,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 				if(orderQueue.getSiteId()!=null)
 				{
 					int siteId=orderQueue.getSiteId();
+					if(siteId > 0 && siteId <= siteList.size())
 					orderQueue.setSitename(siteList.get(siteId-1).getName());
 				}
 			}
