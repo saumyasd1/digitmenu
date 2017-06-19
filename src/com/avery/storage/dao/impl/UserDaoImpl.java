@@ -31,6 +31,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.MenuRole;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
@@ -190,27 +191,27 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	}
 
 	@Override
-	public List<User> getSortedList(int siteId,int roleId) {
+	public List<SystemCsrCode> getSortedList(int siteId) {
 		Session session = null;
 		Criteria criteria = null;
-		List<User> listofcsr=null;
+		List<SystemCsrCode> listofcsr=null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(User.class)
+			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "user")
 					.setProjection(
 							Projections.projectionList()
-									.add(Projections.property("id"), ("id"))
-									.add(Projections.property("firstName"),"firstName")
-									.add(Projections.property("systemCsrCodeOwner"),"systemCsrCodeOwner")
-									.add(Projections.property("lastName"),"lastName")
-									.add(Projections.property("middleName"),"middleName"));
+									.add(Projections.property("id"), "id")
+									.add(Projections.property("csrCode"), "csrCode")
+									.add(Projections.property("user.firstName"),"firstName")
+									.add(Projections.property("user.lastName"),"lastName")
+									.add(Projections.property("user.middleName"),"middleName")
+									.add(Projections.property("user.id"),"userId"));
 			Conjunction disCriteria = Restrictions.conjunction();
-			//disCriteria.add(Restrictions.eq("role", "3"));
-			if(siteId!=1)disCriteria.add(Restrictions.eq("siteId", siteId));
-			criteria.add(Restrictions.isNotNull("systemCsrCodeOwner"));
+			if(siteId!=1)disCriteria.add(Restrictions.eq("user.siteId", siteId));
+			disCriteria.add(Restrictions.eq("user.status", 100));
 			criteria.add(disCriteria);
-			criteria.addOrder(Order.asc("firstName"));
-			criteria.setResultTransformer(Transformers.aliasToBean(User.class));
+			criteria.addOrder(Order.asc("user.firstName"));
+			criteria.setResultTransformer(Transformers.aliasToBean(SystemCsrCode.class));
 			listofcsr=criteria.list();
 		} catch (WebApplicationException ex) {
 			throw ex;
