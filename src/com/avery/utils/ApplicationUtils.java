@@ -86,7 +86,10 @@ public class ApplicationUtils {
 	 * @return list of elements after removing null and blanks
 	 */
 	public static List<String> convertStringToList(String str) {
-		List<String> list = Arrays.asList(str.split(","));
+		List<String> list = new ArrayList<String>();
+		if(str == null)
+			return list;
+		list = Arrays.asList(str.split(","));
 		List<String> removeList = new ArrayList<String>();
 		removeList.add(null);
 		removeList.add("");

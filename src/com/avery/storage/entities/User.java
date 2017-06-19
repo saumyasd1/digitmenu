@@ -46,6 +46,7 @@ import com.avery.app.config.PropertiesConfig;
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.UserMixIn;
 import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.HashPassword;
@@ -133,6 +134,7 @@ public class User extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
+			mapper.addMixIn(User.class, UserMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			Map responseMap = new HashMap();
@@ -224,6 +226,7 @@ public class User extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			mapper.addMixIn(User.class, UserMixIn.class);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
@@ -358,6 +361,7 @@ public class User extends MainAbstractEntity {
 			List<User> actualCsrList = new ArrayList<User>();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+//			mapper.addMixIn(User.class, UserMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			csrList = userService.getSortedList(siteId, roleId);
