@@ -35,23 +35,27 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
             text: 'System',
             width: 120,
             sortable: true,
+            align:'left',
             dataIndex: 'systemName',
             flex: 1
         },{
             text: 'Org Code',
             width: 120,
+            align:'left',
             sortable: true,
             dataIndex: 'orgCode',
             flex: 1
         }, {
             text: 'CSR Code',
             width: 120,
+            align:'left',
             sortable: true,
             dataIndex: 'csrCode',
             flex: 1
         }, {
         	 text: 'Code Owner',
              width: 120,
+             align:'left',
              sortable: true,
              dataIndex: 'codeOwner',
              flex: 0.5

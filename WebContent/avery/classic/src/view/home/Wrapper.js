@@ -63,7 +63,7 @@ Ext.define('AOC.view.home.Wrapper', {
 								flex:.5,
 								labelWidth:50,
 							 	currentItemRef:'siteCombo',
-							 	editable:false,
+//							 	editable:false,
 								displayField:'name',
 								queryMode :'local',
 								reference:'siteCombo',

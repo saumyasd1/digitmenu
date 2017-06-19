@@ -4,6 +4,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
     controller: 'adduserwindow',
     mode: 'add',
     bodyPadding: 10,
+    constraintInsets:'10 10 10 10',
     title: 'Add User',
     layout: {
         type: 'vbox',
