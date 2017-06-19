@@ -54,16 +54,24 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 	getCSRList:function(store, siteId){
 		var me = this,
 			refs = me.getView().getReferences(),
-			csrCombo = refs.csrCombo;
+			csrCombo = refs.csrCombo,
+			systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
+		
 		Ext.Ajax.request({
 			method:'GET',
 			url:applicationContext+'/rest/users/csrlist',
 			params:{siteId:siteId},
 			success:function(response){
 				var data = JSON.parse(response.responseText);
-				store.loadData(data);
+				var storeA = Ext.data.StoreManager.lookup('AssignCSRStore');
+				storeA.loadData(data);
+								
 				if(AOCRuntime.getUser().role == 3){
-					csrCombo.setValue(AOCRuntime.getUser().id);
+					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
+						csrCombo.setValue(systemCsrNonCodeOwner);
+					}else{
+						csrCombo.setValue(AOCRuntime.getUser().id);
+					}
 				}
 			},
 			failure:function(response){
@@ -163,13 +171,55 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			csrCombo = refs.csrCombo,
 			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
 			siteName = userObj.siteName;
-
+		
 		if(roleId != 1){
 			field.setHidden(false);
 			field.setValue(siteName);
 			siteCombo.setHidden(true);
-			csrCombo.setValue(systemCsrNonCodeOwner);
 			me.getCSRList(csrCombo.store, userObj.siteId);
+		}
+		me.loadDefaultHomeList();
+	},
+	loadDefaultHomeList:function(){
+		var me = this,
+			refs = me.getReferences(),
+			userObj = AOCRuntime.getUser(),
+			currentUserId = userObj.id,
+			currentUserSiteId = userObj.siteId,
+			roleId = userObj.role,
+			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
+			grid = refs.orderQueueStatusList,
+			gridStore = grid.store;
+		
+		if(roleId == 1){
+			me.onRefreshClick();
+		}else if(roleId == 2){
+			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
+			gridStore.load();
+		}else if(roleId == 3){
+			var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId};
+			
+			//CSR Manager functionality
+			if(!Ext.isEmpty(systemCsrNonCodeOwner)){
+				values.filterCsrCode = systemCsrNonCodeOwner;
+				values.multiSelectFlag = false;
+				values.csrManagerFlag = true; 
+			}
+			
+			gridStore.proxy.setFilterParam('query');
+			gridStore.setRemoteFilter(true);
+			
+	        if (!gridStore.proxy.hasOwnProperty('filterParam')) {
+	        	gridStore.proxy.setFilterParam('query');
+	        }
+	        gridStore.proxy.encodeFilters = function(filters) {
+	            return filters[0].getValue();
+	        };
+	        gridStore.filter({
+	            id: 'query',
+	            property: 'query',
+	            value: Ext.JSON.encode(values)
+	        });	
 		}
 	}
 	

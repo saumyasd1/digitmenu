@@ -289,32 +289,6 @@ Ext.define('AOC.controller.MenuController', {
         rec ? cmp.getSelectionModel().select(rec) : cmp.getSelectionModel().deselectAll();
     },
     loadStores: function () {
-    	var userInfo = AOCRuntime.getUser(),
-			currentUserRoleId = userInfo.role,
-			currentUserId = userInfo.id,
-			currentUserSiteId = userInfo.siteId, 
-			homeListStore = Ext.getStore('HomePageOders');
-		if(currentUserRoleId == 3){
-			var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId};
-			homeListStore.proxy.setFilterParam('query');
-			homeListStore.setRemoteFilter(true);
-			
-	        if (!homeListStore.proxy.hasOwnProperty('filterParam')) {
-	        	homeListStore.proxy.setFilterParam('query');
-	        }
-	        homeListStore.proxy.encodeFilters = function(filters) {
-	            return filters[0].getValue();
-	        };
-	        homeListStore.filter({
-	            id: 'query',
-	            property: 'query',
-	            value: Ext.JSON.encode(values)
-	        });			
-		}
-		else{
-			homeListStore.proxy.extraParams = { siteId: currentUserSiteId };
-			homeListStore.load();
-		}
         Helper.loadVariableComboStore('FreightTerms');
         Helper.loadVariableComboStore('ShippingMethod');
         Helper.loadVariableComboStore('CSR');

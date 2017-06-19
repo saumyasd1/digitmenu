@@ -78,16 +78,19 @@ Ext.define('AOC.view.home.Wrapper', {
 						        xtype: 'tagfield',
 						        fieldLabel: 'CSR Code',
 						        flex:1,
-						        store: Ext.data.StoreManager.lookup('AssignCSRStore'),
 						        displayField:'csrName',
 								valueField:'id',
+								multiSelect:true,
 						        filterPickList: true,
 						        queryMode: 'local',
 						        reference:'csrCombo',
 								name:'assignCSR',
 								margin:'0 20',
 								listeners:{
-									'change':'onChangeSiteCSRCodeCombo'
+									'change':'onChangeSiteCSRCodeCombo',
+									afterrender:function(tagfield){
+										tagfield.store = Ext.data.StoreManager.lookup('AssignCSRStore');
+									}
 								}
 						    },
 							{
