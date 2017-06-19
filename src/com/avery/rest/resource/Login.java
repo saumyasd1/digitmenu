@@ -128,12 +128,10 @@ public class Login {
 					int userSiteId=user.getSiteId();
 					String UserRoleId=user.getRole();
 					SiteService siteService= (SiteService) SpringConfig.getInstance().getBean("siteService");
-					List listOfSite=siteService.readAll();
-					Site site=(Site) listOfSite.get(userSiteId-1);
+					Site site = siteService.read((long)userSiteId);
 					user.setSiteName(site.getName());
 					RoleService roleService= (RoleService) SpringConfig.getInstance().getBean("roleService");
-					List listOfRole=roleService.readAll();
-					Role role=(Role) listOfRole.get(Integer.parseInt(UserRoleId)-1);
+					Role role = roleService.read(Long.parseLong(UserRoleId));
 					user.setRoleName(role.getRoleName());
 					
 					responseMap.put("userinfo", user);
