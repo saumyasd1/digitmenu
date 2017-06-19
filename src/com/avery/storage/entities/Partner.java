@@ -373,6 +373,7 @@ public class Partner extends MainAbstractEntity {
 					if(currentPartner.getSiteId()!=null)
 					{
 						int siteId1=currentPartner.getSiteId();
+						if(siteId1 > 0 && siteId1 <= siteList.size())
 						currentPartner.setSitename(siteList.get(siteId1-1).getName());
 					}
 					listOfPR.add(currentPartner);
