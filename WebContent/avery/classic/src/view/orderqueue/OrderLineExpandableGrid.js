@@ -5,7 +5,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     requires: [
 		'Ext.grid.Panel', 
 		'AOC.view.ux.RowExpanderGrid', 
-		'AOC.view.ux.CustomRowEditing', 
+//		'AOC.view.ux.CustomRowEditing', 
 		'AOC.util.Helper',
 		'Ext.grid.RowEditor',
 		'Ext.grid.plugin.Clipboard'
@@ -1578,7 +1578,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     	}
     },
     getOuterGridRowEditor:function(){
-		var rowEditor=Ext.create('AOC.view.ux.CustomRowEditing',{
+		var rowEditor={
+			ptype:'rowediting',
 			clicksToEdit: 2,
 			autoCancel:false,
 			saveAndNextBtn: true,
@@ -1589,7 +1590,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			bulKUpdate: function(editor,context){
 				this.getCmp().getController().outerGridBulkUpdate(this,editor,context);
 			}
-		});
+		};
 		return rowEditor;
 	},
 	onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){

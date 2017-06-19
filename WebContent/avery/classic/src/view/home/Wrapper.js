@@ -57,13 +57,14 @@ Ext.define('AOC.view.home.Wrapper', {
 								}
 							 },
 							{
-								xtype:'combobox',
+								xtype:'combo',
 								name: 'siteId',
 								fieldLabel:'Site',
 								flex:.5,
+								labelWidth:50,
 							 	currentItemRef:'siteCombo',
 							 	editable:false,
-								displayField: 'name',
+								displayField:'name',
 								queryMode :'local',
 								reference:'siteCombo',
 								valueField: 'id',
@@ -76,7 +77,7 @@ Ext.define('AOC.view.home.Wrapper', {
 							{
 						        xtype: 'tagfield',
 						        fieldLabel: 'CSR Code',
-						        flex:1.3,
+						        flex:1,
 						        store: Ext.data.StoreManager.lookup('AssignCSRStore'),
 						        displayField:'csrName',
 								valueField:'id',

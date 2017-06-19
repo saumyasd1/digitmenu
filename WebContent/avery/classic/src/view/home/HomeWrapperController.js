@@ -162,7 +162,7 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			csrCombo = refs.csrCombo,
 			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
 			siteName = userObj.siteName;
-		
+
 		if(roleId != 1){
 			field.setHidden(false);
 			field.setValue(siteName);
