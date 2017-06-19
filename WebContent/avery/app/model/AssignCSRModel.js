@@ -4,7 +4,7 @@ Ext.define('AOC.model.AssignCSRModel',{
     fields: [
         {name: 'csrName', type: 'string',
         	convert: function( v, record ) {
- 		       return record.get('csrCodeOwnerName') + '(' +record.get( 'firstName' ) + ' ' + record.get( 'lastName' ) + ')';
+ 		       return record.get('csrCode') + ' (' +record.get( 'firstName' ) + ' ' + record.get( 'lastName' ) + ')';
  		       }
         },
         {name: 'id', type: 'string'}
