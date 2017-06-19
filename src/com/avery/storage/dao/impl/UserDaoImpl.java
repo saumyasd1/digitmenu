@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -22,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -101,8 +101,23 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		Criteria criteria = null;
 		User user = null;
 		session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList()
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("firstName"), "firstName")
+				.add(Projections.property("lastName"), "lastName")
+				.add(Projections.property("email"), "email")
+				.add(Projections.property("role"), "role")
+				.add(Projections.property("status"), "status")
+				.add(Projections.property("middleName"), "middleName")
+				.add(Projections.property("fileName"), "fileName")
+				.add(Projections.property("filePath"), "filePath")
+				.add(Projections.property("systemCsrCodeOwner"), "systemCsrCodeOwner")
+				.add(Projections.property("systemCsrNonCodeOwner"), "systemCsrNonCodeOwner")
+				.add(Projections.property("password"), "password")
+				.add(Projections.property("siteId"), "siteId");
 		criteria = session.createCriteria(User.class);
 		if (email != null && !"".equals(email)) {
+			criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(User.class));
 			user = (User) criteria.add(Restrictions.eq("email", email))
 					.uniqueResult();
 			}

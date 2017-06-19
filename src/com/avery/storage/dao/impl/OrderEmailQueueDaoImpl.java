@@ -2,10 +2,10 @@ package com.avery.storage.dao.impl;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +33,7 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.User;
 import com.avery.storage.service.CSRAcknowledgementService;
 import com.avery.utils.ApplicationConstants;
@@ -680,22 +681,44 @@ OrderEmailQueueDao {
 		HibernateUtils.getCriteriaBasedOnDate(criteria, "createdDate", startDate, endDate);
 		criteria.add(Restrictions.in("status", status));
 		Map<String,String> searchMap=ApplicationUtils.convertJSONtoMaps(queryString);
-		if(queryString!=null){
+		if (queryString != null) {
+			boolean multiSelectFlag = false;
+			boolean isCsrManager = false;
+			multiSelectFlag = Boolean.parseBoolean(searchMap.get("multiSelectFlag"));
 			String filterSiteId = (String) searchMap.get("filterSiteId");
-			if (filterSiteId!=null && !"".equals(filterSiteId)) {
+			String filterCsrCode = (String) searchMap.get("filterCsrCode");
+			isCsrManager = Boolean.parseBoolean(searchMap.get("csrManagerFlag"));
+			if (filterSiteId != null && !"".equals(filterSiteId)) {
 				criteria.add(Restrictions.eq("siteId", Integer.parseInt(filterSiteId)));
 			}
-			String filterCsrCode = (String) searchMap.get("filterCsrCode");
-			if (filterCsrCode!=null && !"".equals(filterCsrCode)) {
-				criteria.add(Restrictions.eq("assignCSR",filterCsrCode));
-			}}
-			else
-			{
-				String siteId =(String) queryParamMap.getFirst("siteId");
-				if(siteId!=null)
+			if (isCsrManager) {
+				List<String> ids = ApplicationUtils.convertStringToList(filterCsrCode);
+				List<Long> systemCsrCodeIds = new ArrayList<Long>();
+				for (String id : ids) {
+					systemCsrCodeIds.add(Long.parseLong(id));
+				}
+				Criteria crit = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "varUser")
+						.setProjection(Projections.projectionList().add(Projections.property("varUser.id")))
+						.add(Restrictions.in("id", systemCsrCodeIds));
+				List<Long> results = crit.list();
+				List<String> userIds = new ArrayList<String>();
+				for(Long systemCsrCode : results){
+					userIds.add(String.valueOf(systemCsrCode));
+				}
+				criteria.add(Restrictions.in("assignCSR", userIds));
+			} else if (multiSelectFlag) {
+				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
+				criteria.add(Restrictions.in("assignCSR", userIds));
+			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
+				criteria.add(Restrictions.eq("assignCSR", filterCsrCode));
+			}
+		} else {
+			String siteId = (String) queryParamMap.getFirst("siteId");
+			if (siteId != null)
 				if (!siteId.equals("1")) {
 					criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
-			}}
+				}
+		}
 		//criteria.add(Restrictions.between("createdDate", startDate, endDate));
 		criteria.setProjection(projectionList);
 		criteria.setResultTransformer(Transformers

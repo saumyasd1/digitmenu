@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -74,6 +77,21 @@ public class ApplicationUtils {
 			AppLogger.getSystemLogger().error("Error while uploading the file", e);
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Method to return comma separated elements of a string as list
+	 * 
+	 * @param str
+	 * @return list of elements after removing null and blanks
+	 */
+	public static List<String> convertStringToList(String str) {
+		List<String> list = Arrays.asList(str.split(","));
+		List<String> removeList = new ArrayList<String>();
+		removeList.add(null);
+		removeList.add("");
+		list.removeAll(removeList);
+		return list;
 	}
 	
 }

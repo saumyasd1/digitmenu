@@ -57,6 +57,9 @@ public class SystemCsrCode extends MainAbstractEntity {
 	@Column(name = "hasOwner", length = 10)
 	private String hasOwner;
 	
+//	@Column(name = "ownerId", length = 10)
+//	private String ownerId;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId")
 	private SystemInfo varSystemInfo;
@@ -64,6 +67,10 @@ public class SystemCsrCode extends MainAbstractEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="orgId")
 	private Org varOrg;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="ownerId")
+	private User varUser;
 	
 	private transient long systemId;
 	
@@ -202,9 +209,25 @@ public class SystemCsrCode extends MainAbstractEntity {
 	public void setHasOwner(String hasOwner) {
 		this.hasOwner = hasOwner;
 	}
-
+	
+//	public String getOwnerId() {
+//		return ownerId;
+//	}
+//
+//	public void setOwnerId(String ownerId) {
+//		this.ownerId = ownerId;
+//	}
+	
 	public SystemInfo getVarSystemInfo() {
 		return varSystemInfo;
+	}
+
+	public User getVarUser() {
+		return varUser;
+	}
+
+	public void setVarUser(User varUser) {
+		this.varUser = varUser;
 	}
 
 	public void setVarSystemInfo(SystemInfo varSystemInfo) {

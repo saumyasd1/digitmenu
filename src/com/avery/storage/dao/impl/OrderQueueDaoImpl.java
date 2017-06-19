@@ -2,10 +2,10 @@ package com.avery.storage.dao.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +37,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -132,7 +133,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.createAlias("varProductLine.listOrderSystemInfo", "listOrderSystemInfo")
 				.createAlias("listOrderSystemInfo.listOrgInfo", "listOrgInfo")
 				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo");
-		
+
 		String siteId1 = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
 		if (!siteId1.equals("1") && !roleId.equals("1")) {
@@ -298,13 +299,36 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		// .add(Restrictions.eq("varOrderEmailQueue.id", trackId));
 		Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 		if (queryString != null) {
+			boolean multiSelectFlag = false;
+			boolean isCsrManager = false;
+			multiSelectFlag = Boolean.parseBoolean(searchMap.get("multiSelectFlag"));
 			String filterSiteId = (String) searchMap.get("filterSiteId");
+			String filterCsrCode = (String) searchMap.get("filterCsrCode");
+			isCsrManager = Boolean.parseBoolean(searchMap.get("csrManagerFlag"));
+			if (isCsrManager) {
+				List<String> ids = ApplicationUtils.convertStringToList(filterCsrCode);
+				List<Long> systemCsrCodeIds = new ArrayList<Long>();
+				for (String id : ids) {
+					systemCsrCodeIds.add(Long.parseLong(id));
+				}
+				Criteria crit = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "varUser")
+						.setProjection(Projections.projectionList().add(Projections.property("varUser.id")))
+						.add(Restrictions.in("id", systemCsrCodeIds));
+				List<Long> results = crit.list();
+				List<String> userIds = new ArrayList<String>();
+				for(Long systemCsrCode : results){
+					userIds.add(String.valueOf(systemCsrCode));
+				}
+				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+			} else if (multiSelectFlag) {
+				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
+				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
+				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR", filterCsrCode));
+			}
+
 			if (filterSiteId != null && !"".equals(filterSiteId)) {
 				criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(filterSiteId)));
-			}
-			String filterCsrCode = (String) searchMap.get("filterCsrCode");
-			if (filterCsrCode != null && !"".equals(filterCsrCode)) {
-				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR", filterCsrCode));
 			}
 		} else {
 			String siteId = (String) queryParamMap.getFirst("siteId");
@@ -395,7 +419,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				Long Id = Long.parseLong(emailQueueId);
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
-			
+
 			if (searchMap.get("filterSiteId") != null && !searchMap.get("filterSiteId").equals("")) {
 				String filterSiteId = (String) searchMap.get("filterSiteId");
 				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));

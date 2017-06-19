@@ -55,7 +55,6 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 		var me = this,
 			refs = me.getView().getReferences(),
 			csrCombo = refs.csrCombo;
-		
 		Ext.Ajax.request({
 			method:'GET',
 			url:applicationContext+'/rest/users/csrlist',
@@ -96,23 +95,35 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner,
 			multiSelectFlag = false,
 			csrManagerFlag = false;
-			store = grid.store;
-			//If site combo enable(for Super Admin)
-			if(currentItemRef=='siteCombo'){
-				values = {filterSiteId : siteComboValue };
-			}
-			//For role CSR(either csr clerk or csr manager)
-			if(length == 1 && currentItemRef != 'siteCombo'){
-				values = {filterSiteId : currentUserSiteId, filterCsrCode: csrComboValueString, multiSelectFlag: false, csrManagerFlag: false };
-			}
-			//CSR Clerk functionality
-			else if(length > 1 && currentItemRef != 'siteCombo'){
-				values = {filterSiteId : currentUserSiteId, filterCsrCode: csrComboValueString, multiSelectFlag: true, csrManagerFlag: false };
-			}
-			//CSR Manager functionality
-			else if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-				values = {filterSiteId : currentUserSiteId,filterCsrCode:systemCsrNonCodeOwner,multiSelectFlag: false, csrManagerFlag: true };
-			}
+			store = grid.store,
+			values = {
+				 multiSelectFlag: false, 
+				 csrManagerFlag: false
+			};
+			
+		//If site combo enable(for Super Admin)
+		if(currentItemRef && currentItemRef == 'siteCombo'){
+			values.filterSiteId = siteComboValue;
+		}else{
+			values.filterSiteId = currentUserSiteId;
+		}
+		
+		//For role CSR(either csr clerk or csr manager)
+		if(length == 1 && currentItemRef != 'siteCombo'){
+			values.filterCsrCode = csrComboValueString;
+		}
+		//CSR Clerk functionality
+		if(length > 1 && currentItemRef != 'siteCombo'){
+			values.multiSelectFlag = true;
+		}
+		
+		//CSR Manager functionality
+		if(!Ext.isEmpty(systemCsrNonCodeOwner)){
+			values.filterCsrCode = systemCsrNonCodeOwner;
+			values.multiSelectFlag = false;
+			values.csrManagerFlag = true; 
+		}
+			
 		store.proxy.setFilterParam('query');
         store.setRemoteFilter(true);
         

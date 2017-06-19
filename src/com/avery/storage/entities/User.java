@@ -18,6 +18,8 @@ import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.ws.rs.Consumes;
@@ -85,19 +87,19 @@ public class User extends MainAbstractEntity {
 	Integer status;
 	@Column(name = "middleName", length = 64)
 	private String middleName;
-	
+
 	@Transient
 	private String csrCodeOwnerName;
-	
+
 	@Transient
 	private String csrNonCodeOwnerName;
-	
+
 	@Transient
 	private String siteName;
-	
+
 	@Transient
 	private String roleName;
-	
+
 	public User() {
 	}
 
@@ -105,18 +107,21 @@ public class User extends MainAbstractEntity {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
+
 	@Column(name = "fileName", length = 100)
 	private String fileName;
 	@Column(name = "filePath")
 	private String filePath;
-	
+
 	@Column(name = "systemCsrCodeOwner", length = 150)
 	private String systemCsrCodeOwner;
-	
+
 	@Column(name = "systemCsrNonCodeOwner", length = 150)
 	private String systemCsrNonCodeOwner;
 
+	@OneToMany(mappedBy = "varUser", fetch = FetchType.LAZY)
+	private List<SystemCsrCode> varSystemCsrCode;
+	
 	/* Business Logic Starts */
 
 	@Override
@@ -127,45 +132,39 @@ public class User extends MainAbstractEntity {
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			MultivaluedMap<String, String> queryParamMap = ui
-					.getQueryParameters();
+			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
-			Map responseMap=new HashMap();			
-				entitiesMap = userService.readWithCriteria( queryParamMap);
-				if (entitiesMap == null || entitiesMap.isEmpty())
-					throw new Exception("Unable to find partners");
-				else{
-					List listofPL=(List) entitiesMap.get("users");
-					List listOfPR=new LinkedList<Partner>();
-					for(int i=0;i<listofPL.size();i++)
-					{
-						User currentuser=(User) listofPL.get(i);
-						String lastmodifiedUserId=currentuser.getLastModifiedBy();
-						if(lastmodifiedUserId!=null)
-						{
-						String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			Map responseMap = new HashMap();
+			entitiesMap = userService.readWithCriteria(queryParamMap);
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find partners");
+			else {
+				List listofPL = (List) entitiesMap.get("users");
+				List listOfPR = new LinkedList<Partner>();
+				for (int i = 0; i < listofPL.size(); i++) {
+					User currentuser = (User) listofPL.get(i);
+					String lastmodifiedUserId = currentuser.getLastModifiedBy();
+					if (lastmodifiedUserId != null) {
+						String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 						currentuser.setLastModifiedBy(LastModifiedByName);
-						}
-						listOfPR.add(currentuser);
 					}
-					//Collections.sort(listOfPR, userIdComparator);
-					responseMap.put("users", listOfPR);
-					}
-				if(entitiesMap.containsKey("totalCount"))
+					listOfPR.add(currentuser);
+				}
+				// Collections.sort(listOfPR, userIdComparator);
+				responseMap.put("users", listOfPR);
+			}
+			if (entitiesMap.containsKey("totalCount"))
 				responseMap.put("totalCount", entitiesMap.get("totalCount"));
-				mapper.writeValue(writer, responseMap);
-			
+			mapper.writeValue(writer, responseMap);
+
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -177,12 +176,10 @@ public class User extends MainAbstractEntity {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			User user = mapper.readValue(data, User.class);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
 			boolean userExist = userService.checkDuplicateUser(user);
@@ -191,14 +188,13 @@ public class User extends MainAbstractEntity {
 				responseMap.put("valueExist", true);
 				mapper.writeValue(writer, responseMap);
 			} else {
-				user.setPassword(com.avery.utils.HashPassword.simpleHash(user
-						.getPassword()));
+				user.setPassword(com.avery.utils.HashPassword.simpleHash(user.getPassword()));
 				user.setCreatedDate(new Date());
 				user.setLastModifiedDate(new Date());
 				user.setStatus(100);
 				id = userService.create(user);
 				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
-				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, "");
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, "", id.toString());
 				responseMap.put("valueExist", false);
 				responseMap.put("id", id);
 				mapper.writeValue(writer, responseMap);
@@ -206,33 +202,29 @@ public class User extends MainAbstractEntity {
 			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@Override
-	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id,
-			String data) {
+	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id, String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		String[] str=data.replace("{", "").replace("}", "").split(",");
-		String userId="";
-		for(String tmp:str){
-			if(tmp.contains("userId")){
-				String[]tmp1=tmp.split(":");
-				userId=tmp1[1];
-			}}
+		String[] str = data.replace("{", "").replace("}", "").split(",");
+		String userId = "";
+		for (String tmp : str) {
+			if (tmp.contains("userId")) {
+				String[] tmp1 = tmp.split(":");
+				userId = tmp1[1];
+			}
+		}
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
 			User user = userService.read(Long.parseLong(id));
@@ -242,11 +234,9 @@ public class User extends MainAbstractEntity {
 			ObjectReader updater = mapper.readerForUpdating(user);
 			user = updater.readValue(data);
 			if (user == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("User entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			boolean userExist = userService.checkDuplicateUser(user);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -254,8 +244,7 @@ public class User extends MainAbstractEntity {
 				responseMap.put("valueExist", true);
 				mapper.writeValue(writer, responseMap);
 			} else {
-				if (user.getPassword() != null
-						&& !user.getPassword().equals("")
+				if (user.getPassword() != null && !user.getPassword().equals("")
 						&& !user.getPassword().equals(password))
 					user.setPassword(HashPassword.simpleHash(user.getPassword()));
 				else {
@@ -266,23 +255,19 @@ public class User extends MainAbstractEntity {
 				user.setLastModifiedBy(userId);
 				userService.update(user);
 				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
-				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner);
+				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner, id);
 				responseMap.put("valueExist", false);
 				responseMap.put("user", user);
 				mapper.writeValue(writer, responseMap);
 			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating user entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in updating user entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in updating user entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in updating user entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -295,28 +280,21 @@ public class User extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			User user = userService.read(entityId);
 			if (user == null)
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("User entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			mapper.writeValue(writer, user);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching user entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in fetching user entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching user entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching user entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -324,63 +302,47 @@ public class User extends MainAbstractEntity {
 	@Override
 	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
 		try {
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			// read existing entity from database
 			User user = userService.read(Long.parseLong(id));
 			if (user == null) {
-				throw new WebApplicationException(Response
-						.status(Status.BAD_REQUEST)
-						.entity("User entity with id \"" + id
-								+ "\" doesn't exist")
-						.type(MediaType.TEXT_PLAIN_TYPE).build());
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("User entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
 			}
 			// prepare response
 			userService.delete(user);
 			return Response.ok(id).build();
 		} catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting User entity with id " + id, ex);
+			AppLogger.getSystemLogger().error("Error in deleting User entity with id " + id, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in deleting User entity with id " + id, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in deleting User entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
 	@GET
 	@Path("/checkcurrentpassword/{id: [0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response CheckUserPassword(@Context UriInfo ui,
-			@Context HttpHeaders hh, @QueryParam(PASSWORD) String password,
-			@PathParam(ID) String id) {
+	public Response CheckUserPassword(@Context UriInfo ui, @Context HttpHeaders hh,
+			@QueryParam(PASSWORD) String password, @PathParam(ID) String id) {
 		try {
 			Long _id = Long.parseLong(id);
 			password = (password == null) ? "" : password;
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			User user = userService.read(_id);
-			if (user != null
-					&& (HashPassword.simpleHash(password).equals(user
-							.getPassword()))) {
-				return Response.ok("{\"success\":true,\"passwordmatch\":true}")
-						.build();
+			if (user != null && (HashPassword.simpleHash(password).equals(user.getPassword()))) {
+				return Response.ok("{\"success\":true,\"passwordmatch\":true}").build();
 			} else {
-				return Response
-						.ok("{\"success\":true,\"passwordmatch\":false}")
-						.build();
+				return Response.ok("{\"success\":true,\"passwordmatch\":false}").build();
 			}
 		} catch (WebApplicationException aep) {
 			throw aep;
 		} catch (Exception e) {
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
 
@@ -388,45 +350,47 @@ public class User extends MainAbstractEntity {
 	@GET
 	@Path("/csrlist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh,@QueryParam("siteId") int siteId,@QueryParam("roleId") int roleId) {
+	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("siteId") int siteId,
+			@QueryParam("roleId") int roleId) {
 		Response.ResponseBuilder rb = null;
 		List<User> csrList = null;
 		try {
-			List<User> actualCsrList=new ArrayList<User>();
+			List<User> actualCsrList = new ArrayList<User>();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
-			csrList = userService.getSortedList(siteId,roleId);
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			csrList = userService.getSortedList(siteId, roleId);
 			if (csrList == null || csrList.isEmpty())
 				throw new Exception("Unable to find csr");
-			SystemCsrCodeService systemCsrCodeService=(SystemCsrCodeService) SpringConfig.getInstance().getBean("systemCsrCodeService");
-			for(User user : csrList){
-				int i=0;
+			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
+					.getBean("systemCsrCodeService");
+			for (User user : csrList) {
+				int i = 0;
 				String csrCodeOwner = user.getSystemCsrCodeOwner();
-				if(csrCodeOwner != null){
+				if (csrCodeOwner != null) {
 					String csrCode = systemCsrCodeService.getSystemcsrcodeById(csrCodeOwner);
-					if(csrCode != null && csrCode != ""){
-					String[] csrCodeOwnerList = csrCode.split(",");
-					String[] csrCodeOwnerIdList = csrCodeOwner.split(",");
-			    	for(String csrCodeOwnerName : csrCodeOwnerList){
-			    		User userModified = new User();
-			    		userModified.setId(user.getId());
-			    		userModified.setFirstName(user.getFirstName());
-			    		userModified.setLastName(user.getLastName());
-			    		userModified.setMiddleName(user.getMiddleName());
-			    		userModified.setSystemCsrCodeOwner(csrCodeOwnerIdList[i]);
-			    		userModified.setcsrCodeOwnerName(csrCodeOwnerName);
-			    		actualCsrList.add(userModified);
-			    		i++;
-			    	}}else{
-			    		actualCsrList.add(user);
-			    	}
-				}else{
+					if (csrCode != null && csrCode != "") {
+						String[] csrCodeOwnerList = csrCode.split(",");
+						String[] csrCodeOwnerIdList = csrCodeOwner.split(",");
+						for (String csrCodeOwnerName : csrCodeOwnerList) {
+							User userModified = new User();
+							userModified.setId(user.getId());
+							userModified.setFirstName(user.getFirstName());
+							userModified.setLastName(user.getLastName());
+							userModified.setMiddleName(user.getMiddleName());
+							userModified.setSystemCsrCodeOwner(csrCodeOwnerIdList[i]);
+							userModified.setcsrCodeOwnerName(csrCodeOwnerName);
+							actualCsrList.add(userModified);
+							i++;
+						}
+					} else {
+						actualCsrList.add(user);
+					}
+				} else {
 					actualCsrList.add(user);
 				}
-				
+
 			}
 			mapper.writeValue(writer, actualCsrList);
 			rb = Response.ok(writer.toString());
@@ -434,18 +398,15 @@ public class User extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
 
 	@GET
 	@Path("/globaltimezone")
-	public Response getApplicationDefaultTimeZone(@Context UriInfo ui,
-			@Context HttpHeaders hh) {
+	public Response getApplicationDefaultTimeZone(@Context UriInfo ui, @Context HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		String timeZone;
 		Map responseMap = new HashMap();
@@ -453,8 +414,7 @@ public class User extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			UserService userService = (UserService) SpringConfig.getInstance()
-					.getBean("userService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			timeZone = userService.getApplicationDefaultTimeZone();
 			if (timeZone == null | "".equals(timeZone))
 				timeZone = TimeZone.getDefault().getID();
@@ -465,10 +425,8 @@ public class User extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
@@ -483,44 +441,46 @@ public class User extends MainAbstractEntity {
 	@POST
 	@Path("/pictureupload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response savepicture(@FormDataParam("fileName") String picname,@FormDataParam("file") InputStream userimage,@FormDataParam("roleId") int roleId,@FormDataParam("userId") String userId) throws Exception {
+	public Response savepicture(@FormDataParam("fileName") String picname, @FormDataParam("file") InputStream userimage,
+			@FormDataParam("roleId") int roleId, @FormDataParam("userId") String userId) throws Exception {
 		Response.ResponseBuilder rb = null;
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
 		Map<String, String> responseMap = new HashMap<String, String>();
 		String uploadDir = PropertiesConfig.getString(PropertiesConstants.PIC_PATH);
-		if(roleId==1)uploadDir =uploadDir+"/1";
-		if(roleId==2)uploadDir =uploadDir+"/2";
-		if(roleId==3)uploadDir =uploadDir+"/3";
-		uploadDir=uploadDir+"/"+userId;
-		String extens=picname.substring(picname.lastIndexOf("."),picname.length());
-		String filename=userId+extens;
-		try
-	    {
-			//to store image in file
-			File targetFile = new File(uploadDir,filename);
-			if(targetFile.exists()){
-				 targetFile.delete();
+		if (roleId == 1)
+			uploadDir = uploadDir + "/1";
+		if (roleId == 2)
+			uploadDir = uploadDir + "/2";
+		if (roleId == 3)
+			uploadDir = uploadDir + "/3";
+		uploadDir = uploadDir + "/" + userId;
+		String extens = picname.substring(picname.lastIndexOf("."), picname.length());
+		String filename = userId + extens;
+		try {
+			// to store image in file
+			File targetFile = new File(uploadDir, filename);
+			if (targetFile.exists()) {
+				targetFile.delete();
 			}
-			FileUtils.copyInputStreamToFile(userimage,targetFile);
-			//to store fileName and filePath in DB
+			FileUtils.copyInputStreamToFile(userimage, targetFile);
+			// to store fileName and filePath in DB
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-			User user=userService.read(Long.parseLong(userId));
+			User user = userService.read(Long.parseLong(userId));
 			user.setFileName(filename);
 			user.setFilePath(uploadDir);
 			userService.update(user);
-			responseMap.put("upload","Successful");
-	        mapper.writeValue(writer, responseMap);
-	        rb = Response.ok(writer.toString());
-	    } catch (IOException e) 
-	    {
-	    	responseMap.put("upload", "Unsuccessful");
-	        mapper.writeValue(writer, responseMap);
-	        rb = Response.ok(writer.toString());
-	    }	
+			responseMap.put("upload", "Successful");
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (IOException e) {
+			responseMap.put("upload", "Unsuccessful");
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		}
 		return rb.build();
-    }
-	
+	}
+
 	/* Business Logic Ends */
 
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -604,6 +564,7 @@ public class User extends MainAbstractEntity {
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
+
 	public String getRole() {
 		return role;
 	}
@@ -611,9 +572,11 @@ public class User extends MainAbstractEntity {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+
 	public String getFileName() {
 		return fileName;
 	}
@@ -621,6 +584,7 @@ public class User extends MainAbstractEntity {
 	public String getFilePath() {
 		return filePath;
 	}
+
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
@@ -640,22 +604,23 @@ public class User extends MainAbstractEntity {
 	public void setSystemCsrNonCodeOwner(String systemCsrNonCodeOwner) {
 		this.systemCsrNonCodeOwner = systemCsrNonCodeOwner;
 	}
+
 	public void setcsrCodeOwnerName(String csrCodeOwnerName) {
 		this.csrCodeOwnerName = csrCodeOwnerName;
 	}
-	
+
 	public String getcsrCodeOwnerName() {
 		return csrCodeOwnerName;
 	}
-	
+
 	public void setcsrNonCodeOwnerName(String csrNonCodeOwnerName) {
 		this.csrNonCodeOwnerName = csrNonCodeOwnerName;
 	}
-	
+
 	public String getcsrNonCodeOwnerName() {
 		return csrNonCodeOwnerName;
 	}
-	
+
 	public String getRoleName() {
 		return roleName;
 	}
@@ -663,7 +628,7 @@ public class User extends MainAbstractEntity {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
+
 	public String getSiteName() {
 		return siteName;
 	}
@@ -672,4 +637,12 @@ public class User extends MainAbstractEntity {
 		this.siteName = siteName;
 	}
 
+	public List<SystemCsrCode> getVarSystemCsrCode() {
+		return varSystemCsrCode;
+	}
+
+	public void setVarSystemCsrCode(List<SystemCsrCode> varSystemCsrCode) {
+		this.varSystemCsrCode = varSystemCsrCode;
+	}
+	
 }

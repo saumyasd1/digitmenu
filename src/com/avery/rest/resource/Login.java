@@ -27,6 +27,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MixIn.MenuMixIn;
+import com.avery.storage.MixIn.UserMixIn;
 import com.avery.storage.entities.Menu;
 import com.avery.storage.entities.Role;
 import com.avery.storage.entities.Site;
@@ -101,6 +102,8 @@ public class Login {
 	public static String logIn(String userName, String password,
 			boolean isCallFromExternalApp) throws Exception {
 		if (!"".equals(userName) && !"".equals(password)) {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
 			UserService userService = (UserService) SpringConfig.getInstance()
 					.getBean("userService");
 			User user = userService.findUserByEmail(userName);
@@ -111,8 +114,7 @@ public class Login {
 				else if (user.getStatus() != 100)
 					throw new Exception(USER_NOT_ACTIVATED);
 				else {
-					StringWriter writer = new StringWriter();
-					ObjectMapper mapper = new ObjectMapper();
+					mapper.addMixIn(User.class, UserMixIn.class);
 					Map<String, Object> responseMap = new HashMap<String, Object>();
 					Map<String, Object> claimsMap = new HashMap<String, Object>();
 					claimsMap.put("user", user.getEmail());
