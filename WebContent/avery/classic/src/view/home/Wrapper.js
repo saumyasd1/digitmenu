@@ -79,7 +79,7 @@ Ext.define('AOC.view.home.Wrapper', {
 						        fieldLabel: 'CSR Code',
 						        flex:1,
 						        displayField:'csrName',
-								valueField:'id',
+								valueField:'userId',
 								multiSelect:true,
 						        filterPickList: true,
 						        queryMode: 'local',
