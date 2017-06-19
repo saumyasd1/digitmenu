@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.UserDao;
 import com.avery.storage.entities.Menu;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.User;
 
 /**
@@ -50,8 +51,8 @@ public class UserService extends GenericEntityService<User, Long> {
 	}
 	
 	@Transactional
-	public List<User> getSortedList(int siteId,int roleId) {
-		return getUserDao().getSortedList(siteId,roleId);
+	public List<SystemCsrCode> getSortedList(int siteId) {
+		return getUserDao().getSortedList(siteId);
 	}
 
 	@Transactional
