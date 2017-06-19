@@ -272,9 +272,10 @@ public class OrderQueue extends MainAbstractEntity {
 			List listOfTask=(List) orderQueue.get("orders");
 			for (int i = 0; i < listOfTask.size(); i++) {
 				OrderQueue orderQueue1 = (OrderQueue) listOfTask.get(i);
-				if(orderQueue1.getSiteId()!=0)
+				if(orderQueue1.getSiteId() > 0)
 				{
 					int siteId=orderQueue1.getSiteId();
+					if(siteId > 0 && siteId <= siteList.size())
 					orderQueue1.setSitename(siteList.get(siteId-1).getName());
 				}
 			}
