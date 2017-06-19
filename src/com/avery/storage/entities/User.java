@@ -356,47 +356,14 @@ public class User extends MainAbstractEntity {
 	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("siteId") int siteId,
 			@QueryParam("roleId") int roleId) {
 		Response.ResponseBuilder rb = null;
-		List<User> csrList = null;
+		List<SystemCsrCode> csrList = null;
 		try {
-			List<User> actualCsrList = new ArrayList<User>();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-//			mapper.addMixIn(User.class, UserMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			csrList = userService.getSortedList(siteId, roleId);
-			if (csrList == null || csrList.isEmpty())
-				throw new Exception("Unable to find csr");
-			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
-					.getBean("systemCsrCodeService");
-			for (User user : csrList) {
-				int i = 0;
-				String csrCodeOwner = user.getSystemCsrCodeOwner();
-				if (csrCodeOwner != null) {
-					String csrCode = systemCsrCodeService.getSystemcsrcodeById(csrCodeOwner);
-					if (csrCode != null && csrCode != "") {
-						String[] csrCodeOwnerList = csrCode.split(",");
-						String[] csrCodeOwnerIdList = csrCodeOwner.split(",");
-						for (String csrCodeOwnerName : csrCodeOwnerList) {
-							User userModified = new User();
-							userModified.setId(user.getId());
-							userModified.setFirstName(user.getFirstName());
-							userModified.setLastName(user.getLastName());
-							userModified.setMiddleName(user.getMiddleName());
-							userModified.setSystemCsrCodeOwner(csrCodeOwnerIdList[i]);
-							userModified.setcsrCodeOwnerName(csrCodeOwnerName);
-							actualCsrList.add(userModified);
-							i++;
-						}
-					} else {
-						actualCsrList.add(user);
-					}
-				} else {
-					actualCsrList.add(user);
-				}
-
-			}
-			mapper.writeValue(writer, actualCsrList);
+			mapper.writeValue(writer, csrList);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -407,6 +374,7 @@ public class User extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
+
 
 	@GET
 	@Path("/globaltimezone")
