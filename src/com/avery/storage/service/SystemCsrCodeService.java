@@ -10,11 +10,15 @@ import org.springframework.stereotype.Component;
 import com.avery.storage.dao.impl.SystemCsrCodeDao;
 import com.avery.storage.entities.SystemCsrCode;
 
+/**
+ * @author Vishal
+ *
+ */
 @Component
-public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Long>{
-	
+public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Long> {
+
 	public SystemCsrCodeDao systemCsrCodeDao;
-	
+
 	public SystemCsrCodeDao getSystemCsrCodeDao() {
 		return systemCsrCodeDao;
 	}
@@ -25,18 +29,18 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 	}
 
 	@Transactional
-	public Map<String, Object> getBySystemAndOrgCodeId(long systemId, long orgId){
+	public Map<String, Object> getBySystemAndOrgCodeId(long systemId, long orgId) {
 		return getSystemCsrCodeDao().getBySystemAndOrgCodeId(systemId, orgId);
 	}
-	
+
 	@Transactional
-	public String getSystemcsrcodeById(String id){
+	public String getSystemcsrcodeById(String id) {
 		return systemCsrCodeDao.getSystemcsrcodeById(id);
 	}
-	
+
 	@Transactional
-	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner){
-		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner);
+	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner, String userId) {
+		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner, userId);
 	}
-	
+
 }
