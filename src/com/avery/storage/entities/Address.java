@@ -399,9 +399,10 @@ public class Address extends MainAbstractEntity {
 			List listOfTask=(List) entitiesMap.get("address");
 			for (int i = 0; i < listOfTask.size(); i++) {
 				Address addresh = (Address) listOfTask.get(i);
-				if(addresh.getSiteId()!=0)
+				if(addresh.getSiteId() > 0)
 				{
 					int siteId1=addresh.getSiteId();
+					if(siteId1 > 0 && siteId1 <= siteList.size())
 					addresh.setSiteName(siteList.get(siteId1-1).getName());
 				}
 			}
