@@ -1,5 +1,6 @@
 package com.avery.storage.entities;
 
+import java.beans.Transient;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +72,7 @@ public class SystemCsrCode extends MainAbstractEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ownerId")
 	private User varUser;
-	
+		
 	private transient long systemId;
 	
 	private transient long orgCodeId;
@@ -79,6 +80,48 @@ public class SystemCsrCode extends MainAbstractEntity {
 	private transient String systemName;
 	
 	private transient String orgCode;
+	
+	private transient String firstName;
+	
+	private transient String middleName;
+	
+	private transient String lastName;
+	
+	private transient long userId;
+	
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	
 
 	/* Business Logic Starts */
 
