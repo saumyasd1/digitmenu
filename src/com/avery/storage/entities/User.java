@@ -353,8 +353,7 @@ public class User extends MainAbstractEntity {
 	@GET
 	@Path("/csrlist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("siteId") int siteId,
-			@QueryParam("roleId") int roleId) {
+	public Response getCSRList(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("siteId") int siteId) {
 		Response.ResponseBuilder rb = null;
 		List<SystemCsrCode> csrList = null;
 		try {
@@ -362,7 +361,7 @@ public class User extends MainAbstractEntity {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-			csrList = userService.getSortedList(siteId, roleId);
+			csrList = userService.getSortedList(siteId);
 			mapper.writeValue(writer, csrList);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
