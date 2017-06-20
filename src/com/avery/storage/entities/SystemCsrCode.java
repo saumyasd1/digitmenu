@@ -75,6 +75,8 @@ public class SystemCsrCode extends MainAbstractEntity {
 		
 	private transient long systemId;
 	
+	private transient int siteId;
+		
 	private transient long orgCodeId;
 	
 	private transient String systemName;
@@ -121,7 +123,13 @@ public class SystemCsrCode extends MainAbstractEntity {
 		this.lastName = lastName;
 	}
 
-	
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
 
 	/* Business Logic Starts */
 
