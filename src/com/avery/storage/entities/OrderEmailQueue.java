@@ -699,19 +699,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	public Response createNewWebOrder(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
 		Map<String, String> jsonMap = null;
 		Response.ResponseBuilder rb = null;
-		String[] str = data.replace("{", "").replace("\"", "").replace("}", "").split(",");
 		String assignCSR = "";
 		String lastModifiedId = "";
-		for (String tmp : str) {
-			if (tmp.contains("assignCSR")) {
-				String[] tmp1 = tmp.split(":");
-				assignCSR = tmp1[1];
-			}
-			if (tmp.contains("userId")) {
-				String[] tmp1 = tmp.split(":");
-				lastModifiedId = tmp1[1];
-			}
-		}
 		OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
 		Date now = new Date();
 		Long orderEmailQueueId = 0L;
@@ -724,7 +713,10 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					.getBean("orderQueueService");
 
 			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
-
+			
+			assignCSR = jsonMap.get("assignCSR");
+			lastModifiedId = jsonMap.get("userId");
+			String siteId = jsonMap.get("siteId");
 			String emailId = jsonMap.get("email");
 			String emailBody = jsonMap.get("emailBody");
 			String dataStructureId = jsonMap.get("dataStructureName");
@@ -743,6 +735,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			productLineObj.setId(productlineId);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
+			orderEmailQueueObj.setSiteId(Integer.parseInt(siteId));
 			orderEmailQueueObj.setAssignCSR(assignCSR);
 			orderEmailQueueObj.setLastModifiedBy(lastModifiedId);
 			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
