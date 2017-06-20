@@ -411,7 +411,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 
 			String assignCSR = searchMap.get("assignCSR");
 			if (assignCSR != null && !"".equals(assignCSR)) {
-				criteria.add(Restrictions.ilike("orderemailqueue.assignCSR", assignCSR, MatchMode.ANYWHERE));
+				List<String> assignCSRList = ApplicationUtils.convertStringToList(assignCSR);
+				criteria.add(Restrictions.in("assignCSR",assignCSRList));
 			}
 
 			String emailQueueId = searchMap.get("emailQueueId");
