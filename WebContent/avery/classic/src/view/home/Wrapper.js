@@ -63,15 +63,15 @@ Ext.define('AOC.view.home.Wrapper', {
 								flex:.5,
 								labelWidth:50,
 							 	currentItemRef:'siteCombo',
-//							 	editable:false,
+							 	editable:false,
 								displayField:'name',
 								queryMode :'local',
 								reference:'siteCombo',
 								valueField: 'id',
 								store:Ext.create('AOC.store.SiteStore'),
 								listeners : {
-									'afterrender':'onAfterRenderSiteCombo',
-									'change':'onChangeSiteCSRCodeCombo'
+									afterrender:'onAfterRenderSiteCombo',
+									change:'onChangeSiteCSRCodeCombo'
 								}
 							},
 							{
@@ -87,7 +87,7 @@ Ext.define('AOC.view.home.Wrapper', {
 								name:'assignCSR',
 								margin:'0 20',
 								listeners:{
-									'change':'onChangeSiteCSRCodeCombo',
+									change:'onChangeSiteCSRCodeCombo',
 									afterrender:function(tagfield){
 										tagfield.store = Ext.data.StoreManager.lookup('AssignCSRStore');
 									}
@@ -103,7 +103,7 @@ Ext.define('AOC.view.home.Wrapper', {
 								queryMode:'local',
 								reference:'refreshRateCombo',
 								name:'refreshRateCombo',
-								//editable:false,
+								editable:false,
 								store:new Ext.data.JsonStore({
 									data:[
 									    {Name:'Don\'t Refresh',id:0},

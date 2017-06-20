@@ -248,7 +248,15 @@ Ext.define('AOC.view.webform.WebFormController', {
 			}else{
 				url=applicationContext+'/rest/emailqueue/newweborder';
 			}
-			var fieldParams = form.getValues(false,false,false,true);
+			var fieldParams = form.getValues(false,false,false,true),
+				assignCsrStore = refs.assignCSR.store,
+				index = assignCsrStore.find('userId',fieldParams.assignCSR);
+			
+			if(index > -1){
+				var record = assignCsrStore.getAt(index);
+				fieldParams.siteId = record.get('siteId');
+			}
+			
 			if(webOrderFormView.isResubmit){
 				fieldParams.isResubmit = 'true';
 			}
