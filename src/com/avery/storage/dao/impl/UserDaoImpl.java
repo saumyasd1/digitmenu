@@ -205,7 +205,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 									.add(Projections.property("user.firstName"),"firstName")
 									.add(Projections.property("user.lastName"),"lastName")
 									.add(Projections.property("user.middleName"),"middleName")
-									.add(Projections.property("user.id"),"userId"));
+									.add(Projections.property("user.id"),"userId")
+									.add(Projections.property("user.siteId"),"siteId"));
 			Conjunction disCriteria = Restrictions.conjunction();
 			if(siteId!=1)disCriteria.add(Restrictions.eq("user.siteId", siteId));
 			disCriteria.add(Restrictions.eq("user.status", 100));
