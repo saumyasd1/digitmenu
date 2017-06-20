@@ -260,13 +260,20 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
 			List<Site> siteList = siteService.readAll();
 			List listOfTask=(List) entitiesMap.get("emailqueue");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			for (int i = 0; i < listOfTask.size(); i++) {
-				OrderEmailQueue orderQueue = (OrderEmailQueue) listOfTask.get(i);
-				if(orderQueue.getSiteId()!=null)
+				OrderEmailQueue orderEmailQueue = (OrderEmailQueue) listOfTask.get(i);
+				String lastModifiedId=orderEmailQueue.getLastModifiedBy();
+				if(lastModifiedId!=null)
 				{
-					int siteId=orderQueue.getSiteId();
+					String LastModifiedByName = userService.getUsernameById(lastModifiedId);
+					orderEmailQueue.setLastModifiedBy(LastModifiedByName);
+				}
+				if(orderEmailQueue.getSiteId()!=null)
+				{
+					int siteId=orderEmailQueue.getSiteId();
 					if(siteId > 0 && siteId <= siteList.size())
-					orderQueue.setSitename(siteList.get(siteId-1).getName());
+					orderEmailQueue.setSitename(siteList.get(siteId-1).getName());
 				}
 			}
 			responceMap.put("emailqueue", listOfTask);
