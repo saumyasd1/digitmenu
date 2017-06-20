@@ -268,15 +268,15 @@ public class OrderQueue extends MainAbstractEntity {
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-			List<Site> siteList = siteService.readAll();
 			List listOfTask=(List) orderQueue.get("orders");
 			for (int i = 0; i < listOfTask.size(); i++) {
 				OrderQueue orderQueue1 = (OrderQueue) listOfTask.get(i);
 				if(orderQueue1.getSiteId() > 0)
 				{
 					int siteId=orderQueue1.getSiteId();
-					if(siteId > 0 && siteId <= siteList.size())
-					orderQueue1.setSitename(siteList.get(siteId-1).getName());
+					Site site = siteService.read((long)siteId);
+					if(site != null)
+					orderQueue1.setSitename(site.getName());
 				}
 			}
 			responceMap.put("orders", listOfTask);

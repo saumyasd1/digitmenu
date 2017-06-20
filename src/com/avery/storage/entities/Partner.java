@@ -359,7 +359,7 @@ public class Partner extends MainAbstractEntity {
 				List listofPL=(List) entitiesMap.get("partners");
 				List listOfPR=new LinkedList<Partner>();
 				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-				List<Site> siteList = siteService.readAll();
+				
 				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
 				for(int i=0;i<listofPL.size();i++)
 				{
@@ -373,8 +373,9 @@ public class Partner extends MainAbstractEntity {
 					if(currentPartner.getSiteId()!=null)
 					{
 						int siteId1=currentPartner.getSiteId();
-						if(siteId1 > 0 && siteId1 <= siteList.size())
-						currentPartner.setSitename(siteList.get(siteId1-1).getName());
+						Site site = siteService.read((long)siteId1);
+						if(site != null)
+						currentPartner.setSitename(site.getName());
 					}
 					listOfPR.add(currentPartner);
 				}

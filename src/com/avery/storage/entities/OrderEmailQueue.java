@@ -201,7 +201,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 				List lsitOforderEmailQueue = (List) entitiesMap.get("emailqueue");
 				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-				List<Site> siteList = siteService.readAll();
+				
 				if (!lsitOforderEmailQueue.isEmpty())
 					for (int i = 0; i < lsitOforderEmailQueue.size(); i++) {
 						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue.get(i);
@@ -218,8 +218,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 						if(orderQueue.getSiteId()!=null)
 						{
 							int siteId=orderQueue.getSiteId();
-							if(siteId > 0 && siteId <= siteList.size())
-							orderQueue.setSitename(siteList.get(siteId-1).getName());
+							Site site = siteService.read((long)siteId);
+							if(site != null)
+							orderQueue.setSitename(site.getName());
 						}
 					}
 				responcemap.put("emailqueue", orderEmailQueuelsit);
@@ -258,7 +259,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-			List<Site> siteList = siteService.readAll();
+			
 			List listOfTask=(List) entitiesMap.get("emailqueue");
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			for (int i = 0; i < listOfTask.size(); i++) {
@@ -272,8 +273,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 				if(orderEmailQueue.getSiteId()!=null)
 				{
 					int siteId=orderEmailQueue.getSiteId();
-					if(siteId > 0 && siteId <= siteList.size())
-					orderEmailQueue.setSitename(siteList.get(siteId-1).getName());
+					Site site = siteService.read((long)siteId);
+					if(site != null)
+					orderEmailQueue.setSitename(site.getName());
 				}
 			}
 			responceMap.put("emailqueue", listOfTask);
