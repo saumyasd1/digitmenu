@@ -49,6 +49,7 @@ import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.UserMixIn;
 import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.storage.service.UserService;
+import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HashPassword;
 import com.avery.utils.PropertiesConstants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -213,15 +214,9 @@ public class User extends MainAbstractEntity {
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id, String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		String[] str = data.replace("{", "").replace("}", "").split(",");
 		String userId = "";
-		for (String tmp : str) {
-			if (tmp.contains("userId")) {
-				String[] tmp1 = tmp.split(":");
-				userId = tmp1[1];
-			}
-		}
 		try {
+			Map<String, String> jsonMap = ApplicationUtils.convertJSONtoMaps(data);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -253,6 +248,7 @@ public class User extends MainAbstractEntity {
 				else {
 					user.setPassword(password);
 				}
+				userId=jsonMap.get("userId");
 				user.setLastModifiedDate(new Date());
 				user.setCreatedDate(createdDate);
 				user.setLastModifiedBy(userId);

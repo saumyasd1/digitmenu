@@ -1394,7 +1394,7 @@ public class ProductLine extends MainAbstractEntity{
 			List listofPL=(List) productline.get("productlines");
 			List listOfPLR=new LinkedList<ProductLine>();
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-			List<Site> siteList = siteService.readAll();
+			
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
 			for(int i=0;i<listofPL.size();i++)
 			{
@@ -1408,7 +1408,9 @@ public class ProductLine extends MainAbstractEntity{
 				if(currentProductline.getSite() != null && currentProductline.getSite()!=0 )
 				{
 					int siteId1=(int) currentProductline.getSite();
-					currentProductline.setSitename(siteList.get(siteId1-1).getName());
+					Site site = siteService.read((long)siteId1);
+					if(site != null)
+						currentProductline.setSitename(site.getName());
 				}
 				listOfPLR.add(currentProductline);
 			}

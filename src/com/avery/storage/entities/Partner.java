@@ -39,6 +39,7 @@ import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.PartnerService;
 import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -444,17 +445,9 @@ public class Partner extends MainAbstractEntity {
 			String data) {
 		Response.ResponseBuilder rb = null;
 		Map<String,Object> responseMap=new HashMap<String,Object>();
-		//To get userid from Data
-		String[] str=data.replace("{", "").replace("}", "").split(",");
 		String userId="";
-		for(String tmp:str){
-			if(tmp.contains("userId")){
-				String[]tmp1=tmp.split(":");
-				userId=tmp1[1];
-			}
-		}
-		
 		try {
+			Map<String, String> jsonMap = ApplicationUtils.convertJSONtoMaps(data);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
@@ -478,6 +471,7 @@ public class Partner extends MainAbstractEntity {
 				responseMap.put("valueExist",true);
 				mapper.writeValue(writer, responseMap);
 			}else{
+				userId=jsonMap.get("userId");
 				partner.setLastModifiedBy(userId);
 				partnerService.update(partner);
 				responseMap.put("valueExist",false);
