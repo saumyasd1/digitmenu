@@ -252,12 +252,13 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			orgCodeCombo = refs.orgCode,
     		systemId = field.getValue(),
 			orgStore = Ext.StoreManager.lookup('userOrgStore');
+    	
     	AOCRuntime.setCurrentUserSystemId(systemId);
     	var proxy = new Ext.data.proxy.Rest({
     		url: applicationContext+'/rest/org/system/'+ systemId,
     		appendId: true,
-    		reader      : {
-    			type          : 'json'
+    		reader: {
+    			type: 'json'
     		},
     		autoLoad:true
     	});
@@ -271,6 +272,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			csrCodeCombo = refs.csrCode,
     		orgId = field.getValue(),
     		systemId = AOCRuntime.getCurrentUserSystemId();
+    	
     	var store = Ext.StoreManager.lookup('userCsrCodeStore');
     	store.load({params:{org:orgId,system:systemId}});
     	csrCodeCombo.setDisabled(false);
@@ -477,10 +479,17 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	
     	if(roleComboValue == 3){
     		systemCsrCodeGrid.setHidden(false);
-    		view.center();
+    		if(view.isVisible()){
+	    		var pos = view.getPosition();
+	    		view.setPosition(pos[0],pos[1]-100);
+    		}
     	}
     	else{
     		systemCsrCodeGrid.setHidden(true);
+    		if(view.isVisible()){
+	    		var pos = view.getPosition();
+	    		view.setPosition(pos[0],pos[1]+100);
+    		}
     	}
     }
 });
