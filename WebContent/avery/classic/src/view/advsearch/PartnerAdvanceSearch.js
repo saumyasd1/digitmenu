@@ -44,7 +44,27 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 						listeners:{
 							specialkey:'getAdvancedSearchResults'
 						}
-					},					
+					},
+					{
+						xtype:'combo',
+						name: 'siteId',
+						fieldLabel:'Site',
+						width:300,
+					 	editable:false,
+						displayField:'name',
+						queryMode :'local',
+						reference:'siteCombo',
+						valueField: 'id',
+						store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
+						listeners : {
+							afterrender:Helper.siteNameForSuperAdminOnly,
+							select:function(field){
+								if(field.getValue() == 'None'){
+									field.setValue('');
+								}
+							}
+						}
+					},
 					{
 
 						xtype: 'fieldcontainer',
