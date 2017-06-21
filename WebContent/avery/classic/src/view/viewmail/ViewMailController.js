@@ -345,7 +345,8 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 						}
 					});
 				},
-				recordId:view.currentRecordId
+				recordId:view.currentRecordId,
+				siteId:view.currentSiteId
 			});
 		assignCsrWin.show();
 	}

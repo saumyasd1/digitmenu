@@ -45,5 +45,11 @@ Ext.define('AOC.view.taskmanager.AssignCSRController', {
 	    };
 	    obj.getStore().load();
 	
+    },
+    onCSRComboAfterRender:function(field){
+    	var view = this.getView(),
+    		siteId = view.siteId;
+    	
+    	field.store.load({params:{siteId:siteId}});
     }
 });

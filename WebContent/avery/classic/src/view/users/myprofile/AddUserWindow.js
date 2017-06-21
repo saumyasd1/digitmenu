@@ -3,6 +3,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
     alias: 'widget.createuser',
     controller: 'adduserwindow',
     mode: 'add',
+    draggable:false,
+    resizable:false,
     bodyPadding: 10,
     title: 'Add User',
     layout: {

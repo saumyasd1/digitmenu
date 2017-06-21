@@ -96,7 +96,8 @@ Ext.define('AOC.view.email.EmailManagementController', {
 								}
 							});
 						},
-						recordId:id
+						recordId:id,
+						siteId:currentRecord.get('siteId')
 					});
 					assignCsrWin.show();
 					callout.destroy();

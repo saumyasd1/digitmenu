@@ -92,7 +92,7 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			}
 		});
 	},
-	onChangeSiteCSRCodeCombo: function( obj, newValue, oldValue, eOpts ){
+	onChangeSiteCSRCodeCombo: function(obj, newValue, oldValue, eOpts ){
 		var me = this,
 			refs = me.getView().getReferences(),
 			siteCombo = refs.siteCombo,
@@ -106,6 +106,7 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
 			if(siteCombo.getValue() == 'None'){
 				siteCombo.setValue('');
+				me.getCSRList(csrCombo.store, 1);
 				me.loadDefaultHomeList();
 				return;
 			}
@@ -113,7 +114,6 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 		}
 		else{
 			csrCombo.setHeight(24);
-			//refs['northRegion'].updateLayout();
 			csrCombo.updateLayout();
 			me.loadDefaultHomeList();
 		}
@@ -128,18 +128,6 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			siteId = siteCombo.isVisible() ? siteCombo.getValue() : userinfo.siteId,
 			siteComboValue = siteCombo.getValue(),
 			csrComboValue = csrCombo.getValue();
-//			csrComboValueArray = [];
-		
-//		var csrCodeArray = csrComboValue.split(','),
-//			len = csrCodeArray.length;
-//		
-//		for(var i = 0; i<len;i++){
-//			var index = csrCombo.store.find('id', csrCodeArray[i]);
-//			if(index > -1){
-//				var record = csrCombo.store.getAt(index);
-//				csrComboValueArray.push(record.get('userId'));
-//			}
-//		}
 			
 		var length = csrComboValue.length,
 			csrComboValueString = csrComboValue.toString(),
@@ -243,5 +231,4 @@ Ext.define('AOC.view.home.HomeWrapperController', {
             value: Ext.JSON.encode(values)
         });		
 	}
-	
 });

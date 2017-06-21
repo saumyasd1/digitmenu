@@ -32,6 +32,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 					viewMail.queryById('processOrderBtn').hide();
 					viewMail.queryById('assignCSRBtn').show();
 					viewMail.currentRecordId = id;
+					viewMail.currentSiteId = currentRecord.get('siteId');
 					viewMail.contextGrid = taskManagerGrid;
 					
 					form.queryById('partnerName').hide();
@@ -89,7 +90,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 								}
 							});
 						},
-						recordId:id
+						recordId:id,
+						siteId:currentRecord.get('siteId')
 					});
 					assignCsrWin.show();
 					callout.destroy();

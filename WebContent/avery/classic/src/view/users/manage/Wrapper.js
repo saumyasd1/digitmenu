@@ -6,7 +6,9 @@ Ext.define('AOC.view.users.manage.Wrapper', {
     height:Ext.getBody().getHeight()-50,
     layout: {
     	type: 'fit'
-    },   
+    },
+    draggable:false,
+    resizable:false,
     items :  [
 	    {
 	       xtype : 'users'
