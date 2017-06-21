@@ -163,6 +163,11 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
 								listeners : {
 									afterrender:Helper.siteNameForSuperAdminOnly,
+									select:function(field){
+										if(field.getValue() == 'None'){
+											field.setValue('');
+										}
+									}
 								}
 							}
 						]
