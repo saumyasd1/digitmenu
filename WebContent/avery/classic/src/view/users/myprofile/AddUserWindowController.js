@@ -220,6 +220,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	if(!Ext.isEmpty(recordId) && (recordId != userId)){
     		uploadbtn.setHidden(true);
     	}
+    	if(me.getView().mode == 'add'){
+    		uploadbtn.setHidden(true);
+    	}
     },
     onSiteSelected:function(field){
     	var me = this,	
@@ -419,6 +422,28 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         editForm.show();
         viewForm.hide();
         editForm.loadRecord(new Ext.data.Record(userinfo));
+        
+        var userInfo = AOCRuntime.getUser(),
+        	systemCsrCodeOwner = userInfo.systemCsrCodeOwner,
+        	systemCsrNonCodeOwner = userInfo.systemCsrNonCodeOwner;
+        
+	    var	systemCsrCombinedCodes ='';
+	    if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
+	        systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
+	    }
+	    else{
+	    	if(systemCsrCodeOwner != null){
+	    		if(!Ext.isEmpty(systemCsrCodeOwner.trim())){
+	        		systemCsrCombinedCodes = systemCsrCodeOwner;
+	        	}
+	        	else if(!Ext.isEmpty(systemCsrNonCodeOwner.trim()) && systemCsrNonCodeOwner !=null){
+	        		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+	        	}
+	    	}
+	    }
+	    if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
+        	Helper.loadSystemCsrCodeGrid(refs['systemCsrCodeGrid'], systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
+	    }
         this.getView().center();
     },
     onViewBtnClick:function(btn){

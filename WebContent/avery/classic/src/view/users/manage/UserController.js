@@ -6,9 +6,10 @@ Ext.define('AOC.view.users.manage.UserController', {
         var me = this,
             win = Ext.create('AOC.view.users.myprofile.AddUserWindow', {
                 gridView: me.getView(),
-                mode:'add'
+                mode:'add',
+                bindFlag:true
             });
-        win.show();
+        win.showBy(Ext.getBody());
     },
     init: function () {
         var me = this;
@@ -22,6 +23,7 @@ Ext.define('AOC.view.users.manage.UserController', {
     onClickMenu: function (obj, rowIndex, colIndex, item, e, record) {
         var me = this,
         	gridView = me.getView();
+        
         var callout = Ext.widget('callout', {
                 cls: 'white more-menu-item-callout extra',
                 html: me.menuTpl.apply(record.data),
@@ -40,8 +42,10 @@ Ext.define('AOC.view.users.manage.UserController', {
 	                            mode: 'edit',
 	                            ID: id,
 	                            gridView: gridView,
+	                            bindFlag:true,
 	                            title: 'Edit User'
                             });
+                        
                         var refs = win.getReferences(),
                             profileImage = refs.profileImage,
                             systemCsrCodeGrid = refs.systemCsrCodeGrid,
@@ -60,8 +64,9 @@ Ext.define('AOC.view.users.manage.UserController', {
 	                        	win.down('#confirmPassword').setHidden(false);
                         	}
                         }
-                        profileImage.setSrc(Helper.getFilePath(currentRecord));
+                        
                         win.lookupReference('addEditUserWinForm').loadRecord(currentRecord);
+                        profileImage.setSrc(Helper.getFilePath(currentRecord));
                         
                         var systemCsrCodeOwner = data.systemCsrCodeOwner,
                         	systemCsrNonCodeOwner = data.systemCsrNonCodeOwner;
@@ -80,43 +85,18 @@ Ext.define('AOC.view.users.manage.UserController', {
                         	}
                         }
                         if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
-                            Ext.Ajax.request({
-                            	url:applicationContext+'/rest/systemcsrcode',
-                            	method:'GET',
-                            	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
-                            	success: function (response, opts) {
-                            		var systemCsrGridData = Ext.JSON.decode(response.responseText),
-                            			gridData = systemCsrGridData.data,
-                            			rec = currentRecord,
-                            			yes = systemCsrCodeOwner,
-                            			no = systemCsrNonCodeOwner,
-                            			grid = systemCsrCodeGrid;
-                            		if(yes!=null)
-                            			yes = systemCsrCodeOwner.split(',');
-                            		if(no!=null)
-                            			no = systemCsrNonCodeOwner.split(',');
-                            		for(i=0;i<gridData.length;i++){
-                                		if(yes.indexOf(systemCsrGridData.data[i].id.toString()) != -1){
-                                			gridData[i].codeOwner = 'Y'
-                                		}
-                                		else{
-                                			gridData[i].codeOwner = 'N'
-                                		}
-                            		}
-                            		systemCsrCodeGridStore.loadData(gridData);
-                                },
-                                failure: function (response, opts) {
-                                    msg = response.responseText;
-                                    Helper.showToast('failure', msg);
-                                }
-                            });
+                        	Helper.loadSystemCsrCodeGrid(systemCsrCodeGrid, systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
                         }
                         if (win.mode == 'edit') {
                             systemCombo.setDisabled(false);
                             Helper.getSystemComboList(currentRecord.data.siteId);
                             systemCombo.store.load();
                         }
-                        win.show();
+                        setTimeout(function(){
+                        	win.show();
+                            win.center();
+                        },400);
+                        
                         callout.destroy();
                     },
                     deleteuser: function (cmp) {

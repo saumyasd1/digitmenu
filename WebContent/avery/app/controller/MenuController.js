@@ -198,13 +198,15 @@ Ext.define('AOC.controller.MenuController', {
                     text: 'Manage Users',
                     itemId: 'manageUsers',
                     typeIndex: 1
-                }, {
-                    iconCls: 'fa fa-universal-access aoc-menu-icon',
-                    text: 'Manage Roles',
-                    itemId: 'manageRoles',
-                    typeIndex: 2
-
-                }, {
+                }, 
+//                {
+//                    iconCls: 'fa fa-universal-access aoc-menu-icon',
+//                    text: 'Manage Roles',
+//                    itemId: 'manageRoles',
+//                    typeIndex: 2
+//
+//                }, 
+                {
                     iconCls: 'fa fa-sign-out aoc-menu-icon',
                     text: 'Logout',
                     typeIndex: 3
@@ -213,18 +215,18 @@ Ext.define('AOC.controller.MenuController', {
                     scope: me,
                     click: me.onProfileMenuClick,
                     beforeshow: function (menu) {
-                        var manageRoles = menu.queryById('manageRoles'),
-                            manageUsers = menu.queryById('manageUsers'),
+                        var manageUsers = menu.queryById('manageUsers'),
+                        	//manageRoles = menu.queryById('manageRoles'),
                             user = AOCRuntime.getUser(),
                         	role = user.role;
                         if (role == 1) {
-                            manageRoles.show();
+                           // manageRoles.show();
                             manageUsers.show();
                         } else if (role == 2) {
                             manageUsers.show();
-                            manageRoles.hide();
+                            //manageRoles.hide();
                         } else {
-                            manageRoles.hide();
+                            //manageRoles.hide();
                             manageUsers.hide();
                         }
                     }
@@ -255,7 +257,9 @@ Ext.define('AOC.controller.MenuController', {
     },
     onManageUserMenuItemClick: function () {
     	var win = Ext.create('AOC.view.users.manage.Wrapper',{title:'Manage Users'});
-    	win.show();
+    	var viewPort = this.getViewport();
+        viewPort.add(win).showBy(Ext.getBody());
+//    	win.show();
     },
     onManageRoleMenuItemClick: function () {
     	var win = Ext.create('AOC.view.users.roles.ManageRoleWindow',{title:'Manage Roles'});

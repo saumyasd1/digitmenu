@@ -4,7 +4,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
     controller: 'adduserwindow',
     mode: 'add',
     bodyPadding: 10,
-    constraintInsets:'10 10 10 10',
     title: 'Add User',
     layout: {
         type: 'vbox',
@@ -99,7 +98,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     anchor: '40%',
                     reference:'profileImage',
                     bind:{
-                    	src:'{userInfo.fileSrc}'
+                    	src:!me.bindFlag ? '{userInfo.fileSrc}' : '/test'
                     },
                     margin: me.mode == 'edit'? '20 0 0 0' : '35 0 0 0',
                     width: 160,
@@ -251,10 +250,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     blankText: 'Password is required(should be atleast of length 8)',
                     validateOnChange: false,
                     vtype: 'newpassword',
-                    hidden: me.mode=='edit'? true : false,
-                    listeners: {
-                        scope: me
-                    }
+                    hidden: me.mode=='edit'? true : true
                 }, {
                     xtype: 'textfield',
                     inputType: 'password',
@@ -264,7 +260,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     allowBlank: me.mode=='add'? false : true,
                     blankText: 'Confirm Password is required',
                     fieldLabel: AOCLit.confirmPassword,
-                    hidden:me.mode=='edit'? true : false,
+                    hidden:me.mode=='edit'? true : true,
                     vtype: 'password',
                     initialPassField: 'newPassword'
                 }, {
@@ -347,16 +343,19 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                 {	
                 	name:'csrCodeOwnerName',
                 	fieldLabel:AOCLit.csrCodeOwnerName,
-                    bind:'{userInfo.csrCodeOwnerName}',
+                    //bind:'{userInfo.csrCodeOwnerName}',
                     hidden:true
                 },
                 {	
                 	name:'csrNonCodeOwnerName',
                 	fieldLabel:AOCLit.csrNonCodeOwnerName,
-                    bind:'{userInfo.csrNonCodeOwnerName}',
+                    //bind:'{userInfo.csrNonCodeOwnerName}',
                     hidden:true
                 }]
             }]
         }];
+    },
+    onDestroy:function(){
+    	
     }
 });

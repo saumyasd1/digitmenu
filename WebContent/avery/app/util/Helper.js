@@ -677,6 +677,7 @@ Ext.define('AOC.util.Helper',{
     	    	   var str = filePath ? filePath :'',
     	    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
     	    		   filePath = fPath+'/'+fileName;
+    	    		   
     	    		 return filePath;
     	    	  }
     	}
@@ -706,5 +707,39 @@ Ext.define('AOC.util.Helper',{
                 autoLoad: true
             });
         systemStore.setProxy(proxy);
+    },
+    loadSystemCsrCodeGrid:function(systemCsrCodeGrid, systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes){
+    	var grid = systemCsrCodeGrid,
+    		store = grid.store;
+    	
+    	 Ext.Ajax.request({
+         	url:applicationContext+'/rest/systemcsrcode',
+         	method:'GET',
+         	params:{systemCsrCombinedCodes:systemCsrCombinedCodes},
+         	success: function (response, opts) {
+         		var systemCsrGridData = Ext.JSON.decode(response.responseText),
+         			gridData = systemCsrGridData.data,
+         			yes = systemCsrCodeOwner,
+         			no = systemCsrNonCodeOwner;
+         		
+         		if(yes!=null)
+         			yes = systemCsrCodeOwner.split(',');
+         		if(no!=null)
+         			no = systemCsrNonCodeOwner.split(',');
+         		for(i=0;i<gridData.length;i++){
+             		if(yes.indexOf(systemCsrGridData.data[i].id.toString()) != -1){
+             			gridData[i].codeOwner = 'Y'
+             		}
+             		else{
+             			gridData[i].codeOwner = 'N'
+             		}
+         		}
+         		store.loadData(gridData);
+             },
+             failure: function (response, opts) {
+                 msg = response.responseText;
+                 Helper.showToast('failure', msg);
+             }
+         });
     }
 });
