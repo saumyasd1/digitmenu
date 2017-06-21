@@ -70,7 +70,8 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
                 draggable : false,
                 sortable : false,
                 hideable :false,
-                resizable:false
+                resizable:false,
+                align:'left'
 			},
 		   items:[
 				{

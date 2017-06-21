@@ -162,10 +162,10 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 align: 'left',
                 width: 120,
                 dataIndex: 'siteName',
-                align: 'left'
-//                listeners: {
-//                	'afterrender': Helper.siteNameForSuperAdminOnly
-//                }
+                align: 'left',
+                listeners: {
+                	'afterrender': Helper.siteNameForSuperAdminOnly
+                }
             }, {
                 text: AOCLit.receivedDate,
                 width: 150,

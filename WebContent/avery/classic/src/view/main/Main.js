@@ -35,7 +35,13 @@ Ext.define('AOC.view.main.Main', {
     },
     listeners:{
     	tabchange:'onTabChange',
-    	render:'onTabRenderer'
+    	render:'onTabRenderer',
+    	focus:function(tabpanel, event){
+    		event.event.stopEvent();
+    	},
+    	focusenter:function(tabpanel, event){
+    		event.event.stopEvent();
+    	}
     },
 
     defaults: {

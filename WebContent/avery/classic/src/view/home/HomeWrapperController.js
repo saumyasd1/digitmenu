@@ -43,9 +43,9 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 	    var userInfo = AOCRuntime.getUser(),
 	    	siteId = userInfo.siteId;
 	    
-	    obj.getStore().proxy.extraParams = {
-		    siteId: siteId
-	    };
+//	    obj.getStore().proxy.extraParams = {
+//		    siteId: siteId
+//	    };
 	    obj.getStore().load({
 	    	callback:function(records, success){
 	    		obj.store.insert(0,new Ext.data.Record({name:'None', id:'None'}));
@@ -66,10 +66,24 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 				var data = JSON.parse(response.responseText);
 				var storeA = Ext.data.StoreManager.lookup('AssignCSRStore');
 				storeA.loadData(data);
-								
 				if(AOCRuntime.getUser().role == 3){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-						csrCombo.setValue(systemCsrNonCodeOwner);
+						var codeArray = systemCsrNonCodeOwner.split(','),
+							len = codeArray.length,
+							userIds = [];
+						
+						for(var i = 0; i < len; i++){
+							var index = csrCombo.store.find('id',codeArray[i]);
+							if(index > -1){
+								var record = csrCombo.store.getAt(index);
+								if(record){
+									userIds.push(record.get('userId'));
+								}
+							}
+						}
+						setTimeout(function(){
+							csrCombo.setValue(userIds.join());
+						},2000);
 					}else{
 						csrCombo.setValue(AOCRuntime.getUser().id);
 					}
@@ -101,6 +115,8 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			me.filterHomeList(obj, newValue, oldValue);
 		}
 		else{
+			csrCombo.setHeight(24);
+			//refs['northRegion'].updateLayout();
 			csrCombo.updateLayout();
 			me.loadDefaultHomeList();
 		}
@@ -114,8 +130,21 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			userinfo = AOCRuntime.getUser(),
 			siteId = siteCombo.isVisible() ? siteCombo.getValue() : userinfo.siteId,
 			siteComboValue = siteCombo.getValue(),
-			csrComboValue = csrCombo.getValue(),
-			length = csrComboValue.length,
+			csrComboValue = csrCombo.getValue();
+//			csrComboValueArray = [];
+		
+//		var csrCodeArray = csrComboValue.split(','),
+//			len = csrCodeArray.length;
+//		
+//		for(var i = 0; i<len;i++){
+//			var index = csrCombo.store.find('id', csrCodeArray[i]);
+//			if(index > -1){
+//				var record = csrCombo.store.getAt(index);
+//				csrComboValueArray.push(record.get('userId'));
+//			}
+//		}
+			
+		var length = csrComboValue.length,
 			csrComboValueString = csrComboValue.toString(),
 			currentItemRef = obj.currentItemRef,
 			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner,

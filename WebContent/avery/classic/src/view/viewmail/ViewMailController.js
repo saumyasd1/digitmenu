@@ -65,7 +65,6 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
     	var panel=Ext.ComponentQuery.query(itemId)[0];
  	   	panel.getLayout().setActiveItem(0);
  	   	var activeItem = panel.getLayout().getActiveItem();
- 	   //activeItem.getView().refresh();
  	   	activeItem.getStore().load();
     },
   	

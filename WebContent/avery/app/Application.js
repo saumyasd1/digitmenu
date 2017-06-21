@@ -25,7 +25,6 @@ Ext.define('AOC.Application', {
 	],
     stores: [
          'Sections',
-         //'AddressManageStore',
          'PartnerManagementStore',
          'EmailManagementStore',
          'AddressStore',
@@ -35,6 +34,7 @@ Ext.define('AOC.Application', {
     views : ['Viewport'],
     
     launch: function () {
+    	localStorage.clear();
     	var me =this;
    	 	Ext.fly('loading').fadeOut({
             callback : function(){

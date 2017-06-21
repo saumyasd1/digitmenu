@@ -1,7 +1,6 @@
 Ext.define('AOC.view.home.Wrapper', {
 	extend : 'Ext.Container',
 	alias : 'widget.homewrapper',
-	//requires:['AOC.view.home.HomePageOrderList'],
 	controller:'homewrappercontroller',
 	layout: {
         type: 'border'
@@ -16,6 +15,7 @@ Ext.define('AOC.view.home.Wrapper', {
 	    return [
 	        {
 	        	region:'north',
+	        	reference:'northRegion',
 	        	minHeight:60,
 	        	bodyPadding:10,
 	        	layout:{
@@ -68,15 +68,15 @@ Ext.define('AOC.view.home.Wrapper', {
 								queryMode :'local',
 								reference:'siteCombo',
 								valueField: 'id',
-								store:Ext.create('AOC.store.SiteStore'),
+								store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
 								listeners : {
 									afterrender:'onAfterRenderSiteCombo',
 									change:'onChangeSiteCSRCodeCombo'
 								}
 							},
-							{
+						    {
 						        xtype: 'tagfield',
-						        fieldLabel: 'CSR Code',
+						        fieldLabel:'CSR Code',
 						        flex:1,
 						        displayField:'csrName',
 								valueField:'userId',

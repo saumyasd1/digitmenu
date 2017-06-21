@@ -1,6 +1,6 @@
 Ext.define('AOC.view.viewmail.ViewMail', { 
 	extend : 'Ext.panel.Panel',
-	requires : ['AOC.view.base.BaseToolbar','AOC.view.viewmail.EmailAttachmentInfoGrid','AOC.view.viewmail.ViewMailForm'],
+	requires : ['AOC.view.viewmail.EmailAttachmentInfoGrid','AOC.view.viewmail.ViewMailForm'],
 	alias : 'widget.viewmail',
 	controller:'viewMailController',
 	itemId : 'viewMailItemId',
@@ -35,22 +35,19 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 	buildButtons:function(){
 		return [
 			{
-				//xtype:'whitebutton',
 				text:'Back',
 				handler:'backButton'
 			},
 			'->',
 			{
-			   //xtype   : 'whitebutton',
-			   margin  : '0 10 0 10',
-			   text    : 'Save',
+			   margin: '0 10 0 10',
+			   text: 'Save',
 			   reference:'saveEmailAttachmentBtn',
-			   itemId  : 'saveAttachment',
+			   itemId: 'saveAttachment',
 			   disabled:true,
-			   handler : 'onSaveBtnClicked'
+			   handler: 'onSaveBtnClicked'
 			},
 			{
-			   //xtype   : 'whitebutton',
 			   margin  : '0 10 0 10',
 			   text    : 'Assign CSR',
 			   reference:'assignCSRBtn',
@@ -59,7 +56,6 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   handler : 'onAssignCSRBtnClicked'
 			},
 			{
-			   //xtype   : 'whitebutton',
 			   margin  : '0 10 0 0',
 			   itemId  : 'downloadAttachments',
 			   text    : 'Download Attachment(s)',
@@ -67,20 +63,19 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   handler : 'onDownloadAttachmentBtnClick'
 			},
 			{
-			   //xtype   : 'whitebutton',
 			   itemId  : 'processOrderBtn',
 			   text    : 'Process Order',
 			   reference:'processOrderBtn',
 			   disabled: true,
 			   handler : 'onProcessOrderBtnClicked'
 			}
-		]
+		];
 	},
 	buildItems:function(){
 		return [
 			 {
 				 xtype:'viewmailform',
-				 reference:'webform',
+				 reference:'viewMailForm',
 				 region:'north',
 				 height:155,
 				 scrollable:true,
@@ -89,10 +84,10 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			},
 			{
 				 xtype:'emailattachmentinfoGrid',
-				 style:AOC.config.Settings.config.defaultBorderStyle,
 				 margin:'0 1 0 1',
 				 reference:'emailAttachmentInfoGrid',
 				 scrollable:true,
+				 frame:true,
 				 region:'center'
 			 }
 		]

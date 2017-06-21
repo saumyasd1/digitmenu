@@ -1,13 +1,12 @@
 Ext.define('AOC.view.email.EmailManagement',{
 	extend : 'Ext.Container',
 	requires : [
-         'AOC.view.base.BaseToolbar',
          'AOC.view.email.EmailManagementGrid',
          'AOC.view.viewmail.ViewMail'
 	],
-	alias : 'widget.emailmanagement',
-	itemId : 'emailManagementItemId',
-	layout :'card',
+	alias: 'widget.emailmanagement',
+	itemId: 'emailManagementItemId',
+	layout:'card',
 	activeItem: 0,
 	
 	initComponent : function() {

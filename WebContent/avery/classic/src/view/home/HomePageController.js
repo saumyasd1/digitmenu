@@ -45,15 +45,53 @@ Ext.define('AOC.view.home.HomePageController', {
 		}
 		status = status.join(',');
 		
-		var parameters = '{"days":"' +days + '","Status":"' + status +'"}';
+		var parameters = {
+			days:days,
+			Status:status
+		};
+		var userInfo = AOCRuntime.getUser(),
+			roleId = userInfo.role,
+			homeWrapper = Ext.ComponentQuery.query('viewport homewrapper')[0],
+			homeWrapperRefs = homeWrapper.getReferences(),
+			csrCombo = homeWrapperRefs.csrCombo,
+			siteCombo = homeWrapperRefs.siteCombo;
+		
+		if(roleId == 1){ //super admin
+			parameters.assignCSR = csrCombo.getValue().join();
+			parameters.siteId = siteCombo.getValue() ? siteCombo.getValue() : '';
+		}else if(roleId == 2){ //site admin
+			parameters.assignCSR = csrCombo.getValue().join();
+		}else if(roleId == 3){ //csr
+			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
+				parameters.assignCSR = csrCombo.getValue() ? csrCombo.getValue().join() : userInfo.id.toString();
+			}else{   // csr manager
+				if(csrCombo.getValue().length > 0){
+					parameters.assignCSR = csrCombo.getValue().join();
+				}else{
+					var codeArray = userInfo.systemCsrNonCodeOwner.split(','),
+						len = codeArray.length,
+						assignCSRStore = csrCombo.store,
+						userIds = [];
+				  
+					for(var i = 0; i < len; i++){
+						var rec = assignCSRStore.findRecord('id', codeArray[i],'',false, false, true);
+						if(rec){
+							userIds.push(rec.get('userId'));
+						}
+					}
+					parameters.assignCSR = userIds.join();
+				}
+			}
+		}
+		
 		if(record.get('type') == 'orderqueue'){
-			me.filterOrderQueueList(parameters);
+			me.filterOrderQueueList(Ext.JSON.encode(parameters));
 		}
 		else if(record.get('type') == 'emailqueue'){
-			me.filterEmailQueueList(parameters);
+			me.filterEmailQueueList(Ext.JSON.encode(parameters));
 		}
 		else if(record.get('type') == 'taskmanager'){
-			me.filterTaskManagerList(parameters);
+			me.filterTaskManagerList(Ext.JSON.encode(parameters));
 		}
 	},
 	filterOrderQueueList:function(parameters){

@@ -30,24 +30,24 @@ Ext.define('AOC.view.main.MainController', {
 //			activeTab = tabPanel.getActiveTab(),
     		listType = tab.listType;
 	
-	switch(listType){
-		case 'orderQueueStatusList':
-			break;
-		case 'webOrderView':
-			var webOrderView = refs[listType];
-            Helper.resetWebOrderForm(webOrderView);
-            webOrderView.down('#backButtonimage').hide();
-            webOrderView.updateHeaderLabel(newWebOrder);
-	            break;
-		default:
-			var gridView = refs[listType],
-            clearAdvSarchBtn = gridView.down('#clearadvanedsearch'),
-            store = gridView.getStore();
-
-        clearAdvSarchBtn.isVisible() ? clearAdvSarchBtn.hide() : '';
-        store.clearFilter(true);
-        store.load();
-        break;
-	}
+		switch(listType){
+			case 'orderQueueStatusList':
+				break;
+			case 'webOrderView':
+				var webOrderView = refs[listType];
+	            Helper.resetWebOrderForm(webOrderView);
+	            webOrderView.down('#backButtonimage').hide();
+	            webOrderView.updateHeaderLabel(newWebOrder);
+		            break;
+			default:
+				var gridView = refs[listType],
+	            clearAdvSarchBtn = gridView.down('#clearadvanedsearch'),
+	            store = gridView.getStore();
+	
+	        clearAdvSarchBtn.isVisible() ? clearAdvSarchBtn.hide() : '';
+	        store.clearFilter(true);
+	        store.load();
+	        break;
+		}
     }
 });
