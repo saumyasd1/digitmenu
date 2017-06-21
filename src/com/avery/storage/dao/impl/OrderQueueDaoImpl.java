@@ -412,7 +412,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String assignCSR = searchMap.get("assignCSR");
 			if (assignCSR != null && !"".equals(assignCSR)) {
 				List<String> assignCSRList = ApplicationUtils.convertStringToList(assignCSR);
-				criteria.add(Restrictions.in("assignCSR",assignCSRList));
+				criteria.add(Restrictions.in("orderemailqueue.assignCSR",assignCSRList));
 			}
 
 			String emailQueueId = searchMap.get("emailQueueId");
@@ -421,8 +421,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
 
-			if (searchMap.get("filterSiteId") != null && !searchMap.get("filterSiteId").equals("")) {
-				String filterSiteId = (String) searchMap.get("filterSiteId");
+			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("")) {
+				String filterSiteId = (String) searchMap.get("siteId");
 				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));
 			}
 
