@@ -123,6 +123,22 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
+							},
+							{
+								xtype:'combo',
+								name: 'siteId',
+								fieldLabel:'Site',
+								flex:1,
+							 	editable:false,
+								displayField:'name',
+								margin:'0 0 0 10',
+								queryMode :'local',
+								reference:'siteCombo',
+								valueField: 'id',
+								store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
+								listeners : {
+									afterrender:Helper.siteNameForSuperAdminOnly,
+								}
 							}
 						]
 					},

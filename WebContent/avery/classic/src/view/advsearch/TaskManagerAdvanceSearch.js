@@ -140,6 +140,33 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 							}
 						]
 					},
+					{ 
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype:'combo',
+								name: 'siteId',
+								fieldLabel:'Site',
+								flex:1,
+							 	editable:false,
+								displayField:'name',
+								queryMode :'local',
+								reference:'siteCombo',
+								valueField: 'id',
+								store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
+								listeners : {
+									afterrender:Helper.siteNameForSuperAdminOnly,
+								}
+							}
+						]
+					},
 					{
 
 						xtype: 'fieldcontainer',
