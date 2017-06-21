@@ -55,7 +55,7 @@ Ext.define('AOC.view.home.Wrapper', {
 								listeners : {
 									'afterrender':'onAfterRenderSiteDisplayfield'
 								}
-							 },
+							},
 							{
 								xtype:'combo',
 								name: 'siteId',

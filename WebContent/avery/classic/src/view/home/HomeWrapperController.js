@@ -73,12 +73,9 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 							userIds = [];
 						
 						for(var i = 0; i < len; i++){
-							var index = csrCombo.store.find('id',codeArray[i]);
-							if(index > -1){
-								var record = csrCombo.store.getAt(index);
-								if(record){
-									userIds.push(record.get('userId'));
-								}
+							var record = csrCombo.store.findRecord('id',codeArray[i],'', false, false, true);
+							if(record){
+								userIds.push(record.get('userId'));
 							}
 						}
 						setTimeout(function(){
