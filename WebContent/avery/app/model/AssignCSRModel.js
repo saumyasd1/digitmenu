@@ -1,6 +1,6 @@
 Ext.define('AOC.model.AssignCSRModel',{
     extend: 'Ext.data.Model',
-	idProperty:null,
+	idProperty:'id',
     fields: [
         {name: 'csrName', type: 'string',
         	convert: function( v, record ) {

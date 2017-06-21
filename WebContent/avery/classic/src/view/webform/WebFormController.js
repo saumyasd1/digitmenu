@@ -519,13 +519,13 @@ Ext.define('AOC.view.webform.WebFormController', {
     };
    },
    onAfterRenderCSRList: function(obj){
-	    var userInfo = AOCRuntime.getUser(),
-	    roleId = userInfo.role,
-	    siteId = userInfo.siteId;
-	obj.getStore().proxy.extraParams = {
-	    siteId: siteId,
-	    roleId: roleId
-	};
+//	    var userInfo = AOCRuntime.getUser(),
+//	    roleId = userInfo.role,
+//	    siteId = userInfo.siteId;
+//	obj.getStore().proxy.extraParams = {
+//	    siteId: siteId,
+//	    roleId: roleId
+//	};
 	obj.getStore().load();
 	
 	}

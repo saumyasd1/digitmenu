@@ -115,7 +115,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 				.add(Projections.property("systemCsrCodeOwner"), "systemCsrCodeOwner")
 				.add(Projections.property("systemCsrNonCodeOwner"), "systemCsrNonCodeOwner")
 				.add(Projections.property("password"), "password")
-				.add(Projections.property("siteId"), "siteId");
+				.add(Projections.property("siteId"), "siteId")
+				.add(Projections.property("gender"), "gender");
 		criteria = session.createCriteria(User.class);
 		if (email != null && !"".equals(email)) {
 			criteria.setProjection(proj).setResultTransformer(Transformers.aliasToBean(User.class));
