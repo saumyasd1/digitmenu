@@ -129,7 +129,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						valueField:'userId',
 						queryMode:'local',
 						disabled:true,
-						store:Ext.data.StoreManager.lookup('AssignCSRStore'),//Ext.create('AOC.store.AssignCSRStore'),
+						store:Ext.create('AOC.store.AssignCSRStore'),
 						typeAhead:true,
 						triggerAction:'all',
 						flex:1,
@@ -140,7 +140,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 							blur:function(combo,e){
 								Helper.clearCSRCombo(combo,e);
 							}
-//							afterrender:'onAfterRenderCSRList'
 						}
 					}
 				]
