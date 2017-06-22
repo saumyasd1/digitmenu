@@ -252,7 +252,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     blankText: 'Password is required(should be atleast of length 8)',
                     validateOnChange: false,
                     vtype: 'newpassword',
-                    hidden: me.mode=='edit'? true : true
+                    hidden: me.mode=='edit'? true : false
                 }, {
                     xtype: 'textfield',
                     inputType: 'password',
@@ -262,7 +262,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     allowBlank: me.mode=='add'? false : true,
                     blankText: 'Confirm Password is required',
                     fieldLabel: AOCLit.confirmPassword,
-                    hidden:me.mode=='edit'? true : true,
+                    hidden:me.mode=='edit'? true : false,
                     vtype: 'password',
                     initialPassField: 'newPassword'
                 }, {

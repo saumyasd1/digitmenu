@@ -407,15 +407,17 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         
         refs['roledisplayfield'].setHidden(false);
         refs['newPassword'].setValue();
-        if(userinfo.id == 1){
-        	refs['siteName'].setHidden(true);
-        	refs['newPassword'].setHidden(false);
-        	refs['confirmPassword'].setHidden(false);
-        }
-        refs['siteName'].setDisabled(true);
-        refs['roleName'].setHidden(true);
         
+        if(userinfo.role == 1){
+        	refs['siteName'].setHidden(true);
+        }
+    	refs['newPassword'].setHidden(true);
+    	refs['confirmPassword'].setHidden(true);
+        
+        refs['siteName'].setDisabled(true);
         refs['siteName'].store.load();
+        
+        refs['roleName'].setHidden(true);
         
         refs['saveUserFormBtn'].setHidden(false);
         refs['viewBtn'].setHidden(false);
