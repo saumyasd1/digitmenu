@@ -112,7 +112,11 @@ Ext.define('AOC.view.webform.WebFormController', {
 			index = store.find('id', newValue),
 			view = me.getView(),
 			attachementField = me.lookupReference('attachment'),
-			additionalDataFileKey = me.lookupReference('additionalDataFileKey');
+			additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
+			assignCSRCombo = me.lookupReference('assignCSR'),
+			siteId = AOCRuntime.getUser().siteId;
+		
+		assignCSRCombo.getStore().load({params:{siteId:siteId}});
 			
 		if(attachementField){
 			if(!Ext.isEmpty(newValue) && index != -1){

@@ -139,8 +139,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						listeners:{
 							blur:function(combo,e){
 								Helper.clearCSRCombo(combo,e);
-							},
-							afterrender:'onAfterRenderCSRList'
+							}
+//							afterrender:'onAfterRenderCSRList'
 						}
 					}
 				]
