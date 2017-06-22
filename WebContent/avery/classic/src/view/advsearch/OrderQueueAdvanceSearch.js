@@ -240,7 +240,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									name:'assignCSR',
 									valueField:'id',
 									queryMode:'local',
-									store:Ext.data.StoreManager.lookup('AssignCSRStore'),
+									store:Ext.data.StoreManager.lookup('advOQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advOQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advOQCSRStoreId'}),
 									typeAhead:true,
 									tabIndex:10,
 									triggerAction:'all',
@@ -251,7 +251,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 										blur:function(combo,e){
 											Helper.clearCSRCombo(combo,e);
 										},
-										specialkey:'getAdvancedSearchResults'
+										specialkey:'getAdvancedSearchResults',
+										afterrender:Helper.loadAdvanceCSRStore
 									}
 							}
 						]

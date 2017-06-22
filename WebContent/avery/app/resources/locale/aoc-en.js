@@ -525,5 +525,10 @@ Ext.define('AOC.lang.lit',{
     	emailQueueTabIndex:2,
     	orderQueueTabIndex:3,
     	webOrderTabIndex:4
+	},
+	userRole:{
+		superAdmin:1,
+		siteManager:2,
+		CSR:3
 	}
 });

@@ -54,14 +54,15 @@ Ext.define('AOC.view.home.HomePageController', {
 			homeWrapper = Ext.ComponentQuery.query('viewport homewrapper')[0],
 			homeWrapperRefs = homeWrapper.getReferences(),
 			csrCombo = homeWrapperRefs.csrCombo,
-			siteCombo = homeWrapperRefs.siteCombo;
+			siteCombo = homeWrapperRefs.siteCombo,
+			userRoles = AOCLit.userRole;
 		
-		if(roleId == 1){ //super admin
+		if(roleId == userRoles.superAdmin){ //super admin
 			parameters.assignCSR = csrCombo.getValue().join();
 			parameters.siteId = siteCombo.getValue() ? siteCombo.getValue() : '';
-		}else if(roleId == 2){ //site admin
+		}else if(roleId == userRoles.siteManager){ //site admin
 			parameters.assignCSR = csrCombo.getValue().join();
-		}else if(roleId == 3){ //csr
+		}else if(roleId == userRoles.CSR){ //csr
 			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
 				parameters.assignCSR = csrCombo.getValue().length > 0 ? csrCombo.getValue().join() : userInfo.id.toString();
 			}else{   // csr manager

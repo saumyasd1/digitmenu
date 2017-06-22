@@ -124,7 +124,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								name:'assignCSR',
 								valueField:'id',
 								queryMode:'local',
-								store:Ext.data.StoreManager.lookup('AssignCSRStore'),
+								store:Ext.create('AOC.store.AssignCSRStore',{storeId:'advTmCSRStoreId'}),
 								typeAhead:true,
 								triggerAction:'all',
 								width:275,
@@ -135,7 +135,8 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 									blur:function(combo,e){
 										Helper.clearCSRCombo(combo,e);
 									},
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									afterrender:Helper.loadAdvanceCSRStore
 								}
 							}
 						]

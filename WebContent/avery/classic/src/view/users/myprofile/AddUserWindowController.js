@@ -375,6 +375,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwner = refs.codeOwner,
     		hasOwner = combo.getSelectedRecord().data.hasOwner,
     		insertBtn = refs.insertBtn;
+    	
     	codeOwner.setDisabled(false);
     	systemCsrCodeGridStore.each(function(rec, index){
     		if(rec.get('csrCode') == csrComboValue ){
@@ -389,6 +390,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	});
     	if(hasOwner == 'true'){
     		codeOwner.setValue('N');
+    		codeOwner.setDisabled(true);
+    		insertBtn.setDisabled(false);
+    	}else{
+    		codeOwner.setValue('Y');
     		codeOwner.setDisabled(true);
     		insertBtn.setDisabled(false);
     	}
@@ -414,7 +419,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         refs['roledisplayfield'].setHidden(false);
         refs['newPassword'].setValue();
         
-        if(userinfo.role == 1){
+        if(userinfo.role == superAdmin){
         	refs['siteName'].setHidden(true);
         }
     	refs['newPassword'].setHidden(true);
@@ -430,7 +435,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         viewForm.hide();
         editForm.show();
         editForm.loadRecord(new Ext.data.Record(userinfo));
-        //this.getView().down('#site').setValue(userinfo.siteId);
         refs['siteName'].setDisabled(true);
         
         var userInfo = AOCRuntime.getUser(),
