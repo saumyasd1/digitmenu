@@ -47,7 +47,13 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             method = '',
             msg = '';
         
-        var obj =me.getSystemCsrCodeValues(systemCsrCodeGrid);
+        var obj = me.getSystemCsrCodeValues(systemCsrCodeGrid);
+        
+        var values = form.getValues(false, true, false, true);
+        if(systemCsrCodeGrid.store.getCount() == 0 && values.role == 3){
+        	Helper.showToast('validation', 'User must have atleast one CSR Code');
+        	return;
+        }
         
         if (mode == 'edit') {
             url = applicationContext + '/rest/users/' + view.ID; //Provide roleId for particular record
