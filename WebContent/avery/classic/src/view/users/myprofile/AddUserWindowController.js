@@ -256,6 +256,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	var me = this,
 			refs = this.getReferences(),
 			orgCodeCombo = refs.orgCode,
+			csrCodeCombo = refs.csrCode,
+			insertBtn = refs.insertBtn,
     		systemId = field.getValue(),
 			orgStore = Ext.StoreManager.lookup('userOrgStore');
     	
@@ -270,18 +272,24 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	});
     	orgStore.setProxy(proxy);
     	orgStore.load();
+    	orgCodeCombo.reset();
     	orgCodeCombo.setDisabled(false);
+    	csrCodeCombo.setDisabled(true);
+    	insertBtn.setDisabled(true);
     },
     onOrgSelected:function(field){
     	var me = this,
 			refs = this.getReferences(),
 			csrCodeCombo = refs.csrCode,
+			insertBtn = refs.insertBtn,
     		orgId = field.getValue(),
     		systemId = AOCRuntime.getCurrentUserSystemId();
     	
     	var store = Ext.StoreManager.lookup('userCsrCodeStore');
     	store.load({params:{org:orgId,system:systemId}});
+    	csrCodeCombo.reset();
     	csrCodeCombo.setDisabled(false);
+    	insertBtn.setDisabled(true);
     },
     onSystemCsrCodeAddRowBtnClick:function(){
 		var me = this,
