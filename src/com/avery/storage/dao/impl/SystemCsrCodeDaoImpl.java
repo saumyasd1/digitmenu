@@ -136,10 +136,11 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 				if (newList.contains(currentId)) {
 					systemCsrCode.setHasOwner("true");
 					user.setId(Long.parseLong(userId));
+					systemCsrCode.setVarUser(user);
 				} else {
 					systemCsrCode.setHasOwner("false");
+					systemCsrCode.setVarUser(null);
 				}
-				systemCsrCode.setVarUser(user);
 				session.update(systemCsrCode);
 			}
 			flag = true;
