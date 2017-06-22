@@ -126,19 +126,6 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		return user;
 	}
 
-	@Override
-	public int findUserBySiteId(int siteId) throws Exception {
-		Session session = null;
-		Criteria criteria = null;
-		User user = null;
-		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(User.class);
-		if (siteId != 0 && !"".equals(siteId)) {
-			user = (User) criteria.add(Restrictions.eq("siteId", siteId))
-					.uniqueResult();
-		}
-		return siteId;
-	}
 
 	@Override
 	public boolean checkDuplicateUser(User userObj) throws Exception {
