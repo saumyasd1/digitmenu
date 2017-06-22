@@ -419,7 +419,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         refs['roledisplayfield'].setHidden(false);
         refs['newPassword'].setValue();
         
-        if(userinfo.role == superAdmin){
+        if(userinfo.role == AOCLit.userRole.superAdmin){
         	refs['siteName'].setHidden(true);
         }
     	refs['newPassword'].setHidden(true);

@@ -30,6 +30,105 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 	listeners:{
         cellclick:'onOrderQueueStatusCellClick'
     },
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top',
+        items: [
+			{
+				xtype:'tbtext',
+				text:'Order Queue Status',
+				style:AOC.config.Settings.config.tabHeaderTitleStyle
+			},'->',
+			{
+				xtype:'displayfield',
+				itemId:'siteDisplay',
+				fieldLabel:'Site',
+				width:150,
+				labelWidth:50,
+				currentItemRef:'siteDisplayfield',
+				reference:'siteDisplayfield',
+				labelStyle:Settings.config.defaultFormLabelStyle,
+				labelSeparator:'',
+				labelWidth:100,
+				hidden:true,
+				listeners : {
+					'afterrender':'onAfterRenderSiteDisplayfield'
+				}
+			},
+			{
+				xtype:'combo',
+				name: 'siteId',
+				fieldLabel:'Site',
+				width:200,
+				labelWidth:50,
+			 	currentItemRef:'siteCombo',
+			 	labelStyle:Settings.config.defaultFormLabelStyle,
+				labelSeparator:'',
+			 	editable:false,
+				displayField:'name',
+				queryMode :'local',
+				reference:'siteCombo',
+				valueField: 'id',
+				store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
+				listeners : {
+					afterrender:'onAfterRenderSiteCombo',
+					change:'onChangeSiteCSRCodeCombo'
+				}
+			},
+			{
+			    xtype: 'tagfield',
+			    fieldLabel:'CSR Code',
+			    width:450,
+			    displayField:'csrName',
+			    labelStyle:Settings.config.defaultFormLabelStyle,
+				labelSeparator:'',
+				labelWidth:70,
+				valueField:'userId',
+				multiSelect:true,
+			    filterPickList: true,
+			    queryMode: 'local',
+			    reference:'csrCombo',
+				name:'assignCSR',
+				listeners:{
+					change:'onChangeSiteCSRCodeCombo',
+					afterrender:function(tagfield){
+						tagfield.store = Ext.data.StoreManager.lookup('AssignCSRStore');
+					}
+				}
+			},
+			{
+				xtype:'combo',
+				displayField:'Name',
+				fieldLabel:'Refresh Rate',
+				valueField:'id',
+				value:0,
+				width:220,
+				labelStyle:Settings.config.defaultFormLabelStyle,
+				labelSeparator:'',
+				labelWidth:100,
+				queryMode:'local',
+				reference:'refreshRateCombo',
+				name:'refreshRateCombo',
+				editable:false,
+				store:new Ext.data.JsonStore({
+					data:[
+					    {Name:'Don\'t Refresh',id:0},
+					    {Name:'5 min', id:5},{Name:'10 min',id:10},{Name:'15 min', id:15}    
+					],
+					fields:['Name','id']
+				}),
+				listeners:{
+					select:'onRefreshRateComboSelect'
+				}
+			},
+			{
+				cls:'aoc-btn',
+				margin:'0 0 0 10',
+				tooltip:'<font color="blue">Quick Refresh</font>',
+				iconCls:'fa fa-refresh aoc-icon',
+				handler:'onRefreshClick'
+			}] 
+    }],
 	buildColumns : function(){
     	var me=this;
         return {
