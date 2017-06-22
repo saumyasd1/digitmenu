@@ -63,7 +63,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			parameters.assignCSR = csrCombo.getValue().join();
 		}else if(roleId == 3){ //csr
 			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
-				parameters.assignCSR = csrCombo.getValue() ? csrCombo.getValue().join() : userInfo.id.toString();
+				parameters.assignCSR = csrCombo.getValue().length > 0 ? csrCombo.getValue().join() : userInfo.id.toString();
 			}else{   // csr manager
 				if(csrCombo.getValue().length > 0){
 					parameters.assignCSR = csrCombo.getValue().join();
