@@ -46,11 +46,6 @@ public class UserService extends GenericEntityService<User, Long> {
 	}
 
 	@Transactional
-	public int findUserBySiteId(int siteId) throws Exception {
-		return getUserDao().findUserBySiteId(siteId);
-	}
-	
-	@Transactional
 	public List<SystemCsrCode> getSortedList(int siteId) {
 		return getUserDao().getSortedList(siteId);
 	}
