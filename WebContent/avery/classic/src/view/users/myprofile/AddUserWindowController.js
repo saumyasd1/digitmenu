@@ -415,6 +415,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         refs['siteName'].setDisabled(true);
         refs['roleName'].setHidden(true);
         
+        refs['siteName'].store.load();
+        
         refs['saveUserFormBtn'].setHidden(false);
         refs['viewBtn'].setHidden(false);
         refs['cancelUserFormBtn'].setHidden(false);
@@ -444,6 +446,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    	}
 	    }
 	    if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
+	    	refs['systemCsrCodeGrid'].setDisabled(true);
         	Helper.loadSystemCsrCodeGrid(refs['systemCsrCodeGrid'], systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
 	    }
         this.getView().center();

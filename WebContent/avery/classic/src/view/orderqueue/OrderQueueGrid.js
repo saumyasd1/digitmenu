@@ -194,10 +194,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             dataIndex: 'siteName',
             align: 'left',
             align: 'left',
-            width: 150
-//            listeners: {
-//            	'afterrender': Helper.siteNameForSuperAdminOnly
-//            }
+            width: 150,
+            listeners: {
+            	'afterrender': Helper.siteNameForSuperAdminOnly
+            }
         }, {
             text: AOCLit.receivedDate,
             align: 'left',
