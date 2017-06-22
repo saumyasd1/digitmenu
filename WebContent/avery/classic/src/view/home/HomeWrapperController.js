@@ -125,15 +125,22 @@ Ext.define('AOC.view.home.HomeWrapperController', {
 			siteCombo = refs.siteCombo,
 			csrCombo = refs.csrCombo,
 			userinfo = AOCRuntime.getUser(),
-			siteId = siteCombo.isVisible() ? siteCombo.getValue() : userinfo.siteId,
+			siteId = '',
 			siteComboValue = siteCombo.getValue(),
 			csrComboValue = csrCombo.getValue();
-			
+		
+		if(siteCombo.getValue() == 'None'){
+			siteId = 1;
+		}else if(siteCombo.isVisible()){
+			siteId = siteCombo.getValue();
+		}else{
+			siteId = userinfo.siteId;
+		}
+		
 		var length = csrComboValue.length,
 			csrComboValueString = csrComboValue.toString(),
 			currentItemRef = obj.currentItemRef,
-			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner,
-			store = grid.store;
+			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner;
 		
 		if(siteCombo.isVisible() && Ext.isEmpty(siteCombo.getValue())){
 			Helper.showToast('validation','Please select site first');

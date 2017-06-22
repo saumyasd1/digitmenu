@@ -414,20 +414,18 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	refs['newPassword'].setHidden(true);
     	refs['confirmPassword'].setHidden(true);
         
-        refs['siteName'].setDisabled(true);
-        refs['siteName'].store.load();
-        
         refs['roleName'].setHidden(true);
-        
         refs['saveUserFormBtn'].setHidden(false);
         refs['viewBtn'].setHidden(false);
         refs['cancelUserFormBtn'].setHidden(false);
         refs['changePasswordBtn'].setHidden(true);
         btn.hide();
         
-        editForm.show();
         viewForm.hide();
+        editForm.show();
         editForm.loadRecord(new Ext.data.Record(userinfo));
+        //this.getView().down('#site').setValue(userinfo.siteId);
+        refs['siteName'].setDisabled(true);
         
         var userInfo = AOCRuntime.getUser(),
         	systemCsrCodeOwner = userInfo.systemCsrCodeOwner,

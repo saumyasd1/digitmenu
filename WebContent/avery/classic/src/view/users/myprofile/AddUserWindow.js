@@ -222,7 +222,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     xtype: 'combo',
                     name: 'siteId',
                     itemId:'site',
-                    reference:'site',
                     fieldLabel: AOCLit.site,
                     allowBlank: false,
                     flex: 1,
@@ -234,7 +233,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     queryMode: 'local',
                     listeners:{
                     	select:'onSiteSelected',
-                    	change:'onSiteChange'
+                    	change:'onSiteChange',
+                    	afterrender:function(field){
+                    		field.store.load();
+                    	}
                     }
                 }, {
                 	xtype:'systemcsrcodegrid',
