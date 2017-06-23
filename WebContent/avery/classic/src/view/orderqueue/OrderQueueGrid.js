@@ -15,6 +15,24 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
     viewConfig: {
         stripeRows: true
     },
+    listeners: {
+        cellclick:'onCellClickToView',// me.onCellClickToView,
+        activate: function (obj) {
+            var userInfo = AOCRuntime.getUser(),
+                roleId = userInfo.role,
+                siteId = userInfo.siteId;
+//                userId = userInfo.id,
+//                userEmailId = userInfo.email;
+            this.down('pagingtoolbar').bindStore(obj.getStore());
+            obj.getStore().proxy.extraParams = {
+                siteId: siteId,
+                roleId: roleId
+//                userId: userId,
+//                userEmailId: userEmailId
+            };
+
+        }
+    },
     initComponent: function () {
         var me = this;
         me.fieldArray = [];
@@ -25,25 +43,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 height: AOC.config.Settings.config.defaultTbarHeight,
                 items: me.buildtbar()
             },
-            store: 'OrderQueueStore',
-            listeners: {
-                cellclick: me.onCellClickToView,
-                activate: function (obj) {
-                    var userInfo = AOCRuntime.getUser(),
-                        roleId = userInfo.role,
-                        siteId = userInfo.siteId,
-                        userId = userInfo.id,
-                        userEmailId = userInfo.email;
-                    me.down('pagingtoolbar').bindStore(obj.getStore());
-                    obj.getStore().proxy.extraParams = {
-                        siteId: siteId,
-                        roleId: roleId,
-                        userId: userId,
-                        userEmailId: userEmailId
-                    };
-
-                }
-            }
+            store: 'OrderQueueStore'
+            
         });
         this.callParent(arguments);
     },
@@ -51,15 +52,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
 
         return [{
             header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
-            width: 25,
-            xtype: 'actioncolumn',
+            width: 35,
+            //xtype: 'actioncolumn',
             menuDisabled: true,
-            baseCls: 'custom-action',
+            //baseCls: 'custom-action',
             tooltip: 'Menu Action',
-            items: [{
-                icon: AOC.config.Settings.buttonIcons.menuIcon,
-                handler: 'onClickMenu' //'showMenu'
-            }]
+            align:'center',
+            renderer:function(v, metadata, record){
+            	return '<i class="x-fa fa-ellipsis-v" style="color:#2c3e50;font-size:16px;cursor:pointer;"></i>';
+            }
+//            items: [{
+//                icon: AOC.config.Settings.buttonIcons.menuIcon,
+//                handler: 'onClickMenu' //'showMenu'
+//            }]
         }, {
             header: Settings.config.defaultIcons.commentColumnIcon,
             width: 40,

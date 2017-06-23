@@ -277,14 +277,6 @@ Ext.define('AOC.controller.MenuController', {
         var mainprofilewrapper = Ext.ComponentQuery.query('profileinfowrapper #mainprofilewrapper')[0];
         mainprofilewrapper.getLayout().setActiveItem(index);
     },
-//    updateTopToolBar: function (flag, title) {
-//        var topToolbar = Ext.ComponentQuery.query('profileinfowrapper #toptoolbar')[0];
-//        topToolbar.down('#changepasswordbtn').setVisible(flag);
-//        topToolbar.down('#editbutton').setVisible(flag);
-//        if (!Ext.isEmpty(title)) {
-//            topToolbar.updateTitle(title);
-//        }
-//    },
     selectMenuItem: function (xtype) {
         var cmp = Ext.ComponentQuery.query('viewport canwas mainmenu')[0],
             store = cmp.getStore(),
@@ -305,7 +297,7 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadCodeStore('orderline');
         Helper.loadCodeStore('orderemailqueue');
         this.getTimeZone();
-        this.loadCsrList();
+        //this.loadCsrList();
     },
     loadCsrList:function(){
     	var userInfo = AOCRuntime.getUser(),

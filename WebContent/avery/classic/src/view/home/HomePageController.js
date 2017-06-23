@@ -201,20 +201,11 @@ Ext.define('AOC.view.home.HomePageController', {
 	    	}
 	    }, obj);
 	},
-	getCSRList:function(store, siteId){
-		var me = this,
-			refs = me.getView().getReferences(),
-			csrCombo = refs.csrCombo,
-			systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
-		
-		Ext.Ajax.request({
-			method:'GET',
-			url:applicationContext+'/rest/users/csrlist',
-			params:{siteId:siteId},
-			success:function(response){
-				var data = JSON.parse(response.responseText);
-				var storeA = Ext.data.StoreManager.lookup('AssignCSRStore');
-				storeA.loadData(data);
+	onCSRComboAfterRender:function(csrCombo){
+		csrCombo.store.load({
+			params:{siteId:AOCRuntime.getUser().siteId},
+			callback:function(records, operation, success){
+				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
 						var codeArray = systemCsrNonCodeOwner.split(','),
@@ -222,24 +213,63 @@ Ext.define('AOC.view.home.HomePageController', {
 							userIds = [];
 						
 						for(var i = 0; i < len; i++){
-							var record = csrCombo.store.findRecord('id',codeArray[i],'', false, false, true);
+							var record = csrCombo.store.getById(codeArray[i]);
 							if(record){
 								userIds.push(record.get('userId'));
 							}
 						}
-						setTimeout(function(){
-							csrCombo.setValue(userIds.join());
-						},1000);
+						csrCombo.setValue(userIds.join());
 					}else{
 						csrCombo.setValue(AOCRuntime.getUser().id);
 					}
 				}
-			},
-			failure:function(response){
-				store.removeAll();
-				Helper.showToast('failure', 'Unable to Find CSR for selected Site.');
+			}
+		}, csrCombo);
+	},
+	getCSRList:function(store, siteId){
+		var me = this,
+			refs = me.getView().getReferences(),
+			csrCombo = refs.csrCombo,
+			systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
+		
+		csrCombo.store.load({
+			params:{siteId:siteId},
+			callback:function(records, operation, success){
 			}
 		});
+//		Ext.Ajax.request({
+//			method:'GET',
+//			url:applicationContext+'/rest/users/csrlist',
+//			params:{siteId:siteId},
+//			success:function(response){
+//				var data = JSON.parse(response.responseText);
+//				var storeA = Ext.data.StoreManager.lookup('AssignCSRStore');
+//				storeA.loadData(data);
+//				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
+//					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
+//						var codeArray = systemCsrNonCodeOwner.split(','),
+//							len = codeArray.length,
+//							userIds = [];
+//						
+//						for(var i = 0; i < len; i++){
+//							var record = csrCombo.store.getById(codeArray[i]);
+//							if(record){
+//								userIds.push(record.get('userId'));
+//							}
+//						}
+//						setTimeout(function(){
+//							csrCombo.setValue('2,3');
+//						},1000);
+//					}else{
+//						csrCombo.setValue(AOCRuntime.getUser().id);
+//					}
+//				}
+//			},
+//			failure:function(response){
+//				store.removeAll();
+//				Helper.showToast('failure', 'Unable to Find CSR for selected Site.');
+//			}
+//		});
 	},
 	onChangeSiteCSRCodeCombo: function(obj, newValue, oldValue, eOpts ){
 		var me = this,

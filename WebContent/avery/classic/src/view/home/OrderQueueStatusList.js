@@ -43,13 +43,12 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 				xtype:'displayfield',
 				itemId:'siteDisplay',
 				fieldLabel:'Site',
-				width:150,
+				width:200,
 				labelWidth:50,
 				currentItemRef:'siteDisplayfield',
 				reference:'siteDisplayfield',
 				labelStyle:Settings.config.defaultFormLabelStyle,
 				labelSeparator:'',
-				labelWidth:100,
 				hidden:true,
 				listeners : {
 					'afterrender':'onAfterRenderSiteDisplayfield'
@@ -80,20 +79,21 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 			    fieldLabel:'CSR Code',
 			    width:450,
 			    displayField:'csrName',
+			    valueField:'userId',
 			    labelStyle:Settings.config.defaultFormLabelStyle,
 				labelSeparator:'',
 				labelWidth:70,
-				valueField:'userId',
 				multiSelect:true,
 			    filterPickList: true,
+			    createNewOnEnter: true,
+			    publishes:'value',
 			    queryMode: 'local',
 			    reference:'csrCombo',
 				name:'assignCSR',
+				store:Ext.data.StoreManager.lookup('homePageCSRStoreId') != null ? Ext.data.StoreManager.lookup('homePageCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'homePageCSRStoreId'}),
 				listeners:{
 					change:'onChangeSiteCSRCodeCombo',
-					afterrender:function(tagfield){
-						tagfield.store = Ext.data.StoreManager.lookup('AssignCSRStore');
-					}
+					afterrender:'onCSRComboAfterRender'
 				}
 			},
 			{
@@ -123,7 +123,6 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 			},
 			{
 				cls:'aoc-btn',
-				margin:'0 0 0 10',
 				tooltip:'<font color="blue">Quick Refresh</font>',
 				iconCls:'fa fa-refresh aoc-icon',
 				handler:'onRefreshClick'
