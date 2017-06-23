@@ -106,17 +106,17 @@ Ext.define('AOC.view.webform.WebFormController', {
 		 }
 		 Ext.getBody().unmask();
 	},
-	onDataStructureSelection:function(cmp,newValue){
+	onDataStructureSelection:function(cmp, newValue, oldValue){
 		var me = this,
 			store = cmp.getStore(),
 			index = store.find('id', newValue),
 			view = me.getView(),
 			attachementField = me.lookupReference('attachment'),
 			additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
-			assignCSRCombo = me.lookupReference('assignCSR'),
-			siteId = AOCRuntime.getUser().siteId;
+			assignCSRCombo = me.lookupReference('assignCSR');
 		
-		assignCSRCombo.getStore().load({params:{siteId:siteId}});
+		var record = store.getById(newValue);
+		assignCSRCombo.getStore().load({params:{siteId:record.get('site')}});
 			
 		if(attachementField){
 			if(!Ext.isEmpty(newValue) && index != -1){

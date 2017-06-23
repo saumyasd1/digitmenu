@@ -18,15 +18,15 @@ Ext.define('AOC.view.main.MainController', {
     	this.selectTabPanelView(tabPanel.getActiveTab());
     },
     onTabRenderer:function(tabpanel){
-    	var userInfo = AOCRuntime.getUser(),
-    		roleId = userInfo.role,
-    		webOrderTab = tabpanel.child('#webOrder').tab;
-    	
-    	if(roleId == AOCLit.userRole.superAdmin){
-    		webOrderTab.hide();
-    	}else{
-    		webOrderTab.show();
-    	}
+//    	var userInfo = AOCRuntime.getUser(),
+//    		roleId = userInfo.role,
+//    		webOrderTab = tabpanel.child('#webOrder').tab;
+//    	
+//    	if(roleId == AOCLit.userRole.superAdmin){
+//    		webOrderTab.hide();
+//    	}else{
+//    		webOrderTab.show();
+//    	}
     	//to do hide tab dynamically
     },
     onTabClick:function(tab, b){
