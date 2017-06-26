@@ -219,19 +219,9 @@ Ext.define('AOC.view.home.HomePageController', {
 				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-//						var codeArray = systemCsrNonCodeOwner.split(','),
-//							len = codeArray.length,
-//							userIds = [];
-//						
-//						for(var i = 0; i < len; i++){
-//							var record = csrCombo.store.getById(codeArray[i]);
-//							if(record){
-//								userIds.push(record.get('userId'));
-//							}
-//						}
 						csrCombo.setValue(systemCsrNonCodeOwner);
 					}else{
-						csrCombo.setValue(AOCRuntime.getUser().id);
+						csrCombo.setValue(AOCRuntime.getUser().systemCsrCodeOwner);
 					}
 				}
 			}
@@ -240,47 +230,12 @@ Ext.define('AOC.view.home.HomePageController', {
 	getCSRList:function(store, siteId){
 		var me = this,
 			refs = me.getView().getReferences(),
-			csrCombo = refs.csrCombo,
-			systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
+			csrCombo = refs.csrCombo;
 		
 		csrCombo.store.load({
 			params:{siteId:siteId},
-			callback:function(records, operation, success){
-			}
+			callback:function(records, operation, success){}
 		});
-//		Ext.Ajax.request({
-//			method:'GET',
-//			url:applicationContext+'/rest/users/csrlist',
-//			params:{siteId:siteId},
-//			success:function(response){
-//				var data = JSON.parse(response.responseText);
-//				var storeA = Ext.data.StoreManager.lookup('AssignCSRStore');
-//				storeA.loadData(data);
-//				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
-//					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-//						var codeArray = systemCsrNonCodeOwner.split(','),
-//							len = codeArray.length,
-//							userIds = [];
-//						
-//						for(var i = 0; i < len; i++){
-//							var record = csrCombo.store.getById(codeArray[i]);
-//							if(record){
-//								userIds.push(record.get('userId'));
-//							}
-//						}
-//						setTimeout(function(){
-//							csrCombo.setValue('2,3');
-//						},1000);
-//					}else{
-//						csrCombo.setValue(AOCRuntime.getUser().id);
-//					}
-//				}
-//			},
-//			failure:function(response){
-//				store.removeAll();
-//				Helper.showToast('failure', 'Unable to Find CSR for selected Site.');
-//			}
-//		});
 	},
 	onChangeSiteCSRCodeCombo: function(obj, newValue, oldValue, eOpts ){
 		var me = this,
