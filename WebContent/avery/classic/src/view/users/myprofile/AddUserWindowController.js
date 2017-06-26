@@ -385,17 +385,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		insertBtn = refs.insertBtn;
     	
     	codeOwner.setDisabled(false);
-    	systemCsrCodeGridStore.each(function(rec, index){
-    		if(rec.get('csrCode') == csrComboValue ){
-    			Helper.showToast('failure',AOCLit.csrCodeExist);
-    			systemCombo.reset();
-    			orgCodeCombo.reset();
-    			csrCodeCombo.reset();
-    			orgCodeCombo.setDisabled(true);
-    			csrCodeCombo.setDisabled(true);
-    			codeOwner.setDisabled(true);
-    		}
-    	});
+    	
     	if(hasOwner == 'true'){
     		codeOwner.setValue('N');
     		codeOwner.setDisabled(true);
@@ -405,6 +395,19 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwner.setDisabled(true);
     		insertBtn.setDisabled(false);
     	}
+    	systemCsrCodeGridStore.each(function(rec, index){
+    		if(rec.get('csrCode') == csrComboValue ){
+    			Helper.showToast('failure',AOCLit.csrCodeExist);
+    			systemCombo.reset();
+    			orgCodeCombo.reset();
+    			csrCodeCombo.reset();
+    			codeOwner.reset();
+    			orgCodeCombo.setDisabled(true);
+    			csrCodeCombo.setDisabled(true);
+    			codeOwner.setDisabled(true);
+    			insertBtn.setDisabled(true);
+    		}
+    	});
     },
     onSelectCodeOwner: function(combo){
     	var me = this,
@@ -412,7 +415,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			insertBtn = refs.insertBtn;
 		insertBtn.setDisabled(false);
     },
-    
     onClickEdit: function (btn) {
         var me = this,
         	userinfo = AOCRuntime.getUser(),
