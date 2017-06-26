@@ -610,15 +610,9 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 
 	@Override
 	public List getAllDistantPartners(MultivaluedMap queryMap) throws Exception {
-		String siteId = (String) queryMap.getFirst("siteId");
-		String roleId = (String) queryMap.getFirst("roleId");
 		Session session= getSessionFactory().getCurrentSession();
 		String queryString ="";
-		if(siteId.equals("1") && roleId.equals("1")){
-			queryString ="select distinct varPartner.id, varPartner.partnerName from ProductLine where orderInMailBody<> true ";
-		}else{
-			queryString ="select distinct varPartner.id, varPartner.partnerName from ProductLine where orderInMailBody<> true and siteId = "+ siteId;
-		}
+		queryString ="select distinct varPartner.id, varPartner.partnerName from ProductLine where orderInMailBody<> true ";
 		Query query=session.createQuery(queryString);  
 		List list=query.list();
 		return list;
