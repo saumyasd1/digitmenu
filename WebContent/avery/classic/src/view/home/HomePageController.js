@@ -208,17 +208,17 @@ Ext.define('AOC.view.home.HomePageController', {
 				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-						var codeArray = systemCsrNonCodeOwner.split(','),
-							len = codeArray.length,
-							userIds = [];
-						
-						for(var i = 0; i < len; i++){
-							var record = csrCombo.store.getById(codeArray[i]);
-							if(record){
-								userIds.push(record.get('userId'));
-							}
-						}
-						csrCombo.setValue(userIds.join());
+//						var codeArray = systemCsrNonCodeOwner.split(','),
+//							len = codeArray.length,
+//							userIds = [];
+//						
+//						for(var i = 0; i < len; i++){
+//							var record = csrCombo.store.getById(codeArray[i]);
+//							if(record){
+//								userIds.push(record.get('userId'));
+//							}
+//						}
+						csrCombo.setValue(systemCsrNonCodeOwner);
 					}else{
 						csrCombo.setValue(AOCRuntime.getUser().id);
 					}
@@ -277,9 +277,10 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteCombo = refs.siteCombo,
 			csrCombo = refs.csrCombo,
 			siteComboValue = siteCombo.getValue(),
-			csrComboValue = csrCombo.getValue(),
-			csrComboValueString = csrComboValue.toString();
+			csrComboValue = csrCombo.getValue();
 		
+		
+		var	csrComboValueString = csrComboValue.join();
 		if(!Ext.isEmpty(csrComboValueString)){
 			me.filterHomeList(obj, newValue, oldValue);
 		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
@@ -313,9 +314,22 @@ Ext.define('AOC.view.home.HomePageController', {
 		}
 		
 		var length = csrComboValue.length,
-			csrComboValueString = csrComboValue.toString(),
+//			csrComboValueString = csrComboValue.toString(),
 			currentItemRef = obj.currentItemRef,
 			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner;
+		
+		//get user id foe selected CSR
+		var codeArray = csrComboValue,
+			len = codeArray.length,
+			userIds = [];
+		
+		for(var i = 0; i < len; i++){
+			var record = csrCombo.store.getById(codeArray[i]);
+			if(record){
+				userIds.push(record.get('userId'));
+			}
+		}
+		var csrComboValueString = userIds.join();
 		
 		if(siteCombo.isVisible() && Ext.isEmpty(siteCombo.getValue())){
 			Helper.showToast('validation','Please select site first');
