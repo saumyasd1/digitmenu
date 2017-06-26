@@ -466,8 +466,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    	}
 	    }
 	    if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
-	    	refs['systemCsrCodeGrid'].setDisabled(true);
+	    	refs['systemCsrCodeGrid'].setDisabled(false);
         	Helper.loadSystemCsrCodeGrid(refs['systemCsrCodeGrid'], systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
+        	refs['systemCsrCodeGrid'].columns[4].setHidden(true);
 	    }
         this.getView().center();
     },
