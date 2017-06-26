@@ -144,6 +144,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             ui: 'darktoolbar',
             itemId: 'pagingtoolbar',
             store: me.store,
+            pageSize: pageSize,
             displayInfo: true,
             plugins: Ext.create('Ext.ux.ProgressBarPager', {
                 width: 250
