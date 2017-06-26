@@ -74,6 +74,55 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             }
 		},
 		{
+			text: AOCLit.Status,
+			dataIndex: 'status',
+			align:'left',
+			width: 200,
+			editor: {
+				xtype:'combo',
+				editable:false,
+				displayField:'value',
+				valueField:'code',
+				queryMode :'local',
+				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
+				listeners:{
+			        afterrender:function(combo){
+			        	Helper.onStatusComboAfterRender(combo);
+			        },
+			        focus:function(combo){
+			        	Helper.onStatusComboFocus(combo);
+			        },
+			        select:'onStatusSelect'
+		       }
+			},
+			renderer:function(v, metadata,rec){
+				return Helper.getSatus(rec);
+			}
+		},
+		{
+			text: AOCLit.CSR+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: CSR</br>Phx: Dept No</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'csr',
+			align:'left',
+			width: 160,
+			editor:{
+				xtype:'combo',
+				displayField:'variableFieldName',
+				valueField:'variableFieldName',
+				queryMode:'local',
+				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
+			    listeners:{
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						Helper.onComboAfterRender(combo);
+					},
+					select:function(combo){
+						Helper.onComboSelect(combo);
+					}
+			    }
+			},
+			renderer:'comboColumnRenderer'
+		}, 
+		{
 			text: AOCLit.atoMandatory+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Mandatory variable field checking</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
 			width: 65,
@@ -102,7 +151,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: AOCLit.bulkSample+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sample item bulk order fail - cross</br>Others - click</font>" class="fa fa-info-circle"></i>',
+			text: AOCLit.bulkSample+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sample item bulk order fail - cross</br>Others - tick</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'bulkSampleValidationFlag',
 			width: 65,
 			align:'center',
@@ -208,12 +257,222 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		},
 		{
-			text: AOCLit.roundQty,
-			dataIndex: 'roundQty',
-			width: 50,
-			align:'center',
+			text: AOCLit.targetSystem,
+			dataIndex: 'targetSystemName',
+			align:'left',
+			width: 100
+		},
+		{
+			text: AOCLit.divisionforInterfaceERPORG+ '<i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'divisionForInterfaceERPORG',
+			align:'left',
+			width: 120,
+			editor: {
+				xtype:'combo',
+				displayField:'name',
+				valueField:'id',
+				store:AOCRuntime.getStoreERPORG(),
+				listeners:{
+					'select':'onerporgSelectChange'
+				}
+			},
+			renderer:'divisionForInterfaceERPORGColumnRenderer'
+		}, 
+		{
+			text: AOCLit.orderType,
+			dataIndex: 'orderType',
+			align:'left',
+			width: 115,
+			editor: {
+				xtype: 'combo',
+				displayField: 'variableFieldName',
+				valueField: 'variableFieldName',
+				editable:false,
+				queryMode :'local',
+				reference:'OrdertypeCombo',
+				store:Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
+				listeners:{
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						Helper.onComboAfterRender(combo);
+					},
+					select:function(combo){
+						Helper.onComboSelect(combo);
+					}
+			    }
+			},
+			renderer:'comboColumnRenderer'
+		}, 
+		{
+			text: AOCLit.soldToRbo+'<font color=red>*</font> '+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Customer Number</br>Vips: Store Group</br>Phx: BO CODE</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'soldToRBONumber',
+			align:'left',
+			width: 100,
+			editor: 'textfield',
 			renderer:function(value, metadata, record){
-				return Helper.qtyColumnRenderer(value, metadata, record);
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		},
+		{
+			text: AOCLit.custName,
+			dataIndex: 'partnerCustomerName',
+			align:'left',
+			width: 130,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.poNumber+'<font color=red>*</font>',
+			dataIndex: 'poNumber',
+			align:'left',
+			width: 120
+		},
+		{
+			text: AOCLit.averyItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>GLID</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'averyItemNumber',
+			align:'left',
+			width: 88,
+			renderer : function(value, metadata,record) {
+                return Helper.onAveryItemNumberColumnRenderer(value, metadata, record);
+            }
+		}, 
+		{
+			text: AOCLit.averyProduction,
+			dataIndex: 'averyProductLineType',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		},
+		{
+			text: AOCLit.averyATO+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Y - SBS</br>N - MSS / FGS</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'averyATO',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		}, 
+		{
+			text: AOCLit.averyRegion+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Adidas Region</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'averyRegion',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		},
+		{
+			text: AOCLit.additionalLabel,
+			dataIndex: 'additionalLabelInternalItem',
+			align:'left',
+			width: 150,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.custItemNo,
+			dataIndex: 'customerItemNumber',
+			align:'left',
+			width: 88
+			
+		},
+		{
+			text: AOCLit.customerColorCode,
+			dataIndex: 'customerColorCode',
+			align:'left',
+			width: 102
+		}, 
+		{
+			text: AOCLit.customerColorDescription,
+			dataIndex: 'customerColorDescription',
+			align:'left',
+			width: 102
+		},
+		{
+			text: AOCLit.customerSize,
+			dataIndex: 'customerSize',
+			align:'left',
+			width: 72,
+			editor: 'textfield',
+			renderer:function(value, metadata,rec){
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+			}
+		},
+		{
+			text: AOCLit.itemDescription+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Size Chart</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'pageSize',
+			align:'left',
+			width: 102,
+			renderer:function(value, metadata,rec){
+				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+			}
+		}, 
+		{
+			text: AOCLit.styleNo,
+			dataIndex: 'styleNo',
+			align:'left',
+			width: 111,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.custSeason,
+			dataIndex: 'customerSeason',
+			align:'left',
+			width: 93,
+			editor: 'textfield'
+		},
+		{
+			text: AOCLit.Bulk+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Bulk order/Sample order</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'bulk',
+			align:'left',
+			width: 60,
+			editor:{
+				xtype:'combo',
+				editable:false,
+				store:[['Y','Y'],['N','N']]
+			},
+			renderer:function(value, metadata,rec){
+				return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
+			}
+		},
+		{
+			text: AOCLit.bulkItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Bulk item/Sample item</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'averyBulk',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		}, 
+		{
+			text: AOCLit.custOrderedQty +'<font color=red>*</font>',
+			dataIndex: 'customerOrderedQty',
+			align:'left',
+			width: 130,
+			editor: {
+				xtype:'numberfield',
+				minValue:0
+			},
+			renderer : function(value, metadata, record) {
+				return Helper.onCustomerOrderQty(value, metadata, record);
+			} 
+		},
+		{
+			text: AOCLit.averyMOQ+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Legacy MOQ on SKU level</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'averyMOQ',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
+			}
+		}, 
+		{
+			text: AOCLit.averyRoundupQty,
+			dataIndex: 'averyRoundupQty',
+			align:'left',
+			width: 93,
+			renderer:function(value, metadata, record){
+				return Helper.onAtoColumnRenderer(value, metadata, record);
 			},
 			type:'address',
 			hidden:true
@@ -230,23 +489,15 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			hidden:true
 		},
 		{
-			text: AOCLit.custOrderedQty +'<font color=red>*</font>',
-			dataIndex: 'customerOrderedQty',
-			align:'left',
-			width: 130,
-			editor: {
-				xtype:'numberfield',
-				minValue:0
+			text: AOCLit.roundQty,
+			dataIndex: 'roundQty',
+			width: 50,
+			align:'center',
+			renderer:function(value, metadata, record){
+				return Helper.qtyColumnRenderer(value, metadata, record);
 			},
-			renderer : function(value, metadata, record) {
-				return Helper.onCustomerOrderQty(value, metadata, record);
-			} 
-		},
-		{
-			text: AOCLit.skuQtyDifference ,
-			dataIndex: 'skuQtyDifference',
-			align:'left',
-			width: 106
+			type:'address',
+			hidden:true
 		},
 		{
 			text: AOCLit.updateQty,
@@ -277,276 +528,88 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			hidden:true
 		},
 		{
-			text: AOCLit.Status,
-			dataIndex: 'status',
+			text: AOCLit.orderedDate+'<font color=red>*</font>',
+			dataIndex: 'orderedDate',
 			align:'left',
-			width: 200,
-			editor: {
-				xtype:'combo',
-				editable:false,
-				displayField:'value',
-				valueField:'code',
-				queryMode :'local',
-				store:Ext.data.StoreManager.lookup('orderlineid') == null ? AOC.util.Helper.getCodeStore('orderline') : Ext.data.StoreManager.lookup('orderlineid'),
-				listeners:{
-			        afterrender:function(combo){
-			        	Helper.onStatusComboAfterRender(combo);
-			        },
-			        focus:function(combo){
-			        	Helper.onStatusComboFocus(combo);
-			        },
-			        select:'onStatusSelect'
-		       }
-			},
-			renderer:function(v, metadata,rec){
-				return Helper.getSatus(rec);
-			}
-		},
-		{
-			text: AOCLit.poNumber+'<font color=red>*</font>',
-			dataIndex: 'poNumber',
-			align:'left',
-			width: 120
-		},
-		{
-			text: AOCLit.averyItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>GLID</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'averyItemNumber',
-			align:'left',
-			width: 88,
-			renderer : function(value, metadata,record) {
-                return Helper.onAveryItemNumberColumnRenderer(value, metadata, record);
-            }
+			width: 90,
+			xtype:'datecolumn',
+			editor: 'datefield',
+			renderer : function(value, meta,record) {
+            	return Helper.onOrdererDateRenderer(value, meta,record);
+        	}
 		}, 
 		{
-			text: AOCLit.custItemNo,
-			dataIndex: 'customerItemNumber',
-			align:'left',
-			width: 88
-			
-		},
-		{
-			text: AOCLit.customerColorCode,
-			dataIndex: 'customerColorCode',
-			align:'left',
-			width: 102
-		}, 
-		{
-			text: AOCLit.customerColorDescription,
-			dataIndex: 'customerColorDescription',
-			align:'left',
-			width: 102
-		},
-		{
-			text: AOCLit.itemDescription+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Size Chart</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'pageSize',
+			text: AOCLit.requestedDeliveryDate,
+			dataIndex: 'requestedDeliveryDate',
 			align:'left',
 			width: 102,
-			renderer:function(value, metadata,rec){
-				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
-		}, 
-		{
-			text: AOCLit.customerSize,
-			dataIndex: 'customerSize',
-			align:'left',
-			width: 72,
-			editor: 'textfield',
-			renderer:function(value, metadata,rec){
-				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
-		},
-		{
-			text: AOCLit.Bulk,
-			dataIndex: 'bulk',
-			align:'left',
-			width: 60,
-			editor:{
-				xtype:'combo',
+			xtype:'datecolumn',
+			editor: {
+				xtype:'datefield',
 				editable:false,
-				store:[['Y','Y'],['N','N']]
+				listeners:{
+					'select':'onSelectDate'
+				}
 			},
-			renderer:function(value, metadata,rec){
-				return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
-			}
-		},
-		{
-			text: AOCLit.averyATO+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Y - SBS</br>N - MSS / FGS</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'averyATO',
-			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
+			renderer:function(v, metadata, record){
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
 			}
 		}, 
 		{
-			text: AOCLit.bulkItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Bulk item/Sample item</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'averyBulk',
+			text: AOCLit.promiseDate,
+			dataIndex: 'promiseDate',
 			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyMOQ+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Legacy MOQ on SKU level</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'averyMOQ',
-			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyProduction,
-			dataIndex: 'averyProductLineType',
-			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyRegion+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Adidas Region</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'averyRegion',
-			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		},
-		{
-			text: AOCLit.averyRoundupQty,
-			dataIndex: 'averyRoundupQty',
-			align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
+			xtype: 'datecolumn',   
+			width: 88,
+			editor: {
+				xtype:'datefield',
+				editable:false,
+				listeners:{
+					'select':'onSelectDate'
+				}
 			},
-			type:'address',
-			hidden:true
+			renderer:function(v, metadata, record){
+				return Helper.onOrderLineDateRenderer(v, metadata, record);
+			}
 		},
 		{
-			text: AOCLit.custName,
-			dataIndex: 'partnerCustomerName',
+			text: AOCLit.skuQtyDifference ,
+			dataIndex: 'skuQtyDifference',
 			align:'left',
-			width: 130,
-			editor: 'textfield'
+			width: 106
+		},
+		{
+			text: AOCLit.apoType,
+			dataIndex: 'apoType',
+			align:'left',
+			width: 55,
+			editor: {
+				xtype: 'combo',
+				displayField: 'variableFieldName',
+				valueField: 'variableFieldName',
+				editable:false,
+				queryMode :'local',
+				reference:'APOTypeCombo',
+				store:Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
+				listeners:{
+					focus:'onComboFocus',
+					afterrender:function(combo){
+						Helper.onComboAfterRender(combo);
+				     },
+				     select:function(combo){
+						Helper.onComboSelect(combo);
+				     }
+			    }
+			},
+			renderer:'comboColumnRenderer'
 		}, 
 		{
-			text: AOCLit.vendorName,
-			dataIndex: 'partnerVendorName',
-			align:'left',
-			width: 120,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToCustomer,
-			dataIndex: 'shipToCustomer',
+			text: AOCLit.billToCustomer,
+			dataIndex: 'billToCustomer',
 			align:'left',
 			width: 170,
 			editor: 'textfield'
 		}, 
-		{
-			text: AOCLit.shipContact,
-			dataIndex: 'shipToContact',
-			align:'left',
-			width: 170,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToAddress1,
-			dataIndex: 'shipToAddress1',
-			align:'left',
-			width: 170,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToAddress2,
-			dataIndex: 'shipToAddress2',
-			align:'left',
-			width: 170,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToAddress3,
-			dataIndex: 'shipToAddress3',
-			align:'left',
-			width: 170,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToCity,
-			dataIndex: 'shipToCity',
-			align:'left',
-			width: 112,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToCountry,
-			dataIndex: 'shipToCountry',
-			align:'left',
-			width: 112,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToState,
-			dataIndex: 'shipToState',
-			align:'left',
-			width: 112,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToZip,
-			dataIndex: 'shipToZip',
-			align:'left',
-			width: 85,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToEmail,
-			dataIndex: 'shipToEmail',
-			align:'left',
-			width: 170,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToFax,
-			dataIndex: 'shipToFax',
-			align:'left',
-			width: 130,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipToTelephone,
-			dataIndex: 'shipToTelephone',
-			align:'left',
-			width: 130,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		},
 		{
 			text: AOCLit.billtoSite+'<font color=red>*</font>',
 			dataIndex: 'oracleBillToSiteNumber',
@@ -556,13 +619,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
-		}, 
-		{
-			text: AOCLit.billToCustomer,
-			dataIndex: 'billToCustomer',
-			align:'left',
-			width: 170,
-			editor: 'textfield'
 		}, 
 		{
 			text: AOCLit.billToContact,
@@ -667,22 +723,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			hidden:true
 		}, 
 		{
-			text: AOCLit.specialInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>For Adidas - Ningbo reference only</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'specialInstruction',
+			text: AOCLit.shipToCustomer,
+			dataIndex: 'shipToCustomer',
 			align:'left',
 			width: 170,
 			editor: 'textfield'
 		}, 
-		{
-			text: AOCLit.soldToRbo+'<font color=red>*</font> '+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Customer Number</br>Vips: Store Group</br>Phx: BO CODE</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'soldToRBONumber',
-			align:'left',
-			width: 100,
-			editor: 'textfield',
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		},  
 		{
 			text: AOCLit.shipToSite+'<font color=red>*</font>',
 			dataIndex: 'oracleShipToSiteNumber',
@@ -692,6 +738,141 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
+		}, 
+		{
+			text: AOCLit.shipContact,
+			dataIndex: 'shipToContact',
+			align:'left',
+			width: 170,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToAddress1,
+			dataIndex: 'shipToAddress1',
+			align:'left',
+			width: 170,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToAddress2,
+			dataIndex: 'shipToAddress2',
+			align:'left',
+			width: 170,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToAddress3,
+			dataIndex: 'shipToAddress3',
+			align:'left',
+			width: 170,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToCity,
+			dataIndex: 'shipToCity',
+			align:'left',
+			width: 112,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToCountry,
+			dataIndex: 'shipToCountry',
+			align:'left',
+			width: 112,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToState,
+			dataIndex: 'shipToState',
+			align:'left',
+			width: 112,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToZip,
+			dataIndex: 'shipToZip',
+			align:'left',
+			width: 85,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToEmail,
+			dataIndex: 'shipToEmail',
+			align:'left',
+			width: 170,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToFax,
+			dataIndex: 'shipToFax',
+			align:'left',
+			width: 130,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		}, 
+		{
+			text: AOCLit.shipToTelephone,
+			dataIndex: 'shipToTelephone',
+			align:'left',
+			width: 130,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
+		
+		{
+			text: AOCLit.specialInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>For Adidas - Ningbo reference only</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'specialInstruction',
+			align:'left',
+			width: 170,
+			editor: 'textfield'
+		},
+		{
+			text: AOCLit.manufacturingNotes+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Manufacturing Notes</br>VIPS to Oracle/SPW: Vendor Note</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'manufacturingNotes',
+			align:'left',
+			width: 107,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.invoiceLineInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Invoice Line Instruction</br>VIPS to Oracle/SPW: Order Line instruction</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'invoicelineInstruction',
+			align:'left',
+			width: 119,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.packagingInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Packing Instruction</br>VIPS to Oracle/SPW: Vendor Notes</br>VIPS to PHX: Printer Notes</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'packingInstruction',
+			align:'left',
+			width: 180,
+			editor: 'textfield'
+		}, 
+		{
+			text: AOCLit.shippingInstructions+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Shipping Instruction</br>VIPS to Oracle/SPW: Shipping instruction</br>VIPS to PHX: Special Instruction</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'shippingInstructions',
+			align:'left',
+			width: 180,
+			editor: 'textfield'
 		}, 
 		{
 			text: AOCLit.shippingMethod,
@@ -719,83 +900,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:'comboColumnRenderer'
 		}, 
 		{
-			text: AOCLit.retailerPO_CustomerJob,
-			dataIndex: 'retailerPO_CustomerJob',
-			align:'left',
-			width: 115,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.contractNo,
-			dataIndex: 'contractNumber',
-			align:'left',
-			width: 130,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.styleNo,
-			dataIndex: 'styleNo',
-			align:'left',
-			width: 111,
-			editor: 'textfield'
-		}, 
-		{
-			text: AOCLit.custSeason,
-			dataIndex: 'customerSeason',
-			align:'left',
-			width: 93,
-			editor: 'textfield'
-		},
-		{
-			text: AOCLit.orderedDate+'<font color=red>*</font>',
-			dataIndex: 'orderedDate',
-			align:'left',
-			width: 90,
-			xtype:'datecolumn',
-			editor: 'datefield',
-			renderer : function(value, meta,record) {
-            	return Helper.onOrdererDateRenderer(value, meta,record);
-        	}
-		}, 
-		{
-			text: AOCLit.requestedDeliveryDate,
-			dataIndex: 'requestedDeliveryDate',
-			align:'left',
-			width: 102,
-			xtype:'datecolumn',
-			editor: {
-				xtype:'datefield',
-				editable:false,
-				listeners:{
-					'select':'onSelectDate'
-				}
-			},
-			renderer:function(v, metadata, record){
-				return Helper.onOrderLineDateRenderer(v, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.promiseDate,
-			dataIndex: 'promiseDate',
-			align:'left',
-			xtype: 'datecolumn',   
-			width: 88,
-			editor: {
-				xtype:'datefield',
-				editable:false,
-				listeners:{
-					'select':'onSelectDate'
-				}
-			},
-			renderer:function(v, metadata, record){
-				return Helper.onOrderLineDateRenderer(v, metadata, record);
-			}
-		}, 
-		{
 			text: AOCLit.freightTerm,
 			dataIndex: 'freightTerms',
 			align:'left',
@@ -821,64 +925,66 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:'comboColumnRenderer'
 		}, 
 		{
-			text: AOCLit.CSR+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: CSR</br>Phx: Dept No</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'csr',
-			align:'left',
-			width: 160,
-			editor:{
-				xtype:'combo',
-				displayField:'variableFieldName',
-				valueField:'variableFieldName',
-				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
-			    listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
-			    }
-			},
-			renderer:'comboColumnRenderer'
-		}, 
+			text: AOCLit.shipMark + ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
+			dataIndex: 'shipMark',
+			width: 150,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
 		{
-			text: AOCLit.packagingInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Packing Instruction</br>VIPS to Oracle/SPW: Vendor Notes</br>VIPS to PHX: Printer Notes</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'packingInstruction',
+			text: AOCLit.variableDataBreakdown,
+			dataIndex: 'variableDataBreakdown',
+			align:'left',
+			width: 110,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
+		{
+			text: AOCLit.retailerPO_CustomerJob,
+			dataIndex: 'retailerPO_CustomerJob',
+			align:'left',
+			width: 115,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
+		{
+			text: AOCLit.modelSerialNumber,
+			dataIndex: 'modelSerialNumber',
 			align:'left',
 			width: 180,
-			editor: 'textfield'
-		}, 
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
 		{
-			text: AOCLit.shippingInstructions+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Shipping Instruction</br>VIPS to Oracle/SPW: Shipping instruction</br>VIPS to PHX: Special Instruction</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'shippingInstructions',
+			text: AOCLit.productionLine,
+			dataIndex: 'productionLine',
 			align:'left',
-			width: 180,
-			editor: 'textfield'
-		}, 
+			width: 100,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
 		{
-			text: AOCLit.invoiceLineInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Invoice Line Instruction</br>VIPS to Oracle/SPW: Order Line instruction</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'invoicelineInstruction',
+			text: AOCLit.agreement,
+			dataIndex: 'agreement',
 			align:'left',
-			width: 119,
-			editor: 'textfield'
-		}, 
+			width: 102,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
+		},
 		{
-			text: AOCLit.divisionforInterfaceERPORG+ '<i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'divisionForInterfaceERPORG',
+			text: AOCLit.contractNo,
+			dataIndex: 'contractNumber',
 			align:'left',
-			width: 120,
-			editor: {
-				xtype:'combo',
-				displayField:'name',
-				valueField:'id',
-				store:AOCRuntime.getStoreERPORG(),
-				listeners:{
-					'select':'onerporgSelectChange'
-				}
-			},
-			renderer:'divisionForInterfaceERPORGColumnRenderer'
+			width: 130,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}, 
 		{
 			text: AOCLit.artworkHold,
@@ -890,7 +996,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				editable:false,
 				store:[['Y','Y'],['N','N']]
 			}
-		}, 
+		},
 		{
 			text: AOCLit.artworkWorkAttachment,//'Artwork Work Attachment',
 			dataIndex: 'artworkAttachment',
@@ -906,128 +1012,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			}
 		}, 
 		{
-			text: AOCLit.variableDataBreakdown,
-			dataIndex: 'variableDataBreakdown',
+			text: AOCLit.productionHold,
+			dataIndex: 'productionHold',
 			align:'left',
-			width: 110,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.manufacturingNotes+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Manufacturing Notes</br>VIPS to Oracle/SPW: Vendor Note</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'manufacturingNotes',
-			align:'left',
-			width: 107,
-			editor: 'textfield'
-		}, 
-		{
-			text: AOCLit.orderType,
-			dataIndex: 'orderType',
-			align:'left',
-			width: 115,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
-				queryMode :'local',
-				reference:'OrdertypeCombo',
-				store:Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
-				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
-			    }
-			},
-			renderer:'comboColumnRenderer'
-		}, 
-		{
-			text: AOCLit.orderBy,
-			dataIndex: 'orderBy',
-			align:'left',
-			width: 115,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.endCust,
-			dataIndex: 'endCustomer',
-			align:'left',
-			width: 115,
-			editor: {
-				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
-				queryMode :'local',
-				reference:'EndCustomerCombo',
-				store:Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
-				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
-			    }
-			},
-			renderer:'comboColumnRenderer',
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shipMark + ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
-			dataIndex: 'shipMark',
-			width: 150,
-			editor: 'textfield',
-			type:'address',
-			hidden:true
-		},
-		{
-			text: AOCLit.additionalLabel,
-			dataIndex: 'additionalLabelInternalItem',
-			align:'left',
-			width: 150,
-			editor: 'textfield'
-		}, 
-		{
-			text: AOCLit.bankCharge,
-			dataIndex: 'bankCharge',
-			align:'left',
-			width: 90,
-			editor: {
-				xtype: 'numberfield',
-				maxLength: 8,
-				minValue: 0
-			},
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.freightCharge,
-			dataIndex: 'freightCharge',
-			align:'left',
-			width: 90,
-			editor: {
-				xtype: 'numberfield',
-				maxLength: 8,
-				minValue: 0
-			},
-			type:'address',
-			hidden:true
-		}, 
-		{
-			text: AOCLit.shippingHold,
-			dataIndex: 'shippingHold',
-			align:'left',
-			width: 83,
+			width: 77,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -1038,12 +1026,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			},
 			type:'address',
 			hidden:true
-		}, 
+		},
 		{
-			text: AOCLit.productionHold,
-			dataIndex: 'productionHold',
+			text: AOCLit.shippingHold,
+			dataIndex: 'shippingHold',
 			align:'left',
-			width: 77,
+			width: 83,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -1081,56 +1069,65 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:'comboColumnRenderer',
 			type:'address',
 			hidden:true
-		}, 
+		},
 		{
-			text: AOCLit.agreement,
-			dataIndex: 'agreement',
+			text: AOCLit.bankCharge,
+			dataIndex: 'bankCharge',
 			align:'left',
-			width: 102,
-			editor: 'textfield',
+			width: 90,
+			editor: {
+				xtype: 'numberfield',
+				maxLength: 8,
+				minValue: 0
+			},
 			type:'address',
 			hidden:true
 		}, 
 		{
-			text: AOCLit.modelSerialNumber,
-			dataIndex: 'modelSerialNumber',
+			text: AOCLit.freightCharge,
+			dataIndex: 'freightCharge',
 			align:'left',
-			width: 180,
-			editor: 'textfield',
+			width: 90,
+			editor: {
+				xtype: 'numberfield',
+				maxLength: 8,
+				minValue: 0
+			},
 			type:'address',
 			hidden:true
-		}, 
+		},
 		{
-			text: AOCLit.apoType,
-			dataIndex: 'apoType',
+			text: AOCLit.endCust,
+			dataIndex: 'endCustomer',
 			align:'left',
-			width: 55,
+			width: 115,
 			editor: {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
 				editable:false,
 				queryMode :'local',
-				reference:'APOTypeCombo',
-				store:Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
+				reference:'EndCustomerCombo',
+				store:Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
 				listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
 						Helper.onComboAfterRender(combo);
-				     },
-				     select:function(combo){
+					},
+					select:function(combo){
 						Helper.onComboSelect(combo);
-				     }
+					}
 			    }
 			},
-			renderer:'comboColumnRenderer'
-		}, 
+			renderer:'comboColumnRenderer',
+			type:'address',
+			hidden:true
+		},
 		{
-			text: AOCLit.sentToOracleDate,
-			dataIndex: 'sentToOracleDate',
+			text: AOCLit.orderBy,
+			dataIndex: 'orderBy',
 			align:'left',
-			width: 100,
-			hidden:true,
+			width: 115,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -1152,19 +1149,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	            }
 		},
 		{
-			text: AOCLit.productionLine,
-			dataIndex: 'productionLine',
+			text: AOCLit.vendorName,
+			dataIndex: 'partnerVendorName',
 			align:'left',
-			width: 100,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
-		},
+		}, 
 		{
-			text: AOCLit.targetSystem,
-			dataIndex: 'targetSystemName',
+			text: AOCLit.sentToOracleDate,
+			dataIndex: 'sentToOracleDate',
 			align:'left',
-			width: 100
+			width: 100,
+			hidden:true,
+			editor: 'textfield',
+			type:'address',
+			hidden:true
 		}
 	],
 	editGrid:true,
