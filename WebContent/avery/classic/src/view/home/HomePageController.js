@@ -279,7 +279,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteComboValue = siteCombo.getValue(),
 			csrComboValue = csrCombo.getValue(),
 			csrComboValueString = csrComboValue.toString();
-			
+		
 		if(!Ext.isEmpty(csrComboValueString)){
 			me.filterHomeList(obj, newValue, oldValue);
 		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
@@ -370,12 +370,12 @@ Ext.define('AOC.view.home.HomePageController', {
 			currentUserSiteId = userObj.siteId,
 			roleId = userObj.role,
 			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
-			grid = me.getView(),//refs.orderQueueStatusList,
+			grid = me.getView(),
 			gridStore = grid.store;
 		
 		gridStore.clearFilter();
-		
 		if(roleId == AOCLit.userRole.superAdmin){
+			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
 			me.onRefreshClick();
 		}else if(roleId == AOCLit.userRole.siteManager){
 			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
