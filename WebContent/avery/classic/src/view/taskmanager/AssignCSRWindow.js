@@ -30,7 +30,7 @@ Ext.define('AOC.view.taskmanager.AssignCSRWindow',{
 				name:'CSR',
 				valueField:'userId',
 				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('AssignCSRStore'),
+				store:Ext.data.StoreManager.lookup('assignCSRStoreID') != null ? Ext.data.StoreManager.lookup('assignCSRStoreID') : Ext.create('AOC.store.AssignCSRStore',{siteId:'assignCSRStoreID'}) ,
 				typeAhead:true,
 				listeners:{
 					afterrender:'onCSRComboAfterRender'
