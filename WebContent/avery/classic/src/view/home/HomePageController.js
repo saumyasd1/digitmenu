@@ -56,30 +56,41 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteCombo = refs.siteCombo,
 			userRoles = AOCLit.userRole;
 		
+		var codeArray = csrCombo.getValue(),
+			len = codeArray.length,
+			userIds = [];
+		
+		for(var i = 0; i < len; i++){
+			var csrRec = csrCombo.store.getById(codeArray[i]);
+			if(csrRec){
+				userIds.push(csrRec.get('userId'));
+			}
+		}
+		
 		if(roleId == userRoles.superAdmin){ //super admin
-			parameters.assignCSR = csrCombo.getValue().join();
+			parameters.assignCSR = userIds.join();
 			parameters.siteId = siteCombo.getValue() ? siteCombo.getValue() : '';
 		}else if(roleId == userRoles.siteManager){ //site admin
-			parameters.assignCSR = csrCombo.getValue().join();
+			parameters.assignCSR = userIds.join();
 		}else if(roleId == userRoles.CSR){ //csr
 			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
-				parameters.assignCSR = csrCombo.getValue().length > 0 ? csrCombo.getValue().join() : userInfo.id.toString();
+				parameters.assignCSR = userIds.length > 0 ? userIds.join() : userInfo.id.toString();
 			}else{   // csr manager
-				if(csrCombo.getValue().length > 0){
-					parameters.assignCSR = csrCombo.getValue().join();
+				if(userIds.length > 0){
+					parameters.assignCSR = userIds.join();
 				}else{
 					var codeArray = userInfo.systemCsrNonCodeOwner.split(','),
 						len = codeArray.length,
 						assignCSRStore = csrCombo.store,
-						userIds = [];
+						userId = [];
 				  
 					for(var i = 0; i < len; i++){
-						var rec = assignCSRStore.findRecord('id', codeArray[i],'',false, false, true);
+						var rec = assignCSRStore.getById(codeArray[i]);
 						if(rec){
-							userIds.push(rec.get('userId'));
+							userId.push(rec.get('userId'));
 						}
 					}
-					parameters.assignCSR = userIds.join();
+					parameters.assignCSR = userId.join();
 				}
 			}
 		}
