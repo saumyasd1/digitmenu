@@ -81,8 +81,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						flex:1,
 						displayField:'partnerName',
 						listeners:{
-							'change':'onPartnerChange',
-							'afterrender':'afterRenderPartnerCombo'
+							'change':'onPartnerChange'
+//							'afterrender':'afterRenderPartnerCombo'
 						}
 					},
 					{
