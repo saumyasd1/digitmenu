@@ -22,18 +22,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             }),
             listeners: {
                 activate: function (obj) {
-                    var userInfo = AOCRuntime.getUser(),
-                        roleId = userInfo.role,
-                        siteId = userInfo.siteId,
-                        userId = userInfo.id,
-                        userEmailId = userInfo.email;
                     me.down('pagingtoolbar').bindStore(obj.getStore());
-                    obj.getStore().proxy.extraParams = {
-                        siteId: siteId,
-                        roleId: roleId,
-                        userId: userId,
-                        userEmailId: userEmailId
-                    };
                 }
             },
             tbar: {
