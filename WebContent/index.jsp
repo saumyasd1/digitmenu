@@ -49,7 +49,7 @@ int pageSize=100;
 	<!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" type="text/javascript" src="avery/bootstrap.js"></script>
 </head>
-<body>
+<body oncontextmenu="return false;">
 <div  id="loading">
 		<div id="loading-text">
 		<div><img style="width:60px;height:60px" src="resources/images/logo_avery.gif"></div>
