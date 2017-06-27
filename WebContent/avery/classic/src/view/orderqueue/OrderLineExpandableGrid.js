@@ -53,7 +53,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			  xtype: 'rownumberer',
 			  text:'#',
-			  width:30,
+			  width:35,
 			  align:'center',
 			  locked:true
 		},{
@@ -62,7 +62,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             dataIndex: 'Comments',
             tooltip: 'Comments',
             align:'center',
-            baseCls: 'custom-action',
             renderer: function (value, metadata, rec) {
                var comment = Ext.String.htmlEncode(rec.data.comment);
             	if(comment){
@@ -263,7 +262,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 100
 		},
 		{
-			text: AOCLit.divisionforInterfaceERPORG+ '<i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
+			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'divisionForInterfaceERPORG',
 			align:'left',
 			width: 120,
@@ -1334,6 +1333,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			modal: 'AOC.model.VariableHeaderModel',
 			cls: 'nestedGrid',
 			store:store,
+			minHeight:120,
 			recordId:recordId,
 			selModel: {
 				type:sel,

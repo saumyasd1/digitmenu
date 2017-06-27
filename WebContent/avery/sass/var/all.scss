@@ -168,3 +168,18 @@ $enable-font-awesome: dynamic(true);
 .x-grid-item-selected {
     background-color: #f9f4be !important;
 }
+.x-form-item-default.x-item-disabled{
+    opacity:.8 !important;
+}
+.x-rtl {
+	direction:ltr !important;
+}
+.x-rtl.x-grid-scrollbar-clipper-locked,.x-rtl.x-grid-scrollbar-locked {
+	left:0 !important;
+}
+.x-grid-locked .x-rtl.x-grid-scrollbar-clipper-locked, .x-grid-locked .x-rtl.x-grid-scrollbar-locked {
+    border-width: 0 1px 0 0 !important; 
+}
+.x-grid-scrollbar-clipper-locked > .x-grid-view-default{
+	border-right:solid 1px #ccc;
+}

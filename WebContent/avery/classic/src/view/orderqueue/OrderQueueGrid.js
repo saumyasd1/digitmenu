@@ -16,29 +16,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         stripeRows: true
     },
     listeners: {
-        cellclick:'onCellClickToView',// me.onCellClickToView,
-        activate: function (obj) {
-            var userInfo = AOCRuntime.getUser(),
-                roleId = userInfo.role,
-                siteId = userInfo.siteId;
-//                userId = userInfo.id,
-//                userEmailId = userInfo.email;
-            this.down('pagingtoolbar').bindStore(obj.getStore());
-            obj.getStore().proxy.extraParams = {
-                siteId: siteId,
-                roleId: roleId
-//                userId: userId,
-//                userEmailId: userEmailId
-            };
-
-        }
+        cellclick:'onCellClickToView',
+        rowcontextmenu:'onRowContextMenu',
+        activate:'onActivateGrid' 
     },
     initComponent: function () {
         var me = this;
-        me.fieldArray = [];
-        Ext.apply(this, {
-            columns: this.buildColumns(),
-            dockedItems: this.buildDockedItems(),
+        Ext.apply(me, {
+            columns: me.buildColumns(),
+            dockedItems: me.buildDockedItems(),
             tbar: {
                 height: AOC.config.Settings.config.defaultTbarHeight,
                 items: me.buildtbar()
@@ -46,32 +32,23 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             store: 'OrderQueueStore'
             
         });
-        this.callParent(arguments);
+        me.callParent(arguments);
     },
     buildColumns: function () {
 
         return [{
             header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
             width: 35,
-            //xtype: 'actioncolumn',
             menuDisabled: true,
-            //baseCls: 'custom-action',
             tooltip: 'Menu Action',
             align:'center',
-            renderer:function(v, metadata, record){
-            	return '<i class="x-fa fa-ellipsis-v" style="color:#2c3e50;font-size:16px;cursor:pointer;"></i>';
-            }
-//            items: [{
-//                icon: AOC.config.Settings.buttonIcons.menuIcon,
-//                handler: 'onClickMenu' //'showMenu'
-//            }]
+            renderer:Helper.actionColumnRenderer
         }, {
             header: Settings.config.defaultIcons.commentColumnIcon,
             width: 40,
             dataIndex: 'Comments',
             menuDisabled: true,
             tooltip: 'Comments',
-            baseCls: 'custom-action',
             align:'center',
             renderer: function (value, metadata, rec) {
                 if (value) {
@@ -89,7 +66,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             tooltip: 'Error',
             menuDisabled: true,
             align:'center',
-            baseCls: 'custom-action',
             renderer: function (value, metadata, rec) {
                 if (value) {
                     var error = Ext.String.htmlEncode(rec.data.error);
@@ -328,41 +304,5 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 width: 250
             })
         }];
-    },
-    onCellClickToView: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-        var el = Ext.get(e.target);
-        if (el.hasCls('vieworderattachment')) {
-            var form = Ext.create('Ext.form.Panel', {
-                standardSubmit: true,
-                url: applicationContext + '/rest/orders/download/orderfile/' + record.get('id')
-            });
-            form.submit({
-                method: 'GET'
-            });
-        } else if (el.hasCls('viewattachment')) {
-            var id = record.get('id');
-            var attachmentWin = Ext.create('AOC.view.orderqueue.OrderQueueAttachmentWindow', {
-                recordId: id
-            });
-            attachmentWin.show();
-        } else if (el.hasCls('attachment')) {
-            var id = e.target.accessKey;
-            var form = Ext.create('Ext.form.Panel', {
-                standardSubmit: true,
-                url: applicationContext + '/rest/orderattachements/download/' + id
-            });
-            form.submit({
-                method: 'GET'
-            });
-        } else if (el.hasCls('viewemail')) {
-            var form = Ext.create('Ext.form.Panel', {
-                standardSubmit: true,
-                url: applicationContext + '/rest/orders/download/emailbody/' + record.get('emailQueueId')
-            });
-
-            form.submit({
-                method: 'GET'
-            });
-        }
     }
 });

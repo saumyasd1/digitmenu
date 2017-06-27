@@ -9,14 +9,22 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var bulkupdategrid = this.getView();
         bulkupdategrid.bindStore(OrderQueueStore);
     },
-    init : function(){
-	     var me=this;
-	     me.menuTpl=me.buildMenuTpl();    
+    
+    onActivateGrid:function(obj){
+    	obj.down('pagingtoolbar').bindStore(obj.getStore());
+    	var userInfo = AOCRuntime.getUser(),
+	        roleId = userInfo.role,
+	        siteId = userInfo.siteId;
+    
+	    obj.getStore().proxy.extraParams = {
+	        siteId: siteId,
+	        roleId: roleId
+	    };
     },
     onCellClickToView:function(obj, td, cellIndex, record, tr, rowIndex, e, eOpts){
     	var el = Ext.get(e.target);
     	if(cellIndex == 0){
-        	this.createContextMenu(obj, e);
+        	this.createContextMenu(record, e);
         }
         if (el.hasCls('vieworderattachment')) {
             var form = Ext.create('Ext.form.Panel', {
@@ -53,10 +61,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         }
         
     },
-    createContextMenu:function(obj, e){
-    	var me = this,
-    		currentRecord = obj.getSelectionModel().getSelection()[0];
-    		status = currentRecord.get('status');
+    onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
+    	e.stopEvent();
+    	this.createContextMenu(record, e);
+    },
+    createContextMenu:function(record, e){
+    	var me = this;
+    	AOCRuntime.setCurrentOrderQueueStatus(record.get('status'));
     	
     	if(me.contextMenu){
     		me.contextMenu.showAt(e.getXY());
@@ -92,8 +103,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     					var viewOrderBtn = menu.queryById('viewOrderLineMenuItem'),
 	    					viewSalesBtn = menu.queryById('viewSalesOrderMenuItem'),
 	    					resubmitBtn = menu.queryById('resubmitOrderMenuItem'),
-	    					cancelBtn = menu.queryById('cancelMenuItem');
+	    					cancelBtn = menu.queryById('cancelMenuItem'),
+	    					status = AOCRuntime.getCurrentOrderQueueStatus();
     					
+    					//enable/disable view order btn
     					if((status == AOCLit.waitingForCSRStatusOrderQueue) || (status == AOCLit.soGeneratedStatusOrderQueue) 
    							 || (status == AOCLit.soSubmittedStatusOrderQueue)
    								|| (status == AOCLit.bookedStatusOrderQueue)
@@ -103,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     					}else{
     						viewOrderBtn.setDisabled(true);
     					}
-    					
+    					//enable/disable view sales btn
     					if(status  == AOCLit.soGeneratedStatusOrderQueue 
    							 || status == AOCLit.soSubmittedStatusOrderQueue
    								|| status == AOCLit.bookedStatusOrderQueue
@@ -112,13 +125,13 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     					}else{
     						viewSalesBtn.setDisabled(true);
     					}
-    					
+    					//enable/disable view resubmit btn
     					if(status == AOCLit.cancelStatusOrderQueue && AOCRuntime.getUser().role != AOCLit.userRole.superAdmin){
     						resubmitBtn.setDisabled(false);
     					}else{
     						resubmitBtn.setDisabled(true);
     					}
-    					
+    					//enable/disable view cancel btn
     					if(status == AOCLit.waitingForCSRStatusOrderQueue || status == AOCLit.errorStatusOrderQueue){
     						cancelBtn.setDisabled(false);
     					}else{
@@ -126,7 +139,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     					}
     				}
     			}
-    		})
+    		});
+    		me.contextMenu.showAt(e.getXY());
     	}
     },
     onMenuItemClick:function(menu, item, e){
@@ -389,186 +403,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		//show/hide validation buttons in orderline sceen
 		me.showHideValidationButton(orderlinecontainer, status);
     },
-    onClickMenu:function(obj, rowIndex, colIndex, item, e, record){
-		var me = this;
-		var callout = Ext.widget('callout', {
-			cls: 'white more-menu-item-callout extra',
-			html: me.menuTpl.apply(record.data),
-			target: e.target,
-			calloutArrowLocation: 'top-left',
-			relativePosition: 't-b',
-			relativeOffsets: [52,23],
-			dismissDelay: 0,
-			listeners: {
-				afterrender : me.onAfterRenderEditCallout,
-				viewOrders: function(cmp){
-					var currentRecord = e.record;
-		   
-					var id = currentRecord.get('id');
-		        	var partnerId = currentRecord.get('partnerId');
-		        	//setting parameters at runtime   
-		            me.runTime.setOrderQueueId(id);
-		            me.runTime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
-		            me.runTime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
-		            me.runTime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
-		            me.runTime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
-		            me.runTime.setOrderQueueActiveRecord(currentRecord);
-					me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-					me.runTime.setAllowOrderLineEdit(true);
-					
-					Ext.getBody().mask('Loading...');
-					
-					var storeERPORG = Ext.create('Ext.data.Store', {
-						fields:['id','name'],
-						proxy: {
-							type: 'rest',
-							url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
-							reader: {
-								type: 'json',
-								rootProperty: 'data'
-							}
-						}
-					});
-					
-					storeERPORG.load(function(){
-						me.runTime.setStoreERPORG(storeERPORG);
-						me.viewOrderLineScreen(currentRecord);
-						
-						callout.destroy(); // hide action menu items
-						Ext.getBody().unmask();
-					});
-				},
-				viewSales: function(cmp){
-					var currentRecord = e.record;
-					var id = currentRecord.get('id');
-					me.runTime.setOrderQueueId(id);
-					me.runTime.setOrderQueueActiveRecord(currentRecord);
-					me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-					me.runTime.setAllowOrderLineEdit(true);
-					var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-					var owner = me.getView().ownerCt;
-					var store = Ext.create('AOC.store.SalesOrderStore', {
-						proxy: {
-							type: 'rest',
-							url: applicationContext + '/rest/salesorders/order/' + id,
-							reader: {
-								type: 'json',
-								rootProperty: 'ArrayList'
-							}
-						}
-					});
-					owner.insert({
-						xtype: 'salesrrderexpandablegrid',
-						flex: 1,
-						store: store
-					});
-					owner.getLayout().setActiveItem(1);
-					callout.destroy();
-				},
-				cancelOrder: function(cmp){
-					var currentRecord = e.record;
-					var id = currentRecord.get('id');
-					me.runTime.setOrderQueueId(id);
-					me.runTime.setOrderQueueActiveRecord(currentRecord);
-					me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-					me.runTime.setAllowOrderLineEdit(true);
-					var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
-					me.getCancelOrderWindow(id);
-					callout.destroy();
-				},
-				reSubmitOrder:function(cmp){
-					var rec = e.record;
-					var orderInMailBody=(Ext.isEmpty(rec.get('orderInMailBody'))) ? false : rec.get('orderInMailBody');
-					if(orderInMailBody){
-						Helper.showToast('validation', AOCLit.resubmitNotPermissible);
-						return false;
-					}
-					var con=AOC.app.getController('MenuController');
-					con.changeTabPanel(4);
-					
-					var webOrderView=Ext.ComponentQuery.query('weborderview')[0],
-						refs = webOrderView.getReferences(),
-						weborderform = refs.webform,
-						attachmentinfoGrid = refs.webOrderAttachmentInfoGrid,
-						partnerCombo = refs.partnerCombo,
-						rboCombo = refs.rboCombo,
-						dataStructureCombo = refs.dataStructureCombo
-						emailField = refs.email,
-						subjectField = refs.subject,
-						emailBodyField = refs.emailBody;
-					
-					weborderform.resetFormFields();
-					attachmentinfoGrid.store.removeAll();
-					attachmentinfoGrid.getView().refresh();
-					var partnerId = (Ext.isEmpty(rec.get('partnerId'))) ? '' : rec.get('partnerId'),
-						productLineId = (Ext.isEmpty(rec.get('productLineId'))) ? '' : rec.get('productLineId'),
-						rboId = (Ext.isEmpty(rec.get('rboId'))) ? '' : rec.get('rboId'),
-						senderEmailID = (Ext.isEmpty(rec.get('senderEmailId'))) ? '' : rec.get('senderEmailId'),
-						subject =(Ext.isEmpty(rec.get('subject'))) ? '' : rec.get('subject'),
-								mailBody =(Ext.isEmpty(rec.get('mailBody'))) ? '': rec.get('mailBody');
-					emailBodyField.setValue(mailBody);
-					webOrderView.rboId = rboId;
-					webOrderView.productLineId = productLineId;
-					
-					partnerCombo.getStore().load();
-					partnerCombo.setValue(partnerId);
-					
-					//rboCombo.setValue(rboId);
-					partnerCombo.isChangedForFirstTime=true;
-					rboCombo.isChangedForFirstTime=true;
-					
-					//dataStructureCombo.setValue(productLineId);
-					emailField.setValue(senderEmailID);
-					subjectField.setValue(subject);
-					
-					var response = Ext.Ajax.request({
-						async: false,
-						url: applicationContext+'/rest/orderattachements/resubmit/'+rec.get('id')+'/'+rec.get('emailQueueId')
-					});
-					var jsonValue = Ext.decode(response.responseText),
-						fileList = jsonValue.viewmail;
-					 
-					var controller=webOrderView.getController(),
-						currentFile = null,
-						oldAdditionalFileIdArray = [];
-					
-					for(var i=0;i<fileList.length;i++){
-						var currentFile=fileList[i];
-						if(currentFile.fileContentType=="Order"){
-							webOrderView.down('#oldOrderFileId').setValue(currentFile.id);
-							webOrderView.down('#orderFileType').setValue(currentFile.fileName);
-							controller.insertFileInGrid(currentFile.fileName,'Order File Type',false,i+1,currentFile.id,null);
-						}else if(currentFile.fileContentType == 'AdditionalData'){
-							oldAdditionalFileIdArray.push(currentFile.id);
-							controller.insertFileInGrid(currentFile.fileName,'Attachment',true,i+1,currentFile.id,null);
-						}
-					}
-					
-					webOrderView.down('#oldAdditionalFileId').setValue(oldAdditionalFileIdArray.join(','));
-					webOrderView.down('#oldEmailId').setValue(rec.get('emailQueueId'));
-					webOrderView.down('#oldOrderId').setValue(rec.get('id'));
-					webOrderView.down('#backButtonimage').show();
-					webOrderView.updateHeaderLabel(AOCLit.fixAndResubmitWebOredr);
-					weborderform.isResubmit=true;
-					callout.destroy();
-				}
-			} 
-		});
-		callout.show();   
-		var heightAbove = e.getY() - Ext.getBody().getScroll().top,
-			heightBelow = Ext.Element.getViewportHeight() - heightAbove;
-		if(heightBelow<(callout.getHeight()+40)){
-		  callout.calloutArrowLocation='bottom-left'; 
-		  callout.relativePosition='b-t';
-		  callout.relativeOffsets = [55, 0];
-		}
-		else{
-		  callout.calloutArrowLocation='top-left'; 
-		  callout.relativePosition='t-b';
-			callout.relativeOffsets = [55, 5];
-		}
-		callout.show();
-	},
 	showHideValidationButton:function(orderlinecontainer, status){
 		validateButton = orderlinecontainer.lookupReference('validateButton'),
 		bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
@@ -586,109 +420,15 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		salesViewOrderbutton[editableFlag ? 'disable':'enable']();
 		form[editableFlag ? 'enable':'disable']();
 	},
-	onAfterRenderEditCallout : function(cmp){
-		var me = this;
-		cmp.el.on({
-			delegate: 'div.user-profile-menu-item',
-			click: function(e,element){
-				var el    = Ext.get(element),
-					event = el.getAttribute('event');
-				if (event && !el.hasCls('edit-menu-disabled')){
-					me.fireEvent(event);
-					if(cmp)
-						cmp.destroy();
-				}
-			}
-		});
-	},
-	buildMenuTpl : function(){
-		var me=this;
-		return Ext.create('Ext.XTemplate',
-			'<div style="width: 140px !important;{[this.getViewOrderLineStyle(values)]}" class="user-profile-menu-callout {[this.getViewOrderLineEnableDisableClass(values)]}" event="viewOrders">View Order Line</div>',
-			'<div style="width: 140px !important;{[this.getViewSalesOrderStyle(values)]}" class="user-profile-menu-callout {[this.getViewSalesOrderEnableDisableClass(values)]}" event="viewSales">View Sales Order</div>',
-			'<div style="width: 140px !important;{[this.getResubmitStyle(values)]}" class="user-profile-menu-callout {[this.getResubmitEnableDisableClass(values)]}" event="reSubmitOrder">ReSubmit Order</div>',
-			'<div style="width: 140px !important;border-bottom: none{[this.getCancelOrderStyle(values)]}" class="user-profile-menu-callout {[this.getCancelOrderEnableDisableClass(values)]}" event="cancelOrder">Cancel Order</div>',
-			{
-				isViewOrderBtnEnable:function(status){
-					if((status == AOCLit.waitingForCSRStatusOrderQueue) || (status == AOCLit.soGeneratedStatusOrderQueue) 
-							 || (status == AOCLit.soSubmittedStatusOrderQueue)
-								|| (status == AOCLit.bookedStatusOrderQueue)
-									|| (status == AOCLit.errorStatusOrderQueue) || (status == AOCLit.oracleErrorStatusOrderQueue)
-										|| (status == AOCLit.cancelStatusOrderQueue)){
-						return true;
-					}
-					return false;
-				},
-				isViewSalesOrderBtnEnable:function(status){
-					if(status  == AOCLit.soGeneratedStatusOrderQueue 
-							 || status == AOCLit.soSubmittedStatusOrderQueue
-								|| status == AOCLit.bookedStatusOrderQueue
-									|| status == AOCLit.errorStatusOrderQueue || status == AOCLit.oracleErrorStatusOrderQueue){
-						return true;
-					}
-					return false;
-				},
-				getViewOrderLineStyle:function(v){
-					if(this.isViewOrderBtnEnable(v.Status)){
-						 return Helper.getEnableMenuItemStyle();
-					}
-					return Helper.getDisableMenuItemStyle();
-				},
-				getViewSalesOrderStyle:function(v){
-					if(this.isViewSalesOrderBtnEnable(v.Status)){
-						return Helper.getEnableMenuItemStyle();
-					}
-					return Helper.getDisableMenuItemStyle();
-				},
-				getViewSalesOrderEnableDisableClass:function(v){
-					if(this.isViewSalesOrderBtnEnable(v.Status)){
-						 return 'user-profile-menu-item';
-					}
-					return 'order-profile-menu-item';
-				},
-				getResubmitStyle:function(v){
-					if(v.Status == AOCLit.cancelStatusOrderQueue){
-						 return Helper.getEnableMenuItemStyle();
-					}
-					return Helper.getDisableMenuItemStyle();
-				},
-				getViewOrderLineEnableDisableClass:function(v){
-					if(this.isViewOrderBtnEnable(v.Status)){
-						 return 'user-profile-menu-item';
-					}
-					return 'order-profile-menu-item';
-				},
-				getResubmitEnableDisableClass:function(v){
-					if(v.Status == AOCLit.cancelStatusOrderQueue){
-						 return 'user-profile-menu-item';
-					}
-					return 'order-profile-menu-item';
-				},
-				getCancelOrderStyle:function(v){
-					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue){
-						 return Helper.getEnableMenuItemStyle();
-					}
-					return Helper.getDisableMenuItemStyle();
-				},
-				getCancelOrderEnableDisableClass:function(v){
-					if(v.Status == AOCLit.waitingForCSRStatusOrderQueue || v.Status == AOCLit.errorStatusOrderQueue){
-						 return 'user-profile-menu-item';
-					}
-					return 'order-profile-menu-item';
-				}
-			}
-		);
-	},
     getCancelOrderWindow: function(id) {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
     },
-    notifyByMessage:function()
-    {
-    	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-	 	ordersearch.down('#messageFieldItemId').setValue('').setVisible(true);
-	 	ordersearch.down('#messageFieldItemId').setHidden('true');
-    },
+//    notifyByMessage:function(){
+//    	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
+//	 	ordersearch.down('#messageFieldItemId').setValue('').setVisible(true);
+//	 	ordersearch.down('#messageFieldItemId').setHidden('true');
+//    },
     backButton:function(){
  	   var panel=Ext.ComponentQuery.query('#emailPanel')[0];
 	       var emailManagement=panel.down('#EmailMangementitemId');

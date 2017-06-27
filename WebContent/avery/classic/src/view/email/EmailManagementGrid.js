@@ -54,7 +54,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 tooltip: 'Comments',
                 menuDisabled: true,
                 align: 'center',
-                baseCls: 'custom-action',
                 renderer: function (value, metaData, rec) {
                     if (value) {
                         var status = rec.get('status');
