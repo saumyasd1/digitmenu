@@ -4,15 +4,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 10,
-	width: 990,
-	height:560,
+	width: Ext.getBody().getWidth()-350,
+	height:Ext.getBody().getHeight()-50,
     draggable:false,
+    
     editMode:false,
     rec:null,
     additionalFieldCount:1,
     productlineId:null,
     partnerid:null,
     partnerName:null,
+    
 	scrollable : true,	
     initComponent : function(){
 		this.items = this.buildItems();
@@ -56,7 +58,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			{
 				xtype:'form',
 				itemId:'listPanel',
-				scrollable:true,
 				reference:'partnerProfileForm',
 				anchor:'100%',
 				border:false,
@@ -65,19 +66,21 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						xtype: 'fieldcontainer',
 						layout: 'column',
 						margin : '10 0 5 0',
+						layout:{
+							type:'hbox',
+							align:'stretch'
+						},
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign,
-							labelWidth:150,
-							width:300
+							labelAlign:Settings.form.topLabelAlign
 						},	
 						items:[
 							{
-								xtype:'displayfield',
+								xtype:'textfield',
 								itemId:'PNItemId',
 								name: 'partnerName',
-								width: 300,
+								flex:1,
 								fieldLabel: AOCLit.partnerName,
 								value: me.partnerName
 							},
@@ -85,13 +88,29 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								xtype:'textfield',
 								itemId:'dataStructureName',
 								name: 'dataStructureName',
-								width: 300,
 								margin:'0 0 0 10',
+								flex:1,
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
 								blankText:'Data Structure Name is required',
 								bind:'{dataStructureName}'
-							},
+							}
+						]
+					},
+					{
+						xtype: 'fieldcontainer',
+						layout: 'column',
+						margin : '10 0 5 0',
+						layout:{
+							type:'hbox',
+							align:'stretch'
+						},
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},	
+						items:[
 							{
 								xtype:'combo',
 								itemId:'RItemId',
@@ -100,33 +119,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								bind:'{rbo.id}',
 								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
-								margin:'0 0 0 10',
 								store:rboStore,
 								displayField:'rboName',
 								valueField:'id',
-								blankText : 'RBO Name is required',
+								flex:1,
+								blankTexts: 'RBO Name is required',
 								listeners : {
-									'focus' : 'HideMandatoryMessage'
+									//'focus' : 'HideMandatoryMessage'
 								}
-							}
-						]
-					},
-					{
-						xtype:'fieldcontainer',
-						layout:'hbox',
-						margin : '0 0 5 0',
-						defaults:{
-							labelSeparator:'',
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign,
-							labelWidth:150,
-							width:455
-						},
-						items:[
+							},
 							{
 								xtype:'combo',
 								itemId:'SiteId',
 								name: 'site',
+								flex:1,
 								fieldLabel:'Site',
 								allowBlank: false,
 								bind:'{siteId}',
@@ -134,30 +140,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								reference:'site',
 								valueField:'id',
 								displayField:'name',
-								maxLength : '100',
+								maxLength: '100',
 								blankText:'Site Name is required',
 								store:siteStore,
+								margin:'0 0 0 10',
 								siteChanged:false,
 								enforceMaxLength: true,
 								listeners : {
-									'focus' : 'HideMandatoryMessage',
+									//'focus' : 'HideMandatoryMessage',
 									'change':'onSiteSelect'
-								}
-							},
-							{
-								xtype:'textfield',
-								name: 'email',
-								bind:'{email}',
-								fieldLabel:'Email ID',
-								regex: /^((([a-zA-Z0-9_\-\.*]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-								width : 455,
-								margin:'0 0 0 10',
-								labelSeparator:'',
-								labelStyle:Settings.config.defaultFormLabelStyle,
-								labelAlign:Settings.form.defaultLabelAlign,
-								labelWidth:150,
-								listeners : {
-									'focus' : 'HideMandatoryMessage'
 								}
 							}
 						]
@@ -173,19 +164,88 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						layout:'anchor',
 						labelStyle:Settings.config.defaultFormLabelStyle
 					},
+					
+	        		{
+						xtype:'fieldcontainer',
+						layout:'hbox',
+						margin : '0 0 5 0',
+						layout:{
+							type:'anchor',
+						},
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype:'textfield',
+								name: 'email',
+								flex:1,
+								anchor:'49.5%',
+								bind:'{email}',
+								fieldLabel:'Email ID',
+								regex: /^((([a-zA-Z0-9_\-\.*]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+								listeners : {
+									//'focus' : 'HideMandatoryMessage'
+								}
+							}
+						]
+					},
+					{   
+						xtype: 'fieldcontainer',
+						layout: 'column',
+						margin : '0 0 5 0',
+						layout:{
+							type:'hbox',
+							align:'stretch'
+						},
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1
+						},
+						items:[
+							{
+								xtype:'textfield',
+								itemId:'CSRPrimaryId',
+								name: 'csrPrimaryId',
+								bind:'{csrPrimaryId}',
+								fieldLabel:'CSR Primary Email',
+								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+								blankText : AOCLit.prodLineReq,
+								listeners : {
+									//'focus' : 'HideMandatoryMessage'
+								}
+							},
+							{
+								xtype:'textfield',
+								itemId:'CSRSecondaryId',
+								name: 'csrSecondaryId',
+								bind:'{csrSecondaryId}',
+								fieldLabel:'CSR Secondary Email',
+								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
+								blankText : AOCLit.CSRReq,
+								margin:'0 0 0 10',
+								listeners : {
+									//'focus' : 'HideMandatoryMessage'
+								}
+							}
+						]
+					},
 					{
 	        			xtype:'fieldcontainer',
 	        			layout:'column',
 	        			fieldLabel:'Product Line',
-	        			margin : '0 0 5 0',
+	        			labelStyle:Settings.config.defaultFormLabelStyle,
 	        			labelSeparator:'',
-						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelWidth:150,
+	        			labelWidth:150,
+	        			margin : '0 0 5 0',
 	        			defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign,
-							labelWidth:150
+							labelAlign:Settings.form.topLabelAlign
 						},
 	        			items:[
 							{
@@ -204,6 +264,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								xtype:'combo',
 								name: 'productLineTypeCombo',
 								fieldLabel:AOCLit.productLine,
+								labelAlign:Settings.form.defaultLabelAlign,
 								labelWidth:100,
 								allowBlank: true,
 								reference:'productLineTypeCombo',
@@ -215,7 +276,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								value:'HTL',
 								blankText : AOCLit.prodLineReq,
 								listeners : {
-									'focus' : 'HideMandatoryMessage',
+									//'focus' : 'HideMandatoryMessage',
 									change:'onProductLineComboChange'
 								}
 							},
@@ -234,46 +295,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							}
 						]
 	        		},
-	        		
-					{   
-						xtype: 'fieldcontainer',
-						layout: 'column',
-						margin : '0 0 5 0',
-						defaults:{
-							labelSeparator:'',
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.defaultLabelAlign,
-							labelWidth:150,
-							width:455
-						},
-						items:[
-							{
-								xtype:'textfield',
-								itemId:'CSRPrimaryId',
-								name: 'csrPrimaryId',
-								bind:'{csrPrimaryId}',
-								fieldLabel:'CSR Primary Email',
-								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-								blankText : AOCLit.prodLineReq,
-								listeners : {
-									'focus' : 'HideMandatoryMessage'
-								}
-							},
-							{
-								xtype:'textfield',
-								itemId:'CSRSecondaryId',
-								name: 'csrSecondaryId',
-								bind:'{csrSecondaryId}',
-								fieldLabel:'CSR Secondary Email',
-								regex: /^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*(\s*?,\s*?)*)*$/, //Allowed Space Between Email Ids
-								blankText : AOCLit.CSRReq,
-								margin:'0 0 0 10',
-								listeners : {
-									'focus' : 'HideMandatoryMessage'
-								}
-							}
-						]
-					},
 					{
 						xtype: 'fieldcontainer',
 						fieldLabel: 'Validations',
@@ -283,7 +304,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						margin : '0 0 5 0',
 						labelSeparator:'',
 						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.defaultLabelAlign,
+						labelAlign:Settings.form.topLabelAlign,
 						name:'validation',
 						defaults:{
 							width:150
@@ -306,74 +327,55 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						]
 					},
 					{
-						xtype: 'fieldcontainer',
-						fieldLabel: 'CSR Attention',
+						xtype:'checkboxgroup',
+						fieldLabel:'CSR Attention',
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						labelSeparator:'',
-						labelAlign:'top',
-						defaults:{
-							width:150
-						},
-						defaultType: 'checkboxfield',
-						layout:'column',
-						margin : '0 0 5 0',
-						labelAlign:'top',
-						name:'CSRAttention',
-						items: [
+						labelAlign:Settings.form.topLabelAlign,
+						width:500,
+						columns:3,
+						vertical:true,
+						items:[
 							{
-								boxLabel : 'Local Billing',
-								name : 'localBilling',
+								boxLabel: 'Local Billing',
+								name: 'localBilling',
 								inputValue: 'localBilling',
-								id: 'localBilling',
-								bind:'{localBilling}'
+								itemId:'localBilling',
+								bind: '{localBilling}'
 							},
 							{
 								boxLabel : 'Factory Transfer',
-								name : 'factoryTransfer',
+								name: 'factoryTransfer',
 								inputValue : 'factoryTransfer',
-								id : 'factoryTransfer',
+								itemId : 'factoryTransfer',
 								bind:'{factoryTransfer}'
 							},
 							{
 								boxLabel: 'Shipment Sample',
 								name : 'shipmentSample',
 								inputValue : 'shipmentSample',
-								id : 'shipmentSample',
+								itemId : 'shipmentSample',
 								bind:'{shipmentSample}'
-							}
-							
-						]
-					},
-					{
-						xtype: 'fieldcontainer',
-						defaultType: 'checkboxfield',
-						layout:'column',
-						margin : '0 0 5 0',
-						name:'CSRAttention1',
-						defaults:{
-							labelStyle:Settings.config.defaultFormLabelStyle,
-							width:150
-						},
-						items: [
+							},
 							{
 								boxLabel : 'Size Check',
 								name  : 'sizeCheck',
 								inputValue : 'sizecheck',
-								id : 'sizecheck',
+								itemId : 'sizecheck',
 								bind:'{sizeCheck}'
 							},
 							{
 								boxLabel : 'Fabric Check',
 								name : 'fiberpercentagecheck',
 								inputValue : 'fabriccheck',
-								id : 'fabriccheck',
+								itemId : 'fabriccheck',
 								bind:'{fiberpercentagecheck}'
 							},
 							{
 								boxLabel : 'LLKK',
 								name : 'llkk',
 								inputValue : 'LLKK',
-								id : 'LLKK',
+								itemId : 'LLKK',
 								bind:'{llkk}'
 							}
 						]
@@ -386,12 +388,164 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						margin:'0 0 5 0',
 						labelStyle:Settings.config.defaultFormLabelStyle,
 						value:'<div class="activeBtn fa fa-toggle-off" style="font-size:24px;color:#ccc;cursor:pointer;"></div>'
+					},
+					{
+						frame:true,
+						collapsible:true,
+						collapsed:true,
+						title:'Advance Properties',
+						titleCollapse:true,
+						bodyPadding:10,
+						layout:{
+							type:'vbox',
+							align:'stretch'
+						},
+						defaults:{
+							flex:1
+						},
+						items:[
+						    {
+						    	xtype:'label',
+						    	text:'Order',
+						    	style:Settings.form.wiLabelStyle
+						    },
+						    {
+								xtype: 'fieldcontainer',
+								layout: 'column',
+								margin : '0 0 5 0',
+								layout:{
+									type:'hbox',
+									align:'stretch'
+								},
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.topLabelAlign,
+									flex:1
+								},
+								items:[
+									{
+										xtype:'combo',
+										itemId:'FileType',
+										name: 'fileType',
+										fieldLabel:'File Type',
+										store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
+										editable:false,
+										bind:'{orderFileNameExtension}',
+										allowBlank:false,
+										blankText:'File Type is required'
+									},
+									{
+										xtype:'textfield',
+										itemId:'FileNamePattern',
+										margin:'0 0 0 10',
+										name: 'fileNamePattern',
+										fieldLabel:'File Name Pattern',
+										bind:'{orderFileNamePattern}'
+									}
+								]
+							},
+							{
+								xtype: 'fieldcontainer',
+								layout: 'column',
+								margin : '0 0 5 0',
+								layout:{
+									type:'hbox',
+									align:'stretch'
+								},
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.topLabelAlign,
+									flex:1
+								},
+								items:[
+									{
+										xtype:'textfield',
+										itemId:'Schema',
+										name: 'orderSchemaID',
+										fieldLabel:'Schema',
+										maxLength : '50',
+										enforceMaxLength: true,
+										bind:'{orderSchemaID}'
+									},
+									{
+										xtype:'textfield',
+										itemId:'Mapping',
+										margin:'0 0 0 10',
+										name: 'orderMappingID',
+										fieldLabel:'Mapping',
+										maxLength : '50',
+										enforceMaxLength: true,
+										bind:'{orderMappingID}'
+									}
+								]
+							},
+							{
+								xtype:'fieldcontainer',
+								layout:'hbox',
+								margin:'0 0 5 0',
+								defaults:{
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelSeparator:'',
+									labelAlign:Settings.form.defaultLabelAlign,
+									labelWidth:150,
+								},
+								items:[{
+									xtype: 'radiogroup',
+									vertical: true,
+									fieldLabel:'Additional Data',
+									width:300,
+									name:'AdditionalData',
+									reference:'attachmentRequired',
+									//bind:'{attachmentRequired}',
+									defaults:{
+										name:'attachmentRequired'
+									},
+									items:[
+										{
+											 boxLabel : 'Yes',
+											 inputValue : true,
+											 checked:true
+										 }, 
+										 {
+											 boxLabel : 'No',
+											 inputValue :false,
+											 listeners: {
+												 change: 'onRequiredChange'
+											 }
+										 }
+									 ]
+								},{
+									xtype:'button',
+									text:'Add Additional Field',
+									cls:'blu-btn',
+									iconCls:'x-fa fa-plus',
+									itemId:'addMoreAdditionalFieldButton',
+									handler:'addMoreAdditionalField'
+								}]
+							},
+							{	
+								itemId:'AdditionalData',
+								reference:'additionalData',
+								layout:{
+									type:'vbox',
+									align:'stretch'
+								},
+								items:me.getController().getAttachementContainer(1)
+						   },
+						   me.getEmailRBOMatchField('Email Subject Match', 'emailSubject'),
+						   me.getEmailRBOMatchField('Email Body Match', 'emailBody'),
+						   me.getFileRBOMatchField('File Match','file',false),
+						   me.getFileRBOMatchField('File Match Additional','attachmentFile',true),
+						]
 					}
 			   ]
 			},
 			{
 				xtype: 'form',
 				itemId:'AdvancedPropertiesForm',
+				hidden:true,
 				collapseDirection: 'top',
 				animCollapse: false,
 				collapsible: true,
@@ -501,7 +655,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								width:300,
 								margin:'5 0 0 0',
 								name:'AdditionalData',
-								reference:'attachmentRequired',
+//								reference:'attachmentRequired',
 								fieldLabel:'Additional Data',
 								labelStyle:Settings.config.defaultFormLabelStyle,
 								labelSeparator:'',
@@ -539,7 +693,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								collapseDirection: 'top',
 								animCollapse: false,
 								collapsible: true,
-								reference:'additionalData',
+//								reference:'additionalData',
 								collapsed :true,
 								titleCollapse: true,
 								width:'100%',
@@ -923,7 +1077,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 											},
 											{
 												xtype:'textfield',
-												//itemId:'Sheet',
 												margin:'0 0 0 10',
 												name: 'sheet',
 												fieldLabel:'Sheet',
@@ -946,6 +1099,220 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				]
 			}
 		]
+	},
+	getEmailRBOMatchField:function(label, fieldType){
+		return {
+			xtype:'fieldcontainer',
+			margin:'10 0',
+			layout:{
+				type:'vbox',
+				align:'stretch'
+			},
+			items:[
+				{
+					xtype:'label',
+					text:label,
+					style:Settings.form.wiLabelStyle
+				},
+				{
+					xtype: 'fieldcontainer',
+					layout: 'column',
+					margin : '0 0 5 0',
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					items:[
+						{
+							xtype:'textfield',
+							name: fieldType+'RBOMatch',
+							fieldLabel:'RBO',
+							bind:'{'+fieldType+'RBOMatch}'
+						},
+						{
+							xtype:'textfield',
+							margin:'0 0 0 10',
+							name: fieldType+'ProductLineMatch',
+							fieldLabel:'Product Line Type',
+							bind:'{'+fieldType+'ProductLineMatch}'
+						}
+					]
+				},
+				{
+					xtype:'textarea',
+					labelAlign:'left',
+					name: 'instruction',
+					fieldLabel:'Instruction',
+					labelSeparator:'',
+					hidden:true,
+					labelWidth: 150,
+					labelStyle:Settings.config.defaultFormLabelStyle,
+					labelAlign:Settings.form.topLabelAlign,
+					flex:1
+				}
+			]
+		};
+	},
+	getFileRBOMatchField:function(label, fieldType, hiddenFlag){
+		return  {
+			xtype:'fieldcontainer',
+			layout:{
+				type:'vbox',
+				align:'stretch'
+			},
+			margin:'10 0',
+			defaults:{
+				flex:1
+			},
+			items:[
+				{
+					xtype:'label',
+					text:label,
+					style:Settings.form.wiLabelStyle
+				},
+				{
+					xtype: 'fieldcontainer',
+					layout: {
+						type:'hbox',
+						align:'stretch'
+					},
+					margin : '0 0 15 0',
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					defaultType:'textfield',
+					items:[
+						{
+							name: fieldType+'RBOMatch',
+							fieldLabel:'RBO',
+							reference:fieldType+'RBOMatch',
+							hidden:hiddenFlag,
+							bind:'{'+fieldType+'RBOMatch}'
+						},
+						{
+							itemId:'firstSheet',
+							margin:'0 0 0 10',
+							name: fieldType+'RBOSheetMatch',
+							prevItemRef: fieldType+'RBOMatch',
+							fieldLabel:'Sheet',
+							hidden:hiddenFlag,
+							bind:'{'+fieldType+'RBOSheetMatch}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						},
+						{
+							margin:'0 0 0 10',
+							name: fieldType+'RBOCellMatch',
+							prevItemRef: fieldType+'RBOMatch',
+							fieldLabel:'Cell',
+							hidden:hiddenFlag,
+							bind:'{'+fieldType+'RBOCellMatch}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					layout: 'column',
+					margin : '0 0 5 0',
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					defaultType:'textfield',
+					items:[
+						{
+							name: fieldType+'ProductlineMatch',
+							reference:fieldType+'ProductlineMatch',
+							fieldLabel:'Product Line',
+							bind:'{'+fieldType+'ProductlineMatch}'
+						},
+						{
+							margin:'0 0 0 10',
+							name: fieldType+'ProductlineSheetMatch',
+							prevItemRef: fieldType+'ProductlineMatch',
+							fieldLabel:'Sheet',
+							bind:'{fileProductlineSheetMatch}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						},
+						{
+							name: fieldType+'ProductlineCellMatch',
+							margin:'0 0 0 10',
+							prevItemRef: fieldType+'ProductlineMatch',
+							fieldLabel:'Cell',
+							bind:'{'+fieldType+'ProductlineCellMatch}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					layout: 'column',
+					margin : '0 0 5 0',
+					layout:{
+						type:'hbox',
+						align:'stretch'
+					},
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					defaultType:'textfield',
+					items:[
+						{
+							name: fieldType+'OrderMatch',
+							reference:fieldType+'OrderMatch',
+							fieldLabel:'Order Match',
+							bind:'{'+fieldType+'OrderMatch}'
+						},
+						{
+							name: fieldType+'OrderMatchSheet',
+							margin:'0 0 0 10',
+							prevItemRef: fieldType+'OrderMatch',
+							fieldLabel:'Sheet',
+							bind:'{'+fieldType+'OrderMatchSheet}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						},
+						{
+							name: fieldType+'OrderMatchCell',
+							margin:'0 0 0 10',
+							prevItemRef:  fieldType+'OrderMatch',
+							fieldLabel:'Cell',
+							bind:'{'+fieldType+'OrderMatchCell}',
+							listeners: {
+								'change': 'onChangeOfSheetCellField'
+							}
+						}
+					]
+				}
+			]
+		};
 	},
 	notifyByImage : function(config){
 		 if(config.isValid()){

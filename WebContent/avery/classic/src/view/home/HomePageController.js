@@ -61,15 +61,31 @@ Ext.define('AOC.view.home.HomePageController', {
 			userIds = [];
 		
 		for(var i = 0; i < len; i++){
-			var csrRec = csrCombo.store.getById(codeArray[i]);
-			if(csrRec){
-				userIds.push(csrRec.get('userId'));
+			if(codeArray[i] == 'All'){
+				userIds = [];
+				csrCombo.store.each(function(data){
+					userIds.push(data.get('userId'));
+				});
+				break;
+			}
+			else{
+				var csrRec = csrCombo.store.getById(codeArray[i]);
+				if(csrRec && !Ext.isEmpty(csrRec.get('userId'))){
+					userIds.push(csrRec.get('userId'));
+				}
 			}
 		}
 		
 		if(roleId == userRoles.superAdmin){ //super admin
-			parameters.assignCSR = userIds.join();
-			parameters.siteId = siteCombo.getValue() ? siteCombo.getValue() : '';
+			var siteComboValue = siteCombo.getValue() ? siteCombo.getValue() : '';
+			if(siteComboValue == 'All'){
+				siteComboValue = '';
+			}
+			parameters.siteId = siteComboValue;
+			if(userIds.length > 0){
+				parameters.assignCSR = userIds.join();
+				parameters.siteId = siteComboValue ? siteComboValue : 1;
+			}
 		}else if(roleId == userRoles.siteManager){ //site admin
 			parameters.assignCSR = userIds.join();
 		}else if(roleId == userRoles.CSR){ //csr
@@ -208,7 +224,9 @@ Ext.define('AOC.view.home.HomePageController', {
 	onAfterRenderSiteCombo: function(obj){
 	    obj.getStore().load({
 	    	callback:function(records, success){
-	    		obj.store.insert(0,new Ext.data.Record({name:'None', id:'None'}));
+	    		if((AOCRuntime.getUser().role == AOCLit.userRole.superAdmin) && obj.isVisible()){
+	    			obj.store.insert(0,new Ext.data.Record({name:'All', id:'All'}));
+	    		}
 	    	}
 	    }, obj);
 	},
@@ -224,6 +242,7 @@ Ext.define('AOC.view.home.HomePageController', {
 						csrCombo.setValue(AOCRuntime.getUser().systemCsrCodeOwner);
 					}
 				}
+				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
 			}
 		}, csrCombo);
 	},
@@ -234,8 +253,13 @@ Ext.define('AOC.view.home.HomePageController', {
 		
 		csrCombo.store.load({
 			params:{siteId:siteId},
-			callback:function(records, operation, success){}
-		});
+			callback:function(records, operation, success){
+				var rec = csrCombo.store.findExact('id', 'All');
+				if(rec){
+					csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
+				}
+			}
+		}, csrCombo);
 	},
 	onChangeSiteCSRCodeCombo: function(obj, newValue, oldValue, eOpts ){
 		var me = this,
@@ -245,13 +269,11 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteComboValue = siteCombo.getValue(),
 			csrComboValue = csrCombo.getValue();
 		
-		
 		var	csrComboValueString = csrComboValue.join();
 		if(!Ext.isEmpty(csrComboValueString)){
 			me.filterHomeList(obj, newValue, oldValue);
 		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
-			if(siteCombo.getValue() == 'None'){
-				siteCombo.setValue('');
+			if(siteCombo.getValue() == 'All'){
 				me.getCSRList(csrCombo.store, 1);
 				me.loadDefaultHomeList();
 				return;
@@ -271,7 +293,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteId = '',
 			csrComboValue = csrCombo.getValue();
 		
-		if(siteCombo.getValue() == 'None'){
+		if(siteCombo.isVisible() && siteCombo.getValue() == 'All'){
 			siteId = 1;
 		}else if(siteCombo.isVisible()){
 			siteId = siteCombo.getValue();
@@ -279,9 +301,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteId = userinfo.siteId;
 		}
 		
-		var length = csrComboValue.length,
-//			csrComboValueString = csrComboValue.toString(),
-			currentItemRef = obj.currentItemRef,
+		var currentItemRef = obj.currentItemRef,
 			systemCsrNonCodeOwner = userinfo.systemCsrNonCodeOwner;
 		
 		//get user id foe selected CSR
@@ -290,9 +310,16 @@ Ext.define('AOC.view.home.HomePageController', {
 			userIds = [];
 		
 		for(var i = 0; i < len; i++){
-			var record = csrCombo.store.getById(codeArray[i]);
-			if(record){
-				userIds.push(record.get('userId'));
+			if(codeArray[i] == 'All'){
+				userIds = [];
+				csrCombo.store.each(function(data){
+					userIds.push(data.get('userId'));
+				});
+			}else{
+				var record = csrCombo.store.getById(codeArray[i]);
+				if(record){
+					userIds.push(record.get('userId'));
+				}
 			}
 		}
 		var csrComboValueString = userIds.join();
@@ -302,16 +329,11 @@ Ext.define('AOC.view.home.HomePageController', {
 			return;
 		}
 		var values = {
-			 multiSelectFlag: false, 
 			 csrManagerFlag: false,
 			 filterSiteId: siteId.toString(),
 			 filterCsrCode: csrComboValueString
 		};
 			
-		//CSR Clerk functionality
-		if(length > 1){
-			values.multiSelectFlag = true;
-		}
 		//CSR Manager functionality
 		if(!Ext.isEmpty(systemCsrNonCodeOwner)){
 			values.csrManagerFlag = false; 
@@ -366,7 +388,6 @@ Ext.define('AOC.view.home.HomePageController', {
 			//CSR Manager functionality
 			if(!Ext.isEmpty(systemCsrNonCodeOwner)){
 				values.filterCsrCode = systemCsrNonCodeOwner;
-				values.multiSelectFlag = false;
 				values.csrManagerFlag = true; 
 			}
 			me.setFilters(values);

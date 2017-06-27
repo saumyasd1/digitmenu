@@ -16,6 +16,11 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
         stripeRows: true,
         enableTextSelection: true
     },
+    listeners: {
+        activate:'onActivateGrid',
+        cellclick:'onCellClick',
+        rowcontextmenu:'onRowContextMenu'
+    },
     initComponent: function () {
         var me = this;
 
@@ -25,22 +30,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
             store: Ext.create('AOC.store.EmailManagementStore', {
                 storeId: 'EmailManagementStoreId'
             }),
-            listeners: {
-                activate: function (obj) {
-                    var userInfo = AOCRuntime.getUser(),
-                        roleId = userInfo.role,
-                        siteId = userInfo.siteId,
-                        userId = userInfo.id,
-                        userEmailId = userInfo.email;
-                    me.down('pagingtoolbar').bindStore(obj.getStore());
-                    obj.getStore().proxy.extraParams = {
-                        siteId: siteId,
-                        roleId: roleId,
-                        userId: userId,
-                        userEmailId: userEmailId
-                    };
-                }
-            },
             tbar: {
                 height: AOC.config.Settings.config.defaultTbarHeight,
                 items: me.buildtbar()
@@ -52,14 +41,12 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
         var me = this;
         return [{
                 header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
-                width: 25,
-                xtype: 'actioncolumn',
+                width: 40,
                 menuDisabled: true,
-                baseCls: 'custom-action',
-                items: [{
-                    icon: AOC.config.Settings.buttonIcons.menuIcon,
-                    handler: 'onClickMenu' //'showMenu'
-                }]
+                align:'center',
+                sortable:false,
+                resizable:false,
+                renderer:Helper.actionColumnRenderer
             }, {
                 header: Settings.config.defaultIcons.commentColumnIcon,
                 width: 40,

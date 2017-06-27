@@ -9,6 +9,19 @@ Ext.define('AOC.view.partner.SystemGrid', {
 		stripeRows : true,
 		enableTextSelection : true
 	},
+	listeners:{
+		'afterrender':function(obj){
+			obj.getView().on('beforerefresh',function(){
+	        	obj.isSystemGridNotValid=false;
+	        });
+		},
+		'beforeedit': function(){
+			if(AOCRuntime.getUser().role == 3){
+				return false;
+			}
+			return true;
+		}
+	},
 	initComponent : function(){
 		var me = this;
 		Ext.apply(me,{
@@ -16,20 +29,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			plugins: [{
 				ptype: 'cellediting',
 				clicksToEdit: 1
-			}],
-			listeners:{
-				'afterrender':function(){
-					me.getView().on('beforerefresh',function(){
-			        	me.isSystemGridNotValid=false;
-			        });
-				},
-				'beforeedit': function(){
-					if(AOCRuntime.getUser().role == 3){
-						return false;
-					}
-					return true;
-				}
-			}
+			}]
 		});
        me.callParent(arguments);
 	},
@@ -39,7 +39,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{  
 				text : 'CSR Name',
 				width:120,
-				sortable : true,
+				align:'left',
 				flex:1.5,
 				dataIndex:'csrName',
 				editor:{
@@ -52,7 +52,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Packing Instruction',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'packingInstruction',
 				flex:1.5,
 				editor:{
@@ -62,7 +62,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Manu. Note',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'manufacturingNotes',
 				flex:1.5,
 				editor:{
@@ -72,7 +72,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Invoice Note',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'invoiceNote',
 				flex:1.5,
 				editor:{
@@ -82,7 +82,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Variable data breakdown',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'variableDataBreakdown',
 				flex:1.5,
 				editor:{
@@ -92,6 +92,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Split by Ship Set',
 				width:150,
+				align:'left',
 				dataIndex:'splitShipSetBy',
 				flex:1,
 				editor: {
@@ -122,6 +123,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			{
 				text : 'Ship mark',
 				width:150,
+				align:'left',
 				dataIndex:'shippingMark',
 				flex:1,
 				editor:{
@@ -130,7 +132,8 @@ Ext.define('AOC.view.partner.SystemGrid', {
 			},
 			{
 				text : 'Artwork Hold',
-				width:150,
+				width:80,
+				align:'center',
 				dataIndex:'artworkHold',
 				editor:{
 					xtype:'combo',

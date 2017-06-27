@@ -1,7 +1,7 @@
 Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
     extend: 'Ext.grid.Panel',
     requires: ['AOC.util.Helper'],
-    controller: 'taskManagerController',
+    controller: 'taskmanagercontroller',
     itemId: 'TaskManagerGriditemId',
     alias: 'widget.taskmanagergrid',
     cls: 'aoc-panel',
@@ -13,29 +13,16 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
         stripeRows: true,
         enableTextSelection: true
     },
+    listeners: {
+    	cellclick:'onCellClick',
+    	rowcontextmenu:'onRowContextMenu',
+        activate:'onActivateGrid'
+    },
     initComponent: function () {
         var me = this;
         me.columns = this.buildColumns();
         me.dockedItems = this.buildDockedItems();
-
         Ext.apply(me, {
-            listeners: {
-                activate: function (obj) {
-                	me.down('pagingtoolbar').bindStore(obj.getStore());
-                    var userInfo = AOCRuntime.getUser(),
-                        roleId = userInfo.role,
-                        siteId = userInfo.siteId,
-                        userId = userInfo.id,
-                        userEmailId = userInfo.email;
-                    
-                    obj.getStore().proxy.extraParams = {
-                        siteId: siteId,
-                        roleId: roleId,
-                        userId: userId,
-                        userEmailId: userEmailId
-                    };
-                }
-            },
             tbar: {
                 height: 50,
                 items: me.buildTbar()
@@ -54,14 +41,13 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
     buildColumns: function () {
         var me = this;
         return [{
-            xtype: 'actioncolumn',
-            width: 25,
+            width: 40,
             header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
-            baseCls: 'custom-action',
-            items: [{
-                icon: AOC.config.Settings.buttonIcons.menuIcon,
-                handler: 'onClickMenu'
-            }]
+            align:'center',
+            renderer:Helper.actionColumnRenderer,
+            menuDisabled: true,
+            sortable:false,
+            resizable:false
         }, {
             header: Settings.config.defaultIcons.commentColumnIcon,
             width: 40,

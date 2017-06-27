@@ -10,6 +10,7 @@ Ext.define('AOC.view.address.AddAddressWin',{
 	width: 800,
 	height: 600,
 	scrollable: true,
+	title:'Add Address',
 	
 	layout:{
 		type:'anchor'

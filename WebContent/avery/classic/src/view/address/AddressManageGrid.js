@@ -6,6 +6,12 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     controller: 'addresscontroller',
     emptyText: AOCLit.emptyDataMsg,
     cls: 'aoc-panel',
+    
+    listeners: {
+        activate:'onActivateGrid',
+        rowcontextmenu:'onRowContextMenu',
+        cellclick:'onCellClick'
+    },
     initComponent: function () {
         var me = this;
 
@@ -19,22 +25,6 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             store: Ext.create('AOC.store.AddressStore', {
                 storeId: 'AddressStoreId'
             }),
-            listeners: {
-                activate: function (obj) {
-                    var userInfo = AOCRuntime.getUser(),
-                        roleId = userInfo.role,
-                        siteId = userInfo.siteId,
-                        userId = userInfo.id,
-                        userEmailId = userInfo.email;
-                    obj.down('pagingtoolbar').bindStore(obj.getStore());
-                    obj.getStore().proxy.extraParams = {
-                        siteId: siteId,
-                        roleId: roleId,
-                        userId: userId,
-                        userEmailId: userEmailId
-                    };
-                }
-            },
             dockedItems: this.buildDockedItems(),
             viewConfig: {
                 stripeRows: true,
@@ -46,13 +36,13 @@ Ext.define('AOC.view.address.AddressManageGrid', {
     buildColumns: function () {
         var me = this;
         return [{
-                text: '',
-                width: 20,
-                xtype: 'actioncolumn',
-                items: [{
-                    icon: AOC.config.Settings.buttonIcons.menuIcon,
-                    handler: 'onClickMenu'
-                }]
+        		header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
+                width: 40,
+                sortable:false,
+                menuDisabled:true,
+                resizable:false,
+                align:'center',
+                renderer:Helper.actionColumnRenderer
             }, {
                 text: AOCLit.orgCode,
                 width: 120,

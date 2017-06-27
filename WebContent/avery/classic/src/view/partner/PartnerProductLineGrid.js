@@ -13,21 +13,21 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	partnerid:null,
 	partnerName:null,
 	initComponent : function(){
-	var me=this;
-    Ext.apply(this,{
-        columns : this.buildColumns(),
-		columnLines:false,
-        tbar: { 
-        		height: AOC.config.Settings.config.defaultTbarHeight,
-    		    items : me.buildtbar()
-        },
-        dockedItems : this.buildDockedItems(),
-        viewConfig : {
+		var me=this;
+	    Ext.apply(this,{
+	        columns : this.buildColumns(),
+			columnLines:false,
+	        tbar: { 
+	    		height: AOC.config.Settings.config.defaultTbarHeight,
+			    items : me.buildtbar()
+	        },
+	        dockedItems : this.buildDockedItems(),
+	        viewConfig : {
 	            stripeRows : true,
 	            enableTextSelection : true
-        }
-    });
-       this.callParent(arguments);
+	        }
+	    });
+	    this.callParent(arguments);
   },
   buildColumns : function(){
     	var me=this;
@@ -120,68 +120,68 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     },
 	 buildtbar:function(){
 		var me=this;
-			return [  	{
-			    		    xtype: 'component',
-			    		    autoEl: {
-			    		    	tag: 'img',
-						        src: AOC.config.Settings.buttonIcons.backIcon
-			    		    },
-				    		    listeners: {
-				    		    	 el : {
-				    		    		    click    : 'backButton'
-				    		    	 }
-    	                      }
-    		         },
-	                 {
-	     				xtype : 'tbtext',
-	     				itemId : 'ProductlinetextItemId',
-	     				text : '<div style="color:"><b>Partner Data Structure-Manage</b></div>'
-	                    },
-	                    {
-	                     	xtype :'tbspacer',
-	                     	width :10
-	             		},
-				     {
-			              text:'New',
-			              itemId : 'newPartner',
-			              handler:'createproductline',
-			              iconCls:'fa fa-plus',
-			              cls:'blue-btn',
-			              hidden:false,
-			              listeners:{
-			                	'afterrender':function(obj){
-			                		if(AOCRuntime.getUser().role == 3) obj.setHidden(true);
-			                	}
-			                }
-		              },
-		          '->',
-		          {
-		            	xtype: 'customsearchfield',
-		            	searchCriteria:'',
-		    			store : Ext.data.StoreManager.lookup(me.store),
-		    			width: 200,
-		    			emptyText: "Search by ProductLine"
-					 },
-					
-		        		{
-		    				xtype:'button',
-		    				refrence:'advancesearchbutton',
-		    				text:AOCLit.advSearchText,
-		    				iconCls:'fa fa-search',
-		    				iconAlign: "right",
-		    				cls:'blue-btn',
-		    				handler:'openAdvancedSearchWindow'
-		    			 },
-		    			 {
-		 					hidden:true, 
-		 					iconCls:'fa fa-times',
-							cls:'blue-btn',
-		 					itemId:'clearadvanedsearch',
-		 					reference:'clearAdvSearch',
-		 					handler:'clearAdvancedSearch',
-		 					tooltip:'Clear Search'
-		 				}
-		          ];
+		return [{
+	    		    xtype: 'component',
+	    		    autoEl: {
+	    		    	tag: 'img',
+				        src: AOC.config.Settings.buttonIcons.backIcon
+	    		    },
+    		    	listeners: {
+	    		    	 el : {
+    		    		    click: 'backButton'
+	    		    	 }
+    		    	}
+	         	},
+	         	{
+	 				xtype : 'tbtext',
+	 				itemId : 'ProductlinetextItemId',
+	 				text : '<div style="color:"><b>Partner Data Structure-Manage</b></div>'
+                },
+                {
+                 	xtype :'tbspacer',
+                 	width :10
+                },
+                {
+	              text:'New',
+	              itemId : 'newPartner',
+	              handler:'createproductline',
+	              iconCls:'fa fa-plus',
+	              cls:'blue-btn',
+	              hidden:false,
+	              listeners:{
+	                	'afterrender':function(obj){
+	                		if(AOCRuntime.getUser().role == 3) obj.setHidden(true);
+	                	}
+	                }
+                },
+	          '->',
+	          {
+            	xtype: 'customsearchfield',
+            	searchCriteria:'',
+    			store : Ext.data.StoreManager.lookup(me.store),
+    			width: 200,
+    			emptyText: "Search by ProductLine"
+	          },
+				
+	          {
+				xtype:'button',
+				refrence:'advancesearchbutton',
+				text:AOCLit.advSearchText,
+				iconCls:'fa fa-search',
+				iconAlign: "right",
+				cls:'blue-btn',
+				handler:'openAdvancedSearchWindow'
+			 },
+			 {
+				hidden:true, 
+				iconCls:'fa fa-times',
+				cls:'blue-btn',
+				itemId:'clearadvanedsearch',
+				reference:'clearAdvSearch',
+				handler:'clearAdvancedSearch',
+				tooltip:'Clear Search'
+			}
+		 ];
 	},
 	 buildDockedItems : function(){
     	var me=this;

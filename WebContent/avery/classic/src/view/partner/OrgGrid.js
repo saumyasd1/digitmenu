@@ -9,13 +9,27 @@ Ext.define('AOC.view.partner.OrgGrid', {
 	isOrgGridNotValid:false,
 	store:null,
 	systemId:0,
+	
+	listeners:{
+		'afterrender':function(grid){
+			var store= grid.getStore(),
+				index = store.find('isDefault',true);
+			
+			if(index!=-1){
+				grid.getSelectionModel().select(index);
+			}
+			grid.getView().on('beforerefresh',function(){
+				grid.isOrgGridNotValid=false;
+			});
+		}
+	},
 	initComponent : function(){
 		var me=this;
-		Ext.apply(this,{
-			columns : this.buildColumns(),
+		Ext.apply(me,{
+			columns: me.buildColumns(),
 			columnLines:true,
-			viewConfig : {
-				stripeRows : true,
+			viewConfig: {
+				stripeRows: true,
 				enableTextSelection : true
 			},
 			plugins: [{
@@ -27,18 +41,6 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			}],
 			selModel: {
 				selType: 'radiomodel'
-			},
-			listeners:{
-				'afterrender':function(){
-					var store=me.getStore(),
-						index = store.find('isDefault',true);
-					if(index!=-1){
-						me.getSelectionModel().select(index);
-					}
-					me.getView().on('beforerefresh',function(){
-						me.isOrgGridNotValid=false;
-					});
-				}
 			}
 		});
 		this.callParent(arguments);
@@ -49,7 +51,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Org',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'orgCodeId',
 				editor:{
 					xtype:'combo',
@@ -58,7 +60,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					displayField:'name',
 					valueField:'id',
 					listeners:{
-						'render':'onOrgeCodeComboRender',
+						//'render':'onOrgeCodeComboRender',
 						'change':'onOrgeCodeComboChange'
 					}
 				},
@@ -67,7 +69,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Legacy Bill to Code',
 				width:100,
-				sortable : true,
+				align:'left',
 				dataIndex:'billToCode',
 				editor:{
 					xtype:'textfield'
@@ -76,7 +78,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Legacy Ship to Code',
 				width:100,
-				sortable : true,
+				align:'left',
 				dataIndex:'shipToCode',
 				editor:{
 					xtype:'textfield'
@@ -85,7 +87,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Freight Terms',
 				width:120,
-				sortable : true,
+				align:'left',
 				dataIndex:'freightTerm',
 				editor: {
 					xtype: 'combo',
@@ -105,6 +107,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Shipping method',
 				width:150,
+				align:'left',
 				dataIndex:'shippingMethod',
 				editor: {
 					xtype: 'combo',
@@ -124,6 +127,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			{
 				text : 'Shipping Instructions',
 				flex:1,
+				align:'left',
 				dataIndex:'shippingInstruction',
 				editor:{
 					xtype:'textfield'

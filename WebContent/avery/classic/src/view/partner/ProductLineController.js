@@ -630,8 +630,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    				xtype:'button',
 		    				margin:'45 0 0 5',
 		    				maxRecord:totalOrgConfigured,
-		    				text:'+ Org',
-		    				ui:'white',
+		    				text:'Org',
+		    				cls:'blue-btn',
+		    				iconCls:'x-fa fa-plus',
 		    				reference:selectedSystemArray.name+'Plus',
 		    				hidden:true,
 		    				listeners:{
@@ -764,155 +765,161 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    				allowBlank=true;
 	    			}
 	    		return [{
-									xtype: 'fieldcontainer',
-									layout: 'column',
-									margin : '0 0 5 0',
-									defaults:{
-										labelSeparator:'',
-										labelStyle:Settings.config.defaultFormLabelStyle,
-										labelAlign:Settings.form.defaultLabelAlign,
-										labelWidth:150,
-										width:450
-									},
-									items:[
-										{
-											xtype:'combo',
-											itemId:'FileType'+count,
-											name: 'fileType'+count,
-											allowBlank:allowBlank,
-											fieldLabel:'File Type ' +nameCount,
-											maxLength : '50',
-											store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
-											bind:'{attachmentFileNameExtension_'+count+'}',
-											editable:false,
-											itemId:'attachmentFileNameExtension_'+count+'',
-											enforceMaxLength: true,
-											blankText:'File Type is required'
-										},
-										{
-											xtype:'textfield',
-											itemId:'FileNamePattern'+count,
-											name: 'fileNamePattern'+count,
-											fieldLabel:'File Name Pattern '+nameCount,
-											margin:'0 0 0 10',
-											bind:'{attachmentFileNamePattern_'+count+'}'
-										}
-									]
-								},
-								{
-									xtype: 'fieldcontainer',
-									layout: 'column',
-									margin : '0 0 5 0',
-									defaults:{
-										labelSeparator:'',
-										labelStyle:Settings.config.defaultFormLabelStyle,
-										labelAlign:Settings.form.defaultLabelAlign,
-										labelWidth:150,
-										width:450
-									},
-									items:[
-										{
-											xtype:'textfield',
-											itemId:'SchemaId'+count,
-											name: 'schemaId'+count,
-											bind:'{attachmentSchemaID_'+count+'}',
-											fieldLabel:'Schema ID '+nameCount
-										},
-										{
-											xtype:'textfield',
-											itemId:'MappingId'+count,
-											name: 'mappingId'+count,
-											bind:'{attachmentMappingID_'+count+'}',
-											fieldLabel:'Mapping ID '+nameCount,
-											margin:'0 0 0 10'
-										}
-									]
-								},
-								{
-									xtype:'textfield',
-									itemId:'MatchType'+count,
-									labelStyle:Settings.config.defaultFormLabelStyle,
-									labelAlign:Settings.form.defaultLabelAlign,
-									name: 'matchType'+count,
-									fieldLabel:'Match Type '+nameCount,
-									bind:'{attachmentIdentifier_'+count+'}',
-									labelSeparator:'',
-									labelWidth : 150,
-									width : 450
-								}]
-	    	},
-	    	addMoreAdditionalField:function(cmp){
-	    		var view=this.getView(),count=parseInt(view.additionalFieldCount)+1;
-	    		view.additionalFieldCount=count;
-	    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
-	    		if(count==AOCLit.maxAdditionalFieldAllowed){
-	    			cmp.disable();
-	    		}
-	    	},
-	    	onRequiredChange:function (field, newValue, oldValue) {
-	    		var view=this.getView();
-	    		view.down('#AdditionalData').setDisabled(newValue);
-	    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
-	    		view.down('#attachmentFileNameExtension_1').allowBlank=newValue;
-			 },
-			 hasAdditionFieldData:function(count){
-				 var data=this.getView().getViewModel().getData(),
-				 attachmentFileNameExtension='attachmentFileNameExtension_'+count,
-				 attachmentFileNamePattern_='attachmentFileNamePattern_'+count,
-				 attachmentSchemaID_='attachmentSchemaID_'+count,
-				 attachmentMappingID_='attachmentMappingID_'+count,
-				 attachmentIdentifier_='attachmentIdentifier_'+count;
-				 if(!Ext.isEmpty(data[attachmentFileNameExtension] ) ||
-						 !Ext.isEmpty(data[attachmentFileNamePattern_] ) ||
-						 	!Ext.isEmpty(data[attachmentSchemaID_] ) ||
-						 		!Ext.isEmpty(data[attachmentMappingID_] ) ||
-						 			!Ext.isEmpty(data[attachmentIdentifier_] )){
-					 return true;
-				 }
-				 return false;
-			 },
-			 openAdvancedSearchWindow:function(){
-			    	var advanceSearchWin = Ext.create('AOC.view.advsearch.ProductLineAdvanceSearch',{contextGrid:this.getView()});
-			    	if(!advanceSearchWin.isVisible()){
-			    		advanceSearchWin.show();
-			    	}
-			    },
-			    onSearchBtnClicked:function(btn){
-			    	  var view = this.getView(),
-			    	  	  refs = view.getReferences(),
-			    	  	  form = refs.productlineAdvanceSearchForm.getForm(),
-			    	  	  values = form.getValues();
-			    	  	  values.datecriteriavalue = 'createdDate';
-			    	  	  store = view.contextGrid.store;
-			              Helper.advancedSearch(view,values);
-			    },
-			    clearAdvancedSearch:function(btn){
-			        var grid = this.getView();
-			        var store = grid.store;
-			        store.clearFilter();
-			        store.loadPage(1);
-			        btn.hide();
-			    },
-			    getQuickSearchResults: function(cmp) {
-			    	var view = this.getView(),
-			        value = cmp.getValue();
-			        Helper.quickSearch(view,{productLineType: value}),
-			        cmp.orderedTriggers[0].show();
-			    },
-			    getSearchResults: function(cmp, e) {
-			        var me = this;
-			        if (e.getKey() == e.ENTER) {
-			            me.getQuickSearchResults(cmp);
-			        }
-			    },
-			    clearSearchResults: function(cmp) {
-			        var grid = this.getView();
-			        var store = grid.store;
-			        store.clearFilter();
-			        store.loadPage(1);
-			        cmp.setValue('');
-			        cmp.orderedTriggers[0].hide();
-			    },
+					xtype: 'fieldcontainer',
+					flex:1,
+					layout: {
+						type:'hbox',
+						align:'stretch'
+					},
+					margin : '0 0 5 0',
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					items:[
+						{
+							xtype:'combo',
+							itemId:'FileType'+count,
+							name: 'fileType'+count,
+							allowBlank:allowBlank,
+							fieldLabel:'File Type ' +nameCount,
+							maxLength : '50',
+							store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
+							bind:'{attachmentFileNameExtension_'+count+'}',
+							editable:false,
+							itemId:'attachmentFileNameExtension_'+count+'',
+							enforceMaxLength: true,
+							blankText:'File Type is required'
+						},
+						{
+							xtype:'textfield',
+							itemId:'FileNamePattern'+count,
+							name: 'fileNamePattern'+count,
+							fieldLabel:'File Name Pattern '+nameCount,
+							margin:'0 0 0 10',
+							bind:'{attachmentFileNamePattern_'+count+'}'
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					layout: 'column',
+					flex:1,
+					layout: {
+						type:'hbox',
+						align:'stretch'
+					},
+					margin : '0 0 5 0',
+					defaults:{
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						flex:1
+					},
+					defaultType:'textfield',
+					items:[
+						{
+							itemId:'SchemaId'+count,
+							name: 'schemaId'+count,
+							bind:'{attachmentSchemaID_'+count+'}',
+							fieldLabel:'Schema ID '+nameCount
+						},
+						{
+							itemId:'MappingId'+count,
+							name: 'mappingId'+count,
+							bind:'{attachmentMappingID_'+count+'}',
+							fieldLabel:'Mapping ID '+nameCount,
+							margin:'0 0 0 10'
+						}
+					]
+				},
+				{
+					xtype:'textfield',
+					itemId:'MatchType'+count,
+					labelStyle:Settings.config.defaultFormLabelStyle,
+					labelAlign:Settings.form.topLabelAlign,
+					name: 'matchType'+count,
+					fieldLabel:'Match Type '+nameCount,
+					bind:'{attachmentIdentifier_'+count+'}',
+					labelSeparator:'',
+					width:450
+				}
+			]
+    	},
+    	addMoreAdditionalField:function(cmp){
+    		var view=this.getView(),count=parseInt(view.additionalFieldCount)+1;
+    		view.additionalFieldCount=count;
+    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
+    		if(count==AOCLit.maxAdditionalFieldAllowed){
+    			cmp.disable();
+    		}
+    	},
+    	onRequiredChange:function (field, newValue, oldValue) {
+    		var view=this.getView();
+    		view.down('#AdditionalData').setDisabled(newValue);
+    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
+    		view.down('#attachmentFileNameExtension_1').allowBlank=newValue;
+		 },
+		 hasAdditionFieldData:function(count){
+			 var data=this.getView().getViewModel().getData(),
+			 attachmentFileNameExtension='attachmentFileNameExtension_'+count,
+			 attachmentFileNamePattern_='attachmentFileNamePattern_'+count,
+			 attachmentSchemaID_='attachmentSchemaID_'+count,
+			 attachmentMappingID_='attachmentMappingID_'+count,
+			 attachmentIdentifier_='attachmentIdentifier_'+count;
+			 if(!Ext.isEmpty(data[attachmentFileNameExtension] ) ||
+					 !Ext.isEmpty(data[attachmentFileNamePattern_] ) ||
+					 	!Ext.isEmpty(data[attachmentSchemaID_] ) ||
+					 		!Ext.isEmpty(data[attachmentMappingID_] ) ||
+					 			!Ext.isEmpty(data[attachmentIdentifier_] )){
+				 return true;
+			 }
+			 return false;
+		 },
+		 openAdvancedSearchWindow:function(){
+		    	var advanceSearchWin = Ext.create('AOC.view.advsearch.ProductLineAdvanceSearch',{contextGrid:this.getView()});
+		    	if(!advanceSearchWin.isVisible()){
+		    		advanceSearchWin.show();
+		    	}
+		 },
+		 onSearchBtnClicked:function(btn){
+	    	  var view = this.getView(),
+	    	  	  refs = view.getReferences(),
+	    	  	  form = refs.productlineAdvanceSearchForm.getForm(),
+	    	  	  values = form.getValues();
+	    	  	  values.datecriteriavalue = 'createdDate';
+	    	  	  store = view.contextGrid.store;
+	              Helper.advancedSearch(view,values);
+		 },
+		 clearAdvancedSearch:function(btn){
+	        var grid = this.getView();
+	        var store = grid.store;
+	        store.clearFilter();
+	        store.loadPage(1);
+	        btn.hide();
+		 },
+		 getQuickSearchResults: function(cmp) {
+	    	var view = this.getView(),
+	        value = cmp.getValue();
+	        Helper.quickSearch(view,{productLineType: value}),
+	        cmp.orderedTriggers[0].show();
+		 },
+		 getSearchResults: function(cmp, e) {
+	        var me = this;
+	        if (e.getKey() == e.ENTER) {
+	            me.getQuickSearchResults(cmp);
+	        }
+		 },
+		 clearSearchResults: function(cmp) {
+	        var grid = this.getView();
+	        var store = grid.store;
+	        store.clearFilter();
+	        store.loadPage(1);
+	        cmp.setValue('');
+	        cmp.orderedTriggers[0].hide();
+		 },
 			    setReadOnlyView: function (readOnlyFlag) {
 				    var me = this,
 				        refs = me.getReferences(),

@@ -65,9 +65,10 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 				labelSeparator:'',
 			 	editable:false,
 				displayField:'name',
+				valueField: 'id',
+				value:'All',
 				queryMode :'local',
 				reference:'siteCombo',
-				valueField: 'id',
 				store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
 				listeners : {
 					afterrender:'onAfterRenderSiteCombo',

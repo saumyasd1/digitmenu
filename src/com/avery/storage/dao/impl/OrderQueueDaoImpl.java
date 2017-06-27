@@ -316,15 +316,14 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 						.add(Restrictions.in("id", systemCsrCodeIds));
 				List<Long> results = crit.list();
 				List<String> userIds = new ArrayList<String>();
-				for(Long systemCsrCode : results){
+				for (Long systemCsrCode : results) {
 					userIds.add(String.valueOf(systemCsrCode));
 				}
-				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
-			} else if (multiSelectFlag) {
+				if (userIds.size() > 0)
+					criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
 				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
 				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
-			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
-				criteria.add(Restrictions.eq("varOrderEmailQueue.assignCSR", filterCsrCode));
 			}
 
 			if (filterSiteId != null && !"".equals(filterSiteId)) {

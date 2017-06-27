@@ -506,7 +506,9 @@ Ext.define('AOC.util.Helper',{
             minWidth: 400
         });
 	},
-	
+	actionColumnRenderer:function(v, metadata, record){
+    	return '<i class="x-fa fa-ellipsis-v" style="color:#2c3e50;font-size:16px;cursor:pointer;font-style:inherit;"></i>';
+    },
 	//(Amit Kumar)Common function for orderlinegrid and bulkupdate orderline grid column renderer
 	qtyColumnRenderer:function(value, metadata, record){
 		if(value){

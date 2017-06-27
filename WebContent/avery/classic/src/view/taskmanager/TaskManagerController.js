@@ -1,117 +1,147 @@
 Ext.define('AOC.view.taskmanager.TaskManagerController', {
 	extend: 'Ext.app.ViewController',
-    alias: 'controller.taskManagerController',
+    alias: 'controller.taskmanagercontroller',
     runTime : AOC.config.Runtime,
     requires:[
         'AOC.view.taskmanager.AssignCSRWindow'
     ],
-    onClickMenu: function(obj, rowIndex, colIndex, item, e, record) {
-        var me = this;
-        var callout = Ext.widget('callout', {
-            cls: 'white more-menu-item-callout extra',
-            html: me.buildMenuTpl.apply("{}"),
-            target: e.target,
-            calloutArrowLocation: 'top-left',
-            relativePosition: 't-b', 
-            relativeOffsets: [52, 23],
-            dismissDelay: 0,
-            listeners: {
-            	afterrender: me.onAfterRenderEditCallout,
-            	viewMail: function(){  
-            		currentRecord = e.record;
-					var id = currentRecord.get('id'),
-						panel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
-						taskManagerGrid = panel.queryById('TaskManagerGriditemId');
-						form = panel.down('#viewmailformItemId'),
-						viewMail = panel.down('#viewMailItemId');
-						
-					//(Amit Kumar)hide some fields from view mail from if user views from taskmanager
-					Helper.showHideEmailBodySubjectFields(form, currentRecord);
-					
-					viewMail.queryById('saveAttachment').hide();
-					viewMail.queryById('processOrderBtn').hide();
-					viewMail.queryById('assignCSRBtn').show();
-					viewMail.currentRecordId = id;
-					viewMail.currentSiteId = currentRecord.get('siteId');
-					viewMail.contextGrid = taskManagerGrid;
-					
-					form.queryById('partnerName').hide();
-					form.loadRecord(currentRecord);
-					
-                    store = Ext.create('AOC.store.ViewMailformStore',{
-                        storeId: 'ViewMailformStoreId',
-                        totalCount: 'totalCount',
-                        proxy : {
-                    		type : 'rest',
-                    		url : applicationContext+'/rest/orderattachements/order/'+id,
-                    		reader:{
-                    	        type:'json', 
-                    	        rootProperty: 'viewmail',
-                    	        totalProperty: 'totalCount'
-                    	    }
-                    	}
-                    });
-                   
-					var emailAttachmentGrid = panel.down('#EmailAttachmentInfoGriditemId');
-					emailAttachmentGrid.status = AOCLit.emailIdentifiedStatus;
-					emailAttachmentGrid.bindStore(store);
-					
-					//(AK)Hide some columns(PartnerDataStructure,FileContentType,FileConentMatch..) if user view mail from taskmanager
-					me.showHideEmailAttachmentGridColumns(emailAttachmentGrid);
-					
-					panel.getLayout().setActiveItem(1);
-					me.runTime.setActiveGrid(emailAttachmentGrid);
-                    callout.destroy();
-				},
-				assignCSR:function(){
-					currentRecord = e.record;
-					var id = currentRecord.get('id');
-					
-					var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
-						callback:function(rec){
-							var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
-								taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId');
-							
-							assignCsrWin.mask(AOCLit.pleaseWaitTitle);
-		    		    	Ext.Ajax.request({
-		    		    		method:'GET',
-		    		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
-		    		    		params:{
-		    		    			userId: AOCRuntime.getUser().id
-		    		    		},
-		    				    success : function(response, opts) {
-		    				    	assignCsrWin.unmask();
-	    					  		Helper.showToast('Success','CSR assigned successfully');
-	    					  		assignCsrWin.close();
-	    					  		taskManagerGrid.store.load();
-	    				        },
-	    				        failure: function(response, opts) {
-	    				        	assignCsrWin.unmask();
-								}
-							});
-						},
-						recordId:id,
-						siteId:currentRecord.get('siteId')
-					});
-					assignCsrWin.show();
-					callout.destroy();
-				}
-            }
-        });
-        //Adding functionality related to Menu item visibility
-        callout.show();
-        var heightAbove = e.getY() - Ext.getBody().getScroll().top,
-        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
-  	    if(heightBelow<(callout.getHeight()+40)){
-			callout.calloutArrowLocation='bottom-left'; 
-			callout.relativePosition='b-t';
-			callout.relativeOffsets = [60, 0];
-		}else{
-			callout.calloutArrowLocation='top-left'; 
-			callout.relativePosition='t-b';
-			callout.relativeOffsets = [60, 5];
+    
+    onActivateGrid:function(grid){
+    	grid.down('pagingtoolbar').bindStore(grid.getStore());
+        var userInfo = AOCRuntime.getUser(),
+            roleId = userInfo.role,
+            siteId = userInfo.siteId;
+        
+        grid.getStore().proxy.extraParams = {
+            siteId: siteId,
+            roleId: roleId
+        };
+    },
+    onCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e){
+    	if(cellIndex == 0){
+    		this.createContextMenu(record, e);
+    	}
+    },
+    onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
+    	e.stopEvent();
+    	this.createContextMenu(record, e);
+    },
+    createContextMenu:function(record, e){
+    	var me = this;
+    	
+    	if(me.contextMenu){
+    		me.contextMenu.showAt(e.getXY());
+    	}else{
+    		me.contextMenu = Ext.create('AOC.view.ux.CustomMenu', {
+    			items:[
+    			    {
+    			    	text:'View Mail',
+    			    	iconCls:'x-fa fa-eye',
+    			    	itemIndex:0,
+    			    	itemId:'viewMailMenuItem'
+    			    },{
+    			    	text:'Assign CSR',
+    			    	iconCls:'x-fa fa-address-book-o',
+    			    	itemIndex:1,
+    			    	itemId:'assignCSRMenuItem'
+    			    }
+    			],
+    			listeners:{
+    				scope:me,
+    				click:me.onMenuItemClick
+    			}
+    		});
+    		me.contextMenu.showAt(e.getXY());
+    	}
+    },
+    onMenuItemClick:function(menu, item, e){
+		var me = this;
+		if (item.itemIndex == 0) {
+	         me.onViewMailItemClick();
+		} else if (item.itemIndex == 1) {
+	         me.onAssignCSRMenuItemClick();
 		}
-        callout.show();
+    },
+    onViewMailItemClick:function(){
+    	var me = this,
+			currentRecord = me.getView().getSelectionModel().getSelection()[0];
+    	
+    	var id = currentRecord.get('id'),
+		panel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
+		taskManagerGrid = panel.queryById('TaskManagerGriditemId');
+		form = panel.down('#viewmailformItemId'),
+		viewMail = panel.down('#viewMailItemId');
+		
+		//(Amit Kumar)hide some fields from view mail from if user views from taskmanager
+		Helper.showHideEmailBodySubjectFields(form, currentRecord);
+		
+		viewMail.queryById('saveAttachment').hide();
+		viewMail.queryById('processOrderBtn').hide();
+		viewMail.queryById('assignCSRBtn').show();
+		viewMail.currentRecordId = id;
+		viewMail.currentSiteId = currentRecord.get('siteId');
+		viewMail.contextGrid = taskManagerGrid;
+		
+		form.queryById('partnerName').hide();
+		form.loadRecord(currentRecord);
+		
+	    store = Ext.create('AOC.store.ViewMailformStore',{
+	        storeId: 'ViewMailformStoreId',
+	        totalCount: 'totalCount',
+	        proxy : {
+	    		type : 'rest',
+	    		url : applicationContext+'/rest/orderattachements/order/'+id,
+	    		reader:{
+	    	        type:'json', 
+	    	        rootProperty: 'viewmail',
+	    	        totalProperty: 'totalCount'
+	    	    }
+	    	}
+	    });
+	   
+		var emailAttachmentGrid = panel.down('#EmailAttachmentInfoGriditemId');
+		emailAttachmentGrid.status = AOCLit.emailIdentifiedStatus;
+		emailAttachmentGrid.bindStore(store);
+		
+		//(AK)Hide some columns(PartnerDataStructure,FileContentType,FileConentMatch..) if user view mail from taskmanager
+		me.showHideEmailAttachmentGridColumns(emailAttachmentGrid);
+		
+		panel.getLayout().setActiveItem(1);
+		me.runTime.setActiveGrid(emailAttachmentGrid);
+    },
+    onAssignCSRMenuItemClick:function(){
+    	var me = this,
+			currentRecord = me.getView().getSelectionModel().getSelection()[0];
+    	
+    	var id = currentRecord.get('id');
+		
+		var assignCsrWin  = Ext.create('AOC.view.taskmanager.AssignCSRWindow',{
+			callback:function(rec){
+				var taskManagerPanel = Ext.ComponentQuery.query('#taskManagerItemId')[0],
+					taskManagerGrid = taskManagerPanel.queryById('TaskManagerGriditemId');
+				
+				assignCsrWin.mask(AOCLit.pleaseWaitTitle);
+		    	Ext.Ajax.request({
+		    		method:'GET',
+		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
+		    		params:{
+		    			userId: AOCRuntime.getUser().id
+		    		},
+				    success : function(response, opts) {
+				    	assignCsrWin.unmask();
+				  		Helper.showToast('Success','CSR assigned successfully');
+				  		assignCsrWin.close();
+				  		taskManagerGrid.store.load();
+			        },
+			        failure: function(response, opts) {
+			        	assignCsrWin.unmask();
+					}
+				});
+			},
+			recordId:id,
+			siteId:currentRecord.get('siteId')
+		});
+		assignCsrWin.show();
     },
     
     showHideEmailAttachmentGridColumns:function(emailAttachmentGrid){
@@ -124,26 +154,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 		columns[6].hide();
 		columns[7].hide();
     },
-    onAfterRenderEditCallout: function(cmp) {
-        var me = this;
-        cmp.el.on({
-            delegate: 'div.user-profile-menu-item',
-            click: function(e, element) {
-                var el = Ext.get(element),
-                    event = el.getAttribute('event');
-                if (event && !el.hasCls('edit-menu-disabled')) {
-                    me.fireEvent(event);
-                }
-            }
-        });
-    },
-    buildMenuTpl: function() {
-        var me = this;
-        return Ext.create('Ext.XTemplate',
-            '<div style="width:150px !important;border-bottom: none !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="viewMail"">View Mail</div>',
-            '<div style="width:150px !important;background: #FFFFFF;cursor:pointer;" class="user-profile-menu-callout user-profile-menu-item"  event="assignCSR"">Assign CSR</div>'
-        );
-    },
+    
+    //Advance/quick search section
     getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
         value = cmp.getValue();
@@ -192,4 +204,5 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
   	  	  store = view.contextGrid.store;
           Helper.advancedSearch(view,values);
     }
+  //End Of Advance/quick search section
 });

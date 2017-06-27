@@ -8,6 +8,7 @@ Ext.define('AOC.view.email.EmailManagement',{
 	itemId: 'emailManagementItemId',
 	layout:'card',
 	activeItem: 0,
+	deferredRender:true,
 	
 	initComponent : function() {
 		this.items = this.buildItems();

@@ -3,7 +3,6 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
     requires: [
         'AOC.view.partner.PartnerProductLineGrid',
         'AOC.view.ux.CustomSearchField',
-        'AOC.util.Helper',
         'AOC.view.partner.PartnerController'
     ],
     controller: 'partnerMain',
@@ -12,6 +11,11 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
     alias: 'widget.partnermanagementgrid',
     emptyText: AOCLit.emptyDataMsg,
     recordBeingEdit: null,
+    listeners: {
+        activate: function (obj) {
+            obj.down('pagingtoolbar').bindStore(obj.getStore());
+        }
+    },
     initComponent: function () {
         var me = this;
         Ext.apply(this, {
@@ -20,11 +24,7 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             store: Ext.create('AOC.store.PartnerManagementStore', {
                 storeId: 'PartnerManagementStoreId'
             }),
-            listeners: {
-                activate: function (obj) {
-                    me.down('pagingtoolbar').bindStore(obj.getStore());
-                }
-            },
+            
             tbar: {
                 height: AOC.config.Settings.config.defaultTbarHeight,
                 items: me.buildtbar()

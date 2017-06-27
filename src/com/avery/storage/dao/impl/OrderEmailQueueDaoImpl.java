@@ -89,9 +89,7 @@ OrderEmailQueueDao {
 		String pageNo = (String) queryMap.getFirst("page");
 		String siteId = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if(roleId.equals("1") && siteId.equals("1")){
-			//criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId))); // need to be added or change as per the requirements
-		}else{
+		if(!(roleId.equals("1") && siteId.equals("1"))){
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 
@@ -176,9 +174,7 @@ OrderEmailQueueDao {
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String siteId = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if(roleId.equals("1") && siteId.equals("1")){
-			//criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId))); // need to be added or change as per the requirements
-		}else{
+		if(!(roleId.equals("1") && siteId.equals("1"))){
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
@@ -703,15 +699,14 @@ OrderEmailQueueDao {
 						.add(Restrictions.in("id", systemCsrCodeIds));
 				List<Long> results = crit.list();
 				List<String> userIds = new ArrayList<String>();
-				for(Long systemCsrCode : results){
+				for (Long systemCsrCode : results) {
 					userIds.add(String.valueOf(systemCsrCode));
 				}
-				criteria.add(Restrictions.in("assignCSR", userIds));
-			} else if (multiSelectFlag) {
+				if (userIds.size() > 0)
+					criteria.add(Restrictions.in("assignCSR", userIds));
+			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
 				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
 				criteria.add(Restrictions.in("assignCSR", userIds));
-			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
-				criteria.add(Restrictions.eq("assignCSR", filterCsrCode));
 			}
 		} else {
 			String siteId = (String) queryParamMap.getFirst("siteId");
