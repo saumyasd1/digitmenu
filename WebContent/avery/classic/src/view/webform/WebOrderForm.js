@@ -207,16 +207,16 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				items:[
 					{
 						
-						xtype:'textareafield',
+						xtype:'textarea',
 						itemId:'AItemId',
 						name: 'emailBody',
 						reference:'emailBody',
 						fieldLabel:AOCLit.emailBody,
 						itemId:'emailBody',
 						disabled:true,
+						height:100,
 						allowBlank: false,
 						flex:1.8,
-						blankText :'Email Body is required',
 						//margin:'0 50 0 0',
 						listeners:{
 							blur : this.notifyByImage

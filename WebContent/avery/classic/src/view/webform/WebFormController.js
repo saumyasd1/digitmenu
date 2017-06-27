@@ -116,7 +116,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 			assignCSRCombo = me.lookupReference('assignCSR');
 		
 		var record = store.getById(newValue);
-		assignCSRCombo.getStore().load({params:{siteId:record.get('site')}});
+		if(record){
+			assignCSRCombo.getStore().load({params:{siteId:record.get('site')}});
+		}
 			
 		if(attachementField){
 			if(!Ext.isEmpty(newValue) && index != -1){
