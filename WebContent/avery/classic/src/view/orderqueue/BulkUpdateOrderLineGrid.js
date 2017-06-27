@@ -60,7 +60,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                     width: 46,
                     tdCls: me.rowNumbererTdCls,
                     cls: me.rowNumbererHeaderCls,
-//                    locked: true,
+                    locked: true,
                     text:'#'
                 },
                 {
