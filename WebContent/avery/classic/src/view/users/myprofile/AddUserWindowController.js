@@ -326,7 +326,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	csrCodeCombo.setDisabled(true);
     	codeOwnerCombo.setDisabled(true);
     },
-    insertDataIntoGrid: function(obj){
+/*    insertDataIntoGrid: function(obj){
     	var me = this,
     		systemCsrCodeGridView = me.getReferences().systemCsrCodeGrid,
     		systemCsrCodeGridStore = systemCsrCodeGridView.store,
@@ -371,7 +371,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    	codeOwner.setDisabled(true);
 	    	insertBtn.setDisabled(true);
     	}
-    },
+    },*/
     onSelectCsrCode: function(combo){
     	var me = this,
     		csrComboValue = combo.getRawValue(),
@@ -515,5 +515,53 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    		view.setPosition(pos[0],pos[1]+100);
     		}
     	}
-    }
+    },
+    insertDataIntoGrid:function(){
+    	var me = this,
+    		view = me.getView(),
+			systemCsrCodeGridView = me.getReferences().systemCsrCodeGrid,
+			systemCsrCodeGridStore = systemCsrCodeGridView.store,
+			addEditUserForm = me.getReferences().addEditUserWinForm,
+			currentRecordId = addEditUserForm.getValues().id,
+			refs =  me.getView().getReferences(),
+			csrCodeCombo = refs.csrCode,
+			codeOwner = refs.codeOwner,
+			insertBtn = refs.insertBtn,
+			csrCodeComboValue = csrCodeCombo.getRawValue(),
+			csrCodeComboId = csrCodeCombo.getValue(),
+			codeOwnerComboValue = codeOwner.getRawValue(),
+			currentUserId = AOCRuntime.getUser().id,
+			valueObj = { csrCode:csrCodeComboValue,userId:currentRecordId },
+			url = applicationContext + '/rest/systemcsrcode',
+    		method = 'POST',
+    		parameters = Ext.JSON.encode(valueObj);
+    	
+    		view.mask('Saving....');
+	    	Ext.Ajax.request({
+	             method: method,
+	             jsonData: parameters,
+	             url: url,
+	             success: function (response, opts) {
+	                 var me = this,
+	                 	jsonString = Ext.JSON.decode(response.responseText),
+	                     valueExist = jsonString.valueExist;
+	                 if (valueExist) {
+	                 	view.unmask();
+	                     Helper.showToast('failure',AOCLit.userExistMsg);
+	                     return false;
+	                 }
+	                 view.unmask();
+	                 systemCsrCodeGridStore.insert(0,(new Ext.data.Record(jsonString)));
+	                 csrCodeCombo.store.load();
+	                 Helper.showToast('success', 'Row inserted successfully');
+	                // view.close();
+	             },
+	             failure: function (response, opts) {
+	                 msg = response.responseText;
+	                 Helper.showToast('failure', msg);
+	                 view.unmask();
+	                 view.close();
+	             }
+	         });
+	    }
 });
