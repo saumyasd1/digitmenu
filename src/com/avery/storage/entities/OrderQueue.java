@@ -216,6 +216,9 @@ public class OrderQueue extends MainAbstractEntity {
 	
 	@Transient
 	private String siteName;
+	
+	@Transient
+	private String csrName;
 
 	/* Business Logic Starts*/
 	@Override
@@ -589,7 +592,6 @@ public class OrderQueue extends MainAbstractEntity {
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
-			/* default value if no values is coming from GUI */
 			String timeZone = TimeZone.getDefault().getID();
 			if (queryParamMap.getFirst("timezone") != null
 					&& !"".equals(queryParamMap.getFirst("timezone")))
@@ -600,8 +602,8 @@ public class OrderQueue extends MainAbstractEntity {
 					.getAllEntitiesListForDailyReport(queryParamMap);
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
-			ByteArrayOutputStream outputStream = ExcelUtils
-					.createOrderQueueExcelFile(orderQueue, timeZone);
+			ByteArrayOutputStream outputStream;
+				outputStream = ExcelUtils.createOrderQueueExcelFile(orderQueue, timeZone);
 			byte[] bytes = outputStream.toByteArray();
 			String fileName = "Daily_Report.xls";
 			return Response
@@ -660,6 +662,54 @@ public class OrderQueue extends MainAbstractEntity {
 					.createOrderQueueExcelFile(orderQueue, timeZone);
 			byte[] bytes = outputStream.toByteArray();
 			String fileName = "Detail_Status_Report.xls";
+			return Response
+					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
+					.header("content-disposition",
+							"attachment; filename = " + fileName).build();
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/download/materialreport")
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getMaterialReport(@Context UriInfo ui, @Context HttpHeaders hh) {
+		List<SalesOrder> salesOrder = null;
+		try {
+			MultivaluedMap<String, String> queryParamMap = ui
+					.getQueryParameters();
+			String time="", date="";
+			/* default value if no values is coming from GUI */
+			String timeZone = TimeZone.getDefault().getID();
+			if (queryParamMap.getFirst("timezone") != null
+					&& !"".equals(queryParamMap.getFirst("timezone")))
+				timeZone = queryParamMap.getFirst("timezone");
+			if(queryParamMap.getFirst("localTime") != null && !"".equals(queryParamMap.getFirst("localTime")))
+			{
+				time=queryParamMap.getFirst("localTime");
+			}
+			if(queryParamMap.getFirst("localDate") != null && !"".equals(queryParamMap.getFirst("localDate")))
+			{
+				date=queryParamMap.getFirst("localDate");
+			}
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			salesOrder = orderQueueService
+					.getAllEntitiesListForMaterialReport(queryParamMap);
+			if (salesOrder == null)
+				throw new Exception("Unable to find Orders");
+			ByteArrayOutputStream outputStream = ExcelUtils
+					.createOrderQueueMaterialReportExcelFile(salesOrder, timeZone, time, date);
+			byte[] bytes = outputStream.toByteArray();
+			String fileName = "Material_Status_Report.xls";
 			return Response
 					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
 					.header("content-disposition",
@@ -1161,4 +1211,13 @@ public class OrderQueue extends MainAbstractEntity {
 	public String getSiteName() {
 		return siteName;
 	}
+	
+	public String getCsrName() {
+		return csrName;
+	}
+
+	public void setCsrName(String csrName) {
+		this.csrName = csrName;
+	}
+
 }
