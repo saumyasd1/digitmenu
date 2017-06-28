@@ -1,7 +1,7 @@
 package com.avery.storage.entities;
 
-import java.beans.Transient;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,7 @@ import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.MixIn.SystemCsrCodeMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.SystemCsrCodeService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
@@ -132,24 +133,67 @@ public class SystemCsrCode extends MainAbstractEntity {
 	}
 
 	/* Business Logic Starts */
+	
+	@Override
+	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
+		Long id = 0L;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			SystemCsrCode systemCsrCode = mapper.readValue(data, SystemCsrCode.class);
+			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig
+					.getInstance().getBean("systemCsrCodeService");
+			systemCsrCode.setCsrCode(systemCsrCode.getCsrCode());
+			SystemInfo varSystemInfo = new SystemInfo();
+			varSystemInfo.setId(1);
+			Org varOrg = new Org();
+			varOrg.setId(1);
+			User varUser = new User();
+			varUser.setId(systemCsrCode.getUserId());
+			systemCsrCode.setVarUser(varUser);
+			systemCsrCode.setVarSystemInfo(varSystemInfo);
+			systemCsrCode.setVarOrg(varOrg);
+			systemCsrCode.setCreatedDate(new Date());
+			systemCsrCode.setCreatedBy(systemCsrCode.getCreatedBy());
+			systemCsrCode.setIsActive("true");
+			systemCsrCode.setHasOwner("true");
+			id = systemCsrCodeService.create(systemCsrCode);
+			responseMap.put("csrCode", systemCsrCode.getCsrCode());
+			responseMap.put("id", id);
+			responseMap.put("codeOwner", "Y");
+			
+			mapper.writeValue(writer, responseMap);
+			return Response.ok(writer.toString()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 
 	@GET
 	@Path("/list")
-	public Response getBySystemAndOrgCodeId(@Context UriInfo ui, @Context HttpHeaders hh,
-			@QueryParam("system") String system, @QueryParam("org") String org) {
+	public Response getBySystemAndOrgCodeId(@Context UriInfo ui, @Context HttpHeaders hh) {
+		//, @QueryParam("system") String system, @QueryParam("org") String org // removed by deepak for manual entry
 		Response.ResponseBuilder rb = null;
 		Map<String, Object> responseMap = null;
-		if(!NumberUtils.isNumber(system) | !NumberUtils.isNumber(org))
-			return Response.ok("Invalid Input", MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();
-		long systemId = Long.parseLong(system);
-		long orgId = Long.parseLong(org);
+		/*if(!NumberUtils.isNumber(system) | !NumberUtils.isNumber(org))
+			return Response.ok("Invalid Input", MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();*/
+		//long systemId = Long.parseLong(0);
+		//long orgId = Long.parseLong(0);
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(SystemCsrCode.class, SystemCsrCodeMixIn.class);
 			StringWriter writer = new StringWriter();
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
-			responseMap = systemCsrCodeService.getBySystemAndOrgCodeId(systemId, orgId);
+			responseMap = systemCsrCodeService.getBySystemAndOrgCodeId(0, 0);
 			if(responseMap == null)
 				return Response.ok("Unable to fetch any data", MediaType.TEXT_HTML).status(Status.INTERNAL_SERVER_ERROR).build();
 			mapper.writeValue(writer, responseMap);
