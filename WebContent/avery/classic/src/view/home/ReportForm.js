@@ -7,6 +7,9 @@ Ext.define('AOC.view.home.ReportForm',{
         type: 'vbox',
         align: 'stretch'
     },
+    listeners: {
+        afterrender: 'onReportFormAfterRender'
+    },
     initComponent : function(){
         var me = this;
         Ext.apply(me,{
@@ -35,7 +38,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						allowBlank : false,
 						reference:'partner',
 						margin:'0 10 0 0',
-						flex:1,
+						width:210,
 						displayField:'partnerName',
 						emptyText:'Select Partner',
 						listeners:{
@@ -47,8 +50,8 @@ Ext.define('AOC.view.home.ReportForm',{
 						xtype:'combo',
 						name:'rbo',
 						labelAlign:'top',
-						margin:'0 20 0 0',
-						flex:1,
+						margin:'0 10 0 0',
+						width:210,
 						allowBlank : false,
 						reference:'rboName',
 						displayField:'rboName',
@@ -65,7 +68,7 @@ Ext.define('AOC.view.home.ReportForm',{
 	                	xtype : 'combo',
 						name:'Status',
 						hideLabel:true,
-						flex:1,
+						width:210,
 						margin:'0 10 0 0',
 						reference:'status',
 						allowBlank : false,
@@ -86,6 +89,69 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    	}
 	                    }
 					}
+				]
+	        },{
+				xtype: 'fieldcontainer',
+	            layout: 'hbox',
+	            items:[
+					{
+	                    xtype: 'combo',
+	                    name: 'siteId',
+	                    itemId:'site',
+	                    emptyText:'Select Site',
+	                    width:210,
+	                    editable: false,
+	                    margin:'5 10 0 0',
+	                    displayField: 'name',
+	                    valueField: 'id',
+	                    reference: 'siteName',
+	                    store: Ext.create('AOC.store.SiteStore'),
+	                    queryMode: 'local',
+	                    listeners:{
+	                    	afterrender:function(field){
+	                    		if(AOCRuntime.getUser().role == 1){
+		                    		var store = field.store,
+		                    			obj ={id:'all',name:'Select All'};
+		                    		store.on('load',function(){
+		                    			store.insert(0,new Ext.data.Record(obj));
+		                    		},store);
+	                    		}
+	                    	},
+	                    	select:'onSiteSelect'
+	                    }
+	                },
+	                {
+	    				xtype:'combo',
+	    				displayField:'csrName',
+	    				reference:'csrCombo',
+	    				name:'CSR',
+	    				emptyText:'Select CSR Name',
+	    				valueField:'userId',
+	    				width:210,
+	    				disabled:true,
+	    				margin:'5 10 0 0',
+	    				queryMode:'local',
+	    				store:Ext.create('AOC.store.AssignCSRStore') ,
+	    				typeAhead:true,
+	    				listeners:{
+		                    	afterrender:function(field){
+		                    		if(AOCRuntime.getUser().role == 1){
+			                    		var store = field.store,
+			                    			obj ={userId:'all',csrName:'Select All'};
+			                    		store.on('load',function(){
+			                    			store.insert(0,new Ext.data.Record(obj));
+			                    		},store);
+		                    		}
+		                    	}
+		                    }
+	    			},
+	    			{
+	    				xtype:'combo',
+	    				name:'timeZone',
+	    				emptyText:'Select Time Zone',
+	    				width:210,
+	    				margin:'5 10 0 0'
+	    			}
 				]
 	        },
 			{
