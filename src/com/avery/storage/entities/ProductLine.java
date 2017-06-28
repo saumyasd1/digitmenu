@@ -22,6 +22,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -32,6 +33,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.FetchProfile;
@@ -1662,4 +1664,63 @@ public class ProductLine extends MainAbstractEntity{
     	return rb.build();
     }
 	
+	@GET
+	@Path("/rboList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPartnersByID(@Context UriInfo ui,
+			@Context HttpHeaders hh, @QueryParam("partnerId") String partnerId) {
+		Response.ResponseBuilder rb = null;
+		Map<?,?> productline = new HashMap();;
+		Map returnproductline = new HashMap();
+		try{
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
+			mapper.addMixIn(RBO.class,RboMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class, OrderSystemInfoMixIn.class);
+			mapper.addMixIn(OrderSystemInfo.class,ProductLineMixIn.class);
+			mapper.addMixIn(Partner.class, PartnerMixIn.class);
+			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			productline = productLineService.getRboListById(partnerId);
+			if (productline == null)
+				throw new Exception("Unable to find Product Line");
+			List listofPL=(List) productline.get("productlines");
+			List listOfPLR=new LinkedList<ProductLine>();
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
+			for(int i=0;i<listofPL.size();i++)
+			{
+				ProductLine currentProductline=(ProductLine) listofPL.get(i);
+				String lastmodifiedUserId=currentProductline.getLastModifiedBy();
+				if(lastmodifiedUserId!=null)
+				{
+				String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
+				currentProductline.setLastModifiedBy(LastModifiedByName);
+				}
+				if(currentProductline.getSite() != null && currentProductline.getSite()!=0 )
+				{
+					int siteId1=(int) currentProductline.getSite();
+					Site site = siteService.read((long)siteId1);
+					if(site != null)
+						currentProductline.setSitename(site.getName());
+				}
+				listOfPLR.add(currentProductline);
+			}
+			returnproductline.put("productlines", listOfPLR);
+			mapper.writeValue(writer, returnproductline);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 }
