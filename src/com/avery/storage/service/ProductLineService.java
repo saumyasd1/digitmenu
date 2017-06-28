@@ -82,4 +82,9 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 	public Map getDataStructure(Long fileAttachmentId) throws Exception{
 		return getProductLineDao().getDataStructureListBasedOnAttachmentId(fileAttachmentId);
 	}
+	
+	@Transactional
+	public Map<?, ?> getRboListById(String partnerId) throws Exception {
+		return getProductLineDao().getRboListById(partnerId);
+	}
 }
