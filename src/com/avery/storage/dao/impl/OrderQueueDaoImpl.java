@@ -37,6 +37,7 @@ import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SalesOrder;
 import com.avery.storage.entities.SystemCsrCode;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
@@ -46,6 +47,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 @Repository
 public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implements OrderQueueDao {
@@ -449,6 +451,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
+				.add(Projections.property("orderemailqueue.assignCSR"), "csrName")
+				.add(Projections.property("orderemailqueue.siteId"), "siteId")
 				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
 				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
@@ -499,7 +503,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
 
-			if (dateType != null && !"".equals(dateType)) {
+			/*if (dateType != null && !"".equals(dateType)) {
 				String partner = searchMap.get("PartnerName");
 				String partnerName = partner;
 				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.EXACT));
@@ -507,7 +511,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String PartnerName = searchMap.get("partnerName");
 			if (PartnerName != null && !"".equals(PartnerName)) {
 				criteria.add(Restrictions.ilike("partner.partnerName", PartnerName, MatchMode.ANYWHERE));
-			}
+			}*/
 			if (dateType != null && !"".equals(dateType)) {
 				String rbo = searchMap.get("RBOName");
 				String[] rboName = rbo.split(",");
@@ -518,7 +522,31 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				String[] statusCode = status.split(",");
 				criteria.add(Restrictions.in("status", statusCode));
 			}
-
+			String siteId = searchMap.get("siteId");
+			if (siteId != null && !"".equals(dateType)) {
+				String[] siteIdList = siteId.split(",");
+				List<Integer> siteList=new ArrayList<Integer>();
+				for(int i=0; i<siteIdList.length; i++)
+				{
+					siteList.add(Integer.parseInt(siteIdList[i]));
+				}
+				criteria.add(Restrictions.in("orderemailqueue.siteId", siteList));
+			}
+			String PartnerId = searchMap.get("partnerId");
+			if (PartnerId != null && !"".equals(dateType)) {
+				String[] PartnerIdList = PartnerId.split(",");
+				List<Long> partneList=new ArrayList<Long>();
+				for(int i=0; i<PartnerIdList.length; i++)
+				{
+					partneList.add(Long.parseLong(PartnerIdList[i]));
+				}
+				criteria.add(Restrictions.in("partner.id", partneList));
+			}
+			String csrId = searchMap.get("csrId");
+			if (csrId != null && !"".equals(dateType)) {
+				String[] csrIdList = csrId.split(",");
+				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
+			}
 		}
 		return criteria;
 	}
@@ -527,6 +555,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
+				.add(Projections.property("orderemailqueue.assignCSR"), "csrName")
+				.add(Projections.property("orderemailqueue.siteId"), "siteId")
 				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
 				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
@@ -580,15 +610,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
 			if (dateType != null && !"".equals(dateType)) {
-				String partner = searchMap.get("PartnerName");
-				String partnerName = partner;
-				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.EXACT));
-			}
-			String PartnerName = searchMap.get("partnerName");
-			if (PartnerName != null && !"".equals(PartnerName)) {
-				criteria.add(Restrictions.ilike("partner.partnerName", PartnerName, MatchMode.ANYWHERE));
-			}
-			if (dateType != null && !"".equals(dateType)) {
 				String rbo = searchMap.get("RBOName");
 				String[] rboName = rbo.split(",");
 				criteria.add(Restrictions.in("rbo.rboName", rboName));
@@ -598,7 +619,58 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				String[] statusCode = status.split(",");
 				criteria.add(Restrictions.in("status", statusCode));
 			}
+			
+			String siteId = searchMap.get("siteId");
+			if (siteId != null && !"".equals(dateType)) {
+				String[] siteIdList = siteId.split(",");
+				List<Integer> siteList=new ArrayList<Integer>();
+				for(int i=0; i<siteIdList.length; i++)
+				{
+					siteList.add(Integer.parseInt(siteIdList[i]));
+				}
+				criteria.add(Restrictions.in("orderemailqueue.siteId", siteList));
+			}
+			String PartnerId = searchMap.get("partnerId");
+			if (PartnerId != null && !"".equals(dateType)) {
+				String[] PartnerIdList = PartnerId.split(",");
+				List<Long> partneList=new ArrayList<Long>();
+				for(int i=0; i<PartnerIdList.length; i++)
+				{
+					partneList.add(Long.parseLong(PartnerIdList[i]));
+				}
+				criteria.add(Restrictions.in("partner.id", partneList));
+			}
+			String csrId = searchMap.get("csrId");
+			if (csrId != null && !"".equals(dateType)) {
+				String[] csrIdList = csrId.split(",");
+				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
+			}
+		}
+		return criteria;
+	}
+	
+	public Criteria getMaterialReportCriteria(MultivaluedMap queryMap) throws Exception {
+		Session session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("rbo.rboName"), "rboName")
+				.add(Projections.property("customerPoNumber"), "customerPoNumber")
+				.add(Projections.property("customerItemNumber"), "customerItemNumber")
+				.add(Projections.property("customerOrderedQty"), "customerOrderedQty")
+				.add(Projections.property("csr"), "csr")
+				.add(Projections.property("customerRequestDate"), "customerRequestDate")
+				.add(Projections.property("varOrderFileQueue.id"), "orderTrackId");
+		Criteria criteria = session.createCriteria(SalesOrder.class);
+		criteria.createAlias("varOrderFileQueue", "varOrderFileQueue")
+				.createAlias("varOrderFileQueue.varProductLine", "varProductLine")
+				.createAlias("varProductLine.rbo", "rbo")
+				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SalesOrder.class));
 
+		String queryString = (String) queryMap.getFirst("query");
+		session = getSessionFactory().getCurrentSession();
+		if (queryString != null) {
+			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
+			String OrderTrackingID = searchMap.get("orderTrack");
+			criteria.add(Restrictions.eq("varOrderFileQueue.id", Long.parseLong(OrderTrackingID)));
 		}
 		return criteria;
 	}
@@ -608,6 +680,14 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Criteria criteria = getOpenReportCriteria(queryMap);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
+		return list;
+	}
+	
+	@Override
+	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap queryMap) throws Exception {
+		Criteria criteria = getMaterialReportCriteria(queryMap);
+		criteria.addOrder(Order.desc("lastModifiedDate"));
+		List<SalesOrder> list = criteria.list();
 		return list;
 	}
 
