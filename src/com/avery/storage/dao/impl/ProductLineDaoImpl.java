@@ -737,5 +737,24 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 
 		return entitiesMap;
 	}
+	@Override
+	public Map getRboListById(String partnerId)
+			throws Exception {
+		Map entitiesMap = new HashMap();
+		Session session = null;
+		Criteria criteria = null;
+		session = getSessionFactory().getCurrentSession();
+		criteria = session.createCriteria(ProductLine.class);
+		String[] partnerIdList=partnerId.split(",");
+		List<Long> idList=new ArrayList<Long>();
+		for(int i=0; i<partnerIdList.length; i++)
+		{
+			idList.add(Long.parseLong(partnerIdList[i]));
+		}
+		criteria.createAlias("rbo", "rbo");
+		criteria.add(Restrictions.in("rbo.id", idList));
+		entitiesMap.put("productlines", criteria.list());
+		return entitiesMap;
 
+	}
 }
