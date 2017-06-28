@@ -64,7 +64,9 @@ Ext.define('AOC.view.home.HomePageController', {
 			if(codeArray[i] == 'All'){
 				userIds = [];
 				csrCombo.store.each(function(data){
-					userIds.push(data.get('userId'));
+					if(data.get('userId')){
+						userIds.push(data.get('userId'));
+					}
 				});
 				break;
 			}
@@ -222,10 +224,12 @@ Ext.define('AOC.view.home.HomePageController', {
 		},secs);
 	},
 	onAfterRenderSiteCombo: function(obj){
+		var refs = this.getReferences();
 	    obj.getStore().load({
 	    	callback:function(records, success){
 	    		if((AOCRuntime.getUser().role == AOCLit.userRole.superAdmin) && obj.isVisible()){
 	    			obj.store.insert(0,new Ext.data.Record({name:'All', id:'All'}));
+	    			refs['csrCombo'].setValue('All');
 	    		}
 	    	}
 	    }, obj);
@@ -243,6 +247,7 @@ Ext.define('AOC.view.home.HomePageController', {
 					}
 				}
 				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
+				//csrCombo.setValue('All');
 			}
 		}, csrCombo);
 	},

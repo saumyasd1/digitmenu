@@ -10,5 +10,11 @@ Ext.define('AOC.store.AssignCSRStore', {
 	        type:'json', 
 	        rootProperty:'users' //temp name for now
 	    }
-	}
+	},
+	sorters: [
+          {
+        	  property:'csrCode',
+        	  direction:'ASC'
+	      }
+    ]
 });

@@ -142,7 +142,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
-		AOC.app.fireEvent('changemainview','orderqueueview', currentRecord.get('id'));
+		AOC.app.fireEvent('changemainview','orderqueueview', currentRecord.get('id'), AOCLit.tablist.orderQueueTabIndex);
     },
     onAssignCSRMenuItemClick:function(menu, item, e){
     	var me = this,

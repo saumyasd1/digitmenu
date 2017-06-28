@@ -561,7 +561,7 @@ OrderEmailQueueDao {
 				criteria.add(Restrictions.ilike("ccMailId",ccMailId,MatchMode.ANYWHERE));
 			}
 			String siteId=searchMap.get("siteId");
-			if(siteId!=null && !"".equals(siteId)){
+			if(siteId!=null && !"".equals(siteId) && !"1".equals(siteId.trim()) ){
 				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
 			}
 		}
@@ -685,7 +685,7 @@ OrderEmailQueueDao {
 			String filterSiteId = (String) searchMap.get("filterSiteId");
 			String filterCsrCode = (String) searchMap.get("filterCsrCode");
 			isCsrManager = Boolean.parseBoolean(searchMap.get("csrManagerFlag"));
-			if (filterSiteId != null && !"".equals(filterSiteId)) {
+			if (filterSiteId != null && !"".equals(filterSiteId) && !"1".equals(filterSiteId.trim())) {
 				criteria.add(Restrictions.eq("siteId", Integer.parseInt(filterSiteId)));
 			}
 			if (isCsrManager) {

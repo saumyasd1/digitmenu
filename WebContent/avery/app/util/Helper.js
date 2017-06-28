@@ -747,5 +747,18 @@ Ext.define('AOC.util.Helper',{
     loadAdvanceCSRStore:function(field){
     	var store = field.store;
     	field.store.load({params:{siteId:AOCRuntime.getUser().siteId}});
-    }
+    },
+    //partner screen
+    getExcelStore:function(){
+		return [['None','None'],['One Sheet in a file','One Sheet in a file'],['Multiple order sheets in a file','Multiple order sheets in a file']];
+	},
+	getYesNoStore:function(){
+		return [['None','None'],['Yes','Yes'],['No','No']];
+	},
+	getFileNameContentStore:function(){
+		return [['None','None'],['File Name','File Name'],['File Content','File Content']];
+	},
+	getIdentificationTypeStore:function(){
+		return [['None','None'],['RBO','RBO'],['Product Line','Product Line']];
+	}
 });

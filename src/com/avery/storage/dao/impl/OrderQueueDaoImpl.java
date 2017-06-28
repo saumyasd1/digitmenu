@@ -326,7 +326,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
 			}
 
-			if (filterSiteId != null && !"".equals(filterSiteId)) {
+			if (filterSiteId != null && !"".equals(filterSiteId) && !"1".equals(filterSiteId.trim())) {
 				criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(filterSiteId)));
 			}
 		} else {
@@ -420,7 +420,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
 
-			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("")) {
+			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("") && !searchMap.get("siteId").equals("1")) {
 				String filterSiteId = (String) searchMap.get("siteId");
 				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));
 			}

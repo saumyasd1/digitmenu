@@ -72,7 +72,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 				store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
 				listeners : {
 					afterrender:'onAfterRenderSiteCombo',
-					change:'onChangeSiteCSRCodeCombo'
+					select:'onChangeSiteCSRCodeCombo'
 				}
 			},
 			{
@@ -81,6 +81,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 			    width:450,
 			    displayField:'csrName',
 			    valueField:'id',
+//			    value:'All',
 			    labelStyle:Settings.config.defaultFormLabelStyle,
 				labelSeparator:'',
 				labelWidth:70,

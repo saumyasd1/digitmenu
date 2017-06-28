@@ -40,14 +40,14 @@ Ext.define('AOC.view.main.MainController', {
 	
 		switch(listType){
 			case 'orderQueueStatusList':
-				if(AOCRuntime.getUser().role == AOCLit.userRole.superAdmin){
-					var orderQueueStatusListRefs = refs['homewrapper'].getReferences().orderQueueStatusList.getReferences(),
-						siteCombo = orderQueueStatusListRefs.siteCombo,
-						csrCombo = orderQueueStatusListRefs.csrCombo;
+				var orderQueueStatusListRefs = refs['homewrapper'].getReferences().orderQueueStatusList.getReferences(),
+					siteCombo = orderQueueStatusListRefs.siteCombo,
+					csrCombo = orderQueueStatusListRefs.csrCombo;
 				
+				if(AOCRuntime.getUser().role == AOCLit.userRole.superAdmin){
 					siteCombo.setValue('All');
-					csrCombo.setValue('');
 				}
+				csrCombo.setValue('All');
 				break;
 			case 'webOrderView':
 				var webOrderView = refs[listType];
