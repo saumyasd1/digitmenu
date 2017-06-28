@@ -14,16 +14,21 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SalesOrder;
+import com.avery.storage.entities.Site;
+import com.avery.storage.service.SiteService;
+import com.avery.storage.service.UserService;
 
 public class ExcelUtils {
 			
 	public static ByteArrayOutputStream createOrderQueueExcelFile(List<OrderQueue> OrderQueueList, String timeZone) throws IOException{
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
-        String[] headerNames = { "Order track #","Prv Order track#","Order Source", "PO #", "Order File",
+        String[] headerNames = {"Site ","Order track #","Prv Order track#","Order Source", "PO #", "Order File",
 				 "Partner Name", "RBO", "Product Line",
-				"Order Status", "Processed Date", "Sender Email ID", "Subject","Submitted By","Submitted Date","Acknowledgement Date","Comment","Error" };
+				"Order Status","Order Received Date", "Processed Date", "Sender Email ID", "Subject","Submitted By","Submitted Date","Acknowledgement Date","CSR Name ","Comment","Error" };
         addHeader(sheet, headerNames);
         getReportData(sheet,OrderQueueList,headerNames.length, timeZone);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
@@ -43,60 +48,142 @@ public class ExcelUtils {
 		}
 	}
 	private static void getReportData(XSSFSheet sheet,List<OrderQueue> OrderQueueList,int headerLength, String timeZone){
-		int rowIndex=1,columncellCount=0;
-		Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
-		Date date = null;
-		while (CrunchifyIterator.hasNext()) {
-			OrderQueue obj=CrunchifyIterator.next();
-			Row row = sheet.createRow(rowIndex);
-			Cell cell1 = row.createCell(columncellCount);
-			cell1.setCellValue(obj.getId());
-			Cell cell2 = row.createCell(++columncellCount);
-			cell2.setCellValue(obj.getPrevOrderQueueId());
-			Cell cell3 = row.createCell(++columncellCount);
-			cell3.setCellValue(obj.getOrderSource());
-			Cell cell4 = row.createCell(++columncellCount);
-			cell4.setCellValue(obj.getPoNumber());
-			Cell cell5 = row.createCell(++columncellCount);
-			cell5.setCellValue(obj.getOrderFileName());
-			Cell cell6 = row.createCell(++columncellCount);
-			if(obj.getPartnerName()!=null && !obj.getPartnerName().equals(""))
-				cell6.setCellValue(obj.getPartnerName());
-			Cell cell7 = row.createCell(++columncellCount);
-			cell7.setCellValue(obj.getRboName());
-			Cell cell8 = row.createCell(++columncellCount);
-			if(obj.getProductLineType()!=null && !obj.getProductLineType().equals(""))
-				cell8.setCellValue(obj.getProductLineType());
-			Cell cell9 = row.createCell(++columncellCount);
-			cell9.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
-			Cell cell10 = row.createCell(++columncellCount);
-			if(obj.getCreatedDate()!=null)
-				date = obj.getCreatedDate();
-				cell10.setCellValue(convertDateUsingTimezone(date, timeZone));
-			Cell cell11 = row.createCell(++columncellCount);
-			cell11.setCellValue(obj.getSenderEmailId());
-			Cell cell12 = row.createCell(++columncellCount);
-			cell12.setCellValue(obj.getSubject());
-			Cell cell13 = row.createCell(++columncellCount);
-			cell13.setCellValue(obj.getSubmittedBy());
-			Cell cell14 = row.createCell(++columncellCount);
-			if(obj.getSubmittedDate()!=null)
-				cell14.setCellValue(obj.getSubmittedDate().toString());
-			Cell cell15 = row.createCell(++columncellCount);
-			if(obj.getFeedbackAcknowledgementDate()!=null)
-			cell15.setCellValue(obj.getFeedbackAcknowledgementDate().toString());                                               
-			Cell cell16 = row.createCell(++columncellCount);
-			cell16.setCellValue(obj.getComment());
-			Cell cell17 = row.createCell(++columncellCount);
-			cell17.setCellValue(obj.getError());
-			columncellCount=0;
-			rowIndex++;
+		try {
+			int rowIndex=1,columncellCount=0;
+			Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
+			Date date = null;
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			while (CrunchifyIterator.hasNext()) {
+				OrderQueue obj=CrunchifyIterator.next();
+				String csrName="";
+				csrName=userService.getUsernameById(obj.getCsrName());
+				String siteName="";
+				Site site = siteService.read((long)obj.getSiteId());
+				if(site != null)
+					siteName = site.getName();
+				Row row = sheet.createRow(rowIndex);
+				Cell cell1 = row.createCell(columncellCount);
+				cell1.setCellValue(siteName);
+				Cell cell2 = row.createCell(++columncellCount);
+				cell2.setCellValue(obj.getId());
+				Cell cell3 = row.createCell(++columncellCount);
+				cell3.setCellValue(obj.getPrevOrderQueueId());
+				Cell cell4 = row.createCell(++columncellCount);
+				cell4.setCellValue(obj.getOrderSource());
+				Cell cell5 = row.createCell(++columncellCount);
+				cell5.setCellValue(obj.getPoNumber());
+				Cell cell6 = row.createCell(++columncellCount);
+				cell6.setCellValue(obj.getOrderFileName());
+				Cell cell7 = row.createCell(++columncellCount);
+				if(obj.getPartnerName()!=null && !obj.getPartnerName().equals(""))
+					cell7.setCellValue(obj.getPartnerName());
+				Cell cell8 = row.createCell(++columncellCount);
+				cell8.setCellValue(obj.getRboName());
+				Cell cell9 = row.createCell(++columncellCount);
+				if(obj.getProductLineType()!=null && !obj.getProductLineType().equals(""))
+					cell9.setCellValue(obj.getProductLineType());
+				Cell cell10 = row.createCell(++columncellCount);
+				cell10.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
+				Cell cell11 = row.createCell(++columncellCount);
+				if(obj.getReceivedDate()!=null)
+					date = obj.getReceivedDate();
+				cell11.setCellValue(convertDateUsingTimezone(date, timeZone));
+				Cell cell12 = row.createCell(++columncellCount);
+				if(obj.getCreatedDate()!=null)
+					date = obj.getCreatedDate();
+					cell12.setCellValue(convertDateUsingTimezone(date, timeZone));
+				Cell cell13 = row.createCell(++columncellCount);
+				cell13.setCellValue(obj.getSenderEmailId());
+				Cell cell14 = row.createCell(++columncellCount);
+				cell14.setCellValue(obj.getSubject());
+				Cell cell15 = row.createCell(++columncellCount);
+				cell15.setCellValue(obj.getSubmittedBy());
+				Cell cell16 = row.createCell(++columncellCount);
+				if(obj.getSubmittedDate()!=null)
+					cell16.setCellValue(obj.getSubmittedDate().toString());
+				Cell cell17 = row.createCell(++columncellCount);
+				if(obj.getFeedbackAcknowledgementDate()!=null)
+				cell17.setCellValue(obj.getFeedbackAcknowledgementDate().toString());
+				Cell cell18 = row.createCell(++columncellCount);
+				cell18.setCellValue(csrName);
+				Cell cell19 = row.createCell(++columncellCount);
+				cell19.setCellValue(obj.getComment());
+				Cell cell20 = row.createCell(++columncellCount);
+				cell20.setCellValue(obj.getError());
+				columncellCount=0;
+				rowIndex++;
+			}
+			for(int i=0;i<=headerLength;i++){
+				sheet.autoSizeColumn(i);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		for(int i=0;i<=headerLength;i++){
-			sheet.autoSizeColumn(i);
-		}
+		
 	}
 
+	public static ByteArrayOutputStream createOrderQueueMaterialReportExcelFile(List<SalesOrder> salesOrder, String timeZone, String time, String date) throws IOException{
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Sheet 1");
+        String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
+				 "CSR name", "Customer request date", "AOC Order Track #"};
+        addHeader(sheet, headerNames);
+        getMaterialReportData(sheet, salesOrder, headerNames.length, timeZone, time, date);
+        try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
+            workbook.write(outputStream);
+		return outputStream;
+        }
+	}
+	
+	private static void getMaterialReportData(XSSFSheet sheet,List<SalesOrder> salesOrder,int headerLength, String timeZone, String time, String date1){
+		try {
+			int rowIndex=1,columncellCount=0;
+			Iterator<SalesOrder> CrunchifyIterator = salesOrder.iterator();
+			Date date = null;
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			while (CrunchifyIterator.hasNext()) {
+				SalesOrder obj=CrunchifyIterator.next();
+				String csrName="";
+				csrName=userService.getUsernameById(obj.getCsr());
+				Row row = sheet.createRow(rowIndex);
+				Cell cell1 = row.createCell(columncellCount);
+				cell1.setCellValue(time);
+				Cell cell2 = row.createCell(++columncellCount);
+				cell2.setCellValue(date1);
+				Cell cell3 = row.createCell(++columncellCount);
+				cell3.setCellValue(obj.getRboName());
+				Cell cell4 = row.createCell(++columncellCount);
+				cell4.setCellValue(obj.getCustomerPoNumber());
+				Cell cell5 = row.createCell(++columncellCount);
+				cell5.setCellValue(obj.getCustomerItemNumber());
+				Cell cell6 = row.createCell(++columncellCount);
+				cell6.setCellValue(obj.getCustomerItemNumber());
+				Cell cell7 = row.createCell(++columncellCount);
+				cell7.setCellValue(obj.getCustomerOrderedQty());
+				Cell cell8 = row.createCell(++columncellCount);
+				cell8.setCellValue(csrName);
+				Cell cell19 = row.createCell(++columncellCount);
+				if(obj.getCustomerRequestDate()!=null)
+					date = obj.getCustomerRequestDate();
+					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
+				Cell cell10 = row.createCell(++columncellCount);
+				cell10.setCellValue(obj.getOrderTrackId());
+				columncellCount=0;
+				rowIndex++;
+			}
+			for(int i=0;i<=headerLength;i++){
+				sheet.autoSizeColumn(i);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	/**
 	 * Method to convert date using given timezone
 	 * 
