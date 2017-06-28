@@ -90,9 +90,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     			    	itemIndex:2,
     			    	itemId:'resubmitOrderMenuItem'
     			    },{
+    			    	text:'Material Report',
+    			    	iconCls:'x-fa fa-bar-chart',
+    			    	itemIndex:3,
+    			    	itemId:'materialReportMenuItem'
+    			    },{
     			    	text:'Cancel Order',
     			    	iconCls:'x-fa fa-times',
-    			    	itemIndex:3,
+    			    	itemIndex:4,
     			    	itemId:'cancelMenuItem'
     			    }
     			],
@@ -151,7 +156,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	         me.onViewSalesOrderMenuItemClick();
 		} else if (item.itemIndex == 2) {
 	         me.onResubmitOrderMenuItemClick();
-		} else {
+		} else if(item.itemIndex == 3){
+			me.onMaterialReportMenuItemClick();
+		}
+		else {
 	         me.onCancelMenuItemClick();
 		}
     },
@@ -300,6 +308,29 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		webOrderView.down('#backButtonimage').show();
 		webOrderView.updateHeaderLabel(AOCLit.fixAndResubmitWebOredr);
 		weborderform.isResubmit=true;
+    },
+    onMaterialReportMenuItemClick: function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0],
+			emailTrack = currentRecord.get('emailQueueId'),
+			orderTrack = currentRecord.get('id'),
+			localDate = new Date(),
+			date = localDate.getDate(),
+			month = localDate.getMonth(),
+			year = localDate.getFullYear(),
+			userDate = date+'/'+month+'/'+year,
+			hours = localDate.getHours(),
+			minutes = localDate.getMinutes(),
+			seconds = localDate.getSeconds(),
+			userTimeStamp = hours+':'+minutes+':'+seconds,
+			obj = {orderTrack:orderTrack,emailTrack:emailTrack,localDate:userDate, localTime:userTimeStamp },
+			query = Ext.JSON.encode(obj);
+    	Ext.Ajax.request({
+    		url:applicationContext + '/rest/orders/download/materialreport',
+    		method:'GET',
+    		params:{query:query}
+    	});
     },
     onCancelMenuItemClick:function(){
     	var me = this,
