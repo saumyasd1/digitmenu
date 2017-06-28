@@ -8,6 +8,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.avery.storage.dao.GenericDao;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SalesOrder;
 
 public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	
@@ -34,4 +35,6 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	public String getOrderFilePath(long orderFileQueueId);//getting order file path
 
 	int getAdditionalFileCount(Long orderQueueId);//getting order file count
+	
+	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap<String, String> queryParamMap) throws Exception;
 }
