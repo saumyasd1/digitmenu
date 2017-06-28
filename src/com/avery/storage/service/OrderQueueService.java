@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.OrderQueueDao;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.SalesOrder;
 
 @Component
 public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
@@ -89,5 +90,9 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	@Transactional
 	public int getAdditionalFileCount(Long orderQueueId){
 		return getOrderQueueDao().getAdditionalFileCount(orderQueueId);
+	}
+	@Transactional
+	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap<String, String> queryParamMap) throws Exception {
+		return getOrderQueueDao().getAllEntitiesListForMaterialReport(queryParamMap);
 	}
 }
