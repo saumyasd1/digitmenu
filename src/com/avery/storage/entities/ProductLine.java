@@ -1208,20 +1208,25 @@ public class ProductLine extends MainAbstractEntity{
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		List<ProductLine> productline = null;
+		Map entitiesMap = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
+			MultivaluedMap queryMap = ui.getQueryParameters();
 			mapper.addMixIn(ProductLine.class,ProductLineMixIn.class);
+			/*mapper.addMixIn(Partner.class, PartnerMixIn.class); // because of partner profile Apperance Change by Rajo
 			mapper.addMixIn(RBO.class,RboMixIn.class);
 			mapper.addMixIn(OrderSystemInfo.class, OrderSystemInfoMixIn.class);
-			mapper.addMixIn(ProductLine.class, OrderSystemInfoMixIn.class);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+			mapper.addMixIn(ProductLine.class, OrderSystemInfoMixIn.class);*/
+			mapper.addMixIn(Partner.class, PartnerMixIn.class);
+			mapper.addMixIn(RBO.class, RboMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			ProductLineService productLineService = (ProductLineService) SpringConfig
 					.getInstance().getBean("productLineService");
-			productline = productLineService.readAll();
-			if (productline == null)
+			entitiesMap = productLineService.readWithCriteria(queryMap);
+			if (entitiesMap == null)
 				throw new Exception("Unable to find Product Line");			
-			mapper.writeValue(writer, productline);
+			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;

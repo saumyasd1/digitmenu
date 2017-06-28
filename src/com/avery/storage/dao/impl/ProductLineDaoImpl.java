@@ -59,11 +59,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
-		Partner partner = new Partner();
+		/*Partner partner = new Partner(); // because of partner profile Appreance Change by Rajo
 		String PartnerId = (String) queryMap.getFirst("partnerId");
 		Long partnerId = Long.valueOf(PartnerId);
 		partner.setId(partnerId);
-		criteria.add(Restrictions.eq("varPartner", partner));
+		criteria.add(Restrictions.eq("varPartner", partner));*/
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
 		if (queryString != null) {
