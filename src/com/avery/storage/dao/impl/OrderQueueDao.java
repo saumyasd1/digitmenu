@@ -35,6 +35,4 @@ public interface OrderQueueDao extends GenericDao<OrderQueue, Long>{
 	public String getOrderFilePath(long orderFileQueueId);//getting order file path
 
 	int getAdditionalFileCount(Long orderQueueId);//getting order file count
-	
-	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap<String, String> queryParamMap) throws Exception;
 }

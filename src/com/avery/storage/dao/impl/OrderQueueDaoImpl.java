@@ -476,54 +476,29 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
-				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo")
+				.createAlias("varProductLine.varPartner", "partner")
+				.createAlias("varProductLine.rbo", "rbo")
 				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
 		Date now = DateUtils.getDefaultCurrentDate("MM/dd/yyyy" + " 00:00:00");
 		String strDate = HibernateUtils.sdfDate.format(now);
 		criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, "orderemailqueue.receivedDate", strDate, strDate);
-
-		if (queryMap.getFirst("emailQueueId") != null) {
-			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
-			Long queueId = Long.parseLong(emailQueueId);
-			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-		}
-		if (queryMap.getFirst("senderEmailId") != null) {
-			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
-			String senderEmail = senderEmailId;
-			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
-		}
-		if (queryMap.getFirst("receivedDate") != null) {
-			Date receivedDate = (Date) queryMap.getFirst("receivedDate");
-			Date receivedEmailDate = receivedDate;
-			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
-		}
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		if (queryString != null) {
 			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
-
-			/*if (dateType != null && !"".equals(dateType)) {
-				String partner = searchMap.get("PartnerName");
-				String partnerName = partner;
-				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.EXACT));
-			}
-			String PartnerName = searchMap.get("partnerName");
-			if (PartnerName != null && !"".equals(PartnerName)) {
-				criteria.add(Restrictions.ilike("partner.partnerName", PartnerName, MatchMode.ANYWHERE));
-			}*/
-			if (dateType != null && !"".equals(dateType)) {
-				String rbo = searchMap.get("RBOName");
+			String rbo = searchMap.get("RBOName");
+			if (rbo != null && !"".equals(rbo)) {
 				String[] rboName = rbo.split(",");
 				criteria.add(Restrictions.in("rbo.rboName", rboName));
 			}
-			if (dateType != null && !"".equals(dateType)) {
-				String status = searchMap.get("Status");
+			String status = searchMap.get("Status");
+			if (status != null && !"".equals(status)) {
 				String[] statusCode = status.split(",");
 				criteria.add(Restrictions.in("status", statusCode));
 			}
 			String siteId = searchMap.get("siteId");
-			if (siteId != null && !"".equals(dateType)) {
+			if (siteId != null && !"".equals(siteId)) {
 				String[] siteIdList = siteId.split(",");
 				List<Integer> siteList=new ArrayList<Integer>();
 				for(int i=0; i<siteIdList.length; i++)
@@ -533,7 +508,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("orderemailqueue.siteId", siteList));
 			}
 			String PartnerId = searchMap.get("partnerId");
-			if (PartnerId != null && !"".equals(dateType)) {
+			if (PartnerId != null && !"".equals(PartnerId)) {
 				String[] PartnerIdList = PartnerId.split(",");
 				List<Long> partneList=new ArrayList<Long>();
 				for(int i=0; i<PartnerIdList.length; i++)
@@ -543,7 +518,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("partner.id", partneList));
 			}
 			String csrId = searchMap.get("csrId");
-			if (csrId != null && !"".equals(dateType)) {
+			if (csrId != null && !"".equals(csrId)) {
 				String[] csrIdList = csrId.split(",");
 				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
 			}
@@ -580,25 +555,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
-				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo")
+				.createAlias("varProductLine.varPartner", "partner")
+				.createAlias("varProductLine.rbo", "rbo")
 				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(OrderQueue.class));
-
-		if (queryMap.getFirst("emailQueueId") != null) {
-			String emailQueueId = (String) queryMap.getFirst("emailQueueId");
-			Long queueId = Long.parseLong(emailQueueId);
-			criteria.add(Restrictions.eq("orderemailqueue.id", queueId));
-		}
-		if (queryMap.getFirst("senderEmailId") != null) {
-			String senderEmailId = (String) queryMap.getFirst("senderEmailId");
-			String senderEmail = senderEmailId;
-			criteria.add(Restrictions.eq("orderemailqueue.senderEmailId", senderEmail));
-		}
-		if (queryMap.getFirst("receivedDate") != null) {
-			Date receivedDate = (Date) queryMap.getFirst("receivedDate");
-			Date receivedEmailDate = receivedDate;
-			criteria.add(Restrictions.eq("orderemailqueue.receivedDate", receivedEmailDate));
-		}
-
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		if (queryString != null) {
@@ -609,19 +568,18 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				String eDate = searchMap.get("toDate");
 				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			if (dateType != null && !"".equals(dateType)) {
-				String rbo = searchMap.get("RBOName");
+			String rbo = searchMap.get("RBOName");
+			if (rbo != null && !"".equals(rbo)) {				
 				String[] rboName = rbo.split(",");
 				criteria.add(Restrictions.in("rbo.rboName", rboName));
 			}
-			if (dateType != null && !"".equals(dateType)) {
-				String status = searchMap.get("Status");
+			String status = searchMap.get("Status");
+			if (status != null && !"".equals(status)) {
 				String[] statusCode = status.split(",");
 				criteria.add(Restrictions.in("status", statusCode));
-			}
-			
+			}			
 			String siteId = searchMap.get("siteId");
-			if (siteId != null && !"".equals(dateType)) {
+			if (siteId != null && !"".equals(siteId)) {
 				String[] siteIdList = siteId.split(",");
 				List<Integer> siteList=new ArrayList<Integer>();
 				for(int i=0; i<siteIdList.length; i++)
@@ -631,7 +589,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("orderemailqueue.siteId", siteList));
 			}
 			String PartnerId = searchMap.get("partnerId");
-			if (PartnerId != null && !"".equals(dateType)) {
+			if (PartnerId != null && !"".equals(PartnerId)) {
 				String[] PartnerIdList = PartnerId.split(",");
 				List<Long> partneList=new ArrayList<Long>();
 				for(int i=0; i<PartnerIdList.length; i++)
@@ -641,36 +599,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("partner.id", partneList));
 			}
 			String csrId = searchMap.get("csrId");
-			if (csrId != null && !"".equals(dateType)) {
+			if (csrId != null && !"".equals(csrId)) {
 				String[] csrIdList = csrId.split(",");
 				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
 			}
-		}
-		return criteria;
-	}
-	
-	public Criteria getMaterialReportCriteria(MultivaluedMap queryMap) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
-		ProjectionList proj = Projections.projectionList();
-		proj.add(Projections.property("rbo.rboName"), "rboName")
-				.add(Projections.property("customerPoNumber"), "customerPoNumber")
-				.add(Projections.property("customerItemNumber"), "customerItemNumber")
-				.add(Projections.property("customerOrderedQty"), "customerOrderedQty")
-				.add(Projections.property("csr"), "csr")
-				.add(Projections.property("customerRequestDate"), "customerRequestDate")
-				.add(Projections.property("varOrderFileQueue.id"), "orderTrackId");
-		Criteria criteria = session.createCriteria(SalesOrder.class);
-		criteria.createAlias("varOrderFileQueue", "varOrderFileQueue")
-				.createAlias("varOrderFileQueue.varProductLine", "varProductLine")
-				.createAlias("varProductLine.rbo", "rbo")
-				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SalesOrder.class));
-
-		String queryString = (String) queryMap.getFirst("query");
-		session = getSessionFactory().getCurrentSession();
-		if (queryString != null) {
-			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
-			String OrderTrackingID = searchMap.get("orderTrack");
-			criteria.add(Restrictions.eq("varOrderFileQueue.id", Long.parseLong(OrderTrackingID)));
 		}
 		return criteria;
 	}
@@ -678,19 +610,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 	@Override
 	public List<OrderQueue> getAllEntitiesListForOpenReport(MultivaluedMap queryMap) throws Exception {
 		Criteria criteria = getOpenReportCriteria(queryMap);
-		criteria.addOrder(Order.desc("lastModifiedDate"));
 		List<OrderQueue> list = criteria.list();
 		return list;
 	}
 	
-	@Override
-	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap queryMap) throws Exception {
-		Criteria criteria = getMaterialReportCriteria(queryMap);
-		criteria.addOrder(Order.desc("lastModifiedDate"));
-		List<SalesOrder> list = criteria.list();
-		return list;
-	}
-
 	@Override
 	public void identifyEmail(String data, Long entityId) {
 		ObjectMapper mapper = new ObjectMapper();

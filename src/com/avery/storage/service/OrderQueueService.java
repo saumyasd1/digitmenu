@@ -91,8 +91,5 @@ public class OrderQueueService extends GenericEntityService<OrderQueue, Long>{
 	public int getAdditionalFileCount(Long orderQueueId){
 		return getOrderQueueDao().getAdditionalFileCount(orderQueueId);
 	}
-	@Transactional
-	public List<SalesOrder> getAllEntitiesListForMaterialReport(MultivaluedMap<String, String> queryParamMap) throws Exception {
-		return getOrderQueueDao().getAllEntitiesListForMaterialReport(queryParamMap);
-	}
+	
 }

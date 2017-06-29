@@ -232,12 +232,6 @@ public class SalesOrder extends MainAbstractEntity{
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
-	
-	@Transient
-	private String rboName;
-		
-	@Transient
-	private int orderTrackId;
 
 	@Transient
 	private String colorCode;
@@ -1097,24 +1091,6 @@ public class SalesOrder extends MainAbstractEntity{
 	public void setAdditionalLabelInternalItem(String additionalLabelInternalItem) {
 		this.additionalLabelInternalItem = additionalLabelInternalItem;
 	}
-	
-	public String getRboName() {
-		return rboName;
-	}
-
-	public void setRboName(String rboName) {
-		this.rboName = rboName;
-	}
-	
-	public int getOrderTrackId() {
-		return orderTrackId;
-	}
-
-	public void setOrderTrackId(int orderTrackId) {
-		this.orderTrackId = orderTrackId;
-	}
-
-
 	
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {

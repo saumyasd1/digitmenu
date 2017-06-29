@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.entities.OrderQueue;
+import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SalesOrder;
 import com.avery.storage.entities.Site;
 import com.avery.storage.service.SiteService;
@@ -154,7 +155,9 @@ public class ExcelUtils {
 				Cell cell2 = row.createCell(++columncellCount);
 				cell2.setCellValue(date1);
 				Cell cell3 = row.createCell(++columncellCount);
-				cell3.setCellValue(obj.getRboName());
+				RBO rbo=obj.getVarRbo();
+				if(rbo != null)
+				cell3.setCellValue(rbo.getRboName());
 				Cell cell4 = row.createCell(++columncellCount);
 				cell4.setCellValue(obj.getCustomerPoNumber());
 				Cell cell5 = row.createCell(++columncellCount);
@@ -170,7 +173,7 @@ public class ExcelUtils {
 					date = obj.getCustomerRequestDate();
 					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
 				Cell cell10 = row.createCell(++columncellCount);
-				cell10.setCellValue(obj.getOrderTrackId());
+				cell10.setCellValue(obj.getVarOrderFileQueue().getId());
 				columncellCount=0;
 				rowIndex++;
 			}
