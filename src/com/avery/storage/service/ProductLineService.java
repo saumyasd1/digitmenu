@@ -87,4 +87,10 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 	public Map<?, ?> getRboListById(String partnerId) throws Exception {
 		return getProductLineDao().getRboListById(partnerId);
 	}
+	@Transactional 
+	public Boolean updateStatus(Long id,Boolean status) throws Exception{
+		
+		return getProductLineDao().updateStatus(id,status);
+		
+	}
 }

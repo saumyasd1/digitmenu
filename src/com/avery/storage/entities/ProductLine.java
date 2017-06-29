@@ -1209,6 +1209,7 @@ public class ProductLine extends MainAbstractEntity{
 		Response.ResponseBuilder rb = null;
 		List<ProductLine> productline = null;
 		Map entitiesMap = null;
+		Map returnproductline = new HashMap();// code added 29-06-2017 Rajo
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -1225,8 +1226,30 @@ public class ProductLine extends MainAbstractEntity{
 					.getInstance().getBean("productLineService");
 			entitiesMap = productLineService.readWithCriteria(queryMap);
 			if (entitiesMap == null)
-				throw new Exception("Unable to find Product Line");			
-			mapper.writeValue(writer, entitiesMap);
+				throw new Exception("Unable to find Product Line");	
+			
+			// code added 29-06-2017 Rajo
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			List listofPL=(List) entitiesMap.get("productlines");
+			List listOfPLR=new LinkedList<ProductLine>();
+			for(int i=0;i<listofPL.size();i++)
+			{
+				ProductLine currentProductline=(ProductLine) listofPL.get(i);
+				if(currentProductline.getSite() != null && currentProductline.getSite()!=0 )
+				{
+					int siteId1=(int) currentProductline.getSite();
+					Site site = siteService.read((long)siteId1);
+					if(site != null)
+						currentProductline.setSitename(site.getName());
+				}
+				listOfPLR.add(currentProductline);
+			}
+			returnproductline.put("productlines", listOfPLR);
+			if(entitiesMap.containsKey("totalCount"))
+				returnproductline.put("totalCount", entitiesMap.get("totalCount"));
+			mapper.writeValue(writer, returnproductline);
+			// end 
+			//mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -1728,4 +1751,37 @@ public class ProductLine extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
+	
+	@GET
+	@Path("/status")
+	public Response statusProductLine(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id,
+			@QueryParam("status") Boolean status) {
+		Response.ResponseBuilder rb = null;
+		if (id == null | "".equals(id.trim()))
+			return Response.ok("Wrong input", MediaType.TEXT_PLAIN).status(Status.NOT_ACCEPTABLE).build();
+		Long entityId = Long.parseLong(id);
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		boolean success = false;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			success = productLineService.updateStatus(entityId, status);
+			responseMap.put("success", success);
+			if (success)
+				responseMap.put("message", "Partner #" + id + " status was successfully updated");
+			else
+				responseMap.put("message", "Partner #" + id + " status was not updated");
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+}
 }

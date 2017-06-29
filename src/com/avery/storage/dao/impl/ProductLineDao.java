@@ -31,4 +31,7 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 	public Map getDataStructureListBasedOnAttachmentId(Long fileAttachmentId) throws Exception;
 
 	Map getRboListById(String partnerId) throws Exception;
+	public Boolean updateStatus(Long id,Boolean status) throws Exception;
+	
+	
 }

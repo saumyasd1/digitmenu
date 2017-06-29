@@ -757,4 +757,31 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long>
 		return entitiesMap;
 
 	}
+
+	@Override
+	public Long create(ProductLine newInstance) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean updateStatus(Long id, Boolean status) throws Exception {
+		boolean success = false;
+		Session session = null;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			ProductLine productLine = (ProductLine) session.get(ProductLine.class, id);
+			productLine.setActive(status);
+			//wi.setLastModifiedDate(now);
+			session.update(productLine);
+			//saveHistory(user, "", "", entityId, "cancel");
+			success = true;
+		} catch (Exception e) {
+			//AppLogger.getSystemLogger().debug(MessageUtils.WICANCEL_FAILURE_MESSAGE + " -> " + e);
+			return false;
+		}
+		return success;
+	}
+
+	
 }
