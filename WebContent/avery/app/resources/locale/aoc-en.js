@@ -530,5 +530,6 @@ Ext.define('AOC.lang.lit',{
 		superAdmin:1,
 		siteManager:2,
 		CSR:3
-	}
+	},
+	noRboMsg:'No RBO configured for selected Partner'
 });

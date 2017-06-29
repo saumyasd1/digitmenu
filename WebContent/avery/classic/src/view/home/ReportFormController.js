@@ -28,11 +28,15 @@ Ext.define('AOC.view.home.ReportFormController', {
      		csrStore = csrCombo.store,
      		csrName = [];
 	
-	rboStore.each(function(rec){
-		if(rec.get('id') != 'all'){
-			rboName.push(rec.get('rboName'));
-		}
-	});
+ 	if(rboCombo.getValue() == 'all'){
+ 		rboStore.each(function(rec){
+			if(rec.get('id') != 'all' ){
+				rboName.push(rec.get('rboName'));
+			}
+		});
+	}else{
+		rboName.push(rboCombo.getRawValue());
+	}
 	
 	if(partnerCombo.getValue() == 'all'){
 		partnerStore.each(function(rec){
@@ -163,6 +167,8 @@ Ext.define('AOC.view.home.ReportFormController', {
 		    		    		 });
 		    		    		 rboStore.loadData(rboStoreData);
 		    		    	}
+		    	    	}else{
+		    	    		Helper.showToast('failure',AOCLit.noRboMsg);
 		    	    	}
 			        },
 		        failure: function(response, opts) {
