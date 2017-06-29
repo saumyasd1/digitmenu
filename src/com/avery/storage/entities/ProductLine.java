@@ -1769,10 +1769,20 @@ public class ProductLine extends MainAbstractEntity{
 					.getInstance().getBean("productLineService");
 			success = productLineService.updateStatus(entityId, status);
 			responseMap.put("success", success);
-			if (success)
-				responseMap.put("message", "Partner #" + id + " status was successfully updated");
-			else
+			if (success){
+				if(status){
+					responseMap.put("message", "Partner #" + id + " Status changed from deactive to active");
+				}
+				else{
+					responseMap.put("message", "Partner #" + id + " Status changed from active to deactive");
+				}
+				
+			}
+				
+			else{
 				responseMap.put("message", "Partner #" + id + " status was not updated");
+			}
+				
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (Exception e) {
