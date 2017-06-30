@@ -26,7 +26,9 @@ Ext.define('AOC.view.home.ReportFormController', {
      		siteName = [],
      		csrCombo = this.lookupReference('csrCombo'),
      		csrStore = csrCombo.store,
-     		csrName = [];
+     		csrName = [],
+     		timeZone =this.lookupReference('timeZone');
+     		
 	
  	if(rboCombo.getValue() == 'all'){
  		rboStore.each(function(rec){
@@ -86,6 +88,7 @@ Ext.define('AOC.view.home.ReportFormController', {
 	obj.siteId = siteName.join(',');
 	obj.csrId = csrName.join(',');
 	obj.Status = statusCode.join(',');
+	obj.timeZone = timeZone.getValue();
 	var values = reportForm.getValues();
 		query = Ext.JSON.encode(obj);
 	

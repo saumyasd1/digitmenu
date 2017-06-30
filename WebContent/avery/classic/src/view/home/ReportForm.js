@@ -150,7 +150,9 @@ Ext.define('AOC.view.home.ReportForm',{
 	    				name:'timeZone',
 	    				emptyText:'Select Time Zone',
 	    				width:210,
-	    				margin:'5 10 0 0'
+	    				reference:'timeZone',
+	    				margin:'5 10 0 0',
+	    				store:[['HKT','HKT'],['EDT','EDT'],['EST','EST']]
 	    			}
 				]
 	        },
