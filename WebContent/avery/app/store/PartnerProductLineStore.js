@@ -7,12 +7,11 @@ Ext.define('AOC.store.PartnerProductLineStore', {
 	storeId:'PartnerProductLineStoreStoreId',
 	proxy: {
         type: 'rest',
-        url         : applicationContext+'/rest/productLines/productLineType',
-        reader      : {
-            type          : 'json',
-            rootProperty  : 'ArrayList'
+        url : applicationContext+'/rest/productLines/productLineType',
+        reader: {
+            type: 'json',
+            rootProperty: 'ArrayList'
         }
-        
     }
 });
 

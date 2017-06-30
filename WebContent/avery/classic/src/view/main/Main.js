@@ -132,7 +132,7 @@ Ext.define('AOC.view.main.Main', {
     	  iconCls:'fa fa-users',
     	  layout:'fit',
     	  itemId:'partner',
-    	  listType:'partnerManagementGrid',
+    	  listType:'partnerProductLineGrid',
     	  items:[
     	     {
     	    	 xtype:'partnermanagement',

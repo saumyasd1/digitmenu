@@ -11,15 +11,15 @@ Ext.define('AOC.view.partner.PartnerManagement', {
     			flex : 1.8,
     			layout:'card',
 				itemId:'partnerPanel',
-				collapsible :false,
 				activeItem: 0,
-				hidden:false,
-    			items:[{
-    				xtype:'partnermanagementgrid',
-    				reference:'partnerManagementGrid'
-    			},
+    			items:[
+//    			       {
+//    				xtype:'partnermanagementgrid',
+//    				reference:'partnerManagementGrid'
+//    			},
     			{
     				xtype:'partnerproductlinegrid',
+    				reference:'partnerProductLineGrid',
 					itemId: 'partnerproductlinegriditemId'
     			}
     			]

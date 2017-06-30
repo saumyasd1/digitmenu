@@ -44,10 +44,10 @@ Ext.define('AOC.view.main.MainController', {
 					siteCombo = orderQueueStatusListRefs.siteCombo,
 					csrCombo = orderQueueStatusListRefs.csrCombo;
 				
-				if(AOCRuntime.getUser().role == AOCLit.userRole.superAdmin){
-					siteCombo.setValue('All');
-				}
-				csrCombo.setValue('All');
+//				if(AOCRuntime.getUser().role == AOCLit.userRole.superAdmin){
+//					siteCombo.setValue('All');
+//				}
+//				csrCombo.setValue('All');
 				break;
 			case 'webOrderView':
 				var webOrderView = refs[listType];
