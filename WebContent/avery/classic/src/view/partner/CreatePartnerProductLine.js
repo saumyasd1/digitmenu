@@ -109,6 +109,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								xtype:'textfield',
 								itemId:'dataStructureName',
 								name: 'dataStructureName',
+								reference:'dataStructureName',
 								margin:'0 0 0 10',
 								flex:1,
 								allowBlank: false,
