@@ -42,5 +42,10 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner, String userId) {
 		return systemCsrCodeDao.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner, userId);
 	}
+	
+	@Transactional
+	public boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode) {
+		return systemCsrCodeDao.checkIfCsrCodeExists(systemId, orgId, csrCode);
+	}
 
 }

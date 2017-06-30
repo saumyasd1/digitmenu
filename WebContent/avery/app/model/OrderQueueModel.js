@@ -115,6 +115,11 @@ Ext.define('AOC.model.OrderQueueModel',{
 		name: 'siteName', 
 		mapping:'siteName',
 		type: 'string'
+	},
+	{
+		name:'csrCode',
+		mapping:'csrCode',
+		type:'string'
 	}
     ]
 });

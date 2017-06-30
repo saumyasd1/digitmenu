@@ -109,6 +109,9 @@ public class OrderQueue extends MainAbstractEntity {
 
 	@Column(name = "status", length = 100)
 	private String status;
+	
+	@Column(name = "csrCode", length = 100)
+	private String csrCode;
 
 	@Column(name = "comment", length = 250)
 	private String comment;
@@ -1247,6 +1250,14 @@ public class OrderQueue extends MainAbstractEntity {
 
 	public void setCsrName(String csrName) {
 		this.csrName = csrName;
+	}
+
+	public String getCsrCode() {
+		return csrCode;
+	}
+
+	public void setCsrCode(String csrCode) {
+		this.csrCode = csrCode;
 	}
 
 }

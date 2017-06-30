@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import javax.persistence.Column;
@@ -177,6 +178,31 @@ public class User extends MainAbstractEntity {
 		Long id = 0L;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		try {
+			Map<String, Object> jsonMap = ApplicationUtils.convertJSONtoObjectMaps(data);
+			List list  = (ArrayList) jsonMap.get("newCSRCodeArray");
+			List <SystemCsrCode> systemCsrCodeList = new ArrayList<SystemCsrCode>();
+			for(int i = 0; i < list.size(); i++){
+				SystemCsrCode systemCsrCode1 = new SystemCsrCode();
+				String jsonString = list.get(i).toString();
+				StringTokenizer st = new StringTokenizer(jsonString,",");  
+			     while (st.hasMoreTokens()) {
+			         String str = st.nextToken();
+			         if(str.contains("csrCode=")){
+			        	 String filtered = str.replace("csrCode=","");
+			        	 systemCsrCode1.setCsrCode(filtered.replace("{","").trim().replace("}","").trim());
+			         }
+			         if(str.contains("orgCodeId=") || str.contains("systemId=")){
+			        	 if(str.contains("orgCodeId=")){
+				        	String filtered = str.replace("orgCodeId=","");
+				        	 systemCsrCode1.setOrgCodeId(Long.parseLong(filtered.replace("}","").trim()));
+				         }else if(str.contains("systemId=")){
+				        	 String filtered =  str.replace("systemId=","");
+				        	 systemCsrCode1.setSystemId(Long.parseLong(filtered.replace("}","").trim()));
+				         } 
+			         }
+			     } 
+			     systemCsrCodeList.add(systemCsrCode1);
+			}
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -185,6 +211,42 @@ public class User extends MainAbstractEntity {
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
+			
+			/* *******************************************************  */
+			String systemCsrCodeOwner = "";
+			if(systemCsrCodeList != null){
+				for(int i = 0; i< systemCsrCodeList.size() ; i++){
+					SystemCsrCode systemCsrCode = (SystemCsrCode) systemCsrCodeList.get(i);
+					systemCsrCode.setCsrCode(systemCsrCode.getCsrCode());
+					systemCsrCode.setSystemId(systemCsrCode.getSystemId());
+					systemCsrCode.setOrgCodeId(systemCsrCode.getOrgCodeId());
+					boolean insertFlag = false;
+					String csrCode = systemCsrCode.getCsrCode();
+					long systeminfoId = systemCsrCode.getSystemId();
+					long orgCodeId = systemCsrCode.getOrgCodeId();
+					insertFlag = systemCsrCodeService.checkIfCsrCodeExists(systeminfoId,orgCodeId,csrCode);
+					if(insertFlag){
+						return Response.ok("Invalid Input CSR Code : "+ csrCode +" Already Exists." , MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();
+					}else{
+						SystemInfo varSystemInfo = new SystemInfo();
+						varSystemInfo.setId(systemCsrCode.getSystemId());
+						Org varOrg = new Org();
+						varOrg.setId(systemCsrCode.getOrgCodeId());
+						systemCsrCode.setVarSystemInfo(varSystemInfo);
+						systemCsrCode.setVarOrg(varOrg);
+						systemCsrCode.setIsActive("true");
+						systemCsrCode.setCreatedDate(new Date());
+						systemCsrCode.setLastModifiedDate(new Date());
+						Long systemCsrCodeId = systemCsrCodeService.create(systemCsrCode);
+						if(systemCsrCodeOwner.isEmpty()){
+							systemCsrCodeOwner = systemCsrCodeOwner + String.valueOf(systemCsrCodeId);
+						}else{
+							systemCsrCodeOwner = systemCsrCodeOwner + ","+ String.valueOf(systemCsrCodeId);
+						}		
+					}
+				}
+			}
+			/* ******************************************* */
 			boolean userExist = userService.checkDuplicateUser(user);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			if (userExist) {
@@ -195,8 +257,8 @@ public class User extends MainAbstractEntity {
 				user.setCreatedDate(new Date());
 				user.setLastModifiedDate(new Date());
 				user.setStatus(100);
+				user.setSystemCsrCodeOwner(systemCsrCodeOwner);
 				id = userService.create(user);
-				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
 				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, "", id.toString());
 				responseMap.put("valueExist", false);
 				responseMap.put("id", id);
@@ -216,7 +278,31 @@ public class User extends MainAbstractEntity {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		String userId = "";
 		try {
-			Map<String, String> jsonMap = ApplicationUtils.convertJSONtoMaps(data);
+			Map<String, Object> jsonMap = ApplicationUtils.convertJSONtoObjectMaps(data);
+			List list  = (ArrayList) jsonMap.get("newCSRCodeArray");
+			List <SystemCsrCode> systemCsrCodeList = new ArrayList<SystemCsrCode>();
+			for(int i = 0; i < list.size(); i++){
+				SystemCsrCode systemCsrCode1 = new SystemCsrCode();
+				String jsonString = list.get(i).toString();
+				StringTokenizer st = new StringTokenizer(jsonString,",");  
+			     while (st.hasMoreTokens()) {
+			         String str = st.nextToken();
+			         if(str.contains("csrCode=")){
+			        	 String filtered = str.replace("csrCode=","");
+			        	 systemCsrCode1.setCsrCode(filtered.replace("{","").trim().replace("}","").trim());
+			         }
+			         if(str.contains("orgCodeId=") || str.contains("systemId=")){
+			        	 if(str.contains("orgCodeId=")){
+				        	String filtered = str.replace("orgCodeId=","");
+				        	 systemCsrCode1.setOrgCodeId(Long.parseLong(filtered.replace("}","").trim()));
+				         }else if(str.contains("systemId=")){
+				        	 String filtered =  str.replace("systemId=","");
+				        	 systemCsrCode1.setSystemId(Long.parseLong(filtered.replace("}","").trim()));
+				         } 
+			         }
+			     } 
+			     systemCsrCodeList.add(systemCsrCode1);
+			}
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -248,12 +334,54 @@ public class User extends MainAbstractEntity {
 				else {
 					user.setPassword(password);
 				}
-				userId=jsonMap.get("userId");
+				userId=(String) jsonMap.get("userId").toString();
+				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
+				/* ******************************************* */
+				if(systemCsrCodeList != null){
+					for(int i = 0; i< systemCsrCodeList.size() ; i++){
+						SystemCsrCode systemCsrCode = (SystemCsrCode) systemCsrCodeList.get(i);
+						systemCsrCode.setCsrCode(systemCsrCode.getCsrCode());
+						systemCsrCode.setSystemId(systemCsrCode.getSystemId());
+						systemCsrCode.setOrgCodeId(systemCsrCode.getOrgCodeId());
+						boolean insertFlag = false;
+						String csrCode = systemCsrCode.getCsrCode();
+						long systeminfoId = systemCsrCode.getSystemId();
+						long orgCodeId = systemCsrCode.getOrgCodeId();
+						insertFlag = systemCsrCodeService.checkIfCsrCodeExists(systeminfoId,orgCodeId,csrCode);
+						if(insertFlag){
+							return Response.ok("Invalid Input CSR Code : "+ csrCode +" Already Exists." , MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();
+						}else{
+							SystemInfo varSystemInfo = new SystemInfo();
+							varSystemInfo.setId(systemCsrCode.getSystemId());
+							Org varOrg = new Org();
+							varOrg.setId(systemCsrCode.getOrgCodeId());
+							User varUser = new User();
+							varUser.setId(Long.parseLong(id));
+							systemCsrCode.setVarUser(varUser);
+							systemCsrCode.setVarSystemInfo(varSystemInfo);
+							systemCsrCode.setVarOrg(varOrg);
+							systemCsrCode.setIsActive("true");
+							systemCsrCode.setHasOwner("true");
+							systemCsrCode.setCreatedDate(createdDate);
+							systemCsrCode.setLastModifiedDate(new Date());
+							systemCsrCode.setLastModifiedBy(userId);
+							systemCsrCode.setCreatedBy(userId);
+							Long systemCsrCodeId = systemCsrCodeService.create(systemCsrCode);
+							if(systemCsrCodeOwner.isEmpty()){
+								systemCsrCodeOwner = systemCsrCodeOwner + String.valueOf(systemCsrCodeId);
+							}else{
+								systemCsrCodeOwner = systemCsrCodeOwner + ","+ String.valueOf(systemCsrCodeId);
+							}		
+						}
+					}
+				}
+				/* ******************************************* */
+				user.setSystemCsrCodeOwner(systemCsrCodeOwner);
 				user.setLastModifiedDate(new Date());
 				user.setCreatedDate(createdDate);
 				user.setLastModifiedBy(userId);
 				userService.update(user);
-				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
+				
 				systemCsrCodeService.updateOwnerStatus(systemCsrCodeOwner, oldSystemCsrCodeOwner, id);
 				responseMap.put("valueExist", false);
 				responseMap.put("user", user);

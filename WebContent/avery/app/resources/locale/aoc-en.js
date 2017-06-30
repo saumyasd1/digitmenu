@@ -519,7 +519,7 @@ Ext.define('AOC.lang.lit',{
     userExistMsg:'An entry already exist for given email address',
     csrCodeOwnerName:'CSR Code Owner name',
     csrNonCodeOwnerName:'CSR Non-Code Owner name',
-    csrCodeExist:'An entry already exist for selected CSR code',
+    csrCodeExist:'An entry already exist for selected System,Org Code & CSR code',
     tablist:{
     	taskManagerTabIndex:1,
     	emailQueueTabIndex:2,
@@ -531,5 +531,9 @@ Ext.define('AOC.lang.lit',{
 		siteManager:2,
 		CSR:3
 	},
-	noRboMsg:'No RBO configured for selected Partner'
+	noRboMsg:'No RBO configured for selected Partner',
+	
+	wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font> {0} </font>" class="fa fa-info-circle"></i>',
+	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|',
+	csrCode:'CSR Code'
 });

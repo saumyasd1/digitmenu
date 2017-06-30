@@ -12,6 +12,13 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	emptyText: AOCLit.emptyDataMsg,
 	partnerid:null,
 	partnerName:null,
+	
+	listeners: {
+        activate: 'onActivateGrid',
+        cellclick:'onCellClick',
+        rowcontextmenu:'onRowContextMenu'
+    },
+	store:Ext.data.StoreManager.lookup('partnerProductStoreId') != null ? Ext.data.StoreManager.lookup('partnerProductStoreId') : Ext.create('AOC.store.PartnerProductStore',{storeId:'partnerProductStoreId'}),
 	initComponent : function(){
 		var me=this;
 	    Ext.apply(this,{
@@ -33,13 +40,13 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     	var me=this;
         return [          
             {
-	            text : '',
-	            width:20,
-	            xtype:'actioncolumn',
-	  	        items:[{
-	  	    	  icon: AOC.config.Settings.buttonIcons.menuIcon,
-	  	    	  handler: 'onClickMenu'
-              }]
+            	header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
+	            width:40,
+	            menuDisabled: true,
+                align:'center',
+                sortable:false,
+                resizable:false,
+                renderer:Helper.actionColumnRenderer
             },
 		    {  
 	            text : AOCLit.partnerName,
@@ -48,7 +55,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
                 align:'left',
 	            flex:1.5,
 	            renderer: function(v,cell,rec){
-	                return me.partnerName;
+	            	return rec.get('varPartner').partnerName;
 	            }
 	            
    			},
@@ -120,28 +127,25 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     },
 	 buildtbar:function(){
 		var me=this;
-		return [{
-	    		    xtype: 'component',
-	    		    autoEl: {
-	    		    	tag: 'img',
-				        src: AOC.config.Settings.buttonIcons.backIcon
-	    		    },
-    		    	listeners: {
-	    		    	 el : {
-    		    		    click: 'backButton'
-	    		    	 }
-    		    	}
-	         	},
-	         	{
+		return [
+//		        {
+//	    		    xtype: 'component',
+//	    		    autoEl: {
+//	    		    	tag: 'img',
+//				        src: AOC.config.Settings.buttonIcons.backIcon
+//	    		    },
+//    		    	listeners: {
+//	    		    	 el : {
+//    		    		    click: 'backButton'
+//	    		    	 }
+//    		    	}
+//	         	},
+         		{
 	 				xtype : 'tbtext',
-	 				itemId : 'ProductlinetextItemId',
+	//	 				itemId : 'ProductlinetextItemId',
 	 				text : '<div style="color:"><b>Partner Data Structure-Manage</b></div>'
-                },
-                {
-                 	xtype :'tbspacer',
-                 	width :10
-                },
-                {
+	            },
+	            {
 	              text:'New',
 	              itemId : 'newPartner',
 	              handler:'createproductline',
@@ -153,7 +157,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	                		if(AOCRuntime.getUser().role == 3) obj.setHidden(true);
 	                	}
 	                }
-                },
+	            },
 	          '->',
 	          {
             	xtype: 'customsearchfield',
@@ -162,7 +166,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
     			width: 200,
     			emptyText: "Search by ProductLine"
 	          },
-				
 	          {
 				xtype:'button',
 				refrence:'advancesearchbutton',
@@ -183,13 +186,13 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 			}
 		 ];
 	},
-	 buildDockedItems : function(){
+	buildDockedItems : function(){
     	var me=this;
         return [
 			{
             xtype : 'pagingtoolbar',
             dock : 'bottom',
-            ui : 'darktoolbar',
+//            ui : 'darktoolbar',
             itemId:'pagingtoolbar',
             store:me.store,
             displayInfo:true,

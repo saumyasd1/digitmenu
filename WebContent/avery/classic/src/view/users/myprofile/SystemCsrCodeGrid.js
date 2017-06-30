@@ -122,7 +122,7 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
 						combob.store.load();
 					},
 					select:'onSelectCsrCode',
-					blur:'onSelectCsrCode'
+					blur:'onBlurCsrCode'
 				}
 			},
 			{

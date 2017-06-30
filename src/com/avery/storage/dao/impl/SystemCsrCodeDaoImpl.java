@@ -150,4 +150,28 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 		}
 		return flag;
 	}
+	
+	@Override
+	public boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode) {
+		Session session = null;
+		Criteria criteria = null;
+		boolean recordExists = false;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varSystemInfo", "varSystemInfo")
+					.createAlias("varOrg", "varOrg");
+			Conjunction conjunction = Restrictions.conjunction();
+			conjunction.add(Restrictions.eq("isActive", "true")
+			 ).add(Restrictions.eq("varSystemInfo.id", systemId)).add(Restrictions.eq("varOrg.id", orgId)
+			 ).add(Restrictions.eq("csrCode", csrCode));
+			criteria.add(conjunction);
+			if(criteria.list().size() > 0){
+				recordExists = true;
+			}
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Some error occured while fetching the data -> " + e);
+			throw new WebApplicationException();
+		}
+		return recordExists;
+	}
 }

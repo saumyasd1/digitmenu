@@ -32,7 +32,8 @@ Ext.define('AOC.config.Runtime',{
         currentUserSystemId:null,
         currentOrderQueueStatus:null,
         currentEmailQueueStatus:null,
-        currentOrderQueueCount:null
+        currentOrderQueueCount:null,
+        currentProductLineStatus:null
     },
     constructor : function(config){
         this.initConfig(config);

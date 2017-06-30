@@ -3,11 +3,364 @@ Ext.define('AOC.view.productline.ProductLineController', {
     alias: 'controller.productlineMain',
     runTime : AOC.config.Runtime,
     active:false,
-    requires:['AOC.view.advsearch.ProductLineAdvanceSearch','AOC.util.Helper'],
-    init: function () {
-        var me = this;
-        me.menuTpl = me.buildMenuTpl();
+    requires:['AOC.view.advsearch.ProductLineAdvanceSearch'],
+    
+    onActivateGrid:function(grid){
+    	grid.down('pagingtoolbar').bindStore(grid.getStore());
+    	
+    	 var userInfo = AOCRuntime.getUser(),
+	         siteId = userInfo.siteId;
+    	 
+    	 grid.getStore().proxy.extraParams = {
+	         siteId: siteId
+	     };
     },
+    
+    onCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e){
+    	if(cellIndex == 0){
+    		this.createContextMenu(record, e);
+    	}
+    },
+    onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
+    	e.stopEvent();
+    	this.createContextMenu(record, e);
+    },
+    
+    createContextMenu:function(record, e){
+    	var me = this;
+    	AOCRuntime.setCurrentProductLineStatus(record.get('active'));
+    	
+    	if(me.contextMenu){
+    		me.contextMenu.showAt(e.getXY());
+    	}else{
+    		me.contextMenu = Ext.create('AOC.view.ux.CustomMenu', {
+    			items:[
+    			    {
+    			    	text:'Edit',
+    			    	iconCls:'x-fa fa-pencil-square-o',
+    			    	itemIndex:0,
+    			    	itemId:'editPartnerDataStructureMenuItem'
+    			    }, {
+    			    	text:'View',
+    			    	iconCls:'x-fa fa-eye',
+    			    	itemIndex:1,
+    			    	itemId:'viewPartnerDataStructureMenuItem'
+    			    }, {
+    			    	text:'Delete',
+    			    	iconCls:'x-fa fa-trash-o',
+    			    	itemIndex:2,
+    			    	itemId:'deletePartnerDataStructureMenuItem'
+    			    },{
+    			    	text:'Deactive',
+    			    	iconCls:'x-fa fa-toggle-off',
+    			    	itemIndex:3,
+    			    	itemId:'activeDeactiveProductLineMenuItem'
+    			    }
+    			],
+    			listeners:{
+    				scope:me,
+    				click:me.onMenuItemClick,
+    				beforeshow:function(menu){
+    					var editBtn = menu.queryById('editPartnerDataStructureMenuItem'),
+	    					deleteBtn = menu.queryById('deletePartnerDataStructureMenuItem'),
+	    					activeDeactiveBtn = menu.queryById('activeDeactiveProductLineMenuItem'),
+	    					activeStatus = AOCRuntime.getCurrentProductLineStatus(record.get('active'));
+    					
+    					if(activeStatus){
+    						activeDeactiveBtn.setText('Deactive');
+    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-off');
+    					}else{
+    						activeDeactiveBtn.setText('Active');
+    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-on');
+    					}
+    					
+    					if (AOCRuntime.getUser().role == AOCLit.userRole.CSR) {
+    						editBtn.setDisabled(true);
+    						deleteBtn.setDisabled(true);
+ 	                    }else{
+ 	                    	editBtn.setDisabled(false);
+    						deleteBtn.setDisabled(false);
+ 	                    }
+    				}
+    			}
+    		});
+    		me.contextMenu.showAt(e.getXY());
+    	}
+    },
+    onMenuItemClick:function(menu, item, e){
+		var me = this;
+		if (item.itemIndex == 0) {
+	         me.onEditPartnerDataStructureItemClick();
+		} else if (item.itemIndex == 1) {
+	         me.onViewPartnerDataStructureItemClick();
+		}else if (item.itemIndex == 2) {
+	         me.onDeletePartnerDataStructureItemClick();
+		}else if(item.itemIndex == 3){
+			me.onActiveDeactiveItemClick();
+		}
+    },
+    onEditPartnerDataStructureItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0];
+    	
+    	me.openPartnerDatastructureWin(currentRecord, AOCLit.editPartProdLine, 'edit');
+    },
+    onViewPartnerDataStructureItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0];
+    	
+    	me.openPartnerDatastructureWin(currentRecord, 'View Partner Data Structure', 'view');
+    },
+    onDeletePartnerDataStructureItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0],
+			id=currentRecord.get('id');
+    	
+	    Ext.MessageBox.confirm('Confirm Action', AOCLit.delPartProdLine, function(response) {
+	    	if (response == 'yes') {
+				Ext.Ajax.request({
+					method:'DELETE',
+					url:applicationContext+'/rest/productLines/'+id,
+				    success : function(response, opts) {
+				    	Helper.showToast('Success', AOCLit.deleteProdLineMsg);
+				    	grid.store.load();
+				    },
+				    failure: function(response, opts) {}
+				});
+	    	}
+	    });
+    },
+    onActiveDeactiveItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0],
+			activeStatus = currentRecord.get('active'),
+			status;
+    	
+    	if(activeStatus){
+    		status = false;
+    	}else{
+    		status = true;
+    	}
+    	Ext.getBody().mask(AOCLit.pleaseWait);
+    	Ext.Ajax.request({
+    		method:'GET',
+    		url:applicationContext+'/rest/productLines/status',
+    		params:{id:currentRecord.get('id'), status:status},
+    		success:function(response){
+    			var data = JSON.parse(response.responseText);
+    			Helper.showToast('success', data.message);
+    			grid.store.load();
+    			Ext.getBody().unmask();
+    		},
+    		failure:function(){
+    			Ext.getBody().unmask();
+    		}
+    	});
+    },
+    
+    openPartnerDatastructureWin:function(record, title, mode){
+    	var data = this.processData(record);
+    	
+    	var me =this;
+		var win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+  			    mode:mode,
+  			    contextView: me.getView(),
+  			    title:title,
+  			    rec:data,
+//  			    productlineId:id,
+  			    listeners: {
+  			    	'close':function( panel, eOpts ) {
+  			    		Ext.getBody().unmask();
+  			    		win.destroy();
+  			    	}
+  			    }
+  			});
+			win.show();
+//    	Ext.Ajax.request({
+//			method:'GET',
+//			url:applicationContext+'/rest/productLines/'+id,
+//			success : function(response, opts) {
+//				var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
+//				var viewModel = Ext.create('Ext.app.ViewModel',{
+//					data:jsonString
+//				});
+//				var win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
+//	      			    mode:mode,
+//	      			    viewModel:viewModel,
+//	      			    title:title,
+//	      			    rec:jsonString,
+//	      			    productlineId:id,
+//	      			    listeners: {
+//	      			    	'close':function( panel, eOpts ) {
+//	      			    		Ext.getBody().unmask();
+//	      			    		win.destroy();
+//	      			    	}
+//	      			    }
+//	      			});
+//      			win.show();
+//	        },
+//	        failure: function(response, opts) {
+//	        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
+//            }
+//    	});
+    },
+    processData:function(record){
+    	var me = this;
+    	
+    	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
+    	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
+    	record.data.emailSubjectProductLineKeyword = record.get('emailSubjectProductLineMatch');
+    	record.data.emailBodyProductLineKeyword = record.get('emailBodyProductLineMatch');
+    	record.data.emailSubjectPartnerFactoryKeyword = record.get('emailSubjectPartnerMatch');
+    	record.data.emailBodyPartnerFactoryKeyword = record.get('emailBodyPartnerMatch');
+    	
+    	record.data.fileOrderRBOMatchRequired = record.get('fileRBOMatchRequired');
+    	record.data.fileOrderProductLineMatchRequired = record.get('fileProductLineMatchRequired');
+    	record.data.fileOrderPartnerRequired = record.get('fileOrderPartnerRequired');
+    	
+    	record.data.fileOrderRBOKeyword = me.getKeyword(record.get('fileOrderRBOMatch'));
+    	record.data.fileOrderRBOCellNo = me.getCellNo(record.get('fileOrderRBOMatch'));
+    	record.data.fileOrderProductLineKeyword =me.getKeyword(record.get('fileProductlineMatch'));
+    	record.data.fileOrderProductLineCellNo = me.getCellNo(record.get('fileProductlineMatch'));
+    	record.data.fileOrderPartnerFactoryKeyword = me.getKeyword(record.get('fileOrderPartnerMatch'));
+    	record.data.fileOrderPartnerFactoryCellNo = me.getCellNo(record.get('fileOrderPartnerMatch'));
+    	
+    	record.data.sizeValidationMultipleProductLine = me.getMultipleProductLine(record.get('sizeCheck'));
+    	record.data.fiberContentValidationMultipleProductLine = me.getMultipleProductLine(record.get('fiberpercentagecheck'));
+    	record.data.cooValidationMultipleProductLine = me.getMultipleProductLine(record.get('coocheck'));
+    	record.data.factoryMoqValidationMultipleProductLine = me.getMultipleProductLine(record.get('factoryMOQCheck'));
+    	
+    	record.data.sizeCheck = me.getSKUValidationRadioValue(record.get('sizeCheck'));
+    	record.data.fiberpercentagecheck = me.getSKUValidationRadioValue(record.get('fiberpercentagecheck'));
+    	record.data.coocheck = me.getSKUValidationRadioValue(record.get('coocheck'));
+    	record.data.factoryMOQCheck = me.getSKUValidationRadioValue(record.get('factoryMOQCheck'));
+    	
+    	delete record.get('emailSubjectRBOMatch');
+    	delete record.get('emailBodyRBOMatch');
+    	delete record.get('emailSubjectProductLineMatch');
+    	delete record.get('emailBodyProductLineMatch');
+    	delete record.get('emailSubjectPartnerMatch');
+    	delete record.get('emailBodyPartnerMatch');
+    	
+    	delete record.get('fileRBOMatchRequired');
+    	delete record.get('fileProductlineMatchRequired');
+    	delete record.get('fileOrderPartnerRequired');
+    	
+    	delete record.get('fileOrderRBOMatch');
+    	delete record.get('fileProductlineMatch');
+    	delete record.get('fileOrderPartnerMatch');
+    	
+    	return record;
+    },
+    getKeyword:function(str){
+    	if(!Ext.isEmpty(str)){
+	    	if(str.indexOf(';') > -1){
+		    	var splitArray = str.split(';');
+		    	return splitArray[0].split(':')[1];
+	    	}
+	    	return str.split(':')[1];
+    	}
+    	return '';
+    },
+    getCellNo:function(str){
+    	if(!Ext.isEmpty(str) && str.indexOf(';') > -1){
+	    	var splitArray = str.split(';');
+	    	return splitArray[1].split(':')[1];
+    	}
+    	return '';
+    },
+    getSKUValidationRadioValue:function(value){
+    	if(Ext.isEmpty(value)){
+    		return '';
+    	}
+    	if(value.indexOf('|') > -1){
+    		return '1';
+    	}
+    	return value;
+    },
+    getMultipleProductLine:function(value){
+    	if(value.indexOf('|') > -1){
+    		return value;
+    	}
+    	return '';
+    },
+    onWinAfterRender:function(win){
+    	var me = this,
+    		roleId = AOCRuntime.getUser().role,
+    		view = me.getView(),
+    		refs = me.getReferences(),
+    		form = refs['partnerProfileForm'];
+    	
+    	if(view.mode != 'add'){
+    		var detail = view.rec.data;
+    		detail.partnerName = detail.varPartner.id;
+    		detail.rboId = detail.rbo.id;
+    		delete detail.varPartner;
+    		delete detail.rbo;
+    		me.createGroupingField(detail);
+    		form.loadRecord(new Ext.data.Record(detail));
+    	}
+    	if(roleId == 3){
+			me.setReadOnlyView(true);s
+//			me.setButtonDisabled(true);
+		}
+    },
+    createGroupingField:function(detail){
+    	var me = this,
+    		refs = me.getReferences(),
+    		groupingField = refs['groupingFieldBox'];
+    	
+    	for(var prop in detail){
+    		if(prop.indexOf('groupingField') > -1){
+    			if(!Ext.isEmpty(detail[prop])){
+	    			groupingField.add({
+	    				xtype:'displayfield',
+	    				margin:'0 0 5 0',
+	    				value:detail[prop],
+	    				fieldLabel:prop,
+	    				labelSeparator:'',
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelWidth:150
+	    			});
+    			}
+    		}
+    	}
+    },
+    setReadOnlyView: function (readOnlyFlag) {
+	    var me = this,
+	        refs = me.getReferences(),
+	        partnerProfileForm = refs.partnerProfileForm,
+
+	        //Partner Profile section
+	        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
+	        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
+	        partnerRadioArray = partnerProfileForm.query('[xtype = radio]'),
+	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
+	        
+	        tempArray = [].concat(partnerTextFieldArray)
+	        			  .concat(partnerComboArray)
+    					  .concat(partnerRadioArray)
+    	                  .concat(partnerCheckboxArray);
+	    
+	    var len = tempArray.length;
+	    for (var i = 0; i < len; i++) {
+            tempArray[i].setReadOnly(readOnlyFlag);
+	    }
+	},
+	setButtonDisabled: function(readOnlyFlag){
+	    var me = this,
+	        refs = me.getReferences(),
+	        partnerProfileForm = refs.partnerProfileForm,
+	        tempArray = [].concat(advancedPropButton);
+	    var len = tempArray.length;
+	    for (var i = 0; i < len; i++) {
+	            tempArray[i].setDisabled(readOnlyFlag);
+	    }
+	},
     onSaveDetails:function(){
 		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
 		var me=this;
@@ -68,9 +421,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			createproductline.down('#messageFieldItemId').setValue(AOCLit.checkSystemChechBoxMsg).setVisible(true);
 			return false;
 		}
-		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData(),
-		attachmentRequiredField=this.getView().lookupReference('attachmentRequired');
-		var attachmentRequired=attachmentRequiredField.getValue().attachmentRequired;
+		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData();
+		//attachmentRequiredField=this.getView().lookupReference('attachmentRequired');
+//		var attachmentRequired=attachmentRequiredField.getValue().attachmentRequired;
 		if(editMode){
 			Id=createproductline.productlineId;
 			url=applicationContext+'/rest/productLines/'+Id;
@@ -145,7 +498,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
 				dataStructureName:dataModel.dataStructureName,
 				active:dataModel.active,
-				attachmentRequired:attachmentRequired,
+//				attachmentRequired:attachmentRequired,
 				fileOrderMatchCell:dataModel.fileOrderMatchCell,
 				fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
 				fileOrderMatch:dataModel.fileOrderMatch,
@@ -205,323 +558,125 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		        	createproductline.destroy();
               }
       	});
-		this.runTime.setWindowInEditMode(false);
     },
     onCancelDetails:function(){       
-	    Ext.getBody().unmask();
+//	    Ext.getBody().unmask();
 		this.getView().destroy();
-		this.runTime.setWindowInEditMode(false);
-		this.runTime.getActiveGrid().store.load();
 	},
 	createproductline:function(){
-		var viewModel=Ext.create('Ext.app.ViewModel',{});
-		
+		var me = this;
 		var win = Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-			viewModel:viewModel,
-			partnerName:this.getView().partnerName,
-			title:AOCLit.addPartProdLine
+//			viewModel:viewModel,
+			title:AOCLit.addPartProdLine,
+			contextView: me.getView()
 		});
 		win.show();
 	},
-	onClickMenu:function(obj,rowIndex,colIndex,item,e,record){
-	      var me = this;
-	      var callout = Ext.widget('callout', {
-	          cls: 'white more-menu-item-callout extra',
-	          html: me.menuTpl.apply(record.data),
-	          target: e.target,
-	          calloutArrowLocation: 'top-left',
-	          relativePosition: 't-b',
-	          relativeOffsets: [52,23],
-	          dismissDelay: 0,
-	          listeners: {
-                afterrender : me.onAfterRenderEditCallout,
-                edit: function(cmp){
-      				var data = e.record,
-      					id=data.id;
-      				
- 	      			 Ext.Ajax.request({
-						method:'GET',
-						url:applicationContext+'/rest/productLines/'+id,
-						success : function(response, opts) {
-							var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
-							var viewModel=Ext.create('Ext.app.ViewModel',{
-								data:jsonString
-							});
-							var win = Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
-		 	      			if(!win){
-								win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-			 	      				partnerName:me.getView().partnerName,
-			 	      			    editMode:true,
-			 	      			    viewModel:viewModel,
-			 	      			    title:AOCLit.editPartProdLine,
-			 	      			    rec:jsonString,
-			 	      			    productlineId:id,
-			 	      			    listeners: {
-					     	        	'close':function( panel, eOpts ) {
-					     	        		 Ext.getBody().unmask();
-					     	        		 win.destroy();
-					     	            }
-			 	      			    }
-			 	      			});
-		 	      			}
-		 	      			win.show();
-				        },
-				        failure: function(response, opts) {
-				        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
-		                }
-		        	});
- 	      			 
-                	callout.destroy();
-                },
-                viewPartnerDataStructure:function(cmp){
-      				var data = e.record,
-      					id=data.id;
- 	      			 Ext.Ajax.request({
-						method:'GET',
-						url:applicationContext+'/rest/productLines/'+id,
-						success : function(response, opts) {
-							var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
-							var viewModel=Ext.create('Ext.app.ViewModel',{
-								data:jsonString
-							});
-							var win = Ext.ComponentQuery.query('#createpartnerproductlineItemId')[0];//Added ItemId(16/07/2015)
-		 	      			if(!win){
-								win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-			 	      				partnerName:me.getView().partnerName,
-			 	      			    editMode:true,
-			 	      			    viewModel:viewModel,
-			 	      			    title:'View Partner Data Structure',
-			 	      			    rec:jsonString,
-			 	      			    productlineId:id,
-			 	      			    listeners: {
-					     	        	'close':function( panel, eOpts ) {
-					     	        		 Ext.getBody().unmask();
-					     	        		 win.destroy();
-					     	            }
-			 	      			    }
-			 	      			});
-		 	      			}
-		 	      			win.show();
-				        },
-				        failure: function(response, opts) {
-				        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
-		                }
-		        	});
-                	callout.destroy();
-                },
-                deleteproductline: function(cmp){
-                	var data=e.record;
-	     			    var id=data.id;
-	     			    var partner='';
-	     			    partner={id:id};
-	     			    Ext.MessageBox.confirm('Confirm Action', AOCLit.delPartProdLine, function(response) {
- 	     				  if (response == 'yes') {
- 	     					Ext.Ajax.request({
-     							method:'DELETE',
-     							url:applicationContext+'/rest/productLines/'+id,
-     				        success : function(response, opts) {
-     				        	Helper.showToast('Success',AOCLit.deleteProdLineMsg);
-     							me.runTime.getActiveGrid().store.load();
-     				        },
-     				        failure: function(response, opts) {
-     		                }
-     		        	});
- 	     				  }else if(response == 'no'){
- 	     				  return true;
- 	     				  }
- 	     				  });
- 		        	 this.destroy();
-                	callout.destroy();
-                }
-            }
-	      });
-	      callout.show();
-	      var heightAbove = e.getY() - Ext.getBody().getScroll().top,
-	        heightBelow = Ext.Element.getViewportHeight() - heightAbove;
-	  	    if(heightBelow<(callout.getHeight()+40)){
-	  		  callout.calloutArrowLocation='bottom-left'; 
-	  		  callout.relativePosition='b-t';
-	  		  callout.relativeOffsets = [55, 0];
-	  	  }else{
-	  		  callout.calloutArrowLocation='top-left'; 
-	  		  callout.relativePosition='t-b';
-	  		callout.relativeOffsets = [55, 5];
-	  	  }
-	        callout.show();
-	  },
-	  onAfterRenderEditCallout : function(cmp){
-	        var me = this;
-	        cmp.el.on({
-	            delegate: 'div.user-profile-menu-item',
-	            click    : function(e,element){
-	                var el    = Ext.get(element),
-	                    event = el.getAttribute('event');
-	                if (event && !el.hasCls('edit-menu-disabled')){
-//	                    cmp.destroy();
-	                    me.fireEvent(event);
-	                }
-	            }
-	        });
-	    },
-	  buildMenuTpl : function(){
-	    	  var me=this;
-	    	 return Ext.create('Ext.XTemplate',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;{[this.getEditAddressStyle(values)]};" class="user-profile-menu-callout {[this.isEditEnableDisable(values)]}"  event="edit">Edit</div>',
-	    	      '<div style="width: 140px !important;border-bottom: none !important;{[this.getViewAddressStyle(values)]}" class="user-profile-menu-callout {[this.isViewEnableDisable(values)]}"  event="viewPartnerDataStructure">View</div>',
-	              '<div style="width: 140px !important;border-bottom: none {[this.getDeleteAddressStyle(values)]}" class="user-profile-menu-callout {[this.isDeleteEnableDisable(values)]}"  event="deleteproductline">Delete</div>',
-	              {
-	    		 	isEditEnableDisable: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return 'order-profile-menu-item';
-	                    }
-	                    return 'user-profile-menu-item';
-	                },
-	                getEditAddressStyle: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return Helper.getDisableMenuItemStyle();
-	                    }
-	                    return Helper.getEnableMenuItemStyle();
-	                },
-	                isDeleteEnableDisable: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return 'order-profile-menu-item';
-	                    }
-	                    return 'user-profile-menu-item';
-	                },
-	                getDeleteAddressStyle: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return Helper.getDisableMenuItemStyle();
-	                    }
-	                    return Helper.getEnableMenuItemStyle();
-	                },
-	    		 	isViewEnableDisable: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return 'user-profile-menu-item';
-	                    }
-	                    return 'order-profile-menu-item';
-	                },
-	                getViewAddressStyle: function (v) {
-	                    if (AOCRuntime.getUser().role == 3) {
-	                        return Helper.getEnableMenuItemStyle();
-	                    }
-	                    return Helper.getDisableMenuItemStyle();
-	                } 
-	              }
-	          );
-	       },
-	  backButton:function() {
-		   var panel=Ext.ComponentQuery.query('#partnerPanel')[0];
-	       var partnerMangement=panel.down('#PartnerMangementitemId');
-	       panel.getLayout().setActiveItem(partnerMangement);
-	       partnerMangement.getView().refresh();
-	       partnerMangement.getStore().load();
-	},
 	getProductLineBasedOnSearch:function() {
-	 	var valueObj=this.getView().getForm().getValues(false,true);
-	 	var FromDate=this.lookupReference('fromDate').getValue();
-	 	var ToDate=this.lookupReference('toDate').getValue();
-	 	if(FromDate<=ToDate)
-	 		{
-    	if(!valueObj.hasOwnProperty('datecriteriavalue'))
-    		valueObj.datecriteriavalue='createdDate';
-		var parameters=Ext.JSON.encode(valueObj);
-    	var grid=this.runTime.getActiveGrid();
-    	var archievegrid=Ext.ComponentQuery.query('#productLineArchiveGrid')[0];
-    	if(archievegrid !=null)
-    		{
-    		var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
-    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
-			var grid=archievegrid;
-    		}
-    	var store=grid.store;
-        store.proxy.setFilterParam('query');
-        store.setRemoteFilter(true);
-        if (!store.proxy.hasOwnProperty('filterParam')) {
-            store.proxy.setFilterParam('query');
-        }
-        store.proxy.encodeFilters = function(filters) {
-            return filters[0].getValue();
-        };
-        store.filter({
-        	id: 'query',
-            property:'query',
-            value:parameters
-        });
-        grid.down('#clearadvanedsearch').show();
-        this.getView().up('window').hide();
-	 }
-	 	 else
-	 		 {
-			    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-	 	            productlinesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
-	 		 } 	
-	},
-	   HideMandatoryMessage:function(){
-		   var createproductline=this.getView();
-		   createproductline.down('#messageFieldItemId').setValue('').setVisible(true);
-		   createproductline.down('#messageFieldItemId').setHidden('true');
-	   },
-	   notifyByMessage:function()
-	    {
+	 	var valueObj = this.getView().getForm().getValues(false,true),
+	 		FromDate = this.lookupReference('fromDate').getValue(),
+	 		ToDate = this.lookupReference('toDate').getValue();
+	 	
+	 	if(FromDate<=ToDate){
+	    	if(!valueObj.hasOwnProperty('datecriteriavalue')){
+	    		valueObj.datecriteriavalue='createdDate';
+	    	}
+    		
+			var parameters = Ext.JSON.encode(valueObj);
+	    	var grid = AOCRuntime.getActiveGrid();
+	    	
+//	    	var archievegrid=Ext.ComponentQuery.query('#productLineArchiveGrid')[0];
+	    	if(archievegrid !=null){
+	    		var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
+	    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
+				var grid=archievegrid;
+			}
+	    	var store=grid.store;
+	        store.proxy.setFilterParam('query');
+	        store.setRemoteFilter(true);
+	        if (!store.proxy.hasOwnProperty('filterParam')) {
+	            store.proxy.setFilterParam('query');
+	        }
+	        store.proxy.encodeFilters = function(filters) {
+	            return filters[0].getValue();
+	        };
+	        store.filter({
+	        	id: 'query',
+	            property:'query',
+	            value:parameters
+	        });
+        	grid.down('#clearadvanedsearch').show();
+        	this.getView().up('window').hide();
+ 		}
+ 	 	else{
 		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-		    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
-	    },
-	    onSiteSelect:function(cmp){
-	    	Ext.getBody().mask('Loading....').dom.style.zIndex = '99999';;
-	    	var value=cmp.getValue(),me=this;
-	    	Ext.Ajax.request( {
-				method: 'GET',
-			    url : applicationContext+'/rest/system/site/'+value,
-			    success : function(response, opts) {
-			    	var systemContainer=me.getView().lookupReference('systemcontainer'),
-			    	itemsTobeRemoved=systemContainer.items.items;
-			    	for(var j=itemsTobeRemoved.length-1;j>=0;j--){
-			    		systemContainer.remove(itemsTobeRemoved[j]);
-			    	}
-			    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
-			    		if(jsonString.length==0){
-			    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
-			    			Ext.getBody().unmask();
-			    			return false;
-			    		}
-			    		checkboArray=new Array();
-			    		for(var i=0;i<jsonString.length;i++){
-			    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
-			    			systemcontainer.checkboArray.push(jsonString[i].name);
-			    		}
-			    		if(me.getView().editMode)
-			    		if(!cmp.changedBefore){
-			    			cmp.changedBefore=true;
-			    			var view=me.getView(),data=view.getViewModel().getData(),
-				    		listOrderSystemInfo=data.listOrderSystemInfo;
-				    		if(listOrderSystemInfo.length>0){
-				    			for(var i=0;i<listOrderSystemInfo.length;i++){
-				    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
-				    				checkBox=view.lookupReference(systemName);
-				    				checkBox.setValue(true),
-				    				orgGrid=view.lookupReference(systemName+'orgGrid');
-				    				var systemStore=Ext.data.StoreManager.lookup('systemStore'+system.id),orgStore=Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
-				    				systemStore.removeAll();
-				    				systemStore.add(listOrderSystemInfo[i]);
-				    				orgStore.removeAll();
-				    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
-					  	    		var index=orgStore.find('default',true);
-					  	    		  if(index!=-1){
-					  	    			orgGrid.getSelectionModel().select(index);
-					  	    		  }
-				    			}
-				    		}
-			    		}else{
-			    			cmp.siteChanged=true;		
+            productlinesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
+ 		 } 	
+	},
+	HideMandatoryMessage:function(){
+	   var createproductline=this.getView();
+	   createproductline.down('#messageFieldItemId').setValue('').setVisible(true);
+	   createproductline.down('#messageFieldItemId').setHidden('true');
+	},
+	notifyByMessage:function(){
+	    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
+	    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
+	},
+    onSiteSelect:function(cmp){
+    	Ext.getBody().mask('Loading....').dom.style.zIndex = '99999';;
+    	var value=cmp.getValue(),me=this;
+    	Ext.Ajax.request( {
+			method: 'GET',
+		    url : applicationContext+'/rest/system/site/'+value,
+		    success : function(response, opts) {
+		    	var systemContainer=me.getView().lookupReference('systemcontainer'),
+		    		itemsTobeRemoved=systemContainer.items.items;
+		    	
+		    	for(var j=itemsTobeRemoved.length-1;j>=0;j--){
+		    		systemContainer.remove(itemsTobeRemoved[j]);
+		    	}
+	    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
+	    		if(jsonString.length==0){
+	    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
+	    			Ext.getBody().unmask();
+	    			return false;
+	    		}
+	    		checkboArray=new Array();
+	    		for(var i=0;i<jsonString.length;i++){
+	    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
+	    			systemcontainer.checkboArray.push(jsonString[i].name);
+	    		}
+	    		if(me.getView().editMode){
+		    		if(!cmp.changedBefore){
+		    			cmp.changedBefore=true;
+		    			var view=me.getView(),data=view.getViewModel().getData(),
+			    		listOrderSystemInfo=data.listOrderSystemInfo;
+			    		if(listOrderSystemInfo.length>0){
+			    			for(var i=0;i<listOrderSystemInfo.length;i++){
+			    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
+			    				checkBox=view.lookupReference(systemName);
+			    				checkBox.setValue(true),
+			    				orgGrid=view.lookupReference(systemName+'orgGrid');
+			    				var systemStore=Ext.data.StoreManager.lookup('systemStore'+system.id),orgStore=Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
+			    				systemStore.removeAll();
+			    				systemStore.add(listOrderSystemInfo[i]);
+			    				orgStore.removeAll();
+			    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
+				  	    		var index=orgStore.find('default',true);
+				  	    		  if(index!=-1){
+				  	    			orgGrid.getSelectionModel().select(index);
+				  	    		  }
 			    			}
-			    	Ext.getBody().unmask();
-			  		
+			    		}
+		    		}else{
+		    			cmp.siteChanged=true;		
+	    			}
+	    		}
+		    	Ext.getBody().unmask();
 	        },
-	        failure: function(response, opts) {
-	        	
-          }
-	    })
-	    	},
+	        failure: function(response, opts) {}
+	    });
+	},
 	    	getSystemContainer:function(selectedSystemArray){
 	    		var me=this;
 	    		var response = Ext.Ajax.request({
@@ -652,14 +807,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    		}]
 	    	},
 	    	onProductLineChange:function(cmp,newValue){
-	    		var productLineCombo=this.getView().lookupReference('productLineTypeCombo'),
-	    		hiddenProductLineField=this.getView().lookupReference('productLineHidden');
+	    		var productLineCombo=this.getView().lookupReference('productLineTypeCombo');
+//	    		hiddenProductLineField=this.getView().lookupReference('productLineHidden');
 	    		if(newValue){
 	    			productLineCombo.show();
-	    			hiddenProductLineField.setValue(productLineCombo.getValue());
+//	    			hiddenProductLineField.setValue(productLineCombo.getValue());
 	    		}else{
 	    			productLineCombo.hide();
-	    			hiddenProductLineField.setValue('MIXED');
+//	    			hiddenProductLineField.setValue('MIXED');
 	    		}
 	    	},
 	    	onProductLineComboChange:function(cmp,value){
@@ -698,53 +853,53 @@ Ext.define('AOC.view.productline.ProductLineController', {
     				me.active = false;
     			}
 	    	},
-	    	afterWindowRender:function(win){
-	    		win.el.on('click', this.onElClick, this);
+	    	afterWindowRenders:function(win){
+	    		//win.el.on('click', this.onElClick, this);
 	    		
-	    		var me=this,roleId = AOCRuntime.getUser().role,
-	    			view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
-	    		mixed=view.lookupReference('mixed'),
-	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
-	    		me.setActiveBox(data.active);
-	    		
-	    		if(data.productLineType=='MIXED'){
-	    			unique.setValue(false);
-	    			mixed.setValue(true);
-	    			combo.hide();
-	    			productLineHidden.setValue('MIXED');
-	    		}else{
-	    			unique.setValue(true);
-	    			mixed.setValue(false);
-	    			combo.show();
-	    			productLineHidden.setValue(data.productLineType);
-	    		}
-	    		this.getView().lookupReference('attachmentRequired').setValue({
-	    			attachmentRequired : data.attachmentRequired
-                });
-	    		if(view.editMode){
-	    			var count=AOCLit.maxAdditionalFieldAllowed,highestValuePresent=1;
-	    			for(var j=count;j>1;j--){
-	    				if(me.hasAdditionFieldData(j)){
-	    					highestValuePresent=j;
-	    					break;
-	    				}
-	    			}
-	    			if(parseInt(highestValuePresent)>1){
-	    				view.additionalFieldCount=highestValuePresent;
-	    				for(var jj=highestValuePresent;jj>1;jj--){
-	    					view.down('#AdditionalData').add(this.getAttachementContainer(jj));
-	    		    		if(jj==AOCLit.maxAdditionalFieldAllowed){
-	    		    			view.down('#addMoreAdditionalFieldButton').disable();
-	    		    		}
-		    			}
-	    			}
-	    			var viewmodel=view.getViewModel();
-	    			view.setViewModel(viewmodel);
-	    			view.down('#AdditionalData').updateLayout();
-	    		}
+//	    		var me=this,roleId = AOCRuntime.getUser().role,
+//	    			view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
+//	    		mixed=view.lookupReference('mixed'),
+//	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
+//	    		//me.setActiveBox(data.active);
+//	    		
+//	    		if(data.productLineType=='MIXED'){
+//	    			unique.setValue(false);
+//	    			mixed.setValue(true);
+//	    			combo.hide();
+//	    			productLineHidden.setValue('MIXED');
+//	    		}else{
+//	    			unique.setValue(true);
+//	    			mixed.setValue(false);
+//	    			combo.show();
+//	    			productLineHidden.setValue(data.productLineType);
+//	    		}
+////	    		this.getView().lookupReference('attachmentRequired').setValue({
+////	    			attachmentRequired : data.attachmentRequired
+////                });
+//	    		if(view.editMode){
+//	    			var count=AOCLit.maxAdditionalFieldAllowed,highestValuePresent=1;
+//	    			for(var j=count;j>1;j--){
+//	    				if(me.hasAdditionFieldData(j)){
+//	    					highestValuePresent=j;
+//	    					break;
+//	    				}
+//	    			}
+//	    			if(parseInt(highestValuePresent)>1){
+//	    				view.additionalFieldCount=highestValuePresent;
+//	    				for(var jj=highestValuePresent;jj>1;jj--){
+//	    					view.down('#AdditionalData').add(this.getAttachementContainer(jj));
+//	    		    		if(jj==AOCLit.maxAdditionalFieldAllowed){
+////	    		    			view.down('#addMoreAdditionalFieldButton').disable();
+//	    		    		}
+//		    			}
+//	    			}
+//	    			var viewmodel=view.getViewModel();
+//	    			view.setViewModel(viewmodel);
+////	    			view.down('#AdditionalData').updateLayout();
+//	    		}
 	    		if(roleId == 3){
 	    			me.setReadOnlyView(true);
-	    			me.setButtonDisabled(true);
+	    			//me.setButtonDisabled(true);
 	    		}
 	    		
 	    	},
@@ -851,7 +1006,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	addMoreAdditionalField:function(cmp){
     		var view=this.getView(),count=parseInt(view.additionalFieldCount)+1;
     		view.additionalFieldCount=count;
-    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
+//    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
     		if(count==AOCLit.maxAdditionalFieldAllowed){
     			cmp.disable();
     		}
@@ -859,7 +1014,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	onRequiredChange:function (field, newValue, oldValue) {
     		var view=this.getView();
     		view.down('#AdditionalData').setDisabled(newValue);
-    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
+//    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
     		view.down('#attachmentFileNameExtension_1').allowBlank=newValue;
 		 },
 		 hasAdditionFieldData:function(count){
@@ -920,82 +1075,111 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        cmp.setValue('');
 	        cmp.orderedTriggers[0].hide();
 		 },
-			    setReadOnlyView: function (readOnlyFlag) {
-				    var me = this,
-				        refs = me.getReferences(),
-				        partnerProfileForm = refs.partnerProfileForm,
-				        advancePropertiesForm = refs.advancePropertiesForm,
-				        orderForm = refs.orderForm,
-				        additionalData = refs.additionalData,
-				        emailSubjectMatchForm = refs.emailSubjectMatchForm,
-				        emailMatchForm = refs.emailMatchForm,
-				        fileMatchForm =refs.fileMatchForm,
-				        fileMatchAdditionalForm = refs.fileMatchAdditionalForm,
-
-				        //Partner Profile section
-				        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
-				        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
-				        partnerRadioArray = partnerProfileForm.query('[xtype = radio]'),
-				        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
-				        //Advanced properties 
-				        advancedPropRadioGroup = advancePropertiesForm.query('[xtype = radiogroup]'),
-				        advancedPropButton = advancePropertiesForm.query('[xtype  = button]'),
-				        //Order Form
-				        orderTextFieldArray = orderForm.query('[xtype = textfield]'),
-				        orderComboArray 	= orderForm.query('[xtype = combo]'),
-				        //Additional data section
-				        additionalDataTextFieldArray = additionalData.query('[xtype = textfield]'),
-				        additionalDataComboArray = additionalData.query('[xtype = combo]'),
-				        //Email Subject Match section
-				        emailSubjectMatchTextFieldArray = emailSubjectMatchForm.query('[xtype = textfield]'),
-				        //Email Match form section
-				        emailMatchTextFieldArray = emailMatchForm.query('[xtype = textfield]'),
-				        //File Match form section
-				        fileMatchTextFieldArray = fileMatchForm.query('[xtype = textfield]'),
-				        //File Match additional form section 
-				        fileMatchAdditionalTextFieldArray = fileMatchAdditionalForm.query('[xtype = textfield]'),
-				        
-				        tempArray = [].concat(partnerTextFieldArray)
-				        			  .concat(partnerComboArray)
-			    					  .concat(partnerRadioArray)
-			    	                  .concat(partnerCheckboxArray)
-			    	                  .concat(advancedPropRadioGroup)
-			    	                  .concat(additionalDataComboArray)
-			    	                  .concat(orderTextFieldArray)
-			    	                  .concat(orderComboArray)
-			    	                  .concat(additionalDataTextFieldArray)
-			    	                  .concat(emailSubjectMatchTextFieldArray)
-			    	                  .concat(emailMatchTextFieldArray)
-			    	                  .concat(fileMatchTextFieldArray)
-			    	                  .concat(fileMatchAdditionalTextFieldArray);
-				    
-				    var len = tempArray.length;
-				    for (var i = 0; i < len; i++) {
-				            tempArray[i].setReadOnly(readOnlyFlag);
-				    }
-				},
-				setButtonDisabled: function(readOnlyFlag){
-				    var me = this,
-				        refs = me.getReferences(),
-				        partnerProfileForm = refs.partnerProfileForm,
-				        advancePropertiesForm = refs.advancePropertiesForm,
-				        advancedPropButton = advancePropertiesForm.query('[xtype  = button]'),
-				        tempArray = [].concat(advancedPropButton);
-				    var len = tempArray.length;
-				    for (var i = 0; i < len; i++) {
-				            tempArray[i].setDisabled(readOnlyFlag);
-				    }
+			    
+		onChangeOfSheetCellField:function( obj, newValue, oldValue, eOpts ){
+			var me = this,
+				refs = me.getView().getReferences(),
+				fileMatchForm = refs.fileMatchForm,
+				cmpReference = refs[obj.prevItemRef],
+				textfieldValue = cmpReference.getValue();
+			if(textfieldValue == '') {
+				cmpReference.allowBlank = false;
+				cmpReference.validateValue(textfieldValue);
+			} 
+		},
+	//////////////////////////
+		onSKUValidationRadioChange:function(field, newValue, oldValue){
+			var me = this,
+				refs= me.getReferences(),
+				cont = refs[field.type+'MultipleProductLine'];
+			
+			if(newValue[field.reference] == '1'){
+				cont.setDisabled(false);
 				
-				},
-				onChangeOfSheetCellField:function( obj, newValue, oldValue, eOpts ){
-					var me = this,
-						refs = me.getView().getReferences(),
-						fileMatchForm = refs.fileMatchForm,
-						cmpReference = refs[obj.prevItemRef],
-						textfieldValue = cmpReference.getValue();
-					if(textfieldValue == '') {
-						cmpReference.allowBlank = false;
-						cmpReference.validateValue(textfieldValue);
-					} 
+			}else{
+				cont.setDisabled(true);
+			}
+		},
+		onOrderWithAttachmentRadioChange:function(field, newValue, oldValue){
+			var me = this,
+				refs = me.getReferences(),
+				cont1 = refs.additionalAttachmentFileCont,
+				cont2 = refs.additionalAttachmentFileCont2,
+				cont3 = refs.additionalExcelCont;
+			
+			if(newValue.isOrderWithAttachment == 'true'){
+				cont1.setDisabled(false);
+				cont2.setDisabled(false);
+				cont3.setDisabled(false);
+			}else{
+				cont1.setDisabled(true);
+				cont2.setDisabled(true);
+				cont3.setDisabled(true);
+			}
+		},
+		onComboSelect:function(field, e){
+			Helper.selectCombo(field);
+		},
+		onWIComboBlur:function(field, e){
+			Helper.clearCombo(field, e);
+		},
+		onAttachmentRequiredRadioChange:function(field, newValue, oldValue){
+			var me = this,
+				refs = me.getReferences(),
+				attachmentFieldCont = refs.attachmentFieldCont;
+			
+			if(newValue.attachmentFileRequired == 'true'){
+				attachmentFieldCont.setDisabled(false);
+			}else{
+				attachmentFieldCont.setDisabled(true);
+			}
+		},
+		onOrderReceivedEmailBodyRadioChange:function(field, newValue, oldValue){
+			var me = this,
+				refs = me.getReferences(),
+				fieldType = field.fieldType,
+				fileNameField = refs[fieldType+'FileName'],
+				fileContentField = refs[fieldType+'FileContent'],
+				CellNo = refs[fieldType+'CellNo'],
+				EmailSubject = refs[fieldType+'EmailSubject'],
+				EmailBody = refs[fieldType+'EmailBody'];
+		
+			if(newValue['orderInMailBody'] == 'true'){
+				fileNameField.setDisabled(true);
+				fileContentField.setDisabled(true);
+				CellNo.setDisabled(true);
+				
+				EmailSubject.setDisabled(false);
+				EmailBody.setDisabled(false);
+				
+			}else{
+				fileNameField.setDisabled(false);
+				fileContentField.setDisabled(false);
+				CellNo.setDisabled(false);
+				
+				EmailSubject.setDisabled(true);
+				EmailBody.setDisabled(true);
+			}
+		},
+		onRequiredRadioChange:function(field, newValue, oldValue){
+			var me = this,
+				refs = me.getReferences(),
+				name = field.fieldName,
+				cont1 = refs[field.childCont1],
+				cont2 = refs[field.childCont2];
+			
+			if(newValue[name] == 'true'){
+				cont1.setDisabled(false);
+				cont2 ? cont2.setDisabled(false) : '';
+				if(cont1.xtype == 'textfield'){
+					cont1.allowBlank = false;
 				}
+			}else{
+				cont1.setDisabled(true);
+				cont2 ? cont2.setDisabled(true)  :'';
+				if(cont1.xtype == 'textfield'){
+					cont1.allowBlank = true;
+				}
+			}
+		}
 });

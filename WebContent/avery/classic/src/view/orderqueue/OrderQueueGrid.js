@@ -174,11 +174,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             sortable: true,
             dataIndex: 'siteName',
             align: 'left',
-            align: 'left',
             width: 150,
             listeners: {
             	'afterrender': Helper.siteNameForSuperAdminOnly
             }
+        },{
+            text: AOCLit.csrCode,
+            sortable: true,
+            dataIndex: 'csrCode',
+            align: 'left',
+            width: 150
         }, {
             text: AOCLit.receivedDate,
             align: 'left',
