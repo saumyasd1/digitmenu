@@ -16,4 +16,6 @@ public interface SystemCsrCodeDao extends GenericDao<SystemCsrCode, Long> {
 	public String getSystemcsrcodeById(String id);
 
 	public boolean updateOwnerStatus(String systemCsrCodeOwner, String oldSystemCsrCodeOwner, String userId);
+	
+	boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode);
 }
