@@ -686,7 +686,7 @@ public class OrderQueue extends MainAbstractEntity {
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getMaterialReport(@Context UriInfo ui, @Context HttpHeaders hh) {
 		
-		String time="", date="", entityId="";
+		String time="", date="", entityId="", rboName1="";
 		String timeZone = TimeZone.getDefault().getID();
 		List<SalesOrder> salesOrder = null;
 		try {
@@ -702,6 +702,10 @@ public class OrderQueue extends MainAbstractEntity {
 			if(queryParamMap.get("localTime") != null && !"".equals(queryParamMap.get("localTime")))
 			{
 				time=queryParamMap.get("localTime");
+			}
+			if(queryParamMap.get("rboName") != null && !"".equals(queryParamMap.get("rboName")))
+			{
+				rboName1=queryParamMap.get("rboName");
 			}
 			if(queryParamMap.get("localDate") != null && !"".equals(queryParamMap.get("localDate")))
 			{
@@ -722,7 +726,7 @@ public class OrderQueue extends MainAbstractEntity {
 			if (salesOrder == null)
 				throw new Exception("Unable to find Orders");
 			ByteArrayOutputStream outputStream;
-				outputStream = ExcelUtils.createOrderQueueMaterialReportExcelFile(salesOrder, timeZone,  time, date);
+				outputStream = ExcelUtils.createOrderQueueMaterialReportExcelFile(salesOrder, timeZone,  time, date, rboName1);
 			byte[] bytes = outputStream.toByteArray();
 			String fileName = "Material_Report .xls";
 			return Response

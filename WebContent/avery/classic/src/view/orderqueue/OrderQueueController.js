@@ -313,7 +313,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	var me = this,
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0],
-			emailTrack = currentRecord.get('emailQueueId'),
+			rboName = currentRecord.get('RBOName'),
 			orderTrack = currentRecord.get('id'),
 			localDate = new Date(),
 			date = localDate.getDate(),
@@ -324,13 +324,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			minutes = localDate.getMinutes(),
 			seconds = localDate.getSeconds(),
 			userTimeStamp = hours+':'+minutes+':'+seconds,
-			obj = {orderTrack:orderTrack,emailTrack:emailTrack,localDate:userDate, localTime:userTimeStamp },
+			obj = {orderTrack:orderTrack,localDate:userDate, localTime:userTimeStamp,rboName:rboName },
 			query = Ext.JSON.encode(obj);
-    	Ext.Ajax.request({
-    		url:applicationContext + '/rest/orders/download/materialreport',
-    		method:'GET',
-    		params:{query:query}
-    	});
+    	
+    	var form = Ext.create('Ext.form.Panel', { 
+            standardSubmit: true,   
+            url : applicationContext + '/rest/orders/download/materialreport'
+            
+        });
+     	form.submit({
+        	method : 'GET',
+        	params:{query:query}
+        });
     },
     onCancelMenuItemClick:function(){
     	var me = this,

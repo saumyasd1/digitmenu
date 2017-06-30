@@ -60,8 +60,8 @@ Ext.define('AOC.view.home.ReportFormController', {
 	
 	if(csrCombo.getValue() == 'all'){
 		csrStore.each(function(rec){
-			if(rec.get('id') != 'all' ){
-				csrName.push(rec.get('id'));
+			if(rec.get('userId') != 'all' ){
+				csrName.push(rec.get('userId'));
 			}
 		});
 	}else{
@@ -224,5 +224,6 @@ Ext.define('AOC.view.home.ReportFormController', {
 		    siteId: siteComboValue == 'all' ? 1 : siteComboValue
 		};
     	csrCombo.store.load();
+    	csrCombo.reset();
     }
 })

@@ -126,20 +126,20 @@ public class ExcelUtils {
 		
 	}
 
-	public static ByteArrayOutputStream createOrderQueueMaterialReportExcelFile(List<SalesOrder> salesOrder, String timeZone, String time, String date) throws IOException{
+	public static ByteArrayOutputStream createOrderQueueMaterialReportExcelFile(List<SalesOrder> salesOrder, String timeZone, String time, String date, String rboName) throws IOException{
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
         String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
 				 "CSR name", "Customer request date", "AOC Order Track #"};
         addHeader(sheet, headerNames);
-        getMaterialReportData(sheet, salesOrder, headerNames.length, timeZone, time, date);
+        getMaterialReportData(sheet, salesOrder, headerNames.length, timeZone, time, date, rboName);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
             workbook.write(outputStream);
 		return outputStream;
         }
 	}
 	
-	private static void getMaterialReportData(XSSFSheet sheet,List<SalesOrder> salesOrder,int headerLength, String timeZone, String time, String date1){
+	private static void getMaterialReportData(XSSFSheet sheet,List<SalesOrder> salesOrder,int headerLength, String timeZone, String time, String date1, String rboName){
 		try {
 			int rowIndex=1,columncellCount=0;
 			Iterator<SalesOrder> CrunchifyIterator = salesOrder.iterator();
@@ -155,9 +155,7 @@ public class ExcelUtils {
 				Cell cell2 = row.createCell(++columncellCount);
 				cell2.setCellValue(date1);
 				Cell cell3 = row.createCell(++columncellCount);
-				RBO rbo=obj.getVarRbo();
-				if(rbo != null)
-				cell3.setCellValue(rbo.getRboName());
+				cell3.setCellValue(rboName);
 				Cell cell4 = row.createCell(++columncellCount);
 				cell4.setCellValue(obj.getCustomerPoNumber());
 				Cell cell5 = row.createCell(++columncellCount);
