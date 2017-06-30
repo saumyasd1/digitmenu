@@ -118,6 +118,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varProductLine.productLineType"), "productLineType")
 				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
+				.add(Projections.property("csrCode"), "csrCode")
 				// .add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("listOrgInfo.orgCodeId"), "orgCodeId")

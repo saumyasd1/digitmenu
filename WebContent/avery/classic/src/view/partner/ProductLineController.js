@@ -171,7 +171,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
   			    contextView: me.getView(),
   			    title:title,
   			    rec:data,
-//  			    productlineId:id,
   			    listeners: {
   			    	'close':function( panel, eOpts ) {
   			    		Ext.getBody().unmask();
@@ -180,33 +179,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
   			    }
   			});
 			win.show();
-//    	Ext.Ajax.request({
-//			method:'GET',
-//			url:applicationContext+'/rest/productLines/'+id,
-//			success : function(response, opts) {
-//				var jsonString=Ext.JSON.decode(response.responseText).ProductLine;
-//				var viewModel = Ext.create('Ext.app.ViewModel',{
-//					data:jsonString
-//				});
-//				var win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-//	      			    mode:mode,
-//	      			    viewModel:viewModel,
-//	      			    title:title,
-//	      			    rec:jsonString,
-//	      			    productlineId:id,
-//	      			    listeners: {
-//	      			    	'close':function( panel, eOpts ) {
-//	      			    		Ext.getBody().unmask();
-//	      			    		win.destroy();
-//	      			    	}
-//	      			    }
-//	      			});
-//      			win.show();
-//	        },
-//	        failure: function(response, opts) {
-//	        	Helper.showToast('failure','Error while trying to fetch partner data structure information from the server.');
-//            }
-//    	});
     },
     processData:function(record){
     	var me = this;
@@ -361,16 +333,129 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	            tempArray[i].setDisabled(readOnlyFlag);
 	    }
 	},
+	onSaveBtnClick:function(btn){
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView(),
+			mode = view.mode,
+			currentRecord = view.rec.data,
+			form = refs['partnerProfileForm'].getForm(),
+			url,
+			method;
+		
+		if(mode == 'edit'){
+			method = 'PUT';
+			url = applicationContext+'/rest/productLines/'+currentRecord.id;
+		}else{
+			method = 'POST';
+			url = applicationContext+'/rest/productLines';
+		}
+		
+		if(form.isValid()){
+			var values = form.getValues();
+			var valueObj = me.processPostData(values);
+			
+			Ext.getBody().mask(AOCLit.pleaseWait);
+			
+			Ext.Ajax.request({
+				url: url,
+				method: method,
+				jsonData:valueObj,
+				success:function(response){
+					Ext.getBody().unmask();
+					var jsonData = JSON.parse(response.responseText);
+					if(jsonData.valueExist){
+						refs['dataStructureName'].focus();
+						Helper.showToast('validation', jsonData.message);
+						return
+					}
+					Helper.showToast('success', jsonData.message);
+					Ext.getBody().unmask();
+					view.currentView.store.load();
+					view.close();
+				},
+				failure:function(){
+					Ext.getBody().unmask();
+				}
+			});
+		}else{
+			Helper.showToast('validation', 'Please fill all mandatory(*) field');
+		}
+	},
+	processPostData:function(values){
+		var me = this,
+			obj = {};
+		
+		obj.emailSubjectRBOMatch = values.emailSubjectRBOKeyword;
+		obj.emailBodyRBOMatch = values.emailBodyRBOKeyword;
+		obj.emailSubjectProductLineMatch = values.emailSubjectProductLineKeyword;
+		obj.emailBodyProductLineMatch = values.emailBodyProductLineKeyword;
+		obj.emailSubjectPartnerMatch = values.emailSubjectPartnerFactoryKeyword;
+		obj.emailBodyPartnerMatch = values.emailBodyPartnerFactoryKeyword;
+		
+		obj.fileRBOMatchRequired = values.fileOrderRBOMatchRequired;
+		obj.fileProductLineMatchRequired = values.fileOrderProductLineMatchRequired;
+		obj.fileOrderPartnerRequired = values.fileOrderPartnerRequired;
+		
+		obj.fileOrderRBOMatch = me.getCombinedValue(values.fileOrderRBOKeyword, values.fileOrderRBOCellNo);
+		obj.fileProductlineMatch = me.getCombinedValue(values.fileOrderProductLineKeyword, values.fileOrderProductLineCellNo);
+		obj.fileOrderPartnerMatch = me.getCombinedValue(values.fileOrderPartnerFactoryKeyword, values.fileOrderPartnerFactoryCellNo);
+		
+		obj.sizeCheck = me.getSKUValidationValue(values.sizeValidationMultipleProductLine, values.sizeCheck);
+		obj.fiberpercentagecheck = me.getSKUValidationValue(values.fiberContentValidationMultipleProductLine, values.fiberpercentagecheck);
+		obj.coocheck = me.getSKUValidationValue(values.cooValidationMultipleProductLine, values.coocheck);
+		obj.factoryMOQCheck = me.getSKUValidationValue(values.factoryMoqValidationMultipleProductLine, values.factoryMOQCheck);
+		
+		delete values.emailSubjectRBOKeyword;
+		delete values.emailBodyRBOKeyword;
+		delete values.emailSubjectProductLineKeyword;
+		delete values.emailBodyProductLineKeyword;
+		delete values.emailSubjectPartnerFactoryKeyword;
+		delete values.emailBodyPartnerFactoryKeyword;
+		delete values.fileOrderRBOMatchRequired;
+		delete values.fileOrderProductLineMatchRequired;
+		delete values.fileOrderPartnerRequired;
+		delete values.fileOrderRBOKeyword;
+		
+		delete values.fileOrderRBOCellNo;
+		delete values.fileOrderProductLineKeyword;
+		delete values.fileOrderProductLineCellNo;
+		delete values.fileOrderPartnerFactoryKeyword;
+		delete values.fileOrderPartnerFactoryCellNo;
+		
+		delete values.sizeValidationMultipleProductLine;
+		delete values.fiberContentValidationMultipleProductLine;
+		delete values.cooValidationMultipleProductLine;
+		delete values.factoryMoqValidationMultipleProductLine;
+		
+		Ext.apply(values,obj)
+		return values;
+	},
+	getCombinedValue:function(keyword, cellNo){
+		if(keyword && cellNo){
+			return 'Value:'+keyword +';Cell:'+cellNo;
+		}else if(keyword){
+			return 'Value:'+keyword;
+		}
+	},
+	getSKUValidationValue:function(multipleLine, check){
+		if(!Ext.isEmpty(multipleLine)){
+			return multipleLine;
+		}
+		if(check == '1'){
+			return check
+		}
+		return '0';
+	},
     onSaveDetails:function(){
-		Ext.getBody().mask('Saving....').dom.style.zIndex = '99999';
-		var me=this;
-		var createproductline=this.getView();
-		refs = me.getReferences();
-		advancedPropertiesForm = refs.advancedPropertiesForm,
-		orderForm = refs.orderForm,
-		additionalData = refs.additionalData;
+		Ext.getBody().mask('Saving....');
+		
+		var me = this,
+			createproductline = me.getView(),
+			refs = me.getReferences();
 		
 		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
+		
 		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
 			var getFormInvalidFields=this.getFormInvalidFields(panel.getForm());
 			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
@@ -380,10 +465,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    	additionalData.expand();
 			return false;
 		}
+		
 		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
 		valueObj='',form=this.getView().down('form');
+		
 		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
-		length=0,hiddenProductLineField=this.getView().lookupReference('productLineHidden'),productLineValue=hiddenProductLineField.getValue();
+		
+		length=0,
+		hiddenProductLineField=this.getView().lookupReference('productLineHidden'),
+		productLineValue=hiddenProductLineField.getValue();
+		
 		var systemcontainer=this.getView().lookupReference('systemcontainer'),
 		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore,currentOrgGrid='',
 		currentSystemGrid='';
@@ -560,13 +651,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
       	});
     },
     onCancelDetails:function(){       
-//	    Ext.getBody().unmask();
 		this.getView().destroy();
 	},
 	createproductline:function(){
 		var me = this;
 		var win = Ext.create('AOC.view.partner.CreatePartnerProductLine',{
-//			viewModel:viewModel,
 			title:AOCLit.addPartProdLine,
 			contextView: me.getView()
 		});
@@ -583,13 +672,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    	}
     		
 			var parameters = Ext.JSON.encode(valueObj);
-	    	var grid = AOCRuntime.getActiveGrid();
+	    	//var grid = AOCRuntime.getActiveGrid();
 	    	
 //	    	var archievegrid=Ext.ComponentQuery.query('#productLineArchiveGrid')[0];
 	    	if(archievegrid !=null){
 	    		var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
 	    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
-				var grid=archievegrid;
+				var grid = archievegrid;
 			}
 	    	var store=grid.store;
 	        store.proxy.setFilterParam('query');
@@ -613,61 +702,41 @@ Ext.define('AOC.view.productline.ProductLineController', {
             productlinesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
  		 } 	
 	},
-	HideMandatoryMessage:function(){
-	   var createproductline=this.getView();
-	   createproductline.down('#messageFieldItemId').setValue('').setVisible(true);
-	   createproductline.down('#messageFieldItemId').setHidden('true');
-	},
-	notifyByMessage:function(){
-	    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-	    productlinesearch.down('#messageFieldItemId').setValue('').setVisible(true);
-	},
     onSiteSelect:function(cmp){
-    	Ext.getBody().mask('Loading....').dom.style.zIndex = '99999';;
-    	var value=cmp.getValue(),me=this;
+    	Ext.getBody().mask('Loading....');
+    	
+    	var me = this,
+    		value = cmp.getValue(),
+    		view = me.getView(),
+    		refs = me.getReferences();
+    	
     	Ext.Ajax.request( {
 			method: 'GET',
 		    url : applicationContext+'/rest/system/site/'+value,
 		    success : function(response, opts) {
-		    	var systemContainer=me.getView().lookupReference('systemcontainer'),
-		    		itemsTobeRemoved=systemContainer.items.items;
+		    	var systemContainer= refs['systemcontainer'],
+		    		jsonString = Ext.JSON.decode(response.responseText);
 		    	
-		    	for(var j=itemsTobeRemoved.length-1;j>=0;j--){
-		    		systemContainer.remove(itemsTobeRemoved[j]);
-		    	}
-	    		var jsonString=Ext.JSON.decode(response.responseText),systemcontainer=me.getView().lookupReference('systemcontainer');
-	    		if(jsonString.length==0){
+		    	systemContainer.removeAll();
+	    		
+	    		if(jsonString.length == 0){
 	    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
 	    			Ext.getBody().unmask();
 	    			return false;
 	    		}
-	    		checkboArray=new Array();
-	    		for(var i=0;i<jsonString.length;i++){
-	    			systemcontainer.add(me.getSystemContainer(jsonString[i]));
-	    			systemcontainer.checkboArray.push(jsonString[i].name);
+	    		
+	    		checkboArray = new Array();
+	    		var len = jsonString.length;
+	    		
+	    		for(var i = 0; i < len; i++){
+	    			systemContainer.add(me.getSystemContainer(jsonString[i]));
+	    			systemContainer.checkboArray.push(jsonString[i].name);
 	    		}
-	    		if(me.getView().editMode){
+	    		if(me.getView().mode == 'edit'){
 		    		if(!cmp.changedBefore){
-		    			cmp.changedBefore=true;
-		    			var view=me.getView(),data=view.getViewModel().getData(),
-			    		listOrderSystemInfo=data.listOrderSystemInfo;
-			    		if(listOrderSystemInfo.length>0){
-			    			for(var i=0;i<listOrderSystemInfo.length;i++){
-			    				var system=listOrderSystemInfo[i].varSystem,systemName=system.name,
-			    				checkBox=view.lookupReference(systemName);
-			    				checkBox.setValue(true),
-			    				orgGrid=view.lookupReference(systemName+'orgGrid');
-			    				var systemStore=Ext.data.StoreManager.lookup('systemStore'+system.id),orgStore=Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
-			    				systemStore.removeAll();
-			    				systemStore.add(listOrderSystemInfo[i]);
-			    				orgStore.removeAll();
-			    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
-				  	    		var index=orgStore.find('default',true);
-				  	    		  if(index!=-1){
-				  	    			orgGrid.getSelectionModel().select(index);
-				  	    		  }
-			    			}
-			    		}
+		    			cmp.changedBefore = true;
+		    			me.getListOrderSystemInfo(view);
+		    			
 		    		}else{
 		    			cmp.siteChanged=true;		
 	    			}
@@ -677,509 +746,332 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        failure: function(response, opts) {}
 	    });
 	},
-	    	getSystemContainer:function(selectedSystemArray){
-	    		var me=this;
-	    		var response = Ext.Ajax.request({
-		            async: false,
-		            url: applicationContext+'/rest/org/system/'+selectedSystemArray.id
-		        });
-		        var items = Ext.decode(response.responseText);
-		      	var jsonValue=Ext.decode(response.responseText),
-		      	totalOrgConfigured=jsonValue.length;
-		      	var orgStore=Ext.create('Ext.data.Store',{
-	    			fields:['id','name'],
-	    			storeId:'orgStore'+selectedSystemArray.id,
-	    			data:jsonValue
-		      	});
-		      	
-				var index = orgStore.find('id','none','', false, false, true),
-					obj = {id:'none',name:'None'};
-			
-				if(index == -1){
-					orgStore.insert(0,new Ext.data.Record(obj));
-				}
-	    		var systemStore=Ext.create('Ext.data.Store',{
-	    			fields:['id','name',{
-	    				name:'newRecord',defaultValue:false
-	    			}],
-	    			storeId:'systemStore'+selectedSystemArray.id,
-	    			data:[{
-	    				'csrname':'','systemId':selectedSystemArray.id,newRecord:true
-	    			}]
-	    		});
-	    		var orgOrderStore,data='';
-	    		if(totalOrgConfigured>0){
-	    			data={
-		    				'orgCodeId':jsonValue[0].id,'isDefault':true,newRecord:true
-	    			};
-	    		}
-	    			orgOrderStore=Ext.create('Ext.data.Store',{//isDefault
-		    			fields:['id','name',{
-		    				name:'newRecord',defaultValue:false
-		    			},{
-		    				name:'isDefault',mapping:'default'
-		    			}],
-		    			storeId:'orgInfoStore'+selectedSystemArray.id,
-		    			data:[data]
-		    		});
-	    			if(totalOrgConfigured==0)
-	    				orgOrderStore.removeAll();
-	    		
-	    		return [{
-	    			xtype:'checkbox',
-	    			border:true,
-	    			margin : '0 0 0 0',
-	    			anchor:'100%',
-	    			readOnly : AOCRuntime.getUser().role == 3 ? true : false,
-	    			boxLabel  : selectedSystemArray.name,
-	    			reference  : selectedSystemArray.name,
-                    name      :selectedSystemArray.name,
-                    inputValue: selectedSystemArray.id,
-                    listeners:{
-                    	'change':function(cmp,newValue){
-                    		var systemGrid=me.getView().lookupReference(cmp.name+'systemGrid'),
-                    		orgGrid=me.getView().lookupReference(cmp.name+'orgGrid'),
-                    		plusButton=me.getView().lookupReference(cmp.name+'Plus');
-                    		if(newValue){
-                    			orgGrid.show();
-                    			systemGrid.show();
-                    			plusButton.show();
-                    		}else{
-                    			orgGrid.hide();
-                    			systemGrid.hide();
-                    			plusButton.hide();
-                    		}
-                    	}
-                    }
-	    		},
-	    		{
-	    			xtype:'systemgrid',
-	    			store:systemStore,
-	    			border:true,
-	    			margin : '0 0 0 0',
-	    			style:'border:solid 1px #ccc;',
-	    			hidden:true,
-	    			anchor:'100%',
-	    			reference:selectedSystemArray.name+'systemGrid'
-	    		},
-	    		{
-	    			xtype:'fieldcontainer',
-	    			layout:'hbox',
-	    			border:false,
-	    			anchor:'100%',
-	    			margin : '1 0 0 0',
-	    			items:[
-    			       {
-			    			xtype:'orggrid',
-			    			flex:1,
-			    			store:orgOrderStore,
-			    			style:'border:solid 1px #ccc;',
-			    			orgStore:orgStore,
-			    			uniqueName:selectedSystemArray.name,
-			    			maxRecord:totalOrgConfigured,
-			    			hidden:true,
-			    			systemId:selectedSystemArray.id,
-			    			reference:selectedSystemArray.name+'orgGrid'
-    			       },
-    			       {
-		    				xtype:'button',
-		    				margin:'45 0 0 5',
-		    				maxRecord:totalOrgConfigured,
-		    				text:'Org',
-		    				cls:'blue-btn',
-		    				iconCls:'x-fa fa-plus',
-		    				reference:selectedSystemArray.name+'Plus',
-		    				hidden:true,
-		    				listeners:{
-		    					click:function(cmp, pressed){
-		    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
-		    							orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
-		    							//orgOrderStore.commit();
-		    						}else{
-		    							if(AOCRuntime.getUser().role != 3){
-		    								Helper.showToast('validation','Cannot add any more rows.');
-		    							}
-		    						}
-		    					}
-		    				}
-		    			}
-			        ]
-	    		}]
-	    	},
-	    	onProductLineChange:function(cmp,newValue){
-	    		var productLineCombo=this.getView().lookupReference('productLineTypeCombo');
-//	    		hiddenProductLineField=this.getView().lookupReference('productLineHidden');
-	    		if(newValue){
-	    			productLineCombo.show();
-//	    			hiddenProductLineField.setValue(productLineCombo.getValue());
-	    		}else{
-	    			productLineCombo.hide();
-//	    			hiddenProductLineField.setValue('MIXED');
-	    		}
-	    	},
-	    	onProductLineComboChange:function(cmp,value){
-	    		var hiddenProductLineField=this.getView().lookupReference('productLineHidden');
-	    		hiddenProductLineField.setValue(value);
-	    	},
-	    	onElClick:function(e, target){
-	    		var me = this,
-	    			el = Ext.get(target);
-	    		if(AOCRuntime.getUser().role != 3 ){
-		    		if(el.hasCls('activeBtn')){
-		    			var isToggleOff = el.hasCls('fa-toggle-off');
-		    			me.setActiveBox(isToggleOff, el);
-		    		  }
-	    		}
-	    	},
-	    	setActiveBox:function(active, el){
-	    		var me = this,
-	    			el = el ? el : Ext.get(Ext.select('.activeBtn').elements[0]),
-	    			onClass = 'activeBtn fa fa-toggle-on',
-    				offClass= 'activeBtn fa fa-toggle-off';
-	    		
-	    		if(active){
-    				el.removeCls(offClass);
-    				el.addCls(onClass);
-    				el.setStyle({
-    					color:'green'
-    				});
-    				me.active = true;
-    			}else{
-    				el.removeCls(onClass);
-    				el.addCls(offClass);
-    				el.setStyle({
-    					color:'#ccc'
-    				});
-    				me.active = false;
-    			}
-	    	},
-	    	afterWindowRenders:function(win){
-	    		//win.el.on('click', this.onElClick, this);
-	    		
-//	    		var me=this,roleId = AOCRuntime.getUser().role,
-//	    			view=this.getView(),combo=view.lookupReference('productLineTypeCombo'),unique=view.lookupReference('unique'),
-//	    		mixed=view.lookupReference('mixed'),
-//	    		productLineHidden=view.lookupReference('productLineHidden'),data=view.getViewModel().getData();
-//	    		//me.setActiveBox(data.active);
-//	    		
-//	    		if(data.productLineType=='MIXED'){
-//	    			unique.setValue(false);
-//	    			mixed.setValue(true);
-//	    			combo.hide();
-//	    			productLineHidden.setValue('MIXED');
-//	    		}else{
-//	    			unique.setValue(true);
-//	    			mixed.setValue(false);
-//	    			combo.show();
-//	    			productLineHidden.setValue(data.productLineType);
-//	    		}
-////	    		this.getView().lookupReference('attachmentRequired').setValue({
-////	    			attachmentRequired : data.attachmentRequired
-////                });
-//	    		if(view.editMode){
-//	    			var count=AOCLit.maxAdditionalFieldAllowed,highestValuePresent=1;
-//	    			for(var j=count;j>1;j--){
-//	    				if(me.hasAdditionFieldData(j)){
-//	    					highestValuePresent=j;
-//	    					break;
-//	    				}
-//	    			}
-//	    			if(parseInt(highestValuePresent)>1){
-//	    				view.additionalFieldCount=highestValuePresent;
-//	    				for(var jj=highestValuePresent;jj>1;jj--){
-//	    					view.down('#AdditionalData').add(this.getAttachementContainer(jj));
-//	    		    		if(jj==AOCLit.maxAdditionalFieldAllowed){
-////	    		    			view.down('#addMoreAdditionalFieldButton').disable();
-//	    		    		}
-//		    			}
-//	    			}
-//	    			var viewmodel=view.getViewModel();
-//	    			view.setViewModel(viewmodel);
-////	    			view.down('#AdditionalData').updateLayout();
-//	    		}
-	    		if(roleId == 3){
-	    			me.setReadOnlyView(true);
-	    			//me.setButtonDisabled(true);
-	    		}
-	    		
-	    	},
-	    	getFormInvalidFields: function(form) {
-	    	    var invalidFields = [];
-	    	    Ext.suspendLayouts();
-	    	    form.getFields().filterBy(function(field) {
-	    	        if (field.validate()) return;
-	    	        invalidFields.push(field.getName());
-	    	    });
-	    	    Ext.resumeLayouts(true);
-	    	    return invalidFields;
-	    	},
-	    	getAttachementContainer:function(count){
-	    		var nameCount='',allowBlank=false;
-	    			if(parseInt(count)>1){
-	    				nameCount=count;
-	    				allowBlank=true;
-	    			}
-	    		return [{
-					xtype: 'fieldcontainer',
-					flex:1,
-					layout: {
-						type:'hbox',
-						align:'stretch'
-					},
-					margin : '0 0 5 0',
-					defaults:{
-						labelSeparator:'',
-						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.topLabelAlign,
-						flex:1
-					},
-					items:[
-						{
-							xtype:'combo',
-							itemId:'FileType'+count,
-							name: 'fileType'+count,
-							allowBlank:allowBlank,
-							fieldLabel:'File Type ' +nameCount,
-							maxLength : '50',
-							store:[['pdf','pdf'],['xls/xlsx','xls/xlsx'],['txt','txt']],
-							bind:'{attachmentFileNameExtension_'+count+'}',
-							editable:false,
-							itemId:'attachmentFileNameExtension_'+count+'',
-							enforceMaxLength: true,
-							blankText:'File Type is required'
-						},
-						{
-							xtype:'textfield',
-							itemId:'FileNamePattern'+count,
-							name: 'fileNamePattern'+count,
-							fieldLabel:'File Name Pattern '+nameCount,
-							margin:'0 0 0 10',
-							bind:'{attachmentFileNamePattern_'+count+'}'
-						}
-					]
-				},
-				{
-					xtype: 'fieldcontainer',
-					layout: 'column',
-					flex:1,
-					layout: {
-						type:'hbox',
-						align:'stretch'
-					},
-					margin : '0 0 5 0',
-					defaults:{
-						labelSeparator:'',
-						labelStyle:Settings.config.defaultFormLabelStyle,
-						labelAlign:Settings.form.topLabelAlign,
-						flex:1
-					},
-					defaultType:'textfield',
-					items:[
-						{
-							itemId:'SchemaId'+count,
-							name: 'schemaId'+count,
-							bind:'{attachmentSchemaID_'+count+'}',
-							fieldLabel:'Schema ID '+nameCount
-						},
-						{
-							itemId:'MappingId'+count,
-							name: 'mappingId'+count,
-							bind:'{attachmentMappingID_'+count+'}',
-							fieldLabel:'Mapping ID '+nameCount,
-							margin:'0 0 0 10'
-						}
-					]
-				},
-				{
-					xtype:'textfield',
-					itemId:'MatchType'+count,
-					labelStyle:Settings.config.defaultFormLabelStyle,
-					labelAlign:Settings.form.topLabelAlign,
-					name: 'matchType'+count,
-					fieldLabel:'Match Type '+nameCount,
-					bind:'{attachmentIdentifier_'+count+'}',
-					labelSeparator:'',
-					width:450
-				}
-			]
-    	},
-    	addMoreAdditionalField:function(cmp){
-    		var view=this.getView(),count=parseInt(view.additionalFieldCount)+1;
-    		view.additionalFieldCount=count;
-//    		view.down('#AdditionalData').add(this.getAttachementContainer(count));
-    		if(count==AOCLit.maxAdditionalFieldAllowed){
-    			cmp.disable();
-    		}
-    	},
-    	onRequiredChange:function (field, newValue, oldValue) {
-    		var view=this.getView();
-    		view.down('#AdditionalData').setDisabled(newValue);
-//    		view.down('#addMoreAdditionalFieldButton').setDisabled(newValue);
-    		view.down('#attachmentFileNameExtension_1').allowBlank=newValue;
-		 },
-		 hasAdditionFieldData:function(count){
-			 var data=this.getView().getViewModel().getData(),
-			 attachmentFileNameExtension='attachmentFileNameExtension_'+count,
-			 attachmentFileNamePattern_='attachmentFileNamePattern_'+count,
-			 attachmentSchemaID_='attachmentSchemaID_'+count,
-			 attachmentMappingID_='attachmentMappingID_'+count,
-			 attachmentIdentifier_='attachmentIdentifier_'+count;
-			 if(!Ext.isEmpty(data[attachmentFileNameExtension] ) ||
-					 !Ext.isEmpty(data[attachmentFileNamePattern_] ) ||
-					 	!Ext.isEmpty(data[attachmentSchemaID_] ) ||
-					 		!Ext.isEmpty(data[attachmentMappingID_] ) ||
-					 			!Ext.isEmpty(data[attachmentIdentifier_] )){
-				 return true;
-			 }
-			 return false;
-		 },
-		 openAdvancedSearchWindow:function(){
-		    	var advanceSearchWin = Ext.create('AOC.view.advsearch.ProductLineAdvanceSearch',{contextGrid:this.getView()});
-		    	if(!advanceSearchWin.isVisible()){
-		    		advanceSearchWin.show();
-		    	}
-		 },
-		 onSearchBtnClicked:function(btn){
-	    	  var view = this.getView(),
-	    	  	  refs = view.getReferences(),
-	    	  	  form = refs.productlineAdvanceSearchForm.getForm(),
-	    	  	  values = form.getValues();
-	    	  	  values.datecriteriavalue = 'createdDate';
-	    	  	  store = view.contextGrid.store;
-	              Helper.advancedSearch(view,values);
-		 },
-		 clearAdvancedSearch:function(btn){
-	        var grid = this.getView();
-	        var store = grid.store;
-	        store.clearFilter();
-	        store.loadPage(1);
-	        btn.hide();
-		 },
-		 getQuickSearchResults: function(cmp) {
-	    	var view = this.getView(),
-	        value = cmp.getValue();
-	        Helper.quickSearch(view,{productLineType: value}),
-	        cmp.orderedTriggers[0].show();
-		 },
-		 getSearchResults: function(cmp, e) {
-	        var me = this;
-	        if (e.getKey() == e.ENTER) {
-	            me.getQuickSearchResults(cmp);
-	        }
-		 },
-		 clearSearchResults: function(cmp) {
-	        var grid = this.getView();
-	        var store = grid.store;
-	        store.clearFilter();
-	        store.loadPage(1);
-	        cmp.setValue('');
-	        cmp.orderedTriggers[0].hide();
-		 },
-			    
-		onChangeOfSheetCellField:function( obj, newValue, oldValue, eOpts ){
-			var me = this,
-				refs = me.getView().getReferences(),
-				fileMatchForm = refs.fileMatchForm,
-				cmpReference = refs[obj.prevItemRef],
-				textfieldValue = cmpReference.getValue();
-			if(textfieldValue == '') {
-				cmpReference.allowBlank = false;
-				cmpReference.validateValue(textfieldValue);
-			} 
-		},
-	//////////////////////////
-		onSKUValidationRadioChange:function(field, newValue, oldValue){
-			var me = this,
-				refs= me.getReferences(),
-				cont = refs[field.type+'MultipleProductLine'];
-			
-			if(newValue[field.reference] == '1'){
-				cont.setDisabled(false);
-				
-			}else{
-				cont.setDisabled(true);
-			}
-		},
-		onOrderWithAttachmentRadioChange:function(field, newValue, oldValue){
-			var me = this,
-				refs = me.getReferences(),
-				cont1 = refs.additionalAttachmentFileCont,
-				cont2 = refs.additionalAttachmentFileCont2,
-				cont3 = refs.additionalExcelCont;
-			
-			if(newValue.isOrderWithAttachment == 'true'){
-				cont1.setDisabled(false);
-				cont2.setDisabled(false);
-				cont3.setDisabled(false);
-			}else{
-				cont1.setDisabled(true);
-				cont2.setDisabled(true);
-				cont3.setDisabled(true);
-			}
-		},
-		onComboSelect:function(field, e){
-			Helper.selectCombo(field);
-		},
-		onWIComboBlur:function(field, e){
-			Helper.clearCombo(field, e);
-		},
-		onAttachmentRequiredRadioChange:function(field, newValue, oldValue){
-			var me = this,
-				refs = me.getReferences(),
-				attachmentFieldCont = refs.attachmentFieldCont;
-			
-			if(newValue.attachmentFileRequired == 'true'){
-				attachmentFieldCont.setDisabled(false);
-			}else{
-				attachmentFieldCont.setDisabled(true);
-			}
-		},
-		onOrderReceivedEmailBodyRadioChange:function(field, newValue, oldValue){
-			var me = this,
-				refs = me.getReferences(),
-				fieldType = field.fieldType,
-				fileNameField = refs[fieldType+'FileName'],
-				fileContentField = refs[fieldType+'FileContent'],
-				CellNo = refs[fieldType+'CellNo'],
-				EmailSubject = refs[fieldType+'EmailSubject'],
-				EmailBody = refs[fieldType+'EmailBody'];
+	getListOrderSystemInfo:function(view){
+		var refs = view.getReferences();
 		
-			if(newValue['orderInMailBody'] == 'true'){
-				fileNameField.setDisabled(true);
-				fileContentField.setDisabled(true);
-				CellNo.setDisabled(true);
-				
-				EmailSubject.setDisabled(false);
-				EmailBody.setDisabled(false);
-				
-			}else{
-				fileNameField.setDisabled(false);
-				fileContentField.setDisabled(false);
-				CellNo.setDisabled(false);
-				
-				EmailSubject.setDisabled(true);
-				EmailBody.setDisabled(true);
-			}
-		},
-		onRequiredRadioChange:function(field, newValue, oldValue){
-			var me = this,
-				refs = me.getReferences(),
-				name = field.fieldName,
-				cont1 = refs[field.childCont1],
-				cont2 = refs[field.childCont2];
+		Ext.getBody().mask(AOCLit.pleaseWait);
+		Ext.Ajax.request({
+			url:applicationContext+'/rest/',
+			mathod:'GET',
+			params:{id: view.rec.get('id')},
+			success:function(response){
+				var jsonData = JSON.parse(response.responseText),
+					listOrderSystemInfo = jsonData.listOrderSystemInfo;
 			
-			if(newValue[name] == 'true'){
-				cont1.setDisabled(false);
-				cont2 ? cont2.setDisabled(false) : '';
-				if(cont1.xtype == 'textfield'){
-					cont1.allowBlank = false;
-				}
-			}else{
-				cont1.setDisabled(true);
-				cont2 ? cont2.setDisabled(true)  :'';
-				if(cont1.xtype == 'textfield'){
-					cont1.allowBlank = true;
-				}
+	    		if(listOrderSystemInfo.length > 0){
+	    			var listLen = listOrderSystemInfo.length;
+	    			
+	    			for(var i = 0; i < listLen; i++){
+	    				var system = listOrderSystemInfo[i].varSystem,
+	    					systemName = system.name,
+	    					checkBox = refs[systemName],
+	    					orgGrid = refs[systemName+'orgGrid'];
+	    				
+	    				checkBox.setValue(true);
+	    				
+	    				var systemStore = Ext.data.StoreManager.lookup('systemStore'+system.id),
+	    					orgStore = Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
+	    				
+	    				systemStore.removeAll();
+	    				orgStore.removeAll();
+	    				
+	    				systemStore.add(listOrderSystemInfo[i]);
+	    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
+	    				
+		  	    		var index = orgStore.find('default',true);
+		  	    		if(index!=-1){
+		  	    			orgGrid.getSelectionModel().select(index);
+		  	    		}
+	    			}
+	    		}
+	    		Ext.getBody().unmask();
+			},
+			failure:function(){
+				Ext.getBody().unmask();
+			}
+		});
+	},
+	getSystemContainer:function(selectedSystemArray){
+		var me = this,
+			response = Ext.Ajax.request({
+	            async: false,
+	            url: applicationContext+'/rest/org/system/'+selectedSystemArray.id
+	        });
+		
+      	var jsonValue = Ext.decode(response.responseText),
+      		totalOrgConfigured = jsonValue.length;
+      	
+      	var orgStore = Ext.create('Ext.data.Store',{
+				fields:['id','name'],
+				storeId:'orgStore'+selectedSystemArray.id,
+				data:jsonValue
+	      	}),
+	      	
+	      	systemStore = Ext.create('Ext.data.Store',{
+				fields:['id','name',{
+					name:'newRecord', defaultValue:false
+				}],
+				storeId:'systemStore'+selectedSystemArray.id,
+				data:[{
+					'csrname':'','systemId':selectedSystemArray.id, newRecord:true
+				}]
+			});
+      	
+		var index = orgStore.find('id','none','', false, false, true),
+			obj = {id:'none', name:'None'};
+	
+		if(index == -1){
+			orgStore.insert(0,new Ext.data.Record(obj));
+		}
+		
+		var orgOrderStore,
+			data='';
+		
+		if(totalOrgConfigured > 0){
+			data={
+				orgCodeId:jsonValue[0].id,
+				isDefault:true,
+				newRecord:true
+			};
+		}
+		orgOrderStore=Ext.create('Ext.data.Store',{//isDefault
+			fields:['id','name',{
+				name:'newRecord', defaultValue:false
+			},{
+				name:'isDefault', mapping:'default'
+			}],
+			storeId:'orgInfoStore'+selectedSystemArray.id,
+			data:[data]
+		});
+		
+		if(totalOrgConfigured == 0){
+			orgOrderStore.removeAll();
+		}
+		
+		return [{
+			xtype:'checkbox',
+			margin : '0 0 5 0',
+			anchor:'100%',
+			readOnly: AOCRuntime.getUser().role == 3 ? true : false,
+			boxLabel: selectedSystemArray.name,
+			reference: selectedSystemArray.name,
+            name:selectedSystemArray.name,
+            inputValue: selectedSystemArray.id,
+            listeners:{
+            	'change':function(cmp, newValue){
+            		var systemGrid = refs[cmp.name+'systemGrid'],
+            			orgGrid = refs[cmp.name+'orgGrid'],
+            			plusButton = refs[cmp.name+'Plus'];
+            		
+            		if(newValue){
+            			orgGrid.show();
+            			systemGrid.show();
+            			plusButton.show();
+            		}else{
+            			orgGrid.hide();
+            			systemGrid.hide();
+            			plusButton.hide();
+            		}
+            	}
+            }
+		},
+		{
+			xtype:'systemgrid',
+			store:systemStore,
+			frame:true,
+			margin : '0 0 0 0',
+			hidden:true,
+			anchor:'100%',
+			reference:selectedSystemArray.name+'systemGrid'
+		},
+		{
+			xtype:'fieldcontainer',
+			layout:'hbox',
+			anchor:'100%',
+			margin : '1 0 0 0',
+			items:[
+		       {
+	    			xtype:'orggrid',
+	    			flex:1,
+	    			store:orgOrderStore,
+	    			orgStore:orgStore,
+	    			uniqueName:selectedSystemArray.name,
+	    			maxRecord:totalOrgConfigured,
+	    			hidden:true,
+	    			systemId:selectedSystemArray.id,
+	    			reference:selectedSystemArray.name+'orgGrid'
+		       },
+		       {
+    				xtype:'button',
+    				margin:'45 0 0 5',
+    				maxRecord:totalOrgConfigured,
+    				text:'Org',
+    				cls:'blue-btn',
+    				iconCls:'x-fa fa-plus',
+    				reference:selectedSystemArray.name+'Plus',
+    				hidden:true,
+    				listeners:{
+    					click:function(cmp, pressed){
+    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
+								orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
+    						}else{
+    							if(AOCRuntime.getUser().role != 3){
+    								Helper.showToast('validation','Cannot add any more rows.');
+    							}
+    						}
+    					}
+    				}
+    			}
+	        ]
+		}];
+	 },
+	 getFormInvalidFields: function(form) {
+		 var invalidFields = [];
+		 Ext.suspendLayouts();
+		 form.getFields().filterBy(function(field) {
+	        if (field.validate()) return;
+	        invalidFields.push(field.getName());
+		 });
+		 Ext.resumeLayouts(true);
+		 return invalidFields;
+	 },
+	 /////////////Advance Search
+	 openAdvancedSearchWindow:function(){
+	    	var advanceSearchWin = Ext.create('AOC.view.advsearch.ProductLineAdvanceSearch',{contextGrid:this.getView()});
+	    	if(!advanceSearchWin.isVisible()){
+	    		advanceSearchWin.show();
+	    	}
+	 },
+	 onSearchBtnClicked:function(btn){
+    	  var view = this.getView(),
+    	  	  refs = view.getReferences(),
+    	  	  form = refs.productlineAdvanceSearchForm.getForm(),
+    	  	  values = form.getValues();
+    	  	  values.datecriteriavalue = 'createdDate';
+    	  	  store = view.contextGrid.store;
+              Helper.advancedSearch(view,values);
+	 },
+	 clearAdvancedSearch:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
+	 },
+	 getQuickSearchResults: function(cmp) {
+    	var view = this.getView(),
+        value = cmp.getValue();
+        Helper.quickSearch(view,{productLineType: value}),
+        cmp.orderedTriggers[0].show();
+	 },
+	 getSearchResults: function(cmp, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.getQuickSearchResults(cmp);
+        }
+	 },
+	 clearSearchResults: function(cmp) {
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        cmp.setValue('');
+        cmp.orderedTriggers[0].hide();
+	 },
+			    
+	//////////////////////////
+	 onSKUValidationRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs= me.getReferences(),
+			cont = refs[field.type+'MultipleProductLine'];
+		
+		if(newValue[field.reference] == '1'){
+			cont.setDisabled(false);
+			
+		}else{
+			cont.setDisabled(true);
+		}
+	 },
+	 onOrderWithAttachmentRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			cont1 = refs.additionalAttachmentFileCont,
+			cont2 = refs.additionalAttachmentFileCont2,
+			cont3 = refs.additionalExcelCont;
+		
+		if(newValue.isOrderWithAttachment == 'true'){
+			cont1.setDisabled(false);
+			cont2.setDisabled(false);
+			cont3.setDisabled(false);
+		}else{
+			cont1.setDisabled(true);
+			cont2.setDisabled(true);
+			cont3.setDisabled(true);
+		}
+	 },
+	 onComboSelect:function(field, e){
+		Helper.selectCombo(field);
+	 },
+	 onWIComboBlur:function(field, e){
+		Helper.clearCombo(field, e);
+	 },
+	 onAttachmentRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			attachmentFieldCont = refs.attachmentFieldCont;
+		
+		if(newValue.attachmentFileRequired == 'true'){
+			attachmentFieldCont.setDisabled(false);
+		}else{
+			attachmentFieldCont.setDisabled(true);
+		}
+	 },
+	 onOrderReceivedEmailBodyRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			fieldType = field.fieldType,
+			fileNameField = refs[fieldType+'FileName'],
+			fileContentField = refs[fieldType+'FileContent'],
+			CellNo = refs[fieldType+'CellNo'],
+			EmailSubject = refs[fieldType+'EmailSubject'],
+			EmailBody = refs[fieldType+'EmailBody'];
+	
+		if(newValue['orderInMailBody'] == 'true'){
+			fileNameField.setDisabled(true);
+			fileContentField.setDisabled(true);
+			CellNo.setDisabled(true);
+			
+			EmailSubject.setDisabled(false);
+			EmailBody.setDisabled(false);
+			
+		}else{
+			fileNameField.setDisabled(false);
+			fileContentField.setDisabled(false);
+			CellNo.setDisabled(false);
+			
+			EmailSubject.setDisabled(true);
+			EmailBody.setDisabled(true);
+		}
+	 },
+	 onRequiredRadioChange:function(field, newValue, oldValue){
+		var me = this,
+			refs = me.getReferences(),
+			name = field.fieldName,
+			cont1 = refs[field.childCont1],
+			cont2 = refs[field.childCont2];
+		
+		if(newValue[name] == 'true'){
+			cont1.setDisabled(false);
+			cont2 ? cont2.setDisabled(false) : '';
+			if(cont1.xtype == 'textfield'){
+				cont1.allowBlank = false;
+			}
+		}else{
+			cont1.setDisabled(true);
+			cont2 ? cont2.setDisabled(true)  :'';
+			if(cont1.xtype == 'textfield'){
+				cont1.allowBlank = true;
 			}
 		}
+	 }
 });
