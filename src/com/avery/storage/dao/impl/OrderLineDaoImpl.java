@@ -28,6 +28,7 @@ import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.SystemInfo;
 import com.avery.utils.ApplicationUtils;
+import com.avery.utils.MapperUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -98,7 +99,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	
 	@Override
 	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId, String orgCodeId){
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = MapperUtils.getObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
 		String[] objArray=jsonData.split("@@@");
@@ -235,7 +236,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	@Override
 	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId){
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = MapperUtils.getObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
 		boolean insertBillAddress=false,insertShipAddress=false,insertAddress=true;

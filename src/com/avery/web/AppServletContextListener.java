@@ -1,7 +1,5 @@
 package com.avery.web;
 
-import java.util.TimeZone;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -32,7 +30,7 @@ public class AppServletContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
 			String appWorkingDirPath = null;
-			TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+//			TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 			// fetch via system environment variable
 			appWorkingDirPath = System
 					.getenv(PropertiesConstants.PROPERTIES_APP_WORKING_DIR_PATH);
