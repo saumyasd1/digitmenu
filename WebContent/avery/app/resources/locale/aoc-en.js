@@ -534,5 +534,6 @@ Ext.define('AOC.lang.lit',{
 	noRboMsg:'No RBO configured for selected Partner',
 	
 	wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font> {0} </font>" class="fa fa-info-circle"></i>',
-	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|'
+	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|',
+	csrCode:'CSR Code'
 });
