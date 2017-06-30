@@ -412,7 +412,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		csrCodeCombo = refs.csrCode,
     		codeOwner = refs.codeOwner,
     		hasOwner = combo.getSelectedRecord().data.hasOwner,
-    		insertBtn = refs.insertBtn;
+    		insertBtn = refs.insertBtn,
+    		systemComboValue = systemCombo.getRawValue(),
+    		orgCodeComboValue = orgCodeCombo.getRawValue();
     	
     	codeOwner.setDisabled(false);
     	
@@ -426,7 +428,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		insertBtn.setDisabled(false);
     	}
     	systemCsrCodeGridStore.each(function(rec, index){
-    		if(rec.get('csrCode') == csrComboValue ){
+    		if(rec.get('csrCode') == csrComboValue && rec.get('orgCode') == orgCodeComboValue  && rec.get('systemName') == systemComboValue ){
     			Helper.showToast('failure',AOCLit.csrCodeExist);
     			systemCombo.reset();
     			orgCodeCombo.reset();
@@ -546,72 +548,25 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		}
     	}
     },
-//    insertDataIntoGrid:function(){
-//    	var me = this,
-//    		view = me.getView(),
-//			systemCsrCodeGridView = me.getReferences().systemCsrCodeGrid,
-//			systemCsrCodeGridStore = systemCsrCodeGridView.store,
-//			addEditUserForm = me.getReferences().addEditUserWinForm,
-//			currentRecordId = addEditUserForm.getValues().id,
-//			refs =  me.getView().getReferences(),
-//			csrCodeCombo = refs.csrCode,
-//			codeOwner = refs.codeOwner,
-//			insertBtn = refs.insertBtn,
-//			csrCodeComboValue = csrCodeCombo.getRawValue(),
-//			csrCodeComboId = csrCodeCombo.getValue(),
-//			codeOwnerComboValue = codeOwner.getRawValue(),
-//			currentUserId = AOCRuntime.getUser().id,
-//			valueObj = { csrCode:csrCodeComboValue,userId:currentRecordId },
-//			url = applicationContext + '/rest/systemcsrcode',
-//    		method = 'POST',
-//    		parameters = Ext.JSON.encode(valueObj);
-//    	
-//    		view.mask('Saving....');
-//	    	Ext.Ajax.request({
-//	             method: method,
-//	             jsonData: parameters,
-//	             url: url,
-//	             success: function (response, opts) {
-//	                 var me = this,
-//	                 	jsonString = Ext.JSON.decode(response.responseText),
-//	                     valueExist = jsonString.valueExist;
-//	                 if (valueExist) {
-//	                 	view.unmask();
-//	                     Helper.showToast('failure',AOCLit.userExistMsg);
-//	                     return false;
-//	                 }
-//	                 view.unmask();
-//	                 systemCsrCodeGridStore.insert(0,(new Ext.data.Record(jsonString)));
-//	                 csrCodeCombo.store.load();
-//	                 Helper.showToast('success', 'Row inserted successfully');
-//	             },
-//	             failure: function (response, opts) {
-//	                 msg = response.responseText;
-//	                 Helper.showToast('failure', msg);
-//	                 view.unmask();
-//	                 view.close();
-//	             }
-//	         });
-//	    },
-	    onBlurCsrCode: function(combo){
-	    	var me = this,
-				refs = me.getReferences(),
-				insertBtn = refs.insertBtn,
-				codeOwnerCombo = refs.codeOwner,
-	    		csrCodeComboStore = combo.store,
-	    		csrCodeComboValue = combo.getRawValue(),
-	    		csrCodeDataArray = [];
-	    	csrCodeComboStore.each(function(rec, index){
-	    		if(csrCodeComboStore.getCount()>0){
-	    			csrCodeDataArray.push(rec.get('csrCode'));
-	    		}
-	    	});
-	    	if(csrCodeDataArray.indexOf(csrCodeComboValue) != -1){
-	    		codeOwnerCombo.setValue('N');
-	    		insertBtn.setDisabled(false);
-	    	}else{
-	    		codeOwnerCombo.setValue('Y');
-	    		insertBtn.setDisabled(false);
-	    	}
-	    }
+    onBlurCsrCode: function(combo){
+    	var me = this,
+			refs = me.getReferences(),
+			insertBtn = refs.insertBtn,
+			codeOwnerCombo = refs.codeOwner,
+    		csrCodeComboStore = combo.store,
+    		csrCodeComboValue = combo.getRawValue(),
+    		csrCodeDataArray = [];
+    	csrCodeComboStore.each(function(rec, index){
+    		if(csrCodeComboStore.getCount()>0){
+    			csrCodeDataArray.push(rec.get('csrCode'));
+    		}
+    	});
+    	if(csrCodeDataArray.indexOf(csrCodeComboValue) != -1){
+    		codeOwnerCombo.setValue('N');
+    		insertBtn.setDisabled(false);
+    	}else{
+    		codeOwnerCombo.setValue('Y');
+    		insertBtn.setDisabled(false);
+    	}
+    }
 });
