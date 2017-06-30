@@ -596,13 +596,17 @@ public class OrderQueue extends MainAbstractEntity {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
 			String timeZone = TimeZone.getDefault().getID();
-			if (queryParamMap.getFirst("timezone") != null
-					&& !"".equals(queryParamMap.getFirst("timezone")))
-				timeZone = queryParamMap.getFirst("timezone");
+			String queryString = (String) queryParamMap.getFirst("query");
+			if (queryString != null) {
+				Map<String, String> queryParamMap1 = ApplicationUtils.convertJSONtoMaps(queryString);
+			if (queryParamMap1.get("timeZone") != null
+					&& !"".equals(queryParamMap1.get("timeZone")))
+				timeZone = queryParamMap1.get("timeZone");
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService
 					.getAllEntitiesListForDailyReport(queryParamMap);
+			}
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			ByteArrayOutputStream outputStream;
@@ -647,18 +651,22 @@ public class OrderQueue extends MainAbstractEntity {
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getOpenReport(@Context UriInfo ui, @Context HttpHeaders hh) {
 		List<OrderQueue> orderQueue = null;
+		String timeZone = TimeZone.getDefault().getID();
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
+			String queryString = (String) queryParamMap.getFirst("query");
+			if (queryString != null) {
+				Map<String, String> queryParamMap1 = ApplicationUtils.convertJSONtoMaps(queryString);
 			/* default value if no values is coming from GUI */
-			String timeZone = TimeZone.getDefault().getID();
-			if (queryParamMap.getFirst("timezone") != null
-					&& !"".equals(queryParamMap.getFirst("timezone")))
-				timeZone = queryParamMap.getFirst("timezone");
+			if (queryParamMap1.get("timeZone") != null
+					&& !"".equals(queryParamMap1.get("timeZone")))
+				timeZone = queryParamMap1.get("timeZone");
 			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
 					.getInstance().getBean("orderQueueService");
 			orderQueue = orderQueueService
 					.getAllEntitiesListForOpenReport(queryParamMap);
+			}
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			ByteArrayOutputStream outputStream = ExcelUtils
