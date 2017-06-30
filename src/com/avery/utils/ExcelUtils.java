@@ -102,10 +102,12 @@ public class ExcelUtils {
 				cell15.setCellValue(obj.getSubmittedBy());
 				Cell cell16 = row.createCell(++columncellCount);
 				if(obj.getSubmittedDate()!=null)
-					cell16.setCellValue(obj.getSubmittedDate().toString());
+						date = obj.getSubmittedDate();
+						cell16.setCellValue(convertDateUsingTimezone(date, timeZone));
 				Cell cell17 = row.createCell(++columncellCount);
 				if(obj.getFeedbackAcknowledgementDate()!=null)
-				cell17.setCellValue(obj.getFeedbackAcknowledgementDate().toString());
+					date = obj.getFeedbackAcknowledgementDate();
+				cell17.setCellValue(convertDateUsingTimezone(date, timeZone));
 				Cell cell18 = row.createCell(++columncellCount);
 				cell18.setCellValue(csrName);
 				Cell cell19 = row.createCell(++columncellCount);
@@ -194,7 +196,7 @@ public class ExcelUtils {
 	 *         changed date
 	 */
 	private static String convertDateUsingTimezone(Date date, String timeZone) {
-		if(date==null)
+		if(date == null)
 			return "";
 		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
