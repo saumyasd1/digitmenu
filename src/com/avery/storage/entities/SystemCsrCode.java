@@ -44,12 +44,6 @@ public class SystemCsrCode extends MainAbstractEntity {
 
 	private static final long serialVersionUID = 1833552362987121156L;
 
-//	@Column(name = "systemId")
-//	private int systemId;
-//
-//	@Column(name = "orgId")
-//	private int orgId;
-	
 	@Column(name = "csrCode", length = 45)
 	private String csrCode;
 	
@@ -58,9 +52,6 @@ public class SystemCsrCode extends MainAbstractEntity {
 	
 	@Column(name = "hasOwner", length = 10)
 	private String hasOwner;
-	
-//	@Column(name = "ownerId", length = 10)
-//	private String ownerId;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="systemId")
@@ -92,46 +83,7 @@ public class SystemCsrCode extends MainAbstractEntity {
 	
 	private transient long userId;
 	
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public int getSiteId() {
-		return siteId;
-	}
-
-	public void setSiteId(int siteId) {
-		this.siteId = siteId;
-	}
-
+	
 	/* Business Logic Starts */
 	
 	@Override
@@ -262,24 +214,48 @@ public class SystemCsrCode extends MainAbstractEntity {
 	}
 	
 	/* Business Logic Ends */
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	
+	public long getUserId() {
+		return userId;
+	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 
-//	public int getSystemId() {
-//		return systemId;
-//	}
-//
-//	public void setSystemId(int systemId) {
-//		this.systemId = systemId;
-//	}
-//
-//	public int getOrgId() {
-//		return orgId;
-//	}
-//
-//	public void setOrgId(int orgId) {
-//		this.orgId = orgId;
-//	}
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(int siteId) {
+		this.siteId = siteId;
+	}
 
 	public String getCsrCode() {
 		return csrCode;
@@ -304,14 +280,6 @@ public class SystemCsrCode extends MainAbstractEntity {
 	public void setHasOwner(String hasOwner) {
 		this.hasOwner = hasOwner;
 	}
-	
-//	public String getOwnerId() {
-//		return ownerId;
-//	}
-//
-//	public void setOwnerId(String ownerId) {
-//		this.ownerId = ownerId;
-//	}
 	
 	public SystemInfo getVarSystemInfo() {
 		return varSystemInfo;
