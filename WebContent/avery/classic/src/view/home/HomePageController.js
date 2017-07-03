@@ -86,7 +86,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			parameters.siteId = siteComboValue;
 			if(userIds.length > 0){
 				parameters.assignCSR = userIds.join();
-				parameters.siteId = siteComboValue ? siteComboValue : 1;
+				parameters.siteId = siteComboValue ? siteComboValue : '';
 			}
 		}else if(roleId == userRoles.siteManager){ //site admin
 			parameters.assignCSR = userIds.join();
@@ -299,7 +299,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			csrComboValue = csrCombo.getValue();
 		
 		if(siteCombo.isVisible() && siteCombo.getValue() == 'All'){
-			siteId = 1;
+			siteId = '';
 		}else if(siteCombo.isVisible()){
 			siteId = siteCombo.getValue();
 		}else{
