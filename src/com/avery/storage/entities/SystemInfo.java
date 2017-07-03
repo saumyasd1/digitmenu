@@ -1,17 +1,14 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,7 +26,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.storage.MainAbstractEntity;
-import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.SystemInfoService;
 import com.avery.utils.ApplicationUtils;

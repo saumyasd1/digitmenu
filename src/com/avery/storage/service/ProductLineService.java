@@ -39,11 +39,16 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 		
 	}
 	
+//	@Transactional 
+//	public ProductLine create(String productLineData) throws Exception{
+//		
+//		return getProductLineDao().create(productLineData);
+//		
+//	}
+	
 	@Transactional 
-	public ProductLine create(String productLineData) throws Exception{
-		
+	public long create(String productLineData) throws Exception{
 		return getProductLineDao().create(productLineData);
-		
 	}
 
 	@Transactional
@@ -51,11 +56,16 @@ public class ProductLineService extends GenericEntityService<ProductLine, Long>{
 		return getProductLineDao().read(id);
 	}
 	
+//	@Transactional 
+//	public ProductLine update(String productLineData,Long id) throws Exception{
+//		
+//		return getProductLineDao().update(productLineData,id);
+//		
+//	}
+	
 	@Transactional 
-	public ProductLine update(String productLineData,Long id) throws Exception{
-		
-		return getProductLineDao().update(productLineData,id);
-		
+	public long update(String productLineData) throws Exception{
+		return getProductLineDao().update(productLineData);
 	}
 	
 	@Transactional 

@@ -14,11 +14,15 @@ public interface ProductLineDao extends GenericDao<ProductLine, Long>{
 
 	public Boolean checkDuplicateValues(ProductLine productLine) throws Exception;
 	
-	public ProductLine create(String productLineData);
-	
-	public ProductLine read(Long id) ;
+//	public ProductLine create(String productLineData);
 
-	public ProductLine update(String productLineData,Long id) throws Exception;
+	public long create(String productLineData) throws Exception;
+	
+//	public ProductLine read(Long id) ;
+
+//	public ProductLine update(String productLineData,Long id) throws Exception;
+	
+	public long update(String productLineData) throws Exception;
 	
 	public List getAllDistantPartners(MultivaluedMap queryMap) throws Exception;
 	

@@ -22,7 +22,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.hibernate.criterion.Projections;
 
 import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
@@ -39,18 +38,25 @@ public class OrgInfo extends MainAbstractEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -2757286170711042719L;
+	
 	@Column(name="orgCodeId")
 	private Integer orgCodeId;
+	
 	@Column(name="isDefault")
-	private Boolean isDefault;
+	private boolean defaultSelected;
+	
 	@Column(name="billToCode",length=250)
 	private String billToCode;
+	
 	@Column(name="shipToCode",length=250)
 	private String shipToCode;
+	
 	@Column(name="freightTerm",length=250)
 	private String freightTerm;
+	
 	@Column(name="shippingMethod",length=255)
 	private String shippingMethod;
+	
 	@Column(name="shippingInstruction",length=255)
 	private String shippingInstruction;
 	
@@ -137,14 +143,23 @@ public class OrgInfo extends MainAbstractEntity{
 	public void setOrgCodeId(Integer orgCodeId) {
 		this.orgCodeId = orgCodeId;
 	}
-	public Boolean isDefault() {
-		return isDefault;
-	}
-	public void setDefault(Boolean isDefault) {
-		this.isDefault = isDefault;
-	}
+//	public Boolean isDefault() {
+//		return isDefault;
+//	}
+//	public void setDefault(Boolean isDefault) {
+//		this.isDefault = isDefault;
+//	}
+	
+	
+	
 	public String getBillToCode() {
 		return billToCode;
+	}
+	public boolean isDefaultSelected() {
+		return defaultSelected;
+	}
+	public void setDefaultSelected(boolean defaultSelected) {
+		this.defaultSelected = defaultSelected;
 	}
 	public void setBillToCode(String billToCode) {
 		this.billToCode = billToCode;

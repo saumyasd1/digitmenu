@@ -165,7 +165,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
     
     openPartnerDatastructureWin:function(record, title, mode){
     	var data = this.processData(record);
-    	
     	var me =this;
 		var win=Ext.create('AOC.view.partner.CreatePartnerProductLine',{
   			    mode:mode,
@@ -183,7 +182,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     },
     processData:function(record){
     	var me = this;
-    	
+    	record.data.rboId = record.data.rbo.id;
+    	record.data.partnerId = record.data.varPartner.id;
     	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
     	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
     	record.data.emailSubjectProductLineKeyword = record.get('emailSubjectProductLineMatch');
@@ -256,6 +256,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	return value;
     },
     getMultipleProductLine:function(value){
+    	if(Ext.isEmpty(value)){
+    		return '';
+    	}
     	if(value.indexOf('|') > -1){
     		return value;
     	}
@@ -339,7 +342,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		if(mode == 'edit'){
 			var currentRecord = view.rec.data,
 			method = 'PUT';
-			url = applicationContext+'/rest/productLines/'+currentRecord.id;
+			url = applicationContext+'/rest/productLines/update';
 		}else{
 			method = 'POST';
 			url = applicationContext+'/rest/productLines';
@@ -348,6 +351,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		if(form.isValid()){
 			var values = form.getValues();
 			var valueObj = me.processPostData(values);
+			if(mode == 'edit'){
+				valueObj.id = view.rec.get('id');
+			}
 			
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
@@ -421,18 +427,23 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					var currentRec = orgGridStore.getAt(j).data;
 					delete currentRec.freightTermsData;
 					delete currentRec.shippingMethodData;
+					if(currentRec.newRecord){
+						delete currentRec.id;
+					}
 					listOrgInfo.push(currentRec);
 				}
 				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
+				if(systemGridStore.getAt(0).data.newRecord){
+					delete systemGridStore.getAt(0).data.id;
+				}
 				listOrderSystemInfo.push(systemGridStore.getAt(0).data);
-				
-				return listOrderSystemInfo;
 			}
 		}
 		if(!isCheckBoxSelected){
 			Helper.showToast('validation', AOCLit.checkSystemChechBoxMsg);
 			return false;
 		}
+		return listOrderSystemInfo;
 	},
 	processPostData:function(values){
 		var me = this,
@@ -808,8 +819,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		
 		Ext.getBody().mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
-			url:applicationContext+'/rest/',
-			mathod:'GET',
+			url:applicationContext+'/rest/ordersysteminfo/productline',
+			method:'GET',
 			params:{id: view.rec.get('id')},
 			success:function(response){
 				var jsonData = JSON.parse(response.responseText),
@@ -835,7 +846,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    				systemStore.add(listOrderSystemInfo[i]);
 	    				orgStore.add(listOrderSystemInfo[i].listOrgInfo);
 	    				
-		  	    		var index = orgStore.find('default',true);
+		  	    		var index = orgStore.find('defaultSelected',true);
 		  	    		if(index!=-1){
 		  	    			orgGrid.getSelectionModel().select(index);
 		  	    		}
@@ -887,7 +898,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		if(totalOrgConfigured > 0){
 			data={
 				orgCodeId:jsonValue[0].id,
-				isDefault:true,
+				defaultSelected:true,
 				newRecord:true
 			};
 		}
@@ -895,7 +906,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			fields:['id','name',{
 				name:'newRecord', defaultValue:false
 			},{
-				name:'isDefault', mapping:'default'
+				name:'defaultSelected'
 			}],
 			storeId:'orgInfoStore'+selectedSystemArray.id,
 			data:[data]
