@@ -89,7 +89,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		}
 		String siteId = (String) queryMap.getFirst("siteId");
 		if(siteId!=null)
-		if (!siteId.equals("1")) {
+		if (!siteId.equals("")) {
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		int totalCount = 0;

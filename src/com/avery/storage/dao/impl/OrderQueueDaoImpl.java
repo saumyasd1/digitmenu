@@ -335,7 +335,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		} else {
 			String siteId = (String) queryParamMap.getFirst("siteId");
 			if (siteId != null)
-				if (!siteId.equals("1")) {
+				if (!siteId.equals("")) {
 					criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(siteId)));
 				}
 		}
@@ -423,7 +423,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
 
-			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("") && !searchMap.get("siteId").equals("1")) {
+			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("")) {
 				String filterSiteId = (String) searchMap.get("siteId");
 				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));
 			}
@@ -536,7 +536,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
 				.add(Projections.property("orderemailqueue.orderSource"), "orderSource")
-				.add(Projections.property("partner.partnerName"), "partnerName").add(Projections.property("id"), "id")
+				.add(Projections.property("partner.partnerName"), "partnerName")
+				.add(Projections.property("id"), "id")
 				.add(Projections.property("orderemailqueue.subject"), "subject")
 				.add(Projections.property("comment"), "comment").add(Projections.property("error"), "error")
 				.add(Projections.property("poNumber"), "poNumber")

@@ -89,7 +89,7 @@ OrderEmailQueueDao {
 		String pageNo = (String) queryMap.getFirst("page");
 		String siteId = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if(!(roleId.equals("1") && siteId.equals("1"))){
+		if(!(roleId.equals("1") && siteId.equals(""))){
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 
@@ -174,7 +174,7 @@ OrderEmailQueueDao {
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String siteId = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if(!(roleId.equals("1") && siteId.equals("1"))){
+		if(!(roleId.equals("1") && siteId.equals(""))){
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
@@ -561,7 +561,7 @@ OrderEmailQueueDao {
 				criteria.add(Restrictions.ilike("ccMailId",ccMailId,MatchMode.ANYWHERE));
 			}
 			String siteId=searchMap.get("siteId");
-			if(siteId!=null && !"".equals(siteId) && !"1".equals(siteId.trim()) ){
+			if(siteId!=null && !"".equals(siteId)){
 				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
 			}
 		}
@@ -685,7 +685,7 @@ OrderEmailQueueDao {
 			String filterSiteId = (String) searchMap.get("filterSiteId");
 			String filterCsrCode = (String) searchMap.get("filterCsrCode");
 			isCsrManager = Boolean.parseBoolean(searchMap.get("csrManagerFlag"));
-			if (filterSiteId != null && !"".equals(filterSiteId) && !"1".equals(filterSiteId.trim())) {
+			if (filterSiteId != null && !"".equals(filterSiteId)) {
 				criteria.add(Restrictions.eq("siteId", Integer.parseInt(filterSiteId)));
 			}
 			if (isCsrManager) {
@@ -711,7 +711,7 @@ OrderEmailQueueDao {
 		} else {
 			String siteId = (String) queryParamMap.getFirst("siteId");
 			if (siteId != null)
-				if (!siteId.equals("1")) {
+				if (!siteId.equals("")) {
 					criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 				}
 		}

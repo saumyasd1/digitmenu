@@ -73,7 +73,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		}
 		if (queryMap.getFirst("siteId") != null) {
 		String siteId=(String) queryMap.getFirst("siteId");
-		if (!siteId.equals("1"))
+		if (!siteId.equals("") && siteId != null)
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
@@ -196,7 +196,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 									.add(Projections.property("user.id"),"userId")
 									.add(Projections.property("user.siteId"),"siteId"));
 			Conjunction disCriteria = Restrictions.conjunction();
-			if(siteId!=1)disCriteria.add(Restrictions.eq("user.siteId", siteId));
+			if(siteId!=0)disCriteria.add(Restrictions.eq("user.siteId", siteId));
 			disCriteria.add(Restrictions.eq("user.status", 100));
 			criteria.add(disCriteria);
 			criteria.addOrder(Order.asc("user.firstName"));
