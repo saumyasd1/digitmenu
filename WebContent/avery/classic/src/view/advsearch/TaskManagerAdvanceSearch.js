@@ -4,7 +4,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 	itemId : 'taskmanagerAdvanceSearchWin',
 	
 	reference:'taskmanagerAdvanceSearchWin',
-	controller : 'taskManagerController',
+	controller : 'taskmanagercontroller',
 	requires : ['Ext.window.MessageBox'],
 
 	layout:'fit',
