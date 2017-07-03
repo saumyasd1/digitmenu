@@ -71,8 +71,8 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varSystemInfo", "varSystemInfo")
 					.createAlias("varOrg", "varOrg");
 			Conjunction conjunction = Restrictions.conjunction();
-			conjunction.add(Restrictions.eq("isActive", "true"));
-			 // ).add(Restrictions.eq("varSystemInfo.id", systemId)) .add(Restrictions.eq("varOrg.id", orgId) removed by deepak for manual entry
+			conjunction.add(Restrictions.eq("isActive", "true")
+			  ).add(Restrictions.eq("varSystemInfo.id", systemId)) .add(Restrictions.eq("varOrg.id", orgId));
 			criteria.add(conjunction);
 			entitiesMap.put("data", criteria.list());
 		} catch (Exception e) {

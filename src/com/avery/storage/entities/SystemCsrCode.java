@@ -179,21 +179,21 @@ public class SystemCsrCode extends MainAbstractEntity {
 
 	@GET
 	@Path("/list")
-	public Response getBySystemAndOrgCodeId(@Context UriInfo ui, @Context HttpHeaders hh) {
-		//, @QueryParam("system") String system, @QueryParam("org") String org // removed by deepak for manual entry
+	public Response getBySystemAndOrgCodeId(@Context UriInfo ui, @Context HttpHeaders hh
+		, @QueryParam("system") String system, @QueryParam("org") String org) {
 		Response.ResponseBuilder rb = null;
 		Map<String, Object> responseMap = null;
-		/*if(!NumberUtils.isNumber(system) | !NumberUtils.isNumber(org))
-			return Response.ok("Invalid Input", MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();*/
-		//long systemId = Long.parseLong(0);
-		//long orgId = Long.parseLong(0);
+		if(!NumberUtils.isNumber(system) | !NumberUtils.isNumber(org))
+			return Response.ok("Invalid Input", MediaType.TEXT_HTML).status(Status.NOT_ACCEPTABLE).build();
+		long systemId = Long.parseLong(system);
+		long orgId = Long.parseLong(org);
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(SystemCsrCode.class, SystemCsrCodeMixIn.class);
 			StringWriter writer = new StringWriter();
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
-			responseMap = systemCsrCodeService.getBySystemAndOrgCodeId(0, 0);
+			responseMap = systemCsrCodeService.getBySystemAndOrgCodeId(systemId, orgId);
 			if(responseMap == null)
 				return Response.ok("Unable to fetch any data", MediaType.TEXT_HTML).status(Status.INTERNAL_SERVER_ERROR).build();
 			mapper.writeValue(writer, responseMap);
