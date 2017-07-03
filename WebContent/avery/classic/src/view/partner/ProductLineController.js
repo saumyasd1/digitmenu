@@ -49,6 +49,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     			    	text:'Delete',
     			    	iconCls:'x-fa fa-trash-o',
     			    	itemIndex:2,
+    			    	hidden:true,
     			    	itemId:'deletePartnerDataStructureMenuItem'
     			    },{
     			    	text:'Deactive',
@@ -269,16 +270,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	if(view.mode != 'add'){
     		var detail = view.rec.data;
-    		detail.partnerName = detail.varPartner.id;
-    		detail.rboId = detail.rbo.id;
-    		delete detail.varPartner;
-    		delete detail.rbo;
+    		detail.partnerId = detail.partnerId;
+    		detail.rboId = detail.rboId;
     		me.createGroupingField(detail);
     		form.loadRecord(new Ext.data.Record(detail));
     	}
-    	if(roleId == 3){
-			me.setReadOnlyView(true);s
-//			me.setButtonDisabled(true);
+    	if(view.mode == 'view'){
+			me.setReadOnlyView(true);
 		}
     },
     createGroupingField:function(detail){
@@ -310,7 +308,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        //Partner Profile section
 	        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
 	        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
-	        partnerRadioArray = partnerProfileForm.query('[xtype = radio]'),
+	        partnerRadioArray = partnerProfileForm.query('[xtype = radiogroup]'),
 	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
 	        
 	        tempArray = [].concat(partnerTextFieldArray)
@@ -323,27 +321,23 @@ Ext.define('AOC.view.productline.ProductLineController', {
             tempArray[i].setReadOnly(readOnlyFlag);
 	    }
 	},
-	setButtonDisabled: function(readOnlyFlag){
-	    var me = this,
-	        refs = me.getReferences(),
-	        partnerProfileForm = refs.partnerProfileForm,
-	        tempArray = [].concat(advancedPropButton);
-	    var len = tempArray.length;
-	    for (var i = 0; i < len; i++) {
-	            tempArray[i].setDisabled(readOnlyFlag);
-	    }
-	},
 	onSaveBtnClick:function(btn){
 		var me = this,
 			refs = me.getReferences(),
 			view = me.getView(),
 			mode = view.mode,
-			currentRecord = view.rec.data,
 			form = refs['partnerProfileForm'].getForm(),
 			url,
 			method;
 		
+		if(me.processSystemOrgGrid()){
+			var listOrderSystemInfo = me.processSystemOrgGrid();
+		}else{
+			return;
+		}
+		
 		if(mode == 'edit'){
+			var currentRecord = view.rec.data,
 			method = 'PUT';
 			url = applicationContext+'/rest/productLines/'+currentRecord.id;
 		}else{
@@ -355,7 +349,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			var values = form.getValues();
 			var valueObj = me.processPostData(values);
 			
-			Ext.getBody().mask(AOCLit.pleaseWait);
+			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
+			
+			view.el.mask(AOCLit.pleaseWait);
 			
 			Ext.Ajax.request({
 				url: url,
@@ -370,21 +366,80 @@ Ext.define('AOC.view.productline.ProductLineController', {
 						return
 					}
 					Helper.showToast('success', jsonData.message);
-					Ext.getBody().unmask();
-					view.currentView.store.load();
+					view.el.unmask();
+					view.contextView.store.load();
 					view.close();
 				},
 				failure:function(){
-					Ext.getBody().unmask();
+					view.el.unmask();
 				}
 			});
 		}else{
 			Helper.showToast('validation', 'Please fill all mandatory(*) field');
 		}
 	},
+	processSystemOrgGrid:function(){
+		var me = this,
+			refs = me.getReferences(),
+			systemcontainer = refs['systemcontainer'],
+			checkboArray = systemcontainer.checkboArray,
+			len = checkboArray.length,
+			currentcheckBox,
+			systemGridStore,
+			orgGridStore,
+			currentOrgGrid = '',
+			currentSystemGrid = '';
+		
+		var listOrderSystemInfo = new Array(),
+			isCheckBoxSelected = false;
+		
+		for(var i=0; i < len; i++){
+			currentcheckBox = refs[checkboArray[i]];
+			
+			if(currentcheckBox && currentcheckBox.getValue()){
+				isCheckBoxSelected = true;
+				currentSystemGrid = refs[checkboArray[i]+'systemGrid'];
+				currentOrgGrid = refs[checkboArray[i]+'orgGrid'];
+				
+				systemGridStore = currentSystemGrid.getStore();
+				
+				currentSystemGrid.showValidationError = true;
+				currentSystemGrid.getView().refresh();
+				
+				if(currentSystemGrid.isSystemGridNotValid){
+					Helper.showToast('validation', AOCLit.fillMandatoryCellMsg);
+					return false;
+				}
+				
+				orgGridStore = currentOrgGrid.getStore();
+				var listOrgInfo = new Array();
+				
+				currentOrgGrid.showValidationError = true;
+				currentOrgGrid.getView().refresh();
+				
+				for(var j=0; j < orgGridStore.getCount(); j++){
+					var currentRec = orgGridStore.getAt(j).data;
+					delete currentRec.freightTermsData;
+					delete currentRec.shippingMethodData;
+					listOrgInfo.push(currentRec);
+				}
+				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
+				listOrderSystemInfo.push(systemGridStore.getAt(0).data);
+				
+				return listOrderSystemInfo;
+			}
+		}
+		if(!isCheckBoxSelected){
+			Helper.showToast('validation', AOCLit.checkSystemChechBoxMsg);
+			return false;
+		}
+	},
 	processPostData:function(values){
 		var me = this,
 			obj = {};
+		
+		values.partnerId = values.partnerId.toString();
+		values.rboId = values.rboId.toString();
 		
 		obj.emailSubjectRBOMatch = values.emailSubjectRBOKeyword;
 		obj.emailBodyRBOMatch = values.emailBodyRBOKeyword;
@@ -447,209 +502,209 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		return '0';
 	},
-    onSaveDetails:function(){
-		Ext.getBody().mask('Saving....');
-		
-		var me = this,
-			createproductline = me.getView(),
-			refs = me.getReferences();
-		
-		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
-		
-		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
-			var getFormInvalidFields=this.getFormInvalidFields(panel.getForm());
-			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
-			Ext.getBody().unmask();
-			advancedPropertiesForm.expand();
-	    	orderForm.expand();
-	    	additionalData.expand();
-			return false;
-		}
-		
-		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
-		valueObj='',form=this.getView().down('form');
-		
-		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
-		
-		length=0,
-		hiddenProductLineField=this.getView().lookupReference('productLineHidden'),
-		productLineValue=hiddenProductLineField.getValue();
-		
-		var systemcontainer=this.getView().lookupReference('systemcontainer'),
-		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore,currentOrgGrid='',
-		currentSystemGrid='';
-		var orderSystemInfo=new Array(),isCheckBoxSelected=false;
-		for(var jj=0;jj<checkboArray.length;jj++){
-			currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
-			if(currentcheckBox && currentcheckBox.getValue()){
-				//renderer:'validationRendered'
-				isCheckBoxSelected=true;
-				currentSystemGrid=me.getView().lookupReference(checkboArray[jj]+'systemGrid');
-				systemGridStore=currentSystemGrid.getStore();
-				currentOrgGrid=me.getView().lookupReference(checkboArray[jj]+'orgGrid');
-				currentSystemGrid.showValidationError=true;
-				currentSystemGrid.getView().refresh();
-				if(currentSystemGrid.isSystemGridNotValid){
-					Ext.getBody().unmask();
-					createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryCellMsg).setVisible(true);
-					return false;
-				}
-				orgGridStore=currentOrgGrid.getStore();
-				var orgInfo=new Array(),currentStore;
-				currentOrgGrid.showValidationError=true;
-				currentOrgGrid.getView().refresh();
-				for(var k=0;k<orgGridStore.getCount();k++){
-					currentStore=orgGridStore.getAt(k).data;
-					orgInfo.push(currentStore);
-				}
-				systemGridStore.getAt(0).data.orgInfo=orgInfo;
-				orderSystemInfo.push(systemGridStore.getAt(0).data);
-				
-			}
-		}
-		if(!isCheckBoxSelected){
-			Ext.getBody().unmask();
-			createproductline.down('#messageFieldItemId').setValue(AOCLit.checkSystemChechBoxMsg).setVisible(true);
-			return false;
-		}
-		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData();
-		//attachmentRequiredField=this.getView().lookupReference('attachmentRequired');
-//		var attachmentRequired=attachmentRequiredField.getValue().attachmentRequired;
-		if(editMode){
-			Id=createproductline.productlineId;
-			url=applicationContext+'/rest/productLines/'+Id;
-			methodMode='PUT';
-			userId = AOCRuntime.getUser().id,
-			valueObj=form.getValues(false,true,false,true);
-			length=Object.keys(valueObj).length;
-			Msg=AOCLit.updateProdLineMsg;
-			parameters={
-					rboId:valueObj.rboId,
-					partnerId:Id,
-					csrPrimaryId:valueObj.csrPrimaryId,
-					csrSecondaryId:valueObj.csrSecondaryId,
-					waiveMOA:valueObj.waiveMOA,
-					waiveMOQ:valueObj.waiveMOQ,
-					shipmentSample:valueObj.shipmentSample ? valueObj.shipmentSample: false,
-					factoryTransfer:valueObj.factoryTransfer ? valueObj.factoryTransfer: false,
-					localBilling:valueObj.localBilling ? valueObj.localBilling: false,
-					llkk:valueObj.llkk ? valueObj.llkk: false,
-					sizeCheck:valueObj.sizeCheck ? valueObj.sizeCheck: false,
-					fiberpercentagecheck:valueObj.fiberpercentagecheck? valueObj.fiberpercentagecheck: false,
-					orderSystemInfo:orderSystemInfo,
-					productLineType:productLineValue,
-					userId:userId,
-					siteChanged:site.siteChanged
-		    	};
-		}
-		else{
-			
-			Id=productline.partnerid;
-			partnerName=productline.partnerName;
-			partner={id:Id,partnerName:partnerName};
-			url=applicationContext+'/rest/productLines';
-			valueObj=form.getValues(false,false,false,true);
-			methodMode='POST';
-			length=1;
-			Msg=AOCLit.addProdLineMsg;
-			parameters={
-					rboId:valueObj.rboId,
-					partnerId:Id,
-					CSRPrimaryID:valueObj.CSRPrimaryId,
-					CSRSecondaryID:valueObj.CSRSecondaryId,
-					waivemoa:valueObj.waiveMOA,
-					waivemoq:valueObj.waiveMOQ,
-					shipmentsample:valueObj.shipmentSample,
-					factorytransfer:valueObj.factoryTransfer,
-					localbilling:valueObj.localBilling,
-					llkk:valueObj.llkk,
-					sizeCheck:valueObj.sizeCheck,
-					fiberpercentagecheck:valueObj.fiberpercentagecheck,
-					orderSystemInfo:orderSystemInfo,
-					productLineType:productLineValue
-		    	};
-		}
-		var secondParam={
-				emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
-				email:valueObj.email,
-				emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
-				emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
-				emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
-				fileRBOMatch:dataModel.fileRBOMatch,
-				fileProductlineMatch:dataModel.fileProductlineMatch,
-				fileOrderMatch:dataModel.fileOrderMatch,
-				orderFileNameExtension:dataModel.orderFileNameExtension,
-				orderFileNamePattern:dataModel.orderFileNamePattern,
-				orderMappingID:dataModel.orderMappingID,
-				orderSchemaID:dataModel.orderSchemaID,
-				attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
-				attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
-				attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
-				attachmentMappingID_1:dataModel.attachmentMappingID_1,
-				attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
-				dataStructureName:dataModel.dataStructureName,
-				active:dataModel.active,
-//				attachmentRequired:attachmentRequired,
-				fileOrderMatchCell:dataModel.fileOrderMatchCell,
-				fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
-				fileOrderMatch:dataModel.fileOrderMatch,
-				fileRBOCellMatch:dataModel.fileRBOCellMatch,
-				fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
-				attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
-				attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
-				attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
-				attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
-				attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
-				attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
-				fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
-				fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch,
-				attachmentFileNameExtension_2:dataModel.attachmentFileNameExtension_2,
-				attachmentFileNamePattern_2:dataModel.attachmentFileNamePattern_2,
-				attachmentSchemaID_2:dataModel.attachmentSchemaID_2,
-				attachmentMappingID_2:dataModel.attachmentMappingID_2,
-				attachmentIdentifier_2:dataModel.attachmentIdentifier_2,
-				attachmentFileNameExtension_3:dataModel.attachmentFileNameExtension_3,
-				attachmentFileNamePattern_3:dataModel.attachmentFileNamePattern_3,
-				attachmentSchemaID_3:dataModel.attachmentSchemaID_3,
-				attachmentMappingID_3:dataModel.attachmentMappingID_3,
-				attachmentIdentifier_3:dataModel.attachmentIdentifier_3,
-				attachmentFileNameExtension_4:dataModel.attachmentFileNameExtension_4,
-				attachmentFileNamePattern_4:dataModel.attachmentFileNamePattern_4,
-				attachmentSchemaID_4:dataModel.attachmentSchemaID_4,
-				attachmentMappingID_4:dataModel.attachmentMappingID_4,
-				attachmentIdentifier_4:dataModel.attachmentIdentifier_4
-		};
-		secondParam.active = me.active;
-		Ext.merge(parameters,secondParam);
-				Ext.Ajax.request( {
-					method: methodMode,
-				    jsonData : parameters,	
-				    url : url,
-				    success : function(response, opts) {
-				    		var jsonString=Ext.JSON.decode(response.responseText);
-				    		var valueExist=jsonString.valueExist;
-				    		if(valueExist){
-				    			Ext.getBody().unmask();
-				    			createproductline.down('#dataStructureName').focus();
-				    			createproductline.down('#messageFieldItemId').show();
-				    			createproductline.down('#messageFieldItemId').setValue(AOCLit.entryExistMsg);
-				    			return false;
-				    		}
-				    	Ext.getBody().unmask();
-				    	createproductline.destroy();
-				    	Helper.showToast('Success',Msg);
-			  			productline.store.load();
-				  		
-		        },
-		        failure: function(response, opts) {
-		        	Msg=response.responseText;
-		        	Msg=Msg.replace("Exception:"," ");
-		        	Helper.showToast('validation',Msg);
-		        	Ext.getBody().unmask();
-		        	createproductline.destroy();
-              }
-      	});
-    },
+//    onSaveDetails:function(){
+//		Ext.getBody().mask('Saving....');
+//		
+//		var me = this,
+//			createproductline = me.getView(),
+//			refs = me.getReferences();
+//		
+//		var panel=createproductline.down('#listPanel'),advancedPropertiesForm=this.getView().down('#AdvancedPropertiesForm');
+//		
+//		if(!panel.getForm().isValid() || !advancedPropertiesForm.getForm().isValid()){
+//			var getFormInvalidFields=this.getFormInvalidFields(panel.getForm());
+//			createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
+//			Ext.getBody().unmask();
+//			advancedPropertiesForm.expand();
+//	    	orderForm.expand();
+//	    	additionalData.expand();
+//			return false;
+//		}
+//		
+//		var productline=Ext.ComponentQuery.query("#partnerproductlinegriditemId")[0],
+//		valueObj='',form=this.getView().down('form');
+//		
+//		editMode=this.getView().editMode,url='',site=this.getView().lookupReference('site'),
+//		
+//		length=0,
+//		hiddenProductLineField=this.getView().lookupReference('productLineHidden'),
+//		productLineValue=hiddenProductLineField.getValue();
+//		
+//		var systemcontainer=this.getView().lookupReference('systemcontainer'),
+//		checkboArray=systemcontainer.checkboArray,currentcheckBox,systemGridStore,orgGridStore,currentOrgGrid='',
+//		currentSystemGrid='';
+//		var orderSystemInfo=new Array(),isCheckBoxSelected=false;
+//		for(var jj=0;jj<checkboArray.length;jj++){
+//			currentcheckBox=me.getView().lookupReference(checkboArray[jj]);
+//			if(currentcheckBox && currentcheckBox.getValue()){
+//				//renderer:'validationRendered'
+//				isCheckBoxSelected=true;
+//				currentSystemGrid=me.getView().lookupReference(checkboArray[jj]+'systemGrid');
+//				systemGridStore=currentSystemGrid.getStore();
+//				currentOrgGrid=me.getView().lookupReference(checkboArray[jj]+'orgGrid');
+//				currentSystemGrid.showValidationError=true;
+//				currentSystemGrid.getView().refresh();
+//				if(currentSystemGrid.isSystemGridNotValid){
+//					Ext.getBody().unmask();
+//					createproductline.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryCellMsg).setVisible(true);
+//					return false;
+//				}
+//				orgGridStore=currentOrgGrid.getStore();
+//				var orgInfo=new Array(),currentStore;
+//				currentOrgGrid.showValidationError=true;
+//				currentOrgGrid.getView().refresh();
+//				for(var k=0;k<orgGridStore.getCount();k++){
+//					currentStore=orgGridStore.getAt(k).data;
+//					orgInfo.push(currentStore);
+//				}
+//				systemGridStore.getAt(0).data.orgInfo=orgInfo;
+//				orderSystemInfo.push(systemGridStore.getAt(0).data);
+//				
+//			}
+//		}
+//		if(!isCheckBoxSelected){
+//			Ext.getBody().unmask();
+//			createproductline.down('#messageFieldItemId').setValue(AOCLit.checkSystemChechBoxMsg).setVisible(true);
+//			return false;
+//		}
+//		var viewModel=this.getView().getViewModel(),dataModel=viewModel.getData();
+//		//attachmentRequiredField=this.getView().lookupReference('attachmentRequired');
+////		var attachmentRequired=attachmentRequiredField.getValue().attachmentRequired;
+//		if(editMode){
+//			Id=createproductline.productlineId;
+//			url=applicationContext+'/rest/productLines/'+Id;
+//			methodMode='PUT';
+//			userId = AOCRuntime.getUser().id,
+//			valueObj=form.getValues(false,true,false,true);
+//			length=Object.keys(valueObj).length;
+//			Msg=AOCLit.updateProdLineMsg;
+//			parameters={
+//					rboId:valueObj.rboId,
+//					partnerId:Id,
+//					csrPrimaryId:valueObj.csrPrimaryId,
+//					csrSecondaryId:valueObj.csrSecondaryId,
+//					waiveMOA:valueObj.waiveMOA,
+//					waiveMOQ:valueObj.waiveMOQ,
+//					shipmentSample:valueObj.shipmentSample ? valueObj.shipmentSample: false,
+//					factoryTransfer:valueObj.factoryTransfer ? valueObj.factoryTransfer: false,
+//					localBilling:valueObj.localBilling ? valueObj.localBilling: false,
+//					llkk:valueObj.llkk ? valueObj.llkk: false,
+//					sizeCheck:valueObj.sizeCheck ? valueObj.sizeCheck: false,
+//					fiberpercentagecheck:valueObj.fiberpercentagecheck? valueObj.fiberpercentagecheck: false,
+//					orderSystemInfo:orderSystemInfo,
+//					productLineType:productLineValue,
+//					userId:userId,
+//					siteChanged:site.siteChanged
+//		    	};
+//		}
+//		else{
+//			
+//			Id=productline.partnerid;
+//			partnerName=productline.partnerName;
+//			partner={id:Id,partnerName:partnerName};
+//			url=applicationContext+'/rest/productLines';
+//			valueObj=form.getValues(false,false,false,true);
+//			methodMode='POST';
+//			length=1;
+//			Msg=AOCLit.addProdLineMsg;
+//			parameters={
+//					rboId:valueObj.rboId,
+//					partnerId:Id,
+//					CSRPrimaryID:valueObj.CSRPrimaryId,
+//					CSRSecondaryID:valueObj.CSRSecondaryId,
+//					waivemoa:valueObj.waiveMOA,
+//					waivemoq:valueObj.waiveMOQ,
+//					shipmentsample:valueObj.shipmentSample,
+//					factorytransfer:valueObj.factoryTransfer,
+//					localbilling:valueObj.localBilling,
+//					llkk:valueObj.llkk,
+//					sizeCheck:valueObj.sizeCheck,
+//					fiberpercentagecheck:valueObj.fiberpercentagecheck,
+//					orderSystemInfo:orderSystemInfo,
+//					productLineType:productLineValue
+//		    	};
+//		}
+//		var secondParam={
+//				emailSubjectProductLineMatch:dataModel.emailSubjectProductLineMatch,
+//				email:valueObj.email,
+//				emailSubjectRBOMatch:dataModel.emailSubjectRBOMatch,
+//				emailBodyProductLineMatch:dataModel.emailBodyProductLineMatch,
+//				emailBodyRBOMatch:dataModel.emailBodyRBOMatch,
+//				fileRBOMatch:dataModel.fileRBOMatch,
+//				fileProductlineMatch:dataModel.fileProductlineMatch,
+//				fileOrderMatch:dataModel.fileOrderMatch,
+//				orderFileNameExtension:dataModel.orderFileNameExtension,
+//				orderFileNamePattern:dataModel.orderFileNamePattern,
+//				orderMappingID:dataModel.orderMappingID,
+//				orderSchemaID:dataModel.orderSchemaID,
+//				attachmentFileNameExtension_1:dataModel.attachmentFileNameExtension_1,
+//				attachmentFileNamePattern_1:dataModel.attachmentFileNamePattern_1,
+//				attachmentSchemaID_1:dataModel.attachmentSchemaID_1,
+//				attachmentMappingID_1:dataModel.attachmentMappingID_1,
+//				attachmentIdentifier_1:dataModel.attachmentIdentifier_1,
+//				dataStructureName:dataModel.dataStructureName,
+//				active:dataModel.active,
+////				attachmentRequired:attachmentRequired,
+//				fileOrderMatchCell:dataModel.fileOrderMatchCell,
+//				fileOrderMatchSheet:dataModel.fileOrderMatchSheet,
+//				fileOrderMatch:dataModel.fileOrderMatch,
+//				fileRBOCellMatch:dataModel.fileRBOCellMatch,
+//				fileRBOSheetMatch:dataModel.fileRBOSheetMatch,
+//				attachmentFileOrderMatchCell:dataModel.attachmentFileOrderMatchCell,
+//				attachmentFileOrderMatchSheet:dataModel.attachmentFileOrderMatchSheet,
+//				attachmentFileOrderMatch:dataModel.attachmentFileOrderMatch,
+//				attachmentFileProductlineMatchCell:dataModel.attachmentFileProductlineMatchCell,
+//				attachmentFileProductlineMatchSheet:dataModel.attachmentFileProductlineMatchSheet,
+//				attachmentFileProductlineMatch:dataModel.attachmentFileProductlineMatch,
+//				fileProductlineCellMatch:dataModel.fileProductlineCellMatch,
+//				fileProductlineSheetMatch:dataModel.fileProductlineSheetMatch,
+//				attachmentFileNameExtension_2:dataModel.attachmentFileNameExtension_2,
+//				attachmentFileNamePattern_2:dataModel.attachmentFileNamePattern_2,
+//				attachmentSchemaID_2:dataModel.attachmentSchemaID_2,
+//				attachmentMappingID_2:dataModel.attachmentMappingID_2,
+//				attachmentIdentifier_2:dataModel.attachmentIdentifier_2,
+//				attachmentFileNameExtension_3:dataModel.attachmentFileNameExtension_3,
+//				attachmentFileNamePattern_3:dataModel.attachmentFileNamePattern_3,
+//				attachmentSchemaID_3:dataModel.attachmentSchemaID_3,
+//				attachmentMappingID_3:dataModel.attachmentMappingID_3,
+//				attachmentIdentifier_3:dataModel.attachmentIdentifier_3,
+//				attachmentFileNameExtension_4:dataModel.attachmentFileNameExtension_4,
+//				attachmentFileNamePattern_4:dataModel.attachmentFileNamePattern_4,
+//				attachmentSchemaID_4:dataModel.attachmentSchemaID_4,
+//				attachmentMappingID_4:dataModel.attachmentMappingID_4,
+//				attachmentIdentifier_4:dataModel.attachmentIdentifier_4
+//		};
+//		secondParam.active = me.active;
+//		Ext.merge(parameters,secondParam);
+//				Ext.Ajax.request( {
+//					method: methodMode,
+//				    jsonData : parameters,	
+//				    url : url,
+//				    success : function(response, opts) {
+//				    		var jsonString=Ext.JSON.decode(response.responseText);
+//				    		var valueExist=jsonString.valueExist;
+//				    		if(valueExist){
+//				    			Ext.getBody().unmask();
+//				    			createproductline.down('#dataStructureName').focus();
+//				    			createproductline.down('#messageFieldItemId').show();
+//				    			createproductline.down('#messageFieldItemId').setValue(AOCLit.entryExistMsg);
+//				    			return false;
+//				    		}
+//				    	Ext.getBody().unmask();
+//				    	createproductline.destroy();
+//				    	Helper.showToast('Success',Msg);
+//			  			productline.store.load();
+//				  		
+//		        },
+//		        failure: function(response, opts) {
+//		        	Msg=response.responseText;
+//		        	Msg=Msg.replace("Exception:"," ");
+//		        	Helper.showToast('validation',Msg);
+//		        	Ext.getBody().unmask();
+//		        	createproductline.destroy();
+//              }
+//      	});
+//    },
     onCancelDetails:function(){       
 		this.getView().destroy();
 	},
@@ -703,13 +758,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
  		 } 	
 	},
     onSiteSelect:function(cmp){
-    	Ext.getBody().mask('Loading....');
+    	//Ext.getBody().mask('Loading....');
     	
     	var me = this,
     		value = cmp.getValue(),
     		view = me.getView(),
     		refs = me.getReferences();
-    	
+    	view.el.mask('Loading...');
     	Ext.Ajax.request( {
 			method: 'GET',
 		    url : applicationContext+'/rest/system/site/'+value,
@@ -741,9 +796,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    			cmp.siteChanged=true;		
 	    			}
 	    		}
-		    	Ext.getBody().unmask();
+		    	view.el.unmask();
 	        },
-	        failure: function(response, opts) {}
+	        failure: function(response, opts) {
+	        	view.el.unmask();
+	        }
 	    });
 	},
 	getListOrderSystemInfo:function(view){
@@ -859,18 +916,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
             inputValue: selectedSystemArray.id,
             listeners:{
             	'change':function(cmp, newValue){
-            		var systemGrid = refs[cmp.name+'systemGrid'],
-            			orgGrid = refs[cmp.name+'orgGrid'],
-            			plusButton = refs[cmp.name+'Plus'];
+            		var refs = cmp.up('#createpartnerproductlineItemId').getReferences (),
+            			systemGrid = refs[cmp.name+'systemGrid'],
+            			orgGrid = refs[cmp.name+'orgGrid'];
+            			//plusButton = refs[cmp.name+'Plus'];
             		
             		if(newValue){
             			orgGrid.show();
             			systemGrid.show();
-            			plusButton.show();
+            			//plusButton.show();
             		}else{
             			orgGrid.hide();
             			systemGrid.hide();
-            			plusButton.hide();
+            			//plusButton.hide();
             		}
             	}
             }
@@ -893,6 +951,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		       {
 	    			xtype:'orggrid',
 	    			flex:1,
+	    			frame:true,
 	    			store:orgOrderStore,
 	    			orgStore:orgStore,
 	    			uniqueName:selectedSystemArray.name,
@@ -900,28 +959,28 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			hidden:true,
 	    			systemId:selectedSystemArray.id,
 	    			reference:selectedSystemArray.name+'orgGrid'
-		       },
-		       {
-    				xtype:'button',
-    				margin:'45 0 0 5',
-    				maxRecord:totalOrgConfigured,
-    				text:'Org',
-    				cls:'blue-btn',
-    				iconCls:'x-fa fa-plus',
-    				reference:selectedSystemArray.name+'Plus',
-    				hidden:true,
-    				listeners:{
-    					click:function(cmp, pressed){
-    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
-								orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
-    						}else{
-    							if(AOCRuntime.getUser().role != 3){
-    								Helper.showToast('validation','Cannot add any more rows.');
-    							}
-    						}
-    					}
-    				}
-    			}
+		       }
+//		       {
+//    				xtype:'button',
+//    				margin:'45 0 0 5',
+//    				maxRecord:totalOrgConfigured,
+//    				text:'Org',
+//    				cls:'blue-btn',
+//    				iconCls:'x-fa fa-plus',
+//    				reference:selectedSystemArray.name+'Plus',
+//    				hidden:true,
+//    				listeners:{
+//    					click:function(cmp, pressed){
+//    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
+//								orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
+//    						}else{
+//    							if(AOCRuntime.getUser().role != 3){
+//    								Helper.showToast('validation','Cannot add any more rows.');
+//    							}
+//    						}
+//    					}
+//    				}
+//    			}
 	        ]
 		}];
 	 },
@@ -996,17 +1055,17 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var me = this,
 			refs = me.getReferences(),
 			cont1 = refs.additionalAttachmentFileCont,
-			cont2 = refs.additionalAttachmentFileCont2,
-			cont3 = refs.additionalExcelCont;
+			cont2 = refs.additionalAttachmentFileCont2;
+//			cont3 = refs.additionalExcelCont;
 		
 		if(newValue.isOrderWithAttachment == 'true'){
 			cont1.setDisabled(false);
 			cont2.setDisabled(false);
-			cont3.setDisabled(false);
+//			cont3.setDisabled(false);
 		}else{
 			cont1.setDisabled(true);
 			cont2.setDisabled(true);
-			cont3.setDisabled(true);
+//			cont3.setDisabled(true);
 		}
 	 },
 	 onComboSelect:function(field, e){

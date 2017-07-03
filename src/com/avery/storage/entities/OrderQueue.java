@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -598,7 +599,8 @@ public class OrderQueue extends MainAbstractEntity {
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
-			String timeZone = TimeZone.getDefault().getID();
+			Calendar now = Calendar.getInstance();
+			String timeZone = now.getTimeZone().getID();
 			String queryString = (String) queryParamMap.getFirst("query");
 			if (queryString != null) {
 				Map<String, String> queryParamMap1 = ApplicationUtils.convertJSONtoMaps(queryString);
@@ -654,7 +656,8 @@ public class OrderQueue extends MainAbstractEntity {
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getOpenReport(@Context UriInfo ui, @Context HttpHeaders hh) {
 		List<OrderQueue> orderQueue = null;
-		String timeZone = TimeZone.getDefault().getID();
+		Calendar now = Calendar.getInstance();
+		String timeZone = now.getTimeZone().getID();
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();

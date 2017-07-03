@@ -8,13 +8,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	height:Ext.getBody().getHeight()-50,
     draggable:false,
     
-    editMode:false,
     mode:'add',
     rec:null,
     additionalFieldCount:1,
-    productlineId:null,
-    partnerid:null,
-    partnerName:null,
     
 	scrollable : true,	
     initComponent : function(){
@@ -32,12 +28,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return [
 			{
 				text : AOCLit.Save,
-				handler : 'onSaveDetails',
-				hidden: AOCRuntime.getUser().role == 3 ? true : false 
+				handler: 'onSaveBtnClick',
+				hidden:AOCRuntime.getUser().role == 3 ? true : false 
 			},
 			{
-				text : AOCLit.Cancel,
-				handler : 'onCancelDetails'
+				text: AOCLit.Cancel,
+				handler: 'onCancelDetails'
 			}
 		];
 	},
@@ -77,21 +73,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							labelAlign:Settings.form.topLabelAlign
 						},	
 						items:[
-//							{
-//								xtype:'textfield',
-//								itemId:'PNItemId',
-//								name: 'partnerName',
-//								flex:1,
-//								fieldLabel: AOCLit.partnerName,
-//								value: me.partnerName
-//							},
 							{
 								xtype:'combo',
 								emptyText:AOCLit.partnerName,
 								fieldLabel:AOCLit.partnerName,
-								name:'partnerName',
+								name:'partnerId',
 								reference:'partnerCombo',
-								store:Ext.create('AOC.store.UniquePartnerStore'),
+								store:Ext.create('AOC.store.PartnerManagementStore'),
 								editable:false,
 								allowBlank: false,
 								queryMode:'local',
@@ -99,7 +87,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								displayField:'partnerName',
 								valueField:'id',
 								listeners:{
-									//'change':'onPartnerChange'
 									afterrender:function(field){
 										field.store.load();
 									}
@@ -115,7 +102,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
 								blankText:'Data Structure Name is required',
-//								bind:'{dataStructureName}'
 							}
 						]
 					},
@@ -932,12 +918,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			}
 		];
 	},
-	notifyByImage : function(config){
-		 if(config.isValid()){
-			   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.successImageSrc+');background-repeat:no-repeat;background-position:right;');
-		 }else{
-			   config.setFieldStyle('background-image:url('+ AOC.config.Settings.buttonIcons.errorIcon+');background-repeat:no-repeat;background-position:right;');
-		 }
-	 }
+	onDestroy:function(){
+		this.rec = null;
+		this.callParent(arguments);
+	}
 });
 
