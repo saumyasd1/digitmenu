@@ -103,11 +103,7 @@ public class Site extends MainAbstractEntity {
 			Collections.sort(siteList, siteIdComparator);
 			Iterator itr = siteList.iterator();
 			if (siteId == null) {
-				siteList.remove(0);
 			} else {
-				if (siteId.equals("1")) {
-					siteList.remove(0);
-				} else {
 					while (itr.hasNext()) {
 						Site site = (Site) itr.next();
 						if (!siteId.isEmpty()) {
@@ -116,16 +112,11 @@ public class Site extends MainAbstractEntity {
 							}
 						}
 					}
-				}
 			}
-			if (siteList == null)
-				throw new Exception("Unable to find order configuration");
-			if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {
+			if (siteId == null || siteId.isEmpty()) {
 				mapper.writeValue(writer, siteList);
 			} else if (!siteId.isEmpty()) {
-				if (Integer.parseInt(siteId) != 1) {
 					mapper.writeValue(writer, modifiedSiteList);
-				}
 			} else {
 				mapper.writeValue(writer, siteList);
 			}
