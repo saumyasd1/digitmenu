@@ -56,11 +56,9 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				editor:{
 					xtype:'combo',
 					store:me.orgStore,
-					//reference:'orgCodeCombo',
 					displayField:'name',
 					valueField:'id',
 					listeners:{
-						//'render':'onOrgeCodeComboRender',
 						'change':'onOrgeCodeComboChange'
 					}
 				},
@@ -135,20 +133,32 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			},{
 				xtype:'actioncolumn',
 				text:'',
-				width:30,
-				glyphColor:'red',
-				glyph:'xf056@FontAwesome',
-				menuDisabled  :true,
+				width:60,
+				menuDisabled :true,
+				align:'center',
 				baseCls:'custom-action',
-				handler: function(grid, rowIndex, colIndex) {
-					if(AOCRuntime.getUser().role != 3){
-						 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
-							if(btn=='yes'){
-								grid.getStore().removeAt(rowIndex);
-							} 
-						 });
-					}
-			    }
+				items:[
+				    {
+				    	glyphColor:'red',
+				    	tooltip:'Remove',
+						glyph:'xf056@FontAwesome',
+						handler:function(grid, rowIndex, colIndex) {
+							if(AOCRuntime.getUser().role != 3 && rowIndex > 0){
+								 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
+									if(btn=='yes'){
+										grid.getStore().removeAt(rowIndex);
+									} 
+								 });
+							}
+					    }
+				    },
+				    {
+				    	glyphColor:'green',
+				    	tooltip:'Add More Row',
+						glyph:'xf055@FontAwesome',
+						handler:'onAddOrgBtnClick'
+				    }
+				]
 			}
         ];
     }

@@ -85,5 +85,18 @@ Ext.define('AOC.view.partner.OrgController', {
     		me.isOrgGridNotValid=true;
     	}
     	return value;
+    },
+    onAddOrgBtnClick:function(btn){
+    	var me = this,
+    		view = me.getView(),
+    		store = view.store;
+    	
+    	if((store.getCount() < view.maxRecord) && (AOCRuntime.getUser().role != 3) ){
+    		store.add({orgCodeId:'',newRecord:true, isDefault:false});
+		}else{
+			if(AOCRuntime.getUser().role != 3){
+				Helper.showToast('validation','Cannot add any more rows.');
+			}
+		}
     }
 });
