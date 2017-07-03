@@ -98,13 +98,14 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	                        }
 	                        Helper.setCookie("userinfo", JSON.stringify(jsonString.user), 30);
                         }
-                        me.newCSRCodeArray = [];
+                        view.controller.newCSRCodeArray = [];
                         view.close();
                     },
                     failure: function (response, opts) {
                         msg = response.responseText;
                         Helper.showToast('failure', msg);
                         view.unmask();
+                        view.controller.newCSRCodeArray = [];
                         view.close();
                     }
                 });
@@ -369,7 +370,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 		      csrCodeObj.csrCode = csrCodeComboValue,
 		      csrCodeObj.systemName = systemComboValue,
 		      csrCodeObj.orgCode = orgCodeComboValue,
-		      me.newCSRCodeArray.push(csrCodeObj);
+		      me.getView().controller.newCSRCodeArray.push(csrCodeObj);
 		}
     	
     	if(systemCsrCodeGridStore.getCount() > 0){
