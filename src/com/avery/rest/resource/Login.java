@@ -125,11 +125,16 @@ public class Login {
 					if (!isCallFromExternalApp) {
 						responseMap.put("success", true);
 					}
-					int userSiteId=user.getSiteId();
+					int userSiteId=0;
 					String UserRoleId=user.getRole();
-					SiteService siteService= (SiteService) SpringConfig.getInstance().getBean("siteService");
-					Site site = siteService.read((long)userSiteId);
-					user.setSiteName(site.getName());
+					if(UserRoleId.trim().equals("1")){
+						userSiteId = 0;
+					}else{
+						userSiteId = user.getSiteId();
+						SiteService siteService= (SiteService) SpringConfig.getInstance().getBean("siteService");
+						Site site = siteService.read((long)userSiteId);
+						user.setSiteName(site.getName());
+					}
 					RoleService roleService= (RoleService) SpringConfig.getInstance().getBean("roleService");
 					Role role = roleService.read(Long.parseLong(UserRoleId));
 					user.setRoleName(role.getRoleName());
