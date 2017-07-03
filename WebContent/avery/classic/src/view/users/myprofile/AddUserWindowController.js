@@ -78,8 +78,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
                     jsonData: parameters,
                     url: url,
                     success: function (response, opts) {
-                        var me = this,
-                        	jsonString = Ext.JSON.decode(response.responseText),
+                        var jsonString = Ext.JSON.decode(response.responseText),
                             valueExist = jsonString.valueExist;
                         if (valueExist) {
                         	view.unmask();
@@ -98,14 +97,14 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	                        }
 	                        Helper.setCookie("userinfo", JSON.stringify(jsonString.user), 30);
                         }
-                        view.controller.newCSRCodeArray = [];
+                        me.newCSRCodeArray = [];
                         view.close();
                     },
                     failure: function (response, opts) {
                         msg = response.responseText;
                         Helper.showToast('failure', msg);
                         view.unmask();
-                        view.controller.newCSRCodeArray = [];
+                        me.newCSRCodeArray = [];
                         view.close();
                     }
                 });
@@ -119,6 +118,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         this.getView().close();
     },
     onAddUserAfterRender: function (win) {
+    	var me = this;
+    		me.newCSRCodeArray = [];
     	if(win.mode != 'view'){
     		win.mask(AOCLit.pleaseWaitTitle);
 	        var roleName = win.lookupReference('roleName'),
@@ -370,7 +371,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 		      csrCodeObj.csrCode = csrCodeComboValue,
 		      csrCodeObj.systemName = systemComboValue,
 		      csrCodeObj.orgCode = orgCodeComboValue,
-		      me.getView().controller.newCSRCodeArray.push(csrCodeObj);
+		      me.newCSRCodeArray.push(csrCodeObj);
 		}
     	
     	if(systemCsrCodeGridStore.getCount() > 0){
