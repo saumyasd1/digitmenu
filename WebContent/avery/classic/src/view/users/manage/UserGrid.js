@@ -58,7 +58,6 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             }]
         }, {
             text: 'First Name',
-            width: 120,
             sortable: true,
             align:'left',
             dataIndex: 'firstName',
@@ -66,21 +65,18 @@ Ext.define('AOC.view.users.manage.UserGrid', {
 
         },{
             text: 'Middle Name',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'middleName',
             flex: 0.5
         }, {
             text: 'Last Name',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'lastName',
             flex: 1
         }, {
             text: 'Role',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'role',
@@ -96,14 +92,19 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             }
         }, {
             text: 'Email',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'email',
             flex: 0.5
         },{
+        	text:'Site Name',
+        	align:'left',
+        	sortable:true,
+        	dataIndex:'siteName',
+        	flex:0.5,
+        	hidden: AOCRuntime.getUser().role == 1 ? false : true,
+        },{
             text: 'Last Modified By',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'lastModifiedBy',
@@ -111,7 +112,6 @@ Ext.define('AOC.view.users.manage.UserGrid', {
         
         },{
             text: 'Last Modified Date',
-            width: 120,
             align:'left',
             sortable: true,
             dataIndex: 'lastModifiedDate',
