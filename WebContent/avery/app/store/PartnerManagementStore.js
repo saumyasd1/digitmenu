@@ -15,10 +15,10 @@ Ext.define('AOC.store.PartnerManagementStore', {
         headers: {
             "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
         }
-    },
-    sorters: [{
- 		property:'lastModifiedDate',
- 		direction:'DESC'
-	}]
+    }
+//    sorters: [{
+// 		property:'lastModifiedDate',
+// 		direction:'DESC'
+//	}]
 });
 
