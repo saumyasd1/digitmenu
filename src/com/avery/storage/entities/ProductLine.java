@@ -51,6 +51,7 @@ import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.ProductLineService;
 import com.avery.storage.service.SiteService;
 import com.avery.storage.service.UserService;
+import com.avery.utils.MessageUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -74,9 +75,9 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "site")
 	private Integer site;
 
-//	@ColumnDefault("''")
-//	@Column(name = "attachmentFileMatchLocation", length = 100)
-//	private String attachmentFileMatchLocation;// 100
+	// @ColumnDefault("''")
+	// @Column(name = "attachmentFileMatchLocation", length = 100)
+	// private String attachmentFileMatchLocation;// 100
 
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchRequired")
@@ -97,11 +98,11 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentFileNameExtension_2", length = 50)
 	private String attachmentFileNameExtension_2;// 50
 
-//	@Column(name = "attachmentFileNameExtension_3", length = 50)
-//	private String attachmentFileNameExtension_3;// 50
-//
-//	@Column(name = "attachmentFileNameExtension_4", length = 50)
-//	private String attachmentFileNameExtension_4;// 50
+	// @Column(name = "attachmentFileNameExtension_3", length = 50)
+	// private String attachmentFileNameExtension_3;// 50
+	//
+	// @Column(name = "attachmentFileNameExtension_4", length = 50)
+	// private String attachmentFileNameExtension_4;// 50
 
 	@Column(name = "attachmentFileNamePattern_1", length = 100)
 	private String attachmentFileNamePattern_1;// 100
@@ -118,14 +119,14 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentFileOrderMatch", length = 100)
 	private String attachmentFileOrderMatch;// 100
 
-//	@Column(name = "attachmentFileOrderMatchLocation", length = 100)
-//	private String attachmentFileOrderMatchLocation;// 100
+	// @Column(name = "attachmentFileOrderMatchLocation", length = 100)
+	// private String attachmentFileOrderMatchLocation;// 100
 
 	@Column(name = "attachmentFileOrderMatchRequired")
 	private Boolean attachmentFileOrderMatchRequired;
-//
-//	@Column(name = "attachmentFileProductlineMatchLocation", length = 100)
-//	private String attachmentFileProductlineMatchLocation;// 100
+	//
+	// @Column(name = "attachmentFileProductlineMatchLocation", length = 100)
+	// private String attachmentFileProductlineMatchLocation;// 100
 
 	@Column(name = "attachmentFileProductlineMatchRequired")
 	private Boolean attachmentFileProductlineMatchRequired;
@@ -145,17 +146,17 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentIdentifier_4", length = 50)
 	private String attachmentIdentifier_4;// 50
 
-//	@Column(name = "attachmentMappingID_1", length = 50)
-//	private String attachmentMappingID_1;// 50
-//
-//	@Column(name = "attachmentMappingID_2", length = 50)
-//	private String attachmentMappingID_2;// 50
-//
-//	@Column(name = "attachmentMappingID_3", length = 50)
-//	private String attachmentMappingID_3;// 50
-//
-//	@Column(name = "attachmentMappingID_4", length = 50)
-//	private String attachmentMappingID_4;// 50
+	// @Column(name = "attachmentMappingID_1", length = 50)
+	// private String attachmentMappingID_1;// 50
+	//
+	// @Column(name = "attachmentMappingID_2", length = 50)
+	// private String attachmentMappingID_2;// 50
+	//
+	// @Column(name = "attachmentMappingID_3", length = 50)
+	// private String attachmentMappingID_3;// 50
+	//
+	// @Column(name = "attachmentMappingID_4", length = 50)
+	// private String attachmentMappingID_4;// 50
 
 	@Column(name = "attachmentProductlineMatch", length = 100)
 	private String attachmentProductlineMatch;// 100
@@ -169,23 +170,23 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentSchemaID_2", length = 50)
 	private String attachmentSchemaID_2;// 50
 
-//	@Column(name = "attachmentSchemaID_3", length = 50)
-//	private String attachmentSchemaID_3;// 50
-//
-//	@Column(name = "attachmentSchemaID_4", length = 50)
-//	private String attachmentSchemaID_4;// 50
-//
-//	@Column(name = "attachmentSchemaType_1", length = 50)
-//	private String attachmentSchemaType_1;// 50
-//
-//	@Column(name = "attachmentSchemaType_2", length = 50)
-//	private String attachmentSchemaType_2;// 50
-//
-//	@Column(name = "attachmentSchemaType_3", length = 50)
-//	private String attachmentSchemaType_3;// 50
-//
-//	@Column(name = "attachmentSchemaType_4", length = 50)
-//	private String attachmentSchemaType_4;// 50
+	// @Column(name = "attachmentSchemaID_3", length = 50)
+	// private String attachmentSchemaID_3;// 50
+	//
+	// @Column(name = "attachmentSchemaID_4", length = 50)
+	// private String attachmentSchemaID_4;// 50
+	//
+	// @Column(name = "attachmentSchemaType_1", length = 50)
+	// private String attachmentSchemaType_1;// 50
+	//
+	// @Column(name = "attachmentSchemaType_2", length = 50)
+	// private String attachmentSchemaType_2;// 50
+	//
+	// @Column(name = "attachmentSchemaType_3", length = 50)
+	// private String attachmentSchemaType_3;// 50
+	//
+	// @Column(name = "attachmentSchemaType_4", length = 50)
+	// private String attachmentSchemaType_4;// 50
 
 	@Column(name = "comment", length = 250)
 	private String comment;// 250
@@ -202,8 +203,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "emailSubjectProductLineMatch", length = 100)
 	private String emailSubjectProductLineMatch;// 100
 
-//	@Column(name = "emailSubjectProductlineMatchLocation", length = 100)
-//	private String emailSubjectProductlineMatchLocation;
+	// @Column(name = "emailSubjectProductlineMatchLocation", length = 100)
+	// private String emailSubjectProductlineMatchLocation;
 
 	@Column(name = "emailSubjectProductlineMatchRequired")
 	private Boolean emailSubjectProductlineMatchRequired;
@@ -211,8 +212,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "emailSubjectRBOMatch", length = 100)
 	private String emailSubjectRBOMatch;
 
-//	@Column(name = "emailSubjectRBOMatchLocation", length = 100)
-//	private String emailSubjectRBOMatchLocation;// 100
+	// @Column(name = "emailSubjectRBOMatchLocation", length = 100)
+	// private String emailSubjectRBOMatchLocation;// 100
 
 	@Column(name = "emailSubjectRBOMatchRequired")
 	private Boolean emailSubjectRBOMatchRequired;
@@ -220,8 +221,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "emailBodyProductLineMatch", length = 100)
 	private String emailBodyProductLineMatch;
 
-//	@Column(name = "emailBodyProductlineMatchLocation", length = 100)
-//	private String emailBodyProductlineMatchLocation;
+	// @Column(name = "emailBodyProductlineMatchLocation", length = 100)
+	// private String emailBodyProductlineMatchLocation;
 
 	@Column(name = "emailBodyProductlineMatchRequired")
 	private Boolean emailBodyProductlineMatchRequired;
@@ -229,14 +230,14 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "emailBodyRBOMatch", length = 100)
 	private String emailBodyRBOMatch;
 
-//	@Column(name = "emailBodyRBOMatchLocation", length = 100)
-//	private String emailBodyRBOMatchLocation;
+	// @Column(name = "emailBodyRBOMatchLocation", length = 100)
+	// private String emailBodyRBOMatchLocation;
 
 	@Column(name = "emailBodyRBOMatchRequired")
 	private Boolean emailBodyRBOMatchRequired;
 
-//	@Column(name = "fileRBOMatchLocation", length = 100)
-//	private String fileRBOMatchLocation;
+	// @Column(name = "fileRBOMatchLocation", length = 100)
+	// private String fileRBOMatchLocation;
 
 	@Column(name = "fileRBOMatchRequired")
 	private Boolean fileRBOMatchRequired;
@@ -244,8 +245,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "factoryTransfer")
 	private Boolean factoryTransfer;
 
-//	@Column(name = "fileMatchLocation", length = 100)
-//	private String fileMatchLocation;// 100
+	// @Column(name = "fileMatchLocation", length = 100)
+	// private String fileMatchLocation;// 100
 
 	@Column(name = "fileMatchRequired")
 	private Boolean fileMatchRequired;
@@ -256,14 +257,14 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "fileOrderMatchLocation", length = 100)
 	private String fileOrderMatchLocation;// 100
 
-//	@Column(name = "fileOrderMatchRequired")
-//	private Boolean fileOrderMatchRequired;
+	// @Column(name = "fileOrderMatchRequired")
+	// private Boolean fileOrderMatchRequired;
 
 	@Column(name = "fileProductlineMatch", length = 100)
 	private String fileProductlineMatch;// 100
 
-//	@Column(name = "fileProductLineMatchLocation", length = 100)
-//	private String fileProductLineMatchLocation;// 100
+	// @Column(name = "fileProductLineMatchLocation", length = 100)
+	// private String fileProductLineMatchLocation;// 100
 
 	@Column(name = "fileProductLineMatchRequired")
 	private Boolean fileProductLineMatchRequired;
@@ -467,8 +468,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "OrderInEmailSubjectMatch", length = 250)
 	private String orderInEmailSubjectMatch;
 
-//	@Column(name = "fileOrderPartnerMatchLocation", length = 50)
-//	private String fileOrderPartnerMatchLocation;
+	// @Column(name = "fileOrderPartnerMatchLocation", length = 50)
+	// private String fileOrderPartnerMatchLocation;
 
 	@Column(name = "wi_id")
 	private Integer wi_id;
@@ -478,7 +479,7 @@ public class ProductLine extends MainAbstractEntity {
 
 	private transient long siteId;
 
-//	private transient String fileOrderMatchSheet;
+	// private transient String fileOrderMatchSheet;
 
 	private transient String fileOrderMatchCell;
 
@@ -490,7 +491,7 @@ public class ProductLine extends MainAbstractEntity {
 
 	private transient String fileRBOCellMatch;
 
-//	private transient String attachmentFileProductlineMatchSheet;
+	// private transient String attachmentFileProductlineMatchSheet;
 
 	private transient String attachmentFileProductlineMatch;
 
@@ -498,7 +499,7 @@ public class ProductLine extends MainAbstractEntity {
 
 	private transient String attachmentFileOrderMatchCell;
 
-//	private transient String attachmentFileOrderMatchSheet;
+	// private transient String attachmentFileOrderMatchSheet;
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -539,35 +540,38 @@ public class ProductLine extends MainAbstractEntity {
 
 	}
 
-//	@Override
-//	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
-//		Long id;
-//		Boolean valueExist = false;
-//		Map<String, Object> responseMap = new HashMap<String, Object>();
-//		responseMap.put("valueExist", valueExist);
-//		try {
-//			ObjectMapper mapper = new ObjectMapper();
-//			ObjectMapper responseMapper = new ObjectMapper();
-//			StringWriter writer = new StringWriter();
-//			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-//			ProductLine productline = mapper.readValue(data, ProductLine.class);
-//			ProductLineService productLineService = (ProductLineService) SpringConfig.getInstance()
-//					.getBean("productLineService");
-//			valueExist = productLineService.checkDuplicateValues(productline);
-//			if (!valueExist) {
-//				productLineService.create(data);
-//			}
-//			responseMap.put("valueExist", valueExist);
-//			responseMapper.writeValue(writer, responseMap);
-//			return Response.ok(writer.toString()).build();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
-//					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
-//		}
-//	}
-	
+	// @Override
+	// public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
+	// Long id;
+	// Boolean valueExist = false;
+	// Map<String, Object> responseMap = new HashMap<String, Object>();
+	// responseMap.put("valueExist", valueExist);
+	// try {
+	// ObjectMapper mapper = new ObjectMapper();
+	// ObjectMapper responseMapper = new ObjectMapper();
+	// StringWriter writer = new StringWriter();
+	// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+	// false);
+	// mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+	// ProductLine productline = mapper.readValue(data, ProductLine.class);
+	// ProductLineService productLineService = (ProductLineService)
+	// SpringConfig.getInstance()
+	// .getBean("productLineService");
+	// valueExist = productLineService.checkDuplicateValues(productline);
+	// if (!valueExist) {
+	// productLineService.create(data);
+	// }
+	// responseMap.put("valueExist", valueExist);
+	// responseMapper.writeValue(writer, responseMap);
+	// return Response.ok(writer.toString()).build();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// throw new
+	// WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+	// .entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+	// }
+	// }
+
 	@Override
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;
@@ -588,6 +592,7 @@ public class ProductLine extends MainAbstractEntity {
 				id = productLineService.create(data);
 				responseMap.put("id", id);
 				responseMap.put("success", true);
+				responseMap.put("message", MessageUtils.PRODUCTLINE_CREATED_SUCCESS);
 			}
 			responseMap.put("valueExist", valueExist);
 			responseMapper.writeValue(writer, responseMap);
@@ -618,6 +623,7 @@ public class ProductLine extends MainAbstractEntity {
 			valueExist = productLineService.checkDuplicateValues(productline);
 			if (!valueExist) {
 				productLineService.update(data);
+				responseMap.put("message", MessageUtils.PRODUCTLINE_UPDATED_SUCCESS);
 			}
 			responseMap.put("valueExist", valueExist);
 			mapper.writeValue(writer, responseMap);
@@ -684,7 +690,7 @@ public class ProductLine extends MainAbstractEntity {
 		return rb.build();
 
 	}
-	
+
 	@PUT
 	@Path("/update")
 	public Response updateProductline(@Context UriInfo ui, @Context HttpHeaders hh, String data) {
@@ -706,6 +712,7 @@ public class ProductLine extends MainAbstractEntity {
 				Long productlineId = productLineService.update(data);
 				responseMap.put("success", true);
 				responseMap.put("id", productlineId);
+				responseMap.put("message", MessageUtils.PRODUCTLINE_UPDATED_SUCCESS);
 			}
 			responseMap.put("valueExist", valueExist);
 			mapper.writeValue(writer, responseMap);
@@ -1061,35 +1068,33 @@ public class ProductLine extends MainAbstractEntity {
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			ProductLineService productLineService = (ProductLineService) SpringConfig
-					.getInstance().getBean("productLineService");
+			ProductLineService productLineService = (ProductLineService) SpringConfig.getInstance()
+					.getBean("productLineService");
 			success = productLineService.updateStatus(entityId, status);
 			responseMap.put("success", success);
-			if (success){
-				if(status){
+			if (success) {
+				if (status) {
 					responseMap.put("message", "Partner #" + id + " Status changed from deactive to active");
-				}
-				else{
+				} else {
 					responseMap.put("message", "Partner #" + id + " Status changed from active to deactive");
 				}
-				
+
 			}
-				
-			else{
+
+			else {
 				responseMap.put("message", "Partner #" + id + " status was not updated");
 			}
-				
+
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
-}
+	}
+	
 	// Start of Getters and Setters
 
 	public Boolean getOrderInMailBody() {
@@ -1124,13 +1129,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.productLineMatchFlag = productLineMatchFlag;
 	}
 
-//	public String getFileOrderMatchSheet() {
-//		return fileOrderMatchSheet;
-//	}
-//
-//	public void setFileOrderMatchSheet(String fileOrderMatchSheet) {
-//		this.fileOrderMatchSheet = fileOrderMatchSheet;
-//	}
+	// public String getFileOrderMatchSheet() {
+	// return fileOrderMatchSheet;
+	// }
+	//
+	// public void setFileOrderMatchSheet(String fileOrderMatchSheet) {
+	// this.fileOrderMatchSheet = fileOrderMatchSheet;
+	// }
 
 	public String getFileOrderMatchCell() {
 		return fileOrderMatchCell;
@@ -1172,13 +1177,15 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileRBOCellMatch = fileRBOCellMatch;
 	}
 
-//	public String getAttachmentFileProductlineMatchSheet() {
-//		return attachmentFileProductlineMatchSheet;
-//	}
-//
-//	public void setAttachmentFileProductlineMatchSheet(String attachmentFileProductlineMatchSheet) {
-//		this.attachmentFileProductlineMatchSheet = attachmentFileProductlineMatchSheet;
-//	}
+	// public String getAttachmentFileProductlineMatchSheet() {
+	// return attachmentFileProductlineMatchSheet;
+	// }
+	//
+	// public void setAttachmentFileProductlineMatchSheet(String
+	// attachmentFileProductlineMatchSheet) {
+	// this.attachmentFileProductlineMatchSheet =
+	// attachmentFileProductlineMatchSheet;
+	// }
 
 	public String getAttachmentFileProductlineMatch() {
 		return attachmentFileProductlineMatch;
@@ -1204,13 +1211,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileOrderMatchCell = attachmentFileOrderMatchCell;
 	}
 
-//	public String getAttachmentFileOrderMatchSheet() {
-//		return attachmentFileOrderMatchSheet;
-//	}
-//
-//	public void setAttachmentFileOrderMatchSheet(String attachmentFileOrderMatchSheet) {
-//		this.attachmentFileOrderMatchSheet = attachmentFileOrderMatchSheet;
-//	}
+	// public String getAttachmentFileOrderMatchSheet() {
+	// return attachmentFileOrderMatchSheet;
+	// }
+	//
+	// public void setAttachmentFileOrderMatchSheet(String
+	// attachmentFileOrderMatchSheet) {
+	// this.attachmentFileOrderMatchSheet = attachmentFileOrderMatchSheet;
+	// }
 
 	public long getSiteId() {
 		return siteId;
@@ -1244,13 +1252,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.active = active;
 	}
 
-//	public String getAttachmentFileMatchLocation() {
-//		return attachmentFileMatchLocation;
-//	}
-//
-//	public void setAttachmentFileMatchLocation(String attachmentFileMatchLocation) {
-//		this.attachmentFileMatchLocation = attachmentFileMatchLocation;
-//	}
+	// public String getAttachmentFileMatchLocation() {
+	// return attachmentFileMatchLocation;
+	// }
+	//
+	// public void setAttachmentFileMatchLocation(String
+	// attachmentFileMatchLocation) {
+	// this.attachmentFileMatchLocation = attachmentFileMatchLocation;
+	// }
 
 	public Boolean isAttachmentFileMatchRequired() {
 		return attachmentFileMatchRequired;
@@ -1276,21 +1285,23 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileNameExtension_2 = attachmentFileNameExtension_2;
 	}
 
-//	public String getAttachmentFileNameExtension_3() {
-//		return attachmentFileNameExtension_3;
-//	}
-//
-//	public void setAttachmentFileNameExtension_3(String attachmentFileNameExtension_3) {
-//		this.attachmentFileNameExtension_3 = attachmentFileNameExtension_3;
-//	}
-//
-//	public String getAttachmentFileNameExtension_4() {
-//		return attachmentFileNameExtension_4;
-//	}
-//
-//	public void setAttachmentFileNameExtension_4(String attachmentFileNameExtension_4) {
-//		this.attachmentFileNameExtension_4 = attachmentFileNameExtension_4;
-//	}
+	// public String getAttachmentFileNameExtension_3() {
+	// return attachmentFileNameExtension_3;
+	// }
+	//
+	// public void setAttachmentFileNameExtension_3(String
+	// attachmentFileNameExtension_3) {
+	// this.attachmentFileNameExtension_3 = attachmentFileNameExtension_3;
+	// }
+	//
+	// public String getAttachmentFileNameExtension_4() {
+	// return attachmentFileNameExtension_4;
+	// }
+	//
+	// public void setAttachmentFileNameExtension_4(String
+	// attachmentFileNameExtension_4) {
+	// this.attachmentFileNameExtension_4 = attachmentFileNameExtension_4;
+	// }
 
 	public String getAttachmentFileNamePattern_1() {
 		return attachmentFileNamePattern_1;
@@ -1332,13 +1343,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileOrderMatch = attachmentFileOrderMatch;
 	}
 
-//	public String getAttachmentFileOrderMatchLocation() {
-//		return attachmentFileOrderMatchLocation;
-//	}
-//
-//	public void setAttachmentFileOrderMatchLocation(String attachmentFileOrderMatchLocation) {
-//		this.attachmentFileOrderMatchLocation = attachmentFileOrderMatchLocation;
-//	}
+	// public String getAttachmentFileOrderMatchLocation() {
+	// return attachmentFileOrderMatchLocation;
+	// }
+	//
+	// public void setAttachmentFileOrderMatchLocation(String
+	// attachmentFileOrderMatchLocation) {
+	// this.attachmentFileOrderMatchLocation = attachmentFileOrderMatchLocation;
+	// }
 
 	public Boolean isAttachmentFileOrderMatchRequired() {
 		return attachmentFileOrderMatchRequired;
@@ -1348,13 +1360,15 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileOrderMatchRequired = attachmentFileOrderMatchRequired;
 	}
 
-//	public String getAttachmentFileProductlineMatchLocation() {
-//		return attachmentFileProductlineMatchLocation;
-//	}
-//
-//	public void setAttachmentFileProductlineMatchLocation(String attachmentFileProductlineMatchLocation) {
-//		this.attachmentFileProductlineMatchLocation = attachmentFileProductlineMatchLocation;
-//	}
+	// public String getAttachmentFileProductlineMatchLocation() {
+	// return attachmentFileProductlineMatchLocation;
+	// }
+	//
+	// public void setAttachmentFileProductlineMatchLocation(String
+	// attachmentFileProductlineMatchLocation) {
+	// this.attachmentFileProductlineMatchLocation =
+	// attachmentFileProductlineMatchLocation;
+	// }
 
 	public Boolean isAttachmentFileProductlineMatchRequired() {
 		return attachmentFileProductlineMatchRequired;
@@ -1404,37 +1418,37 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentIdentifier_4 = attachmentIdentifier_4;
 	}
 
-//	public String getAttachmentMappingID_1() {
-//		return attachmentMappingID_1;
-//	}
-//
-//	public void setAttachmentMappingID_1(String attachmentMappingID_1) {
-//		this.attachmentMappingID_1 = attachmentMappingID_1;
-//	}
-//
-//	public String getAttachmentMappingID_2() {
-//		return attachmentMappingID_2;
-//	}
-//
-//	public void setAttachmentMappingID_2(String attachmentMappingID_2) {
-//		this.attachmentMappingID_2 = attachmentMappingID_2;
-//	}
-//
-//	public String getAttachmentMappingID_3() {
-//		return attachmentMappingID_3;
-//	}
-//
-//	public void setAttachmentMappingID_3(String attachmentMappingID_3) {
-//		this.attachmentMappingID_3 = attachmentMappingID_3;
-//	}
-//
-//	public String getAttachmentMappingID_4() {
-//		return attachmentMappingID_4;
-//	}
-//
-//	public void setAttachmentMappingID_4(String attachmentMappingID_4) {
-//		this.attachmentMappingID_4 = attachmentMappingID_4;
-//	}
+	// public String getAttachmentMappingID_1() {
+	// return attachmentMappingID_1;
+	// }
+	//
+	// public void setAttachmentMappingID_1(String attachmentMappingID_1) {
+	// this.attachmentMappingID_1 = attachmentMappingID_1;
+	// }
+	//
+	// public String getAttachmentMappingID_2() {
+	// return attachmentMappingID_2;
+	// }
+	//
+	// public void setAttachmentMappingID_2(String attachmentMappingID_2) {
+	// this.attachmentMappingID_2 = attachmentMappingID_2;
+	// }
+	//
+	// public String getAttachmentMappingID_3() {
+	// return attachmentMappingID_3;
+	// }
+	//
+	// public void setAttachmentMappingID_3(String attachmentMappingID_3) {
+	// this.attachmentMappingID_3 = attachmentMappingID_3;
+	// }
+	//
+	// public String getAttachmentMappingID_4() {
+	// return attachmentMappingID_4;
+	// }
+	//
+	// public void setAttachmentMappingID_4(String attachmentMappingID_4) {
+	// this.attachmentMappingID_4 = attachmentMappingID_4;
+	// }
 
 	public String getAttachmentProductlineMatch() {
 		return attachmentProductlineMatch;
@@ -1468,53 +1482,53 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentSchemaID_2 = attachmentSchemaID_2;
 	}
 
-//	public String getAttachmentSchemaID_3() {
-//		return attachmentSchemaID_3;
-//	}
-//
-//	public void setAttachmentSchemaID_3(String attachmentSchemaID_3) {
-//		this.attachmentSchemaID_3 = attachmentSchemaID_3;
-//	}
-//
-//	public String getAttachmentSchemaID_4() {
-//		return attachmentSchemaID_4;
-//	}
-//
-//	public void setAttachmentSchemaID_4(String attachmentSchemaID_4) {
-//		this.attachmentSchemaID_4 = attachmentSchemaID_4;
-//	}
-//
-//	public String getAttachmentSchemaType_1() {
-//		return attachmentSchemaType_1;
-//	}
-//
-//	public void setAttachmentSchemaType_1(String attachmentSchemaType_1) {
-//		this.attachmentSchemaType_1 = attachmentSchemaType_1;
-//	}
-//
-//	public String getAttachmentSchemaType_2() {
-//		return attachmentSchemaType_2;
-//	}
-//
-//	public void setAttachmentSchemaType_2(String attachmentSchemaType_2) {
-//		this.attachmentSchemaType_2 = attachmentSchemaType_2;
-//	}
-//
-//	public String getAttachmentSchemaType_3() {
-//		return attachmentSchemaType_3;
-//	}
-//
-//	public void setAttachmentSchemaType_3(String attachmentSchemaType_3) {
-//		this.attachmentSchemaType_3 = attachmentSchemaType_3;
-//	}
-//
-//	public String getAttachmentSchemaType_4() {
-//		return attachmentSchemaType_4;
-//	}
-//
-//	public void setAttachmentSchemaType_4(String attachmentSchemaType_4) {
-//		this.attachmentSchemaType_4 = attachmentSchemaType_4;
-//	}
+	// public String getAttachmentSchemaID_3() {
+	// return attachmentSchemaID_3;
+	// }
+	//
+	// public void setAttachmentSchemaID_3(String attachmentSchemaID_3) {
+	// this.attachmentSchemaID_3 = attachmentSchemaID_3;
+	// }
+	//
+	// public String getAttachmentSchemaID_4() {
+	// return attachmentSchemaID_4;
+	// }
+	//
+	// public void setAttachmentSchemaID_4(String attachmentSchemaID_4) {
+	// this.attachmentSchemaID_4 = attachmentSchemaID_4;
+	// }
+	//
+	// public String getAttachmentSchemaType_1() {
+	// return attachmentSchemaType_1;
+	// }
+	//
+	// public void setAttachmentSchemaType_1(String attachmentSchemaType_1) {
+	// this.attachmentSchemaType_1 = attachmentSchemaType_1;
+	// }
+	//
+	// public String getAttachmentSchemaType_2() {
+	// return attachmentSchemaType_2;
+	// }
+	//
+	// public void setAttachmentSchemaType_2(String attachmentSchemaType_2) {
+	// this.attachmentSchemaType_2 = attachmentSchemaType_2;
+	// }
+	//
+	// public String getAttachmentSchemaType_3() {
+	// return attachmentSchemaType_3;
+	// }
+	//
+	// public void setAttachmentSchemaType_3(String attachmentSchemaType_3) {
+	// this.attachmentSchemaType_3 = attachmentSchemaType_3;
+	// }
+	//
+	// public String getAttachmentSchemaType_4() {
+	// return attachmentSchemaType_4;
+	// }
+	//
+	// public void setAttachmentSchemaType_4(String attachmentSchemaType_4) {
+	// this.attachmentSchemaType_4 = attachmentSchemaType_4;
+	// }
 
 	public String getComment() {
 		return comment;
@@ -1580,13 +1594,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.emailSubjectRBOMatch = emailSubjectRBOMatch;
 	}
 
-//	public String getEmailSubjectRBOMatchLocation() {
-//		return emailSubjectRBOMatchLocation;
-//	}
-//
-//	public void setEmailSubjectRBOMatchLocation(String emailSubjectRBOMatchLocation) {
-//		this.emailSubjectRBOMatchLocation = emailSubjectRBOMatchLocation;
-//	}
+	// public String getEmailSubjectRBOMatchLocation() {
+	// return emailSubjectRBOMatchLocation;
+	// }
+	//
+	// public void setEmailSubjectRBOMatchLocation(String
+	// emailSubjectRBOMatchLocation) {
+	// this.emailSubjectRBOMatchLocation = emailSubjectRBOMatchLocation;
+	// }
 
 	public Boolean isEmailSubjectRBOMatchRequired() {
 		return emailSubjectRBOMatchRequired;
@@ -1628,13 +1643,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.emailBodyRBOMatch = emailBodyRBOMatch;
 	}
 
-//	public String getEmailBodyRBOMatchLocation() {
-//		return emailBodyRBOMatchLocation;
-//	}
-//
-//	public void setEmailBodyRBOMatchLocation(String emailBodyRBOMatchLocation) {
-//		this.emailBodyRBOMatchLocation = emailBodyRBOMatchLocation;
-//	}
+	// public String getEmailBodyRBOMatchLocation() {
+	// return emailBodyRBOMatchLocation;
+	// }
+	//
+	// public void setEmailBodyRBOMatchLocation(String
+	// emailBodyRBOMatchLocation) {
+	// this.emailBodyRBOMatchLocation = emailBodyRBOMatchLocation;
+	// }
 
 	public Boolean isEmailBodyRBOMatchRequired() {
 		return emailBodyRBOMatchRequired;
@@ -1644,13 +1660,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.emailBodyRBOMatchRequired = emailBodyRBOMatchRequired;
 	}
 
-//	public String getFileRBOMatchLocation() {
-//		return fileRBOMatchLocation;
-//	}
-//
-//	public void setFileRBOMatchLocation(String fileRBOMatchLocation) {
-//		this.fileRBOMatchLocation = fileRBOMatchLocation;
-//	}
+	// public String getFileRBOMatchLocation() {
+	// return fileRBOMatchLocation;
+	// }
+	//
+	// public void setFileRBOMatchLocation(String fileRBOMatchLocation) {
+	// this.fileRBOMatchLocation = fileRBOMatchLocation;
+	// }
 
 	public Boolean isFileRBOMatchRequired() {
 		return fileRBOMatchRequired;
@@ -1668,13 +1684,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.factoryTransfer = factoryTransfer;
 	}
 
-//	public String getFileMatchLocation() {
-//		return fileMatchLocation;
-//	}
-//
-//	public void setFileMatchLocation(String fileMatchLocation) {
-//		this.fileMatchLocation = fileMatchLocation;
-//	}
+	// public String getFileMatchLocation() {
+	// return fileMatchLocation;
+	// }
+	//
+	// public void setFileMatchLocation(String fileMatchLocation) {
+	// this.fileMatchLocation = fileMatchLocation;
+	// }
 
 	public Boolean isFileMatchRequired() {
 		return fileMatchRequired;
@@ -1700,13 +1716,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileOrderMatchLocation = fileOrderMatchLocation;
 	}
 
-//	public Boolean isFileOrderMatchRequired() {
-//		return fileOrderMatchRequired;
-//	}
-//
-//	public void setFileOrderMatchRequired(Boolean fileOrderMatchRequired) {
-//		this.fileOrderMatchRequired = fileOrderMatchRequired;
-//	}
+	// public Boolean isFileOrderMatchRequired() {
+	// return fileOrderMatchRequired;
+	// }
+	//
+	// public void setFileOrderMatchRequired(Boolean fileOrderMatchRequired) {
+	// this.fileOrderMatchRequired = fileOrderMatchRequired;
+	// }
 
 	public String getFileProductlineMatch() {
 		return fileProductlineMatch;
@@ -1716,13 +1732,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileProductlineMatch = fileProductlineMatch;
 	}
 
-//	public String getFileProductLineMatchLocation() {
-//		return fileProductLineMatchLocation;
-//	}
-//
-//	public void setFileProductLineMatchLocation(String fileProductLineMatchLocation) {
-//		this.fileProductLineMatchLocation = fileProductLineMatchLocation;
-//	}
+	// public String getFileProductLineMatchLocation() {
+	// return fileProductLineMatchLocation;
+	// }
+	//
+	// public void setFileProductLineMatchLocation(String
+	// fileProductLineMatchLocation) {
+	// this.fileProductLineMatchLocation = fileProductLineMatchLocation;
+	// }
 
 	public Boolean isFileProductLineMatchRequired() {
 		return fileProductLineMatchRequired;
@@ -2212,13 +2229,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.orderInEmailSubjectMatch = orderInEmailSubjectMatch;
 	}
 
-//	public String getFileOrderPartnerMatchLocation() {
-//		return fileOrderPartnerMatchLocation;
-//	}
-//
-//	public void setFileOrderPartnerMatchLocation(String fileOrderPartnerMatchLocation) {
-//		this.fileOrderPartnerMatchLocation = fileOrderPartnerMatchLocation;
-//	}
+	// public String getFileOrderPartnerMatchLocation() {
+	// return fileOrderPartnerMatchLocation;
+	// }
+	//
+	// public void setFileOrderPartnerMatchLocation(String
+	// fileOrderPartnerMatchLocation) {
+	// this.fileOrderPartnerMatchLocation = fileOrderPartnerMatchLocation;
+	// }
 
 	public Integer getWi_id() {
 		return wi_id;
@@ -2252,16 +2270,8 @@ public class ProductLine extends MainAbstractEntity {
 		return controlData;
 	}
 
-	public Boolean getEmailSubjectProductlineMatchRequired() {
-		return emailSubjectProductlineMatchRequired;
-	}
-
 	public Boolean getEmailSubjectRBOMatchRequired() {
 		return emailSubjectRBOMatchRequired;
-	}
-
-	public Boolean getEmailBodyProductlineMatchRequired() {
-		return emailBodyProductlineMatchRequired;
 	}
 
 	public Boolean getEmailBodyRBOMatchRequired() {
@@ -2280,9 +2290,9 @@ public class ProductLine extends MainAbstractEntity {
 		return fileMatchRequired;
 	}
 
-//	public Boolean getFileOrderMatchRequired() {
-//		return fileOrderMatchRequired;
-//	}
+	// public Boolean getFileOrderMatchRequired() {
+	// return fileOrderMatchRequired;
+	// }
 
 	public Boolean getFileProductLineMatchRequired() {
 		return fileProductLineMatchRequired;
