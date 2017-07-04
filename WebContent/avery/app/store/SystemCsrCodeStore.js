@@ -1,7 +1,6 @@
 Ext.define('AOC.store.SystemCsrCodeStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','csrCode'],
-	autoLoad:false,
 	totalCount:'total',
 	pageSize:pageSize,
 	proxy: {
