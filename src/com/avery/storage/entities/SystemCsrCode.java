@@ -86,48 +86,7 @@ public class SystemCsrCode extends MainAbstractEntity {
 	
 	/* Business Logic Starts */
 	
-	@Override
-	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
-		Long id = 0L;
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-			SystemCsrCode systemCsrCode = mapper.readValue(data, SystemCsrCode.class);
-			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig
-					.getInstance().getBean("systemCsrCodeService");
-			systemCsrCode.setCsrCode(systemCsrCode.getCsrCode());
-			SystemInfo varSystemInfo = new SystemInfo();
-			varSystemInfo.setId(1);
-			Org varOrg = new Org();
-			varOrg.setId(1);
-			User varUser = new User();
-			varUser.setId(systemCsrCode.getUserId());
-			systemCsrCode.setVarUser(varUser);
-			systemCsrCode.setVarSystemInfo(varSystemInfo);
-			systemCsrCode.setVarOrg(varOrg);
-			systemCsrCode.setCreatedDate(new Date());
-			systemCsrCode.setCreatedBy(systemCsrCode.getCreatedBy());
-			systemCsrCode.setIsActive("true");
-			systemCsrCode.setHasOwner("true");
-			id = systemCsrCodeService.create(systemCsrCode);
-			responseMap.put("csrCode", systemCsrCode.getCsrCode());
-			responseMap.put("id", id);
-			responseMap.put("codeOwner", "Y");
-			
-			mapper.writeValue(writer, responseMap);
-			return Response.ok(writer.toString()).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-	}
+	
 
 	@GET
 	@Path("/list")
