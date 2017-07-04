@@ -143,6 +143,9 @@ Ext.define('AOC.view.partner.OrgGrid', {
 				    	tooltip:'Remove',
 						glyph:'xf056@FontAwesome',
 						handler:function(grid, rowIndex, colIndex) {
+							if(this.up('#createpartnerproductlineItemId').mode == 'view'){
+					    		return;
+					    	}
 							if(AOCRuntime.getUser().role != 3 && rowIndex > 0){
 								 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
 									if(btn=='yes'){

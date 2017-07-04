@@ -187,6 +187,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.rboId = record.data.rbo.id;
     	record.data.partnerId = record.data.varPartner.id;
     	
+    	record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
+    	record.data.fileOrderFileContent = me.getFileContent(record.get('fileOrderMatchLocation'));
+    	
     	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
     	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
     	record.data.emailSubjectProductLineKeyword = record.get('emailSubjectProductLineMatch');
@@ -218,6 +221,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.coocheck = me.getSKUValidationRadioValue(record.get('coocheck'));
     	record.data.factoryMOQCheck = me.getSKUValidationRadioValue(record.get('factoryMOQCheck'));
     	
+    	delete record.get('fileOrderMatchLocation');
+    	
     	delete record.get('emailSubjectProductlineMatchRequired');
     	delete record.get('emailBodyProductlineMatchRequired');
     	
@@ -238,10 +243,24 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	return record;
     },
+    getFileName:function(value){
+    	if(!Ext.isEmpty(value) && value.indexOf('|') > -1){
+    		var splitArray = value.split('|');
+	    	return splitArray[0];
+    	}
+    	return value;
+    },
+    getFileContent:function(value){
+    	if(!Ext.isEmpty(value) && value.indexOf('|') > -1){
+    		var splitArray = value.split('|');
+	    	return splitArray[1];
+    	}
+    	return value;
+    },
     getKeyword:function(str){
     	if(!Ext.isEmpty(str)){
-	    	if(str.indexOf(';') > -1){
-		    	var splitArray = str.split(';');
+	    	if(str.indexOf('|') > -1){
+		    	var splitArray = str.split('|');
 		    	return splitArray[0].split(':')[1];
 	    	}
 	    	return str.split(':')[1];
@@ -249,8 +268,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	return '';
     },
     getCellNo:function(str){
-    	if(!Ext.isEmpty(str) && str.indexOf(';') > -1){
-	    	var splitArray = str.split(';');
+    	if(!Ext.isEmpty(str) && str.indexOf('|') > -1){
+	    	var splitArray = str.split('|');
 	    	return splitArray[1].split(':')[1];
     	}
     	return '';
@@ -321,7 +340,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
 	        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
 	        partnerRadioArray = partnerProfileForm.query('[xtype = radiogroup]'),
-	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
+	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkbox]'),
 	        
 	        tempArray = [].concat(partnerTextFieldArray)
 	        			  .concat(partnerComboArray)
@@ -349,7 +368,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		
 		if(mode == 'edit'){
-			var currentRecord = view.rec.data,
 			method = 'PUT';
 			url = applicationContext+'/rest/productLines/update';
 		}else{
@@ -484,6 +502,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		obj.coocheck = me.getSKUValidationValue(values.cooValidationMultipleProductLine, values.coocheck);
 		obj.factoryMOQCheck = me.getSKUValidationValue(values.factoryMoqValidationMultipleProductLine, values.factoryMOQCheck);
 		
+		if(values.fileOrderFileName && values.fileOrderFileContent){
+			obj.fileOrderMatchLocation = values.fileOrderFileName + '|'+ values.fileOrderFileContent;
+		}
+		else if(values.fileOrderFileName){
+			obj.fileOrderMatchLocation = values.fileOrderFileName;
+		}
+		else if(values.fileOrderFileContent){
+			obj.fileOrderMatchLocation = values.fileOrderFileContent;
+		}
+		
+		delete values.fileOrderFileName;
+		delete values.fileOrderFileContent;
+		
 		delete values.emailSubjectProductLineMatchRequired;
 		delete values.emailBodyProductLineMatchRequired;
 		
@@ -514,7 +545,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	},
 	getCombinedValue:function(keyword, cellNo){
 		if(keyword && cellNo){
-			return 'Value:'+keyword +';Cell:'+cellNo;
+			return 'Value:'+keyword +'|Cell:'+cellNo;
 		}else if(keyword){
 			return 'Value:'+keyword;
 		}
@@ -599,6 +630,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    	
 		    	defaultSystemCombo.setDisabled(false);
 		    	defaultSystemCombo.store.loadData(jsonString);
+		    	if(view.mode != 'add'){
+		    		defaultSystemCombo.setValue(view.rec.get('defaultSystem'));
+		    	}
 		    	
 	    		if(jsonString.length == 0){
 	    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
@@ -613,7 +647,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			systemContainer.add(me.getSystemContainer(jsonString[i]));
 	    			systemContainer.checkboArray.push(jsonString[i].name);
 	    		}
-	    		if(me.getView().mode == 'edit'){
+	    		if(me.getView().mode != 'add'){
 		    		if(!cmp.changedBefore){
 		    			cmp.changedBefore = true;
 		    			me.getListOrderSystemInfo(view);
@@ -884,7 +918,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			cont2 = refs.additionalAttachmentFileCont2;
 //			cont3 = refs.additionalExcelCont;
 		
-		if(newValue.isOrderWithAttachment == 'true'){
+		if(newValue.attachmentRequired == 'true'){
 			cont1.setDisabled(false);
 			cont2.setDisabled(false);
 //			cont3.setDisabled(false);
@@ -917,7 +951,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			fieldType = field.fieldType,
 			fileNameField = refs[fieldType+'FileName'],
 			fileContentField = refs[fieldType+'FileContent'],
-			CellNo = refs[fieldType+'CellNo'],
+			CellNo = refs['fileOrderMatch'],
 			EmailSubject = refs[fieldType+'EmailSubject'],
 			EmailBody = refs[fieldType+'EmailBody'];
 	

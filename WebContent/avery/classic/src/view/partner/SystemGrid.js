@@ -16,7 +16,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
 	        });
 		},
 		'beforeedit': function(){
-			if(AOCRuntime.getUser().role == 3){
+			if(AOCRuntime.getUser().role == 3 || this.up('#createpartnerproductlineItemId').mode == 'view'){
 				return false;
 			}
 			return true;

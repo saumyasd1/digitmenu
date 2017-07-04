@@ -52,7 +52,7 @@ Ext.define('AOC.view.partner.OrgController', {
 		}
 	},
 	OnBeforeEdit:function(editor,context){
-		if(AOCRuntime.getUser().role == 3){
+		if(AOCRuntime.getUser().role == 3 || this.getView().up('#createpartnerproductlineItemId').mode == 'view'){
 			return false;
 		}else{
 		  var grid=editor.grid,record=context.record,
@@ -87,6 +87,9 @@ Ext.define('AOC.view.partner.OrgController', {
     	return value;
     },
     onAddOrgBtnClick:function(btn){
+    	if(this.getView().up('#createpartnerproductlineItemId').mode == 'view'){
+    		return;
+    	}
     	var me = this,
     		view = me.getView(),
     		store = view.store;

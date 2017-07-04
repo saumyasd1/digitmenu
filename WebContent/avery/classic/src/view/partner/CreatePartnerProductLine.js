@@ -25,11 +25,15 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		'afterrender':'onWinAfterRender'
 	},
 	buildButtons : function(){
+		var hiddenFlag = false;
+		if(AOCRuntime.getUser().role == 3 || this.mode == 'view'){
+			hiddenFlag = true;
+		}
 		return [
 			{
 				text : AOCLit.Save,
 				handler: 'onSaveBtnClick',
-				hidden:AOCRuntime.getUser().role == 3 ? true : false 
+				hidden: hiddenFlag 
 			},
 			{
 				text: AOCLit.Cancel,
@@ -321,18 +325,24 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									flex:1
 								},
 								items:[
-									{
-								    	xtype:'combo',
-								    	name:'orderFileNameExtension',
-								    	fieldLabel:'Order File Format',
-								    	displayField:'name',
-								    	valueField:'name',
-								    	queryMode:'local',
-								    	store:fileFormatStore,
-								    	listeners:{
-								    		blur:'onWIComboBlur'
-								    	}
-						    		 },
+//									{
+//								    	xtype:'combo',
+//								    	name:'orderFileNameExtension',
+//								    	fieldLabel:'Order File Format',
+//								    	displayField:'name',
+//								    	valueField:'name',
+//								    	queryMode:'local',
+//								    	store:fileFormatStore,
+//								    	listeners:{
+//								    		blur:'onWIComboBlur'
+//								    	}
+//						    		 },
+									 {
+										 xtype:'textfield',
+										 name:'orderFileNameExtension',
+										 fieldLabel:'Order File Format',
+										 
+									 },
 						    		 {
 						    			 xtype:'box',
 						    			 margin:'0 0 0 10'
@@ -358,7 +368,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										column:2,
 										width:350,
 										defaults:{
-											name:'isOrderWithAttachment'
+											name:'attachmentRequired'
 										},
 										reference:'isOrderWithAttachment',
 										fieldLabel:'Is Order with Additional File?',
@@ -369,7 +379,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										listeners:{
 											change:'onOrderWithAttachmentRadioChange'
 										}
-									},
+									}
 								]
 							},
 							me.getAdditionalField('','1','additionalAttachmentFileCont','additionalAttachment',fileFormatStore),
@@ -617,17 +627,17 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			  },
 			  items:[
 			    {
-			    	xtype:'combo',
+			    	xtype:'textfield',
 			    	name:'attachmentFileNameExtension_'+count,
 			    	fieldLabel:fieldLabel + ' Additional Attachment Format',
-			    	displayField:'name',
-			    	valueField:'name',
-			    	queryMode:'local',
-			    	flex:1,
-			    	store:fileFormatStore,
-			    	listeners:{
-			    		blur:'onWIComboBlur'
-			    	}
+//			    	displayField:'name',
+//			    	valueField:'name',
+//			    	queryMode:'local',
+			    	flex:1
+//			    	store:fileFormatStore,
+//			    	listeners:{
+//			    		blur:'onWIComboBlur'
+//			    	}
 	    		 }, {
 	          		 xtype:'textfield',
 	          		 fieldLabel:fieldLabel + ' Additional File Key',
@@ -636,7 +646,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	          		 flex:1
 	          	 }, {
 	          		 xtype:'textfield',
-	          		 fieldLabel:'Attachment Identifier',
+	          		 fieldLabel:fieldLabel+' Attachment Identifier',
 	          		 name:'attachmentIdentifier_'+count,
 	          		 margin:'0 0 0 10',
 	          		 flex:1
@@ -851,20 +861,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					fieldLabel:'Email Body'
 				}, {
 					xtype:'textfield',
-					name:'fileOrderMatchLocation',
+					name:'fileOrderFileName',
 					reference:type+'FileName',
 					disabled:true,
 					fieldLabel:'File Name'
 				}, {
 					xtype:'textfield',
-					name:'fileOrderMatchLocationContent',
+					name:'fileOrderFileContent',
 					reference:type+'FileContent',
 					disabled:true,
 					fieldLabel:'File Content'
 				}, {
 					xtype:'textfield',
-					name:type+'CellNo',
-					reference:type+'CellNo',
+					name:'fileOrderMatch',
+					reference:'fileOrderMatch',
 					disabled:true,
 					fieldLabel:'Cell No,If Excel'
 				}

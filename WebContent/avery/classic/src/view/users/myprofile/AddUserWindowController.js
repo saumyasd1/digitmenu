@@ -15,11 +15,11 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 				if(Ext.isNumeric(rec.get('id'))){
 					yesArray.push(rec.get('id'));
 				}
-		}else if((rec.get('codeOwner') == 'N')){
+    		}else if((rec.get('codeOwner') == 'N')){
 				if(Ext.isNumeric(rec.get('id'))){
 					noArray.push(rec.get('id'));
 				}
-		}
+    		}
     	});
     	return {yes:yesArray.join(),no:noArray.join()};
     },
@@ -544,10 +544,11 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	}
     	else{
     		systemCsrCodeGrid.setHidden(true);
-    		if(view.isVisible()){
-	    		var pos = view.getPosition();
-	    		view.setPosition(pos[0],pos[1]);
-    		}
+    		view.center()
+//    		if(view.isVisible()){
+//	    		var pos = view.getPosition();
+//	    		view.setPosition(pos[0],pos[1]);
+//    		}
     	}
     },
     onBlurCsrCode: function(combo){
