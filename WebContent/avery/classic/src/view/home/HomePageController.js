@@ -279,7 +279,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			me.filterHomeList(obj, newValue, oldValue);
 		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
 			if(siteCombo.getValue() == 'All'){
-				me.getCSRList(csrCombo.store, 1);
+				me.getCSRList(csrCombo.store, '');
 				me.loadDefaultHomeList();
 				return;
 			}
