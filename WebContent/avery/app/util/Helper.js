@@ -697,6 +697,7 @@ Ext.define('AOC.util.Helper',{
     	},
 	siteNameForSuperAdminOnly:function(obj){
 		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
+		if(obj.xtype == 'combo' || obj.xtype == 'combobox') { obj.getStore().load();}
 	},
 	getSystemComboList: function (siteId) {
         var systemStore = Ext.StoreManager.lookup('userSystemStore'),
