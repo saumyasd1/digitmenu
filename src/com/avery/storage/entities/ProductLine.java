@@ -1048,6 +1048,48 @@ public class ProductLine extends MainAbstractEntity {
 		return rb.build();
 	}
 
+	@GET
+	@Path("/status")
+	public Response statusProductLine(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id,
+			@QueryParam("status") Boolean status) {
+		Response.ResponseBuilder rb = null;
+		if (id == null | "".equals(id.trim()))
+			return Response.ok("Wrong input", MediaType.TEXT_PLAIN).status(Status.NOT_ACCEPTABLE).build();
+		Long entityId = Long.parseLong(id);
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		boolean success = false;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			ProductLineService productLineService = (ProductLineService) SpringConfig
+					.getInstance().getBean("productLineService");
+			success = productLineService.updateStatus(entityId, status);
+			responseMap.put("success", success);
+			if (success){
+				if(status){
+					responseMap.put("message", "Partner #" + id + " Status changed from deactive to active");
+				}
+				else{
+					responseMap.put("message", "Partner #" + id + " Status changed from active to deactive");
+				}
+				
+			}
+				
+			else{
+				responseMap.put("message", "Partner #" + id + " status was not updated");
+			}
+				
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+}
 	// Start of Getters and Setters
 
 	public Boolean getOrderInMailBody() {
