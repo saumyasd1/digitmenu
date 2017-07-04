@@ -116,7 +116,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1
 						},	
 						items:[
 							{
@@ -124,23 +125,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								itemId:'RItemId',
 								name: 'rboId',
 								reference:'rboId',
-//								bind:'{rbo.id}',
 								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
 								store:rboStore,
 								displayField:'rboName',
 								valueField:'id',
-								flex:1,
 								blankTexts: 'RBO Name is required'
 							},
 							{
 								xtype:'combo',
 								itemId:'SiteId',
 								name: 'site',
-								flex:1,
 								fieldLabel:'Site',
 								allowBlank: false,
-//								bind:'{siteId}',
 								changedBefore:false,
 								reference:'site',
 								valueField:'id',
@@ -154,6 +151,40 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								listeners : {
 									'change':'onSiteSelect'
 								}
+							}
+						]
+					},
+					{
+						xtype:'fieldcontainer',
+						margin:'0 0 5 0',
+						layout:{
+							type:'hbox',
+							align:'stretch'
+						},
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1
+						},	
+						items:[
+							{
+								xtype:'combo',
+								fieldLabel:'Default System',
+								name:'defaultSystem',
+								reference:'defaultSystemCombo',
+								displayField:'name',
+								valueField:'id',
+								queryMode:'local',
+								disabled:true,
+								store:new Ext.data.JsonStore({
+									data:[],
+									fields:['name', 'id']
+								}),
+							},
+							{
+								xtype:'box',
+								margin:'0 0 0 10'
 							}
 						]
 					},
@@ -826,7 +857,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					fieldLabel:'File Name'
 				}, {
 					xtype:'textfield',
-					name:'fileOrderMatchLocation',
+					name:'fileOrderMatchLocationContent',
 					reference:type+'FileContent',
 					disabled:true,
 					fieldLabel:'File Content'

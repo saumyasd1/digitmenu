@@ -769,5 +769,10 @@ Ext.define('AOC.util.Helper',{
 	        ['Thermal/ PFL', 'Thermal/ PFL'], ['RFID', 'RFID'], ['Offset', 'Offset'], ['OFF/FLE', 'OFF/FLE'],
 	        ['OFF/PFL/WOV/IMP', 'OFF/PFL/WOV/IMP'], ['Woven & Offset', 'Woven & Offset']
 		];
+	},
+	getSystemStore:function(){
+		return [
+		    ['ORACLE','ORACLE'],['VIPS','VIPS'],['SPARROW','SPARROW']
+		];
 	}
 });

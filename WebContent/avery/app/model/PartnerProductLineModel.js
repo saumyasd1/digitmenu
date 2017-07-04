@@ -4,9 +4,10 @@ Ext.define('AOC.model.PartnerProductLineModel',{
     fields: [
         // set up the fields mapping into the xml doc
         {name:'id',type:'string'},
-	    {name: 'partner.partnerName', mapping:'partner.partnerName',type: 'string'},
+	    {name: 'partner.partnerName', mapping:'varPartner.partnerName',type: 'string'},
+		{name: 'partnerId', mapping:'varPartner.id',type: 'string'},
 		{name: 'rboName', mapping:'rbo.rboName',type: 'string'},
-		{name: 'rboId', mapping:'rbo.rboId',type: 'string'},
+		{name: 'rboId', mapping:'rbo.id',type: 'string'},
 		{name: 'productLineType', mapping:'productLineType',type: 'string'},
 		{name: 'csrName', mapping:'csrName',type: 'string'},
 		{name: 'csrEmail', mapping:'csrEmail',type: 'string'},
