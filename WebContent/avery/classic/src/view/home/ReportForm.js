@@ -43,7 +43,13 @@ Ext.define('AOC.view.home.ReportForm',{
 						emptyText:'Select Partner',
 						listeners:{
 							'change':'onPartnerChange',
-							'afterrender':'onPartnerAfterRender'
+							'afterrender': function(combo){
+	                    		var store = combo.store,
+                    				obj ={id:'all',partnerName:'Select All'};
+	                    		store.on('load',function(){
+	                    			store.insert(0,new Ext.data.Record(obj));
+	                    		},store);
+							}
 						}
 					},
 					{
