@@ -13,55 +13,57 @@ import org.springframework.transaction.annotation.Transactional;
 import com.avery.storage.dao.impl.OrderEmailQueueDao;
 import com.avery.storage.entities.OrderEmailQueue;
 
+/**
+ * @author Vishal
+ *
+ */
 @Component
-public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue, Long>{
-	
+public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue, Long> {
+
 	private OrderEmailQueueDao orderEmailQueueDao;
-	
-	
+
 	public OrderEmailQueueDao getOrderEmailQueueDao() {
 		return orderEmailQueueDao;
 	}
-
 
 	@Autowired
 	public void setOrderEmailQueueDao(OrderEmailQueueDao orderEmailQueueDao) {
 		this.orderEmailQueueDao = orderEmailQueueDao;
 	}
 
-
 	@Transactional
-	public Map getWithUnidentifiedStatus(MultivaluedMap queryMap) throws Exception{
+	public Map getWithUnidentifiedStatus(MultivaluedMap queryMap) throws Exception {
 		return getOrderEmailQueueDao().getUnidentifiedEntities(queryMap);
 	}
-	
+
 	@Transactional
-	public void cancelEmail(String data,Long entityId){
-		getOrderEmailQueueDao().cancelEmail(data,entityId);
+	public void cancelEmail(String data, Long entityId) {
+		getOrderEmailQueueDao().cancelEmail(data, entityId);
 	}
 
 	@Transactional
-	public void disregardEmail(String data,Long entityId){
-		getOrderEmailQueueDao().disregardEmail(data,entityId);
+	public void disregardEmail(String data, Long entityId) {
+		getOrderEmailQueueDao().disregardEmail(data, entityId);
 	}
-	
+
 	@Transactional
-	public void identifyEmail(String data,Long entityId){
-		getOrderEmailQueueDao().identifyEmail(data,entityId);
+	public void identifyEmail(String data, Long entityId) {
+		getOrderEmailQueueDao().identifyEmail(data, entityId);
 	}
-	
+
 	@Transactional
-	public void assignCsrByEmailQueueId(Long entityId, String csrId,String userId){
-		getOrderEmailQueueDao().assignCsrValue(entityId, csrId,userId);
+	public void assignCsrByEmailQueueId(Long entityId, String csrId, String userId, boolean changeStatus) {
+		getOrderEmailQueueDao().assignCsrValue(entityId, csrId, userId, changeStatus);
 	}
-	
+
 	@Transactional
-	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate){
+	public void updateAcknowledgementDate(Long entityId, Date acknowledgementDate) {
 		getOrderEmailQueueDao().updateAcknowledgementDate(entityId, acknowledgementDate);
 	}
-	
+
 	@Transactional
-	public Set<OrderEmailQueue> getList(int lastDays,Set<String> status,MultivaluedMap<String, String> queryParamMap)throws Exception{
-		return getOrderEmailQueueDao().getList(lastDays,status,queryParamMap);
+	public Set<OrderEmailQueue> getList(int lastDays, Set<String> status, MultivaluedMap<String, String> queryParamMap)
+			throws Exception {
+		return getOrderEmailQueueDao().getList(lastDays, status, queryParamMap);
 	}
 }

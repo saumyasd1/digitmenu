@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.mail.Message;
@@ -153,16 +152,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	private List<OrderFileAttachment> listOrderFileAttachment;
 
 	@Column(name = "siteId")
-	Integer siteId;
+	private Integer siteId;
 	
-	public String getEmailSubjectPartnerMatch() {
-		return emailSubjectPartnerMatch;
-	}
-
-	public void setEmailSubjectPartnerMatch(String emailSubjectPartnerMatch) {
-		this.emailSubjectPartnerMatch = emailSubjectPartnerMatch;
-	}
-
 	// transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -491,7 +482,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Path("/assigncsr/{id:[0-9]+}/{csrid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response assignCsr(@Context UriInfo ui, @Context HttpHeaders hh, @PathParam("id") String orderEmailQueueId,
-			@QueryParam("userId") String userId, @PathParam("csrid") String csrId) {
+			@QueryParam("userId") String userId, @PathParam("csrid") String csrId,
+			@QueryParam("changeStatus") boolean changeStatus) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		Response.ResponseBuilder rb = null;
 		try {
@@ -500,10 +492,11 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
 					.getBean("orderEmailQueueService");
-			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId, userId);
+			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId, userId, changeStatus);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
 			entitiesMap.put("success", true);
+			entitiesMap.put("changeStatus", changeStatus);
 			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
@@ -1154,6 +1147,11 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		return siteName;
 	}
 
+	public String getEmailSubjectPartnerMatch() {
+		return emailSubjectPartnerMatch;
+	}
 
-
+	public void setEmailSubjectPartnerMatch(String emailSubjectPartnerMatch) {
+		this.emailSubjectPartnerMatch = emailSubjectPartnerMatch;
+	}
 }

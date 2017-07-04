@@ -374,7 +374,7 @@ OrderEmailQueueDao {
 	}
 	
 	@Override
-	public void assignCsrValue(Long entityId, String csrId,String userId){
+	public void assignCsrValue(Long entityId, String csrId,String userId, boolean changeStatus){
 		Session session = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
@@ -384,11 +384,13 @@ OrderEmailQueueDao {
 			orderEmailQueueObj.setLastModifiedBy(userId);
 			orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 			orderEmailQueueObj.setLastModifiedDate(new Date());//last modified date added on assign csr click
-			String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
-			Query q = session.createQuery(s);
-			q.setString("value",ApplicationConstants.ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS);
-			q.setLong("id",entityId);
-			q.executeUpdate();
+			if(changeStatus){
+				String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
+				Query q = session.createQuery(s);
+				q.setString("value",ApplicationConstants.ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS);
+				q.setLong("id",entityId);
+				q.executeUpdate();
+			}
 			Long csrEntityId = Long.parseLong(csrId);
 			User user = (User) session.get(User.class, csrEntityId);
 			String toUserName = user.getEmail();
