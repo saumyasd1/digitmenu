@@ -171,6 +171,14 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					name: 'fileContentMatch'
 				},
 				{
+					text : 'Partner Match',
+					flex :1,
+					dataIndex:'partnerMatch',
+					sortable:false,
+					resizable:false,
+					name: 'fileContentMatch'
+				},
+				{
 					text : AOCLit.Status,
 					flex :1,
 					dataIndex:'status',

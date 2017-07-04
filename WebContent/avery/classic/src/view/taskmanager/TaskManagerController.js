@@ -125,7 +125,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 		    		method:'GET',
 		    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
 		    		params:{
-		    			userId: AOCRuntime.getUser().id
+		    			userId: AOCRuntime.getUser().id,
+		    			changeStatus:true
 		    		},
 				    success : function(response, opts) {
 				    	assignCsrWin.unmask();

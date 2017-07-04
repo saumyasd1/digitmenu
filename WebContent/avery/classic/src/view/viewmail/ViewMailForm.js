@@ -132,6 +132,30 @@ Ext.define('AOC.view.viewmail.ViewMailForm', {
 						flex:1
 					}
 				]
+			},
+			{
+				xtype:'fieldcontainer',
+				layout:{
+					type:'hbox',
+					align:'stretch'
+				},
+				margin:'0 0 5 0',
+				defaults:{
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:200,
+					flex:1
+				},
+				defaultType:'displayfield',
+				items:[
+				    {
+				    	name:'emailSubjectPartnerMatch',
+				    	fieldLabel:'Email Subject Partner Match',
+				    	reference:'emailSubjectPartnerMatch',
+				    	itemId:'emailSubjectPartnerMatch'
+				    }
+				]
 			}
 		];
     }

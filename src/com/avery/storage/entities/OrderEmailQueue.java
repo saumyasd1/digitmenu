@@ -145,12 +145,23 @@ public class OrderEmailQueue extends MainAbstractEntity {
 
 	@Column(name = "emailBodyRBOMatch", length = 100)
 	private String emailBodyRBOMatch;
+	
+	@Column(name = "emailSubjectPartnerMatch", length = 250)
+	private String emailSubjectPartnerMatch;
 
 	@OneToMany(mappedBy = "varOrderEmailQueue", fetch = FetchType.EAGER)
 	private List<OrderFileAttachment> listOrderFileAttachment;
 
 	@Column(name = "siteId")
 	Integer siteId;
+	
+	public String getEmailSubjectPartnerMatch() {
+		return emailSubjectPartnerMatch;
+	}
+
+	public void setEmailSubjectPartnerMatch(String emailSubjectPartnerMatch) {
+		this.emailSubjectPartnerMatch = emailSubjectPartnerMatch;
+	}
 
 	// transient variables added for getting colorCode and iconName
 	@Transient

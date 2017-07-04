@@ -97,6 +97,9 @@ public class OrderFileAttachment extends MainAbstractEntity {
 	@Column(name="productLineMatch",length=100)
 	private String productLineMatch;
 	
+	@Column(name="partnerMatch",length=250)
+	private String partnerMatch;
+	
 	@Column(name="rboMatch",length=100)
 	private String rboMatch;
 	
@@ -274,6 +277,14 @@ public class OrderFileAttachment extends MainAbstractEntity {
 
 	public void setListOrderFileQueue(List<OrderQueue> listOrderFileQueue) {
 		this.listOrderFileQueue = listOrderFileQueue;
+	}
+
+	public String getPartnerMatch() {
+		return partnerMatch;
+	}
+
+	public void setPartnerMatch(String partnerMatch) {
+		this.partnerMatch = partnerMatch;
 	}
 
 	@Override
