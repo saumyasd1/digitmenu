@@ -212,7 +212,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     		csrCombo = refs.csrCombo;
     	csrCombo.enable();
     	csrCombo.store.proxy.extraParams = {
-		    siteId: siteComboValue == 'all' ? 1 : siteComboValue
+		    siteId: siteComboValue == 'all' ? '' : siteComboValue
 		};
     	csrCombo.store.load();
     	csrCombo.reset();
