@@ -64,6 +64,7 @@ import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.storage.service.SiteService;
+import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationConstants;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.DateUtils;
@@ -278,6 +279,7 @@ public class OrderQueue extends MainAbstractEntity {
 			if (orderQueue == null)
 				throw new Exception("Unable to find Orders");
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			List listOfTask=(List) orderQueue.get("orders");
 			for (int i = 0; i < listOfTask.size(); i++) {
 				OrderQueue orderQueue1 = (OrderQueue) listOfTask.get(i);
@@ -287,6 +289,12 @@ public class OrderQueue extends MainAbstractEntity {
 					Site site = siteService.read((long)siteId);
 					if(site != null)
 					orderQueue1.setSitename(site.getName());
+				}
+				if(orderQueue1.getCsrCode() != null)
+				{
+					String csrCode=orderQueue1.getCsrCode();
+					String csrName = userService.getUsernameById(csrCode);
+					orderQueue1.setCsrName(csrName);
 				}
 			}
 			responceMap.put("orders", listOfTask);
