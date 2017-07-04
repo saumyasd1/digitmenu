@@ -546,7 +546,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		systemCsrCodeGrid.setHidden(true);
     		if(view.isVisible()){
 	    		var pos = view.getPosition();
-	    		view.setPosition(pos[0],pos[1]+100);
+	    		view.setPosition(pos[0],pos[1]);
     		}
     	}
     },
