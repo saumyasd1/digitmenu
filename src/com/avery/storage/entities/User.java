@@ -552,13 +552,7 @@ public class User extends MainAbstractEntity {
 		StringWriter writer = new StringWriter();
 		Map<String, String> responseMap = new HashMap<String, String>();
 		String uploadDir = PropertiesConfig.getString(PropertiesConstants.PIC_PATH);
-		if (roleId == 1)
-			uploadDir = uploadDir + "/1";
-		if (roleId == 2)
-			uploadDir = uploadDir + "/2";
-		if (roleId == 3)
-			uploadDir = uploadDir + "/3";
-		uploadDir = uploadDir + "/" + userId;
+		uploadDir = uploadDir+"/"+roleId+"/"+userId;
 		String extens = picname.substring(picname.lastIndexOf("."), picname.length());
 		String filename = userId + extens;
 		try {
