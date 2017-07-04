@@ -161,7 +161,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								queryMode :'local',
 								reference:'siteCombo',
 								valueField: 'id',
-								store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
+								store:Ext.data.StoreManager.lookup('advSiteStoreId') != null ? Ext.data.StoreManager.lookup('advSiteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'advSiteStoreId'}),
 								listeners : {
 									afterrender:Helper.siteNameForSuperAdminOnly,
 									select:function(field){
