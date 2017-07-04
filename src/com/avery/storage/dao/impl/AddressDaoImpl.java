@@ -83,13 +83,13 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				criteria.add(Restrictions.ilike("siteNumber", siteNumber, MatchMode.ANYWHERE));
 			}
 			String siteId=searchMap.get("siteId");
-			if(siteId!=null && !"".equals(siteId)){
+			if(!siteId.equals("") && siteId != null && !siteId.isEmpty()){
 				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
 			}
 		}
 		String siteId = (String) queryMap.getFirst("siteId");
-		if(siteId!=null)
-		if (!siteId.equals("")) {
+		if(!siteId.equals("") && siteId != null && !siteId.isEmpty())
+		{
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		int totalCount = 0;

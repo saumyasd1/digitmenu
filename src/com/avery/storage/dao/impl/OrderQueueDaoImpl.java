@@ -139,7 +139,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 
 		String siteId1 = (String) queryMap.getFirst("siteId");
 		String roleId = (String) queryMap.getFirst("roleId");
-		if (!siteId1.equals("1") && !roleId.equals("1")) {
+		if (!siteId1.equals("") && !roleId.equals("1")) {
 			criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(siteId1)));
 		}
 
@@ -329,13 +329,13 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
 			}
 
-			if (filterSiteId != null && !"".equals(filterSiteId) && !"1".equals(filterSiteId.trim())) {
+			if (filterSiteId != null && !"".equals(filterSiteId) && !filterSiteId.isEmpty()) {
 				criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(filterSiteId)));
 			}
 		} else {
 			String siteId = (String) queryParamMap.getFirst("siteId");
-			if (siteId != null)
-				if (!siteId.equals("")) {
+			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
+				{
 					criteria.add(Restrictions.eq("varOrderEmailQueue.siteId", Integer.parseInt(siteId)));
 				}
 		}
@@ -422,9 +422,9 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				Long Id = Long.parseLong(emailQueueId);
 				criteria.add(Restrictions.eq("orderemailqueue.id", Id));
 			}
-
-			if (searchMap.get("siteId") != null && !searchMap.get("siteId").equals("")) {
-				String filterSiteId = (String) searchMap.get("siteId");
+			String filterSiteId = (String) searchMap.get("siteId");
+			if (filterSiteId!=null && !"".equals(filterSiteId) && !filterSiteId.isEmpty())
+			{
 				criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(filterSiteId)));
 			}
 
@@ -499,7 +499,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("status", statusCode));
 			}
 			String siteId = searchMap.get("siteId");
-			if (siteId != null && !"".equals(siteId)) {
+			if (siteId!=null && !"".equals(siteId) && !siteId.isEmpty()) {
 				String[] siteIdList = siteId.split(",");
 				List<Integer> siteList=new ArrayList<Integer>();
 				for(int i=0; i<siteIdList.length; i++)
@@ -581,7 +581,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				criteria.add(Restrictions.in("status", statusCode));
 			}			
 			String siteId = searchMap.get("siteId");
-			if (siteId != null && !"".equals(siteId)) {
+			if (siteId!=null && !"".equals(siteId) && !siteId.isEmpty()) {
 				String[] siteIdList = siteId.split(",");
 				List<Integer> siteList=new ArrayList<Integer>();
 				for(int i=0; i<siteIdList.length; i++)

@@ -53,7 +53,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements
 				criteria.add(Restrictions.ilike("partnerName", partnerName,MatchMode.ANYWHERE));
 			}
 			String siteId=searchMap.get("siteId");
-			if(siteId!=null && !"".equals(siteId)){
+			if(siteId!=null && !"".equals(siteId) && !siteId.isEmpty()){
 				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
 			}
 		}

@@ -73,7 +73,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		}
 		if (queryMap.getFirst("siteId") != null) {
 		String siteId=(String) queryMap.getFirst("siteId");
-		if (!siteId.equals("") && siteId != null)
+		if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);

@@ -561,7 +561,7 @@ OrderEmailQueueDao {
 				criteria.add(Restrictions.ilike("ccMailId",ccMailId,MatchMode.ANYWHERE));
 			}
 			String siteId=searchMap.get("siteId");
-			if(siteId!=null && !"".equals(siteId)){
+			if(siteId!=null && !"".equals(siteId) && !siteId.isEmpty()){
 				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
 			}
 		}

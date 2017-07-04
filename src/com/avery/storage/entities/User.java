@@ -48,6 +48,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.UserMixIn;
+import com.avery.storage.service.SiteService;
 import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationUtils;
@@ -139,6 +140,7 @@ public class User extends MainAbstractEntity {
 			mapper.addMixIn(User.class, UserMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
 			Map responseMap = new HashMap();
 			entitiesMap = userService.readWithCriteria(queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
@@ -149,6 +151,13 @@ public class User extends MainAbstractEntity {
 				for (int i = 0; i < listofPL.size(); i++) {
 					User currentuser = (User) listofPL.get(i);
 					String lastmodifiedUserId = currentuser.getLastModifiedBy();
+					if(currentuser.getSiteId() != null)
+					{
+						int siteId=currentuser.getSiteId();
+						Site site = siteService.read((long)siteId);
+						if(site != null)
+							currentuser.setSiteName(site.getName());
+					}
 					if (lastmodifiedUserId != null) {
 						String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 						currentuser.setLastModifiedBy(LastModifiedByName);
