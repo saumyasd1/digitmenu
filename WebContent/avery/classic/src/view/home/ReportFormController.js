@@ -191,19 +191,6 @@ Ext.define('AOC.view.home.ReportFormController', {
 			statusCombo.reset();
 		}
     },
-    onPartnerAfterRender: function(obj){
-	    var userInfo = AOCRuntime.getUser(),
-	    	siteId = userInfo.siteId,
-	    	store = obj.store,
-	    	storeObj = {id:'all',partnerName:'Select All'};
-	    
-	    obj.getStore().proxy.extraParams = {
-		    siteId: siteId
-		};
-		store.on('load',function(){
-			store.insert(0,new Ext.data.Record(storeObj));
-		},store);	
-    },
     onReportFormAfterRender: function(form){
     	  var siteCombo = form.lookupReference('siteName'),
 	          siteStore = siteCombo.store,
