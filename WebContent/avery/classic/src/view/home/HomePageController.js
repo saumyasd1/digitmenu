@@ -231,6 +231,9 @@ Ext.define('AOC.view.home.HomePageController', {
 	    			obj.store.insert(0,new Ext.data.Record({name:'All', id:'All'}));
 	    			refs['csrCombo'].setValue('All');
 	    		}
+	    		else if (AOCRuntime.getUser().role == AOCLit.userRole.siteManager){
+	    			refs['csrCombo'].setValue('All');
+	    		}
 	    	}
 	    }, obj);
 	},
@@ -247,7 +250,6 @@ Ext.define('AOC.view.home.HomePageController', {
 					}
 				}
 				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
-				//csrCombo.setValue('All');
 			}
 		}, csrCombo);
 	},
