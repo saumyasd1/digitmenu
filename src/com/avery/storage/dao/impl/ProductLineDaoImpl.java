@@ -1,6 +1,7 @@
 package com.avery.storage.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -37,6 +38,7 @@ import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 @Repository
 public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implements ProductLineDao {
@@ -291,6 +293,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			rboObj.setId(rboId);
 			productLine.setVarPartner(partnerObj);
 			productLine.setRbo(rboObj);
+			productLine.setCreatedDate(new Date());
 			productlineId = productLineService.create(productLine);
 			List orderSystemInfo = (ArrayList) entitiesMap.get("listOrderSystemInfo");
 			saveListOrderSystemInfo(productlineId, orderSystemInfo);
@@ -381,7 +384,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 			HashMap<String, Object> entitiesMap = ApplicationUtils.convertJSONtoObjectMaps(productLineData);
-			productLine = mapper.readValue(productLineData, ProductLine.class);
+			productlineId = Long.parseLong((String) entitiesMap.get("id"));
+			productLine = (ProductLine) session.get(ProductLine.class, productlineId);
+			ObjectReader updater = mapper.readerForUpdating(productLine);
+			productLine = updater.readValue(productLineData);
+//			productLine = mapper.readValue(productLineData, ProductLine.class);
 			ProductLineService productLineService = (ProductLineService) SpringConfig.getInstance()
 					.getBean("productLineService");
 			// productlineId = productLineService.create(productLine);
@@ -393,8 +400,9 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			rboObj.setId(rboId);
 			productLine.setVarPartner(partnerObj);
 			productLine.setRbo(rboObj);
+			productLine.setLastModifiedDate(new Date());
 			session.update(productLine);
-			productlineId = productLine.getId();
+			// productlineId = productLine.getId();
 			List orderSystemInfo = (ArrayList) entitiesMap.get("listOrderSystemInfo");
 			saveListOrderSystemInfo(productlineId, orderSystemInfo);
 		} catch (Exception e) {
