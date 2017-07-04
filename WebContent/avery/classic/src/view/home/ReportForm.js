@@ -43,13 +43,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						emptyText:'Select Partner',
 						listeners:{
 							'change':'onPartnerChange',
-							'afterrender': function(combo){
-	                    		var store = combo.store,
-                    				obj ={id:'all',partnerName:'Select All'};
-	                    		store.on('load',function(){
-	                    			store.insert(0,new Ext.data.Record(obj));
-	                    		},store);
-							}
+							'afterrender':'onPartnerComboAfterRender' 
 						}
 					},
 					{
@@ -85,14 +79,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						emptyText:'Select Status',
 	                	store: Ext.data.StoreManager.lookup('code') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
 	                    listeners:{
-	                    	afterrender:function(field){
-	                    		var store = field.store,
-	                    			obj ={code:'all',value:'Select All'},
-	                    			index=store.find("code",'all','',false,false,true);
-	                    		if(index == -1){
-	                    			store.insert(0,new Ext.data.Record(obj));
-	                    		}
-	                    	}
+	                    	afterrender:'onStatusComboAfterRender'
 	                    }
 					}
 				]
@@ -114,15 +101,7 @@ Ext.define('AOC.view.home.ReportForm',{
 	                    store: Ext.create('AOC.store.SiteStore'),
 	                    queryMode: 'local',
 	                    listeners:{
-	                    	afterrender:function(field){
-	                    		if(AOCRuntime.getUser().role == 1){
-		                    		var store = field.store,
-		                    			obj ={id:'all',name:'Select All'};
-		                    		store.on('load',function(){
-		                    			store.insert(0,new Ext.data.Record(obj));
-		                    		},store);
-	                    		}
-	                    	},
+	                    	afterrender:'onSiteComboAfterRender',
 	                    	select:'onSiteSelect'
 	                    }
 	                },
@@ -140,16 +119,8 @@ Ext.define('AOC.view.home.ReportForm',{
 	    				store:Ext.create('AOC.store.AssignCSRStore') ,
 	    				typeAhead:true,
 	    				listeners:{
-		                    	afterrender:function(field){
-		                    		if(AOCRuntime.getUser().role == 1){
-			                    		var store = field.store,
-			                    			obj ={userId:'all',csrName:'Select All'};
-			                    		store.on('load',function(){
-			                    			store.insert(0,new Ext.data.Record(obj));
-			                    		},store);
-		                    		}
-		                    	}
-		                    }
+	                    	afterrender:'onCSRComboAfterRender'
+	                    }
 	    			},
 	    			{
 	    				xtype:'combo',

@@ -8,6 +8,7 @@ int pageSize=100;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <script src="https://use.fontawesome.com/515eec56c1.js"></script>
+  <link rel="shortcut icon" type="image/gif" href="logo_avery.gif"/>
   <style type="text/css">
 ::-ms-clear {
    display: none;
