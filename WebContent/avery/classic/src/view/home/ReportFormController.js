@@ -3,7 +3,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     alias: 'controller.reportcontroller',
     runTime: AOC.config.Runtime,
     getReport:function(){
-    	var view=this.getView(),url='';
+    	var view=this.getView(),url='',reportWindow = view.up('window');
     	var reportForm=view.getForm();
     	if(reportForm.isValid()){
     	var radioGroupValue=this.lookupReference('radioGroup').getValue().rb,query='',obj='';
@@ -104,6 +104,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     	}else{
     		 Ext.MessageBox.alert('', AOCLit.emptyFilter);
     	}
+    	reportWindow.close();
     },
     onRadioButtonChange:function(obj){
     	var value=obj.getValue().rb;
