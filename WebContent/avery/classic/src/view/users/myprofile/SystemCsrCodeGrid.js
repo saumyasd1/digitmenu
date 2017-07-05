@@ -118,8 +118,9 @@ Ext.define('AOC.view.users.myprofile.SystemCsrCodeGrid', {
 				editable:true,
 				store: Ext.create('AOC.store.SystemCsrCodeStore',{storeId:'userCsrCodeStore'}),
 				listeners: {
-					select:'onSelectCsrCode',
-					blur:'onBlurCsrCode'
+					change:'onSelectCsrCode',
+					blur:'onBlurCsrCode',
+					change:'onChangeCSRCode'
 				}
 			},
 			{
