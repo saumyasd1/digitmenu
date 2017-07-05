@@ -535,5 +535,5 @@ Ext.define('AOC.lang.lit',{
 	
 	wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font> {0} </font>" class="fa fa-info-circle"></i>',
 	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|',
-	csrCode:'CSR Code'
+	csrCode:'CSR Name'
 });

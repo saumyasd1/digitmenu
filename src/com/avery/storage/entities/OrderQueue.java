@@ -294,7 +294,7 @@ public class OrderQueue extends MainAbstractEntity {
 				{
 					String csrCode=orderQueue1.getCsrCode();
 					String csrName = userService.getUsernameById(csrCode);
-					orderQueue1.setCsrName(csrName);
+					orderQueue1.setCsrCode(csrName);
 				}
 			}
 			responceMap.put("orders", listOfTask);
