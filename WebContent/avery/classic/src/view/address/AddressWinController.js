@@ -4,8 +4,8 @@ Ext.define('AOC.view.address.AddressWinController', {
     runTime: AOC.config.Runtime,
     
     onSaveBtnClick: function () {
-        Ext.getBody().mask('Saving....');
         var me = this;
+        me.getView().el.mask('Saving....');
         var Msg = '';
         var createaddress = this.getView();
         var grid = Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
@@ -23,6 +23,7 @@ Ext.define('AOC.view.address.AddressWinController', {
             form.updateRecord();
             methodMode = 'PUT';
             valueObj = form.getRecord().getChanges();
+            var formData =  form.getValues();
             if (valueObj.partnerId != null) {
                 var varPartner = valueObj.partnerId;
                 var partnerCombo = refs.partnerName;
@@ -39,13 +40,13 @@ Ext.define('AOC.view.address.AddressWinController', {
                     }
                 });
                 valueObj.varPartner = {
-                    id: valueObj.partnerId,
-                    partnerName: valueObj.partnerName,
-                    address: valueObj.address,
-                    phone: valueObj.phone,
-                    lastModifiedDate: valueObj.lastModifiedDate,
-                    lastModifiedBy: valueObj.lastModifiedBy
+                    id: valueObj.partnerId
                 };
+            }
+            else{
+            	valueObj.varPartner = {
+                        id: formData.partnerId
+                    };
             }
             if (valueObj.orgCodeId != null) {
                 var varOrgCode = valueObj.orgCodeId;
@@ -63,28 +64,19 @@ Ext.define('AOC.view.address.AddressWinController', {
                     }
                 });
                 valueObj.varOrgCode = {
-                    id: valueObj.orgCodeId,
-                    name: valueObj.orgName,
-                    system: {
-                        id: valueObj.system,
-                        name: valueObj.systemName,
-                        site: {
-                            id: valueObj.siteId,
-                            name: valueObj.siteName
-                        }
-                    }
+                    id: valueObj.orgCodeId
                 };
+            }
+            else{
+            	valueObj.varOrgCode = {
+                        id: formData.orgCodeId
+                    };
             }
 
             length = Object.keys(valueObj).length;
             //Msg='Address Updated Successfully';
             var Msg = AOCLit.updateAddressMsg;
             var parameters = Ext.JSON.encode(valueObj);
-            if (length > 0) {
-                if (panel.getForm().isValid()) {
-                    Helper.showToast('Success', Msg);
-                }
-            }
         } else {
             url = applicationContext + '/rest/address';
             valueObj = form.getValues(false, true, false, true);
@@ -122,16 +114,7 @@ Ext.define('AOC.view.address.AddressWinController', {
             var Msg = AOCLit.addAddressMsg;
             var parameters = {
                 varOrgCode: {
-                    id: valueObj.orgCodeId,
-                    name: valueObj.orgName,
-                    system: {
-                        id: valueObj.system,
-                        name: valueObj.systemName,
-                        site: {
-                            id: valueObj.siteId,
-                            name: valueObj.siteName
-                        }
-                    }
+                    id: valueObj.orgCodeId
                 },
                 orgName: valueObj.orgName,
                 system: valueObj.system,
@@ -158,12 +141,7 @@ Ext.define('AOC.view.address.AddressWinController', {
                 shippingInstructions: valueObj.shippingInstructions,
                 siteType: valueObj.siteType,
                 varPartner: {
-                    id: valueObj.partnerId,
-                    partnerName: valueObj.partnerName,
-                    address: valueObj.address,
-                    phone: valueObj.phone,
-                    lastModifiedDate: valueObj.lastModifiedDate,
-                    lastModifiedBy: valueObj.lastModifiedBy
+                    id: valueObj.partnerId
                 }
             }
         }
@@ -175,7 +153,7 @@ Ext.define('AOC.view.address.AddressWinController', {
                     jsonData: parameters,
                     url: url,
                     success: function (response, opts) {
-                        Ext.getBody().unmask();
+                        me.getView().unmask();
                         createaddress.destroy();
                         Helper.showToast('Success', Msg);
                         grid.store.load();
