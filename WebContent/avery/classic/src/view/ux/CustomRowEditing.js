@@ -114,7 +114,7 @@ Ext.override(Ext.grid.RowEditor, {
         me.setWidth(clientWidth);
         btns.setLocalX((clientWidth - btns.getWidth()) / 2);
         if (me.lockable) {
-            me.lockedColumnContainer.setWidth(grid.lockedGrid.view.el.dom.clientWidth);
+           // me.lockedColumnContainer.setWidth(grid.lockedGrid.view.el.dom.clientWidth);
         }
     },
     
@@ -843,6 +843,21 @@ Ext.override(Ext.grid.RowEditor, {
             grid.ensureVisible(record);
             me.show();
         }
+        if (!me.isVisible()) {
+        	me.show();
+        	me.focusContextCell();
+        	} else {
+        	me.reposition({
+        	callback: this.focusContextCell
+        	});
+        	}
+        	},
+        	// Focus the cell on start edit based upon the current context
+        	focusContextCell: function() {
+        	var field = this.getEditor(this.context.colIdx);
+        	if (field && field.focus) {
+        	field.focus();
+        	}
     },
 
     // determines the amount by which the row editor will overflow, and flips the buttons

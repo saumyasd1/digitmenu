@@ -1,3 +1,17 @@
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
+.x-tab-over .x-tab-default-right-mc {
+    background-repeat: repeat-x;
+    background-image: url(images/tab/tab-default-right-over-fbg.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
+.x-tab-focus .x-tab-default-right-tl,
+.x-tab-focus .x-tab-default-right-bl,
+.x-tab-focus .x-tab-default-right-tr,
+.x-tab-focus .x-tab-default-right-br,
+.x-tab-focus .x-tab-default-right-tc,
+.x-tab-focus .x-tab-default-right-bc {
+    background-image: url(images/tab/tab-default-right-focus-corners.gif);
+}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
 .x-tab-focus .x-tab-default-right-ml,
 .x-tab-focus .x-tab-default-right-mr {
@@ -7595,25 +7609,6 @@
     -moz-border-radius-topright: 1;
     border-top-right-radius: 1;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:1 */
-.custom-row-expander {
-    width: 16px;
-    height: 15px;
-    cursor: pointer;
-    background-image: url(images/colapse.png);
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:7 */
-.x-grid-row-collapsed .custom-row-expander {
-    background-image: url(images/expand.png);
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:10 */
-.hiderowexpander .x-grid-cell-inner-row-expander {
-    padding: 0px 0px 0px 0px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:13 */
-.invalid .x-grid-row-expander {
-    background-color: yellow !important;
-}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/AOCLogin.scss:1 */
 .heading-text {
     width: 100%;
@@ -8370,6 +8365,25 @@
     /*#AC-3822 : Updated to change fly out menu.*/
     margin-left: -50px;
 }
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:1 */
+.custom-row-expander {
+    width: 16px;
+    height: 15px;
+    cursor: pointer;
+    background-image: url(images/colapse.png);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:7 */
+.x-grid-row-collapsed .custom-row-expander {
+    background-image: url(images/expand.png);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:10 */
+.hiderowexpander .x-grid-cell-inner-row-expander {
+    padding: 0px 0px 0px 0px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:13 */
+.invalid .x-grid-row-expander {
+    background-color: yellow !important;
+}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/home/OrderQueueStatusList.scss:1 */
 .light-black .x-grid-cell {
     background-color: #4b4b4b !important;
@@ -8498,109 +8512,6 @@
     color: #424242;
     font-weight: 500;
     line-height: 30pt;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:1 */
-.profile-img-change-outer-div {
-    display: block;
-    width: 130px;
-    height: 170px;
-    padding: 20px 10px 20px 10px;
-    border: 1px solid #d4d4d4;
-    background-color: #f4f4f4;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:9 */
-.user-profile-image-border {
-    border: 2px solid #36b6e9;
-    /*TODO #36B6E9 */
-    height: 110px;
-    /*TODO #36B6E9 */
-    width: 110px;
-    border-radius: 50%;
-    background-color: white;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:15 */
-.profile-img-outer-div {
-    display: block;
-    width: 132px;
-    height: 150px;
-    padding: 20px 10px 20px 10px;
-    background-color: #f4f4f4;
-    border: 1px solid #a6a6a6;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:23 */
-.profile-img-inner-div {
-    display: block;
-    width: 110px;
-    height: 110px;
-    minHeight: 110px;
-    border-radius: 50%;
-    border: 2px solid #36b6e9;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:31 */
-.profile-img-change-action-div {
-    width: 110px;
-    top: 4px;
-    left: 5px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:36 */
-.profile-change-pic {
-    position: absolute;
-    color: #ff9b37;
-    top: 6px;
-    left: 26px;
-    font-size: 8pt;
-    font-weight: 600;
-    font-family: "Raleway", sans-serif;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:45 */
-.profile-change-circle {
-    position: absolute;
-    left: -1px;
-    font-size: 42px!important;
-    line-height: 27px!important;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:52 */
-.user-view-image {
-    font-size: 163px !important;
-    line-height: 103px !important;
-    margin-left: -3px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:57 */
-.user-edit-image-stle {
-    height: 106px;
-    width: 106px;
-    border-radius: 50%;
-    border: 2px solid #36b6e9;
-    background-color: white;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:64 */
-.profile-img-edit-inner-div {
-    display: block;
-    width: 106px;
-    height: 106px;
-    border-radius: 50%;
-    border: 2px solid #36b6e9;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:72 */
-.user-info-name-wrap {
-    display: block;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
-    text-align: left;
-    height: 40px;
-    width: 280px;
-    word-break: normal !important;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:82 */
-profile-info-form-item {
-    margin-bottom: 0;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/users/myprofile/UserInfo.scss:85 */
-.profile-info-field-lbl {
-    font-size: 10pt;
-    color: #636363;
-    font-weight: 400;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-tab-navigation-top {

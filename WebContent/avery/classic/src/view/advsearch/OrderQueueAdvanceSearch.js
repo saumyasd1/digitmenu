@@ -238,7 +238,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 									fieldLabel : AOCLit.CSRName,
 									reference:'csrCombo',
 									name:'assignCSR',
-									valueField:'id',
+									valueField:'userId',
 									queryMode:'local',
 									store:Ext.data.StoreManager.lookup('advOQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advOQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advOQCSRStoreId'}),
 									typeAhead:true,

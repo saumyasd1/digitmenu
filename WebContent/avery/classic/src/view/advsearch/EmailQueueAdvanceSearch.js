@@ -209,7 +209,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel:AOCLit.CSRName,
 								reference:'csrCombo',
 								name:'assignCSR',
-								valueField:'id',
+								valueField:'userId',
 								queryMode:'local',
 								store:Ext.data.StoreManager.lookup('advEQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advEQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advEQCSRStoreId'}),
 								typeAhead:true,

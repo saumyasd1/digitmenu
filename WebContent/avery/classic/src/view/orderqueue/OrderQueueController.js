@@ -441,11 +441,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
 	showHideValidationButton:function(orderlinecontainer, status){
 		validateButton = orderlinecontainer.lookupReference('validateButton'),
-		bulkUpdateButton=orderlinecontainer.lookupReference('bulkUpdateButton'),
+		bulkUpdateButton = orderlinecontainer.down('orderlineexpandablegrid').lookupReference('bulkUpdateButton'),
 		salesViewOrderbutton= orderlinecontainer.lookupReference('salesViewOrderbutton'),
 		salesOrderbutton=orderlinecontainer.lookupReference('salesOrderbutton'),
 		cancelOrderButton=orderlinecontainer.lookupReference('cancelOrderButton'),
-		form = orderlinecontainer.lookupReference('form');
+		form = orderlinecontainer.down('orderlineexpandablegrid').lookupReference('form');
 
 		var editableFlag = (status == AOCLit.waitingForCSRStatusOrderQueue);
 		

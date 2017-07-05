@@ -13,6 +13,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     controller: 'orderline',
     emptyText: AOCLit.emptyDataMsg,
     autoHeight: true,
+    frame:true,
     nestedGridRefrence:'listOrderlineDetails',
     reserveScrollbar:true,
     showInvalidCombo:false,
@@ -48,6 +49,68 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		}
         }
     },
+    dockedItems:[
+        {
+        	xtype:'toolbar',
+        	dock:'top',
+        	items:[
+				{
+					xtype: 'form',
+					reference:'form',
+					layout: 'hbox',
+					defaults:{
+						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+						labelSeparator:''
+					},
+					items: [
+						{
+							xtype: 'radiogroup',
+							reference: 'radioGroup',
+							flex:1,
+							layout:'hbox',
+							items: [
+								{
+									boxLabel: 'Order Line Update',
+									name: 'rb',
+									inputValue: '1',
+									checked: true,
+									width:150
+								}, 
+								{
+									boxLabel: 'Variable Order Update',
+									name: 'rb',
+									inputValue: '2',
+									width:150
+								}
+							],
+							listeners: {
+								change: 'radioButtonClick'
+							}
+						},
+						{
+							xtype: 'combo',
+							hidden: true,
+							editable:false,
+							hideLabel:true,
+							margin:'0 0 0 20',
+							displayField: 'variableFieldName',
+							valueField: 'variableFieldName',
+							reference: 'variableFieldCombo',
+							width:180
+						}, 
+						{
+							xtype: 'button',
+							text: AOCLit.bulkUpdateButtonText,
+							margin:'0 0 0 10',
+							cls:'blue-btn',
+							reference:'bulkUpdateButton',
+							handler: 'getUpdateScreen'
+						}
+					]
+				}
+        	]
+        }
+    ],
     store:Ext.create('AOC.store.OrderLineStore', {storeId:'OrderLineStoreId'}),
     columns: [
 		{
@@ -55,6 +118,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  text:'#',
 			  width:35,
 			  align:'center',
+			  menuDisabled:true,
+			  sortable:false,
+			  resizable:false,
 			  locked:true
 		},{
             header: Settings.config.defaultIcons.commentColumnIcon,
@@ -62,6 +128,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             dataIndex: 'Comments',
             tooltip: 'Comments',
             align:'center',
+            menuDisabled:true,
+            sortable:false,
+            resizable:false,
             renderer: function (value, metadata, rec) {
                var comment = Ext.String.htmlEncode(rec.data.comment);
             	if(comment){
@@ -103,6 +172,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'csr',
 			align:'left',
 			width: 160,
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			editor:{
 				xtype:'combo',
 				displayField:'variableFieldName',
@@ -124,8 +196,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.atoMandatory+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Mandatory variable field checking</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
-			width: 65,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var checkvalue = value ? value.trim()  :'',
 					listOrderlineDetails = rec.get('listOrderlineDetails'),
@@ -152,8 +227,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.bulkSample+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sample item bulk order fail - cross</br>Others - tick</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'bulkSampleValidationFlag',
-			width: 65,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -165,7 +243,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.custPO,
 			dataIndex: 'customerPOFlag',
 			align:'center',
-			width: 60,
+			width: 100,
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var customerPOFlag=rec.data.customerPOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -176,8 +257,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.dupPO,
 			dataIndex: 'duplicatePOFlag',
-			width: 60,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -189,8 +273,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.sizePage+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Size logic validation per RBO</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'htlsizePageValidationFlag',
-			width: 60,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
@@ -203,7 +290,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.moqRoundUp,
 			dataIndex: 'moqvalidationFlag',
 			align:'center',
-			width: 50,
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
+			width: 100,
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -217,8 +307,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.coo+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>COO logic validation</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'cooTranslationFlag',
-			width: 65,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var cooTranslationFlag= rec.data.cooTranslationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -231,8 +324,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.febricContent+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sum of the Fabric Content = Multiple of 100%</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'febricPercentageFlag',
-			width: 65,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var febricPercentageFlag= rec.data.febricPercentageFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -245,8 +341,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.reviseOrder+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>alert warning message if it is revise order</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'reviseOrderFlag',
-			width: 65,
+			width: 100,
 			align:'center',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			renderer:function(value, metadata,rec){
 				var reviseOrderFlag= rec.data.reviseOrderFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -259,12 +358,18 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.targetSystem,
 			dataIndex: 'targetSystemName',
 			align:'left',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			width: 100
 		},
 		{
 			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'divisionForInterfaceERPORG',
 			align:'left',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			width: 120,
 			editor: {
 				xtype:'combo',
@@ -281,6 +386,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.orderType,
 			dataIndex: 'orderType',
 			align:'left',
+			menuDisabled:true,
+            sortable:false,
+            resizable:false,
 			width: 115,
 			editor: {
 				xtype: 'combo',
@@ -329,7 +437,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.averyItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>GLID</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'averyItemNumber',
 			align:'left',
-			width: 88,
+			width: 120,
 			renderer : function(value, metadata,record) {
                 return Helper.onAveryItemNumberColumnRenderer(value, metadata, record);
             }
@@ -338,7 +446,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.averyProduction,
 			dataIndex: 'averyProductLineType',
 			align:'left',
-			width: 93,
+			width: 120,
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
@@ -356,7 +464,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.averyRegion+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Adidas Region</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'averyRegion',
 			align:'left',
-			width: 93,
+			width: 120,
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
@@ -372,26 +480,26 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.custItemNo,
 			dataIndex: 'customerItemNumber',
 			align:'left',
-			width: 88
+			width: 100
 			
 		},
 		{
 			text: AOCLit.customerColorCode,
 			dataIndex: 'customerColorCode',
 			align:'left',
-			width: 102
+			width: 120
 		}, 
 		{
 			text: AOCLit.customerColorDescription,
 			dataIndex: 'customerColorDescription',
 			align:'left',
-			width: 102
+			width: 120
 		},
 		{
 			text: AOCLit.customerSize,
 			dataIndex: 'customerSize',
 			align:'left',
-			width: 72,
+			width: 120,
 			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
@@ -401,7 +509,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.itemDescription+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Size Chart</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'pageSize',
 			align:'left',
-			width: 102,
+			width: 120,
 			renderer:function(value, metadata,rec){
 				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
@@ -410,20 +518,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.styleNo,
 			dataIndex: 'styleNo',
 			align:'left',
-			width: 111,
+			width: 120,
 			editor: 'textfield'
 		}, 
 		{
 			text: AOCLit.custSeason,
 			dataIndex: 'customerSeason',
 			align:'left',
-			width: 93,
+			width: 100,
 			editor: 'textfield'
 		},
 		{
 			text: AOCLit.Bulk+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Bulk order/Sample order</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'bulk',
-			align:'left',
 			width: 60,
 			editor:{
 				xtype:'combo',
@@ -437,8 +544,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.bulkItem+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Bulk item/Sample item</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'averyBulk',
-			align:'left',
-			width: 93,
+			width: 100,
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
@@ -446,7 +552,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.custOrderedQty +'<font color=red>*</font>',
 			dataIndex: 'customerOrderedQty',
-			align:'left',
 			width: 130,
 			editor: {
 				xtype:'numberfield',
@@ -459,8 +564,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.averyMOQ+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Legacy MOQ on SKU level</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'averyMOQ',
-			align:'left',
-			width: 93,
+			width: 100,
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
@@ -468,8 +572,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.averyRoundupQty,
 			dataIndex: 'averyRoundupQty',
-			align:'left',
-			width: 93,
+			width: 100,
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			},
@@ -479,7 +582,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.MOQDiffQty,
 			dataIndex: 'moqdiffQty',
-			width: 55,
+			width: 100,
 			align:'center',
 			renderer:function(value, metadata, record){
 				return Helper.qtyColumnRenderer(value, metadata, record);
@@ -490,7 +593,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.roundQty,
 			dataIndex: 'roundQty',
-			width: 50,
+			width: 100,
 			align:'center',
 			renderer:function(value, metadata, record){
 				return Helper.qtyColumnRenderer(value, metadata, record);
@@ -502,7 +605,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.updateQty,
 			dataIndex: 'updateMOQ',
 			align:'left',
-			width: 55,
+			width: 100,
 			align:'center',
 			renderer:function(value, metadata,rec){
             	return Helper.onUpdateMoqRenderer(value, metadata,rec);
@@ -514,7 +617,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.waiveMOQ,
 			dataIndex: 'waiveMOQ',
 			align:'left',
-			width: 80,
+			width: 100,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -529,8 +632,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.orderedDate+'<font color=red>*</font>',
 			dataIndex: 'orderedDate',
-			align:'left',
-			width: 90,
+			width: 120,
 			xtype:'datecolumn',
 			editor: 'datefield',
 			renderer : function(value, meta,record) {
@@ -540,8 +642,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.requestedDeliveryDate,
 			dataIndex: 'requestedDeliveryDate',
-			align:'left',
-			width: 102,
+			width: 120,
 			xtype:'datecolumn',
 			editor: {
 				xtype:'datefield',
@@ -557,9 +658,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.promiseDate,
 			dataIndex: 'promiseDate',
-			align:'left',
 			xtype: 'datecolumn',   
-			width: 88,
+			width: 120,
 			editor: {
 				xtype:'datefield',
 				editable:false,
@@ -574,14 +674,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.skuQtyDifference ,
 			dataIndex: 'skuQtyDifference',
-			align:'left',
-			width: 106
+			width: 110
 		},
 		{
 			text: AOCLit.apoType,
 			dataIndex: 'apoType',
 			align:'left',
-			width: 55,
+			width: 100,
 			editor: {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
@@ -660,7 +759,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.billToCity,
 			dataIndex: 'billToCity',
 			align:'left',
-			width: 112,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -668,7 +767,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.billToCountry,
 			dataIndex: 'billToCountry',
-			width: 112,
+			width: 120,
 			align:'left',
 			editor: 'textfield',
 			type:'address',
@@ -678,7 +777,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.billToState,
 			dataIndex: 'billToState',
 			align:'left',
-			width: 112,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -686,8 +785,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.billToZip,
 			dataIndex: 'billToZip',
-			align:'left',
-			width: 85,
+			width: 100,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -732,7 +830,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shipToSite+'<font color=red>*</font>',
 			dataIndex: 'oracleShipToSiteNumber',
 			align:'left',
-			width: 100,
+			width: 120,
 			editor: 'textfield',
 			renderer:function(value, metadata, record){
 				return Helper.onAtoColumnRenderer(value, metadata, record);
@@ -778,7 +876,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shipToCity,
 			dataIndex: 'shipToCity',
 			align:'left',
-			width: 112,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -787,7 +885,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shipToCountry,
 			dataIndex: 'shipToCountry',
 			align:'left',
-			width: 112,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -796,7 +894,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shipToState,
 			dataIndex: 'shipToState',
 			align:'left',
-			width: 112,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -804,8 +902,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.shipToZip,
 			dataIndex: 'shipToZip',
-			align:'left',
-			width: 85,
+			width: 100,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -849,14 +946,14 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.manufacturingNotes+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Manufacturing Notes</br>VIPS to Oracle/SPW: Vendor Note</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'manufacturingNotes',
 			align:'left',
-			width: 107,
+			width: 170,
 			editor: 'textfield'
 		}, 
 		{
 			text: AOCLit.invoiceLineInstruction+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Invoice Line Instruction</br>VIPS to Oracle/SPW: Order Line instruction</br>VIPS to PHX: NA</br>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'invoicelineInstruction',
 			align:'left',
-			width: 119,
+			width: 120,
 			editor: 'textfield'
 		}, 
 		{
@@ -882,7 +979,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
 				valueField: 'variableFieldName',
-				//editable:false,
 				queryMode :'local',
 				reference:'shippingMethodCombo',
 				store:Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
@@ -944,7 +1040,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.retailerPO_CustomerJob,
 			dataIndex: 'retailerPO_CustomerJob',
 			align:'left',
-			width: 115,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -971,7 +1067,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.agreement,
 			dataIndex: 'agreement',
 			align:'left',
-			width: 102,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -989,7 +1085,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.artworkHold,
 			dataIndex: 'artWorkhold',
 			align:'left',
-			width: 84,
+			width: 100,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -1014,7 +1110,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.productionHold,
 			dataIndex: 'productionHold',
 			align:'left',
-			width: 77,
+			width: 100,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -1030,7 +1126,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.shippingHold,
 			dataIndex: 'shippingHold',
 			align:'left',
-			width: 83,
+			width: 100,
 			editor:{
 				xtype:'combo',
 				editable:false,
@@ -1073,7 +1169,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.bankCharge,
 			dataIndex: 'bankCharge',
 			align:'left',
-			width: 90,
+			width: 100,
 			editor: {
 				xtype: 'numberfield',
 				maxLength: 8,
@@ -1086,7 +1182,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.freightCharge,
 			dataIndex: 'freightCharge',
 			align:'left',
-			width: 90,
+			width: 100,
 			editor: {
 				xtype: 'numberfield',
 				maxLength: 8,
@@ -1099,7 +1195,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.endCust,
 			dataIndex: 'endCustomer',
 			align:'left',
-			width: 115,
+			width: 120,
 			editor: {
 				xtype: 'combo',
 				displayField: 'variableFieldName',
@@ -1126,7 +1222,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.orderBy,
 			dataIndex: 'orderBy',
 			align:'left',
-			width: 115,
+			width: 120,
 			editor: 'textfield',
 			type:'address',
 			hidden:true
@@ -1135,7 +1231,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.comment,
 			dataIndex: 'comment',
 			align:'left',
-			width: 100,
+			width: 150,
 			editor: 'textfield',
 			type:'address',
 			hidden:true,
@@ -1160,7 +1256,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.sentToOracleDate,
 			dataIndex: 'sentToOracleDate',
 			align:'left',
-			width: 100,
+			width: 120,
 			hidden:true,
 			editor: 'textfield',
 			type:'address',
@@ -1279,6 +1375,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode));
     		                targetRowbody = Ext.DomQuery.selectNode('div.row-expander-body', rowNode);
     		            
+    		            var childNodes = targetRowbody.childNodes;
+    		            var len =childNodes.length;
+    		            
+    		            for(var i =0; i<len;i++){
+    		            	targetRowbody.removeChild(childNodes[i]);
+    		            }
+    		            
     		            newComponent.render(targetRowbody);
     		            me.lastTopScrollPosition = this.view.el.dom.scrollTop;
     		            newComponent.getEl().swallowEvent([
@@ -1333,7 +1436,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			modal: 'AOC.model.VariableHeaderModel',
 			cls: 'nestedGrid',
 			store:store,
-			minHeight:120,
 			recordId:recordId,
 			selModel: {
 				type:sel,
@@ -1343,6 +1445,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				{
 				  xtype: 'rownumberer',
 				  text:'#',
+				  menuDisabled:true,
+				  sortable:false,
+				  resizable:false,
 				  width:50
 				}, 
 				{
@@ -1393,11 +1498,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					dataIndex: 'variableDataValue',
 					flex:2,
 					editor: {
-							xtype:'textareafield',
-							height:40,
-							autoScroll:true,
-							grow:true
-						   },
+						xtype:'textareafield',
+						height:40,
+						autoScroll:true,
+						grow:true
+					},
 					renderer:function(v, metadata,rec){
 						var mandatory = rec.get('mandatory'),
 						isContainsFibre = rec.get('level').toLowerCase(),
@@ -1444,11 +1549,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			],
 			columnLines: false,
 			width: 1250,
-			border: true,
-			style:'border:solid 1px #ccc;',
 			plugins: me.getInnerGridPlugin(),
 			autoHeight: true,
-			frame: false,
+			frame: true,
 			header: false
 		});
     },

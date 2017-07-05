@@ -1,4 +1,122 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
+.x-panel-header-light-framed-collapsed-top-tl,
+.x-panel-header-light-framed-collapsed-top-bl,
+.x-panel-header-light-framed-collapsed-top-tr,
+.x-panel-header-light-framed-collapsed-top-br,
+.x-panel-header-light-framed-collapsed-top-tc,
+.x-panel-header-light-framed-collapsed-top-bc,
+.x-panel-header-light-framed-collapsed-top-ml,
+.x-panel-header-light-framed-collapsed-top-mr {
+    background-image: url(images/panel-header/panel-header-light-framed-collapsed-top-corners.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:453 */
+.x-panel-header-light-framed-collapsed-top-ml,
+.x-panel-header-light-framed-collapsed-top-mr {
+    background-image: url(images/panel-header/panel-header-light-framed-collapsed-top-sides.gif);
+    background-repeat: repeat-y;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
+.x-panel-header-light-framed-collapsed-top-mc {
+    padding: 6px 6px 6px 6px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-light-framed-collapsed-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-collapsed-top-corners.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-top-sides.gif)" !important;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
+.x-panel-header-light-framed-collapsed-right {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding: 9px 9px 9px 9px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #fff;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
+.x-panel-header-light-framed-collapsed-right-mc {
+    background-color: #fff;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
+.x-nbr .x-panel-header-light-framed-collapsed-right {
+    padding: 0 !important;
+    border-width: 0 !important;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    border-radius: 0px;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
+.x-panel-header-light-framed-collapsed-right-frameInfo {
+    font-family: dh-4-4-4-4-1-1-1-1-9-9-9-9;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
+.x-panel-header-light-framed-collapsed-right-tl {
+    background-position: 0 -8px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
+.x-panel-header-light-framed-collapsed-right-tr {
+    background-position: right -12px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
+.x-panel-header-light-framed-collapsed-right-bl {
+    background-position: 0 -16px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
+.x-panel-header-light-framed-collapsed-right-br {
+    background-position: right -20px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
+.x-panel-header-light-framed-collapsed-right-ml {
+    background-position: right 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:371 */
+.x-panel-header-light-framed-collapsed-right-mr {
+    background-position: right 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:379 */
+.x-panel-header-light-framed-collapsed-right-tc {
+    background-position: 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
+.x-panel-header-light-framed-collapsed-right-bc {
+    background-position: 0 -4px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
+.x-panel-header-light-framed-collapsed-right-tr,
+.x-panel-header-light-framed-collapsed-right-br,
+.x-panel-header-light-framed-collapsed-right-mr {
+    padding-right: 4px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
+.x-panel-header-light-framed-collapsed-right-tl,
+.x-panel-header-light-framed-collapsed-right-bl,
+.x-panel-header-light-framed-collapsed-right-ml {
+    padding-left: 4px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
+.x-panel-header-light-framed-collapsed-right-tc {
+    height: 4px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
+.x-panel-header-light-framed-collapsed-right-bc {
+    height: 4px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-collapsed-right-tl,
 .x-panel-header-light-framed-collapsed-right-bl,
 .x-panel-header-light-framed-collapsed-right-tr,
@@ -3233,25 +3351,6 @@
     -moz-border-radius-topright: 1;
     border-top-right-radius: 1;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:1 */
-.custom-row-expander {
-    width: 16px;
-    height: 15px;
-    cursor: pointer;
-    background-image: url(images/colapse.png);
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:7 */
-.x-grid-row-collapsed .custom-row-expander {
-    background-image: url(images/expand.png);
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:10 */
-.hiderowexpander .x-grid-cell-inner-row-expander {
-    padding: 0px 0px 0px 0px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:13 */
-.invalid .x-grid-row-expander {
-    background-color: yellow !important;
-}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/AOCLogin.scss:1 */
 .heading-text {
     width: 100%;
@@ -4007,6 +4106,25 @@
 .user-profile-menu-item.more-menu-item-middle.uploadfile-btn-menu .x-btn-wrap-default-small {
     /*#AC-3822 : Updated to change fly out menu.*/
     margin-left: -50px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:1 */
+.custom-row-expander {
+    width: 16px;
+    height: 15px;
+    cursor: pointer;
+    background-image: url(images/colapse.png);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:7 */
+.x-grid-row-collapsed .custom-row-expander {
+    background-image: url(images/expand.png);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:10 */
+.hiderowexpander .x-grid-cell-inner-row-expander {
+    padding: 0px 0px 0px 0px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/ux/RowExpanderGrid.scss:13 */
+.invalid .x-grid-row-expander {
+    background-color: yellow !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/src/view/home/OrderQueueStatusList.scss:1 */
 .light-black .x-grid-cell {

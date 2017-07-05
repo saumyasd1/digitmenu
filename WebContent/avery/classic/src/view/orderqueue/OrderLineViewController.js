@@ -4,6 +4,107 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel','AOC.util.Helper'],
     runTime : AOC.config.Runtime,
 
+    radioButtonClick:function(obj, newValue, oldValue){
+    	var comboField = this.lookupReference('variableFieldCombo');
+    	
+    	if(newValue.rb == '2'){
+    		Ext.getBody().mask('Loading..');
+    		var id= this.runTime.getOrderQueueId();
+    		Ext.Ajax.request({
+    			method:'GET',
+    			url : applicationContext+'/rest/orderlinedetails/order/'+id,
+		        success : function(response, opts) {
+		        	var jsonValue=Ext.decode(response.responseText);
+		        	var serviceStoreData = [];
+		        	if(jsonValue.length>0){
+		        	jsonValue.forEach(function(item){
+                		var service = [item];
+                		//fixed bug#40 IT UAT Issue log(Amit Kumar),check only for SIZE,QTY,SIZE CHART
+                        if(item.toLowerCase() != AOCLit.qtyVariableLabel && item.toLowerCase() != AOCLit.sizeVariableLabel && item.toLowerCase() != 'size chart'){
+                         serviceStoreData.push(service);
+                        }
+                	});
+		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+                 	   		fields : ['variableFieldName'],	
+            	            data : serviceStoreData
+                    });
+		        	comboField.bindStore(serviceStore);
+		        	}
+		        	comboField.setVisible(true);
+		        	Ext.getBody().unmask();
+		        },
+		        failure: function(response, opts) {
+		        	Ext.getBody().unmask();
+		        }
+    		});
+    	}else{
+    		comboField.setVisible(false);
+    	}
+    },
+    getUpdateScreen:function(){
+		var me = this,
+			refs = me.getReferences(),
+			height = Ext.getBody().getHeight()-100,
+			width = Ext.getBody().getWidth()-100,
+			id = me.runTime.getOrderQueueId(),
+			radioGroupValue = refs.radioGroup.getValue().rb,
+			store,
+			innerGridType,
+			comboValue = '';
+			
+		if(radioGroupValue == '2'){
+      		var comboField = this.lookupReference('variableFieldCombo');
+			comboValue = comboField.getValue();
+				
+      		if(comboValue == '' || comboValue == null){
+      			Helper.showToast('validation', AOCLit.selectValueDrpMsg);
+      			return false;
+      		}
+      		innerGridType = 'bulkUpdateVariableHeaderrGrid';
+      		height = height - 180;
+      		width = width - 240;
+			
+      		store = Ext.create('AOC.store.OrderLineStore', {
+      			model:'AOC.model.VariableHeaderModel',
+    			proxy : {
+    				type : 'rest',
+    				url : applicationContext+'/rest/orderlinedetails/order/variable/'+id,
+    				reader:{
+    					keepRawData:true,
+    			        type:'json', 
+    			        rootProperty: 'OrderLineDetail'
+    			    }
+    			}
+    		}); 
+		}else{
+			store=Ext.create('AOC.store.OrderLineStore');
+			store.load({params:{id:id}});
+      		innerGridType = 'bulkupdateorderlinegrid';
+		}
+		
+		var win=Ext.create('AOC.view.base.NewBaseWindow',{
+			height:height,
+			width:width,
+			layout: 'fit',
+			draggable: false,
+			title:'Bulk Update',
+			listeners:{ 
+				close:function(obj, eOpts){
+					var orderLineExpandableGrid = me.getView();
+					orderLineExpandableGrid.openedRecordIndex = '';
+					orderLineExpandableGrid.store.load({params:{id:id}});
+				}
+			},
+			items:[
+				{
+					xtype:innerGridType,
+					store:store,
+					variableColumnName:comboValue
+				}
+			]
+		});
+		win.show();
+    },
     updateOrderLine:function(editor, context, eOpts){
     	Ext.getBody().mask('Saving...');
     	
@@ -294,9 +395,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			  
 			}
 		  }
-//		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
-//			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
-//        }
+		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+        }
 	},
 	onFocusEnter:function(field, e){
 		var me = this,

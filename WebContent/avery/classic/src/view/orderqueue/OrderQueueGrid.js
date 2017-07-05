@@ -30,7 +30,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 items: me.buildtbar()
             },
             store: 'OrderQueueStore'
-            
         });
         me.callParent(arguments);
     },

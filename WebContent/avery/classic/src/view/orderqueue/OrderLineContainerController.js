@@ -363,12 +363,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     onOrderLineStoreLoad:function(store){
     	var me = this,
     		view = me.getView(),
+    		orderLineExpandableGrid = view.lookupReference('orderLineExpandableGrid'),
 			salesOrderbutton=view.lookupReference('salesOrderbutton'),
 			salesViewOrderbutton=view.lookupReference('salesViewOrderbutton'),
 			validateButton=view.lookupReference('validateButton'),
 			cancelOrderBtn = view.lookupReference('cancelOrderButton')
-			form = view.lookupReference('form'),
-			radioGroup = view.lookupReference('radioGroup'),
+			form = orderLineExpandableGrid.lookupReference('form'),
+			radioGroup = orderLineExpandableGrid.lookupReference('radioGroup'),
 			atovalidationFlagCount = 0,
 			
 			totalCount = store.getCount(),
@@ -457,107 +458,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		radioGroup.items.items[1].disable();
     	}else{
     		radioGroup.items.items[1].enable();
-    	}
-    },
-    getUpdateScreen:function(){
-		var me = this,
-			refs = me.getReferences(),
-			height = Ext.getBody().getHeight()-100,
-			width = Ext.getBody().getWidth()-100,
-			id = me.runTime.getOrderQueueId(),
-			radioGroupValue = refs.radioGroup.getValue().rb,
-			store,
-			innerGridType,
-			comboValue = '';
-			
-		if(radioGroupValue == '2'){
-      		var comboField = this.lookupReference('variableFieldCombo');
-			comboValue = comboField.getValue();
-				
-      		if(comboValue == '' || comboValue == null){
-      			Helper.showToast('validation', AOCLit.selectValueDrpMsg);
-      			return false;
-      		}
-      		innerGridType = 'bulkUpdateVariableHeaderrGrid';
-      		height = height - 180;
-      		width = width - 240;
-			
-      		store = Ext.create('AOC.store.OrderLineStore', {
-      			model:'AOC.model.VariableHeaderModel',
-    			proxy : {
-    				type : 'rest',
-    				url : applicationContext+'/rest/orderlinedetails/order/variable/'+id,
-    				reader:{
-    					keepRawData:true,
-    			        type:'json', 
-    			        rootProperty: 'OrderLineDetail'
-    			    }
-    			}
-    		}); 
-		}else{
-			store=Ext.create('AOC.store.OrderLineStore');
-			store.load({params:{id:id}});
-      		innerGridType = 'bulkupdateorderlinegrid';
-		}
-		
-		var win=Ext.create('AOC.view.base.NewBaseWindow',{
-			height:height,
-			width:width,
-			layout: 'fit',
-			draggable: false,
-			title:'Bulk Update',
-			listeners:{ 
-				close:function(obj, eOpts){
-					var orderLineExpandableGrid = me.getView().queryById('orderlineexpandablegridrowmodel');//Ext.ComponentQuery.query('orderlineexpandablegrid')[0];
-					orderLineExpandableGrid.openedRecordIndex = '';
-					orderLineExpandableGrid.store.load({params:{id:id}});
-				}
-			},
-			items:[
-				{
-					xtype:innerGridType,
-					store:store,
-					variableColumnName:comboValue
-				}
-			]
-		});
-		win.show();
-    },
-    radioButtonClick:function(obj, newValue, oldValue){
-    	var comboField=this.lookupReference('variableFieldCombo');
-    	
-    	if(newValue.rb == '2'){
-    		Ext.getBody().mask('Loading..');
-    		var id= this.runTime.getOrderQueueId();
-    		Ext.Ajax.request({
-    			method:'GET',
-    			url : applicationContext+'/rest/orderlinedetails/order/'+id,
-		        success : function(response, opts) {
-		        	var jsonValue=Ext.decode(response.responseText);
-		        	var serviceStoreData = [];
-		        	if(jsonValue.length>0){
-		        	jsonValue.forEach(function(item){
-                		var service = [item];
-                		//fixed bug#40 IT UAT Issue log(Amit Kumar),check only for SIZE,QTY,SIZE CHART
-                        if(item.toLowerCase() != AOCLit.qtyVariableLabel && item.toLowerCase() != AOCLit.sizeVariableLabel && item.toLowerCase() != 'size chart'){
-                         serviceStoreData.push(service);
-                        }
-                	});
-		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
-                 	   		fields : ['variableFieldName'],	
-            	            data : serviceStoreData
-                    });
-		        	comboField.bindStore(serviceStore);
-		        	}
-		        	comboField.setVisible(true);
-		        	Ext.getBody().unmask();
-		        },
-		        failure: function(response, opts) {
-		        	Ext.getBody().unmask();
-		        }
-    		});
-    	}else{
-    		comboField.setVisible(false);
     	}
     },
     onShowColumnBtnClick:function(btn){

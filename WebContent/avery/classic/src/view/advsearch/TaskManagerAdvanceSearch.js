@@ -122,7 +122,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								fieldLabel:AOCLit.CSRName,
 								reference:'csrCombo',
 								name:'assignCSR',
-								valueField:'id',
+								valueField:'userId',
 								queryMode:'local',
 								store:Ext.create('AOC.store.AssignCSRStore',{storeId:'advTmCSRStoreId'}),
 								typeAhead:true,

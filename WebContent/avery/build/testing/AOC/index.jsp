@@ -1,6 +1,6 @@
 <%
 String applicationContext = request.getContextPath();
-int pageSize=20;
+int pageSize=100;
 %>
 <!doctype html>
 <html lang="en">
@@ -2727,7 +2727,7 @@ Ext.manifest = Ext.manifest || "bootstrap";
 Ext.Microloader.run();
 </script>
 </head>
-<body>
+<body oncontextmenu="return false;">
 <div  id="loading">
 		<div id="loading-text">
 		<div><img style="width:60px;height:60px" src="resources/images/logo_avery.gif"></div>
