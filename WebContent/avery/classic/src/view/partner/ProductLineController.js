@@ -381,7 +381,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			if(mode == 'edit'){
 				valueObj.id = view.rec.get('id');
 			}
-			
+			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+AOCRuntime.getUser().lastName;
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
 			view.el.mask(AOCLit.pleaseWait);
