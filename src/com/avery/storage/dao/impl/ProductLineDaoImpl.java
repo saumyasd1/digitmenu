@@ -242,8 +242,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		for (int i = 0; i < partnerIdList.length; i++) {
 			idList.add(Long.parseLong(partnerIdList[i]));
 		}
-		criteria.createAlias("rbo", "rbo");
-		criteria.add(Restrictions.in("rbo.id", idList));
+		criteria.createAlias("varPartner", "varPartner");
+		criteria.add(Restrictions.in("varPartner.id", idList));
 		entitiesMap.put("productlines", criteria.list());
 		return entitiesMap;
 
