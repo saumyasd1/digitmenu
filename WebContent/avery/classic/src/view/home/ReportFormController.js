@@ -247,12 +247,9 @@ Ext.define('AOC.view.home.ReportFormController', {
 		}
     },
     onCSRComboAfterRender:function(combo){
-    	if(AOCRuntime.getUser().role == 1){
     		var store = combo.store,
     			obj ={userId:'all',csrName:'Select All'};
     		
     		this.insertAllInStore(store, obj);
-		}
     }
-    
-})
+});
