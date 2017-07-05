@@ -368,6 +368,11 @@ Ext.define('AOC.util.Helper',{
 	advancedSearch:function(view,values){
 		var store = view.contextGrid.store;
 		
+		if(Ext.isEmpty(values.siteId)){
+			var currentUserId = AOCRuntime.getUser().siteId;
+			values.siteId = currentUserId;
+		}
+		
 		if (values) {
 			store.proxy.setFilterParam('query');
             store.setRemoteFilter(true);
