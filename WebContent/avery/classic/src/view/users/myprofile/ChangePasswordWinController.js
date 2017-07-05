@@ -9,13 +9,16 @@ Ext.define('AOC.view.users.myprofile.ChangePasswordWinController', {
             user = AOCRuntime.getUser(),
             id = user.id,
             refs = me.getReferences(),
-            form = refs['changePasswordForm'].getForm();
+            form = refs['changePasswordForm'].getForm(),
+        	formObj = form.getValues(),
+        	userIdObj = {userId : id},
+        	obj = Ext.apply(formObj,userIdObj);
 
         if(form.isValid()){
 	        Ext.getBody().mask(pleaseWait);
 	        Ext.Ajax.request({
 	            method: 'PUT',
-	            jsonData: form.getValues(),
+	            jsonData: obj,
 	            url: Settings.getBaseUserUrl() + '/' + id,
 	            success: function (res) {
 	                Ext.getBody().unmask();

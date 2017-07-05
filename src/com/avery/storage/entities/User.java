@@ -290,27 +290,29 @@ public class User extends MainAbstractEntity {
 			Map<String, Object> jsonMap = ApplicationUtils.convertJSONtoObjectMaps(data);
 			List list  = (ArrayList) jsonMap.get("newCSRCodeArray");
 			List <SystemCsrCode> systemCsrCodeList = new ArrayList<SystemCsrCode>();
-			for(int i = 0; i < list.size(); i++){
-				SystemCsrCode systemCsrCode1 = new SystemCsrCode();
-				String jsonString = list.get(i).toString();
-				StringTokenizer st = new StringTokenizer(jsonString,",");  
-			     while (st.hasMoreTokens()) {
-			         String str = st.nextToken();
-			         if(str.contains("csrCode=")){
-			        	 String filtered = str.replace("csrCode=","");
-			        	 systemCsrCode1.setCsrCode(filtered.replace("{","").trim().replace("}","").trim());
-			         }
-			         if(str.contains("orgCodeId=") || str.contains("systemId=")){
-			        	 if(str.contains("orgCodeId=")){
-				        	String filtered = str.replace("orgCodeId=","");
-				        	 systemCsrCode1.setOrgCodeId(Long.parseLong(filtered.replace("}","").trim()));
-				         }else if(str.contains("systemId=")){
-				        	 String filtered =  str.replace("systemId=","");
-				        	 systemCsrCode1.setSystemId(Long.parseLong(filtered.replace("}","").trim()));
-				         } 
-			         }
-			     } 
-			     systemCsrCodeList.add(systemCsrCode1);
+			if(list != null){
+				for(int i = 0; i < list.size(); i++){
+					SystemCsrCode systemCsrCode1 = new SystemCsrCode();
+					String jsonString = list.get(i).toString();
+					StringTokenizer st = new StringTokenizer(jsonString,",");  
+				     while (st.hasMoreTokens()) {
+				         String str = st.nextToken();
+				         if(str.contains("csrCode=")){
+				        	 String filtered = str.replace("csrCode=","");
+				        	 systemCsrCode1.setCsrCode(filtered.replace("{","").trim().replace("}","").trim());
+				         }
+				         if(str.contains("orgCodeId=") || str.contains("systemId=")){
+				        	 if(str.contains("orgCodeId=")){
+					        	String filtered = str.replace("orgCodeId=","");
+					        	 systemCsrCode1.setOrgCodeId(Long.parseLong(filtered.replace("}","").trim()));
+					         }else if(str.contains("systemId=")){
+					        	 String filtered =  str.replace("systemId=","");
+					        	 systemCsrCode1.setSystemId(Long.parseLong(filtered.replace("}","").trim()));
+					         } 
+				         }
+				     } 
+				     systemCsrCodeList.add(systemCsrCode1);
+				}
 			}
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
