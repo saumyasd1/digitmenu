@@ -408,15 +408,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	var me = this,
     		csrComboValue = combo.getRawValue(),
     		refs = me.getReferences(),
-    		systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
-    		systemCombo = refs.systemName,
-    		orgCodeCombo = refs.orgCode,
     		csrCodeCombo = refs.csrCode,
     		codeOwner = refs.codeOwner,
     		hasOwner = combo.getSelectedRecord().data.hasOwner,
-    		insertBtn = refs.insertBtn,
-    		systemComboValue = systemCombo.getRawValue(),
-    		orgCodeComboValue = orgCodeCombo.getRawValue();
+    		insertBtn = refs.insertBtn;
     	
     	codeOwner.setDisabled(false);
     	
@@ -429,19 +424,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwner.setDisabled(true);
     		insertBtn.setDisabled(false);
     	}
-    	systemCsrCodeGridStore.each(function(rec, index){
-    		if(rec.get('csrCode') == csrComboValue && rec.get('orgCode') == orgCodeComboValue  && rec.get('systemName') == systemComboValue ){
-    			Helper.showToast('failure',AOCLit.csrCodeExist);
-    			systemCombo.reset();
-    			orgCodeCombo.reset();
-    			csrCodeCombo.reset();
-    			codeOwner.reset();
-    			orgCodeCombo.setDisabled(true);
-    			csrCodeCombo.setDisabled(true);
-    			codeOwner.setDisabled(true);
-    			insertBtn.setDisabled(true);
-    		}
-    	});
     },
     onSelectCodeOwner: function(combo){
     	var me = this,
@@ -544,11 +526,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     	}
     	else{
     		systemCsrCodeGrid.setHidden(true);
-    		view.center()
-//    		if(view.isVisible()){
-//	    		var pos = view.getPosition();
-//	    		view.setPosition(pos[0],pos[1]);
-//    		}
+    		view.center();
     	}
     },
     onBlurCsrCode: function(combo){
@@ -571,5 +549,32 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwnerCombo.setValue('Y');
     		insertBtn.setDisabled(false);
     	}
+    },
+    onChangeCSRCode: function(combo){
+    	var me = this,
+			refs = me.getReferences(),
+			systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
+			systemCombo = refs.systemName,
+			orgCodeCombo = refs.orgCode,
+			csrCodeCombo = refs.csrCode,
+			codeOwner = refs.codeOwner,
+			insertBtn = refs.insertBtn,
+			csrComboValue = combo.getRawValue(),
+			systemComboValue = systemCombo.getRawValue(),
+			orgCodeComboValue = orgCodeCombo.getRawValue();
+    	
+    	systemCsrCodeGridStore.each(function(rec, index){
+    		if(rec.get('csrCode') == csrComboValue && rec.get('orgCode') == orgCodeComboValue  && rec.get('systemName') == systemComboValue ){
+    			Helper.showToast('failure',AOCLit.csrCodeExist);
+    			systemCombo.reset();
+    			orgCodeCombo.reset();
+    			csrCodeCombo.reset();
+    			orgCodeCombo.setDisabled(true);
+    			csrCodeCombo.setDisabled(true);
+    			codeOwner.setDisabled(true);
+    			insertBtn.setDisabled(true);
+    		}
+    		codeOwner.reset();
+    	});
     }
 });
