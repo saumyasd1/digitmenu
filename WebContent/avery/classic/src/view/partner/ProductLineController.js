@@ -187,6 +187,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.rboId = record.data.rbo.id;
     	record.data.partnerId = record.data.varPartner.id;
     	
+    	record.data.fileOrderCellNo = me.getOrderCellNo(record.get('fileOrderMatch'));
+    	
     	record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
     	record.data.fileOrderFileContent = me.getFileContent(record.get('fileOrderMatchLocation'));
     	
@@ -222,6 +224,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.factoryMOQCheck = me.getSKUValidationRadioValue(record.get('factoryMOQCheck'));
     	
     	delete record.get('fileOrderMatchLocation');
+    	delete record.get('fileOrderMatch');
     	
     	delete record.get('emailSubjectProductlineMatchRequired');
     	delete record.get('emailBodyProductlineMatchRequired');
@@ -242,6 +245,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	delete record.get('fileOrderPartnerMatch');
     	
     	return record;
+    },
+    getOrderCellNo:function(str){
+    	if(!Ext.isEmpty(str)){
+	    	if(str.indexOf(';') > -1){
+		    	var splitArray = str.split(';');
+		    	return splitArray[1].split(':')[1];
+	    	}
+    	}
+    	return '';
     },
     getFileName:function(value){
     	if(!Ext.isEmpty(value) && value.indexOf('|') > -1){
@@ -381,7 +393,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			if(mode == 'edit'){
 				valueObj.id = view.rec.get('id');
 			}
-			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+AOCRuntime.getUser().lastName;
+			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+ (!Ext.isEmpty(AOCRuntime.getUser().lastName) ? AOCRuntime.getUser().lastName : '');
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
 			view.el.mask(AOCLit.pleaseWait);
@@ -502,6 +514,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		obj.coocheck = me.getSKUValidationValue(values.cooValidationMultipleProductLine, values.coocheck);
 		obj.factoryMOQCheck = me.getSKUValidationValue(values.factoryMoqValidationMultipleProductLine, values.factoryMOQCheck);
 		
+		//order received in email body
 		if(values.fileOrderFileName && values.fileOrderFileContent){
 			obj.fileOrderMatchLocation = values.fileOrderFileName + '|'+ values.fileOrderFileContent;
 		}
@@ -511,9 +524,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		else if(values.fileOrderFileContent){
 			obj.fileOrderMatchLocation = values.fileOrderFileContent;
 		}
+		if(values.fileOrderCellNo){
+			var fileContent = values.fileOrderFileContent ? values.fileOrderFileContent :'';
+			obj.fileOrderMatch = 'Value:'+fileContent +';Cell:'+ values.fileOrderCellNo;
+		}
 		
 		delete values.fileOrderFileName;
 		delete values.fileOrderFileContent;
+		delete values.fileOrderCellNo;
 		
 		delete values.emailSubjectProductLineMatchRequired;
 		delete values.emailBodyProductLineMatchRequired;
@@ -948,28 +966,27 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 onOrderReceivedEmailBodyRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs = me.getReferences(),
-			fieldType = field.fieldType,
-			fileNameField = refs[fieldType+'FileName'],
-			fileContentField = refs[fieldType+'FileContent'],
-			CellNo = refs['fileOrderMatch'],
-			EmailSubject = refs[fieldType+'EmailSubject'],
-			EmailBody = refs[fieldType+'EmailBody'];
+			fileNameField = refs['fileOrderFileName'],
+			fileContentField = refs['fileOrderFileContent'],
+			cellNo = refs['fileOrderMatch'],
+			emailSubject = refs['fileOrderEmailSubject'],
+			emailBody = refs['fileOrderEmailBody'];
 	
 		if(newValue['orderInMailBody'] == 'true'){
 			fileNameField.setDisabled(true);
 			fileContentField.setDisabled(true);
-			CellNo.setDisabled(true);
+			cellNo.setDisabled(true);
 			
-			EmailSubject.setDisabled(false);
-			EmailBody.setDisabled(false);
+			emailSubject.setDisabled(false);
+			emailBody.setDisabled(false);
 			
 		}else{
 			fileNameField.setDisabled(false);
 			fileContentField.setDisabled(false);
-			CellNo.setDisabled(false);
+			cellNo.setDisabled(false);
 			
-			EmailSubject.setDisabled(true);
-			EmailBody.setDisabled(true);
+			emailSubject.setDisabled(true);
+			emailBody.setDisabled(true);
 		}
 	 },
 	 onRequiredRadioChange:function(field, newValue, oldValue){

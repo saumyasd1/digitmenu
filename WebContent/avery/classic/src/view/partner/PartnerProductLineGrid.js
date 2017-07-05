@@ -37,7 +37,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	    this.callParent(arguments);
   },
   buildColumns : function(){
-    	var me=this;
         return [          
             {
             	header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
@@ -89,26 +88,16 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	            flex:1
             },
             {
-	        	text : AOCLit.packingInstruction,
-                align:'left',
-	            sortable : true,
-	            dataIndex:'packingInstruction',
-	            flex:1
-            },
-            {
-	            text : AOCLit.splitShipSetBy,
-                align:'left',
-	            dataIndex:'splitShipSetBy',
-	            flex:1
-            },
-            {
                 text: AOCLit.siteName,
                 sortable: true,
                 flex:1,
-                dataIndex: 'siteName',
+                dataIndex: 'site',
                 align: 'left',
                 listeners: {
                 	'afterrender': Helper.siteNameForSuperAdminOnly
+                },
+                renderer:function(v, metadata, rec){
+                	return Helper.getSiteName(v);
                 }
             },
             {
@@ -119,7 +108,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             }, 
             {
                 text: AOCLit.lastmodifieddate,
-                align:'left',
                 dataIndex: 'lastModifiedDate',
                 flex:1
             }
@@ -128,21 +116,8 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	 buildtbar:function(){
 		var me=this;
 		return [
-//		        {
-//	    		    xtype: 'component',
-//	    		    autoEl: {
-//	    		    	tag: 'img',
-//				        src: AOC.config.Settings.buttonIcons.backIcon
-//	    		    },
-//    		    	listeners: {
-//	    		    	 el : {
-//    		    		    click: 'backButton'
-//	    		    	 }
-//    		    	}
-//	         	},
          		{
 	 				xtype : 'tbtext',
-	//	 				itemId : 'ProductlinetextItemId',
 	 				text : '<div style="color:"><b>Partner Data Structure-Manage</b></div>'
 	            },
 	            {
@@ -192,7 +167,6 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 			{
             xtype : 'pagingtoolbar',
             dock : 'bottom',
-//            ui : 'darktoolbar',
             itemId:'pagingtoolbar',
             store:me.store,
             displayInfo:true,

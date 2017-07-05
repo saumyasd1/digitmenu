@@ -775,5 +775,12 @@ Ext.define('AOC.util.Helper',{
 		return [
 		    ['ORACLE','ORACLE'],['VIPS','VIPS'],['SPARROW','SPARROW']
 		];
+	},
+	getSiteName:function(siteId){
+		switch (siteId){
+			case 2: return 'South China';
+			case 3: return 'Suzhou';
+			case 4: return 'Vietnam';
+		}
 	}
 });

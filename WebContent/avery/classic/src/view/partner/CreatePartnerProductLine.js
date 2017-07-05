@@ -473,11 +473,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				},
 			    {
 			    	xtype:'textfield',
-			    	flex:1,
 			    	labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					anchor:'50%',
+					anchor:'60%',
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
@@ -514,11 +513,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				},
 			    {
 			    	xtype:'textfield',
-			    	flex:1,
 			    	labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					anchor:'50%',
+					anchor:'60%',
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
@@ -556,11 +554,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				},
 			    {
 			    	xtype:'textfield',
-			    	flex:1,
 			    	labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					anchor:'50%',
+					anchor:'60%',
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
@@ -596,11 +593,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				},
 			    {
 			    	xtype:'textfield',
-			    	flex:1,
 			    	labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					anchor:'50%',
+					anchor:'60%',
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
@@ -786,20 +782,18 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			fieldLabel:'Cell No,If Excel',
 			disabled:true,
 			name:name,
-//			maxLength:Settings.wiConfig.maxLength50,
 			reference:name
-		}
+		};
 	},
 	getSchemaIdentificationKeywordField:function(name){
 		return {
 			xtype:'textfield',
 			fieldLabel:'Keyword',
 			disabled:true,
-//			maxLength:Settings.wiConfig.textAreaMaxLength,
 			margin:'0 0 5 0',
 			name:name,
 			reference:name
-		}
+		};
 	},
 	getIdentificationFields:function(type, hideFlag, fileType, hideEmailBody){
 		if(hideFlag){return;}
@@ -807,7 +801,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			xtype:'fieldcontainer',
 			margin:'0 0 5 0',
 			reference:type+'IdentificationTypeCont',
-			hidden:hideFlag,
 			defaults:{
 				width:600,
 		    	labelSeparator:'',
@@ -820,31 +813,27 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				{
 					xtype:'label',
 					text:'How to identify a file as an '+fileType+ ' File?',
-					hidden:hideFlag,
 					style:'font-weight:bold;color:#2c3e50;font-size:13px;font-style: italic;color: #808080;'
-				}, {
+				},
+				{
 					xtype:'radiogroup',
 					column:2,
 					width:350,
 					margin:'0 0 5 0',
 					fieldLabel:'Order Received in Email Body',
-					fieldType:type,
-					hidden:hideEmailBody || hideFlag,
-					labelSeparator:'',
-					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
 					labelWidth:200,
 					defaults:{
 						name:'orderInMailBody'
 					},
 					items:[
-					    {boxLabel:'Yes', inputValue:'true'},
-					    {boxLabel:'No', inputValue:'false', checked:true}
+					    {boxLabel:'Yes', inputValue:'true', checked:true},
+					    {boxLabel:'No', inputValue:'false'}
 					],
 					listeners:{
 						change:'onOrderReceivedEmailBodyRadioChange'
 					}
-				}, {
+				},
+				{
 					xtype:'box',
 					html:'<span>Identification Type</span><span style="margin-left:150px;">Key Word</span>',
 					margin:'0 0 10 0',
@@ -852,28 +841,28 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				}, {
 					xtype:'textfield',
 					name:'orderInEmailSubjectMatch',
-					reference:type+'EmailSubject',
+					reference:'fileOrderEmailSubject',
 					fieldLabel:'Email Subject'
 				}, {
 					xtype:'textfield',
 					name:'orderInEmailBodyMatch',
-					reference:type+'EmailBody',
+					reference:'fileOrderEmailBody',
 					fieldLabel:'Email Body'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderFileName',
-					reference:type+'FileName',
+					reference:'fileOrderFileName',
 					disabled:true,
 					fieldLabel:'File Name'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderFileContent',
-					reference:type+'FileContent',
+					reference:'fileOrderFileContent',
 					disabled:true,
 					fieldLabel:'File Content'
 				}, {
 					xtype:'textfield',
-					name:'fileOrderMatch',
+					name:'fileOrderCellNo',
 					reference:'fileOrderMatch',
 					disabled:true,
 					fieldLabel:'Cell No,If Excel'
