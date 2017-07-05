@@ -85,10 +85,16 @@ Ext.define('AOC.view.home.ReportFormController', {
 	
 		obj.partnerId = partnerName.join(',');
 		obj.RBOName = rboName.join(',');
-		obj.siteId = siteName.join(',');
 		obj.csrId = csrName.join(',');
 		obj.Status = statusCode.join(',');
 		obj.timeZone = timeZone.getValue();
+		var userInfo = AOCRuntime.getUser();
+		if(userInfo.role == 1){
+			obj.siteId = siteName.join(',');
+		}
+		else{
+			obj.siteId = userInfo.siteId;
+		}
 		
 		var values = reportForm.getValues();
 			query = Ext.JSON.encode(obj);
@@ -196,6 +202,8 @@ Ext.define('AOC.view.home.ReportFormController', {
     	var siteCombo = form.lookupReference('siteName'),
           	siteStore = siteCombo.store,
           	userInfo = AOCRuntime.getUser(),
+          	csrCombo = form.lookupReference('csrCombo'),
+          	csrComboStore = csrCombo.store,
           	siteId = userInfo.siteId;
       
     	siteStore.load({
@@ -203,6 +211,14 @@ Ext.define('AOC.view.home.ReportFormController', {
     			siteId: siteId
     		}
     	});
+    	
+    	if(AOCRuntime.getUser().role != 1 ){
+    		csrComboStore.load({
+    			params: {
+    			siteId: siteId
+    			}
+    		});
+    	}
     },
     onSiteSelect: function(siteCombo){
     	var me = this,
