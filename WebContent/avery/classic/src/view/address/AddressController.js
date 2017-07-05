@@ -111,12 +111,12 @@ Ext.define('AOC.view.address.AddressController', {
                     url: applicationContext + '/rest/address/' + currentRecord.get('id'),
                     success: function (response, opts) {
                         Helper.showToast('Success', AOCLit.deleteAddMsg);
-                        AOCRuntime.getActiveGrid().store.load();
+                        grid.store.load();
                     },
                     failure: function (response, opts) {}
                 });
             }
-        });
+        }, grid);
     },
     clearAdvancedSearch: function (btn) {
         var grid = this.getView();
