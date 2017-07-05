@@ -382,9 +382,9 @@ OrderEmailQueueDao {
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			orderEmailQueueObj.setAssignCSR(csrId);
 			orderEmailQueueObj.setLastModifiedBy(userId);
-			orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 			orderEmailQueueObj.setLastModifiedDate(new Date());//last modified date added on assign csr click
 			if(changeStatus){
+				orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
 				String s = "update OrderFileAttachment set status=:value where orderEmailQueueId =:id "; 
 				Query q = session.createQuery(s);
 				q.setString("value",ApplicationConstants.ORDERFILEATTACHMENT_UNIDENTIFIED_STATUS);
