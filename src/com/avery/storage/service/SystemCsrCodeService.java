@@ -47,5 +47,10 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 	public boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode) {
 		return systemCsrCodeDao.checkIfCsrCodeExists(systemId, orgId, csrCode);
 	}
+	
+	@Transactional
+	public boolean removeCSRCode(String entityId){
+		return systemCsrCodeDao.removeCSRCode(entityId);
+	}
 
 }

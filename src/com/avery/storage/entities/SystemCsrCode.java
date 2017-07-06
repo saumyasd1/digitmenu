@@ -1,7 +1,6 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.MixIn.SystemCsrCodeMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.SystemCsrCodeService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.avery.utils.MessageUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
@@ -168,6 +167,35 @@ public class SystemCsrCode extends MainAbstractEntity {
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Some error occured while fetching the data -> "+e);
 			return Response.ok("Some error occured while fetching the data", MediaType.TEXT_HTML).status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("/remove/csrcode")
+	public Response removeCSRCode(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id) {
+		Response.ResponseBuilder rb = null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		if(!NumberUtils.isNumber(id.trim()))
+			return Response.ok("Wrong input", MediaType.TEXT_HTML).status(Status.BAD_REQUEST).build();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
+					.getBean("systemCsrCodeService");
+			boolean flag = systemCsrCodeService.removeCSRCode(id.trim());
+			responseMap.put("success", flag);
+			if(flag){
+				responseMap.put("message", MessageUtils.CSRCODE_REMOVE_SUCCESS);
+			}
+			else{
+				responseMap.put("message", MessageUtils.CSRCODE_REMOVE_FAILURE);
+			}
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(MessageUtils.CSRCODE_REMOVE_FAILURE+" -> "+e);
+			return Response.ok(MessageUtils.CSRCODE_REMOVE_FAILURE, MediaType.TEXT_HTML).status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 		return rb.build();
 	}

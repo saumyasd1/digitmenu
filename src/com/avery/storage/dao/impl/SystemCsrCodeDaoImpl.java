@@ -10,19 +10,25 @@ import java.util.StringTokenizer;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.User;
+import com.avery.storage.service.UserService;
+import com.avery.utils.ApplicationUtils;
+import com.avery.utils.MessageUtils;
 
 /**
  * @author Vishal
@@ -173,5 +179,39 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 			throw new WebApplicationException();
 		}
 		return recordExists;
+	}
+	
+	@Override
+	public boolean removeCSRCode(String entityId){
+		boolean flag = false;
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(User.class)
+					.add(Restrictions.ilike("systemCsrNonCodeOwner", entityId.toString(), MatchMode.ANYWHERE));
+			List<User> userList = criteria.list();
+			for(User user : userList){
+				String systemCsrNonCodeOwner = user.getSystemCsrNonCodeOwner();
+				List<String> codeList = new ArrayList<String>();
+				codeList.addAll(ApplicationUtils.convertStringToList(systemCsrNonCodeOwner));
+//				List<String> codeList = new ArrayList(Arrays.asList(systemCsrNonCodeOwner.split(",")));
+				if(codeList.contains(entityId)){
+					codeList.remove(entityId);
+					systemCsrNonCodeOwner = StringUtils.join(codeList, ",");
+					user.setSystemCsrNonCodeOwner(systemCsrNonCodeOwner);
+					UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+					userService.update(user);
+				}
+			}
+			SystemCsrCode systemCsrCode = (SystemCsrCode) session.get(SystemCsrCode.class, Long.parseLong(entityId));
+			session.delete(systemCsrCode);
+			flag = true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			AppLogger.getSystemLogger().error(MessageUtils.CSRCODE_REMOVE_FAILURE+" -> "+e);
+		}
+		return flag;
 	}
 }
