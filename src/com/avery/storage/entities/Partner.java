@@ -16,8 +16,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -387,6 +389,40 @@ public class Partner extends MainAbstractEntity {
 			responseMap.put("totalCount", entitiesMap.get("totalCount"));
 			if(entitiesMap.containsKey("rbo"))
 			responseMap.put("rbo", entitiesMap.get("rbo"));
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
+	}
+	
+	@GET
+	@Path("/all")
+	public Response getAllPartnerList(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		List<Partner> partnerList = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(Partner.class,PartnerMixIn.class);
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			PartnerService partnerService = (PartnerService) SpringConfig
+					.getInstance().getBean("partnerService");
+			partnerList = partnerService.readAll();
+			/**if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {	*/			
+			if (partnerList == null || partnerList.isEmpty())
+				throw new Exception("Unable to find partners");
+			responseMap.put("partners", partnerList);
+			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
