@@ -400,7 +400,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		csrCodeComboValue = csrCodeCombo.getRawValue(),
     		csrCodeComboId = csrCodeCombo.getValue(),
     		codeOwnerComboValue = codeOwner.getRawValue(),
-    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId,id:csrCodeComboId},
+    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId},
     		csrCodeIdArray = [],
 	    	orgCodeArray = [],
 			csrCodeArray = [],
