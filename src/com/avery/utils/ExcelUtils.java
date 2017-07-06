@@ -198,7 +198,7 @@ public class ExcelUtils {
 	private static String convertDateUsingTimezone(Date date, String timeZone) {
 		if(date == null)
 			return "";
-		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
 		return formatter1.format(date);
 	}
