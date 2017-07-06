@@ -5,16 +5,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueView', {
 	itemId : 'orderQueueViewItemId',
 	layout:'card',
 	activeItem:0,
-	initComponent : function() {
-		Ext.apply(this, {
-			
-	        items:[
-                 {
-		    	   xtype:'orderqueuegrid',
-		    	   reference:'orderQueueGrid'
-                 }
-             ]
-	 	});
-	 	this.callParent(arguments);
-	}
+	items:[
+       {
+    	   xtype:'orderqueuegrid',
+    	   reference:'orderQueueGrid'
+       }
+    ]
 });

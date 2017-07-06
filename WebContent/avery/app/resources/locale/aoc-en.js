@@ -175,7 +175,7 @@ Ext.define('AOC.lang.lit',{
     "custPONumber":'Customer PO Number',
     "PONumber": 'PO#',
     "processedDate":'Processed Date',
-    "prvOrderTrackNo": 'Prv Order track#',
+    "prvOrderTrackNo": 'Prv Order#',
     "orderedDate": 'Ordered Date',
     "partnerCustName":'Partner Customer Name',
     "soldToRboNumber": 'Sold TO RBO Number',

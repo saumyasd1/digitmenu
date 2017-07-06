@@ -33,10 +33,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			{
 				text : AOCLit.Save,
 				handler: 'onSaveBtnClick',
+				iconCls:'x-fa fa-save',
 				hidden: hiddenFlag 
 			},
 			{
 				text: AOCLit.Cancel,
+				iconCls:'x-fa fa-times',
 				handler: 'onCancelDetails'
 			}
 		];
@@ -275,7 +277,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype: 'fieldcontainer',
 						fieldLabel: 'Validations',
-						defaultType: 'checkbox',
+						defaultType: 'checkboxfield',
 						layout:'column',
 						labelWidth:150,
 						margin : '0 0 5 0',

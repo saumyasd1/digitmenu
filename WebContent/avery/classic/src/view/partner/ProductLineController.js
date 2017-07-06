@@ -356,7 +356,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        numberFieldArray = partnerProfileForm.query('[xtype = numberfield]'),
 	        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
 	        partnerRadioArray = partnerProfileForm.query('[xtype = radiogroup]'),
-	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkbox]'),
+	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkboxfield]'),
 	        
 	        tempArray = [].concat(partnerTextFieldArray)
 	        			  .concat(partnerComboArray)
@@ -790,6 +790,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		return [{
 			xtype:'checkbox',
 			margin : '0 0 5 0',
+			disabled:me.getView().mode == 'view',
 			anchor:'100%',
 			readOnly: AOCRuntime.getUser().role == 3 ? true : false,
 			boxLabel: selectedSystemArray.name,

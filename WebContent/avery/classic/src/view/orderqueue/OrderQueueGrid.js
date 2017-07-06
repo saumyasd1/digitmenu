@@ -116,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             }
 
         }, {
-            text: 'Email#',//AOCLit.TrackingNo,
+            text: AOCLit.TrackingNo,
             width: 80,
             dataIndex: 'TrackingId',
             align: 'left',
@@ -124,7 +124,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 return 'E# ' + v;
             }
         }, {
-            text: 'Order#',//AOCLit.orderTrackNo,
+            text: AOCLit.orderTrackNo,
             width: 80,
             dataIndex: 'id',
             align: 'left',
@@ -132,7 +132,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 return 'O# ' + v;
             }
         }, {
-            text:'Prv Order#', //AOCLit.prvOrderTrackNo,
+            text:AOCLit.prvOrderTrackNo,
             width: 120,
             dataIndex: 'prvOrderQueueID',
             align: 'right'
