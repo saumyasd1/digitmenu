@@ -389,7 +389,7 @@ Ext.define('AOC.util.Helper',{
             });
             view.contextGrid.lookupReference('clearAdvSearch').show();
         }
-        view.close();
+		setTimeout(function(){view.close()},100);
 	},
 	quickSearch:function(view, value){
 		var store = view.store;

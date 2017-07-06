@@ -142,6 +142,11 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		if (!siteId1.equals("") && !roleId.equals("1")) {
 			criteria.add(Restrictions.eq("orderemailqueue.siteId", Integer.parseInt(siteId1)));
 		}
+		String emailQueueId =  (String) queryMap.getFirst("emailQueueId");
+		if (emailQueueId != null && !"".equals(emailQueueId) && !emailQueueId.isEmpty()) {
+			Long Id = Long.parseLong(emailQueueId);
+			criteria.add(Restrictions.eq("orderemailqueue.id", Id));
+		}
 
 		// total count was returning 0 so, placed above set projection
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);

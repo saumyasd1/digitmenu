@@ -607,8 +607,7 @@ public class OrderQueue extends MainAbstractEntity {
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
-			Calendar now = Calendar.getInstance();
-			String timeZone = now.getTimeZone().getID();
+			String timeZone = TimeZone.getDefault().getID();
 			String queryString = (String) queryParamMap.getFirst("query");
 			if (queryString != null) {
 				Map<String, String> queryParamMap1 = ApplicationUtils.convertJSONtoMaps(queryString);
@@ -664,8 +663,7 @@ public class OrderQueue extends MainAbstractEntity {
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getOpenReport(@Context UriInfo ui, @Context HttpHeaders hh) {
 		List<OrderQueue> orderQueue = null;
-		Calendar now = Calendar.getInstance();
-		String timeZone = now.getTimeZone().getID();
+		String timeZone = TimeZone.getDefault().getID();
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui
 					.getQueryParameters();
