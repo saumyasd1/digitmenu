@@ -400,15 +400,33 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		csrCodeComboValue = csrCodeCombo.getRawValue(),
     		csrCodeComboId = csrCodeCombo.getValue(),
     		codeOwnerComboValue = codeOwner.getRawValue(),
-    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId,id:csrCodeComboId};
-	    	var csrCodeIdArray = [];
+    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId,id:csrCodeComboId},
+    		csrCodeIdArray = [],
+	    	orgCodeArray = [],
+			csrCodeArray = [],
+			systemArray = [];
 	    	
-	    	csrCodeComboStore.each(function(rec, index){
-	    		if(csrCodeComboStore.getCount()>0){
-	    			csrCodeIdArray.push(rec.get('id'));
-	    		}
-	    	});
-	    //if loop for saving CSR's that are manually entered
+	    	
+    	//Code for checking duplicate entry(System-Org-CSRCode)
+		systemCsrCodeGridStore.each(function(rec, index){
+    		if(systemCsrCodeGridStore.getCount()>0){
+    			csrCodeArray.push(rec.get('csrCode'));
+    			orgCodeArray.push(rec.get('orgCode'));
+    			systemArray.push(rec.get('systemName'));
+    		}
+    	});
+		
+		if(orgCodeArray.indexOf(orgCodeComboValue) != -1 && csrCodeArray.indexOf(csrCodeComboValue) != -1 && systemArray.indexOf(systemComboValue) != -1 ){
+			Helper.showToast('failure',AOCLit.csrCodeExist);
+			return;
+		}
+	    	
+		//code for saving CSR's that are manually entered in a temp array
+    	csrCodeComboStore.each(function(rec, index){
+    		if(csrCodeComboStore.getCount()>0){
+    			csrCodeIdArray.push(rec.get('id'));
+    		}
+    	});
 		if(csrCodeIdArray.indexOf(csrCodeComboId) == -1){
 			  var csrCodeObj={csrCode:'',systemName:'',orgCode:''};
 		      csrCodeObj.systemId = systemComboId,
@@ -418,11 +436,11 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 		      csrCodeObj.orgCode = orgCodeComboValue,
 		      me.newCSRCodeArray.push(csrCodeObj);
 		}
-    	
+		
+		//Code for inserting entry into grid
     	if(systemCsrCodeGridStore.getCount() > 0){
 	    	systemCsrCodeGridStore.each(function(record, index){
-	    		
-	    		if(record.get('codeOwner') != obj.codeOwner){
+	    		 if(record.get('codeOwner') != obj.codeOwner){
 	    			Helper.showToast('validation', 'Code Owner should be '+record.get('codeOwner') +'.Please change code owner');
 	    			return;
 	    		}else{
@@ -599,32 +617,5 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwnerCombo.setValue('Y');
     		insertBtn.setDisabled(false);
     	}
-    },
-    onChangeCSRCode: function(combo){
-    	var me = this,
-			refs = me.getReferences(),
-			systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
-			systemCombo = refs.systemName,
-			orgCodeCombo = refs.orgCode,
-			csrCodeCombo = refs.csrCode,
-			codeOwner = refs.codeOwner,
-			insertBtn = refs.insertBtn,
-			csrComboValue = combo.getRawValue(),
-			systemComboValue = systemCombo.getRawValue(),
-			orgCodeComboValue = orgCodeCombo.getRawValue();
-    	
-    	systemCsrCodeGridStore.each(function(rec, index){
-    		if(rec.get('csrCode') == csrComboValue && rec.get('orgCode') == orgCodeComboValue  && rec.get('systemName') == systemComboValue ){
-    			Helper.showToast('failure',AOCLit.csrCodeExist);
-    			systemCombo.reset();
-    			orgCodeCombo.reset();
-    			csrCodeCombo.reset();
-    			orgCodeCombo.setDisabled(true);
-    			csrCodeCombo.setDisabled(true);
-    			codeOwner.setDisabled(true);
-    			insertBtn.setDisabled(true);
-    		}
-    		codeOwner.reset();
-    	});
     }
 });
