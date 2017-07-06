@@ -549,6 +549,10 @@ OrderEmailQueueDao {
 			if(SenderEmailID!=null && !"".equals(SenderEmailID)){
 				criteria.add(Restrictions.ilike("senderEmailId",SenderEmailID,MatchMode.ANYWHERE));
 			}
+			String receiverEmailID=searchMap.get("ReceiverEmailID");
+			if(receiverEmailID!=null && !"".equals(receiverEmailID)){
+				criteria.add(Restrictions.ilike("toMailId",receiverEmailID,MatchMode.ANYWHERE));
+			}
 			String trackId=searchMap.get("id");
 			if(trackId!=null && !"".equals(trackId) && NumberUtils.isNumber(trackId)){
 				Long id = Long.parseLong(trackId);
