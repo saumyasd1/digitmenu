@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.avery.exception.CsrCodeNotFoundException;
 import com.avery.storage.dao.impl.SystemCsrCodeDao;
 import com.avery.storage.entities.SystemCsrCode;
 
@@ -49,7 +50,7 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 	}
 	
 	@Transactional
-	public boolean removeCSRCode(String entityId){
+	public boolean removeCSRCode(String entityId) throws CsrCodeNotFoundException{
 		return systemCsrCodeDao.removeCSRCode(entityId);
 	}
 

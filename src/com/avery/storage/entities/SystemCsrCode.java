@@ -27,6 +27,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.exception.CsrCodeNotFoundException;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrgMixIn;
@@ -193,7 +194,11 @@ public class SystemCsrCode extends MainAbstractEntity {
 			}
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
-		} catch (Exception e) {
+		} catch(CsrCodeNotFoundException e){
+			AppLogger.getSystemLogger().error(MessageUtils.CSRCODE_REMOVE_FAILURE+" -> "+e);
+			return Response.ok("No CSR Code found", MediaType.TEXT_HTML).status(Status.NOT_FOUND).build();
+		}
+		catch (Exception e) {
 			AppLogger.getSystemLogger().error(MessageUtils.CSRCODE_REMOVE_FAILURE+" -> "+e);
 			return Response.ok(MessageUtils.CSRCODE_REMOVE_FAILURE, MediaType.TEXT_HTML).status(Status.INTERNAL_SERVER_ERROR).build();
 		}

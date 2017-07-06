@@ -87,7 +87,7 @@ public class ApplicationUtils {
 	 */
 	public static List<String> convertStringToList(String str) {
 		List<String> list = new ArrayList<String>();
-		if(str == null)
+		if(str == null || "".equals(str.trim()))
 			return list;
 		list = Arrays.asList(str.split(","));
 		List<String> removeList = new ArrayList<String>();
