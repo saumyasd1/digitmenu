@@ -64,8 +64,14 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             length = 1;
             msg = AOCLit.addUserMsg;
         }
-        valueObj.systemCsrCodeOwner =  obj.yes;
-        valueObj.systemCsrNonCodeOwner =  obj.no;
+        if(valueObj.role != 3){
+        	valueObj.systemCsrCodeOwner =  '';
+            valueObj.systemCsrNonCodeOwner =  '';
+        }
+        else{
+        	 valueObj.systemCsrCodeOwner =  obj.yes;
+             valueObj.systemCsrNonCodeOwner =  obj.no;
+        }
         valueObj.newCSRCodeArray = me.newCSRCodeArray;
         var parameters = Ext.JSON.encode(valueObj);
         if (length == 0) {
@@ -105,7 +111,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
                         Helper.showToast('failure', msg);
                         view.unmask();
                         me.newCSRCodeArray = [];
-                        view.close();
                     }
                 });
             } else {
@@ -523,6 +528,11 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    		var pos = view.getPosition();
 	    		view.setPosition(pos[0],pos[1]-100);
     		}
+    	}
+    	else if(roleComboValue == 2){
+    		me.newCSRCodeArray = [];
+    		systemCsrCodeGrid.setHidden(true);
+    		view.center();
     	}
     	else{
     		systemCsrCodeGrid.setHidden(true);
