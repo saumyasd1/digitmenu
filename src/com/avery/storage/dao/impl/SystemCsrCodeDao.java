@@ -2,6 +2,7 @@ package com.avery.storage.dao.impl;
 
 import java.util.Map;
 
+import com.avery.exception.CsrCodeNotFoundException;
 import com.avery.storage.dao.GenericDao;
 import com.avery.storage.entities.SystemCsrCode;
 
@@ -19,5 +20,5 @@ public interface SystemCsrCodeDao extends GenericDao<SystemCsrCode, Long> {
 	
 	boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode);
 
-	public boolean removeCSRCode(String entityId);
+	public boolean removeCSRCode(String entityId) throws CsrCodeNotFoundException;
 }

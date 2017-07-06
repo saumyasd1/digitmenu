@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -22,6 +23,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.exception.CsrCodeNotFoundException;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.SystemCsrCode;
@@ -182,31 +184,55 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 	}
 	
 	@Override
-	public boolean removeCSRCode(String entityId){
-		boolean flag = false;
+	public boolean removeCSRCode(String entityId) throws CsrCodeNotFoundException{
+		boolean flag = false, changeFlag = false;
 		Session session = null;
 		Criteria criteria = null;
 		try{
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			session = getSessionFactory().getCurrentSession();
+			Disjunction disCriteria = Restrictions.disjunction();
+			disCriteria.add(Restrictions.ilike("systemCsrNonCodeOwner", entityId.toString(), MatchMode.ANYWHERE))
+					.add(Restrictions.ilike("systemCsrCodeOwner", entityId.toString(), MatchMode.ANYWHERE));
 			criteria = session.createCriteria(User.class)
-					.add(Restrictions.ilike("systemCsrNonCodeOwner", entityId.toString(), MatchMode.ANYWHERE));
+					.add(disCriteria);
 			List<User> userList = criteria.list();
 			for(User user : userList){
 				String systemCsrNonCodeOwner = user.getSystemCsrNonCodeOwner();
-				List<String> codeList = new ArrayList<String>();
-				codeList.addAll(ApplicationUtils.convertStringToList(systemCsrNonCodeOwner));
+				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
+				
+				List<String> ownerCodeList = new ArrayList<String>();
+				ownerCodeList.addAll(ApplicationUtils.convertStringToList(systemCsrCodeOwner));
+				
+				List<String> nonOwnerCodeList = new ArrayList<String>();
+				nonOwnerCodeList.addAll(ApplicationUtils.convertStringToList(systemCsrNonCodeOwner));
 //				List<String> codeList = new ArrayList(Arrays.asList(systemCsrNonCodeOwner.split(",")));
-				if(codeList.contains(entityId)){
-					codeList.remove(entityId);
-					systemCsrNonCodeOwner = StringUtils.join(codeList, ",");
+				if(nonOwnerCodeList.contains(entityId)){
+					nonOwnerCodeList.remove(entityId);
+					systemCsrNonCodeOwner = StringUtils.join(nonOwnerCodeList, ",");
 					user.setSystemCsrNonCodeOwner(systemCsrNonCodeOwner);
-					UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+					changeFlag = true;
+				}
+				
+				if(ownerCodeList.contains(entityId)){
+					ownerCodeList.remove(entityId);
+					systemCsrCodeOwner = StringUtils.join(ownerCodeList, ",");
+					user.setSystemCsrCodeOwner(systemCsrCodeOwner);
+					changeFlag = true;
+				}
+				
+				if(changeFlag){
 					userService.update(user);
 				}
 			}
 			SystemCsrCode systemCsrCode = (SystemCsrCode) session.get(SystemCsrCode.class, Long.parseLong(entityId));
+			if(systemCsrCode == null)
+				throw new CsrCodeNotFoundException("No CSR code found for id -> "+entityId);
 			session.delete(systemCsrCode);
 			flag = true;
+		}
+		catch(CsrCodeNotFoundException e){
+			throw e;
 		}
 		catch(Exception e){
 			e.printStackTrace();

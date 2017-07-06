@@ -497,6 +497,12 @@ public class User extends MainAbstractEntity {
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			csrList = userService.getSortedList(siteId);
+			int i=0;
+			for(SystemCsrCode systemCsrCode:csrList)
+			{
+				systemCsrCode.setId(i);
+				i++;
+			}
 			mapper.writeValue(writer, csrList);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {

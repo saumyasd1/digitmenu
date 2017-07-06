@@ -322,8 +322,48 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 				}
 			}
 			
-		if(el.hasCls('delete-row')){
+			if(el.hasCls('delete-row')){
+				Ext.Msg.show({
+				       title:'Warning',
+				       message: 'Deleting the CSR Code will delete the relationship of the CS Manager & Clerk. Still want to continue?',
+				       buttons: Ext.Msg.YESNO,
+				       icon: Ext.Msg.QUESTION,
+				       fn: function(btn) {
+				           if (btn === 'yes') {
+				        	   me.deleteCSRCode(grid, record);
+				           } 
+				       }
+				});
+			}
+    },
+    deleteCSRCode: function(grid, record){
+    	var me = this,
+    		mode = me.getReferences().addEditUserWinForm.mode;
+		if(mode == 'add'){
 	        grid.store.remove(record);
+		}
+		else{
+			var csrCodeId = Number(record.get('csrCodeComboId'));
+			if(!isNaN(csrCodeId)){
+				var id = grid.getSelection()[0].data.id;
+				Ext.Ajax.request({
+					url : applicationContext + '/rest/systemcsrcode/remove/csrcode',
+					method:'GET',
+					params:{id:id},
+					success:function(response){
+						grid.store.remove(record);
+						var data = JSON.parse(response.responseText),
+							msg = data.message;
+		    			Helper.showToast('success', msg);
+					},
+					failure:function(response){
+						var msg = response.responseText;
+						Helper.showToast('failure', msg);
+					}
+				});
+			}else{
+				grid.store.remove(record);
+			}
 		}
     },
     onSiteChange: function(obj, newValue, oldValue, eOpts){
