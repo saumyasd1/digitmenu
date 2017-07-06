@@ -343,8 +343,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	        grid.store.remove(record);
 		}
 		else{
-			var csrCodeId = Number(record.get('csrCodeComboId'));
-			if(!isNaN(csrCodeId)){
+			var newFlag = record.get('newFlag');
+			if(Ext.isEmpty(newFlag)){
 				var id = grid.getSelection()[0].data.id;
 				Ext.Ajax.request({
 					url : applicationContext + '/rest/systemcsrcode/remove/csrcode',
@@ -400,7 +400,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		csrCodeComboValue = csrCodeCombo.getRawValue(),
     		csrCodeComboId = csrCodeCombo.getValue(),
     		codeOwnerComboValue = codeOwner.getRawValue(),
-    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId},
+    		obj = {systemName : systemComboValue,orgCode : orgCodeComboValue,csrCode : csrCodeComboValue,codeOwner : codeOwnerComboValue,csrCodeComboId:csrCodeComboId,newFlag:true},
     		csrCodeIdArray = [],
 	    	orgCodeArray = [],
 			csrCodeArray = [],
