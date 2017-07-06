@@ -232,6 +232,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 		return [ 
 			{
 				text : 'Search',
+				iconCls:'x-fa fa-search',
 				disabled : false,
 				formBind : true,
 				success : true,
@@ -242,6 +243,6 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 					specialkey:'getAdvancedSearchResults'
 				}
 			}
-		]	
+		];	
 	}
 });

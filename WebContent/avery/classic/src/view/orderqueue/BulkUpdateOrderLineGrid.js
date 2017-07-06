@@ -897,10 +897,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     buttons: [ 
       {
 		  text:AOCLit.undoChangesText,
+		  iconCls:'x-fa fa-undo',
 		  handler:'cancelChanges'
       },
       {
 		  text:'Save',
+		  iconCls:'x-fa fa-save',
 		  handler:'saveOrderLine'
       }
   ],

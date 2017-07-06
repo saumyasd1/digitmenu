@@ -316,6 +316,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 		return [ 
 			{
 				text : 'Search',
+				iconCls:'x-fa fa-search',
 				disabled : false,
 				formBind : true,
 				success : true,

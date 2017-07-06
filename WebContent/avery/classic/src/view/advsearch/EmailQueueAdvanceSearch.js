@@ -288,6 +288,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 		return [ 
 			{
 				text : 'Search',
+				iconCls:'x-fa fa-search',
 				disabled : false,
 				formBind : true,
 				success  : true,
