@@ -822,6 +822,7 @@ public class ProductLine extends MainAbstractEntity {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixIn(ProductLine.class, PartnerDataStructureMixin.class);
+			mapper.addMixIn(RBO.class, RboMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			ProductLineService productLineService = (ProductLineService) SpringConfig.getInstance()
 					.getBean("productLineService");
