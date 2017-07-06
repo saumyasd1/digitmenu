@@ -37,7 +37,7 @@ Ext.define('AOC.view.partner.SystemGrid', {
     	var me = this;
         return [          
 			{  
-				text : 'CSR Name',
+				text : 'CSR Code',
 				width:120,
 				align:'left',
 				flex:1.5,

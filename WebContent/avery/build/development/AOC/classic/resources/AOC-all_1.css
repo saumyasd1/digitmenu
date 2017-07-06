@@ -94,6 +94,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:77 */
 .aoc-action-menu .x-menu-item-link .x-menu-item-text {
     color: #2c3e50;
+    font-weight: 500;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:78 */
 .aoc-action-menu .x-menu-item-icon {
@@ -215,56 +216,41 @@
 .x-grid-td {
     vertical-align: middle !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:161 */
-.main-menu-list .section-wrap .section-wrap-text {
-    color: #2c3e50 !important;
-}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:162 */
-.main-menu-list .section-wrap-text {
-    padding-top: 0px !important;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:163 */
-.main-menu-list .section-wrap-selected .section-wrap-img,
-.main-menu-list .section-wrap-selected .section-wrap-text,
-.main-menu-list .section-wrap .section-wrap-text:hover,
-.main-menu-list .section-over .section-wrap-img {
-    color: #3892d3 !important;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:167 */
 .orderline-expandable-grid .x-grid-inner-locked {
     border-right-color: #ccc !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:168 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:163 */
 .x-grid-item-selected {
     background-color: #f9f4be !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:171 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:166 */
 .x-form-item-default.x-item-disabled {
     opacity: 0.8 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:174 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:169 */
 .x-rtl {
     direction: ltr !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:177 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:172 */
 .x-rtl.x-grid-scrollbar-clipper-locked,
 .x-rtl.x-grid-scrollbar-locked {
     left: 0 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:180 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:175 */
 .x-grid-locked .x-rtl.x-grid-scrollbar-clipper-locked,
 .x-grid-locked .x-rtl.x-grid-scrollbar-locked {
     border-width: 0 1px 0 0 !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:183 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:178 */
 .x-grid-scrollbar-clipper-locked > .x-grid-view-default {
     border-right: solid 1px #ccc;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:186 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:181 */
 .orderline-expandable-grid .x-grid-row-editor-wrap .x-grid-row-editor .x-panel-bodyWrap .x-panel-body .x-box-inner {
     left: 12px !important;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:189 */
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/sass/var/all.scss:184 */
 .x-grid-row-editor-wrap {
     z-index: 4 !important;
 }
@@ -15927,4 +15913,14 @@ div.x-border-layout-ct {
 .x-tab-over .x-tab-default-right-tc,
 .x-tab-over .x-tab-default-right-bc {
     background-image: url(images/tab/tab-default-right-over-corners.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
+.x-tab-over .x-tab-default-right-ml,
+.x-tab-over .x-tab-default-right-mr {
+    background-image: url(images/tab/tab-default-right-over-sides.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
+.x-tab-over .x-tab-default-right-mc {
+    background-repeat: repeat-x;
+    background-image: url(images/tab/tab-default-right-over-fbg.gif);
 }

@@ -74,7 +74,7 @@ $enable-font-awesome: dynamic(true);
 }
 .x-menu-default.aoc-action-menu{border-radius:4px;}
 .aoc-action-menu .x-menu-item-link{padding:3px;}
-.aoc-action-menu .x-menu-item-link .x-menu-item-text{color:#2c3e50;}
+.aoc-action-menu .x-menu-item-link .x-menu-item-text{color:#2c3e50;font-weight:500;}
 .aoc-action-menu .x-menu-item-icon{font-size:16px;color:#2c3e50;}
 .x-btn{
 	padding: 5px 3px 5px 3px !important;
@@ -158,12 +158,7 @@ $enable-font-awesome: dynamic(true);
 .x-grid-td {
     vertical-align: middle !important;
 }
-.main-menu-list .section-wrap .section-wrap-text{color:#2c3e50 !important;}
-.main-menu-list .section-wrap-text{ padding-top:0px !important;}
-.main-menu-list .section-wrap-selected .section-wrap-img,
-.main-menu-list .section-wrap-selected .section-wrap-text,
-.main-menu-list .section-wrap .section-wrap-text:hover,
-.main-menu-list .section-over .section-wrap-img{color:#3892d3 !important;}
+
 .orderline-expandable-grid .x-grid-inner-locked{border-right-color:#ccc !important;}
 .x-grid-item-selected {
     background-color: #f9f4be !important;

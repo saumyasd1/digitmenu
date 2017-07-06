@@ -116,7 +116,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
             sortable: true,
             dataIndex: 'status',
             align: 'left',
-            flex: 0.5,
+            width:100,
             renderer: function (v, metadata, rec) {
                 return Helper.getSatus(rec);
             }

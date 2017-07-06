@@ -148,7 +148,7 @@ Ext.define('AOC.lang.lit',{
     "senderEmailID": 'Sender Email ID',
     "receiverEmailID":'Receiver Email ID',
     "ccMailId":'CC Email ID',
-    "orderTrackNo": 'Order Track #',
+    "orderTrackNo": 'Order#',
     "orderSource": 'Order Source',
     "submittedBy": 'Submitted By',
     "submittedDate": 'Submitted Date',
@@ -163,7 +163,7 @@ Ext.define('AOC.lang.lit',{
     "receivedDate":'Received Date',
     "readDate":'Read Date',
     "fiberPercent": 'Fiber Percent',
-    "TrackingNo":'Email Track #',
+    "TrackingNo":'Email#',
     "sentToOracleDate":'Sent To Oracle Date',
     "lastModifiedBy": 'Last Modified By',
     "lastModifiedDate":'Last Modified Date',
@@ -535,5 +535,8 @@ Ext.define('AOC.lang.lit',{
 	
 	wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font> {0} </font>" class="fa fa-info-circle"></i>',
 	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|',
-	csrCode:'CSR Name'
+	csrCode:'CSR Code',
+	multipleProductLineEmptyText:'WVL:TRUE|HTL:FALSE|',
+	dataStructureNameEmptyText:'RBO/Factory/ProductLine/Site/System',
+	fileExtensionEmptyText:'.xlsx|.xls'
 });

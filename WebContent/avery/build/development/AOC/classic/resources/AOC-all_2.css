@@ -1,13 +1,3 @@
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
-.x-tab-over .x-tab-default-right-ml,
-.x-tab-over .x-tab-default-right-mr {
-    background-image: url(images/tab/tab-default-right-over-sides.gif);
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
-.x-tab-over .x-tab-default-right-mc {
-    background-repeat: repeat-x;
-    background-image: url(images/tab/tab-default-right-over-fbg.gif);
-}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
 .x-tab-focus .x-tab-default-right-tl,
 .x-tab-focus .x-tab-default-right-bl,

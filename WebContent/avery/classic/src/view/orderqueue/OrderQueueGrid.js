@@ -104,10 +104,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 }
             }
         }, {
-            text: AOCLit.emailBody,
+            text: '<i class="fa fa-envelope-o" style="font-size:16px;"></i>',//AOCLit.emailBody,
             width: 80,
             align: 'center',
             align:'center',
+            tooltip:'Email Body',
             renderer: function (v, metadata, record) {
                 var emailBody = record.get('emailBody');
                 metadata.tdAttr = 'data-qtip="<font color=blue>CompleteEmail.html</font>"';
@@ -115,7 +116,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             }
 
         }, {
-            text: AOCLit.TrackingNo,
+            text: 'Email#',//AOCLit.TrackingNo,
             width: 80,
             dataIndex: 'TrackingId',
             align: 'left',
@@ -123,7 +124,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 return 'E# ' + v;
             }
         }, {
-            text: AOCLit.orderTrackNo,
+            text: 'Order#',//AOCLit.orderTrackNo,
             width: 80,
             dataIndex: 'id',
             align: 'left',
@@ -131,8 +132,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
                 return 'O# ' + v;
             }
         }, {
-            text: AOCLit.prvOrderTrackNo,
-            width: 80,
+            text:'Prv Order#', //AOCLit.prvOrderTrackNo,
+            width: 120,
             dataIndex: 'prvOrderQueueID',
             align: 'right'
         }, {
@@ -142,7 +143,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             dataIndex: 'ponumber'
         }, {
             text: AOCLit.partnerName,
-            width: 80,
+            width: 150,
             align: 'left',
             dataIndex: 'PartnerName'
         }, {
@@ -234,16 +235,16 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.lastmodifiedby,
             align: 'left',
             dataIndex: 'lastModifiedBy',
-            width: 120
+            width: 150
         }, {
             text: AOCLit.lastmodifieddate,
             align: 'left',
             dataIndex: 'lastModifiedDate',
-            width: 150
+            width: 180
         }, {
             text: AOCLit.acknowledgeDate,
             align: 'left',
-            width: 150,
+            width: 180,
             dataIndex: 'acknowledgementDate'
         }];
     },

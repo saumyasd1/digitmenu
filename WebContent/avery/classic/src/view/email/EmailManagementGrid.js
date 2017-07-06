@@ -68,7 +68,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 }
             }, {
                 text: AOCLit.orderSource,
-                width: 100,
+                width: 120,
                 align: 'center',
                 dataIndex: 'orderSource',
                 menuDisabled: true,
@@ -81,7 +81,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 }
             }, {
                 text: AOCLit.TrackingNo,
-                width: 80,
+                width: 120,
                 align: 'left',
                 dataIndex: 'id',
                 renderer: function (v, metadata, record) {
@@ -164,17 +164,17 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 dataIndex: 'readDate'
             }, {
                 text: AOCLit.acknowledgeDate,
-                width: 150,
+                width: 180,
                 align: 'left',
                 dataIndex: 'acknowledgementDate'
             }, {
                 text: AOCLit.lastmodifiedby,
-                width: 120,
+                width: 150,
                 align: 'left',
                 dataIndex: 'lastModifiedBy'
             }, {
                 text: AOCLit.lastmodifieddate,
-                width: 150,
+                width: 180,
                 align: 'left',
                 dataIndex: 'lastModifiedDate'
             }

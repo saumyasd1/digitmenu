@@ -110,11 +110,11 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentFileNamePattern_2", length = 100)
 	private String attachmentFileNamePattern_2;// 100
 
-	@Column(name = "attachmentFileNamePattern_3", length = 100)
-	private String attachmentFileNamePattern_3;// 100
-
-	@Column(name = "attachmentFileNamePattern_4", length = 100)
-	private String attachmentFileNamePattern_4;// 100
+//	@Column(name = "attachmentFileNamePattern_3", length = 100)
+//	private String attachmentFileNamePattern_3;// 100
+//
+//	@Column(name = "attachmentFileNamePattern_4", length = 100)
+//	private String attachmentFileNamePattern_4;// 100
 
 	@Column(name = "attachmentFileOrderMatch", length = 100)
 	private String attachmentFileOrderMatch;// 100
@@ -146,11 +146,11 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentIdentifier_4", length = 50)
 	private String attachmentIdentifier_4;// 50
 
-	// @Column(name = "attachmentMappingID_1", length = 50)
-	// private String attachmentMappingID_1;// 50
-	//
-	// @Column(name = "attachmentMappingID_2", length = 50)
-	// private String attachmentMappingID_2;// 50
+	 @Column(name = "attachmentMappingID_1", length = 50)
+	 private String attachmentMappingID_1;
+	
+	 @Column(name = "attachmentMappingID_2", length = 50)
+	 private String attachmentMappingID_2;
 	//
 	// @Column(name = "attachmentMappingID_3", length = 50)
 	// private String attachmentMappingID_3;// 50
@@ -191,11 +191,11 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "comment", length = 250)
 	private String comment;// 250
 
-	@Column(name = "controlData")
-	private Boolean controlData;
+//	@Column(name = "controlData")
+//	private Boolean controlData;
 
-	@Column(name = "CSRPrimaryId", length = 250)
-	private String csrPrimaryId;// 250
+//	@Column(name = "CSRPrimaryId", length = 250)
+//	private String csrPrimaryId;// 250
 
 	@Column(name = "CSRSecondaryId", length = 250)
 	private String csrSecondaryId;// 250
@@ -242,8 +242,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "fileRBOMatchRequired")
 	private Boolean fileRBOMatchRequired;
 
-	@Column(name = "factoryTransfer")
-	private Boolean factoryTransfer;
+//	@Column(name = "factoryTransfer")
+//	private Boolean factoryTransfer;
 
 	// @Column(name = "fileMatchLocation", length = 100)
 	// private String fileMatchLocation;// 100
@@ -272,17 +272,17 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "fileRBOMatch", length = 100)
 	private String fileRBOMatch;// 100
 
-	@Column(name = "invoicelineInstruction", length = 500)
-	private String invoicelineInstruction;// 500
+//	@Column(name = "invoicelineInstruction", length = 500)
+//	private String invoicelineInstruction;// 500
 
-	@Column(name = "LLKK")
-	private Boolean llkk;
-
-	@Column(name = "localBilling")
-	private Boolean localBilling;
-
-	@Column(name = "miscCSRInstruction", length = 500)
-	private String miscCSRInstruction;// 500
+//	@Column(name = "LLKK")
+//	private Boolean llkk;
+//
+//	@Column(name = "localBilling")
+//	private Boolean localBilling;
+//
+//	@Column(name = "miscCSRInstruction", length = 500)
+//	private String miscCSRInstruction;// 500
 
 	@Column(name = "orderFileNameExtension", length = 100)
 	private String orderFileNameExtension;// 100
@@ -299,14 +299,14 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "orderSchemaType", length = 50)
 	private String orderSchemaType;// 50
 
-	@Column(name = "others")
-	private Boolean others;// Others (pls specify)
+//	@Column(name = "others")
+//	private Boolean others;// Others (pls specify)
 
-	@Column(name = "preProcessPID", length = 50)
-	private String preProcessPID;// 50
+//	@Column(name = "preProcessPID", length = 50)
+//	private String preProcessPID;
 
-	@Column(name = "productLineType", length = 25)
-	private String productLineType;// 25
+	@Column(name = "productLineType", length = 100)
+	private String productLineType;
 
 	@Column(name = "DataStructureName", length = 100)
 	private String dataStructureName;
@@ -314,17 +314,17 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "shipmentSample")
 	private Boolean shipmentSample;
 
-	@Column(name = "waiveMOA")
-	private Boolean waiveMOA;
+//	@Column(name = "waiveMOA")
+//	private Boolean waiveMOA;
 
 	@Column(name = "waiveMOQ")
 	private Boolean waiveMOQ;
 
-	@Column(name = "localItem")
-	private Boolean localItem;
-
-	@Column(name = "averyItem")
-	private Boolean averyItem;
+//	@Column(name = "localItem")
+//	private Boolean localItem;
+//
+//	@Column(name = "averyItem")
+//	private Boolean averyItem;
 
 	@Column(name = "fiberpercentagecheck", length = 100)
 	private String fiberpercentagecheck;
@@ -372,8 +372,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "defaultShipToCode", length = 255)
 	private String defaultShipToCode;
 
-	@Column(name = "discountOffer")
-	private Boolean discountOffer;
+//	@Column(name = "discountOffer")
+//	private Boolean discountOffer;
 
 	@Column(name = "shippingMark")
 	private Boolean shippingMark;
@@ -1320,21 +1320,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileNamePattern_2 = attachmentFileNamePattern_2;
 	}
 
-	public String getAttachmentFileNamePattern_3() {
-		return attachmentFileNamePattern_3;
-	}
-
-	public void setAttachmentFileNamePattern_3(String attachmentFileNamePattern_3) {
-		this.attachmentFileNamePattern_3 = attachmentFileNamePattern_3;
-	}
-
-	public String getAttachmentFileNamePattern_4() {
-		return attachmentFileNamePattern_4;
-	}
-
-	public void setAttachmentFileNamePattern_4(String attachmentFileNamePattern_4) {
-		this.attachmentFileNamePattern_4 = attachmentFileNamePattern_4;
-	}
+//	public String getAttachmentFileNamePattern_3() {
+//		return attachmentFileNamePattern_3;
+//	}
+//
+//	public void setAttachmentFileNamePattern_3(String attachmentFileNamePattern_3) {
+//		this.attachmentFileNamePattern_3 = attachmentFileNamePattern_3;
+//	}
+//
+//	public String getAttachmentFileNamePattern_4() {
+//		return attachmentFileNamePattern_4;
+//	}
+//
+//	public void setAttachmentFileNamePattern_4(String attachmentFileNamePattern_4) {
+//		this.attachmentFileNamePattern_4 = attachmentFileNamePattern_4;
+//	}
 
 	public String getAttachmentFileOrderMatch() {
 		return attachmentFileOrderMatch;
@@ -1419,21 +1419,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentIdentifier_4 = attachmentIdentifier_4;
 	}
 
-	// public String getAttachmentMappingID_1() {
-	// return attachmentMappingID_1;
-	// }
-	//
-	// public void setAttachmentMappingID_1(String attachmentMappingID_1) {
-	// this.attachmentMappingID_1 = attachmentMappingID_1;
-	// }
-	//
-	// public String getAttachmentMappingID_2() {
-	// return attachmentMappingID_2;
-	// }
-	//
-	// public void setAttachmentMappingID_2(String attachmentMappingID_2) {
-	// this.attachmentMappingID_2 = attachmentMappingID_2;
-	// }
+	 public String getAttachmentMappingID_1() {
+	 return attachmentMappingID_1;
+	 }
+	
+	 public void setAttachmentMappingID_1(String attachmentMappingID_1) {
+	 this.attachmentMappingID_1 = attachmentMappingID_1;
+	 }
+	
+	 public String getAttachmentMappingID_2() {
+	 return attachmentMappingID_2;
+	 }
+	
+	 public void setAttachmentMappingID_2(String attachmentMappingID_2) {
+	 this.attachmentMappingID_2 = attachmentMappingID_2;
+	 }
 	//
 	// public String getAttachmentMappingID_3() {
 	// return attachmentMappingID_3;
@@ -1539,21 +1539,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.comment = comment;
 	}
 
-	public Boolean isControlData() {
-		return controlData;
-	}
-
-	public void setControlData(Boolean controlData) {
-		this.controlData = controlData;
-	}
-
-	public String getCsrPrimaryId() {
-		return csrPrimaryId;
-	}
-
-	public void setCsrPrimaryId(String csrPrimaryId) {
-		this.csrPrimaryId = csrPrimaryId;
-	}
+//	public Boolean isControlData() {
+//		return controlData;
+//	}
+//
+//	public void setControlData(Boolean controlData) {
+//		this.controlData = controlData;
+//	}
+//
+//	public String getCsrPrimaryId() {
+//		return csrPrimaryId;
+//	}
+//
+//	public void setCsrPrimaryId(String csrPrimaryId) {
+//		this.csrPrimaryId = csrPrimaryId;
+//	}
 
 	public String getCsrSecondaryId() {
 		return csrSecondaryId;
@@ -1677,13 +1677,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileRBOMatchRequired = fileRBOMatchRequired;
 	}
 
-	public Boolean isFactoryTransfer() {
-		return factoryTransfer;
-	}
-
-	public void setFactoryTransfer(Boolean factoryTransfer) {
-		this.factoryTransfer = factoryTransfer;
-	}
+//	public Boolean isFactoryTransfer() {
+//		return factoryTransfer;
+//	}
+//
+//	public void setFactoryTransfer(Boolean factoryTransfer) {
+//		this.factoryTransfer = factoryTransfer;
+//	}
 
 	// public String getFileMatchLocation() {
 	// return fileMatchLocation;
@@ -1758,37 +1758,37 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileRBOMatch = fileRBOMatch;
 	}
 
-	public String getInvoicelineInstruction() {
-		return invoicelineInstruction;
-	}
-
-	public void setInvoicelineInstruction(String invoicelineInstruction) {
-		this.invoicelineInstruction = invoicelineInstruction;
-	}
-
-	public Boolean getLlkk() {
-		return llkk;
-	}
-
-	public void setLlkk(Boolean llkk) {
-		this.llkk = llkk;
-	}
-
-	public Boolean isLocalBilling() {
-		return localBilling;
-	}
-
-	public void setLocalBilling(Boolean localBilling) {
-		this.localBilling = localBilling;
-	}
-
-	public String getMiscCSRInstruction() {
-		return miscCSRInstruction;
-	}
-
-	public void setMiscCSRInstruction(String miscCSRInstruction) {
-		this.miscCSRInstruction = miscCSRInstruction;
-	}
+//	public String getInvoicelineInstruction() {
+//		return invoicelineInstruction;
+//	}
+//
+//	public void setInvoicelineInstruction(String invoicelineInstruction) {
+//		this.invoicelineInstruction = invoicelineInstruction;
+//	}
+//
+//	public Boolean getLlkk() {
+//		return llkk;
+//	}
+//
+//	public void setLlkk(Boolean llkk) {
+//		this.llkk = llkk;
+//	}
+//
+//	public Boolean isLocalBilling() {
+//		return localBilling;
+//	}
+//
+//	public void setLocalBilling(Boolean localBilling) {
+//		this.localBilling = localBilling;
+//	}
+//
+//	public String getMiscCSRInstruction() {
+//		return miscCSRInstruction;
+//	}
+//
+//	public void setMiscCSRInstruction(String miscCSRInstruction) {
+//		this.miscCSRInstruction = miscCSRInstruction;
+//	}
 
 	public String getOrderFileNameExtension() {
 		return orderFileNameExtension;
@@ -1830,21 +1830,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.orderSchemaType = orderSchemaType;
 	}
 
-	public Boolean isOthers() {
-		return others;
-	}
-
-	public void setOthers(Boolean others) {
-		this.others = others;
-	}
-
-	public String getPreProcessPID() {
-		return preProcessPID;
-	}
-
-	public void setPreProcessPID(String preProcessPID) {
-		this.preProcessPID = preProcessPID;
-	}
+//	public Boolean isOthers() {
+//		return others;
+//	}
+//
+//	public void setOthers(Boolean others) {
+//		this.others = others;
+//	}
+//
+//	public String getPreProcessPID() {
+//		return preProcessPID;
+//	}
+//
+//	public void setPreProcessPID(String preProcessPID) {
+//		this.preProcessPID = preProcessPID;
+//	}
 
 	public String getProductLineType() {
 		return productLineType;
@@ -1862,13 +1862,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.shipmentSample = shipmentSample;
 	}
 
-	public Boolean isWaiveMOA() {
-		return waiveMOA;
-	}
-
-	public void setWaiveMOA(Boolean waiveMOA) {
-		this.waiveMOA = waiveMOA;
-	}
+//	public Boolean isWaiveMOA() {
+//		return waiveMOA;
+//	}
+//
+//	public void setWaiveMOA(Boolean waiveMOA) {
+//		this.waiveMOA = waiveMOA;
+//	}
 
 	public Boolean isWaiveMOQ() {
 		return waiveMOQ;
@@ -1878,21 +1878,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.waiveMOQ = waiveMOQ;
 	}
 
-	public Boolean isLocalItem() {
-		return localItem;
-	}
-
-	public void setLocalItem(Boolean localItem) {
-		this.localItem = localItem;
-	}
-
-	public Boolean isAveryItem() {
-		return averyItem;
-	}
-
-	public void setAveryItem(Boolean averyItem) {
-		this.averyItem = averyItem;
-	}
+//	public Boolean isLocalItem() {
+//		return localItem;
+//	}
+//
+//	public void setLocalItem(Boolean localItem) {
+//		this.localItem = localItem;
+//	}
+//
+//	public Boolean isAveryItem() {
+//		return averyItem;
+//	}
+//
+//	public void setAveryItem(Boolean averyItem) {
+//		this.averyItem = averyItem;
+//	}
 
 	public String getCustomerItemIdentifierDescription() {
 		return customerItemIdentifierDescription;
@@ -1974,13 +1974,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.defaultShipToCode = defaultShipToCode;
 	}
 
-	public Boolean getDiscountOffer() {
-		return discountOffer;
-	}
-
-	public void setDiscountOffer(Boolean discountOffer) {
-		this.discountOffer = discountOffer;
-	}
+//	public Boolean getDiscountOffer() {
+//		return discountOffer;
+//	}
+//
+//	public void setDiscountOffer(Boolean discountOffer) {
+//		this.discountOffer = discountOffer;
+//	}
 
 	public Boolean getShippingMark() {
 		return shippingMark;
@@ -2267,9 +2267,9 @@ public class ProductLine extends MainAbstractEntity {
 		return attachmentRequired;
 	}
 
-	public Boolean getControlData() {
-		return controlData;
-	}
+//	public Boolean getControlData() {
+//		return controlData;
+//	}
 
 	public Boolean getEmailSubjectRBOMatchRequired() {
 		return emailSubjectRBOMatchRequired;
@@ -2283,9 +2283,9 @@ public class ProductLine extends MainAbstractEntity {
 		return fileRBOMatchRequired;
 	}
 
-	public Boolean getFactoryTransfer() {
-		return factoryTransfer;
-	}
+//	public Boolean getFactoryTransfer() {
+//		return factoryTransfer;
+//	}
 
 	public Boolean getFileMatchRequired() {
 		return fileMatchRequired;
@@ -2299,33 +2299,33 @@ public class ProductLine extends MainAbstractEntity {
 		return fileProductLineMatchRequired;
 	}
 
-	public Boolean getLocalBilling() {
-		return localBilling;
-	}
-
-	public Boolean getOthers() {
-		return others;
-	}
+//	public Boolean getLocalBilling() {
+//		return localBilling;
+//	}
+//
+//	public Boolean getOthers() {
+//		return others;
+//	}
 
 	public Boolean getShipmentSample() {
 		return shipmentSample;
 	}
 
-	public Boolean getWaiveMOA() {
-		return waiveMOA;
-	}
+//	public Boolean getWaiveMOA() {
+//		return waiveMOA;
+//	}
 
 	public Boolean getWaiveMOQ() {
 		return waiveMOQ;
 	}
 
-	public Boolean getLocalItem() {
-		return localItem;
-	}
-
-	public Boolean getAveryItem() {
-		return averyItem;
-	}
+//	public Boolean getLocalItem() {
+//		return localItem;
+//	}
+//
+//	public Boolean getAveryItem() {
+//		return averyItem;
+//	}
 
 	public void setSiteName(String siteName) {
 		this.siteName = siteName;
@@ -2362,5 +2362,4 @@ public class ProductLine extends MainAbstractEntity {
 	public void setSizeCheck(String sizeCheck) {
 		this.sizeCheck = sizeCheck;
 	}
-	
 }

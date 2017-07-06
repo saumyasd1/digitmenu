@@ -154,6 +154,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
 		columns[5].hide();
 		columns[6].hide();
 		columns[7].hide();
+		columns[8].hide();
     },
     
     //Advance/quick search section

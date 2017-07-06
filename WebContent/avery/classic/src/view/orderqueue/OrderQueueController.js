@@ -2,8 +2,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.orderqueue',
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 
-               'AOC.view.advsearch.OrderQueueAdvanceSearch'],
-    runTime: AOC.config.Runtime,
+       'AOC.view.advsearch.OrderQueueAdvanceSearch'
+    ],
     getOrdersBasedOnSearchParameters: function() {
         var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {storeId:'OrderQueueId'});
         var bulkupdategrid = this.getView();
@@ -171,14 +171,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	var id = currentRecord.get('id');
     	var partnerId = currentRecord.get('partnerId');
     	//setting parameters at runtime   
-        me.runTime.setOrderQueueId(id);
-        me.runTime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
-        me.runTime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
-        me.runTime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
-        me.runTime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
-        me.runTime.setOrderQueueActiveRecord(currentRecord);
-		me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-		me.runTime.setAllowOrderLineEdit(true);
+        AOCRuntime.setOrderQueueId(id);
+        AOCRuntime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
+        AOCRuntime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
+        AOCRuntime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
+        AOCRuntime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
+        AOCRuntime.setOrderQueueActiveRecord(currentRecord);
+        AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
+        AOCRuntime.setAllowOrderLineEdit(true);
 		
 		Ext.getBody().mask('Loading...');
 		
@@ -195,7 +195,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		});
 		
 		storeERPORG.load(function(){
-			me.runTime.setStoreERPORG(storeERPORG);
+			AOCRuntime.setStoreERPORG(storeERPORG);
 			me.viewOrderLineScreen(currentRecord);
 			
 			//callout.destroy(); // hide action menu items
@@ -208,10 +208,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
     	var id = currentRecord.get('id');
-		me.runTime.setOrderQueueId(id);
-		me.runTime.setOrderQueueActiveRecord(currentRecord);
-		me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-		me.runTime.setAllowOrderLineEdit(true);
+		AOCRuntime.setOrderQueueId(id);
+		AOCRuntime.setOrderQueueActiveRecord(currentRecord);
+		AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
+		AOCRuntime.setAllowOrderLineEdit(true);
 		var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 		var owner = me.getView().ownerCt;
 		var store = Ext.create('AOC.store.SalesOrderStore', {
@@ -315,15 +315,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			currentRecord = grid.getSelectionModel().getSelection()[0],
 			rboName = currentRecord.get('RBOName'),
 			orderTrack = currentRecord.get('id'),
-			localDate = new Date(),
-			date = localDate.getDate(),
-			month = localDate.getMonth(),
-			year = localDate.getFullYear(),
-			userDate = date+'/'+month+'/'+year,
-			hours = localDate.getHours(),
-			minutes = localDate.getMinutes(),
-			seconds = localDate.getSeconds(),
-			userTimeStamp = hours+':'+minutes+':'+seconds,
+			userDate = Ext.util.Format.date(new Date(),'Y-m-d'),
+			userTimeStamp = Ext.util.Format.date(new Date(),'H:i:s'),
 			obj = {orderTrack:orderTrack,localDate:userDate, localTime:userTimeStamp,rboName:rboName },
 			query = Ext.JSON.encode(obj);
     	
@@ -343,17 +336,17 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
 		var id = currentRecord.get('id');
-		me.runTime.setOrderQueueId(id);
-		me.runTime.setOrderQueueActiveRecord(currentRecord);
-		me.runTime.setOrderQueueStatus(currentRecord.get('Status'));
-		me.runTime.setAllowOrderLineEdit(true);
+		AOCRuntime.setOrderQueueId(id);
+		AOCRuntime.setOrderQueueActiveRecord(currentRecord);
+		AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
+		AOCRuntime.setAllowOrderLineEdit(true);
 		var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
 		me.getCancelOrderWindow(id);
     },
   	getReportView:function(obj){
 		var win=Ext.create('AOC.view.base.NewBaseWindow',{
 			title:'Report',
-			width:700,
+			width:900,
 			items:[{
 				xtype:'reportform'
 			}]
@@ -430,7 +423,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		orderLineForm.setValues(currentRecord.data);//set order line form values
 		orderLineTitle.setText('Order Line   (Order Track#: '+ id + ')'); //set orderline title
 		
-		me.runTime.setOrderLineCurrenProductLine(currentRecord.get('productLineId'));
+		AOCRuntime.setOrderLineCurrenProductLine(currentRecord.get('productLineId'));
 		
 		//Load orderline grid for respective orderqueue id
 		grid.store.load({params:{id:id}});

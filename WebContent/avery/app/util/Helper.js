@@ -307,11 +307,13 @@ Ext.define('AOC.util.Helper',{
     	var data = currentRecord.data,
     		emailSubjectRBOMatchField = form.queryById('emailSubjectRBOMatch'),
     		emailSubjectProductLineMatch = form.queryById('emailSubjectProductLineMatch'),
+    		emailSubjectPartnerMatch = form.queryById('emailSubjectPartnerMatch'),
     		emailBodyRBOMatch = form.queryById('emailBodyRBOMatch'),
     		emailBodyProductLineMatch = form.queryById('emailBodyProductLineMatch');
     	
     	emailSubjectRBOMatchField[data.emailSubjectRBOMatch ? 'show':'hide']();
     	emailSubjectProductLineMatch[data.emailSubjectProductLineMatch ? 'show':'hide']();
+    	emailSubjectPartnerMatch[data.emailSubjectPartnerMatch ? 'show':'hide']();
     	emailBodyRBOMatch[data.emailBodyRBOMatch ? 'show':'hide']();
     	emailBodyProductLineMatch[data.emailBodyProductLineMatch ? 'show':'hide']();
     },
@@ -768,7 +770,7 @@ Ext.define('AOC.util.Helper',{
 		return [['None','None'],['RBO','RBO'],['Product Line','Product Line']];
 	},
 	getProductLineStore:function(){
-		return[ ['None','None'],['PFL','PFL'],['HTL','HTL'],['WVL','WVL'],
+		return[ ['PFL','PFL'],['HTL','HTL'],['WVL','WVL'],
 	        ['GG','GG'],['WVL/GG','WVL/GG'],['PFL/HTL/WVL','PFL/HTL/WVL'],['PFI/HTL/WVL/Offset','PFI/HTL/WVL/Offset'],
 	        ['PFL/WVL','PFL/WVL'],['HTL/WVL','HTL/WVL'],['HTL/PFL','HTL/PFL'],['PFL/WVL/PSI', 'PFL/WVL/PSI'],
 	        ['HTL/Woven/PFL/Hangtag/Sticker', 'HTL/Woven/PFL/Hangtag/Sticker'],['PSI', 'PSI'],['HTL/WVL/Speciality', 'HTL/WVL/Speciality'],

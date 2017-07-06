@@ -2,7 +2,6 @@ Ext.define('AOC.view.home.ReportForm',{
     extend: 'Ext.form.Panel',
     controller:'reportcontroller',
     alias:'widget.reportform',
-    runTime: AOC.config.Runtime,
     layout: {
         type: 'vbox',
         align: 'stretch'
@@ -11,47 +10,50 @@ Ext.define('AOC.view.home.ReportForm',{
         afterrender: 'onReportFormAfterRender'
     },
     initComponent : function(){
-        var me = this;
-        Ext.apply(me,{
-            items : me.buildItems()
+        Ext.apply(this,{
+            items : this.buildItems()
         });
-        me.callParent(arguments);
-        me.helper = AOC.util.Helper;
+        this.callParent(arguments);
     },
     bodyPadding:10,
 
     buildItems : function(){
-        var me = this;
         return [
             {
 				xtype: 'fieldcontainer',
-	            layout: 'hbox',
+	            layout:{
+	            	type:'hbox',
+	            	align:'stretch'
+	            },
+	            defaults:{
+	            	flex:1
+	            },
 	            items:[
 					{
 						xtype:'combo',
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
-						store : Ext.data.StoreManager.lookup('partnerStoreId') != null ? Ext.data.StoreManager.lookup('partnerStoreId') : Ext.create('AOC.store.PartnerManagementStore',{storeId:'partnerStoreId'}),
+						store : Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
 						valueField:'id',
 						name:'partnerName',
-						editable:false,
 						allowBlank : false,
 						reference:'partner',
-						margin:'0 10 0 0',
-						width:210,
+						flex:1.5,
 						displayField:'partnerName',
 						emptyText:'Select Partner',
+						queryMode:'local',
 						listeners:{
-							'change':'onPartnerChange',
-							'afterrender':'onPartnerComboAfterRender' 
+							select:'onPartnerSelect',
+							afterrender:'onPartnerComboAfterRender',
+							blur:function(field){
+								Helper.clearCombo(field);
+							}
 						}
 					},
 					{
 						xtype:'combo',
 						name:'rbo',
-						labelAlign:'top',
-						margin:'0 10 0 0',
-						width:210,
+						margin:'0 0 0 10',
 						allowBlank : false,
 						reference:'rboName',
 						displayField:'rboName',
@@ -62,14 +64,18 @@ Ext.define('AOC.view.home.ReportForm',{
 						store:Ext.create('Ext.data.Store',{
 				     	   	 fields : ['rboName','id','productLineType'],	
 					         data : []
-				        })
+				        }),
+				        listeners:{
+				        	blur:function(field){
+								Helper.clearCombo(field);
+							}
+				        }
 	                },
 					{
 	                	xtype : 'combo',
 						name:'Status',
 						hideLabel:true,
-						width:210,
-						margin:'0 10 0 0',
+						margin:'0 0 0 10',
 						reference:'status',
 						allowBlank : false,
 						disabled:true,
@@ -79,22 +85,27 @@ Ext.define('AOC.view.home.ReportForm',{
 						emptyText:'Select Status',
 	                	store: Ext.data.StoreManager.lookup('code') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
 	                    listeners:{
-	                    	afterrender:'onStatusComboAfterRender'
+	                    	afterrender:'onStatusComboAfterRender',
+	                    	blur:function(field){
+								Helper.clearCombo(field);
+							}
 	                    }
 					}
 				]
 	        },{
 				xtype: 'fieldcontainer',
-	            layout: 'hbox',
+	            layout: {
+	            	type:'hbox',
+	            	align:'stretch'
+	            },
 	            items:[
 					{
 	                    xtype: 'combo',
 	                    name: 'siteId',
 	                    itemId:'site',
 	                    emptyText:'Select Site',
-	                    width:210,
+	                    flex:1.5,
 	                    editable: false,
-	                    margin:'5 10 0 0',
 	                    displayField: 'name',
 	                    valueField: 'id',
 	                    hidden:AOCRuntime.getUser().role == 1 ? false : true,
@@ -113,23 +124,27 @@ Ext.define('AOC.view.home.ReportForm',{
 	    				name:'CSR',
 	    				emptyText:'Select CSR Name',
 	    				valueField:'userId',
-	    				width:210,
+	    				flex:1,
 	    				disabled:AOCRuntime.getUser().role == 1 ? true : false ,
-	    				margin:'5 10 0 0',
+	    				margin:'0 0 0 10',
 	    				queryMode:'local',
-	    				store:Ext.create('AOC.store.AssignCSRStore') ,
+	    				store:Ext.create('AOC.store.AssignCSRStore'),
 	    				typeAhead:true,
 	    				listeners:{
-	                    	afterrender:'onCSRComboAfterRender'
+	                    	afterrender:'onCSRComboAfterRender',
+	                    	blur:function(field){
+								Helper.clearCombo(field);
+							}
 	                    }
 	    			},
 	    			{
 	    				xtype:'combo',
 	    				name:'timeZone',
 	    				emptyText:'Select Time Zone',
-	    				width:210,
+	    				flex:1,
 	    				reference:'timeZone',
-	    				margin:'5 10 0 0',
+	    				editable:false,
+	    				margin:'0 0 0 10',
 	    				store:[['HKT','HKT'],['EDT','EDT'],['EST','EST']]
 	    			}
 				]
@@ -137,36 +152,38 @@ Ext.define('AOC.view.home.ReportForm',{
 			{
 				xtype:'tbtext',
 				height:10,
-				margin:'10 0 0 10',
+				margin:'10 0 0 0',
 				text:'Please select the type of report you would like to get:',
 				style:AOC.config.Settings.config.defaultFormLabelStyle
 			},
 			{
 				xtype : 'radiogroup',
 				name: 'rb',
-				fieldLabel : '',
-				width:600,
+				hideLabel:true,
+				width:200,
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 				reference:'radioGroup',
-				margin:'10 0 0 10',
+				margin:'10 0 0 0',
 				items:[
 					{ boxLabel: 'Daily Report', name: 'rb', inputValue: 'dailyReport', checked: true },
 					{ boxLabel: 'Detail Status Report', name: 'rb', inputValue: 'openReport' }
 				],
 			    listeners:{
-			    	'change':'onRadioButtonChange'
+			    	change:'onRadioButtonChange'
 			    }
-        
 			},
 			{
 				xtype: 'fieldcontainer',
-				layout: 'hbox',
-				margin : '5 0 10 10',
+				layout: {
+					type:'hbox',
+					align:'stretch'
+				},
+				margin : '0 0 5 0',
 				defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.topLabelAlign,
-					labelWidth:150
+					flex:1
 				},
 				items:[
 					{
@@ -174,9 +191,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						reference:'fromDate',
 						hidden:true,
 						fieldLabel : 'From Date ',
-						width:250,
-						allowBlank : true,
-						selectOnTab : true,
+						selectOnTab: true,
 						listeners : {
 							afterrender : function(datefield) {
 								datefield.setValue(new Date());
@@ -187,16 +202,14 @@ Ext.define('AOC.view.home.ReportForm',{
 						xtype : 'datefield',
 						fieldLabel : 'To Date ',
 						reference:'toDate',
-						width:250,
 						margin:'0 0 0 10',
 						hidden:true,
-						allowBlank : true,
-						selectOnTab : true,
+						selectOnTab: true,
 						listeners : {
 							afterrender : function(datefield) {
 								datefield.setValue(new Date());
-							},
-							focus: 'notifyByMessage'
+							}
+							//focus: 'notifyByMessage'
 						}
 					}
 				]

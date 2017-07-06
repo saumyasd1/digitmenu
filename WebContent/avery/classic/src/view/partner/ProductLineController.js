@@ -322,6 +322,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			me.setReadOnlyView(true);
 		}
     },
+    onComboBlur:function(field){
+    	Helper.clearCombo(field);
+    },
     createGroupingField:function(detail){
     	var me = this,
     		refs = me.getReferences(),
@@ -350,6 +353,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 
 	        //Partner Profile section
 	        partnerTextFieldArray = partnerProfileForm.query('[xtype = textfield]'),
+	        numberFieldArray = partnerProfileForm.query('[xtype = numberfield]'),
 	        partnerComboArray = partnerProfileForm.query('[xtype = combo]'),
 	        partnerRadioArray = partnerProfileForm.query('[xtype = radiogroup]'),
 	        partnerCheckboxArray = partnerProfileForm.query('[xtype = checkbox]'),
@@ -357,6 +361,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	        tempArray = [].concat(partnerTextFieldArray)
 	        			  .concat(partnerComboArray)
     					  .concat(partnerRadioArray)
+    					  .concat(numberFieldArray)
     	                  .concat(partnerCheckboxArray);
 	    
 	    var len = tempArray.length;
@@ -577,7 +582,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		return '0';
 	},
-    onCancelDetails:function(){       
+    onCancelDetails:function(){  
+    	this.getView().contextView.store.load();
 		this.getView().destroy();
 	},
 	createproductline:function(){
@@ -670,9 +676,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    			cmp.changedBefore = true;
 		    			me.getListOrderSystemInfo(view);
 		    			
-		    		}else{
-		    			cmp.siteChanged=true;		
-	    			}
+		    		}
 	    		}
 		    	view.el.unmask();
 	        },
@@ -924,8 +928,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		
 		if(newValue[field.reference] == '1'){
 			cont.setDisabled(false);
+			if(refs['productLineTypeCombo'].getValue().indexOf('/') > -1){
+				cont.allowBlank = false;
+			}else{
+				cont.allowBlank = true;
+			}
 			
 		}else{
+			cont.allowBlank = true;
 			cont.setDisabled(true);
 		}
 	 },
@@ -933,17 +943,20 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var me = this,
 			refs = me.getReferences(),
 			cont1 = refs.additionalAttachmentFileCont,
-			cont2 = refs.additionalAttachmentFileCont2;
-//			cont3 = refs.additionalExcelCont;
+			cont2 = refs.additionalAttachmentFileCont2,
+			cont3 = refs['attchmentSchemaCont1'],
+			cont4 = refs['attchmentSchemaCont2'];
 		
 		if(newValue.attachmentRequired == 'true'){
 			cont1.setDisabled(false);
 			cont2.setDisabled(false);
-//			cont3.setDisabled(false);
+			cont3.setDisabled(false);
+			cont4.setDisabled(false);
 		}else{
 			cont1.setDisabled(true);
 			cont2.setDisabled(true);
-//			cont3.setDisabled(true);
+			cont3.setDisabled(true);
+			cont4.setDisabled(true);
 		}
 	 },
 	 onComboSelect:function(field, e){

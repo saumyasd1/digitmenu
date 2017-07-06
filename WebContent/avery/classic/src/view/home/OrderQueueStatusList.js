@@ -4,7 +4,7 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 	emptyText:AOCLit.emptyDataMsg,
 	requires:['AOC.view.home.HomePageController'],
 	controller:'homepagecontroller',
-	frame:true,
+//	frame:true,
 	initComponent : function(){
 		var me=this;
 		Ext.apply(this,{

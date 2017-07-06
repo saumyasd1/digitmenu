@@ -4,12 +4,17 @@ Ext.define('AOC.store.RBOStore', {
 	storeId:'rboId',
 	proxy: {
         type: 'rest',
-        url         : applicationContext+'/rest/rbo',
-        reader      : {
-            type          : 'json',
-            rootProperty          : 'ArrayList'
+        url: applicationContext+'/rest/rbo',
+        reader: {
+            type: 'json',
+            rootProperty: 'ArrayList'
         }
-        
-    }
+    },
+    sorters:[
+         {
+      	   property:'rboName',
+      	   direction:'ASC'
+         }
+     ]
 });
 

@@ -37,7 +37,7 @@ Ext.define('AOC.view.partner.OrgController', {
 			alreadyPresent=gridStore.find('orgCodeId',newValue);
 		if(alreadyPresent!=-1){
 			cmp.setValue('');
-			AOC.util.Helper.fadeoutMessage('Error','This Org is already selected. Please select another one');
+			Helper.showToast('Error','This Org is already selected. Please select another one');
 			return false;
 		}
 		var record=cmp.ownerCt.context.record;

@@ -74,7 +74,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1
 						},	
 						items:[
 							{
@@ -83,29 +84,32 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								fieldLabel:AOCLit.partnerName,
 								name:'partnerId',
 								reference:'partnerCombo',
-								store:Ext.create('AOC.store.PartnerManagementStore'),
-								editable:false,
+								store:Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
 								allowBlank: false,
 								queryMode:'local',
-								flex:1,
 								displayField:'partnerName',
 								valueField:'id',
 								listeners:{
-									afterrender:function(field){
-										field.store.load();
-									}
+									blur:'onComboBlur'
 								}
 							},
 							{
-								xtype:'textfield',
-								itemId:'dataStructureName',
-								name: 'dataStructureName',
-								reference:'dataStructureName',
-								margin:'0 0 0 10',
-								flex:1,
+								xtype:'combo',
+								itemId:'RItemId',
+								name: 'rboId',
+								reference:'rboId',
+								fieldLabel:AOCLit.RBO,
 								allowBlank: false,
-								fieldLabel: 'Data Structure Name',
-								blankText:'Data Structure Name is required',
+								emptyText:AOCLit.RBO,
+								store:rboStore,
+								displayField:'rboName',
+								valueField:'id',
+								queryMode:'local',
+								margin:'0 0 0 10',
+								blankTexts: 'RBO Name is required',
+								listeners:{
+									blue:'onComboBlur'
+								}
 							}
 						]
 					},
@@ -125,16 +129,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						},	
 						items:[
 							{
-								xtype:'combo',
-								itemId:'RItemId',
-								name: 'rboId',
-								reference:'rboId',
-								fieldLabel:AOCLit.RBO,
+								xtype:'textfield',
+								itemId:'dataStructureName',
+								name: 'dataStructureName',
+								reference:'dataStructureName',
+								emptyText:AOCLit.dataStructureNameEmptyText,
 								allowBlank: false,
-								store:rboStore,
-								displayField:'rboName',
-								valueField:'id',
-								blankTexts: 'RBO Name is required'
+								fieldLabel: 'Data Structure Name',
+								blankText:'Data Structure Name is required',
 							},
 							{
 								xtype:'combo',
@@ -147,10 +149,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								valueField:'id',
 								displayField:'name',
 								maxLength: '100',
+								emptyText:'Site',
+								editable:false,
 								blankText:'Site Name is required',
 								store:siteStore,
 								margin:'0 0 0 10',
-								siteChanged:false,
 								enforceMaxLength: true,
 								listeners : {
 									'change':'onSiteSelect'
@@ -175,11 +178,13 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								xtype:'combo',
 								fieldLabel:'Default System',
+								emptyText:'System Name',
 								name:'defaultSystem',
 								reference:'defaultSystemCombo',
 								displayField:'name',
 								valueField:'id',
 								queryMode:'local',
+								editable:false,
 								disabled:true,
 								store:new Ext.data.JsonStore({
 									data:[],
@@ -222,6 +227,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								xtype:'textfield',
 								name: 'email',
 								vtype:'multiEmail',
+								emptyText:'Email Id\'s with ; separated',
 								fieldLabel:'Email ID'
 							},
 							{
@@ -229,6 +235,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								reference:'CSRSecondaryId',
 								name: 'csrSecondaryId',
 								margin:'0 0 0 10',
+								emptyText:'Email Id\'s with ; separated',
 								fieldLabel:'CSR Secondary Email',
 								vtype:'multiEmail',
 								blankText : AOCLit.CSRReq
@@ -268,7 +275,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					{
 						xtype: 'fieldcontainer',
 						fieldLabel: 'Validations',
-						defaultType: 'checkboxfield',
+						defaultType: 'checkbox',
 						layout:'column',
 						labelWidth:150,
 						margin : '0 0 5 0',
@@ -325,21 +332,10 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									flex:1
 								},
 								items:[
-//									{
-//								    	xtype:'combo',
-//								    	name:'orderFileNameExtension',
-//								    	fieldLabel:'Order File Format',
-//								    	displayField:'name',
-//								    	valueField:'name',
-//								    	queryMode:'local',
-//								    	store:fileFormatStore,
-//								    	listeners:{
-//								    		blur:'onWIComboBlur'
-//								    	}
-//						    		 },
 									 {
 										 xtype:'textfield',
 										 name:'orderFileNameExtension',
+										 emptyText:AOCLit.fileExtensionEmptyText,
 										 fieldLabel:'Order File Format',
 										 
 									 },
@@ -347,6 +343,37 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						    			 xtype:'box',
 						    			 margin:'0 0 0 10'
 						    		 }
+								]
+							},
+							{
+								xtype: 'fieldcontainer',
+								layout: {
+									type:'hbox',
+									align:'stretch'
+								},
+								margin : '0 0 5 0',
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.topLabelAlign,
+									flex:1
+								},
+								items:[
+									{
+										xtype:'textfield',
+										name: 'orderSchemaID',
+										fieldLabel:'Schema',
+										maxLength : '50',
+										enforceMaxLength: true
+									},
+									{
+										xtype:'textfield',
+										margin:'0 0 0 10',
+										name: 'orderMappingID',
+										fieldLabel:'Mapping',
+										maxLength : '50',
+										enforceMaxLength: true
+									}
 								]
 							},
 							{
@@ -384,39 +411,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							},
 							me.getAdditionalField('','1','additionalAttachmentFileCont','additionalAttachment',fileFormatStore),
 							me.getAdditionalField('Another','2','additionalAttachmentFileCont2','additionalAttachmentTwo',fileFormatStore),
-//							{
-//								xtype:'fieldcontainer',
-//								layout:'hbox',
-//								reference:'additionalExcelCont',
-//								disabled:true,
-//								margin:'0 0 5 0',
-//								flex:1,
-//								defaults:{
-//									labelSeparator:'',
-//									labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-//									labelAlign:AOC.config.Settings.form.topLabelAlign
-//								},
-//								items:[
-//								    {
-//									   xtype:'combo',
-//									   name:'attachmentExcelSheet',
-//									   fieldLabel:'One Sheet/Multiple sheets in a Attachment file',
-//									   editable:false,
-//									   reference:'attachmentExcelSheet',
-//									   flex:1,
-//									   store:Helper.getExcelStore(),
-//									   maxLength:Settings.wiConfig.maxLength100,
-//									   listeners:{
-//										   select:'onComboSelect'
-//									   }
-//				                	 },
-//				                	 {
-//				                		 xtype:'box',
-//				                		 flex:2.1,
-//				                		 html:''
-//				                	 }
-//			                	 ]
-//							},
+							me.getAdditionalSchemaField(1, 'Additional', 'attchmentSchemaCont'),
+							me.getAdditionalSchemaField(2, 'Another Additional', 'attchmentSchemaCont'),
 							me.getSchemaIdentificationItems(),
 							{
 								title:'Grouping Fields',
@@ -425,6 +421,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								titleAlign:'center',
 								frame:true,
 								bodyPadding:10,
+								hidden:me.mode == 'add',
 								reference:'groupingFieldBox'
 							}
 						]
@@ -437,6 +434,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return {
 			title:'SKU Validation',
 			titleAlign:'center',
+			collapsible:true,
 			margin:'20 0',
 			frame:true,
 			bodyPadding:10,
@@ -480,6 +478,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
+			    	emptyText:AOCLit.multipleProductLineEmptyText,
 			    	maskRe: new RegExp('^[ A-Za-z:|]*$'),
 			    	name:'sizeValidationMultipleProductLine',
 			    	maxLength:Settings.wiConfig.maxLength100,
@@ -520,6 +519,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
+			    	emptyText:AOCLit.multipleProductLineEmptyText,
 			    	maskRe: new RegExp('^[ A-Za-z:|]*$'),
 			    	name:'fiberContentValidationMultipleProductLine',
 			    	maxLength:Settings.wiConfig.maxLength100,
@@ -561,13 +561,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
+			    	emptyText:AOCLit.multipleProductLineEmptyText,
 			    	maskRe: new RegExp('^[ A-Za-z:|]*$'),
 			    	name:'cooValidationMultipleProductLine',
 			    	maxLength:Settings.wiConfig.maxLength100,
 			    	reference:'cooValidationMultipleProductLine'
 			    }, {
 					xtype:'label',
-					text:'MOQ Validation',
+					text:'FactoryMOQ Validation',
 					style:'font-weight:bold;color:#2c3e50;font-size:15px;'
 				}, {
 					xtype:'radiogroup',
@@ -600,10 +601,27 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	fieldLabel:'If Multiple Product Line,Product Lines for which validation is applicable '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.moqValidationText),
 			    	margin:'0 0 5 0',
 			    	disabled:true,
+			    	emptyText:AOCLit.multipleProductLineEmptyText,
 			    	maskRe: new RegExp('^[ A-Za-z:|]*$'),
 			    	name:'factoryMoqValidationMultipleProductLine',
 			    	maxLength:Settings.wiConfig.maxLength100,
 			    	reference:'moqValidationMultipleProductLine'
+			    },
+			    {
+			    	xtype:'numberfield',
+			    	hideTrigger:true,
+			    	allowDecimals:false,
+			    	keyNavEnabled:false,
+			    	mouseWheelEnabled:false,
+			    	minValue:'',
+			    	emptyText:'eg. 100',
+			    	labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign,
+					anchor:'60%',
+					margin:'0 0 5 0',
+					fieldLabel:'FactoryMOQ',
+					name:'factoryMOQValue'
 			    }
 			]
 		};
@@ -619,36 +637,62 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			  defaults:{
 				labelSeparator:'',
 				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-				labelAlign:AOC.config.Settings.form.topLabelAlign
+				labelAlign:AOC.config.Settings.form.topLabelAlign,
+				flex:1
 			  },
 			  items:[
 			    {
 			    	xtype:'textfield',
 			    	name:'attachmentFileNameExtension_'+count,
-			    	fieldLabel:fieldLabel + ' Additional Attachment Format',
-//			    	displayField:'name',
-//			    	valueField:'name',
-//			    	queryMode:'local',
-			    	flex:1
-//			    	store:fileFormatStore,
-//			    	listeners:{
-//			    		blur:'onWIComboBlur'
-//			    	}
+			    	fieldLabel:fieldLabel + ' Additional Attachment Format'
 	    		 }, {
 	          		 xtype:'textfield',
 	          		 fieldLabel:fieldLabel + ' Additional File Key',
-	          		 name:'attachmentSchemaID_'+count,
-	          		 margin:'0 0 0 10',
-	          		 flex:1
+	          		 name:'attachmentFileNamePattern_'+count,
+	          		 margin:'0 0 0 10'
 	          	 }, {
 	          		 xtype:'textfield',
 	          		 fieldLabel:fieldLabel+' Attachment Identifier',
 	          		 name:'attachmentIdentifier_'+count,
-	          		 margin:'0 0 0 10',
-	          		 flex:1
+	          		 margin:'0 0 0 10'
 	          	 }
 			  ]
 		  };
+	},
+	getAdditionalSchemaField:function(count, fieldLabel, fieldRefs){
+		return {
+			xtype: 'fieldcontainer',
+			layout: {
+				type:'hbox',
+				align:'stretch'
+			},
+			margin : '0 0 5 0',
+			disabled:true,
+			reference:fieldRefs+count,
+			defaults:{
+				labelSeparator:'',
+				labelStyle:Settings.config.defaultFormLabelStyle,
+				labelAlign:Settings.form.topLabelAlign,
+				flex:1
+			},
+			items:[
+				{
+					xtype:'textfield',
+					name: 'attachmentSchemaID_'+count,
+					fieldLabel:fieldLabel +' SchemaID',
+					maxLength : Settings.wiConfig.maxLength50,
+					enforceMaxLength: true
+				},
+				{
+					xtype:'textfield',
+					margin:'0 0 0 10',
+					name: 'attachmentMappingID_'+count,
+					fieldLabel:fieldLabel+' MappingID',
+					maxLength : Settings.wiConfig.maxLength50,
+					enforceMaxLength: true
+				}
+			]
+		};
 	},
 	getSchemaIdentificationItems:function(){
 		var me = this;
@@ -681,7 +725,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				    style:'font-weight:bold;color:#2c3e50;font-size:15px;margin-top:5px;'
 				}
 			]).concat(me.getSchemaIdentificationFields('fileOrder', false, 'Order'))
-			//.concat(me.getAdditionalFileItems())
+			.concat(me.getIdentificationFields())
 		};	
 	},
 	getSchemaIdentificationFields:function(type, hideFlag, fileType, hideEmailBody){
@@ -770,8 +814,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					me.getSchemaIdentificationKeywordField(type+'PartnerFactoryKeyword'),
 					me.getOrderFileExcelField(hideFlag, type+'PartnerFactoryCellNo')
 				]
-			},
-			me.getIdentificationFields(type, hideFlag, fileType, hideEmailBody)
+			}
 		];
 	},
 	getOrderFileExcelField:function(hideFlag, name){
@@ -795,12 +838,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			reference:name
 		};
 	},
-	getIdentificationFields:function(type, hideFlag, fileType, hideEmailBody){
-		if(hideFlag){return;}
+	getIdentificationFields:function(){
 		return {
 			xtype:'fieldcontainer',
 			margin:'0 0 5 0',
-			reference:type+'IdentificationTypeCont',
+			reference:'fileOrderIdentificationTypeCont',
 			defaults:{
 				width:600,
 		    	labelSeparator:'',
@@ -812,7 +854,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			items:[
 				{
 					xtype:'label',
-					text:'How to identify a file as an '+fileType+ ' File?',
+					text:'How to identify a file as an Order File?',
 					style:'font-weight:bold;color:#2c3e50;font-size:13px;font-style: italic;color: #808080;'
 				},
 				{
@@ -826,8 +868,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						name:'orderInMailBody'
 					},
 					items:[
-					    {boxLabel:'Yes', inputValue:'true', checked:true},
-					    {boxLabel:'No', inputValue:'false'}
+					    {boxLabel:'Yes', inputValue:'true'},
+					    {boxLabel:'No', inputValue:'false', checked:true}
 					],
 					listeners:{
 						change:'onOrderReceivedEmailBodyRadioChange'
@@ -842,29 +884,28 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					xtype:'textfield',
 					name:'orderInEmailSubjectMatch',
 					reference:'fileOrderEmailSubject',
+					disabled:true,
 					fieldLabel:'Email Subject'
 				}, {
 					xtype:'textfield',
 					name:'orderInEmailBodyMatch',
 					reference:'fileOrderEmailBody',
+					disabled:true,
 					fieldLabel:'Email Body'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderFileName',
 					reference:'fileOrderFileName',
-					disabled:true,
 					fieldLabel:'File Name'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderFileContent',
 					reference:'fileOrderFileContent',
-					disabled:true,
 					fieldLabel:'File Content'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderCellNo',
 					reference:'fileOrderMatch',
-					disabled:true,
 					fieldLabel:'Cell No,If Excel'
 				}
 			]
@@ -949,6 +990,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		];
 	},
 	onDestroy:function(){
+		this.contextView.store.load();
 		this.rec = null;
 		this.callParent(arguments);
 	}

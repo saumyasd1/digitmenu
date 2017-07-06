@@ -124,79 +124,75 @@ Ext.define('AOC.view.home.ReportFormController', {
     	}
     },
     
-    onPartnerChange:function(obj,newValue){
+    onPartnerSelect:function(obj){
     	var me = this,
     		view = me.getView(),
-    		statusCombo =this.lookupReference('status');
-    	
-    	if(newValue != null){
-	    	var productLineCombo = me.lookupReference('productLineCombo'),
-	    		rboCombo = me.lookupReference('rboName'),
-	    		partnerCombo = me.lookupReference('partner'),
-	    		partnerStore = partnerCombo.store,
-		    	partnerId =[];
+    		statusCombo =this.lookupReference('status'),
+    		rboCombo = me.lookupReference('rboName'),
+    		partnerCombo = me.lookupReference('partner'),
+    		partnerStore = partnerCombo.store,
+	    	partnerId =[];
 
-	    	if(partnerCombo.getValue() == 'all'){
-	    		partnerStore.each(function(rec){
-	    			if(rec.get('id') != 'all'){
-	    				partnerId.push(rec.get('id'));
-	    			}
-	    		});
-	    	}else{
-	    		partnerId.push(partnerCombo.getValue());
-	    	}
-	    	
-	    	var response = Ext.Ajax.request({
-	    		url: applicationContext + '/rest/productLines/rboList',
-	    		method:'GET',
-	    		params:{partnerId:partnerId.join()},
-	    		success : function(response, opts) {
-    				var jsonValue = Ext.decode(response.responseText).productlines;
-	    				serviceStoreData = [];
-	    	      	
-	    	    	if(jsonValue.length>0){
-	    	    		jsonValue.forEach(function(item){
-	    	    			var service = item;
-	    	    			serviceStoreData.push(service);
-	    	    		});
-	    	    		
-	    		    	var store =  Ext.create('Ext.data.Store',{
-	    		    		fields:['id'],
-	    		            data : serviceStoreData
-	    		    	});
-	    		    	var uniqueValueArray = [],
-	    		    		rboStoreData= [];
-	    		    	store.each(function(rec,index){
-	    		    		uniqueValueArray.push(rec.get('rbo'));
-	    		    	})
-	    		    	
-	    		    	rboStoreData.push({id:'all', rboName:'Select All'});
-	    		    	if(uniqueValueArray.length>0){
-	    		    		var rboStore = rboCombo.store;
-	    		    		
-	    		    		 uniqueValueArray.forEach(function(item){
-	    		    			 rboStoreData.push(item);
-	    		    		 });
-	    		    		 rboStore.loadData(rboStoreData);
-	    		    	}
-	    	    	}else{
-	    	    		Helper.showToast('failure',AOCLit.noRboMsg);
-	    	    	}
-		        },
-		        failure: function(response, opts) {
-                    msg = response.responseText;
-                    Helper.showToast('failure', msg);
-                    view.unmask();
-                    view.close();
-                }
-	    	});
-	    	rboCombo.enable();
-	    	statusCombo.enable();
+    	if(partnerCombo.getValue() == 'all'){
+    		partnerStore.each(function(rec){
+    			if(rec.get('id') != 'all'){
+    				partnerId.push(rec.get('id'));
+    			}
+    		});
+    	}else{
+    		partnerId.push(partnerCombo.getValue());
     	}
-		if(!this.getView().isResubmit || !obj.isChangedForFirstTime){
-			rboCombo.reset();
-			statusCombo.reset();
-		}
+	    view.el.mask(AOCLit.pleaseWait);
+    	var response = Ext.Ajax.request({
+    		url: applicationContext + '/rest/productLines/rboList',
+    		method:'GET',
+    		params:{partnerId:partnerId.join()},
+    		success : function(response, opts) {
+				var jsonValue = Ext.decode(response.responseText).productlines;
+    				serviceStoreData = [];
+    	      	
+    	    	if(jsonValue.length>0){
+    	    		jsonValue.forEach(function(item){
+    	    			serviceStoreData.push(item);
+    	    		});
+    	    		
+    		    	var store =  Ext.create('Ext.data.Store',{
+    		    		fields:['id'],
+    		            data : serviceStoreData
+    		    	});
+    		    	var uniqueValueArray = [],
+    		    		rboStoreData= [];
+    		    	
+    		    	store.each(function(rec,index){
+    		    		uniqueValueArray.push(rec.get('rbo'));
+    		    	})
+    		    	
+    		    	rboStoreData.push({id:'all', rboName:'Select All'});
+    		    	
+    		    	if(uniqueValueArray.length > 0){
+    		    		var rboStore = rboCombo.store;
+    		    		
+    		    		 uniqueValueArray.forEach(function(item){
+    		    			 rboStoreData.push(item);
+    		    		 });
+    		    		 rboStore.loadData(rboStoreData);
+    		    	}
+    		    	
+    	    	}else{
+    	    		Helper.showToast('failure', AOCLit.noRboMsg);
+    	    	}
+    	    	view.el.unmask();
+	        },
+	        failure: function(response, opts) {
+	        	view.el.unmask();
+                msg = response.responseText;
+                Helper.showToast('failure', msg);
+                view.unmask();
+                view.close();
+            }
+    	});
+    	rboCombo.enable();
+    	statusCombo.enable();
     },
     onReportFormAfterRender: function(form){
     	var siteCombo = form.lookupReference('siteName'),
@@ -241,9 +237,16 @@ Ext.define('AOC.view.home.ReportFormController', {
     },
     onPartnerComboAfterRender:function(combo){
     	var store = combo.store,
-			obj ={id:'all',partnerName:'Select All'};
+			obj ={id:'all', partnerName:'Select All'};
     	
-		this.insertAllInStore(store, obj);
+    	var index = store.find('id', 'all');
+    	if(index == -1){
+    		store.on('load',function(){
+    			store.insert(0,new Ext.data.Record(obj));
+    		},store);
+    		store.insert(0,new Ext.data.Record(obj));
+    	}
+    	
     },
     onStatusComboAfterRender:function(combo){
     	var store = combo.store,
