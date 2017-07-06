@@ -185,16 +185,15 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		List<SystemCsrCode> listofcsr=null;
 		try {
 			session = getSessionFactory().getCurrentSession();
-			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "user")
-					.setProjection(
-							Projections.projectionList()
-									.add(Projections.property("id"), "id")
-									.add(Projections.property("csrCode"), "csrCode")
-									.add(Projections.property("user.firstName"),"firstName")
-									.add(Projections.property("user.lastName"),"lastName")
-									.add(Projections.property("user.middleName"),"middleName")
-									.add(Projections.property("user.id"),"userId")
-									.add(Projections.property("user.siteId"),"siteId"));
+			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "user");
+			ProjectionList projList = Projections.projectionList();
+			projList.add(Projections.property("csrCode"), "csrCode");
+			projList.add(Projections.property("user.firstName"),"firstName");
+			projList.add(Projections.property("user.lastName"),"lastName");
+			projList.add(Projections.property("user.middleName"),"middleName");
+			projList.add(Projections.property("user.id"),"userId");
+			projList.add(Projections.property("user.siteId"),"siteId");
+			criteria.setProjection(Projections.distinct(projList));
 			Conjunction disCriteria = Restrictions.conjunction();
 			if(siteId!=0)disCriteria.add(Restrictions.eq("user.siteId", siteId));
 			disCriteria.add(Restrictions.eq("user.status", 100));
