@@ -187,6 +187,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "user");
 			ProjectionList projList = Projections.projectionList();
+			projList.add(Projections.property("id"), "id");
 			projList.add(Projections.property("csrCode"), "csrCode");
 			projList.add(Projections.property("user.firstName"),"firstName");
 			projList.add(Projections.property("user.lastName"),"lastName");
