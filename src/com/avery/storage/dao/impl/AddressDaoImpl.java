@@ -1,11 +1,7 @@
 package com.avery.storage.dao.impl;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -17,28 +13,19 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
-import com.avery.storage.entities.Org;
-import com.avery.storage.entities.Partner;
-import com.avery.storage.entities.Site;
-import com.avery.storage.entities.SystemInfo;
-import com.avery.storage.entities.User;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
-		AddressDao {
+public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements AddressDao {
 
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
@@ -82,14 +69,13 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 			if (siteNumber != null && !"".equals(siteNumber)) {
 				criteria.add(Restrictions.ilike("siteNumber", siteNumber, MatchMode.ANYWHERE));
 			}
-			String siteId=searchMap.get("siteId");
-			if(!siteId.equals("") && siteId != null && !siteId.isEmpty()){
-				criteria.add(Restrictions.eq("siteId",Integer.parseInt(siteId)));
+			String siteId = searchMap.get("siteId");
+			if (!siteId.equals("") && siteId != null && !siteId.isEmpty()) {
+				criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 			}
 		}
 		String siteId = (String) queryMap.getFirst("siteId");
-		if(!siteId.equals("") && siteId != null && !siteId.isEmpty())
-		{
+		if (!siteId.equals("") && siteId != null && !siteId.isEmpty()) {
 			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
 		int totalCount = 0;
@@ -108,10 +94,12 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 				.add(Projections.property("city"), "city").add(Projections.property("siteId"), "siteId")
 				.add(Projections.property("system"), "system").add(Projections.property("country"), "country")
 				.add(Projections.property("shippingMethod"), "shippingMethod").add(Projections.property("zip"), "zip")
-				.add(Projections.property("id"), "id");
-		
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("shippingInstructions"), "shippingInstructions")
+				.add(Projections.property("phone2"), "phone2");
+
 		criteria.addOrder(Order.desc("lastModifiedDate"));
-		
+
 		criteria.createAlias("varOrgCode", "varOrgCode").createAlias("varPartner", "varPartner");
 
 		String limit = (String) queryMap.getFirst("limit");
@@ -149,11 +137,11 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 
 		}
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("address",list);
+		entitiesMap.put("address", list);
 
 		return entitiesMap;
 	}
-	
+
 	@Override
 	public List<Address> getAddress(String siteId) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
@@ -187,9 +175,8 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return addresslist;
 	}
-	
-	
+
 }
