@@ -406,6 +406,11 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			csrCodeArray = [],
 			systemArray = [];
 	    	
+    	//Checking values of system-org-csrCode  are empty or not
+    	if(Ext.isEmpty(obj.systemName) || Ext.isEmpty(obj.orgCode) || Ext.isEmpty(obj.csrCode)){
+    		Helper.showToast('failure',AOCLit.systemOrgCSRNotEmpty);
+    		return;
+    	}
 	    	
     	//Code for checking duplicate entry(System-Org-CSRCode)
 		systemCsrCodeGridStore.each(function(rec, index){
