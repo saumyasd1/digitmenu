@@ -16,6 +16,9 @@ $enable-font-awesome: dynamic(true);
 .x-webkit .x-form-text {
     min-height: 30px !important;
 }
+.x-toast .x-window-header-title-default{
+    color:#2c3e50 !important;
+}
 .x-grid-row {
     height: 32px !important;
 }
@@ -95,13 +98,13 @@ $enable-font-awesome: dynamic(true);
 	color:#2c3e50 !important;
 }
 .success-icon{
-	color:#4BDE4B;
+	color:#4BDE4B !important;
 }
 .failure-icon{
-	color:#ff0000;
+	color:#ff0000 !important;
 }
 .warning-icon{
-	color:orange;
+	color:orange !important;
 }
 .aoc-panel .x-toolbar .x-btn .x-btn-icon-el{
 	height:16px;font-size:16px;color:#2c3e50;

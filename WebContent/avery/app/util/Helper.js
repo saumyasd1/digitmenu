@@ -482,30 +482,31 @@ Ext.define('AOC.util.Helper',{
 		
 		switch(type){
 			case 'failure':
-				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f5b4a5;';
+				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f5b4a5;';
 				title='Failure';
 				iconCls='fa fa-exclamation-circle failure-icon';
-				bodyStyle='background-color:#f5b4a5;font-size:13px;color#2c3e50;';
+				//bodyStyle='background-color:#f5b4a5;font-size:13px;color#2c3e50;';
 				break;
 			case 'validation':
-				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f7f985;';
+				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f7f985;';
 				title='Warning';
 				iconCls='fa fa-exclamation-triangle warning-icon';
-				bodyStyle='background-color:#f7f985;font-size:13px;color#2c3e50;';
+				//bodyStyle='background-color:#f7f985;font-size:13px;color#2c3e50;';
 				break;
 			default:
-				style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#ebffeb;',
-				title = 'Success',
-				iconCls = 'fa fa-check success-icon',
-				bodyStyle='background-color:#ebffeb;font-size:13px;color:#2c3e50;';
+				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#ebffeb;',
+				title = 'Success';
+				iconCls = 'fa fa-check success-icon';
+				//bodyStyle='background-color:#ebffeb;font-size:13px;color:#2c3e50;';
 				break;
 		}
 		
         Ext.toast({
             html: msg,
             closable: true,
+            autoClose:false,
             title:title,
-            bodyStyle:bodyStyle,
+//            bodyStyle:bodyStyle,
             style:style,
             iconCls:iconCls,
             align: 't',
