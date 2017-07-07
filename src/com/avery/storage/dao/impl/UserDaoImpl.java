@@ -193,7 +193,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			projList.add(Projections.property("user.lastName"),"lastName");
 			projList.add(Projections.property("user.middleName"),"middleName");
 			projList.add(Projections.property("user.id"),"userId");
-			projList.add(Projections.property("user.siteId"),"siteId");
+			projList.add(Projections.property("user.siteId"),"siteId")
+			   .add(Projections.groupProperty("csrCode"));
 			criteria.setProjection(Projections.distinct(projList));
 			Conjunction disCriteria = Restrictions.conjunction();
 			if(siteId!=0)disCriteria.add(Restrictions.eq("user.siteId", siteId));
