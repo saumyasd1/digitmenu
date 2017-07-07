@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -196,8 +197,28 @@ public class ExcelUtils {
 	 *         changed date
 	 */
 	private static String convertDateUsingTimezone(Date date, String timeZone) {
-		if(date == null)
+		if(date==null)
+		{
 			return "";
+		}
+		Calendar cal = Calendar.getInstance();
+		long milliDiff = cal.get(Calendar.ZONE_OFFSET);
+		// Got local offset, now loop through available timezone id(s).
+		String [] ids = TimeZone.getAvailableIDs();
+		String timezone = null;
+		for (String id : ids) {
+		  TimeZone tz = TimeZone.getTimeZone(id);
+		  if (tz.getRawOffset() == milliDiff) {
+		    // Found a match.
+			  timezone = id;
+		    break;
+		  }
+		}
+		if(timezone == timeZone)
+		{
+			DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			return formatter1.format(date);
+		}
 		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
 		return formatter1.format(date);
