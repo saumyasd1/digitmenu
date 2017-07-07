@@ -244,7 +244,15 @@ Ext.define('AOC.view.home.HomePageController', {
 				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-						csrCombo.setValue(systemCsrNonCodeOwner);
+						var csrCodeArray = systemCsrNonCodeOwner.split(','),
+							userCsrCodeArray=[], len = csrCodeArray.length;
+						for(var i = 0 ; i < len ; i++){
+							var index = csrCombo.store.find('id',csrCodeArray[i],'',false, false, true);
+							if(index != -1){
+								userCsrCodeArray.push(csrCodeArray[i]);
+							}
+						}
+						csrCombo.setValue(userCsrCodeArray.join());
 					}else{
 						csrCombo.setValue(AOCRuntime.getUser().systemCsrCodeOwner);
 					}
