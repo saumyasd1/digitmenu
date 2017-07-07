@@ -235,7 +235,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 							{
 									xtype:'combo',
 									displayField:'csrName',
-									fieldLabel : AOCLit.CSRName,
+									fieldLabel : AOCLit.csrCode,
 									reference:'csrCombo',
 									name:'assignCSR',
 									valueField:'userId',
