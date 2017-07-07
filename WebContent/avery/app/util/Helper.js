@@ -504,7 +504,6 @@ Ext.define('AOC.util.Helper',{
         Ext.toast({
             html: msg,
             closable: true,
-            autoClose:false,
             title:title,
 //            bodyStyle:bodyStyle,
             style:style,
