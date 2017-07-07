@@ -62,13 +62,13 @@ Ext.define('AOC.view.home.HomePageController', {
 		
 		for(var i = 0; i < len; i++){
 			if(codeArray[i] == 'All'){
-				userIds = [];
-				csrCombo.store.each(function(data){
-					if(data.get('userId')){
-						userIds.push(data.get('userId'));
-					}
-				});
-				break;
+//				userIds = [];
+//				csrCombo.store.each(function(data){
+//					if(data.get('userId')){
+//						userIds.push(data.get('userId'));
+//					}
+//				});
+//				break;
 			}
 			else{
 				var csrRec = csrCombo.store.getById(codeArray[i]);
@@ -241,7 +241,8 @@ Ext.define('AOC.view.home.HomePageController', {
 		csrCombo.store.load({
 			params:{siteId:AOCRuntime.getUser().siteId},
 			callback:function(records, operation, success){
-				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner;
+				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner,
+					systemCsrCodeOwner = AOCRuntime.getUser().systemCsrCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
 					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
 						var csrCodeArray = systemCsrNonCodeOwner.split(','),
@@ -254,7 +255,15 @@ Ext.define('AOC.view.home.HomePageController', {
 						}
 						csrCombo.setValue(userCsrCodeArray.join());
 					}else{
-						csrCombo.setValue(AOCRuntime.getUser().systemCsrCodeOwner);
+						var codeArray = systemCsrCodeOwner.split(','),
+							csrCodeArray = [], len = codeArray.length;
+						for(var i = 0 ; i < len ; i++){
+							var index = csrCombo.store.find('id',codeArray[i],'',false, false, true);
+							if(index != -1){
+								csrCodeArray.push(codeArray[i]);
+							}
+						}
+							csrCombo.setValue(csrCodeArray.join());
 					}
 				}
 				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
