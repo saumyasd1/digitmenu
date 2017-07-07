@@ -124,7 +124,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						displayField:'csrName',
 						reference:'csrCombo',
 						name:'assignCSR',
-						emptyText:'CSR Name',
+						emptyText:'CSR Code',
 						reference:'assignCSR',
 						valueField:'userId',
 						queryMode:'local',
