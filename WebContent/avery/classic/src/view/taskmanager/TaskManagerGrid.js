@@ -77,7 +77,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	                return 'E# ' + v;
 	            }
 	        }, {
-	            text: AOCLit.CSRName,
+	            text: AOCLit.csrCode,
 	            dataIndex: 'csrName',
 	            width: 120
 	        },{
