@@ -1,4 +1,61 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
+.x-tab-focus.x-tab-active .x-tab-default-top-tl,
+.x-tab-focus.x-tab-active .x-tab-default-top-bl,
+.x-tab-focus.x-tab-active .x-tab-default-top-tr,
+.x-tab-focus.x-tab-active .x-tab-default-top-br,
+.x-tab-focus.x-tab-active .x-tab-default-top-tc,
+.x-tab-focus.x-tab-active .x-tab-default-top-bc {
+    background-image: url(images/tab/tab-default-top-focus-active-corners.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
+.x-tab-focus.x-tab-active .x-tab-default-top-ml,
+.x-tab-focus.x-tab-active .x-tab-default-top-mr {
+    background-image: url(images/tab/tab-default-top-focus-active-sides.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
+.x-tab-focus.x-tab-active .x-tab-default-top-mc {
+    background-repeat: repeat-x;
+    background-image: url(images/tab/tab-default-top-focus-active-fbg.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
+.x-tab.x-tab-disabled .x-tab-default-top-tl,
+.x-tab.x-tab-disabled .x-tab-default-top-bl,
+.x-tab.x-tab-disabled .x-tab-default-top-tr,
+.x-tab.x-tab-disabled .x-tab-default-top-br,
+.x-tab.x-tab-disabled .x-tab-default-top-tc,
+.x-tab.x-tab-disabled .x-tab-default-top-bc {
+    background-image: url(images/tab/tab-default-top-disabled-corners.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
+.x-tab.x-tab-disabled .x-tab-default-top-ml,
+.x-tab.x-tab-disabled .x-tab-default-top-mr {
+    background-image: url(images/tab/tab-default-top-disabled-sides.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
+.x-tab.x-tab-disabled .x-tab-default-top-mc {
+    background-repeat: repeat-x;
+    background-image: url(images/tab/tab-default-top-disabled-fbg.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
+.x-tab-over .x-tab-default-right-tl,
+.x-tab-over .x-tab-default-right-bl,
+.x-tab-over .x-tab-default-right-tr,
+.x-tab-over .x-tab-default-right-br,
+.x-tab-over .x-tab-default-right-tc,
+.x-tab-over .x-tab-default-right-bc {
+    background-image: url(images/tab/tab-default-right-over-corners.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2966 */
+.x-tab-over .x-tab-default-right-ml,
+.x-tab-over .x-tab-default-right-mr {
+    background-image: url(images/tab/tab-default-right-over-sides.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2971 */
+.x-tab-over .x-tab-default-right-mc {
+    background-repeat: repeat-x;
+    background-image: url(images/tab/tab-default-right-over-fbg.gif);
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2957 */
 .x-tab-focus .x-tab-default-right-tl,
 .x-tab-focus .x-tab-default-right-bl,
 .x-tab-focus .x-tab-default-right-tr,
@@ -380,173 +437,173 @@
 .x-cmd-slicer.x-tab-focus.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-corners.gif), sides:url(images/tab/tab-default-top-focus-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-corners.gif), sides:url(images/tab/tab-default-top-focus-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-corners.gif), sides:url(images/tab/tab-default-right-focus-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-corners.gif), sides:url(images/tab/tab-default-right-focus-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-corners.gif), sides:url(images/tab/tab-default-bottom-focus-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-corners.gif), sides:url(images/tab/tab-default-bottom-focus-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-corners.gif), sides:url(images/tab/tab-default-left-focus-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-corners.gif), sides:url(images/tab/tab-default-left-focus-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-over.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-over-corners.gif), sides:url(images/tab/tab-default-top-over-sides.gif), frame-bg:url(images/tab/tab-default-top-over-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-over-corners.gif), sides:url(images/tab/tab-default-top-over-sides.gif), frame-bg:url(images/tab/tab-default-top-over-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-over.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-over-corners.gif), sides:url(images/tab/tab-default-right-over-sides.gif), frame-bg:url(images/tab/tab-default-right-over-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-over-corners.gif), sides:url(images/tab/tab-default-right-over-sides.gif), frame-bg:url(images/tab/tab-default-right-over-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-over.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-over-corners.gif), sides:url(images/tab/tab-default-bottom-over-sides.gif), frame-bg:url(images/tab/tab-default-bottom-over-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-over-corners.gif), sides:url(images/tab/tab-default-bottom-over-sides.gif), frame-bg:url(images/tab/tab-default-bottom-over-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-over.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-over-corners.gif), sides:url(images/tab/tab-default-left-over-sides.gif), frame-bg:url(images/tab/tab-default-left-over-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-over-corners.gif), sides:url(images/tab/tab-default-left-over-sides.gif), frame-bg:url(images/tab/tab-default-left-over-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-active.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-active-corners.gif), sides:url(images/tab/tab-default-top-active-sides.gif), frame-bg:url(images/tab/tab-default-top-active-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-active-corners.gif), sides:url(images/tab/tab-default-top-active-sides.gif), frame-bg:url(images/tab/tab-default-top-active-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-active.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-active-corners.gif), sides:url(images/tab/tab-default-right-active-sides.gif), frame-bg:url(images/tab/tab-default-right-active-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-active-corners.gif), sides:url(images/tab/tab-default-right-active-sides.gif), frame-bg:url(images/tab/tab-default-right-active-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-active.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-active-corners.gif), sides:url(images/tab/tab-default-bottom-active-sides.gif), frame-bg:url(images/tab/tab-default-bottom-active-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-active-corners.gif), sides:url(images/tab/tab-default-bottom-active-sides.gif), frame-bg:url(images/tab/tab-default-bottom-active-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-active.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-active-corners.gif), sides:url(images/tab/tab-default-left-active-sides.gif), frame-bg:url(images/tab/tab-default-left-active-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-active-corners.gif), sides:url(images/tab/tab-default-left-active-sides.gif), frame-bg:url(images/tab/tab-default-left-active-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-over.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-over-corners.gif), sides:url(images/tab/tab-default-top-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-over-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-over-corners.gif), sides:url(images/tab/tab-default-top-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-over-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-over.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-over-corners.gif), sides:url(images/tab/tab-default-right-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-over-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-over-corners.gif), sides:url(images/tab/tab-default-right-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-over-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-over.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-over-corners.gif), sides:url(images/tab/tab-default-bottom-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-over-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-over-corners.gif), sides:url(images/tab/tab-default-bottom-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-over-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-over.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-over-corners.gif), sides:url(images/tab/tab-default-left-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-over-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-over-corners.gif), sides:url(images/tab/tab-default-left-focus-over-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-over-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-active.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-active-corners.gif), sides:url(images/tab/tab-default-top-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-active-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-focus-active-corners.gif), sides:url(images/tab/tab-default-top-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-top-focus-active-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-active.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-active-corners.gif), sides:url(images/tab/tab-default-right-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-active-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-focus-active-corners.gif), sides:url(images/tab/tab-default-right-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-right-focus-active-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-active.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-active-corners.gif), sides:url(images/tab/tab-default-bottom-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-active-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-focus-active-corners.gif), sides:url(images/tab/tab-default-bottom-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-bottom-focus-active-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-focus.x-tab-active.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-active-corners.gif), sides:url(images/tab/tab-default-left-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-active-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-focus-active-corners.gif), sides:url(images/tab/tab-default-left-focus-active-sides.gif), frame-bg:url(images/tab/tab-default-left-focus-active-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-disabled.x-tab-default-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-top-disabled-corners.gif), sides:url(images/tab/tab-default-top-disabled-sides.gif), frame-bg:url(images/tab/tab-default-top-disabled-fbg.gif), frame:2px 2px 2px 2px, stretch:bottom" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-top-disabled-corners.gif), sides:url(images/tab/tab-default-top-disabled-sides.gif), frame-bg:url(images/tab/tab-default-top-disabled-fbg.gif), frame:3px 3px 3px 3px, stretch:bottom" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-disabled.x-tab-default-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-right-disabled-corners.gif), sides:url(images/tab/tab-default-right-disabled-sides.gif), frame-bg:url(images/tab/tab-default-right-disabled-fbg.gif), frame:2px 2px 2px 2px, stretch:left" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-right-disabled-corners.gif), sides:url(images/tab/tab-default-right-disabled-sides.gif), frame-bg:url(images/tab/tab-default-right-disabled-fbg.gif), frame:3px 3px 3px 3px, stretch:left" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-disabled.x-tab-default-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-disabled-corners.gif), sides:url(images/tab/tab-default-bottom-disabled-sides.gif), frame-bg:url(images/tab/tab-default-bottom-disabled-fbg.gif), frame:2px 2px 2px 2px, stretch:top" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-bottom-disabled-corners.gif), sides:url(images/tab/tab-default-bottom-disabled-sides.gif), frame-bg:url(images/tab/tab-default-bottom-disabled-fbg.gif), frame:3px 3px 3px 3px, stretch:top" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-disabled.x-tab-default-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, corners:url(images/tab/tab-default-left-disabled-corners.gif), sides:url(images/tab/tab-default-left-disabled-sides.gif), frame-bg:url(images/tab/tab-default-left-disabled-fbg.gif), frame:2px 2px 2px 2px, stretch:right" !important;
+    content: "x-slicer:, corners:url(images/tab/tab-default-left-disabled-corners.gif), sides:url(images/tab/tab-default-left-disabled-sides.gif), frame-bg:url(images/tab/tab-default-left-disabled-fbg.gif), frame:3px 3px 3px 3px, stretch:right" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:168 */
 .x-tab-bar-default {
-    background-color: #f5f5f5;
+    background-color: #157fcc;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:207 */
 .x-tab-bar-default-top > .x-tab-bar-body-default {
-    padding: 6px;
+    padding: 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:211 */
 .x-tab-bar-default-bottom > .x-tab-bar-body-default {
-    padding: 6px 6px 6px 6px;
+    padding: 0 0 0 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:215 */
 .x-tab-bar-default-left > .x-tab-bar-body-default {
-    padding: 6px 6px 6px 6px;
+    padding: 0 0 0 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:220 */
 .x-rtl.x-tab-bar-default-left > .x-tab-bar-body-default {
-    padding: 6px 6px 6px 6px;
+    padding: 0 0 0 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:225 */
 .x-tab-bar-default-right > .x-tab-bar-body-default {
-    padding: 6px 6px 6px 6px;
+    padding: 0 0 0 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:230 */
 .x-rtl.x-tab-bar-default-right > .x-tab-bar-body-default {
-    padding: 6px 6px 6px 6px;
+    padding: 0 0 0 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:269 */
 .x-tab-bar-plain.x-tab-bar-default-horizontal {
@@ -562,34 +619,118 @@
     border-top-width: 0;
     border-bottom-width: 0;
 }
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:288 */
+.x-tab-bar-top > .x-tab-bar-body-default {
+    padding-bottom: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:292 */
+.x-tab-bar-bottom > .x-tab-bar-body-default {
+    padding-top: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:296 */
+.x-tab-bar-left > .x-tab-bar-body-default {
+    padding-right: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:300 */
+.x-tab-bar-left > .x-tab-bar-body-default.x-rtl {
+    padding-right: 0;
+    padding-left: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:307 */
+.x-tab-bar-right > .x-tab-bar-body-default {
+    padding-left: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:311 */
+.x-tab-bar-right > .x-tab-bar-body-default.x-rtl {
+    padding-left: 0;
+    padding-right: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:319 */
+.x-tab-bar-strip-default {
+    border-style: solid;
+    border-color: #157fcc;
+    background-color: #add2ed;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:326 */
+.x-tab-bar-top > .x-tab-bar-strip-default {
+    border-width: 0 0;
+    height: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:330 */
+.x-tab-bar-top.x-tab-bar-plain > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:336 */
+.x-tab-bar-bottom > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+    height: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:340 */
+.x-tab-bar-bottom.x-tab-bar-plain > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:346 */
+.x-tab-bar-left > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+    width: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:350 */
+.x-tab-bar-left > .x-tab-bar-strip-default.x-rtl {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:355 */
+.x-tab-bar-left.x-tab-bar-plain > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:358 */
+.x-tab-bar-left.x-tab-bar-plain > .x-tab-bar-strip-default.x-rtl {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:366 */
+.x-tab-bar-right > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+    width: 5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:370 */
+.x-tab-bar-right > .x-tab-bar-strip-default.x-rtl {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:375 */
+.x-tab-bar-right.x-tab-bar-plain > .x-tab-bar-strip-default {
+    border-width: 0 0 0 0;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:378 */
+.x-tab-bar-right.x-tab-bar-plain > .x-tab-bar-strip-default.x-rtl {
+    border-width: 0 0 0 0;
+}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:390 */
 .x-tab-bar-horizontal > .x-tab-bar-body-default {
-    min-height: 36px;
+    min-height: 34px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:393 */
 .x-ie8m .x-tab-bar-horizontal > .x-tab-bar-body-default {
-    min-height: 24px;
+    min-height: 29px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:400 */
 .x-tab-bar-vertical > .x-tab-bar-body-default {
-    min-width: 36px;
+    min-width: 34px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:403 */
 .x-ie8m .x-tab-bar-vertical > .x-tab-bar-body-default {
-    min-width: 24px;
+    min-width: 29px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/layout/container/Box.scss:170 */
 .x-tab-bar-default-scroller .x-box-scroller-body-horizontal {
-    margin-left: 18px;
+    margin-left: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/layout/container/Box.scss:175 */
 .x-tab-bar-default-scroller.x-rtl .x-box-scroller-body-horizontal {
     margin-left: 0;
-    margin-right: 18px;
+    margin-right: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/layout/container/Box.scss:183 */
 .x-tab-bar-default-vertical-scroller .x-box-scroller-body-vertical {
-    margin-top: 18px;
+    margin-top: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/layout/container/Box.scss:188 */
 .x-box-scroller-tab-bar-default {
@@ -668,35 +809,35 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:500 */
 .x-tab-bar-plain.x-tab-bar-default-scroller .x-box-scroller-body-horizontal {
-    margin-left: 18px;
+    margin-left: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:506 */
 .x-tab-bar-plain.x-tab-bar-default-vertical-scroller .x-box-scroller-body-vertical {
-    margin-top: 18px;
+    margin-top: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:511 */
 .x-tab-bar-plain .x-box-scroller-tab-bar-default {
-    color: #cfcfcf;
+    color: #b0b0b0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:559 */
 .x-tab-bar-default-top .x-box-scroller-tab-bar-default {
-    margin-top: -12px;
+    margin-top: -14px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:563 */
 .x-tab-bar-default-right .x-box-scroller-tab-bar-default {
-    margin-left: -12px;
+    margin-left: -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:567 */
 .x-tab-bar-default-bottom .x-box-scroller-tab-bar-default {
-    margin-top: -12px;
+    margin-top: -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:571 */
 .x-tab-bar-default-left .x-box-scroller-tab-bar-default {
-    margin-left: -12px;
+    margin-left: -14px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:580 */
 .x-box-scroller-tab-bar-default {
-    background-color: #f5f5f5;
+    background-color: #157fcc;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:586 */
 .x-box-scroller-tab-bar-default .x-ie8 .x-box-scroller-plain {
@@ -970,7 +1111,7 @@
     width: 16px;
     height: 24px;
     line-height: 24px;
-    color: #cfcfcf;
+    color: #b0b0b0;
     font-size: 16px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tree/View.scss:165 */
@@ -1115,11 +1256,11 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/window/Toast.scss:17 */
 .x-toast-light .x-window-header {
     /* Custom styling */
-    background-color: #fff;
+    background-color: #3892d4;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/window/Toast.scss:21 */
 .x-toast-light .x-tool-img {
-    background-color: #fff;
+    background-color: #3892d4;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/window/Toast.scss:25 */
 .x-toast-light {
@@ -1141,10 +1282,13 @@
     padding: 3px 3px 3px 3px;
     border-width: 1px;
     border-style: solid;
+    background-image: none;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-plain-toolbar-small-mc {
+    background-image: url(images/btn/btn-plain-toolbar-small-fbg.gif);
+    background-position: 0 top;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
@@ -1157,6 +1301,7 @@
     -o-border-radius: 0px;
     border-radius: 0px;
     background-color: transparent !important;
+    background-image: none;
     box-shadow: none !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
@@ -1223,7 +1368,7 @@
 .x-cmd-slicer.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:3px 3px 3px 3px" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, frame-bg:url(images/btn/btn-plain-toolbar-small-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-plain-toolbar-small {
@@ -1240,7 +1385,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-small {
-    font: 300 12px/16px helvetica, arial, verdana, sans-serif;
+    font: bold 12px/16px helvetica, arial, verdana, sans-serif;
     color: #666;
     padding: 0 5px;
     max-width: 100%;
@@ -1384,9 +1529,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-small {
-    border-color: #cfcfcf;
+    border-color: #d8d8d8;
     background-image: none;
     background-color: #ececec;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #eee), color-stop(50%, #ececec), color-stop(51%, #e0e0e0), color-stop(0%, #ececec));
+    background-image: -webkit-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -moz-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -o-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -ms-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-small {
@@ -1397,9 +1548,15 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-small,
 .x-btn.x-btn-pressed.x-btn-plain-toolbar-small {
-    border-color: #c7c7c7;
+    border-color: #cfcfcf;
     background-image: none;
     background-color: #e2e2e2;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #e2e2e2), color-stop(50%, #d6d6d6), color-stop(51%, #e2e2e2), color-stop(0%, #e5e5e5));
+    background-image: -webkit-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -moz-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -o-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -ms-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-small,
@@ -1430,6 +1587,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-plain-toolbar-small-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-small-focus-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-plain-toolbar-small-tl,
@@ -1448,6 +1606,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-plain-toolbar-small-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-small-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-small-tl,
@@ -1466,6 +1625,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-small-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-small-focus-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-small-tl,
@@ -1493,6 +1653,7 @@
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-small-mc,
 .x-btn.x-btn-pressed .x-btn-plain-toolbar-small-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-small-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-small-tl,
@@ -1520,6 +1681,7 @@
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-small-mc,
 .x-btn-focus.x-btn-pressed .x-btn-plain-toolbar-small-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-small-focus-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-small-tl,
@@ -1538,6 +1700,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-small-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-small-disabled-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-plain-toolbar-small {
@@ -1647,37 +1810,37 @@
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-focus-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-over.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-focus-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-pressed.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-focus-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-disabled.x-btn-plain-toolbar-small:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-disabled-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-small-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-disabled-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-disabled-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1246 */
 .x-button-plain-toolbar-small-cell > .x-grid-cell-inner {
@@ -1698,10 +1861,13 @@
     padding: 3px 3px 3px 3px;
     border-width: 1px;
     border-style: solid;
+    background-image: none;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-plain-toolbar-medium-mc {
+    background-image: url(images/btn/btn-plain-toolbar-medium-fbg.gif);
+    background-position: 0 top;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
@@ -1714,6 +1880,7 @@
     -o-border-radius: 0px;
     border-radius: 0px;
     background-color: transparent !important;
+    background-image: none;
     box-shadow: none !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
@@ -1780,7 +1947,7 @@
 .x-cmd-slicer.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:3px 3px 3px 3px" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, frame-bg:url(images/btn/btn-plain-toolbar-medium-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-plain-toolbar-medium {
@@ -1797,7 +1964,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-medium {
-    font: 300 14px/18px helvetica, arial, verdana, sans-serif;
+    font: bold 14px/18px helvetica, arial, verdana, sans-serif;
     color: #666;
     padding: 0 8px;
     max-width: 100%;
@@ -1941,9 +2108,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-medium {
-    border-color: #cfcfcf;
+    border-color: #d8d8d8;
     background-image: none;
     background-color: #ececec;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #eee), color-stop(50%, #ececec), color-stop(51%, #e0e0e0), color-stop(0%, #ececec));
+    background-image: -webkit-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -moz-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -o-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -ms-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-medium {
@@ -1954,9 +2127,15 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-medium,
 .x-btn.x-btn-pressed.x-btn-plain-toolbar-medium {
-    border-color: #c7c7c7;
+    border-color: #cfcfcf;
     background-image: none;
     background-color: #e2e2e2;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #e2e2e2), color-stop(50%, #d6d6d6), color-stop(51%, #e2e2e2), color-stop(0%, #e5e5e5));
+    background-image: -webkit-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -moz-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -o-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -ms-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-medium,
@@ -1987,6 +2166,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-plain-toolbar-medium-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-medium-focus-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-plain-toolbar-medium-tl,
@@ -2005,6 +2185,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-plain-toolbar-medium-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-medium-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-medium-tl,
@@ -2023,6 +2204,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-medium-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-medium-focus-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-medium-tl,
@@ -2050,6 +2232,7 @@
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-medium-mc,
 .x-btn.x-btn-pressed .x-btn-plain-toolbar-medium-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-medium-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-medium-tl,
@@ -2077,6 +2260,7 @@
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-medium-mc,
 .x-btn-focus.x-btn-pressed .x-btn-plain-toolbar-medium-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-medium-focus-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-medium-tl,
@@ -2095,6 +2279,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-medium-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-medium-disabled-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-plain-toolbar-medium {
@@ -2204,37 +2389,37 @@
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-focus-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-over.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-focus-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-pressed.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-focus-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-disabled.x-btn-plain-toolbar-medium:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-disabled-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-medium-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-disabled-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-disabled-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1246 */
 .x-button-plain-toolbar-medium-cell > .x-grid-cell-inner {
@@ -2255,10 +2440,13 @@
     padding: 3px 3px 3px 3px;
     border-width: 1px;
     border-style: solid;
+    background-image: none;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-plain-toolbar-large-mc {
+    background-image: url(images/btn/btn-plain-toolbar-large-fbg.gif);
+    background-position: 0 top;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
@@ -2271,6 +2459,7 @@
     -o-border-radius: 0px;
     border-radius: 0px;
     background-color: transparent !important;
+    background-image: none;
     box-shadow: none !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
@@ -2337,7 +2526,7 @@
 .x-cmd-slicer.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:3px 3px 3px 3px" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, frame-bg:url(images/btn/btn-plain-toolbar-large-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-plain-toolbar-large {
@@ -2354,7 +2543,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-large {
-    font: 300 16px/20px helvetica, arial, verdana, sans-serif;
+    font: bold 16px/20px helvetica, arial, verdana, sans-serif;
     color: #666;
     padding: 0 10px;
     max-width: 100%;
@@ -2498,9 +2687,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-large {
-    border-color: #cfcfcf;
+    border-color: #d8d8d8;
     background-image: none;
     background-color: #ececec;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #eee), color-stop(50%, #ececec), color-stop(51%, #e0e0e0), color-stop(0%, #ececec));
+    background-image: -webkit-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -moz-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -o-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: -ms-linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
+    background-image: linear-gradient(top, #eee, #ececec 50%, #e0e0e0 51%, #ececec);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-large {
@@ -2511,9 +2706,15 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-large,
 .x-btn.x-btn-pressed.x-btn-plain-toolbar-large {
-    border-color: #c7c7c7;
+    border-color: #cfcfcf;
     background-image: none;
     background-color: #e2e2e2;
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0%, #e2e2e2), color-stop(50%, #d6d6d6), color-stop(51%, #e2e2e2), color-stop(0%, #e5e5e5));
+    background-image: -webkit-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -moz-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -o-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: -ms-linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
+    background-image: linear-gradient(top, #e2e2e2, #d6d6d6 50%, #e2e2e2 51%, #e5e5e5);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-large,
@@ -2544,6 +2745,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-plain-toolbar-large-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-large-focus-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-plain-toolbar-large-tl,
@@ -2562,6 +2764,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-plain-toolbar-large-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-large-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-large-tl,
@@ -2580,6 +2783,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-plain-toolbar-large-mc {
     background-color: #ececec;
+    background-image: url(images/btn/btn-plain-toolbar-large-focus-over-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-large-tl,
@@ -2607,6 +2811,7 @@
 .x-btn.x-btn-menu-active .x-btn-plain-toolbar-large-mc,
 .x-btn.x-btn-pressed .x-btn-plain-toolbar-large-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-large-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-large-tl,
@@ -2634,6 +2839,7 @@
 .x-btn-focus.x-btn-menu-active .x-btn-plain-toolbar-large-mc,
 .x-btn-focus.x-btn-pressed .x-btn-plain-toolbar-large-mc {
     background-color: #e2e2e2;
+    background-image: url(images/btn/btn-plain-toolbar-large-focus-pressed-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-large-tl,
@@ -2652,6 +2858,7 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-plain-toolbar-large-mc {
     background-color: transparent;
+    background-image: url(images/btn/btn-plain-toolbar-large-disabled-fbg.gif);
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-plain-toolbar-large {
@@ -2761,37 +2968,37 @@
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-focus-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-over.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-over-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-focus-over-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-pressed.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-pressed-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-focus-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-focus-pressed-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-disabled.x-btn-plain-toolbar-large:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-disabled-sides.gif)" !important;
+    content: "x-slicer:, stretch:bottom, frame:3px 3px 3px 3px, corners:url(images/btn/btn-plain-toolbar-large-disabled-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-disabled-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-disabled-fbg.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/button/Button.scss:1246 */
 .x-button-plain-toolbar-large-cell > .x-grid-cell-inner {
@@ -2817,13 +3024,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:276 */
 .x-panel-light {
-    border-color: #fff;
+    border-color: #e0ebf3;
     padding: 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:282 */
 .x-panel-header-light {
     font-size: 13px;
-    border: 1px solid #fff;
+    border: 1px solid #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:296 */
 .x-panel-header-light .x-tool-img {
@@ -2831,7 +3038,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:307 */
 .x-panel-header-light .x-tool-tool-el {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:313 */
 .x-panel-header-light-horizontal {
@@ -2889,9 +3096,9 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:387 */
 .x-panel-header-title-light {
-    color: #000;
+    color: #666;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: bold;
     font-family: helvetica, arial, verdana, sans-serif;
     line-height: 16px;
 }
@@ -2935,7 +3142,7 @@
     width: 16px;
     height: 16px;
     font-size: 16px;
-    color: #000;
+    color: #666;
     background-position: center center;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:488 */
@@ -2944,15 +3151,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:501 */
 .x-ie8 .x-panel-header-title-light > .x-title-icon-wrap-light > .x-title-icon-light.x-title-glyph {
-    color: grey;
+    color: #a3a8ac;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:512 */
 .x-panel-body-light {
     background: #fff;
-    border-color: #cfcfcf;
+    border-color: #e0ebf3;
     color: #000;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: normal;
     font-family: helvetica, arial, verdana, sans-serif;
     border-width: 1px;
     border-style: solid;
@@ -2960,17 +3167,17 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:676 */
 .x-panel-header-light {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:680 */
 .x-panel-header-light-vertical {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:685 */
 .x-rtl.x-panel-header-light-vertical {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:738 */
 .x-panel .x-panel-header-light-collapsed-border-top {
@@ -3083,116 +3290,116 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-panel-light-outer-border-l {
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-panel-light-outer-border-b {
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-panel-light-outer-border-bl {
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-panel-light-outer-border-r {
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-panel-light-outer-border-rl {
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-panel-light-outer-border-rb {
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-panel-light-outer-border-rbl {
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-panel-light-outer-border-t {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-panel-light-outer-border-tl {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-panel-light-outer-border-tb {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-panel-light-outer-border-tbl {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-panel-light-outer-border-tr {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-panel-light-outer-border-trl {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
-    border-left-color: #fff !important;
+    border-left-color: #e0ebf3 !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-panel-light-outer-border-trb {
-    border-top-color: #fff !important;
+    border-top-color: #e0ebf3 !important;
     border-top-width: 1px !important;
-    border-right-color: #fff !important;
+    border-right-color: #e0ebf3 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
+    border-bottom-color: #e0ebf3 !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-panel-light-outer-border-trbl {
-    border-color: #fff !important;
+    border-color: #e0ebf3 !important;
     border-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:276 */
 .x-panel-light-framed {
-    border-color: #fff;
+    border-color: #e0ebf3;
     padding: 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:282 */
 .x-panel-header-light-framed {
     font-size: 13px;
-    border: 1px solid #fff;
+    border: 5px solid #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:296 */
 .x-panel-header-light-framed .x-tool-img {
@@ -3200,67 +3407,67 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:307 */
 .x-panel-header-light-framed .x-tool-tool-el {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:313 */
 .x-panel-header-light-framed-horizontal {
-    padding: 9px 9px 9px 9px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:317 */
 .x-panel-header-light-framed-horizontal .x-panel-header-light-framed-tab-bar {
-    margin-top: -9px;
-    margin-bottom: -9px;
+    margin-top: -5px;
+    margin-bottom: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:325 */
 .x-panel-header-light-framed-horizontal.x-header-noborder {
-    padding: 10px 10px 9px 10px;
+    padding: 10px 10px 5px 10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:329 */
 .x-panel-header-light-framed-horizontal.x-header-noborder .x-panel-header-light-framed-tab-bar {
     margin-top: -10px;
-    margin-bottom: -9px;
+    margin-bottom: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:337 */
 .x-panel-header-light-framed-vertical {
-    padding: 9px 9px 9px 9px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:341 */
 .x-panel-header-light-framed-vertical .x-panel-header-light-framed-tab-bar {
-    margin-right: -9px;
-    margin-left: -9px;
+    margin-right: -5px;
+    margin-left: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:349 */
 .x-panel-header-light-framed-vertical.x-header-noborder {
-    padding: 10px 10px 10px 9px;
+    padding: 10px 10px 10px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:353 */
 .x-panel-header-light-framed-vertical.x-header-noborder .x-panel-header-light-framed-tab-bar {
     margin-right: -10px;
-    margin-left: -9px;
+    margin-left: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:362 */
 .x-rtl.x-panel-header-light-framed-vertical {
-    padding: 9px 9px 9px 9px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:366 */
 .x-rtl.x-panel-header-light-framed-vertical .x-panel-header-light-framed-tab-bar {
-    margin-left: -9px;
-    margin-right: -9px;
+    margin-left: -5px;
+    margin-right: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:374 */
 .x-rtl.x-panel-header-light-framed-vertical.x-header-noborder {
-    padding: 10px 9px 10px 10px;
+    padding: 10px 5px 10px 10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:378 */
 .x-rtl.x-panel-header-light-framed-vertical.x-header-noborder .x-panel-header-light-framed-tab-bar {
     margin-left: -10px;
-    margin-right: -9px;
+    margin-right: -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:387 */
 .x-panel-header-title-light-framed {
-    color: #000;
+    color: #666;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: bold;
     font-family: helvetica, arial, verdana, sans-serif;
     line-height: 16px;
 }
@@ -3304,7 +3511,7 @@
     width: 16px;
     height: 16px;
     font-size: 16px;
-    color: #000;
+    color: #666;
     background-position: center center;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:488 */
@@ -3313,15 +3520,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:501 */
 .x-ie8 .x-panel-header-title-light-framed > .x-title-icon-wrap-light-framed > .x-title-icon-light-framed.x-title-glyph {
-    color: grey;
+    color: #a3a8ac;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:512 */
 .x-panel-body-light-framed {
     background: #fff;
-    border-color: #cfcfcf;
+    border-color: #e0ebf3;
     color: #000;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: normal;
     font-family: helvetica, arial, verdana, sans-serif;
     border-width: 1px;
     border-style: solid;
@@ -3333,8 +3540,8 @@
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
     border-radius: 4px;
-    padding: 0 0 0 0;
-    border-width: 1px;
+    padding: 0px 0px 0px 0px;
+    border-width: 5px;
     border-style: solid;
     background-color: #fff;
 }
@@ -3356,23 +3563,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-light-framed-frameInfo {
-    font-family: dh-4-4-4-4-1-1-1-1-3px-3px-3px-3px;
+    font-family: dh-5-5-5-5-5-5-5-5-0-0-0-0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-light-framed-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-light-framed-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-light-framed-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-light-framed-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-light-framed-ml {
@@ -3388,27 +3595,27 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-light-framed-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-light-framed-tr,
 .x-panel-light-framed-br,
 .x-panel-light-framed-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-light-framed-tl,
 .x-panel-light-framed-bl,
 .x-panel-light-framed-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-light-framed-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-light-framed-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-light-framed-tl,
@@ -3429,13 +3636,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-light-framed-mc {
-    padding: 0 0 0 0;
+    padding: 0px 0px 0px 0px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-light-framed:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel/panel-light-framed-corners.gif), sides:url(images/panel/panel-light-framed-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 5px, corners:url(images/panel/panel-light-framed-corners.gif), sides:url(images/panel/panel-light-framed-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-top {
@@ -3451,14 +3658,14 @@
     -moz-border-radius-bottomleft: 0;
     -webkit-border-bottom-left-radius: 0;
     border-bottom-left-radius: 0;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px 1px 0 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px 5px 0 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-top-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-top {
@@ -3474,23 +3681,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-top-frameInfo {
-    font-family: dh-4-4-0-4-1-1-0-1-9-9-9-9;
+    font-family: dh-5-5-0-5-5-5-0-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-top-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-top-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-top-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-top-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-top-ml {
@@ -3506,23 +3713,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-top-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-top-tr,
 .x-panel-header-light-framed-top-br,
 .x-panel-header-light-framed-top-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-top-tl,
 .x-panel-header-light-framed-top-bl,
 .x-panel-header-light-framed-top-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-top-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-top-bc {
@@ -3547,13 +3754,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-top-mc {
-    padding: 6px 6px 9px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 0 4px, corners:url(images/panel-header/panel-header-light-framed-top-corners.gif), sides:url(images/panel-header/panel-header-light-framed-top-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 0 5px, corners:url(images/panel-header/panel-header-light-framed-top-corners.gif), sides:url(images/panel-header/panel-header-light-framed-top-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-right {
@@ -3569,19 +3776,19 @@
     -moz-border-radius-bottomleft: 0;
     -webkit-border-bottom-left-radius: 0;
     border-bottom-left-radius: 0;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px 1px 1px 0;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px 5px 5px 0;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-light-framed-right {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-right-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-right {
@@ -3597,23 +3804,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-right-frameInfo {
-    font-family: dh-4-4-4-0-1-1-1-0-9-9-9-9;
+    font-family: dh-5-5-5-0-5-5-5-0-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-right-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-right-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-right-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-right-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-right-ml {
@@ -3629,13 +3836,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-right-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-right-tr,
 .x-panel-header-light-framed-right-br,
 .x-panel-header-light-framed-right-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-right-tl,
@@ -3645,11 +3852,11 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-right-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-right-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-right-tl,
@@ -3679,13 +3886,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-right-mc {
-    padding: 6px 6px 6px 9px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 0, corners:url(images/panel-header/panel-header-light-framed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-right-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 0, corners:url(images/panel-header/panel-header-light-framed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-right-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-bottom {
@@ -3701,14 +3908,14 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 0 1px 1px 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 0 5px 5px 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-bottom-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-bottom {
@@ -3724,23 +3931,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-bottom-frameInfo {
-    font-family: dh-0-4-4-4-0-1-1-1-9-9-9-9;
+    font-family: dh-0-5-5-5-0-5-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-bottom-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-bottom-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-bottom-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-bottom-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-bottom-ml {
@@ -3756,19 +3963,19 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-bottom-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-bottom-tr,
 .x-panel-header-light-framed-bottom-br,
 .x-panel-header-light-framed-bottom-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-bottom-tl,
 .x-panel-header-light-framed-bottom-bl,
 .x-panel-header-light-framed-bottom-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-bottom-tc {
@@ -3776,7 +3983,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-bottom-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-bottom-tl,
@@ -3797,13 +4004,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-bottom-mc {
-    padding: 9px 6px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:0 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-bottom-corners.gif), sides:url(images/panel-header/panel-header-light-framed-bottom-sides.gif)" !important;
+    content: "x-slicer:, frame:0 5px 5px 5px, corners:url(images/panel-header/panel-header-light-framed-bottom-corners.gif), sides:url(images/panel-header/panel-header-light-framed-bottom-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-left {
@@ -3819,19 +4026,19 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px 0 1px 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px 0 5px 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-light-framed-left {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-left-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-left {
@@ -3847,23 +4054,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-left-frameInfo {
-    font-family: dh-4-0-4-4-1-0-1-1-9-9-9-9;
+    font-family: dh-5-0-5-5-5-0-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-left-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-left-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-left-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-left-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-left-ml {
@@ -3879,7 +4086,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-left-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-left-tr,
@@ -3891,15 +4098,15 @@
 .x-panel-header-light-framed-left-tl,
 .x-panel-header-light-framed-left-bl,
 .x-panel-header-light-framed-left-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-left-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-left-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-left-tl,
@@ -3929,13 +4136,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-left-mc {
-    padding: 6px 9px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 0 4px 4px, corners:url(images/panel-header/panel-header-light-framed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-left-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 0 5px 5px, corners:url(images/panel-header/panel-header-light-framed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-left-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-collapsed-top {
@@ -3951,14 +4158,14 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-collapsed-top-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-collapsed-top {
@@ -3974,23 +4181,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-collapsed-top-frameInfo {
-    font-family: dh-4-4-4-4-1-1-1-1-9-9-9-9;
+    font-family: dh-5-5-5-5-5-5-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-collapsed-top-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-collapsed-top-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-collapsed-top-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-collapsed-top-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-collapsed-top-ml {
@@ -4006,27 +4213,27 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-collapsed-top-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-collapsed-top-tr,
 .x-panel-header-light-framed-collapsed-top-br,
 .x-panel-header-light-framed-collapsed-top-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-collapsed-top-tl,
 .x-panel-header-light-framed-collapsed-top-bl,
 .x-panel-header-light-framed-collapsed-top-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-collapsed-top-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-collapsed-top-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-collapsed-top-tl,
@@ -4047,13 +4254,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-collapsed-top-mc {
-    padding: 6px 6px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-collapsed-top:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-collapsed-top-corners.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-top-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 5px, corners:url(images/panel-header/panel-header-light-framed-collapsed-top-corners.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-top-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-collapsed-right {
@@ -4069,19 +4276,19 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-light-framed-collapsed-right {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-collapsed-right-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-collapsed-right {
@@ -4097,23 +4304,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-collapsed-right-frameInfo {
-    font-family: dh-4-4-4-4-1-1-1-1-9-9-9-9;
+    font-family: dh-5-5-5-5-5-5-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-collapsed-right-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-collapsed-right-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-collapsed-right-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-collapsed-right-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-collapsed-right-ml {
@@ -4129,27 +4336,27 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-collapsed-right-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-collapsed-right-tr,
 .x-panel-header-light-framed-collapsed-right-br,
 .x-panel-header-light-framed-collapsed-right-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-collapsed-right-tl,
 .x-panel-header-light-framed-collapsed-right-bl,
 .x-panel-header-light-framed-collapsed-right-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-collapsed-right-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-collapsed-right-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-collapsed-right-tl,
@@ -4179,13 +4386,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-collapsed-right-mc {
-    padding: 6px 6px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-collapsed-right:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-collapsed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-collapsed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-right-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 5px, corners:url(images/panel-header/panel-header-light-framed-collapsed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-collapsed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-right-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-collapsed-bottom {
@@ -4201,14 +4408,14 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-collapsed-bottom-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-collapsed-bottom {
@@ -4224,23 +4431,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-collapsed-bottom-frameInfo {
-    font-family: dh-4-4-4-4-1-1-1-1-9-9-9-9;
+    font-family: dh-5-5-5-5-5-5-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-collapsed-bottom-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-collapsed-bottom-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-collapsed-bottom-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-collapsed-bottom-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-collapsed-bottom-ml {
@@ -4256,27 +4463,27 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-collapsed-bottom-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-collapsed-bottom-tr,
 .x-panel-header-light-framed-collapsed-bottom-br,
 .x-panel-header-light-framed-collapsed-bottom-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-collapsed-bottom-tl,
 .x-panel-header-light-framed-collapsed-bottom-bl,
 .x-panel-header-light-framed-collapsed-bottom-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-collapsed-bottom-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-collapsed-bottom-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-collapsed-bottom-tl,
@@ -4297,13 +4504,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-collapsed-bottom-mc {
-    padding: 6px 6px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-collapsed-bottom:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-collapsed-bottom-corners.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-bottom-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 5px, corners:url(images/panel-header/panel-header-light-framed-collapsed-bottom-corners.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-bottom-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-light-framed-collapsed-left {
@@ -4319,19 +4526,19 @@
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 9px 9px 9px 9px;
-    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px;
     border-style: solid;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-light-framed-collapsed-left {
     background-image: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-light-framed-collapsed-left-mc {
-    background-color: #fff;
+    background-color: #e0ebf3;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-light-framed-collapsed-left {
@@ -4347,23 +4554,23 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
 .x-panel-header-light-framed-collapsed-left-frameInfo {
-    font-family: dh-4-4-4-4-1-1-1-1-9-9-9-9;
+    font-family: dh-5-5-5-5-5-5-5-5-5-5-5-5;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
 .x-panel-header-light-framed-collapsed-left-tl {
-    background-position: 0 -8px;
+    background-position: 0 -10px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
 .x-panel-header-light-framed-collapsed-left-tr {
-    background-position: right -12px;
+    background-position: right -15px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
 .x-panel-header-light-framed-collapsed-left-bl {
-    background-position: 0 -16px;
+    background-position: 0 -20px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
 .x-panel-header-light-framed-collapsed-left-br {
-    background-position: right -20px;
+    background-position: right -25px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
 .x-panel-header-light-framed-collapsed-left-ml {
@@ -4379,27 +4586,27 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
 .x-panel-header-light-framed-collapsed-left-bc {
-    background-position: 0 -4px;
+    background-position: 0 -5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
 .x-panel-header-light-framed-collapsed-left-tr,
 .x-panel-header-light-framed-collapsed-left-br,
 .x-panel-header-light-framed-collapsed-left-mr {
-    padding-right: 4px;
+    padding-right: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
 .x-panel-header-light-framed-collapsed-left-tl,
 .x-panel-header-light-framed-collapsed-left-bl,
 .x-panel-header-light-framed-collapsed-left-ml {
-    padding-left: 4px;
+    padding-left: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
 .x-panel-header-light-framed-collapsed-left-tc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-collapsed-left-bc {
-    height: 4px;
+    height: 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-panel-header-light-framed-collapsed-left-tl,
@@ -4429,29 +4636,29 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-light-framed-collapsed-left-mc {
-    padding: 6px 6px 6px 6px;
+    padding: 5px 5px 5px 5px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-collapsed-left:before {
     /*<if slicer>*/
     display: none;
-    content: "x-slicer:, frame:4px 4px 4px 4px, corners:url(images/panel-header/panel-header-light-framed-collapsed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-collapsed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-left-sides.gif)" !important;
+    content: "x-slicer:, frame:5px 5px 5px 5px, corners:url(images/panel-header/panel-header-light-framed-collapsed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-light-framed-collapsed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-light-framed-collapsed-left-sides.gif)" !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:638 */
 .x-panel .x-panel-header-light-framed-top {
-    border-bottom-width: 1px !important;
+    border-bottom-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:642 */
 .x-panel .x-panel-header-light-framed-right {
-    border-left-width: 1px !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:646 */
 .x-panel .x-panel-header-light-framed-bottom {
-    border-top-width: 1px !important;
+    border-top-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:650 */
 .x-panel .x-panel-header-light-framed-left {
-    border-right-width: 1px !important;
+    border-right-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:656 */
 .x-nbr .x-panel-header-light-framed-collapsed-top {
@@ -4527,119 +4734,159 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:842 */
 .x-rtl.x-panel-header-light-framed-collapsed-border-right {
-    border-right-width: 1px !important;
+    border-right-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:845 */
 .x-rtl.x-panel-header-light-framed-collapsed-border-left {
-    border-left-width: 1px !important;
+    border-left-width: 5px !important;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:856 */
+.x-panel-light-framed-resizable {
+    overflow: visible;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:859 */
 .x-panel-light-framed-resizable .x-panel-handle {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     opacity: 0;
 }
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:868 */
+.x-panel-light-framed-resizable .x-panel-handle-north-br {
+    top: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:871 */
+.x-panel-light-framed-resizable .x-panel-handle-south-br {
+    bottom: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:874 */
+.x-panel-light-framed-resizable .x-panel-handle-east-br {
+    right: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:877 */
+.x-panel-light-framed-resizable .x-panel-handle-west-br {
+    left: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:880 */
+.x-panel-light-framed-resizable .x-panel-handle-northwest-br {
+    left: -5px;
+    top: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:884 */
+.x-panel-light-framed-resizable .x-panel-handle-northeast-br {
+    right: -5px;
+    top: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:888 */
+.x-panel-light-framed-resizable .x-panel-handle-southeast-br {
+    right: -5px;
+    bottom: -5px;
+}
+/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:892 */
+.x-panel-light-framed-resizable .x-panel-handle-southwest-br {
+    left: -5px;
+    bottom: -5px;
+}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-panel-light-framed-outer-border-l {
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-panel-light-framed-outer-border-b {
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-panel-light-framed-outer-border-bl {
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-panel-light-framed-outer-border-r {
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-panel-light-framed-outer-border-rl {
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-panel-light-framed-outer-border-rb {
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-panel-light-framed-outer-border-rbl {
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-panel-light-framed-outer-border-t {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-panel-light-framed-outer-border-tl {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-panel-light-framed-outer-border-tb {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-panel-light-framed-outer-border-tbl {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-panel-light-framed-outer-border-tr {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-panel-light-framed-outer-border-trl {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
-    border-left-color: #fff !important;
-    border-left-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
+    border-left-color: #e0ebf3 !important;
+    border-left-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-panel-light-framed-outer-border-trb {
-    border-top-color: #fff !important;
-    border-top-width: 1px !important;
-    border-right-color: #fff !important;
-    border-right-width: 1px !important;
-    border-bottom-color: #fff !important;
-    border-bottom-width: 1px !important;
+    border-top-color: #e0ebf3 !important;
+    border-top-width: 5px !important;
+    border-right-color: #e0ebf3 !important;
+    border-right-width: 5px !important;
+    border-bottom-color: #e0ebf3 !important;
+    border-bottom-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-panel-light-framed-outer-border-trbl {
-    border-color: #fff !important;
-    border-width: 1px !important;
+    border-color: #e0ebf3 !important;
+    border-width: 5px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/form/field/File.scss:3 */
 .x-form-file-wrap .x-form-trigger-wrap {
@@ -4648,26 +4895,26 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/form/field/File.scss:7 */
 .x-form-file-wrap .x-form-trigger-wrap .x-form-text {
     border: 1px solid;
-    border-color: #cfcfcf;
+    border-color: #c2c2c2 #dadada #dadada;
     height: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/form/field/HtmlEditor.scss:1 */
 .x-html-editor-container {
     border: 1px solid;
-    border-color: #cfcfcf;
+    border-color: #c2c2c2 #dadada #dadada;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/header/Container.scss:1 */
 .x-grid-header-ct {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #c2c2c2;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:6 */
 .x-column-header-trigger {
     background-color: #eff6fb;
-    border-left: 1px solid #cfcfcf;
+    border-left: 1px solid #c2c2c2;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:12 */
 .x-rtl.x-column-header-trigger {
-    border-right: 1px solid #cfcfcf;
+    border-right: 1px solid #c2c2c2;
     border-left: 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:18 */
@@ -4676,7 +4923,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:20 */
 .x-column-header-last .x-column-header-over .x-column-header-trigger {
-    border-right: 1px solid #cfcfcf;
+    border-right: 1px solid #c2c2c2;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:26 */
 .x-rtl.x-column-header-last {
@@ -4684,7 +4931,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:28 */
 .x-rtl.x-column-header-last .x-column-header-over .x-column-header-trigger {
-    border-left: 1px solid #cfcfcf;
+    border-left: 1px solid #c2c2c2;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neptune/sass/src/resizer/Resizer.scss:1 */
 .x-resizable-handle {
@@ -7488,7 +7735,7 @@
     font-size: 13px;
     font-family: helvetica, arial, verdana, sans-serif;
     line-height: 13px;
-    font-weight: 300;
+    font-weight: normal;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -8907,7 +9154,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1597 */
 .x-tab-navigation {
-    border-color: #f5f5f5;
+    border-color: #4c9dd8;
     cursor: pointer;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1656 */
@@ -9107,12 +9354,12 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2218 */
 .x-tab-focus.x-tab-navigation {
-    border-color: #f5f5f5;
+    border-color: #4c9dd8;
     background-color: transparent;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2354 */
 .x-tab-over.x-tab-navigation {
-    border-color: #c9deed;
+    border-color: #60a8dc;
     background-color: #505050;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2410 */
@@ -9129,12 +9376,12 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2466 */
 .x-tab-focus.x-tab-over.x-tab-navigation {
-    border-color: #c9deed;
+    border-color: #60a8dc;
     background-color: #505050;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2581 */
 .x-tab.x-tab-active.x-tab-navigation {
-    border-color: #3892d4;
+    border-color: #add2ed;
     background-color: #303030;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2637 */
@@ -9151,12 +9398,12 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2692 */
 .x-tab-focus.x-tab-active.x-tab-navigation {
-    border-color: #3892d4;
+    border-color: #add2ed;
     background-color: #303030;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2808 */
 .x-tab.x-tab-disabled.x-tab-navigation {
-    border-color: #f5f5f5;
+    border-color: #4c9dd8;
     background-color: transparent;
     cursor: default;
 }
@@ -9863,30 +10110,6 @@
 .x-rtl.x-tab-bar-navigation-right > .x-tab-bar-body-navigation {
     padding: 0 0 0 0;
 }
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:238 */
-.x-tab-bar-plain.x-tab-bar-navigation-top > .x-tab-bar-body-navigation {
-    padding: 6px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:242 */
-.x-tab-bar-plain.x-tab-bar-navigation-bottom > .x-tab-bar-body-navigation {
-    padding: 6px 6px 6px 6px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:246 */
-.x-tab-bar-plain.x-tab-bar-navigation-left > .x-tab-bar-body-navigation {
-    padding: 6px 6px 6px 6px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:251 */
-.x-rtl.x-tab-bar-plain.x-tab-bar-navigation-left > .x-tab-bar-body-navigation {
-    padding: 6px 6px 6px 6px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:256 */
-.x-tab-bar-plain.x-tab-bar-navigation-right > .x-tab-bar-body-navigation {
-    padding: 6px 6px 6px 6px;
-}
-/* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:261 */
-.x-rtl.x-tab-bar-plain.x-tab-bar-navigation-right > .x-tab-bar-body-navigation {
-    padding: 6px 6px 6px 6px;
-}
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:269 */
 .x-tab-bar-plain.x-tab-bar-navigation-horizontal {
     border-top-color: transparent;
@@ -10007,15 +10230,15 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:500 */
 .x-tab-bar-plain.x-tab-bar-navigation-scroller .x-box-scroller-body-horizontal {
-    margin-left: 18px;
+    margin-left: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:506 */
 .x-tab-bar-plain.x-tab-bar-navigation-vertical-scroller .x-box-scroller-body-vertical {
-    margin-top: 18px;
+    margin-top: 24px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:511 */
 .x-tab-bar-plain .x-box-scroller-tab-bar-navigation {
-    color: #cfcfcf;
+    color: #b0b0b0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/tab/Bar.scss:559 */
 .x-tab-bar-navigation-top .x-box-scroller-tab-bar-navigation {
@@ -10083,13 +10306,13 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:276 */
 .x-panel-navigation {
-    border-color: #f5f5f5;
+    border-color: #157fcc;
     padding: 0;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:282 */
 .x-panel-header-navigation {
     font-size: 20px;
-    border: 1px solid #f5f5f5;
+    border: 1px solid #157fcc;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:307 */
 .x-panel-header-navigation .x-tool-tool-el {
@@ -10181,10 +10404,10 @@
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:512 */
 .x-panel-body-navigation {
     background: #fff;
-    border-color: #cfcfcf;
+    border-color: #c2c2c2;
     color: #000;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: normal;
     font-family: helvetica, arial, verdana, sans-serif;
     border-width: 1px;
     border-style: solid;
@@ -10278,7 +10501,7 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:830 */
 .x-panel-header-navigation .x-tool-focus {
-    outline: 1px solid #157fcc;
+    outline: 1px solid #fff;
     outline-offset: 1px;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/css-outline.scss:64 */
@@ -10297,7 +10520,7 @@
     right: -2px;
     bottom: -2px;
     left: -2px;
-    border: 1px solid #157fcc;
+    border: 1px solid #fff;
     pointer-events: none;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-neutral/sass/src/panel/Panel.scss:842 */
@@ -10315,105 +10538,105 @@
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-panel-navigation-outer-border-l {
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-panel-navigation-outer-border-b {
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-panel-navigation-outer-border-bl {
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-panel-navigation-outer-border-r {
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-panel-navigation-outer-border-rl {
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-panel-navigation-outer-border-rb {
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-panel-navigation-outer-border-rbl {
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-panel-navigation-outer-border-t {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-panel-navigation-outer-border-tl {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-panel-navigation-outer-border-tb {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-panel-navigation-outer-border-tbl {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-panel-navigation-outer-border-tr {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-panel-navigation-outer-border-trl {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
-    border-left-color: #f5f5f5 !important;
+    border-left-color: #157fcc !important;
     border-left-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-panel-navigation-outer-border-trb {
-    border-top-color: #f5f5f5 !important;
+    border-top-color: #157fcc !important;
     border-top-width: 1px !important;
-    border-right-color: #f5f5f5 !important;
+    border-right-color: #157fcc !important;
     border-right-width: 1px !important;
-    border-bottom-color: #f5f5f5 !important;
+    border-bottom-color: #157fcc !important;
     border-bottom-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-panel-navigation-outer-border-trbl {
-    border-color: #f5f5f5 !important;
+    border-color: #157fcc !important;
     border-width: 1px !important;
 }
 /* C:/Users/Amit/git/AveryDennisonWeb/WebContent/avery/classic/sass/src/view/main/Main.scss:60 */

@@ -184,3 +184,23 @@ $enable-font-awesome: dynamic(true);
 .x-grid-row-editor-wrap{
     z-index:4 !important;
 }
+
+.x-grid-td {
+    vertical-align: middle !important;
+}
+.x-grid-row,.x-form-field{
+	font-weight:500 !important;
+}
+.x-form-cb-label{
+	font-weight:500 !important;
+}
+.x-tab-text.x-tab-icon-left > .x-tab-icon-el-default {
+    margin-top: 2px !important;
+    font-size: 18px;
+}
+.x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
+    color: #404040 !important;
+} 
+.x-tab.x-tab-active.x-tab-default .x-tab-inner-default{
+  color: #404040 !important;
+}

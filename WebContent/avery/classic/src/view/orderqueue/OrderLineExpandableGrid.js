@@ -14,7 +14,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     
     emptyText: AOCLit.emptyDataMsg,
     autoHeight: true,
-    frame:true,
+    style:'border-top:solid 1px #ccc;',
+//    frame:true,
     nestedGridRefrence:'listOrderlineDetails',
     reserveScrollbar:true,
     showInvalidCombo:false,
@@ -102,6 +103,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						}, 
 						{
 							xtype: 'button',
+							iconCls:'x-fa fa-pencil-square-o',
 							text: AOCLit.bulkUpdateButtonText,
 							margin:'0 0 0 10',
 							cls:'blue-btn',
@@ -1372,7 +1374,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		    	this.grid.ownerGrid.editingPlugin ? this.grid.ownerGrid.editingPlugin.cancelEdit() : '';
     		    	
     		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bcz after store load inner view destroyed
-    		    	if(Ext.isEmpty(rowNode.querySelector('.nestedGrid'))){
+    		    	if(Ext.isEmpty(rowNode.querySelector('.nestedGrid1'))){
     		            var view = this.grid.getView(),
     		                newComponent = this.createComponent(view, record, rowNode, view.indexOf(rowNode));
     		                targetRowbody = Ext.DomQuery.selectNode('div.row-expander-body', rowNode);
@@ -1436,7 +1438,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			
 		return Ext.create('Ext.grid.Panel',{
 			modal: 'AOC.model.VariableHeaderModel',
-			cls: 'nestedGrid',
+			cls: 'nestedGrid1',
 			store:store,
 			recordId:recordId,
 			selModel: {
@@ -1553,7 +1555,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 1250,
 			plugins: me.getInnerGridPlugin(),
 			autoHeight: true,
-			frame: true,
+//			frame: true,
 			header: false
 		});
     },

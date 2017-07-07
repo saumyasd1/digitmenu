@@ -36,6 +36,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 		return [
 			{
 				text:'Back',
+				iconCls:'x-fa fa-arrow-left',
 				handler:'backButton'
 			},
 			'->',
@@ -44,30 +45,34 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 			   text: 'Save',
 			   reference:'saveEmailAttachmentBtn',
 			   itemId: 'saveAttachment',
+			   iconCls:'x-fa fa-save',
 			   disabled:true,
 			   handler: 'onSaveBtnClicked'
 			},
 			{
-			   margin  : '0 10 0 10',
-			   text    : 'Assign CSR',
+			   margin: '0 10 0 10',
+			   text: 'Assign CSR',
 			   reference:'assignCSRBtn',
-			   itemId  : 'assignCSRBtn',
+			   itemId: 'assignCSRBtn',
+			   iconCls:'x-fa fa-address-book-o',
 			   hidden:true,
-			   handler : 'onAssignCSRBtnClicked'
+			   handler: 'onAssignCSRBtnClicked'
 			},
 			{
-			   margin  : '0 10 0 0',
-			   itemId  : 'downloadAttachments',
-			   text    : 'Download Attachment(s)',
+			   margin: '0 10 0 0',
+			   itemId: 'downloadAttachments',
+			   iconCls:'x-fa fa-download',
+			   text: 'Download Attachment(s)',
 			   reference:'downLoadAttachmentBtn',
-			   handler : 'onDownloadAttachmentBtnClick'
+			   handler: 'onDownloadAttachmentBtnClick'
 			},
 			{
-			   itemId  : 'processOrderBtn',
-			   text    : 'Process Order',
+			   itemId: 'processOrderBtn',
+			   iconCls:'x-fa fa-globe',
+			   text: 'Process Order',
 			   reference:'processOrderBtn',
 			   disabled: true,
-			   handler : 'onProcessOrderBtnClicked'
+			   handler: 'onProcessOrderBtnClicked'
 			}
 		];
 	},
@@ -87,7 +92,8 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				 margin:'0 1 0 1',
 				 reference:'emailAttachmentInfoGrid',
 				 scrollable:true,
-				 frame:true,
+				 //frame:true,
+				 style:'border-top:solid 1px #ccc;',
 				 region:'center'
 			 }
 		]

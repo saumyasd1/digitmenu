@@ -74,7 +74,7 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'homewrapper',
-    	    	 style:'border-top:solid 1px #ccc;',
+//    	    	 style:'border-top:solid 1px #ccc;',
     	    	 reference:'homewrapper'
     	     }
     	  ]
@@ -86,8 +86,8 @@ Ext.define('AOC.view.main.Main', {
     	  listType:'taskMangerGrid',
     	  items:[
     	     {
-    	    	 xtype:'taskmanager',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 xtype:'taskmanager'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -98,8 +98,8 @@ Ext.define('AOC.view.main.Main', {
     	  listType:'emailManagementGrid',
     	  items:[
     	     {
-    	    	 xtype:'emailmanagement',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 xtype:'emailmanagement'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -110,8 +110,8 @@ Ext.define('AOC.view.main.Main', {
     	  listType:'orderQueueGrid',
     	  items:[
     	     {
-    	    	 xtype:'orderqueueview',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 xtype:'orderqueueview'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -123,8 +123,8 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'weborderview',
-    	    	 reference:'webOrderView',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 reference:'webOrderView'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -135,8 +135,8 @@ Ext.define('AOC.view.main.Main', {
     	  listType:'partnerProductLineGrid',
     	  items:[
     	     {
-    	    	 xtype:'partnermanagement',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 xtype:'partnermanagement'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -147,8 +147,8 @@ Ext.define('AOC.view.main.Main', {
     	  listType:'addressManagerGrid',
     	  items:[
     	     {
-    	    	 xtype:'addressmanage',
-    	    	 style:'border-top:solid 1px #ccc;'
+    	    	 xtype:'addressmanage'
+//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }

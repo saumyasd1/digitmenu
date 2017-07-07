@@ -1208,17 +1208,20 @@ Ext.define('AOC.view.RowEditorButtons', {
         items: [{
             cls: cssPrefix + 'row-editor-update-button',
             itemId: 'update',
+            iconCls:'x-fa fa-pencil-square-o',
             handler: plugin.completeEdit,
             text: rowEditor.saveBtnText,
             disabled: rowEditor.updateButtonDisabled
         }, {
             cls: Ext.baseCSSPrefix + 'row-editor-update-button',
             itemId: 'next',
+            iconCls:'x-fa fa-pencil-square-o',
             handler: plugin.bulKUpdate,
             text: 'Update All',
             disabled: rowEditor.updateButtonDisabled
         },{
             itemId: 'cancel',
+            iconCls:'x-fa fa-times',
             handler: plugin.cancelEdit,
             text: rowEditor.cancelBtnText
         }]

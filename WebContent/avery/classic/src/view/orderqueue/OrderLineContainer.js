@@ -75,22 +75,26 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		return [
 			{
 				text:'Back',
+				iconCls:'x-fa fa-arrow-left',
 				handler:'backButton'
 			},
 			'->',
 			{
 	  	    	 text:'Expand Column',
+	  	    	 iconCls:'x-fa fa-arrows-alt',
 	  	    	 enableToggle:true,
 	  	    	 handler:'onShowColumnBtnClick'
 			},
 			{
 				reference:'validateButton',
 				text: 'Validate',
+	  	    	iconCls:'x-fa fa-check',
 				margin:'0 10 0 10',
 				handler: 'validateOrderLine'
 			},
 			{
 				reference:'cancelOrderButton',
+				iconCls:'x-fa fa-times',
 				margin:'0 10 0 0',
 				text: AOCLit.cancelSalesOrderText,
 				handler: 'cancelOrder'
@@ -98,11 +102,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 			{
 				reference: 'salesOrderbutton',
 				text: AOCLit.salesOrdersumbitText,
+				iconCls:'x-fa fa-save',
 				margin:'0 10 0 0',
 				handler: 'submitSalesOrder'
 			},
 			{
 				reference: 'salesViewOrderbutton',
+				iconCls:'x-fa fa-eye',
 				text: AOCLit.viewSalesOrderBtnText,
 				handler: 'viewSalesOrder',
 				disabled:true
