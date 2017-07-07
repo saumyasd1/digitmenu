@@ -6,21 +6,37 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     getSystemCsrCodeValues:function(grid){
     	var store = grid.store,
     		me = this,
-    		mode = me.getView().mode;
+    		view = me.getView();
+    	
     	var yesArray = [],
     		noArray = [];
     	
     	store.each(function(rec, index){
     		if(rec.get('codeOwner') == 'Y'){
-				if(Ext.isNumeric(rec.get('id'))){
-					yesArray.push(rec.get('id'));
-				}
+    			var csrCodeStore = Ext.data.StoreManager.lookup('userCsrCodeStore'),
+    				index;
+    			if(rec.get('newFlag')){
+    				index = csrCodeStore.find('csrCodeComboId', rec.get('csrCodeComboId'),'',false, false, true);
+    			}else{
+    				index = csrCodeStore.find('id', rec.get('id'),'',false, false, true);
+    				if(view.mode == 'edit' && index == -1){
+    					index = 1;
+    				}
+    			}
+    			
+    			if(index != -1){
+    				yesArray.push(rec.get('id'));
+    			}
+				
     		}else if((rec.get('codeOwner') == 'N')){
-				if(Ext.isNumeric(rec.get('id'))){
-					noArray.push(rec.get('id'));
-				}
+    			if(rec.get('newFlag')){
+    				noArray.push(rec.get('csrCodeComboId'));
+    			}else{
+    				noArray.push(rec.get('id'));
+    			}
     		}
-    	});
+    	}, view);
+    	
     	return {yes:yesArray.join(),no:noArray.join()};
     },
     SaveDetails: function () {

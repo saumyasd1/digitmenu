@@ -30,7 +30,7 @@ Ext.define('AOC.view.viewmail.ViewMail', {
 				text:'View Mail Detail',
 				style:AOC.config.Settings.config.tabHeaderTitleStyle
 			}
-		]
+		];
 	},
 	buildButtons:function(){
 		return [

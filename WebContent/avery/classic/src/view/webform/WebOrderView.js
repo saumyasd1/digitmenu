@@ -36,18 +36,20 @@ Ext.define('AOC.view.webform.WebOrderView', {
 			{
 				text:'Back',
 				itemId:'backButtonimage',
+				iconCls:'x-fa fa-arrow-left',
 				handler:'backButton',
 				hidden:true
 			},
 		    '->',
 			{
 			   itemId: 'cancel',
+			   iconCls:'x-fa fa-times',
 			   text:AOCLit.Cancel,
 			   handler: 'onCancelBtnClick'
 			},
 			{
-			   margin: '0 10 0 10',
 			   text:AOCLit.Save,
+			   iconCls:'x-fa fa-save',
 			   itemId: 'save',
 			   handler:'onSaveBtnClick'
 			}
