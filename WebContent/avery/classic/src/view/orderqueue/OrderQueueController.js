@@ -109,6 +109,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 	    					viewSalesBtn = menu.queryById('viewSalesOrderMenuItem'),
 	    					resubmitBtn = menu.queryById('resubmitOrderMenuItem'),
 	    					cancelBtn = menu.queryById('cancelMenuItem'),
+	    					materialReportBtn = menu.queryById('materialReportMenuItem'),
 	    					status = AOCRuntime.getCurrentOrderQueueStatus();
     					
     					//enable/disable view order btn
@@ -141,6 +142,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     						cancelBtn.setDisabled(false);
     					}else{
     						cancelBtn.setDisabled(true);
+    					}
+    					//enable/disable material report btn
+    					if(status == AOCLit.waitingForCSRStatusOrderQueue || (status == AOCLit.soGeneratedStatusOrderQueue) || (status == AOCLit.soSubmittedStatusOrderQueue)){
+    						materialReportBtn.setDisabled(false);
+    					}else{
+    						materialReportBtn.setDisabled(true);
     					}
     				}
     			}
