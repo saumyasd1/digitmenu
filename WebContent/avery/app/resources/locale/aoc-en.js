@@ -540,5 +540,5 @@ Ext.define('AOC.lang.lit',{
 	dataStructureNameEmptyText:'RBO/Factory/ProductLine/Site/System',
 	fileExtensionEmptyText:'.xlsx|.xls',
 	noCSRCode:'Please enter CSR code to insert record into grid.',
-	systemOrgCSRNotEmpty:'System,Org Code or CSR Code can not be empty'
+	systemOrgCSRNotEmpty:'System,Org Code,CSR Code or Code Owner can not be empty'
 });
