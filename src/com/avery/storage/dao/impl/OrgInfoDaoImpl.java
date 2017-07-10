@@ -1,11 +1,13 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Projections;
@@ -13,11 +15,10 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
-import com.avery.storage.entities.OrderQueue;
-import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.OrgInfo;
-import com.avery.storage.entities.ProductLine;
+import com.avery.storage.entities.OrgInfoName;
 
 @Repository
 public class OrgInfoDaoImpl extends GenericDaoImpl<OrgInfo, Long> implements
@@ -57,6 +58,26 @@ OrgInfoDao {
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public Map<String, Object> readAllOrgInfoAndOrgName(){
+		Map<String, Object> entitiesMap = new HashMap<String, Object>();
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery(
+					"select distinct orginfo.id as id, orginfo.orgCodeId as orgCodeId, org.name as orgName from orginfo orginfo "
+							+ "inner join org org on orginfo.orgCodeId = org.id");
+			query.setResultTransformer(Transformers.aliasToBean(OrgInfoName.class));
+			entitiesMap.put("data", query.list());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			AppLogger.getSystemLogger().error("Error while fetching data from the orginfo table -> "+e);
+			throw e;
+		}
+		return entitiesMap;
 	}
 
 }

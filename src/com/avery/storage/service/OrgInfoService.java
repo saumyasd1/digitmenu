@@ -1,6 +1,7 @@
 package com.avery.storage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,5 +30,10 @@ public class OrgInfoService extends GenericEntityService<OrgInfo, Long>{
 		return getOrgInfoDao().readOrgInfoByProductLneId(productLineId,OrgId);
 		
 	} 
+	
+	@Transactional
+	public Map<String, Object> readAllOrgInfoAndOrgName(){
+		return getOrgInfoDao().readAllOrgInfoAndOrgName();
+	}
 
 }

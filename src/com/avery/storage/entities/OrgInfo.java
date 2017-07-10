@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -227,6 +228,32 @@ public class OrgInfo extends MainAbstractEntity{
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@GET
+	@Path("/orgname/list")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readAllOrgInfoAndOrgName(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		Map<String, Object> entitiesMap = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			OrgInfoService orgInfoService = (OrgInfoService) SpringConfig.getInstance().getBean("orgInfoService");
+			entitiesMap = orgInfoService.readAllOrgInfoAndOrgName();
+			if (entitiesMap == null)
+				throw new Exception("Unable to find any data");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching values from the orginfo table -> " + ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in fetching values from the orginfo table -> " + e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
 	}
