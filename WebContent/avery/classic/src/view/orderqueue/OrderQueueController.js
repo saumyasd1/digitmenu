@@ -150,17 +150,19 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     },
     onMenuItemClick:function(menu, item, e){
 		var me = this;
-		if (item.itemIndex == 0) {
-	         me.onViewOrderMenuItemClick();
-		} else if (item.itemIndex == 1) {
-	         me.onViewSalesOrderMenuItemClick();
-		} else if (item.itemIndex == 2) {
-	         me.onResubmitOrderMenuItemClick();
-		} else if(item.itemIndex == 3){
-			me.onMaterialReportMenuItemClick();
-		}
-		else {
-	         me.onCancelMenuItemClick();
+		if(item){
+			if (item.itemIndex == 0) {
+		         me.onViewOrderMenuItemClick();
+			} else if (item.itemIndex == 1) {
+		         me.onViewSalesOrderMenuItemClick();
+			} else if (item.itemIndex == 2) {
+		         me.onResubmitOrderMenuItemClick();
+			} else if(item.itemIndex == 3){
+				me.onMaterialReportMenuItemClick();
+			}
+			else {
+		         me.onCancelMenuItemClick();
+			}
 		}
     },
     onViewOrderMenuItemClick:function(){
@@ -169,7 +171,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     		currentRecord = grid.getSelectionModel().getSelection()[0];
     	
     	var id = currentRecord.get('id');
-    	var partnerId = currentRecord.get('partnerId');
     	//setting parameters at runtime   
         AOCRuntime.setOrderQueueId(id);
         AOCRuntime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
@@ -179,8 +180,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setOrderQueueActiveRecord(currentRecord);
         AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
         AOCRuntime.setAllowOrderLineEdit(true);
-		
-		Ext.getBody().mask('Loading...');
 		
 		var storeERPORG = Ext.create('Ext.data.Store', {
 			fields:['id','name'],
@@ -194,11 +193,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			}
 		});
 		
+		Ext.getBody().mask('Loading...');
 		storeERPORG.load(function(){
 			AOCRuntime.setStoreERPORG(storeERPORG);
 			me.viewOrderLineScreen(currentRecord);
 			
-			//callout.destroy(); // hide action menu items
 			Ext.getBody().unmask();
 		});
     },

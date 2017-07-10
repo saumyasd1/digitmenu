@@ -114,7 +114,7 @@ Ext.override(Ext.grid.RowEditor, {
         me.setWidth(clientWidth);
         btns.setLocalX((clientWidth - btns.getWidth()) / 2);
         if (me.lockable) {
-           // me.lockedColumnContainer.setWidth(grid.lockedGrid.view.el.dom.clientWidth);
+            me.lockedColumnContainer.setWidth(grid.lockedGrid.view.el.dom.clientWidth);
         }
     },
     
@@ -420,6 +420,14 @@ Ext.override(Ext.grid.RowEditor, {
 
         // Makes the cursor always be placed at the end of the textfield
         // when the field is being edited for the first time (IE only).
+    	
+    	var copyBtn = this.editingPlugin.editor.floatingButtons.queryById('copy');
+    	if(field.dataIndex == 'additionalLabelInternalItem'){
+    		copyBtn.show();
+    	}else{
+    		copyBtn.hide();
+    	}
+    	
         if(!this.activeField && Ext.isIE) {
             field.inputEl.dom.value = field.inputEl.dom.value;
         }
@@ -428,12 +436,14 @@ Ext.override(Ext.grid.RowEditor, {
         field.column.getView().getScrollable().scrollIntoView(field.el);
         if(this.context.grid && !Ext.isEmpty(this.context.grid.lastScrollLeftPosition)){
         	if(this.context.grid.lockedGrid){
-        		this.context.grid.view.normalView.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
+        		this.context.grid.view.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
         	}
         	else{
         		this.context.grid.view.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
         	}
         }
+        this.context.grid.view.el.dom.scrollLeft = this.lastScrollLeft;
+        console.log(this.lastScrollLeft);
     },
 
     destroyColumnEditor: function(column) {
@@ -454,7 +464,7 @@ Ext.override(Ext.grid.RowEditor, {
         }
         return btns;
     },
-
+    
     repositionIfVisible: function(c) {
         var me = this,
             view = me.view;
@@ -1187,6 +1197,7 @@ Ext.override(Ext.grid.RowEditor, {
 //        );
 //    }
 });
+
 Ext.define('AOC.view.RowEditorButtons', {
     override: 'Ext.grid.RowEditorButtons',
     
@@ -1224,6 +1235,13 @@ Ext.define('AOC.view.RowEditorButtons', {
             iconCls:'x-fa fa-times',
             handler: plugin.cancelEdit,
             text: rowEditor.cancelBtnText
+        },{
+            itemId: 'copy',
+            margin:'0 0 0 5',
+            hidden:true,
+            iconCls:'x-fa fa-clone',
+            handler: plugin.clone,
+            text: 'Copy'
         }]
     }, config);
         var me = this,

@@ -105,6 +105,7 @@ Ext.define('AOC.model.OrderLineModel',{
 	 		{name: 'mandatory', mapping:'mandatory',type: 'string'},
 	 		{name: 'roundQty', mapping:'roundQty',type: 'string'},
 	 		{name: 'moqDiffQty', mapping:'moqDiffQty',type: 'string'},
-	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'}
+	 		{name: 'updateMOQ', mapping:'updateMOQ',type: 'string'},
+	 		{name:'additionalLabelInternalItem', type:'string'}
 	     ]
 });
