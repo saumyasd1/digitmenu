@@ -242,10 +242,11 @@ Ext.define('AOC.view.home.HomePageController', {
 			params:{siteId:AOCRuntime.getUser().siteId},
 			callback:function(records, operation, success){
 				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner,
-					systemCsrCodeOwner = AOCRuntime.getUser().systemCsrCodeOwner;
+					systemCsrCodeOwner = AOCRuntime.getUser().systemCsrCodeOwner,
+					codeOwners = systemCsrNonCodeOwner+','+systemCsrCodeOwner;
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
-					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-						var csrCodeArray = systemCsrNonCodeOwner.split(','),
+//					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
+						var csrCodeArray = codeOwners.split(','),
 							userCsrCodeArray=[], len = csrCodeArray.length;
 						for(var i = 0 ; i < len ; i++){
 							var index = csrCombo.store.find('id',csrCodeArray[i],'',false, false, true);
@@ -254,17 +255,18 @@ Ext.define('AOC.view.home.HomePageController', {
 							}
 						}
 						csrCombo.setValue(userCsrCodeArray.join());
-					}else{
-						var codeArray = systemCsrCodeOwner.split(','),
-							csrCodeArray = [], len = codeArray.length;
-						for(var i = 0 ; i < len ; i++){
-							var index = csrCombo.store.find('id',codeArray[i],'',false, false, true);
-							if(index != -1){
-								csrCodeArray.push(codeArray[i]);
-							}
-						}
-							csrCombo.setValue(csrCodeArray.join());
-					}
+//					}
+//					else{
+//						var codeArray = systemCsrCodeOwner.split(','),
+//							csrCodeArray = [], len = codeArray.length;
+//						for(var i = 0 ; i < len ; i++){
+//							var index = csrCombo.store.find('id',codeArray[i],'',false, false, true);
+//							if(index != -1){
+//								csrCodeArray.push(codeArray[i]);
+//							}
+//						}
+//							csrCombo.setValue(csrCodeArray.join());
+//					}
 				}
 				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
 			}
