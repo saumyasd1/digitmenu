@@ -33,7 +33,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						xtype:'combo',
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
-						store : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
+						store : Ext.data.StoreManager.lookup('reportPartnerId') != null ? Ext.data.StoreManager.lookup('reportPartnerId')  :Ext.create('AOC.store.PartnerManagementStore',{storeId:'reportPartnerId'}),
 						valueField:'id',
 						name:'partnerName',
 						allowBlank : false,
