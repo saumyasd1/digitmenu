@@ -145,7 +145,7 @@ Ext.define('AOC.view.home.ReportForm',{
 	    				reference:'timeZone',
 	    				editable:false,
 	    				margin:'0 0 0 10',
-	    				store:[['HKT','HKT'],['EDT','EDT'],['EST','EST']]
+	    				store:[['Hongkong','HKT'],['Asia/Hong_Kong','EDT'],['EST','EST'],['VST','VNT'],['GMT','GMT'],['CST','CST']]
 	    			}
 				]
 	        },
