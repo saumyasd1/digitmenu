@@ -239,14 +239,14 @@ Ext.define('AOC.view.home.ReportFormController', {
     	var store = combo.store,
 			obj ={id:'all', partnerName:'Select All'};
     	
-    	var index = store.find('id', 'all');
-    	if(index == -1){
-    		store.on('load',function(){
-    			store.insert(0,new Ext.data.Record(obj));
-    		},store);
-    		store.insert(0,new Ext.data.Record(obj));
-    	}
-    	
+		store.load({
+			callback:function(records, operation, success){
+				var index = store.find('id', 'all');
+				if(index == -1){
+					store.insert(0, new Ext.data.Record(obj));
+				}
+			}
+		}, store);
     },
     onStatusComboAfterRender:function(combo){
     	var store = combo.store,
