@@ -46,6 +46,7 @@ import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
 import com.avery.storage.MixIn.PartnerDataStructureMixin;
 import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.ViewMailMixIn;
+import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -600,9 +601,14 @@ public class OrderFileAttachment extends MainAbstractEntity {
 					else if(productLineId!=0){
 						fileAttachementObj.setStatus("8");//In statuscode table Identified:8
 					}
-					
+					String lastModifiedBy = "";
+					lastModifiedBy = (String) jsonMap.get("lastModifiedBy").toString();
 					orderFileAttachmentService.update(fileAttachementObj);
 					Long entityId = Long.parseLong(emailQueueId);
+					OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance().getBean("orderEmailQueueService");
+					OrderEmailQueue emailQueue=orderEmailQueueService.read(entityId);
+					emailQueue.setLastModifiedBy(lastModifiedBy);
+					orderEmailQueueService.update(emailQueue);
 					orderFileAttachmentService.checkDisregardMail(entityId);
 				}
 				Map entitiesMap = new HashMap();

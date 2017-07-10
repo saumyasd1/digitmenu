@@ -247,6 +247,7 @@ OrderEmailQueueDao {
 			orderEmailQueueObj = updater.readValue(data);
 			if(orderEmailQueueObj.getComment()!=null)
 				commentString=orderEmailQueueObj.getComment().replace("::", "\n");
+			String lastModifiedBy=orderEmailQueueObj.getLastModifiedBy();
 			orderEmailQueueObj.setComment(commentString);
 			orderEmailQueueObj.preUpdateOp();
 			session.update(orderEmailQueueObj);
@@ -257,9 +258,10 @@ OrderEmailQueueDao {
 			if(!"".equals(comment)){
 				commentString=",comment=:comment ";
 			}
-			String s = "update OrderEmailQueue set status=:value "+commentString+",lastModifiedDate=:date where id =:id "; 
+			String s = "update OrderEmailQueue set status=:value "+commentString+",lastModifiedDate=:date,lastModifiedBy=:modifiedId where id =:id "; 
 			Query q = session.createQuery(s);
 			q.setString("value",status);
+			q.setString("modifiedId",lastModifiedBy);
 			q.setTimestamp("date", new Date());//adding last modified date on cancel email
 			if(!"".equals(comment)){
 				q.setString("comment",comment);
