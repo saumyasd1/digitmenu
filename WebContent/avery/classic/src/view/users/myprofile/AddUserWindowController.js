@@ -28,7 +28,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     				yesArray.push(rec.get('id'));
     			}
 				
-    		}else if((rec.get('codeOwner') == 'N')){
+    		}
+    		if((rec.get('codeOwner') == 'N')){
     			if(rec.get('newFlag')){
     				noArray.push(rec.get('csrCodeComboId'));
     			}else{
@@ -354,9 +355,13 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     },
     deleteCSRCode: function(grid, record){
     	var me = this,
-    		mode = me.getReferences().addEditUserWinForm.mode;
+    		mode = me.getReferences().addEditUserWinForm.mode,
+    		codeOwnerValue = grid.getSelection()[0].data.codeOwner;
 		if(mode == 'add'){
 	        grid.store.remove(record);
+		}
+		else if( codeOwnerValue == 'N'){
+			 grid.store.remove(record);
 		}
 		else{
 			var newFlag = record.get('newFlag');
@@ -423,7 +428,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			systemArray = [];
 	    	
     	//Checking values of system-org-csrCode  are empty or not
-    	if(Ext.isEmpty(obj.systemName) || Ext.isEmpty(obj.orgCode) || Ext.isEmpty(obj.csrCode)){
+    	if(Ext.isEmpty(obj.systemName) || Ext.isEmpty(obj.orgCode) || Ext.isEmpty(obj.csrCode) || Ext.isEmpty(obj.codeOwner)){
     		Helper.showToast('failure',AOCLit.systemOrgCSRNotEmpty);
     		return;
     	}
@@ -461,10 +466,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 		//Code for inserting entry into grid
     	if(systemCsrCodeGridStore.getCount() > 0){
 	    	systemCsrCodeGridStore.each(function(record, index){
-	    		 if(record.get('codeOwner') != obj.codeOwner){
-	    			Helper.showToast('validation', 'Code Owner should be '+record.get('codeOwner') +'.Please change code owner');
-	    			return;
-	    		}else{
+//	    		 if(record.get('codeOwner') != obj.codeOwner){
+//	    			Helper.showToast('validation', 'Code Owner should be '+record.get('codeOwner') +'.Please change code owner');
+//	    			return;
+//	    		}else{
 	    			systemCsrCodeGridStore.insert(0,(new Ext.data.Record(obj)));
 	    	    	systemCombo.reset();
 	    	    	orgCodeCombo.reset();
@@ -474,7 +479,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    	    	csrCodeCombo.setDisabled(true);
 	    	    	codeOwner.setDisabled(true);
 	    	    	insertBtn.setDisabled(true);
-	    		}
+//	    		}
 	    	}, me);
     	}else{
     		systemCsrCodeGridStore.insert(0,(new Ext.data.Record(obj)));
@@ -496,9 +501,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwner = refs.codeOwner,
     		hasOwner = combo.getSelectedRecord().data.hasOwner,
     		insertBtn = refs.insertBtn;
-    	
-    	codeOwner.setDisabled(false);
-    	
+  	
     	if(hasOwner == 'true'){
     		codeOwner.setValue('N');
     		codeOwner.setDisabled(true);
@@ -620,8 +623,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     },
     onBlurCsrCode: function(combo){
     	var me = this,
-			refs = me.getReferences(),
-			insertBtn = refs.insertBtn,
+    		refs = me.getReferences(),
+			codeOwner = refs.codeOwner,
+			insertBtn = refs.insertBtn;
 			codeOwnerCombo = refs.codeOwner,
     		csrCodeComboStore = combo.store,
     		csrCodeComboValue = combo.getRawValue(),
