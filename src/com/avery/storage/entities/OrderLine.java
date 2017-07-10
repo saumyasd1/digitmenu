@@ -1739,6 +1739,40 @@ public class OrderLine extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
-
+	
+	@GET
+	@Path("/copy/additional")
+	public Response copyAdditionalLabel(@Context UriInfo ui, @Context HttpHeaders hh, @QueryParam("id") String id,
+			@QueryParam("additional") String additionalLabel) {
+		OrderLine orderLine = null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			Long entityId = Long.parseLong(id);
+			OrderLineService orderLineService = (OrderLineService) SpringConfig.getInstance()
+					.getBean("orderLineService");
+			orderLine = orderLineService.read(entityId);
+			List<OrderLineDetail> listOrderLineDetail = orderLine.getListOrderlineDetails();
+			for(OrderLineDetail orderLineDetail : listOrderLineDetail){
+				orderLineDetail.setId(0);
+			}
+			orderLine.setAveryItemNumber(additionalLabel);
+			orderLine.setListOrderlineDetails(listOrderLineDetail);
+			orderLine.setId(0);
+			Long newId = orderLineService.create(orderLine);
+			responseMap.put("id", newId);
+			responseMap.put("success", true);
+			mapper.writeValue(writer, responseMap);
+			return Response.ok(writer.toString()).build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while Permorfing the operation -> ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while Permorfing the operation -> ", e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 
 }
