@@ -328,7 +328,8 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	onSystemCsrCodeCellClick:function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		var me = this,	
 			el = Ext.get(e.target),
-			deletedCSRCode = record.get('csrCode');
+			deletedCSRCode = record.get('csrCode'),
+			codeOwner = record.get('codeOwner'),
 			array = me.newCSRCodeArray,
 			len = array.length;
 			
@@ -342,7 +343,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 			if(el.hasCls('delete-row')){
 				Ext.Msg.show({
 				       title:'Warning',
-				       message: 'Deleting the CSR Code will delete the relationship of the CS Manager & Clerk. Still want to continue?',
+				       message: codeOwner == 'Y' ? AOCLit.codeOwnerYDeleteMsg : AOCLit.codeOwnerNDeleteMsg ,
 				       buttons: Ext.Msg.YESNO,
 				       icon: Ext.Msg.QUESTION,
 				       fn: function(btn) {
