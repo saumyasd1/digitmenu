@@ -269,10 +269,15 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
             xhttp.send(formData);
 
             function uploadDone(xhttp) {
-                switch (xhttp.status) {
+            	var data = JSON.parse(xhttp.response),
+            		filePath = data.filePath,
+            		fileName = data.fileName;
+            	
+            	switch (xhttp.status) {
                 case 200:
                     fileArray.pop();
-                    //me.getView().fireEvent('uploaded',me.getView().scope);
+                    AOCRuntime.getUser().filePath = filePath;
+                    AOCRuntime.getUser().fileName = fileName;
                     break;
                 }
             }
