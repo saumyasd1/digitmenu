@@ -257,4 +257,29 @@ public class OrgInfo extends MainAbstractEntity{
 		}
 		return rb.build();
 	}
+	
+	@Override
+	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		Response.ResponseBuilder rb = null;
+		try {
+			OrgInfoService orgInfoService = (OrgInfoService) SpringConfig.getInstance().getBean("orgInfoService");
+			// read existing entity from database
+			OrgInfo orgInfo = orgInfoService.read(Long.parseLong(id));
+			if (orgInfo == null) {
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("Data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			// prepare response
+			orgInfoService.delete(orgInfo);
+			return Response.ok(id).build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in deleting Data entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in deleting data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
 }
