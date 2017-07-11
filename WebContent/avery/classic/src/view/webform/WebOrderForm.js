@@ -128,6 +128,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						reference:'assignCSR',
 						valueField:'userId',
 						queryMode:'local',
+						allowBlank:false,
 						disabled:true,
 						store:Ext.data.StoreManager.lookup('webOrderCSRStoreId') != null ? Ext.data.StoreManager.lookup('webOrderCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'webOrderCSRStoreId'}),
 						typeAhead:true,
