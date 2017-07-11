@@ -602,6 +602,7 @@ public class OrderFileAttachment extends MainAbstractEntity {
 						fileAttachementObj.setStatus("8");//In statuscode table Identified:8
 					}
 					String lastModifiedBy = "";
+					if(jsonMap.get("lastModifiedBy").toString() != null && !jsonMap.get("lastModifiedBy").toString().isEmpty() && jsonMap.get("lastModifiedBy").toString() !="")
 					lastModifiedBy = (String) jsonMap.get("lastModifiedBy").toString();
 					orderFileAttachmentService.update(fileAttachementObj);
 					Long entityId = Long.parseLong(emailQueueId);

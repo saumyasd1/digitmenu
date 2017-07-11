@@ -748,6 +748,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			productLineObj.setId(productlineId);
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
+			if(siteId != null && !siteId.isEmpty() && siteId !="")
 			orderEmailQueueObj.setSiteId(Integer.parseInt(siteId));
 			orderEmailQueueObj.setAssignCSR(assignCSR);
 			orderEmailQueueObj.setLastModifiedBy(lastModifiedId);
