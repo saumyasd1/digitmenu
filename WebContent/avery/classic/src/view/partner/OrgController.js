@@ -33,22 +33,22 @@ Ext.define('AOC.view.partner.OrgController', {
 //		Ext.getBody().mask()
 		var view=this.getView();
 		if(!Ext.isEmpty(newValue)){
-		var gridStore=view.getStore(),
-			alreadyPresent=gridStore.find('orgCodeId',newValue);
-		if(alreadyPresent!=-1){
-			cmp.setValue('');
-			Helper.showToast('Error','This Org is already selected. Please select another one');
-			return false;
-		}
-		var record=cmp.ownerCt.context.record;
-		var freightTermsData=AOC.util.Helper.getDependendVariableComboStore('freightTerms',view.systemId,newValue);
-		record.set('freightTermsData',freightTermsData);
-		var frieghtTermTempArray = ['None'].concat(freightTermsData);
-		view.columns[3].getEditor().bindStore(frieghtTermTempArray);
-		var shippingMethodData=AOC.util.Helper.getDependendVariableComboStore('shippingMethod',view.systemId,newValue);
-		record.set('shippingMethodData',shippingMethodData);
-		var shippingMethodDataArray = ['None'].concat(shippingMethodData);
-		view.columns[4].getEditor().bindStore(shippingMethodDataArray);
+			var gridStore=view.getStore(),
+				alreadyPresent=gridStore.find('orgCodeId',newValue);
+			if(alreadyPresent!=-1){
+				cmp.setValue('');
+				Helper.showToast('Error','This Org is already selected. Please select another one');
+				return false;
+			}
+			var record=cmp.ownerCt.context.record;
+			var freightTermsData=AOC.util.Helper.getDependendVariableComboStore('freightTerms',view.systemId,newValue);
+			record.set('freightTermsData',freightTermsData);
+			var frieghtTermTempArray = ['None'].concat(freightTermsData);
+			view.columns[3].getEditor().bindStore(frieghtTermTempArray);
+			var shippingMethodData=AOC.util.Helper.getDependendVariableComboStore('shippingMethod',view.systemId,newValue);
+			record.set('shippingMethodData',shippingMethodData);
+			var shippingMethodDataArray = ['None'].concat(shippingMethodData);
+			view.columns[4].getEditor().bindStore(shippingMethodDataArray);
 		}
 	},
 	OnBeforeEdit:function(editor,context){
@@ -95,11 +95,39 @@ Ext.define('AOC.view.partner.OrgController', {
     		store = view.store;
     	
     	if((store.getCount() < view.maxRecord) && (AOCRuntime.getUser().role != 3) ){
-    		store.add({orgCodeId:'',newRecord:true, isDefault:false});
+    		store.add({orgCodeId:'', newRecord:true, isDefault:false});
 		}else{
 			if(AOCRuntime.getUser().role != 3){
 				Helper.showToast('validation','Cannot add any more rows.');
 			}
 		}
+    },
+    onRemoveOrgRow:function(grid, rowIndex, colIndex){
+    	var me = this,
+    		view = me.getView();
+    	
+    	if(view.up('#createpartnerproductlineItemId').mode == 'view'){
+    		return;
+    	}
+		if(AOCRuntime.getUser().role != 3 && rowIndex > 0){
+			 Ext.Msg.confirm('','Are you sure you want to delete this Org?',function(btn){
+				if(btn=='yes'){
+					var currentRecord = view.getStore().getAt(rowIndex);
+					if(!currentRecord.get('newRecord')){
+						me.removeOrgData(currentRecord);
+					}
+					view.getStore().removeAt(rowIndex);
+				} 
+			 });
+		}
+    },
+    removeOrgData:function(record){
+    	Ext.Ajax.request({
+    		url:applicationContext+'/rest/orginfo/'+record.get('id'),
+    		method:'DELETE',
+    		success:function(response){
+    			var jsonData = JSON.parse(response.responseText);
+    		}
+    	})
     }
 });
