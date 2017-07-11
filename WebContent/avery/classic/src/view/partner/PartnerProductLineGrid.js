@@ -109,7 +109,8 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             {
                 text: AOCLit.lastmodifieddate,
                 dataIndex: 'lastModifiedDate',
-                flex:1
+                flex:1,
+                renderer:Helper.onDateRendererSiteTimeZoneSpecific
             }
         ];
     },
