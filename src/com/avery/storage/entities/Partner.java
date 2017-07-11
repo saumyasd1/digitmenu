@@ -2,6 +2,8 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -421,6 +423,7 @@ public class Partner extends MainAbstractEntity {
 			/**if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {	*/			
 			if (partnerList == null || partnerList.isEmpty())
 				throw new Exception("Unable to find partners");
+			Collections.sort(partnerList,new PartnerComprator());
 			responseMap.put("partners", partnerList);
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
