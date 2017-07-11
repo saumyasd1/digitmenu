@@ -140,9 +140,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	        refs = me.getReferences(),
 	        winMode = refs.addEditUserWinForm.mode,
 	        systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
+	        roleCombo = refs.roleName.getValue(),
 	        newFlagArray = [];
 
-	    if (AOCRuntime.getUser().role == 3) {
+	    if (roleCombo == 3) {
 	        systemCsrCodeGridStore.each(function (rec, index) {
 	            if (systemCsrCodeGridStore.getCount() > 0) {
 	                newFlagArray.push(rec.get('newFlag'));
@@ -176,7 +177,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
 	    } else {
 	    	me.cancelBtn();
 	    }
-
     },
     onAddUserAfterRender: function (win) {
     	var me = this;
