@@ -535,6 +535,8 @@ Ext.define('AOC.lang.lit',{
 	
 	wiInfoIconText:'<i style="color:#2c3e50;" data-qtip="<font> {0} </font>" class="fa fa-info-circle"></i>',
 	moqValidationText:'If productline multiple then define rules as format:</br>WVL:TRUE|HTL:FALSE|',
+	orderKeywordInfoText:'Value should be in following Format:<br>1.Nike PO <br> 2.Nike PO AND Nike<br>3.Nike PO OR Nike',
+	orderCellNoInfoText:'Value should be in following Format:<br>1.A1 <br> 2.A1 AND A2<br>3.A1 OR A2',
 	csrCode:'CSR Code',
 	multipleProductLineEmptyText:'WVL:TRUE|HTL:FALSE|',
 	dataStructureNameEmptyText:'RBO/Factory/ProductLine/Site/System',

@@ -188,7 +188,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.receivedDate,
             align: 'left',
             width: 150,
-            dataIndex: 'receivedDate'
+            dataIndex: 'receivedDate',
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }, {
             text: AOCLit.processedDate,
             align: 'left',

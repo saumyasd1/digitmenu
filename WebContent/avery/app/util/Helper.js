@@ -59,9 +59,9 @@ Ext.define('AOC.util.Helper',{
 				async: false,
 				url: applicationContext+'/rest/orderconfigurations/variable/'+variableName
 			});
-			var items = Ext.decode(response.responseText);
-			var jsonValue=Ext.decode(response.responseText);
+			var jsonValue = Ext.decode(response.responseText);
 			var serviceStoreData = [];
+			
 			if(jsonValue.length > 0){
 				Ext.Array.forEach(jsonValue,function(item){
 					var service = [item];
@@ -71,6 +71,55 @@ Ext.define('AOC.util.Helper',{
 			}
 		}
 	},
+	getVariableComboStores:function(variableName, store){
+		var response = Ext.Ajax.request({
+			async: false,
+			url: applicationContext+'/rest/orderconfigurations/variable/'+variableName
+		});
+		
+//		store.removeAll();
+		var jsonValue=Ext.decode(response.responseText);
+		var serviceStoreData = [];
+		
+		if(jsonValue.length > 0){
+			Ext.Array.forEach(jsonValue,function(item){
+				var service = [item];
+				serviceStoreData.push(service);
+			});
+			store.loadRawData(serviceStoreData);
+		}
+		return store;
+	},
+	getVariableName:function(dataIndex){
+		switch(dataIndex){
+			case 'shippingMethod':return 'ShippingMethod';
+			case 'freightTerms':return 'FreightTerms';
+			case 'splitShipset':return 'SplitShipset';
+			case 'endCustomer':return 'EndCustomer';
+			case 'orderType':return 'OrderType';
+			case 'apoType':return 'APOType';
+			default:return'';
+		}
+	},
+	getVariableFieldStore:function(variableField){
+		return new Ext.data.Store({
+			autoLoad:false,
+			storeId:variableField+'Id1',
+			proxy : {
+				type : 'rest',
+				method:'GET',
+				limitParam:'',
+		        startParam:'',
+		        pageParam:'',
+				url: applicationContext+'/rest/orderconfigurations/orgid/systemid',
+				reader:{
+			        type:'json'
+			     }
+		    },
+			field:['name']
+		});
+	},
+	
 	BulkUpdate:function(grid, selection, eOpts){
 		if(selection.startCell){
 			var store = grid.store;
@@ -789,5 +838,47 @@ Ext.define('AOC.util.Helper',{
 			case 3: return 'Suzhou';
 			case 4: return 'Vietnam';
 		}
+	},
+	onDateRendererSiteTimeZoneSpecific:function(v, metadata, record){
+		var siteId = record.get('siteId'),
+			estOffset = -240,
+			hktOffset = -480*(-1),
+			vitnamOffset = -420*(-1),
+			cstOffset = -480*(-1);
+		
+		var time = new Date(v).getTime(),
+			utcTime = time - (estOffset*60*1000);
+		
+		switch(siteId){
+		case 2: var siteTime = utcTime + (hktOffset*60*1000);
+				
+				return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+		case 3: var siteTime = utcTime + (cstOffset*60*1000);
+		
+				return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+				
+		case 4: var siteTime = utcTime + (vitnamOffset*60*1000);
+			
+			return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+		
+		}
+	},
+	getDefaultProuctLineFieldParams:function(){
+		return {
+			shippingMark:false,
+			discountOffer:false,
+			averyItem:false,
+			localItem:false,
+			localBilling:false,
+			waiveMOA:false,
+			shipmentSample:false,
+			others:false,
+			fileOrderMatchRequired:false,
+			fileMatchRequired:false,
+			attachmentFileProductlineMatchRequired:false,
+			attachmentFileOrderMatchRequired:false,
+			attachmentFileMatchRequired:false,
+			productLineMatchFlag:false
+		};
 	}
 });

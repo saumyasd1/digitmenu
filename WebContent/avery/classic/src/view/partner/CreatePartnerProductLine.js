@@ -821,19 +821,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	},
 	getOrderFileExcelField:function(hideFlag, name){
 		if(hideFlag){return;}
-		
+		var index = name.indexOf('fileOrder');
 		return {
 			xtype:'textfield',
-			fieldLabel:'Cell No,If Excel',
+			fieldLabel:index > -1 ? 'Cell No,If Excel '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderCellNoInfoText)  :'Cell No,If Excel',
 			disabled:true,
 			name:name,
 			reference:name
 		};
 	},
 	getSchemaIdentificationKeywordField:function(name){
+		var index = name.indexOf('fileOrder');
 		return {
 			xtype:'textfield',
-			fieldLabel:'Keyword',
+			fieldLabel:index > -1 ? 'Keyword '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderKeywordInfoText)  :'Keyword',
 			disabled:true,
 			margin:'0 0 5 0',
 			name:name,

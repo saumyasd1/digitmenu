@@ -269,22 +269,40 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	}
     	return value;
     },
+    getSplitValue:function(str){
+    	if(str.indexOf('_&&_') > -1){
+			var strA = str.split('_&&_');
+			
+			return strA[0]+' AND '+ strA[1];
+		}
+		if(str.indexOf('_._') > -1){
+			var strA = str.split('_._');
+			
+			return strA[0]+' OR '+ strA[1];
+		}
+		return str;
+    },
     getKeyword:function(str){
     	if(!Ext.isEmpty(str)){
-	    	if(str.indexOf('|') > -1){
-		    	var splitArray = str.split('|');
-		    	return splitArray[0].split(':')[1];
+	    	if(str.indexOf(';') > -1){
+	    		var leftStr = str.split(';')[0];
+	    		return this.getSplitValue(leftStr.split(':')[1]);
+	    	}else{
+	    		return this.getSplitValue(str);
 	    	}
-	    	return str.split(':')[1];
     	}
-    	return '';
+    	return str;
     },
     getCellNo:function(str){
-    	if(!Ext.isEmpty(str) && str.indexOf('|') > -1){
-	    	var splitArray = str.split('|');
-	    	return splitArray[1].split(':')[1];
+    	if(!Ext.isEmpty(str)){
+	    	if(str.indexOf(';') > -1){
+	    		var rightStr = str.split(';')[1];
+	    		return this.getSplitValue(rightStr.split(':')[1]);
+	    	}else{
+	    		return this.getSplitValue(str);
+	    	}
     	}
-    	return '';
+    	return str;
     },
     getSKUValidationRadioValue:function(value){
     	if(Ext.isEmpty(value)){
@@ -398,6 +416,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			if(mode == 'edit'){
 				valueObj.id = view.rec.get('id');
 			}
+			//app default params need to post for identification process as: 11/07/2017
+			Ext.apply(valueObj, Helper.getDefaultProuctLineFieldParams());
+			
 			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+ (!Ext.isEmpty(AOCRuntime.getUser().lastName) ? AOCRuntime.getUser().lastName : '');
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
@@ -567,10 +588,36 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		return values;
 	},
 	getCombinedValue:function(keyword, cellNo){
-		if(keyword && cellNo){
-			return 'Value:'+keyword +'|Cell:'+cellNo;
-		}else if(keyword){
-			return 'Value:'+keyword;
+		var keywordStr = '',
+			cellStr = '';
+		
+		if(keyword.indexOf('AND') > -1){
+			var strA = keyword.replace(/ /g,''),
+				keywordStr = strA.replace('AND', '_&&_');
+		}
+		if(keyword.indexOf('OR') > -1){
+			var strA = keyword.replace(/ /g,''),
+				keywordStr = strA.replace('OR', '_._');
+		}
+		if(cellNo.indexOf('AND') > -1){
+			var strA = cellNo.replace(/ /g,''),
+				cellStr = strA.replace('AND', '_&&_');
+		}
+		if(cellNo.indexOf('OR') > -1){
+			var strA = cellNo.replace(/ /g,''),
+				cellStr = strA.replace('OR', '_._');
+		}
+		if(Ext.isEmpty(keywordStr)){
+			keywordStr = keyword;
+		}
+		if(Ext.isEmpty(cellStr)){
+			cellStr = cellNo;
+		}
+		
+		if(keywordStr && cellStr){
+			return 'Value:'+keywordStr +';Cell:'+cellStr;
+		}else if(keywordStr){
+			return 'Value:'+keywordStr;
 		}
 	},
 	getSKUValidationValue:function(multipleLine, check){
