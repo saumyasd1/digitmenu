@@ -138,7 +138,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                     return me.tipRenderer(v, metaData);
                 }
             }, {
-                text: AOCLit.csrCode,
+                text: AOCLit.CSRName,
                 width: 120,
                 align: 'left',
                 dataIndex: 'csrName'
