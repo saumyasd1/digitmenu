@@ -188,11 +188,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
         AOCRuntime.setAllowOrderLineEdit(true);
 		
-		var storeERPORG = Ext.create('Ext.data.Store', {
+        var storeERPORG = Ext.create('Ext.data.Store', {
 			fields:['id','name'],
 			proxy: {
 				type: 'rest',
-				url: applicationContext + '/rest/org/productline/' + currentRecord.get('productLineId'),
+				method:'GET',
+				url: applicationContext + '/rest/orginfo/orgname/list',
 				reader: {
 					type: 'json',
 					rootProperty: 'data'

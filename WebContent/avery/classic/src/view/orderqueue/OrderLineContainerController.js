@@ -390,8 +390,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			atovalidationFlagCount++;
     		}
     		if(!Ext.isEmpty(orderLineExpandableGrid.openedRecordIndex) && (orderLineExpandableGrid.openedRecordIndex == index)){
-    			var expander = orderLineExpandableGrid.lockedGrid.features[0].rowExpander;
-    			
+//    			var expander = orderLineExpandableGrid.lockedGrid.features[0].rowExpander;
+    			var expander = orderLineExpandableGrid.features[0].rowExpander;
     			expander ? expander.toggleRow(index, orderLineExpandableGrid.store.getAt(index)) :'';
     		}
     		

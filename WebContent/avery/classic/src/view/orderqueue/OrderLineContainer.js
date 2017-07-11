@@ -6,7 +6,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 	layout: {
 		type: 'border'
 	},
-	border:'4 4 4 4',
 	initComponent : function() {
 		var me = this;
 		me.items = me.buildItems();

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -80,33 +81,37 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 
 
 	@Override
-	public List<OrderConfiguration> readByPropertyName(String propertyName,
-			Long systemId, Long orgCodeId) throws Exception {
-		// TODO Auto-generated method stub
-		Session session = null;
-		Criteria criteria = null;
-		try{
-			session = getSessionFactory().getCurrentSession();;
-			criteria = session.createCriteria(OrderConfiguration.class);
+	 public List<OrderConfiguration> readByPropertyName(String propertyName,
+	   Long systemInfoId, Long orgCodeId) throws Exception {
+	  // TODO Auto-generated method stub
+	  Session session = null;
+	  Criteria criteria = null;
+	  try{
+	   session = getSessionFactory().getCurrentSession();
+	   
+	   Query query = session.createQuery("select varSystem.id from OrderSystemInfo where id=:id");
+	   query.setLong("id", systemInfoId);
+	   Long systemId = (Long) query.list().get(0);
+	   criteria = session.createCriteria(OrderConfiguration.class);
 
-			criteria.add(Restrictions.eq("systemId", systemId));
-			criteria.add(Restrictions.eq("propertyName", propertyName));
-			criteria.add(Restrictions.eq("orgCodeId", orgCodeId));
-			return criteria.list();
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order conf for system id " + systemId, ex);
-			throw ex;
-		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching order conf for site id " + systemId, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-		
-		
-	}
+	   criteria.add(Restrictions.eq("systemId", systemId));
+	   criteria.add(Restrictions.eq("propertyName", propertyName));
+	   criteria.add(Restrictions.eq("orgCodeId", orgCodeId));
+	   return criteria.list();
+	  }catch (WebApplicationException ex) {
+	   AppLogger.getSystemLogger().error(
+	     "Error in fetching order conf for system id " + systemInfoId, ex);
+	   throw ex;
+	  } catch (Exception e) {
+	   AppLogger.getSystemLogger().error(
+	     "Error in fetching order conf for site id " + systemInfoId, e);
+	   throw new WebApplicationException(Response
+	     .status(Status.INTERNAL_SERVER_ERROR)
+	     .entity(ExceptionUtils.getRootCauseMessage(e))
+	     .type(MediaType.TEXT_PLAIN_TYPE).build());
+	  }
+	  
+	  
+	 }
 
 }

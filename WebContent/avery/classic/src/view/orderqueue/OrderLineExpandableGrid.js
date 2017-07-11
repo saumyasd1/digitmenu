@@ -205,7 +205,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField:'variableFieldName',
 				valueField:'variableFieldName',
 				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
+				store:Ext.data.StoreManager.lookup('CSRId') == null ? Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
 			    listeners:{
 					focus:'onComboFocus',
 					afterrender:function(combo){
@@ -398,11 +398,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 220,
 			editor: {
 				xtype:'combo',
-				displayField:'name',
+				displayField:'orgName',
 				valueField:'id',
 				store:AOCRuntime.getStoreERPORG(),
 				listeners:{
-					'select':'onerporgSelectChange'
+					//'select':'onERPORGSelect'
+					expand:'onDivisionEPORGExpand'
 				}
 			},
 			renderer:'divisionForInterfaceERPORGColumnRenderer'
@@ -417,23 +418,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 115,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
+				matchFieldWidth:false,
+				listConfig:{
+					width:180
+				},
 				reference:'OrdertypeCombo',
-				store:Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
+				variableName:'OrderType',
+				store:Ext.data.StoreManager.lookup('OrderTypeId1') != null ? Ext.data.StoreManager.lookup('OrderTypeId1') : Helper.getAllVariableComboStore('OrderType', true),
 				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer'
+			renderer:'variableComboColumnRenderer'
 		}, 
 		{
 			text: AOCLit.soldToRbo+'<font color=red>*</font> '+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Customer Number</br>Vips: Store Group</br>Phx: BO CODE</font>" class="fa fa-info-circle"></i>',
@@ -708,23 +709,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 100,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
 				reference:'APOTypeCombo',
-				store:Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
+				variableName:'APOType',
+				store:Ext.data.StoreManager.lookup('APOTypeId1') != null ? Ext.data.StoreManager.lookup('APOTypeId1') : Helper.getAllVariableComboStore('APOType', true),
 				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-				     },
-				     select:function(combo){
-						Helper.onComboSelect(combo);
-				     }
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer'
+			renderer:'variableComboColumnRenderer'
 		}, 
 		{
 			text: AOCLit.billToCustomer,
@@ -1002,22 +999,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 170,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
 				reference:'shippingMethodCombo',
-				store:Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
+				variableName:'ShippingMethod',
+				store:Ext.data.StoreManager.lookup('ShippingMethodId1') != null ? Ext.data.StoreManager.lookup('ShippingMethodId1') : Helper.getAllVariableComboStore('ShippingMethod', true),
 				listeners:{
-			    	focus:'onComboFocus',
-			    	afterrender:function(combo){
-			    		Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer'
+			renderer:'variableComboColumnRenderer'
 		}, 
 		{
 			text: AOCLit.freightTerm,
@@ -1026,23 +1020,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 130,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
 				reference:'freightTermscombo',
-				store:Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
+				variableName:'FreightTerms',
+				store:Ext.data.StoreManager.lookup('FreightTermsId1') != null ? Ext.data.StoreManager.lookup('FreightTermsId1') : Helper.getAllVariableComboStore('FreightTerms', true),
 				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer'
+			renderer:'variableComboColumnRenderer'
 		}, 
 		{
 			text: AOCLit.shipMark + ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Use ^ as an indicator to return a new line. e.g TAIWAN^1 TO UP</br>it will be imported as</br>TAIWAN</br>1 TO UP</font>" class="fa fa-info-circle"></i>',
@@ -1170,23 +1160,19 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 120,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
 				reference:'splitShipsetCombo',
-				store:Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
+				variableName:'SplitShipset',
+				store:Ext.data.StoreManager.lookup('SplitShipsetId1') != null ? Ext.data.StoreManager.lookup('SplitShipsetId1') : Helper.getAllVariableComboStore('SplitShipset', true),
 				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer',
+			renderer:'variableComboColumnRenderer',
 			type:'address',
 			hidden:true
 		},
@@ -1223,23 +1209,23 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 120,
 			editor: {
 				xtype: 'combo',
-				displayField: 'variableFieldName',
-				valueField: 'variableFieldName',
-				editable:false,
+				displayField: 'name',
+				valueField: 'name',
 				queryMode :'local',
 				reference:'EndCustomerCombo',
-				store:Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
+				variableName:'EndCustomer',
+				matchFieldWidth:false,
+				listConfig:{
+					width:200
+				},
+				store:Ext.data.StoreManager.lookup('EndCustomerId1') != null ? Ext.data.StoreManager.lookup('EndCustomerId1') : Helper.getAllVariableComboStore('EndCustomer', true),
 				listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer',
+			renderer:'variableComboColumnRenderer',
 			type:'address',
 			hidden:true
 		},

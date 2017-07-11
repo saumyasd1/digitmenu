@@ -296,6 +296,15 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadCodeStore('orderfilequeue');
         Helper.loadCodeStore('orderline');
         Helper.loadCodeStore('orderemailqueue');
+        
+        //get all variable data
+        Helper.loadAllVariableComboStore('FreightTerms');
+        Helper.loadAllVariableComboStore('ShippingMethod');
+        Helper.loadAllVariableComboStore('OrderType');
+        Helper.loadAllVariableComboStore('APOType');
+        Helper.loadAllVariableComboStore('EndCustomer');
+        Helper.loadAllVariableComboStore('SplitShipset');
+        
         this.getServerSystemOffset();
         //this.getTimeZone();
         //this.loadCsrList();

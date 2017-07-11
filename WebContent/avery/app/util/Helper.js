@@ -71,24 +71,31 @@ Ext.define('AOC.util.Helper',{
 			}
 		}
 	},
-	getVariableComboStores:function(variableName, store){
-		var response = Ext.Ajax.request({
-			async: false,
-			url: applicationContext+'/rest/orderconfigurations/variable/'+variableName
-		});
-		
-//		store.removeAll();
-		var jsonValue=Ext.decode(response.responseText);
-		var serviceStoreData = [];
-		
-		if(jsonValue.length > 0){
-			Ext.Array.forEach(jsonValue,function(item){
-				var service = [item];
-				serviceStoreData.push(service);
+	getAllVariableComboStore:function(variableName, autoLoad){
+		var store = Ext.data.StoreManager.lookup(variableName+'Id1');
+		if(Ext.isEmpty(store)) {
+			store =  Ext.create('Ext.data.JsonStore',{
+				storeId:variableName+'Id1',
+				fields : ['name','systemId', 'orgId'],
+				autoLoad:autoLoad,
+				proxy:{
+					type: 'rest',
+			        limitParam:'',
+			        startParam:'',
+			        pageParam:'',
+					url:applicationContext+'/rest/orderconfigurations/variable/all',
+					method:'GET',
+					extraParams:{variableName:variableName}
+				}
 			});
-			store.loadRawData(serviceStoreData);
 		}
 		return store;
+	},
+	loadAllVariableComboStore:function(variableName){
+		var store = this.getAllVariableComboStore(variableName);
+		if(store.getCount() == 0){
+			store.load();
+		}
 	},
 	getVariableName:function(dataIndex){
 		switch(dataIndex){
@@ -101,23 +108,24 @@ Ext.define('AOC.util.Helper',{
 			default:return'';
 		}
 	},
-	getVariableFieldStore:function(variableField){
-		return new Ext.data.Store({
-			autoLoad:false,
-			storeId:variableField+'Id1',
-			proxy : {
-				type : 'rest',
-				method:'GET',
-				limitParam:'',
-		        startParam:'',
-		        pageParam:'',
-				url: applicationContext+'/rest/orderconfigurations/orgid/systemid',
-				reader:{
-			        type:'json'
-			     }
-		    },
-			field:['name']
-		});
+	getVariableFieldStore:function(variableName){
+		return Ext.data.StoreManager.lookup(variableName+'Id1');
+//		return new Ext.data.Store({
+//			autoLoad:false,
+//			storeId:variableField+'Id1',
+//			proxy : {
+//				type : 'rest',
+//				method:'GET',
+//				limitParam:'',
+//		        startParam:'',
+//		        pageParam:'',
+//				url: applicationContext+'/rest/orderconfigurations/orgid/systemid',
+//				reader:{
+//			        type:'json'
+//			     }
+//		    },
+//			field:['name']
+//		});
 	},
 	
 	BulkUpdate:function(grid, selection, eOpts){

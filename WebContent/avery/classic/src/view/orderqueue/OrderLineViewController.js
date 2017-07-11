@@ -338,7 +338,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			len = columns.length,
 			gridView = me.getView();
     	
-    	
     	editor.grid.lastScrollLeftPosition = gridView.view.el.dom.scrollLeft;
     	
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue 
@@ -385,44 +384,68 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	}
     	return true;
     },
-    onerporgSelectChange:function(cmp,record){
-    	Ext.getBody().mask('Setting...');
+    
+    onERPORGSelect:function(cmp, record){
     	var me = this,
     		view = me.getView(),
     		currentRecord = view.editingPlugin.context.record,
-    		systemId = 0;
+    		systemId = 0,
+    		params = {systemId:currentRecord('targetSystem'), orgId:cmp.getValue()};
     	
-    	var response = Ext.Ajax.request({
-			async: false,
-			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+me.runTime.getOrderLineCurrenProductLine()+'/'+record.get('id')
-		});
-		var jsonValue=Ext.decode(response.responseText),refs=view.refs;
-		if(jsonValue.length > 0){
-		
-			var obj=jsonValue[0];
-			systemId=obj.systemId;
-			me.attachCombo('freightTerms',systemId,record.get('id'),'freightTermscombo',obj.freightTerm,'freightTerms');
-			me.attachCombo('splitShipset',systemId,record.get('id'),'splitShipsetCombo',obj.splitShipSetBy,'splitShipset');
-			me.attachCombo('shippingMethod',systemId,record.get('id'),'shippingMethodCombo',obj.shippingMethod,'shippingMethod');
-			
-			me.attachCombo('EndCustomer',systemId,record.get('id'),'EndCustomerCombo',obj.shippingMethod,'EndCustomer');
-			me.attachCombo('Ordertype',systemId,record.get('id'),'OrdertypeCombo',obj.shippingMethod,'Ordertype');
-			me.attachCombo('APOType',systemId,record.get('id'),'APOTypeCombo',obj.shippingMethod,'APOType');
-			//EndCustomerCombo
-			//csrReferenceField
-			currentRecord.set('divisionForInterfaceERPORG',record.get('id'));
-			currentRecord.set('artworkhold',obj.artworkHold);
-			currentRecord.set('CSR',obj.csrName);
-			currentRecord.set('invoicelineInstruction',obj.invoiceNote);
-			currentRecord.set('manufacturingNotes',obj.manufacturingNotes);
-			currentRecord.set('packingInstruction',obj.packingInstruction);
-			currentRecord.set('shipmark',obj.shippingMark);
-			currentRecord.set('splitShipset',obj.splitShipSetBy);
-			currentRecord.set('variableDataBreakdown',obj.variableDataBreakdown);
-			currentRecord.set('shippingInstructions',obj.shippingInstruction);
-			currentRecord.set('shippingMethod',obj.shippingMethod);
-		}
-		Ext.getBody().unmask();
+//    	var freightTermStore = AOC.util.Helper.getVariableComboStore('FreightTerms'),
+//    		splitShipsetStore = AOC.util.Helper.getVariableComboStore('SplitShipset'),
+//    		shippingMethodStore = AOC.util.Helper.getVariableComboStore('ShippingMethod'),
+//    		EndCustomer = AOC.util.Helper.getVariableComboStore('EndCustomer'),
+//    		Ordertype = AOC.util.Helper.getVariableComboStore('Ordertype'),
+//    		APOType = AOC.util.Helper.getVariableComboStore('APOType');
+//    	
+//    	Ext.getBody().mask('Loading...');
+//    	me.loadVariableStore(freightTermStore, params);
+//    	me.loadVariableStore(splitShipsetStore, params);
+//    	me.loadVariableStore(shippingMethodStore, params);
+//    	me.loadVariableStore(EndCustomer, params);
+//    	me.loadVariableStore(Ordertype, params);
+//    	me.loadVariableStore(APOType, params);
+//    	Ext.getBody().unmask();
+//    	var response = Ext.Ajax.request({
+//			async: false,
+//			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+me.runTime.getOrderLineCurrenProductLine()+'/'+record.get('id')
+//		});
+//		var jsonValue=Ext.decode(response.responseText),refs=view.refs;
+//		if(jsonValue.length > 0){
+//		
+//			var obj=jsonValue[0];
+//				systemId = obj.systemId;
+//			
+//			Helper.getVariableComboStore()
+//			
+//			me.attachCombo('freightTerms', systemId,record.get('id'),'freightTermscombo', obj.freightTerm,'freightTerms');
+//			me.attachCombo('splitShipset', systemId,record.get('id'),'splitShipsetCombo', obj.splitShipSetBy,'splitShipset');
+//			me.attachCombo('shippingMethod', systemId,record.get('id'),'shippingMethodCombo', obj.shippingMethod,'shippingMethod');
+//			
+//			me.attachCombo('EndCustomer',systemId,record.get('id'),'EndCustomerCombo',obj.shippingMethod,'EndCustomer');
+//			me.attachCombo('Ordertype',systemId,record.get('id'),'OrdertypeCombo',obj.shippingMethod,'Ordertype');
+//			me.attachCombo('APOType',systemId,record.get('id'),'APOTypeCombo',obj.shippingMethod,'APOType');
+//			//EndCustomerCombo
+//			//csrReferenceField
+//			currentRecord.set('divisionForInterfaceERPORG',record.get('id'));
+//			currentRecord.set('artworkhold',obj.artworkHold);
+//			currentRecord.set('CSR',obj.csrName);
+//			currentRecord.set('invoicelineInstruction',obj.invoiceNote);
+//			currentRecord.set('manufacturingNotes',obj.manufacturingNotes);
+//			currentRecord.set('packingInstruction',obj.packingInstruction);
+//			currentRecord.set('shipmark',obj.shippingMark);
+//			currentRecord.set('splitShipset',obj.splitShipSetBy);
+//			currentRecord.set('variableDataBreakdown',obj.variableDataBreakdown);
+//			currentRecord.set('shippingInstructions',obj.shippingInstruction);
+//			currentRecord.set('shippingMethod',obj.shippingMethod);
+//		}
+//		Ext.getBody().unmask();
+    },
+    loadVariableStore:function(store, params){
+    	store.load({
+    		params:params
+    	});
     },
 	attachCombo:function(variableName,systemId,orgId,referenceValue,valueToBeSet,recordRef){
 		var variableFieldStore=AOC.util.Helper.loadDependendVariableComboStore(variableName,systemId,orgId),
@@ -435,8 +458,30 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			variableFieldStore.getAt(1).set(recordRef,valueToBeSet);
 		}
 	},
+	variableComboColumnRenderer:function(v,h,l,k){
+		var view = this.getView();
+		
+		if(!Ext.isEmpty(v)){
+			var store = h.column.config.editor.store;
+			if(store){
+				var index = store.find('name',v,'',false,false,true);
+				if(index == -1){
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						view.invalidComboValid = true;
+						h.style = AOCLit.cellColor; // change cell color if value is not exist in store
+					}
+				}
+			}else{
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					view.invalidComboValid = true;
+					h.style = AOCLit.cellColor; //change cell color if value is not exist in store
+				}
+			}
+		}
+		return v;
+	},
 	comboColumnRenderer:function(v,h,l,k){
-		var view=this.getView();
+		var view = this.getView();
 		
 		if(!Ext.isEmpty(v)){
 			var store = h.column.config.editor.store;
@@ -457,7 +502,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		}
 		return v;
 	},
-	divisionForInterfaceERPORGColumnRenderer:function(v,h,l,k){
+	onDivisionEPORGExpand:function(field){
+		var view = this.getView(),
+			currentRecord = view.editingPlugin.context.record;
+		
+		field.store.filterBy(function(record){
+			if(record.get('id') == currentRecord.get('divisionForInterfaceERPORG')){
+				return true;
+			}
+			return false;
+		});
+	},
+	divisionForInterfaceERPORGColumnRenderer:function(v, h, l, k){
 		var orgCodeName = '';
 		var view = this.getView();
 		if(!Ext.isEmpty(v)){
@@ -472,7 +528,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 					}
 				}else{
-					orgCodeName = store.getAt(index).get('name');
+					orgCodeName = store.getAt(index).get('orgName');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
@@ -483,6 +539,95 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		}
 		return orgCodeName;
 	},
+	onVariableComboBlur:function(field){
+		var me = this,
+			fieldStore = field.store,
+			view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context,
+		   	fieldName = context.field,
+		   	rowIdx = context.rowIdx;
+		
+		var index = fieldStore.find('name', field.getValue(),'', false, false, true);
+		if(index == -1 || field.getValue() == 'None'){
+			field.setValue('');
+		  	context.store.getAt(rowIdx).set(fieldName,'');
+		}
+	},
+	onVariableComboFocus:function(field){
+		var me = this,
+		   	view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context,
+		   	rowIdx = context.rowIdx,
+		   	fieldStore = field.store,
+		   	currentRecord = context.record,
+		   	fieldName = context.field,
+		   	currentValue = field.getValue();
+		
+		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+        }
+		
+		var divisionEPORGStore = AOCRuntime.getStoreERPORG();
+		var eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
+			orgId = eporgRecord.get('orgCodeId');
+		
+		field.store.filterBy(function(record){
+			if(record.get('systemId') == currentRecord.get('systemId') && 
+					orgId == record.get('orgId')){
+				return true;
+			}
+			return false;
+		});
+		
+		if(!Ext.isEmpty(context.record.get(fieldName))){
+			//filter variable field store for current record systemId and Orgid
+			//remove value from current record and field if value is not exist in store
+			var index = fieldStore.find("name", currentValue,'', false, false, true);
+			if(index == -1){
+				field.setValue('');
+			  	context.store.getAt(rowIdx).set(fieldName,'');
+			}
+		}
+	},
+	getVariableStore:function(field, context){
+    	var me = this,
+    		record = context.record,
+    		dataIndex = field.dataIndex;
+			variableName = Helper.getVariableName(dataIndex);
+		
+		if(variableName){
+			var divEPORGStore = AOCRuntime.getStoreERPORG();
+			var eporgRec = divEPORGStore.getById(record.get('divisionForInterfaceERPORG'));
+			
+	    	field.store.load({
+	    		params:{
+					sysid:record.get('targetSystem').toString(),
+					orgid:eporgRec.get('id').toString(),
+					variablename:variableName
+				},
+				callback:function(records, operation, success){
+					var obj = {name:'None'},
+						fieldStore = field.store,
+						fieldName = field.dataIndex,
+						index = field.store.find('name', 'None','', false, false, true);
+			
+					if(index == -1){
+						fieldStore.insert(0, new Ext.data.Record(obj));
+					}
+					
+					if(!Ext.isEmpty(context.record.get(fieldName))){
+						var index = fieldStore.find("name", field.getValue(),'', false, false, true);
+						if(index == -1){
+							field.setValue('');
+						  	context.store.getAt(context.rowIdx).set(fieldName,'');
+						}
+					}
+				}
+	    	},field, context);
+    	}
+    },
 	onComboFocus:function(field){
 		var me = this,
 		   	view = me.getView(),
@@ -494,13 +639,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   	currentValue = field.getValue();
 		
 		if(!Ext.isEmpty(context.record.get(fieldName))){
-			var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
-			if(index == -1){
-				field.setValue('');
-			  	context.store.getAt(rowIdx).set(fieldName,'');
-			  
+			if(!fieldStore.isEmptyStore){
+				var index = fieldStore.find("variableFieldName", currentValue,'', false, false, true);
+				if(index == -1){
+					field.setValue('');
+				  	context.store.getAt(rowIdx).set(fieldName,'');
+				}
 			}
-		  }
+		}
 		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
 			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
         }
@@ -593,10 +739,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 					var jsonString = JSON.parse(response.responseText);
 					var newRecId = jsonString.id;
 					
-					view.store.load({params:{id:AOCRuntime.getCurrentConfig().orderQueueId}});
-					var record = view.store.getById(newRecId);
+					view.store.load({
+						params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
+						callback:function(records, operation, success){
+							var record = view.store.getById(newRecId);
+							view.view.select(record);
+						}
+					}, view, newRecId);
 					
-					view.view.select(record);
 					Ext.getBody().unmask();
 				},
 				failure:function(){

@@ -357,7 +357,7 @@ public class OrderConfiguration extends MainAbstractEntity {
 	@Path("/variable/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllVariableListByPropertyName(@Context UriInfo ui,
-			@Context HttpHeaders hh, @QueryParam("variablename") String variablfieldename) {
+			@Context HttpHeaders hh, @QueryParam("variableName") String variablfieldename) {
 		Response.ResponseBuilder rb = null;
 		Set<Map<String,Object>> valuesList = new HashSet<Map<String,Object>>();
 		List<OrderConfiguration> propertyValues = null;

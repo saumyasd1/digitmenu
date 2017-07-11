@@ -424,6 +424,7 @@ Ext.override(Ext.grid.RowEditor, {
     	var copyBtn = this.editingPlugin.editor.floatingButtons.queryById('copy');
     	if(field.dataIndex == 'additionalLabelInternalItem'){
     		copyBtn.show();
+    		field.focus(true, 100);
     	}else{
     		copyBtn.hide();
     	}
@@ -433,7 +434,7 @@ Ext.override(Ext.grid.RowEditor, {
         }
         this.activeField = field;
         this.context.setColumn(field.column);
-        field.column.getView().getScrollable().scrollIntoView(field.el);
+        //field.column.getView().getScrollable().scrollIntoView(field.el);
         if(this.context.grid && !Ext.isEmpty(this.context.grid.lastScrollLeftPosition)){
         	if(this.context.grid.lockedGrid){
         		this.context.grid.view.el.dom.scrollLeft = this.context.grid.lastScrollLeftPosition;
