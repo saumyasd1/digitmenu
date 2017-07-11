@@ -136,7 +136,6 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         }
     },
     CancelDetails: function () {
-    	debugger
     	var me = this,
     	    refs = me.getReferences(),
     	    winMode = refs.addEditUserWinForm.mode,
