@@ -3,7 +3,10 @@ package com.avery.storage.entities;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -349,6 +353,53 @@ public class OrderConfiguration extends MainAbstractEntity {
 		return rb.build();
 	}
 	
-	
-	
+	@GET
+	@Path("/variable/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllVariableListByPropertyName(@Context UriInfo ui,
+			@Context HttpHeaders hh, @QueryParam("variablename") String variablfieldename) {
+		Response.ResponseBuilder rb = null;
+		Set<Map<String,Object>> valuesList = new HashSet<Map<String,Object>>();
+		List<OrderConfiguration> propertyValues = null;
+		try{
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			OrderConfigurationService orderConfigurationService = (OrderConfigurationService) SpringConfig
+					.getInstance().getBean("orderConfigurationService");
+			propertyValues = orderConfigurationService.readByPropertyName(variablfieldename);
+			if (propertyValues == null)
+				throw new Exception("Unable to find values for propert name::"+variablfieldename);
+			
+			if(propertyValues.size() != 0){
+				for(int j=0;j<propertyValues.size();j++){
+					String properties = propertyValues.get(j).getPropertyValue();
+					Long systemId = propertyValues.get(j).getSystemId();
+					Long orgCodeId = propertyValues.get(j).getOrgCodeId();
+					String[] values = properties.split("\\|");
+					for(int i = 0; i < values.length; i++){
+						Map<String,Object> map = new HashMap<String, Object>();
+						map.put("name", values[i]);
+						map.put("systemId", systemId);
+						map.put("orgId", orgCodeId);
+						valuesList.add(map);
+					}
+				}
+			}
+			
+			mapper.writeValue(writer, valuesList);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching values for propert name::"+variablfieldename, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching values for propert name::"+variablfieldename, e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
 	}
+}
