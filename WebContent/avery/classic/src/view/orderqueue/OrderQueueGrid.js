@@ -194,7 +194,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.processedDate,
             align: 'left',
             width: 150,
-            dataIndex: 'createdDate'
+            dataIndex: 'createdDate',
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }, {
             text: AOCLit.senderEmailID,
             align: 'left',
@@ -231,7 +232,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.submittedDate,
             align: 'left',
             width: 150,
-            dataIndex: 'submittedDate'
+            dataIndex: 'submittedDate',
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }, {
             text: AOCLit.lastmodifiedby,
             align: 'left',
@@ -241,12 +243,14 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.lastmodifieddate,
             align: 'left',
             dataIndex: 'lastModifiedDate',
-            width: 180
+            width: 180,
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }, {
             text: AOCLit.acknowledgeDate,
             align: 'left',
             width: 180,
-            dataIndex: 'acknowledgementDate'
+            dataIndex: 'acknowledgementDate',
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }];
     },
     buildtbar: function () {

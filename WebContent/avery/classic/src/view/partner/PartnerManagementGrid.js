@@ -97,7 +97,8 @@ Ext.define('AOC.view.partner.PartnerManagementGrid', {
             text: AOCLit.lastmodifieddate,
             dataIndex: 'lastModifiedDate',
             align:'left',
-            width: 150
+            width: 150,
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }];
     },
     buildtbar: function () {

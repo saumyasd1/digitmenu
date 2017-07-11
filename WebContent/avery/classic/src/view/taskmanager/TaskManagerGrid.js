@@ -119,7 +119,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	            sortable: true,
 	            dataIndex: 'createdDate',
 	            align: 'right',
-	            width: 150
+	            width: 150,
+	            renderer:Helper.onDateRendererSiteTimeZoneSpecific
 	        }, {
 	            text: AOCLit.lastModifiedBy,
 	            dataIndex: 'lastModifiedBy',
@@ -127,7 +128,8 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	        }, {
 	            text: AOCLit.lastModifiedDate,
 	            dataIndex: 'lastModifiedDate',
-	            width: 150
+	            width: 150,
+	            renderer:Helper.onDateRendererSiteTimeZoneSpecific
 	        }]
         };
     },

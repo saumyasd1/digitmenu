@@ -115,7 +115,8 @@ Ext.define('AOC.view.users.manage.UserGrid', {
             align:'left',
             sortable: true,
             dataIndex: 'lastModifiedDate',
-            flex: 0.5
+            flex: 0.5,
+            renderer:Helper.onDateRendererSiteTimeZoneSpecific
         }];
     },
     buildtbar: function () {

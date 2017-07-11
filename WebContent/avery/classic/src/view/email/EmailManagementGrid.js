@@ -156,17 +156,20 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 text: AOCLit.receivedDate,
                 width: 150,
                 align: 'left',
-                dataIndex: 'receivedDate'
+                dataIndex: 'receivedDate',
+                renderer:Helper.onDateRendererSiteTimeZoneSpecific
             }, {
                 text: AOCLit.readDate,
                 width: 150,
                 align: 'left',
-                dataIndex: 'readDate'
+                dataIndex: 'readDate',
+                renderer:Helper.onDateRendererSiteTimeZoneSpecific
             }, {
                 text: AOCLit.acknowledgeDate,
                 width: 180,
                 align: 'left',
-                dataIndex: 'acknowledgementDate'
+                dataIndex: 'acknowledgementDate',
+                renderer:Helper.onDateRendererSiteTimeZoneSpecific
             }, {
                 text: AOCLit.lastmodifiedby,
                 width: 150,
@@ -176,7 +179,8 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 text: AOCLit.lastmodifieddate,
                 width: 180,
                 align: 'left',
-                dataIndex: 'lastModifiedDate'
+                dataIndex: 'lastModifiedDate',
+                renderer:Helper.onDateRendererSiteTimeZoneSpecific
             }
         ];
     },
