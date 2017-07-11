@@ -257,8 +257,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "fileOrderMatchLocation", length = 100)
 	private String fileOrderMatchLocation;// 100
 
-	// @Column(name = "fileOrderMatchRequired")
-	// private Boolean fileOrderMatchRequired;
+	@Column(name = "fileOrderMatchRequired")
+	private Boolean fileOrderMatchRequired;
 
 	@Column(name = "fileProductlineMatch", length = 100)
 	private String fileProductlineMatch;// 100
@@ -278,8 +278,8 @@ public class ProductLine extends MainAbstractEntity {
 //	@Column(name = "LLKK")
 //	private Boolean llkk;
 //
-//	@Column(name = "localBilling")
-//	private Boolean localBilling;
+	@Column(name = "localBilling")
+	private Boolean localBilling;
 //
 //	@Column(name = "miscCSRInstruction", length = 500)
 //	private String miscCSRInstruction;// 500
@@ -299,8 +299,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "orderSchemaType", length = 50)
 	private String orderSchemaType;// 50
 
-//	@Column(name = "others")
-//	private Boolean others;// Others (pls specify)
+	@Column(name = "others")
+	private Boolean others;// Others (pls specify)
 
 //	@Column(name = "preProcessPID", length = 50)
 //	private String preProcessPID;
@@ -314,17 +314,17 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "shipmentSample")
 	private Boolean shipmentSample;
 
-//	@Column(name = "waiveMOA")
-//	private Boolean waiveMOA;
+	@Column(name = "waiveMOA")
+	private Boolean waiveMOA;
 
 	@Column(name = "waiveMOQ")
 	private Boolean waiveMOQ;
 
-//	@Column(name = "localItem")
-//	private Boolean localItem;
-//
-//	@Column(name = "averyItem")
-//	private Boolean averyItem;
+	@Column(name = "localItem")
+	private Boolean localItem;
+
+	@Column(name = "averyItem")
+	private Boolean averyItem;
 
 	@Column(name = "fiberpercentagecheck", length = 100)
 	private String fiberpercentagecheck;
@@ -372,8 +372,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "defaultShipToCode", length = 255)
 	private String defaultShipToCode;
 
-//	@Column(name = "discountOffer")
-//	private Boolean discountOffer;
+	@Column(name = "discountOffer")
+	private Boolean discountOffer;
 
 	@Column(name = "shippingMark")
 	private Boolean shippingMark;
@@ -1717,13 +1717,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.fileOrderMatchLocation = fileOrderMatchLocation;
 	}
 
-	// public Boolean isFileOrderMatchRequired() {
-	// return fileOrderMatchRequired;
-	// }
-	//
-	// public void setFileOrderMatchRequired(Boolean fileOrderMatchRequired) {
-	// this.fileOrderMatchRequired = fileOrderMatchRequired;
-	// }
+	public Boolean isFileOrderMatchRequired() {
+		return fileOrderMatchRequired;
+	}
+	
+	public void setFileOrderMatchRequired(Boolean fileOrderMatchRequired) {
+		this.fileOrderMatchRequired = fileOrderMatchRequired;
+	}
 
 	public String getFileProductlineMatch() {
 		return fileProductlineMatch;
@@ -1774,13 +1774,13 @@ public class ProductLine extends MainAbstractEntity {
 //		this.llkk = llkk;
 //	}
 //
-//	public Boolean isLocalBilling() {
-//		return localBilling;
-//	}
-//
-//	public void setLocalBilling(Boolean localBilling) {
-//		this.localBilling = localBilling;
-//	}
+	public Boolean isLocalBilling() {
+		return localBilling;
+	}
+
+	public void setLocalBilling(Boolean localBilling) {
+		this.localBilling = localBilling;
+	}
 //
 //	public String getMiscCSRInstruction() {
 //		return miscCSRInstruction;
@@ -1830,13 +1830,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.orderSchemaType = orderSchemaType;
 	}
 
-//	public Boolean isOthers() {
-//		return others;
-//	}
-//
-//	public void setOthers(Boolean others) {
-//		this.others = others;
-//	}
+	public Boolean isOthers() {
+		return others;
+	}
+
+	public void setOthers(Boolean others) {
+		this.others = others;
+	}
 //
 //	public String getPreProcessPID() {
 //		return preProcessPID;
@@ -1862,13 +1862,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.shipmentSample = shipmentSample;
 	}
 
-//	public Boolean isWaiveMOA() {
-//		return waiveMOA;
-//	}
-//
-//	public void setWaiveMOA(Boolean waiveMOA) {
-//		this.waiveMOA = waiveMOA;
-//	}
+	public Boolean isWaiveMOA() {
+		return waiveMOA;
+	}
+
+	public void setWaiveMOA(Boolean waiveMOA) {
+		this.waiveMOA = waiveMOA;
+	}
 
 	public Boolean isWaiveMOQ() {
 		return waiveMOQ;
@@ -1878,21 +1878,21 @@ public class ProductLine extends MainAbstractEntity {
 		this.waiveMOQ = waiveMOQ;
 	}
 
-//	public Boolean isLocalItem() {
-//		return localItem;
-//	}
-//
-//	public void setLocalItem(Boolean localItem) {
-//		this.localItem = localItem;
-//	}
-//
-//	public Boolean isAveryItem() {
-//		return averyItem;
-//	}
-//
-//	public void setAveryItem(Boolean averyItem) {
-//		this.averyItem = averyItem;
-//	}
+	public Boolean isLocalItem() {
+		return localItem;
+	}
+
+	public void setLocalItem(Boolean localItem) {
+		this.localItem = localItem;
+	}
+
+	public Boolean isAveryItem() {
+		return averyItem;
+	}
+
+	public void setAveryItem(Boolean averyItem) {
+		this.averyItem = averyItem;
+	}
 
 	public String getCustomerItemIdentifierDescription() {
 		return customerItemIdentifierDescription;
@@ -1974,13 +1974,13 @@ public class ProductLine extends MainAbstractEntity {
 		this.defaultShipToCode = defaultShipToCode;
 	}
 
-//	public Boolean getDiscountOffer() {
-//		return discountOffer;
-//	}
-//
-//	public void setDiscountOffer(Boolean discountOffer) {
-//		this.discountOffer = discountOffer;
-//	}
+	public Boolean getDiscountOffer() {
+		return discountOffer;
+	}
+
+	public void setDiscountOffer(Boolean discountOffer) {
+		this.discountOffer = discountOffer;
+	}
 
 	public Boolean getShippingMark() {
 		return shippingMark;
