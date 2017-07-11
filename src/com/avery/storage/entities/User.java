@@ -570,11 +570,13 @@ public class User extends MainAbstractEntity {
 			user.setFileName(filename);
 			user.setFilePath(uploadDir);
 			userService.update(user);
-			responseMap.put("upload", "Successful");
+			responseMap.put("success", "true");
+			responseMap.put("filePath", uploadDir);
+			responseMap.put("fileName", filename);
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (IOException e) {
-			responseMap.put("upload", "Unsuccessful");
+			responseMap.put("success", "false");
 			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		}
