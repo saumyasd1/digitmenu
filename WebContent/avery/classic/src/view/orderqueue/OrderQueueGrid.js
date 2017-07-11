@@ -179,7 +179,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             	'afterrender': Helper.siteNameForSuperAdminOnly
             }
         },{
-            text: AOCLit.csrCode,
+            text: AOCLit.CSRName,
             sortable: true,
             dataIndex: 'csrCode',
             align: 'left',

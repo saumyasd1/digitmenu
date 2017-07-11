@@ -81,7 +81,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
 	            flex:1
             },
             {
-	        	text : AOCLit.csrCode,
+	        	text : AOCLit.CSRName,
 	            sortable : true,
                 align:'left',
 	            dataIndex:'assignCSRName',
