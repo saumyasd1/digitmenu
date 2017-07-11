@@ -137,45 +137,46 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     },
     CancelDetails: function () {
     	var me = this,
-    	    refs = me.getReferences(),
-    	    winMode = refs.addEditUserWinForm.mode,
-    	    systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
-    		newFlagArray = [];
-    		
-    	systemCsrCodeGridStore.each(function(rec, index){
-    		if(systemCsrCodeGridStore.getCount()>0){
-    			newFlagArray.push(rec.get('newFlag'));
-    		}
-    	});
-    	
-    	if (systemCsrCodeGridStore.getCount() > 0) {
-    		if(winMode == 'add'){
-	    	    Ext.getBody().unmask();
-	    	    this.getView().close();
-    		}
-    		else if (newFlagArray.indexOf(true) != -1) {
-    	        Ext.Msg.show({
-    	            title: 'Warning',
-    	            message: AOCLit.saveDataMsg,
-    	            buttons: Ext.Msg.YES,
-    	            icon: Ext.Msg.QUESTION,
-    	            fn: function (btn) {
-    	                if (btn === 'yes') {
-    	                    me.SaveDetails();
-    	                }
-    	            }
-    	        });
-    	    }else{
-	    	    Ext.getBody().unmask();
-	    	    this.getView().close();
-    	    }
-    	} else {
-    		if (winMode == 'add'){
-    			Ext.getBody().unmask();
-        	    this.getView().close();
-    		}
-    	    Helper.showToast('failure', AOCLit.atLeastOneCSRMsg);
-    	}
+	        refs = me.getReferences(),
+	        winMode = refs.addEditUserWinForm.mode,
+	        systemCsrCodeGridStore = refs.systemCsrCodeGrid.store,
+	        newFlagArray = [];
+
+	    if (AOCRuntime.getUser().role == 3) {
+	        systemCsrCodeGridStore.each(function (rec, index) {
+	            if (systemCsrCodeGridStore.getCount() > 0) {
+	                newFlagArray.push(rec.get('newFlag'));
+	            }
+	        });
+	
+	        if (systemCsrCodeGridStore.getCount() > 0) {
+	            if (winMode == 'add') {
+	                me.cancelBtn();
+	            } else if (newFlagArray.indexOf(true) != -1) {
+	                Ext.Msg.show({
+	                    title: 'Warning',
+	                    message: AOCLit.saveDataMsg,
+	                    buttons: Ext.Msg.YES,
+	                    icon: Ext.Msg.QUESTION,
+	                    fn: function (btn) {
+	                        if (btn === 'yes') {
+	                            me.SaveDetails();
+	                        }
+	                    }
+	                });
+	            } else {
+	            	me.cancelBtn();
+	            }
+	        } else {
+	            if (winMode == 'add') {
+	            	me.cancelBtn();
+	            }
+	            Helper.showToast('failure', AOCLit.atLeastOneCSRMsg);
+	        }
+	    } else {
+	    	me.cancelBtn();
+	    }
+
     },
     onAddUserAfterRender: function (win) {
     	var me = this;
@@ -681,5 +682,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     		codeOwnerCombo.setValue('Y');
     		insertBtn.setDisabled(false);
     	}
+    },
+    cancelBtn: function(){
+    	Ext.getBody().unmask();
+        this.getView().close();
     }
 });
