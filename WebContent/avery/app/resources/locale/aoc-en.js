@@ -544,5 +544,5 @@ Ext.define('AOC.lang.lit',{
 	codeOwnerNDeleteMsg: 'Are you sure you want to delete this CSR Code from Grid?',
 	codeOwnerYDeleteMsg: 'Deleting the CSR Code will delete the relationship of the CS Manager & Clerk. Still want to continue?',
 	atLeastOneCSRMsg:'Please add at least one CSR code in grid',
-	saveDataMsg:'Before closing window please save the data.Press Yes to save Data'
+	saveDataMsg:'Before closing window please save the data.Press Yes to save data'
 });
