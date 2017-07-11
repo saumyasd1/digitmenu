@@ -840,27 +840,24 @@ Ext.define('AOC.util.Helper',{
 		}
 	},
 	onDateRendererSiteTimeZoneSpecific:function(v, metadata, record){
-		var siteId = record.get('siteId'),
-			estOffset = -240,
-			hktOffset = -480*(-1),
-			vitnamOffset = -420*(-1),
-			cstOffset = -480*(-1);
-		
-		var time = new Date(v).getTime(),
-			utcTime = time - (estOffset*60*1000);
-		
-		switch(siteId){
-		case 2: var siteTime = utcTime + (hktOffset*60*1000);
-				
-				return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-		case 3: var siteTime = utcTime + (cstOffset*60*1000);
-		
-				return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-				
-		case 4: var siteTime = utcTime + (vitnamOffset*60*1000);
+		if(!Ext.isEmpty(v)){
+			var siteId = record.get('siteId'),
+				estOffset = AOCRuntime.getTimeOffset(),
+				hktOffset = -480*(-1),
+				vitnamOffset = -420*(-1),
+				cstOffset = -480*(-1);
 			
-			return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-		
+			var time = new Date(v).getTime(),
+				utcTime = time - (estOffset);
+			
+			switch(siteId){
+				case 2: var siteTime = utcTime + (hktOffset*60*1000);
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+				case 3: var siteTime = utcTime + (cstOffset*60*1000);
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+				case 4: var siteTime = utcTime + (vitnamOffset*60*1000);
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+			}
 		}
 	},
 	getDefaultProuctLineFieldParams:function(){

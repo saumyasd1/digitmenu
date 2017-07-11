@@ -296,7 +296,8 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadCodeStore('orderfilequeue');
         Helper.loadCodeStore('orderline');
         Helper.loadCodeStore('orderemailqueue');
-        this.getTimeZone();
+        this.getServerSystemOffset();
+        //this.getTimeZone();
         //this.loadCsrList();
     },
     loadCsrList:function(){
@@ -319,6 +320,17 @@ Ext.define('AOC.controller.MenuController', {
                     timeZone = data.timeZone;
 
                 AOCRuntime.setTimeZone(timeZone);
+            }
+        });
+    },
+    getServerSystemOffset: function () {
+        Ext.Ajax.request({
+            url: applicationContext + '/rest/users/server/offset',
+            success: function (response) {
+                var data = JSON.parse(response.responseText),
+                    timeZoneOffset = data.offset;
+
+                AOCRuntime.setTimeOffset(timeZoneOffset);
             }
         });
     }
