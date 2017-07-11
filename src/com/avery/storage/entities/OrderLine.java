@@ -457,6 +457,9 @@ public class OrderLine extends MainAbstractEntity{
 	@Transient
 	private String targetSystemName;
 	
+	@Transient
+	private Long systemId;
+	
 	public String getOrderFileOrderType() {
 		return orderFileOrderType;
 	}
@@ -1490,6 +1493,14 @@ public class OrderLine extends MainAbstractEntity{
 //	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
 //		this.listSalesOrderLine = listSalesOrderLine;
 //	}
+	
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -1522,7 +1533,7 @@ public class OrderLine extends MainAbstractEntity{
 		return rb.build();
 
 	}
-	
+
 	@Override
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;

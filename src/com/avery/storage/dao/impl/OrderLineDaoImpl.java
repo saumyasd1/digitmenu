@@ -76,6 +76,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					OrderSystemInfo orderSystemInfo = (OrderSystemInfo) session.get(OrderSystemInfo.class, orderSystemInfoId);
 					SystemInfo systemInfo = orderSystemInfo.getVarSystem();
 					orderLine.setTargetSystemName(systemInfo.getName());
+					orderLine.setSystemId(systemInfo.getId());
 				}
 
 			}
