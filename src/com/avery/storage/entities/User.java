@@ -580,6 +580,30 @@ public class User extends MainAbstractEntity {
 		}
 		return rb.build();
 	}
+	
+	@GET
+	@Path("/server/offset")
+	public Response getServerTimeZoneOffset(@Context UriInfo ui, @Context HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		int offset = 0;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			offset = TimeZone.getDefault().getRawOffset();
+			responseMap.put("offset", offset);
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
 
 	/* Business Logic Ends */
 
