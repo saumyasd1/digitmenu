@@ -99,9 +99,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     xtype: 'image',
                     anchor: '40%',
                     reference:'profileImage',
-                    bind:{
-                    	src:!me.bindFlag ? '{userInfo.fileSrc}' : '/test'
-                    },
+//                    bind:{
+//                    	src:!me.bindFlag ? '{userInfo.fileSrc}' : '/test'
+//                    },
                     margin: me.mode == 'edit'? '20 0 0 0' : '35 0 0 0',
                     width: 160,
                     height: 160,

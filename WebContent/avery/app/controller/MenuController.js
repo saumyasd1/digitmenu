@@ -252,7 +252,10 @@ Ext.define('AOC.controller.MenuController', {
         	title:'My Profile', 
         	mode:'view'
     	});
-        var viewPort = this.getViewport();
+        var viewPort = this.getViewport(),
+        	profileImage = win.lookupReference('profileImage');
+		
+		profileImage.setSrc(Helper.getFilePath());
         viewPort.add(win).showBy(Ext.getBody());
     },
     onManageUserMenuItemClick: function () {

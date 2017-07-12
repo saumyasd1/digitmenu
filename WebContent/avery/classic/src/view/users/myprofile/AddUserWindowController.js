@@ -181,6 +181,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
     onAddUserAfterRender: function (win) {
     	var me = this;
     		me.newCSRCodeArray = [];
+		
     	if(win.mode != 'view'){
     		win.mask(AOCLit.pleaseWaitTitle);
 	        var roleName = win.lookupReference('roleName'),
@@ -238,12 +239,15 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         fileReader.onload = function (e, b) {
             var fileContent = e.target.result;
             if(AOCRuntime.getUser().id == me.getView().ID){
+            	var profileImage = me.getView().lookupReference('profileImage');
+        		
+        		profileImage.setSrc(fileContent);
             	Helper.setUserProfileIcon(fileContent);
             }
         }
         fileReader.readAsDataURL(file);
     },
-    uploadFiles: function (userId,roleId,userEmail, filePath,file) {
+    uploadFiles: function (userId, roleId, userEmail, filePath, file) {
         var me = this;
         	refs = me.getReferences(),
             addEditUserWin = refs.addEditUserWinForm,
@@ -278,6 +282,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
                     fileArray.pop();
                     AOCRuntime.getUser().filePath = filePath;
                     AOCRuntime.getUser().fileName = fileName;
+                    //Helper.updateProfileInfo();
+                    
+                    AOCRuntime.getUser().fileSrc = '';
+                    Helper.setCookie("userinfo", JSON.stringify(AOCRuntime.getUser()), 30);
                     break;
                 }
             }
@@ -592,6 +600,10 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         
         viewForm.hide();
         editForm.show();
+        
+        var profileImage = this.getView().lookupReference('profileImage');
+        profileImage.setSrc(Helper.getFilePath());
+        
         editForm.loadRecord(new Ext.data.Record(userinfo));
         refs['siteName'].setDisabled(true);
         
