@@ -621,7 +621,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 						var index = fieldStore.find("name", field.getValue(),'', false, false, true);
 						if(index == -1){
 							field.setValue('');
-						  	context.store.getAt(context.rowIdx).set(fieldName,'');
+						  	context.store.getAt(context.rowIdx).set(fieldName, '');
 						}
 					}
 				}

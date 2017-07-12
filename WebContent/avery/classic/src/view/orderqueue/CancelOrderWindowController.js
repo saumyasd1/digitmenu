@@ -5,40 +5,49 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
     runTime: AOC.config.Runtime,
     cancelOrder: function() {
     	Ext.getBody().mask('Cancelling...');
-        var id = this.runTime.getOrderQueueId(),
+        var id = AOCRuntime.getOrderQueueId(),
             me = this;
+        
         var commentArea = this.getView().lookupReference('commentArea');
         var cancelComboValue = this.getView().lookupReference('cancelOrderCombo');
         var comment = cancelComboValue.getValue()+(commentArea.getValue().replace(/\n/g, '::')? ' <br>'+ commentArea.getValue().replace(/\n/g, '::') : '');
-        var parameters = '{\"status\":\"' + AOCLit.cancelStatusOrderQueue + '\"';
-        if (comment != '') {
-            parameters = parameters + ',\"comment\":\"' + comment + '\"';
+        
+        var parameters = {
+    		status:AOCLit.cancelStatusOrderQueue
         }
-        parameters = parameters + '}';
+        if (comment != '') {
+            parameters.comment = comment
+        }
+        
         Ext.Ajax.request({
             url: applicationContext + '/rest/orders/cancelorder/' + id,
             method: 'PUT',
             jsonData: parameters,
             success: function(response, opts) {
                 var orderQueueView= Ext.ComponentQuery.query('#orderQueueViewItemId')[0];
-                var activeItem=orderQueueView.getLayout().getActiveItem();
-                if(activeItem.xtype.indexOf('orderline')!=-1){
+                var activeItem = orderQueueView.getLayout().getActiveItem();
+                
+                if(activeItem.xtype.indexOf('orderline') != -1){
                 	var orderlineexpandablegrid = activeItem.down('grid'),
-	                validateButton = activeItem.lookupReference('validateButton'),
-	                bulkUpdateButton=activeItem.lookupReference('bulkUpdateButton'),
-	                salesViewOrderbutton= activeItem.lookupReference('salesViewOrderbutton'),
-	                salesOrderbutton=activeItem.lookupReference('salesOrderbutton'),
-	                cancelOrderButton=activeItem.lookupReference('cancelOrderButton'),
-	                form=activeItem.lookupReference('form');
+		                validateButton = activeItem.lookupReference('validateButton'),
+		                bulkUpdateButton= orderlineexpandablegrid.lookupReference('bulkUpdateButton'),
+		                salesViewOrderbutton = activeItem.lookupReference('salesViewOrderbutton'),
+		                salesOrderbutton = activeItem.lookupReference('salesOrderbutton'),
+		                cancelOrderButton = activeItem.lookupReference('cancelOrderButton'),
+		                form = orderlineexpandablegrid.lookupReference('form');
+                	
                 	validateButton.disable();
                 	bulkUpdateButton.disable();
                 	salesViewOrderbutton.disable();
                 	salesOrderbutton.disable();
                 	cancelOrderButton.disable();
                 	form.disable();
-                	me.runTime.setAllowOrderLineEdit(false);
-                	orderlineexpandablegrid.store.load();
-                	Ext.Msg.alert('',AOCLit.orderCancelSuccessAlert);
+                	
+                	AOCRuntime.setAllowOrderLineEdit(false);
+                	
+                	Helper.loadOrderLineGridStore(orderlineexpandablegrid.store, AOC.config.Runtime.getOrderQueueId());
+                	Helper.showToast('success', AOCLit.orderCancelSuccessAlert)
+                	
                 	orderQueueView.getLayout().setActiveItem(0);
                 }else{
                 	activeItem.getStore().load();
