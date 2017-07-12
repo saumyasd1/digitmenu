@@ -96,7 +96,7 @@ Ext.define('AOC.view.home.HomePageController', {
 			}else{   // csr manager
 				if(userIds.length > 0){
 					parameters.assignCSR = userIds.join();
-				}else{
+				}else if(codeArray[0] != 'All'){
 					var codeArray = userInfo.systemCsrNonCodeOwner.split(','),
 						len = codeArray.length,
 						assignCSRStore = csrCombo.store,
@@ -109,6 +109,8 @@ Ext.define('AOC.view.home.HomePageController', {
 						}
 					}
 					parameters.assignCSR = userId.join();
+				}else{
+					parameters.assignCSR = '';
 				}
 			}
 		}
