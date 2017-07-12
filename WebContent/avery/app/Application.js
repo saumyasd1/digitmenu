@@ -49,7 +49,7 @@ Ext.define('AOC.Application', {
    	 		index=1;
    	 		AOCRuntime.setUser(JSON.parse(userInfo));
    	 		
-   	 		this.getController('MenuController').loadStores()
+   	 		this.getController('MenuController').loadStores();
    	 	}
        	myAppGlobal=this;
        	Ext.create('AOC.view.Viewport', {

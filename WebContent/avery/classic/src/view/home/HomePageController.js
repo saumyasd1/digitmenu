@@ -92,7 +92,12 @@ Ext.define('AOC.view.home.HomePageController', {
 			parameters.assignCSR = userIds.join();
 		}else if(roleId == userRoles.CSR){ //csr
 			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
-				parameters.assignCSR = userIds.length > 0 ? userIds.join() : userInfo.id.toString();
+				if(codeArray[0] != 'All'){
+					parameters.assignCSR = userIds.length > 0 ? userIds.join() : userInfo.id.toString();
+				}else{
+					parameters.assignCSR = '';
+				}
+				
 			}else{   // csr manager
 				if(userIds.length > 0){
 					parameters.assignCSR = userIds.join();
@@ -340,9 +345,9 @@ Ext.define('AOC.view.home.HomePageController', {
 		for(var i = 0; i < len; i++){
 			if(codeArray[i] == 'All'){
 				userIds = [];
-				csrCombo.store.each(function(data){
-					userIds.push(data.get('userId'));
-				});
+//				csrCombo.store.each(function(data){
+//					userIds.push(data.get('userId'));
+//				});
 			}else{
 				var record = csrCombo.store.getById(codeArray[i]);
 				if(record){
