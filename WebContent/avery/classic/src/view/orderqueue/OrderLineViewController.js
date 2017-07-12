@@ -729,7 +729,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var id = currentRecord.get('id'),
 			additional = obj.additionalLabelInternalItem;
 		
-		if(!Ext.isEmpty(additional)){
+		if(!Ext.isEmpty(additional.trim())){
 			Ext.getBody().mask(AOCLit.pleaseWait);
 			Ext.Ajax.request({
 				method:'GET',

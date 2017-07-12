@@ -4,7 +4,6 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 'AOC.view.advsearch.OrderQueueAdvanceSearch', 'AOC.view.orderqueue.OrderLineExpandableGrid'],
     runTime: AOC.config.Runtime,
     cancelOrder: function() {
-    	Ext.getBody().mask('Cancelling...');
         var id = AOCRuntime.getOrderQueueId(),
             me = this;
         
@@ -19,6 +18,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
             parameters.comment = comment
         }
         
+        Ext.getBody().mask(AOCLit.pleaseWait);
         Ext.Ajax.request({
             url: applicationContext + '/rest/orders/cancelorder/' + id,
             method: 'PUT',
