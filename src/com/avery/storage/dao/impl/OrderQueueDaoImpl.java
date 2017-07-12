@@ -328,7 +328,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					userIds.add(String.valueOf(systemCsrCode));
 				}
 				if (userIds.size() > 0)
-					criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+					criteria.add(Restrictions.in("csrCode", userIds));
 			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
 				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
 				criteria.add(Restrictions.in("csrCode", userIds));
