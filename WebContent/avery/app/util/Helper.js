@@ -855,15 +855,15 @@ Ext.define('AOC.util.Helper',{
 				vitnamOffset = -420*(-1),
 				cstOffset = -480*(-1);
 			
-			var time = new Date(v).getTime(),
-				utcTime = time - (estOffset);
+			var time = new Date(v).getTime();
+//				utcTime = time - (estOffset);
 			
 			switch(siteId){
-				case 2: var siteTime = utcTime + (hktOffset*60*1000);
+				case 2: var siteTime = time + (hktOffset*60*1000);
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-				case 3: var siteTime = utcTime + (cstOffset*60*1000);
+				case 3: var siteTime = time + (cstOffset*60*1000);
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-				case 4: var siteTime = utcTime + (vitnamOffset*60*1000);
+				case 4: var siteTime = time + (vitnamOffset*60*1000);
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
 			}
 		}
