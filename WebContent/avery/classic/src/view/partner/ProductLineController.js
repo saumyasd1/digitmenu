@@ -591,21 +591,25 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var keywordStr = '',
 			cellStr = '';
 		
-		if(keyword.indexOf('AND') > -1){
-			var strA = keyword.replace(/ /g,''),
-				keywordStr = strA.replace('AND', '_&&_');
+		if(!Ext.isEmpty(keyword)){
+			if(keyword.indexOf('AND') > -1){
+				var strA = keyword.replace(/ /g,''),
+					keywordStr = strA.replace('AND', '_&&_');
+			}
+			if(keyword.indexOf('OR') > -1){
+				var strA = keyword.replace(/ /g,''),
+					keywordStr = strA.replace('OR', '_._');
+			}
 		}
-		if(keyword.indexOf('OR') > -1){
-			var strA = keyword.replace(/ /g,''),
-				keywordStr = strA.replace('OR', '_._');
-		}
-		if(cellNo.indexOf('AND') > -1){
-			var strA = cellNo.replace(/ /g,''),
-				cellStr = strA.replace('AND', '_&&_');
-		}
-		if(cellNo.indexOf('OR') > -1){
-			var strA = cellNo.replace(/ /g,''),
-				cellStr = strA.replace('OR', '_._');
+		if(!Ext.isEmpty(cellNo)){
+			if(cellNo.indexOf('AND') > -1){
+				var strA = cellNo.replace(/ /g,''),
+					cellStr = strA.replace('AND', '_&&_');
+			}
+			if(cellNo.indexOf('OR') > -1){
+				var strA = cellNo.replace(/ /g,''),
+					cellStr = strA.replace('OR', '_._');
+			}
 		}
 		if(Ext.isEmpty(keywordStr)){
 			keywordStr = keyword;
