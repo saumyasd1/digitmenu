@@ -83,7 +83,7 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	        },{
 	            text: AOCLit.siteName,
 	            sortable: true,
-	            dataIndex: 'siteName',
+	            dataIndex: 'siteId',
 	            width: 120,
 	            listeners: {
 	            	'afterrender': Helper.siteNameForSuperAdminOnly

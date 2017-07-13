@@ -172,7 +172,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
         },{
             text: AOCLit.siteName,
             sortable: true,
-            dataIndex: 'siteName',
+            dataIndex: 'siteId',
             align: 'left',
             width: 150,
             listeners: {

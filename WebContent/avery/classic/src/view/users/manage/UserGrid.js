@@ -100,7 +100,7 @@ Ext.define('AOC.view.users.manage.UserGrid', {
         	text:'Site Name',
         	align:'left',
         	sortable:true,
-        	dataIndex:'siteName',
+        	dataIndex:'siteId',
         	flex:0.5,
         	hidden: AOCRuntime.getUser().role == 1 ? false : true,
 			renderer:function(v, metadata, rec){

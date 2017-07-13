@@ -94,7 +94,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             },{
             	text:AOCLit.siteName,
             	sortable:true,
-            	dataIndex:'siteName',
+            	dataIndex:'siteId',
             	flex:1,
                 listeners: {
                 	'afterrender': Helper.siteNameForSuperAdminOnly

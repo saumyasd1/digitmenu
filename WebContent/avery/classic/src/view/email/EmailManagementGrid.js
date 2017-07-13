@@ -147,7 +147,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 sortable: true,
                 align: 'left',
                 width: 120,
-                dataIndex: 'siteName',
+                dataIndex: 'siteId',
                 align: 'left',
                 listeners: {
                 	'afterrender': Helper.siteNameForSuperAdminOnly
