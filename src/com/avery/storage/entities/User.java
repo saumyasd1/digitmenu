@@ -98,8 +98,8 @@ public class User extends MainAbstractEntity {
 	@Transient
 	private String csrNonCodeOwnerName;
 
-//	@Transient
-//	private String siteName;
+	@Transient
+	private String siteName;
 
 	@Transient
 	private String roleName;
@@ -755,13 +755,13 @@ public class User extends MainAbstractEntity {
 		this.roleName = roleName;
 	}
 
-//	public String getSiteName() {
-//		return siteName;
-//	}
-//
-//	public void setSiteName(String siteName) {
-//		this.siteName = siteName;
-//	}
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
 
 	public List<SystemCsrCode> getVarSystemCsrCode() {
 		return varSystemCsrCode;
