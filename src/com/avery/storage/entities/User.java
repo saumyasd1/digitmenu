@@ -98,8 +98,8 @@ public class User extends MainAbstractEntity {
 	@Transient
 	private String csrNonCodeOwnerName;
 
-	@Transient
-	private String siteName;
+//	@Transient
+//	private String siteName;
 
 	@Transient
 	private String roleName;
@@ -151,13 +151,13 @@ public class User extends MainAbstractEntity {
 				for (int i = 0; i < listofPL.size(); i++) {
 					User currentuser = (User) listofPL.get(i);
 					String lastmodifiedUserId = currentuser.getLastModifiedBy();
-					if(currentuser.getSiteId() != null)
-					{
-						int siteId=currentuser.getSiteId();
-						Site site = siteService.read((long)siteId);
-						if(site != null)
-							currentuser.setSiteName(site.getName());
-					}
+//					if(currentuser.getSiteId() != null)
+//					{
+//						int siteId=currentuser.getSiteId();
+//						Site site = siteService.read((long)siteId);
+//						if(site != null)
+//							currentuser.setSiteName(site.getName());
+//					}
 					if (lastmodifiedUserId != null) {
 						String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 						currentuser.setLastModifiedBy(LastModifiedByName);
@@ -755,13 +755,13 @@ public class User extends MainAbstractEntity {
 		this.roleName = roleName;
 	}
 
-	public String getSiteName() {
-		return siteName;
-	}
-
-	public void setSiteName(String siteName) {
-		this.siteName = siteName;
-	}
+//	public String getSiteName() {
+//		return siteName;
+//	}
+//
+//	public void setSiteName(String siteName) {
+//		this.siteName = siteName;
+//	}
 
 	public List<SystemCsrCode> getVarSystemCsrCode() {
 		return varSystemCsrCode;

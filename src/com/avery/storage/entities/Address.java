@@ -138,8 +138,8 @@ public class Address extends MainAbstractEntity {
 	@Transient
 	private Long orgCodeId;
 
-	@Transient
-	private String siteName;
+//	@Transient
+//	private String siteName;
 
 	@Transient
 	private Long partnerId;
@@ -171,15 +171,15 @@ public class Address extends MainAbstractEntity {
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
 
 			List listOfTask = (List) entitiesMap.get("address");
-			for (int i = 0; i < listOfTask.size(); i++) {
-				Address addresh = (Address) listOfTask.get(i);
-				if (addresh.getSiteId() > 0) {
-					int siteId1 = addresh.getSiteId();
-					Site site = siteService.read((long) siteId1);
-					if (site != null)
-						addresh.setSiteName(site.getName());
-				}
-			}
+//			for (int i = 0; i < listOfTask.size(); i++) {
+//				Address addresh = (Address) listOfTask.get(i);
+//				if (addresh.getSiteId() > 0) {
+//					int siteId1 = addresh.getSiteId();
+//					Site site = siteService.read((long) siteId1);
+//					if (site != null)
+//						addresh.setSiteName(site.getName());
+//				}
+//			}
 			Map responceMap = new HashMap();
 			;
 			responceMap.put("address", listOfTask);
@@ -535,13 +535,13 @@ public class Address extends MainAbstractEntity {
 		this.orgCodeId = orgCodeId;
 	}
 
-	public String getSiteName() {
-		return siteName;
-	}
-
-	public void setSiteName(String siteName) {
-		this.siteName = siteName;
-	}
+//	public String getSiteName() {
+//		return siteName;
+//	}
+//
+//	public void setSiteName(String siteName) {
+//		this.siteName = siteName;
+//	}
 
 	public Long getPartnerId() {
 		return partnerId;

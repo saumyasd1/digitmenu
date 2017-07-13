@@ -112,8 +112,8 @@ public class Partner extends MainAbstractEntity {
 	@Column(name = "orgCode", length = 50)
 	private String orgCode;
 	
-	@Transient
-	private String siteName;
+//	@Transient
+//	private String siteName;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -300,13 +300,13 @@ public class Partner extends MainAbstractEntity {
 		this.varProductLine = varProductLine;
 	}
 	
-	public void setSitename(String siteName) {
-		this.siteName = siteName;
-	}
-	
-	public String getSiteName() {
-		return siteName;
-	}
+//	public void setSitename(String siteName) {
+//		this.siteName = siteName;
+//	}
+//	
+//	public String getSiteName() {
+//		return siteName;
+//	}
 
 //	public List<SalesOrder> getListSalesOrderLine() {
 //		return listSalesOrderLine;
@@ -375,13 +375,13 @@ public class Partner extends MainAbstractEntity {
 					String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
 					currentPartner.setLastModifiedBy(LastModifiedByName);
 					}
-					if(currentPartner.getSiteId()!=null)
-					{
-						int siteId1=currentPartner.getSiteId();
-						Site site = siteService.read((long)siteId1);
-						if(site != null)
-						currentPartner.setSitename(site.getName());
-					}
+//					if(currentPartner.getSiteId()!=null)
+//					{
+//						int siteId1=currentPartner.getSiteId();
+//						Site site = siteService.read((long)siteId1);
+//						if(site != null)
+//						currentPartner.setSitename(site.getName());
+//					}
 					listOfPR.add(currentPartner);
 				}
 				responseMap.put("partners", listOfPR);

@@ -177,8 +177,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Transient
 	private String csrName;
 	
-	@Transient
-	private String siteName;
+//	@Transient
+//	private String siteName;
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -217,13 +217,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 						{
 							orderEmailQueuelsit.add(orderQueue);
 						}
-						if(orderQueue.getSiteId()!=null)
-						{
-							int siteId=orderQueue.getSiteId();
-							Site site = siteService.read((long)siteId);
-							if(site != null)
-							orderQueue.setSitename(site.getName());
-						}
+//						if(orderQueue.getSiteId()!=null)
+//						{
+//							int siteId=orderQueue.getSiteId();
+//							Site site = siteService.read((long)siteId);
+//							if(site != null)
+//							orderQueue.setSitename(site.getName());
+//						}
 					}
 				responcemap.put("emailqueue", orderEmailQueuelsit);
 				responcemap.put("totalCount", entitiesMap.get("totalCount"));
@@ -272,13 +272,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					String LastModifiedByName = userService.getUsernameById(lastModifiedId);
 					orderEmailQueue.setLastModifiedBy(LastModifiedByName);
 				}
-				if(orderEmailQueue.getSiteId()!=null)
-				{
-					int siteId=orderEmailQueue.getSiteId();
-					Site site = siteService.read((long)siteId);
-					if(site != null)
-					orderEmailQueue.setSitename(site.getName());
-				}
+//				if(orderEmailQueue.getSiteId()!=null)
+//				{
+//					int siteId=orderEmailQueue.getSiteId();
+//					Site site = siteService.read((long)siteId);
+//					if(site != null)
+//					orderEmailQueue.setSitename(site.getName());
+//				}
 			}
 			responceMap.put("emailqueue", listOfTask);
 			responceMap.put("totalCount", entitiesMap.get("totalCount"));
@@ -1140,13 +1140,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		this.siteId = siteId;
 	}
 	
-	public void setSitename(String siteName) {
-		this.siteName = siteName;
-	}
-	
-	public String getSiteName() {
-		return siteName;
-	}
+//	public void setSitename(String siteName) {
+//		this.siteName = siteName;
+//	}
+//	
+//	public String getSiteName() {
+//		return siteName;
+//	}
 
 	public String getEmailSubjectPartnerMatch() {
 		return emailSubjectPartnerMatch;

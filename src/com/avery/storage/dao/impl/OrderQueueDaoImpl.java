@@ -118,7 +118,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varProductLine.productLineType"), "productLineType")
 				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
-				.add(Projections.property("csrCode"), "csrCode")
+				.add(Projections.property("orderemailqueue.assignCSR"), "csrCode")
 				// .add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("varProductLine.defaultShipToCode"), "defaultShipToCode")
@@ -330,10 +330,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					userIds.add(String.valueOf(systemCsrCode));
 				}
 				if (userIds.size() > 0)
-					criteria.add(Restrictions.in("csrCode", userIds));
+					criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
 			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
 				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
-				criteria.add(Restrictions.in("csrCode", userIds));
+				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
 			}
 
 			if (filterSiteId != null && !"".equals(filterSiteId) && !filterSiteId.isEmpty()) {
@@ -421,7 +421,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String assignCSR = searchMap.get("assignCSR");
 			if (assignCSR != null && !"".equals(assignCSR)) {
 				List<String> assignCSRList = ApplicationUtils.convertStringToList(assignCSR);
-				criteria.add(Restrictions.in("csrCode",assignCSRList));
+				criteria.add(Restrictions.in("orderemailqueue.assignCSR",assignCSRList));
 			}
 
 			String emailQueueId = searchMap.get("emailQueueId");
