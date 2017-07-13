@@ -320,6 +320,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	var me = this,
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0],
+			currentRecordStatus = currentRecord.get('Status') ;
 			rboName = currentRecord.get('RBOName'),
 			orderTrack = currentRecord.get('id'),
 			userDate = Ext.util.Format.date(new Date(),'Y-m-d'),
@@ -329,7 +330,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	
     	var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
-            url : applicationContext + '/rest/orders/download/materialreport'
+            url : currentRecordStatus == AOCLit.waitingForCSRStatusOrderQueue ? applicationContext + '/rest/orders/download/materialreportCsAwating' : applicationContext + '/rest/orders/download/materialreport'
             
         });
      	form.submit({
