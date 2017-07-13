@@ -231,8 +231,8 @@ public class ExcelUtils {
 				Cell cell8 = row.createCell(++columncellCount);
 				cell8.setCellValue(csrName);
 				Cell cell19 = row.createCell(++columncellCount);
-				if(obj.getOrderReceivedDate() != null)
-					date = obj.getOrderReceivedDate();
+				if(obj.getCustomerRequestDate() != null)
+					date = obj.getCustomerRequestDate();
 					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(orderTrack);
