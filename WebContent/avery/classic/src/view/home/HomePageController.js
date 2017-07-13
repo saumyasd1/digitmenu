@@ -11,7 +11,6 @@ Ext.define('AOC.view.home.HomePageController', {
     		grid = me.getView(),
     		store = grid.store,
     		columns = grid.columns,
-    		endDate = new Date(),
     		days =0,
     		dataIndex = columns[cellIndex].dataIndex,
     		status=[];
@@ -35,7 +34,6 @@ Ext.define('AOC.view.home.HomePageController', {
     			break;
     	}
     	
-		
 		if(record.get('orderType') == 'Total Count'){
 			store.each(function(rec){
 				status.push(rec.get('statusCode'));
@@ -43,82 +41,44 @@ Ext.define('AOC.view.home.HomePageController', {
 		}else{
 			status.push(record.get('statusCode'));
 		}
-		status = status.join(',');
 		
 		var parameters = {
 			days:days,
-			Status:status
+			Status:status.join()
 		};
+		
 		var userInfo = AOCRuntime.getUser(),
 			roleId = userInfo.role,
 			refs = me.getReferences(),
 			csrCombo = refs.csrCombo,
 			siteCombo = refs.siteCombo,
-			userRoles = AOCLit.userRole;
+			userRoles = AOCLit.userRole,
+			siteId = '';
 		
 		var codeArray = csrCombo.getValue(),
 			len = codeArray.length,
 			userIds = [];
 		
 		for(var i = 0; i < len; i++){
-			if(codeArray[i] == 'All'){
-//				userIds = [];
-//				csrCombo.store.each(function(data){
-//					if(data.get('userId')){
-//						userIds.push(data.get('userId'));
-//					}
-//				});
-//				break;
-			}
-			else{
+			if(codeArray[i] != 'All'){
 				var csrRec = csrCombo.store.getById(codeArray[i]);
 				if(csrRec && !Ext.isEmpty(csrRec.get('userId'))){
 					userIds.push(csrRec.get('userId'));
 				}
-			}
+			} 
 		}
+		parameters.assignCSR = userIds.join();
 		
-		if(roleId == userRoles.superAdmin){ //super admin
-			var siteComboValue = siteCombo.getValue() ? siteCombo.getValue() : '';
-			if(siteComboValue == 'All'){
-				siteComboValue = '';
-			}
-			parameters.siteId = siteComboValue;
-			if(userIds.length > 0){
-				parameters.assignCSR = userIds.join();
-				parameters.siteId = siteComboValue ? siteComboValue : '';
-			}
-		}else if(roleId == userRoles.siteManager){ //site admin
-			parameters.assignCSR = userIds.join();
-		}else if(roleId == userRoles.CSR){ //csr
-			if(Ext.isEmpty(userInfo.systemCsrNonCodeOwner)){ //csr clerk
-				if(codeArray[0] != 'All'){
-					parameters.assignCSR = userIds.length > 0 ? userIds.join() : userInfo.id.toString();
-				}else{
-					parameters.assignCSR = '';
-				}
-				
-			}else{   // csr manager
-				if(userIds.length > 0){
-					parameters.assignCSR = userIds.join();
-				}else if(codeArray[0] != 'All'){
-					var codeArray = userInfo.systemCsrNonCodeOwner.split(','),
-						len = codeArray.length,
-						assignCSRStore = csrCombo.store,
-						userId = [];
-				  
-					for(var i = 0; i < len; i++){
-						var rec = assignCSRStore.getById(codeArray[i]);
-						if(rec){
-							userId.push(rec.get('userId'));
-						}
-					}
-					parameters.assignCSR = userId.join();
-				}else{
-					parameters.assignCSR = '';
-				}
+		if(siteCombo.isVisible()){
+			var siteComboValue = siteCombo.getValue();
+			if(siteComboValue != 'All'){
+				siteId = siteComboValue;
 			}
 		}
+		else{
+			siteId = userInfo.siteId;
+		}
+		parameters.siteId = siteId;
 		
 		if(record.get('type') == 'orderqueue'){
 			me.filterOrderQueueList(Ext.JSON.encode(parameters));
@@ -196,7 +156,6 @@ Ext.define('AOC.view.home.HomePageController', {
 	
 	onRefreshClick:function(btn){
     	var grid = this.getView();
-    	
     	grid.store.load();
     },
    
@@ -251,35 +210,23 @@ Ext.define('AOC.view.home.HomePageController', {
 				var systemCsrNonCodeOwner = AOCRuntime.getUser().systemCsrNonCodeOwner,
 					systemCsrCodeOwner = AOCRuntime.getUser().systemCsrCodeOwner,
 					codeOwners = systemCsrNonCodeOwner+','+systemCsrCodeOwner;
+				
 				if(AOCRuntime.getUser().role == AOCLit.userRole.CSR){
-//					if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-						var csrCodeArray = codeOwners.split(','),
-							userCsrCodeArray=[], len = csrCodeArray.length;
-						for(var i = 0 ; i < len ; i++){
-							var index = csrCombo.store.find('id',csrCodeArray[i],'',false, false, true);
-							if(index != -1){
-								userCsrCodeArray.push(csrCodeArray[i]);
-							}
+					var csrCodeArray = codeOwners.split(','),
+						userCsrCodeArray=[], len = csrCodeArray.length;
+					for(var i = 0 ; i < len ; i++){
+						var index = csrCombo.store.find('id',csrCodeArray[i],'',false, false, true);
+						if(index != -1){
+							userCsrCodeArray.push(csrCodeArray[i]);
 						}
-						csrCombo.setValue(userCsrCodeArray.join());
-//					}
-//					else{
-//						var codeArray = systemCsrCodeOwner.split(','),
-//							csrCodeArray = [], len = codeArray.length;
-//						for(var i = 0 ; i < len ; i++){
-//							var index = csrCombo.store.find('id',codeArray[i],'',false, false, true);
-//							if(index != -1){
-//								csrCodeArray.push(codeArray[i]);
-//							}
-//						}
-//							csrCombo.setValue(csrCodeArray.join());
-//					}
+					}
+					csrCombo.setValue(userCsrCodeArray.join());
 				}
 				csrCombo.store.insert(0, new Ext.data.Record({csrName:'All', id:'All'}));
 			}
 		}, csrCombo);
 	},
-	getCSRList:function(store, siteId){
+	getCSRList:function(siteId){
 		var me = this,
 			refs = me.getView().getReferences(),
 			csrCombo = refs.csrCombo;
@@ -294,30 +241,37 @@ Ext.define('AOC.view.home.HomePageController', {
 			}
 		}, csrCombo);
 	},
-	onChangeSiteCSRCodeCombo: function(obj, newValue, oldValue, eOpts ){
-		var me = this,
-			refs = me.getView().getReferences(),
-			siteCombo = refs.siteCombo,
-			csrCombo = refs.csrCombo,
-			siteComboValue = siteCombo.getValue(),
-			csrComboValue = csrCombo.getValue();
-		
-		var	csrComboValueString = csrComboValue.join();
-		if(!Ext.isEmpty(csrComboValueString)){
-			me.filterHomeList(obj, newValue, oldValue);
-		}else if(siteCombo.isVisible() && !Ext.isEmpty(siteComboValue)){
-			if(siteCombo.getValue() == 'All'){
-				me.getCSRList(csrCombo.store, '');
-				me.loadDefaultHomeList();
-				return;
-			}
-			me.filterHomeList(obj, newValue, oldValue);
+	onSpecialKeyClick:function(cmp, e){
+		if (e.getKey() == e.ENTER) {
+            this.filterHomeList(cmp);
+        }
+	},
+	onCSRComboBeforeSelect:function(obj, record, index){
+		if(record.get('id') == 'All' && obj.getValue().length > 0){
+			obj.reset();
+			return true;
 		}
-		else{
-			me.loadDefaultHomeList();
+		if(obj.getValue().length == 1 && obj.getValue()[0] == 'All'){
+			return false;
 		}
 	},
-	filterHomeList:function(obj, newValue, oldValue){
+	onCSRComboSelect:function(obj){
+		if(!Ext.isEmpty(obj.getValue())){
+			this.filterHomeList(obj);
+		}
+	},
+	onSiteComboSelect: function(obj, eOpts ){
+		var me = this,
+			siteComboValue = obj.getValue();
+		
+		if(siteComboValue == 'All'){
+			me.getCSRList('');
+			me.loadDefaultHomeList();
+			return;
+		}
+		me.filterHomeList(obj);
+	},
+	filterHomeList:function(obj){
 		var me = this,
 			refs = me.getReferences(),
 			siteCombo = refs.siteCombo,
@@ -326,10 +280,8 @@ Ext.define('AOC.view.home.HomePageController', {
 			siteId = '',
 			csrComboValue = csrCombo.getValue();
 		
-		if(siteCombo.isVisible() && siteCombo.getValue() == 'All'){
-			siteId = '';
-		}else if(siteCombo.isVisible()){
-			siteId = siteCombo.getValue();
+		if(siteCombo.isVisible()){
+			siteId = siteCombo.getValue() != 'All' ? siteCombo.getValue() : '';
 		}else{
 			siteId = userinfo.siteId;
 		}
@@ -373,11 +325,10 @@ Ext.define('AOC.view.home.HomePageController', {
 		}
 			
 		me.setFilters(values);
-        csrCombo.enable();
         
-        if(currentItemRef == 'siteCombo' && (oldValue!= newValue)){
+        if(currentItemRef == 'siteCombo'){
         	csrCombo.reset();
-        	me.getCSRList(csrCombo.store, siteId);
+        	me.getCSRList(siteId);
         }
 	},
 	onAfterRenderSiteDisplayfield: function(field){
@@ -399,36 +350,34 @@ Ext.define('AOC.view.home.HomePageController', {
 	},
 	loadDefaultHomeList:function(){
 		var me = this,
-			refs = me.getReferences(),
 			userObj = AOCRuntime.getUser(),
-			currentUserId = userObj.id,
 			currentUserSiteId = userObj.siteId,
 			roleId = userObj.role,
 			systemCsrNonCodeOwner = userObj.systemCsrNonCodeOwner,
+			systemCsrCodeOwner = userObj.systemCsrCodeOwner,
 			grid = me.getView(),
 			gridStore = grid.store;
 		
 		gridStore.clearFilter();
-		if(roleId == AOCLit.userRole.superAdmin){
-			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
-			me.onRefreshClick();
-		}else if(roleId == AOCLit.userRole.siteManager){
-			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
-			gridStore.load();
-		}else if(roleId == AOCLit.userRole.CSR){
-			var	values = {filterSiteId : currentUserSiteId, filterCsrCode: currentUserId};
+		if(roleId == AOCLit.userRole.CSR){
+			var	values = {filterSiteId : currentUserSiteId, filterCsrCode: userObj.id};
 			
 			//CSR Manager functionality
 			if(!Ext.isEmpty(systemCsrNonCodeOwner)){
-				values.filterCsrCode = systemCsrNonCodeOwner;
+				var codeOwnerArray = systemCsrNonCodeOwner.split(',');
+				codeOwnerArray = systemCsrCodeOwner ? codeOwnerArray.concat(systemCsrCodeOwner.split(',')) : codeOwnerArray.concat([]);
+				values.filterCsrCode = codeOwnerArray.join();
 				values.csrManagerFlag = true; 
 			}
 			me.setFilters(values);
 		}
+		else{
+			gridStore.proxy.extraParams = { siteId: currentUserSiteId };
+			me.onRefreshClick();
+		}
 	},
 	setFilters:function(values){
 		var me = this,
-			refs = me.getReferences(),
 			grid = me.getView(),
 			store = grid.store;
 		

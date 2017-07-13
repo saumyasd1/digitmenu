@@ -69,10 +69,12 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 				value:'All',
 				queryMode :'local',
 				reference:'siteCombo',
+				enterKeyEvents:true,
 				store:Ext.data.StoreManager.lookup('siteStoreId') != null ? Ext.data.StoreManager.lookup('siteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'siteStoreId'}),
 				listeners : {
 					afterrender:'onAfterRenderSiteCombo',
-					select:'onChangeSiteCSRCodeCombo'
+					select:'onSiteComboSelect'
+					//specialkey:'onSpecialKeyClick'
 				}
 			},
 			{
@@ -81,21 +83,26 @@ Ext.define('AOC.view.home.OrderQueueStatusList', {
 			    width:450,
 			    displayField:'csrName',
 			    valueField:'id',
-//			    value:'All',
 			    labelStyle:Settings.config.defaultFormLabelStyle,
 				labelSeparator:'',
 				labelWidth:70,
+				grow:true,
+				growMax:150,
+				scrollable:true,
 				multiSelect:true,
 			    filterPickList: true,
-			    createNewOnEnter: true,
+//			    createNewOnEnter: true,
 			    publishes:'value',
 			    queryMode: 'local',
 			    reference:'csrCombo',
 				name:'assignCSR',
+				enterKeyEvents:true,
 				store:Ext.data.StoreManager.lookup('homePageCSRStoreId') != null ? Ext.data.StoreManager.lookup('homePageCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'homePageCSRStoreId'}),
 				listeners:{
-					change:'onChangeSiteCSRCodeCombo',
-					afterrender:'onCSRComboAfterRender'
+					select:'onCSRComboSelect',
+					afterrender:'onCSRComboAfterRender',
+					beforeselect:'onCSRComboBeforeSelect'
+					//specialkey:'onSpecialKeyClick'
 				}
 			},
 			{

@@ -4,7 +4,10 @@ Ext.define('AOC.store.HomePageOders', {
     model  : 'AOC.model.HomePageOder',
     autoLoad:false,
     proxy : {
-		type : 'ajax',
+		type : 'rest',
+		limitParam:'',
+        startParam:'',
+        pageParam:'',
 		url : applicationContext+'/rest/ordertrend/homelist',
 		reader:{
 	        type:'json'
