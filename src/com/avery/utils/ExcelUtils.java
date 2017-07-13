@@ -178,7 +178,7 @@ public class ExcelUtils {
 				Cell cell5 = row.createCell(++columncellCount);
 				cell5.setCellValue(obj.getCustomerItemNumber());
 				Cell cell6 = row.createCell(++columncellCount);
-				cell6.setCellValue(obj.getCustomerItemNumber());
+				cell6.setCellValue(obj.getOracleItemNumber());
 				Cell cell7 = row.createCell(++columncellCount);
 				cell7.setCellValue(obj.getCustomerOrderedQty());
 				Cell cell8 = row.createCell(++columncellCount);
