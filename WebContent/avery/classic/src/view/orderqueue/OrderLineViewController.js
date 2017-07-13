@@ -568,6 +568,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   	fieldStore = field.store,
 		   	currentRecord = context.record,
 		   	fieldName = context.field,
+		   	systemId = currentRecord.get('systemId'),
 		   	currentValue = field.getValue();
 		
 		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
@@ -579,12 +580,11 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			orgId = eporgRecord.get('orgCodeId');
 		
 		field.store.filterBy(function(record){
-			if(record.get('systemId') == currentRecord.get('systemId') && 
-					orgId == record.get('orgId')){
+			if(record.get('systemId') == systemId && orgId == record.get('orgId')){
 				return true;
 			}
 			return false;
-		});
+		}, systemId);
 		
 		if(!Ext.isEmpty(context.record.get(fieldName))){
 			//filter variable field store for current record systemId and Orgid
