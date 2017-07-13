@@ -144,7 +144,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     						cancelBtn.setDisabled(true);
     					}
     					//enable/disable material report btn
-    					if(status == AOCLit.waitingForCSRStatusOrderQueue || (status == AOCLit.soGeneratedStatusOrderQueue) || (status == AOCLit.soSubmittedStatusOrderQueue) || (status == AOCLit.bookedStatusOrderQueue)){
+    					if(status == AOCLit.waitingForCSRStatusOrderQueue || (status == AOCLit.soGeneratedStatusOrderQueue) || (status == AOCLit.soSubmittedStatusOrderQueue)){
     						materialReportBtn.setDisabled(false);
     					}else{
     						materialReportBtn.setDisabled(true);
@@ -181,6 +181,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	//setting parameters at runtime   
         AOCRuntime.setOrderQueueId(id);
         AOCRuntime.setCurrentOrderQueuePartnerId(currentRecord.get('partnerId'));
+        AOCRuntime.setCurrentDefaultBillToCode(currentRecord.get('defaultBillToCode'));
+        AOCRuntime.setCurrentDefaultShipToCode(currentRecord.get('defaultShipToCode'));
         AOCRuntime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
         AOCRuntime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
         AOCRuntime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
@@ -320,7 +322,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	var me = this,
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0],
-			currentRecordStatus = currentRecord.get('Status') ;
 			rboName = currentRecord.get('RBOName'),
 			orderTrack = currentRecord.get('id'),
 			userDate = Ext.util.Format.date(new Date(),'Y-m-d'),
@@ -330,7 +331,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     	
     	var form = Ext.create('Ext.form.Panel', { 
             standardSubmit: true,   
-            url : currentRecordStatus == AOCLit.waitingForCSRStatusOrderQueue ? applicationContext + '/rest/orders/download/materialreportCsAwating' : applicationContext + '/rest/orders/download/materialreport'
+            url : applicationContext + '/rest/orders/download/materialreport'
             
         });
      	form.submit({
