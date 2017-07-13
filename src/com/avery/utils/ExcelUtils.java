@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SalesOrder;
@@ -142,6 +143,19 @@ public class ExcelUtils {
         }
 	}
 	
+	public static ByteArrayOutputStream createOrderLineMaterialReportExcelFile(List<OrderLine> orderLine, String timeZone, String time, String date, String rboName, String orderTrack) throws IOException{
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Sheet 1");
+        String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
+				 "CSR name", "Customer request date", "AOC Order Track #"};
+        addHeader(sheet, headerNames);
+        getMaterialReportDataOrderline(sheet, orderLine, headerNames.length, timeZone, time, date, rboName, orderTrack);
+        try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
+            workbook.write(outputStream);
+		return outputStream;
+        }
+	}
+	
 	private static void getMaterialReportData(XSSFSheet sheet,List<SalesOrder> salesOrder,int headerLength, String timeZone, String time, String date1, String rboName){
 		try {
 			int rowIndex=1,columncellCount=0;
@@ -188,6 +202,54 @@ public class ExcelUtils {
 		}
 		
 	}
+
+	private static void getMaterialReportDataOrderline(XSSFSheet sheet,List<OrderLine> orderLine,int headerLength, String timeZone, String time, String date1, String rboName,String orderTrack){
+		try {
+			int rowIndex=1,columncellCount=0;
+			Iterator<OrderLine> CrunchifyIterator = orderLine.iterator();
+			Date date = null;
+			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
+			while (CrunchifyIterator.hasNext()) {
+				OrderLine obj=CrunchifyIterator.next();
+				String csrName="";
+				csrName=userService.getUsernameById(obj.getCsr());
+				Row row = sheet.createRow(rowIndex);
+				Cell cell1 = row.createCell(columncellCount);
+				cell1.setCellValue(time);
+				Cell cell2 = row.createCell(++columncellCount);
+				cell2.setCellValue(date1);
+				Cell cell3 = row.createCell(++columncellCount);
+				cell3.setCellValue(rboName);
+				Cell cell4 = row.createCell(++columncellCount);
+				cell4.setCellValue(obj.getPoNumber());
+				Cell cell5 = row.createCell(++columncellCount);
+				cell5.setCellValue(obj.getCustomerItemNumber());
+				Cell cell6 = row.createCell(++columncellCount);
+				cell6.setCellValue(obj.getAveryItemNumber());
+				Cell cell7 = row.createCell(++columncellCount);
+				cell7.setCellValue(obj.getCustomerOrderedQty());
+				Cell cell8 = row.createCell(++columncellCount);
+				cell8.setCellValue(csrName);
+				Cell cell19 = row.createCell(++columncellCount);
+				if(obj.getOrderReceivedDate() != null)
+					date = obj.getOrderReceivedDate();
+					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
+				Cell cell10 = row.createCell(++columncellCount);
+				cell10.setCellValue(orderTrack);
+				columncellCount=0;
+				rowIndex++;
+			}
+			for(int i=0;i<=headerLength;i++){
+				sheet.autoSizeColumn(i);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	/**
 	 * Method to convert date using given timezone
 	 * 
