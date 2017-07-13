@@ -177,6 +177,9 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             width: 150,
             listeners: {
             	'afterrender': Helper.siteNameForSuperAdminOnly
+            },
+            renderer:function(v, metadata, rec){
+            	return Helper.getSiteName(v);
             }
         },{
             text: AOCLit.CSRName,

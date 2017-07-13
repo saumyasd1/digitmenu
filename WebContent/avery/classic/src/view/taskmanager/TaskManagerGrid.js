@@ -87,7 +87,10 @@ Ext.define('AOC.view.taskmanager.TaskManagerGrid', {
 	            width: 120,
 	            listeners: {
 	            	'afterrender': Helper.siteNameForSuperAdminOnly
-	            }
+	            },
+	            renderer:function(v, metadata, rec){
+                	return Helper.getSiteName(v);
+                }
 	        }, {
 	            text: AOCLit.from,
 	            dataIndex: 'senderEmailId',

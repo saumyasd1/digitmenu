@@ -103,6 +103,9 @@ Ext.define('AOC.view.users.manage.UserGrid', {
         	dataIndex:'siteName',
         	flex:0.5,
         	hidden: AOCRuntime.getUser().role == 1 ? false : true,
+			renderer:function(v, metadata, rec){
+            	return Helper.getSiteName(v);
+            }	
         },{
             text: 'Last Modified By',
             align:'left',
