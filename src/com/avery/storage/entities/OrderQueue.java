@@ -53,7 +53,6 @@ import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderEmailQueueMixin;
 import com.avery.storage.MixIn.OrderFileAttachmentMixIn;
-import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
@@ -62,7 +61,6 @@ import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
-import com.avery.storage.service.OrderLineService;
 import com.avery.storage.service.OrderQueueService;
 import com.avery.storage.service.SalesOrderService;
 import com.avery.storage.service.SiteService;
@@ -177,6 +175,12 @@ public class OrderQueue extends MainAbstractEntity {
 
 	@Transient
 	private String rboName;
+	
+	@Transient
+	private String defaultBillToCode;
+	
+	@Transient
+	private String defaultShipToCode;
 
 	@Transient
 	private String productLineType;
@@ -741,8 +745,8 @@ public class OrderQueue extends MainAbstractEntity {
 			}
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			/*mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
-			mapper.addMixIn(SalesOrderDetail.class, SalesOrderDetailMixIn.class);*/
+			mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
+			mapper.addMixIn(SalesOrderDetail.class, SalesOrderDetailMixIn.class);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 			SalesOrderService salesOrderService = (SalesOrderService) SpringConfig
 					.getInstance().getBean("salesOrderService");
@@ -770,72 +774,6 @@ public class OrderQueue extends MainAbstractEntity {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	@GET
-	@Path("/download/materialreportCsAwating")
-	@Produces(MediaType.MULTIPART_FORM_DATA)
-	public Response getMaterialReportCsAwating(@Context UriInfo ui, @Context HttpHeaders hh) {
-		
-		String time="", date="", entityId="", rboName1="";
-		String timeZone = TimeZone.getDefault().getID();
-		List<OrderLine> orderLine = null;
-		try {
-			MultivaluedMap<String, String> queryParamMap1 = ui
-					.getQueryParameters();
-
-			String queryString = (String) queryParamMap1.getFirst("query");
-			if (queryString != null) {
-				Map<String, String> queryParamMap = ApplicationUtils.convertJSONtoMaps(queryString);
-			if (queryParamMap.get("timezone") != null
-					&& !"".equals(queryParamMap.get("timezone")))
-				timeZone = queryParamMap.get("timezone");
-			if(queryParamMap.get("localTime") != null && !"".equals(queryParamMap.get("localTime")))
-			{
-				time=queryParamMap.get("localTime");
-			}
-			if(queryParamMap.get("rboName") != null && !"".equals(queryParamMap.get("rboName")))
-			{
-				rboName1=queryParamMap.get("rboName");
-			}
-			if(queryParamMap.get("localDate") != null && !"".equals(queryParamMap.get("localDate")))
-			{
-				date=queryParamMap.get("localDate");
-			}
-			if (queryParamMap.get("orderTrack") != null
-					&& !"".equals(queryParamMap.get("orderTrack")))
-				 entityId = queryParamMap.get("orderTrack");
-			}
-			StringWriter writer = new StringWriter();
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(OrderLine.class, OrderLineMixIn.class);
-			mapper.addMixIn(OrderLineDetail.class, OrderLineMixIn.class);
-			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-			OrderLineService orderLineService = (OrderLineService) SpringConfig
-					.getInstance().getBean("orderLineService");
-			orderLine = orderLineService.readAllByOrderID(Long.parseLong(entityId));
-			if (orderLine == null)
-				throw new Exception("Unable to find Orders");
-			ByteArrayOutputStream outputStream;
-				outputStream = ExcelUtils.createOrderLineMaterialReportExcelFile(orderLine, timeZone,  time, date, rboName1,entityId);
-			byte[] bytes = outputStream.toByteArray();
-			String fileName = "Material_Report .xls";
-			return Response
-					.ok(bytes, MediaType.APPLICATION_OCTET_STREAM)
-					.header("content-disposition",
-							"attachment; filename = " + fileName).build();
-			
-		} catch (WebApplicationException ex) {
-			throw ex;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
-		}
-
-	}
-	
 	public static Map<String, String> getCodeMap() {
 		return codeMap;
 	}
@@ -1337,6 +1275,22 @@ public class OrderQueue extends MainAbstractEntity {
 
 	public void setCsrCode(String csrCode) {
 		this.csrCode = csrCode;
+	}
+	
+	public String getDefaultBillToCode() {
+		return defaultBillToCode;
+	}
+
+	public void setDefaultBillToCode(String defaultBillToCode) {
+		this.defaultBillToCode = defaultBillToCode;
+	}
+
+	public String getDefaultShipToCode() {
+		return defaultShipToCode;
+	}
+
+	public void setDefaultShipToCode(String defaultShipToCode) {
+		this.defaultShipToCode = defaultShipToCode;
 	}
 
 }
