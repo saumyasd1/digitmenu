@@ -222,15 +222,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         	insertBillAddress = false,
         	insertShipAddress = false,
         	runTime = AOC.config.Runtime;
-    	
+    	var billToCode = runTime.getCurrentDefaultBillToCode();
+    	var shipToCode = runTime.getCurrentDefaultShipToCode();
     	obj.id = currentRecord.id;
     	
     	if(idx == rowIdx){
+    		if(billToCode == 'true'){
     		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!='' && currentRecord.getModified('oracleBillToSiteNumber')==''){
     			insertBillAddress=true;
     	  }
+    		}
+    		if(shipToCode =='true'){
     		if(currentRecord.isModified('oracleShipToSiteNumber') &&  currentRecord.get('oracleShipToSiteNumber')!=null && currentRecord.get('oracleShipToSiteNumber')!='' && currentRecord.getModified('oracleShipToSiteNumber')==''){
     			insertShipAddress=true;
+    		}
     		}
 		}
     	
