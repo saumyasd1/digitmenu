@@ -144,7 +144,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     						cancelBtn.setDisabled(true);
     					}
     					//enable/disable material report btn
-    					if(status == AOCLit.waitingForCSRStatusOrderQueue || (status == AOCLit.soGeneratedStatusOrderQueue) || (status == AOCLit.soSubmittedStatusOrderQueue)){
+    					if(status == AOCLit.waitingForCSRStatusOrderQueue || (status == AOCLit.soGeneratedStatusOrderQueue) || (status == AOCLit.soSubmittedStatusOrderQueue) || (status == AOCLit.bookedStatusOrderQueue)){
     						materialReportBtn.setDisabled(false);
     					}else{
     						materialReportBtn.setDisabled(true);
