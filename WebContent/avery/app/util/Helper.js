@@ -424,6 +424,14 @@ Ext.define('AOC.util.Helper',{
 		}
 		return false;
 	},
+	isEmailQueueAssignCSREnabled:function(status){
+		var currentStatus = Number(status),
+			orderEmailProcessedId = Number(AOCLit.orderEmailProcessed);
+		if(currentStatus >= orderEmailProcessedId){
+			return false;
+		}
+		return true;
+	},
 	advancedSearch:function(view,values){
 		var store = view.contextGrid.store;
 		

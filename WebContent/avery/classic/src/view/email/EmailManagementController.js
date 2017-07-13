@@ -63,6 +63,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
     						emailViewOrderMenuItem = menu.queryById('emailViewOrderMenuItem'),
 	    					emailAssignCSRMenuItem = menu.queryById('emailAssignCSRMenuItem'),
 	    					moveToTaskManagerMenuItem = menu.queryById('moveToTaskManagerMenuItem'),
+	    					emailAssignCSRMenuItem = menu.queryById('emailAssignCSRMenuItem'),
 	    					status = AOCRuntime.getCurrentEmailQueueStatus(),
     						orderQueueCount = AOCRuntime.getCurrentOrderQueueCount();
     					
@@ -83,6 +84,12 @@ Ext.define('AOC.view.email.EmailManagementController', {
     						moveToTaskManagerMenuItem.setDisabled(false);
             			}else{
             				moveToTaskManagerMenuItem.setDisabled(true);
+            			}
+    					//enable/disable assignCSR btn
+    					if(Helper.isEmailQueueAssignCSREnabled(status)){
+    						emailAssignCSRMenuItem.setDisabled(false);
+            			}else{
+            				emailAssignCSRMenuItem.setDisabled(true);
             			}
     					
     				}
