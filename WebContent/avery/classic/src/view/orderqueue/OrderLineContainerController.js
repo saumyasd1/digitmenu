@@ -91,7 +91,13 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     			if(column.getEditor(rec)){
     				var fieldStore = column.getEditor(rec).store;
 	    			if(fieldStore && !Ext.isEmpty(rec.get(dataIndex))){
-	    				var index = fieldStore.find("variableFieldName",rec.get(dataIndex),'',false,false,true);
+	    				
+	    				if(dataIndex == 'csr'){
+	    					index = fieldStore.find('variableFieldName', rec.get(dataIndex),'', false, false, true);
+	    				}else{
+	    					index = fieldStore.find('name', rec.get(dataIndex),'', false, false, true);
+	    				}
+	    				
 	    				if(index == -1){
 	    					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
 	    						rowIdx++;
@@ -300,11 +306,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		        		proceed=false;
 		        		var orderlinecontainer = me.getView(),
 			                validateButton = orderlinecontainer.lookupReference('validateButton'),
-			                bulkUpdateButton = orderlinecontainer.lookupReference('bulkUpdateButton'),
+			                bulkUpdateButton = grid.lookupReference('bulkUpdateButton'),
 			                salesViewOrderbutton = orderlinecontainer.lookupReference('salesViewOrderbutton'),
 			                salesOrderbutton = orderlinecontainer.lookupReference('salesOrderbutton'),
 			                cancelOrderButton = orderlinecontainer.lookupReference('cancelOrderButton'),
-			                form = orderlinecontainer.lookupReference('form');
+			                form = grid.lookupReference('form');
 		        		
 	                	validateButton.disable();
 	                	salesViewOrderbutton.enable();

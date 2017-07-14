@@ -862,6 +862,7 @@ Ext.define('AOC.util.Helper',{
 				hktCstOffset = 480 *(60*1000),
 				vitnamOffset = 420 *(60*1000);
 			
+			v = v.replace(' ', 'T');
 			var time = new Date(v).getTime();
 //				utcTime = time - (estOffset);
 			
@@ -874,6 +875,7 @@ Ext.define('AOC.util.Helper',{
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
 			}
 		}
+		return '';
 	},
 	getDefaultProuctLineFieldParams:function(){
 		return {
