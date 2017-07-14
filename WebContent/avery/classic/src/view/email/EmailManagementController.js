@@ -169,7 +169,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 			    		params:{
 			    			userId: AOCRuntime.getUser().id,
 			    			changeStatus:false,
-			    			lastModifiedBy:Helper.setLastModifiedBy
+			    			lastModifiedBy:Helper.setLastModifiedBy()
 			    		},
 					    success : function(response, opts) {
 					    	assignCsrWin.unmask();
