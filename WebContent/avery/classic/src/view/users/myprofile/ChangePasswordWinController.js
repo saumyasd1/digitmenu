@@ -11,7 +11,7 @@ Ext.define('AOC.view.users.myprofile.ChangePasswordWinController', {
             refs = me.getReferences(),
             form = refs['changePasswordForm'].getForm(),
         	formObj = form.getValues(),
-        	userIdObj = {userId : id},
+        	userIdObj = {userId : id,lastModifiedBy: Helper.setLastModifiedBy()},
         	obj = Ext.apply(formObj,userIdObj);
 
         if(form.isValid()){
