@@ -411,10 +411,19 @@ Ext.override(Ext.grid.RowEditor, {
 
         // Ensure the view scrolls the field into view on focus
         field.on('focus', me.onFieldFocus, me);
+        field.on('focusenter', me.onFieldClick, me);
 
         me.needsSyncFieldWidths = true;
     },
 
+    onFieldClick:function(field){
+    	var copyBtn = this.editingPlugin.editor.floatingButtons.queryById('copy');
+    	if(field.dataIndex == 'additionalLabelInternalItem'){
+    		copyBtn.show();
+    	}else{
+    		copyBtn.hide();
+    	}
+    },
     onFieldFocus: function(field) {
         // Cache the active field so that we can restore focus into its cell onHide
 
@@ -422,12 +431,12 @@ Ext.override(Ext.grid.RowEditor, {
         // when the field is being edited for the first time (IE only).
     	
     	var copyBtn = this.editingPlugin.editor.floatingButtons.queryById('copy');
-    	if(field.dataIndex == 'additionalLabelInternalItem'){
-    		copyBtn.show();
-    		field.focus(true, 100);
-    	}else{
-    		copyBtn.hide();
-    	}
+//    	if(field.dataIndex == 'additionalLabelInternalItem'){
+//    		copyBtn.show();
+//    		field.focus(true, 100);
+//    	}else{
+//    		copyBtn.hide();
+//    	}
     	
         if(!this.activeField && Ext.isIE) {
             field.inputEl.dom.value = field.inputEl.dom.value;
