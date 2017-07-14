@@ -53,7 +53,7 @@ Ext.define('AOC.view.users.myprofile.AddUserWindowController', {
         	mode = view.mode,
             userGrid = view.gridView,
             userId = userinfo.id,
-            userIdObj = {userId:userId},
+            userIdObj = {userId:userId,lastModifiedBy:Helper.setLastModifiedBy()},
             url = '',
             valueObj = '',
             method = '',
