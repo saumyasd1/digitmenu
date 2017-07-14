@@ -52,8 +52,8 @@ public class OrderEmailQueueService extends GenericEntityService<OrderEmailQueue
 	}
 
 	@Transactional
-	public void assignCsrByEmailQueueId(Long entityId, String csrId, String userId, boolean changeStatus) {
-		getOrderEmailQueueDao().assignCsrValue(entityId, csrId, userId, changeStatus);
+	public void assignCsrByEmailQueueId(Long entityId, String csrId, String userId, boolean changeStatus, String lastModifiedBy) {
+		getOrderEmailQueueDao().assignCsrValue(entityId, csrId, userId, changeStatus, lastModifiedBy);
 	}
 
 	@Transactional

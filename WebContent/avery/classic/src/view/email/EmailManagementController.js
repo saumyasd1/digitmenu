@@ -168,7 +168,8 @@ Ext.define('AOC.view.email.EmailManagementController', {
 			    		url: applicationContext+'/rest/emailqueue/assigncsr/'+rec.recordId+'/'+rec.assignCSRId,
 			    		params:{
 			    			userId: AOCRuntime.getUser().id,
-			    			changeStatus:false
+			    			changeStatus:false,
+			    			lastModifiedBy:Helper.setLastModifiedBy
 			    		},
 					    success : function(response, opts) {
 					    	assignCsrWin.unmask();

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -184,7 +183,6 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
 		Map<?, ?> entitiesMap = new HashMap();
-		Map responcemap = new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -196,39 +194,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
 					.getBean("orderEmailQueueService");
 			entitiesMap = orderEmailQueueService.readWithCriteria(queryParamMap);
-			if (entitiesMap == null || entitiesMap.isEmpty()) {
+			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find any data");
-			} else {
-				List orderEmailQueuelsit = new LinkedList();
-				List lsitOforderEmailQueue = (List) entitiesMap.get("emailqueue");
-				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-				
-				if (!lsitOforderEmailQueue.isEmpty())
-					for (int i = 0; i < lsitOforderEmailQueue.size(); i++) {
-						OrderEmailQueue orderQueue = (OrderEmailQueue) lsitOforderEmailQueue.get(i);
-						String lastmodifiedId = orderQueue.getLastModifiedBy();
-						if(lastmodifiedId!=null)
-						{
-							String LastModifiedByName = userService.getUsernameById(lastmodifiedId);
-							orderQueue.setLastModifiedBy(LastModifiedByName);
-							orderEmailQueuelsit.add(orderQueue);
-						}else
-						{
-							orderEmailQueuelsit.add(orderQueue);
-						}
-//						if(orderQueue.getSiteId()!=null)
-//						{
-//							int siteId=orderQueue.getSiteId();
-//							Site site = siteService.read((long)siteId);
-//							if(site != null)
-//							orderQueue.setSitename(site.getName());
-//						}
-					}
-				responcemap.put("emailqueue", orderEmailQueuelsit);
-				responcemap.put("totalCount", entitiesMap.get("totalCount"));
-			}
-			mapper.writeValue(writer, responcemap);
+			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -483,7 +451,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response assignCsr(@Context UriInfo ui, @Context HttpHeaders hh, @PathParam("id") String orderEmailQueueId,
 			@QueryParam("userId") String userId, @PathParam("csrid") String csrId,
-			@QueryParam("changeStatus") boolean changeStatus) {
+			@QueryParam("changeStatus") boolean changeStatus, @QueryParam("lastModifiedBy") String lastModifiedBy) {
 		Long orderEmailQueueEntityId = Long.parseLong(orderEmailQueueId);
 		Response.ResponseBuilder rb = null;
 		try {
@@ -492,7 +460,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			OrderEmailQueueService orderEmailQueueService = (OrderEmailQueueService) SpringConfig.getInstance()
 					.getBean("orderEmailQueueService");
-			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId, userId, changeStatus);
+			orderEmailQueueService.assignCsrByEmailQueueId(orderEmailQueueEntityId, csrId, userId, changeStatus, lastModifiedBy);
 			Map entitiesMap = new HashMap();
 			StringWriter writer = new StringWriter();
 			entitiesMap.put("success", true);

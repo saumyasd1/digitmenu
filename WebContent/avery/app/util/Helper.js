@@ -892,5 +892,10 @@ Ext.define('AOC.util.Helper',{
 			attachmentFileMatchRequired:false,
 			productLineMatchFlag:false
 		};
+	},
+	setLastModifiedBy: function(){
+		var firstName = AOCRuntime.getUser().firstName == '' ? '' : AOCRuntime.getUser().firstName,
+	    	lastName = AOCRuntime.getUser().lastName == '' ? '' : AOCRuntime.getUser().lastName;
+	    return firstName+' '+lastName;
 	}
 });

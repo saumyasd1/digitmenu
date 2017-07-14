@@ -5,14 +5,14 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
     cancelEmail: function() {
     	Ext.getBody().mask('Cancelling...');
         var id = this.runTime.getOrderEmailQueueId(),
-        me = this,currentUserId = AOCRuntime.getUser().id;
+	        me = this;
         var commentArea = this.getView().lookupReference('commentArea');
         var comment = commentArea.getValue().replace(/\n/g, '::');
         var parameters = '{\"status\":\"' + AOCLit.unrecognizedEmailStatus + '\"';
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';
         }
-        parameters = parameters + ',\"lastModifiedBy\":\"' + currentUserId + '\"';
+        parameters = parameters + ',\"lastModifiedBy\":\"' + Helper.setLastModifiedBy + '\"';
         parameters = parameters + '}';
         Ext.Ajax.request({
             url: applicationContext + '/rest/emailqueue/cancelemail/' + id,

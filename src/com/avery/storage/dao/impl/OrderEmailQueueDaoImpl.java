@@ -78,7 +78,8 @@ OrderEmailQueueDao {
 				.add(Projections.property("emailSubjectRBOMatch"), "emailSubjectRBOMatch")
 				.add(Projections.property("emailBodyProductLineMatch"), "emailBodyProductLineMatch")
 				.add(Projections.property("emailBodyRBOMatch"), "emailBodyRBOMatch")
-				.add(Projections.property("emailSubjectPartnerMatch"), "emailSubjectPartnerMatch");
+				.add(Projections.property("emailSubjectPartnerMatch"), "emailSubjectPartnerMatch")
+				.add(Projections.property("assignCSR"), "assignCSR");
 		
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		
@@ -113,33 +114,35 @@ OrderEmailQueueDao {
 		HashMap<String, Map> statusList = ApplicationUtils.statusCode;
 		if (statusList == null)
 			throw new Exception("Unable to fetch Status List.");
-		for (OrderEmailQueue orderQueue : list) {
-			String status = orderQueue.getStatus();
+		for (OrderEmailQueue orderEmailQueue : list) {
+			String status = orderEmailQueue.getStatus();
 			if (status == null | status.equals(""))
 				throw new Exception("Unidentified value found for the status.");
 			Map<String, String> statusCodes = statusList.get(status);
 			if (statusCodes == null)
 				throw new Exception("No data found in the status table for status:: \"" + status + "\".");
-			orderQueue.setIconName(statusCodes.get("iconName"));
-			orderQueue.setColorCode(statusCodes.get("colorCode"));
-			orderQueue.setCodeValue(statusCodes.get("codeValue"));
+			orderEmailQueue.setIconName(statusCodes.get("iconName"));
+			orderEmailQueue.setColorCode(statusCodes.get("colorCode"));
+			orderEmailQueue.setCodeValue(statusCodes.get("codeValue"));
 
 			// orderqueue count added for the emailqueue screen "view order"
 			// button
-			long trackId = orderQueue.getId();
+			long trackId = orderEmailQueue.getId();
 			int orderQueueCount = getOrderQueueCountByTrackId(trackId);
-			orderQueue.setOrderQueueCount(orderQueueCount);
+			orderEmailQueue.setOrderQueueCount(orderQueueCount);
 			
 			String partnerName = "";
 			partnerName = getPartnerNameByTrackId(trackId);
-			orderQueue.setPartnerName(partnerName);
+			orderEmailQueue.setPartnerName(partnerName);
 			String rboName = "";
 			rboName = getRboNameByTrackId(trackId);
-			orderQueue.setRboName(rboName);
+			orderEmailQueue.setRboName(rboName);
 			String csrName = "";
-			csrName = getCSRNameByTrackId(trackId);
-			orderQueue.setCsrName(csrName);
-
+			String assignCSR = orderEmailQueue.getAssignCSR();
+			if(assignCSR!=null && !"".equals(assignCSR)){
+				csrName = getCSRNameByAssignCSRId(orderEmailQueue.getAssignCSR());
+				orderEmailQueue.setCsrName(csrName);
+			}
 		}
 		entitiesMap.put("totalCount", totalCount);
 		entitiesMap.put("emailqueue",list);
@@ -376,14 +379,14 @@ OrderEmailQueueDao {
 	}
 	
 	@Override
-	public void assignCsrValue(Long entityId, String csrId,String userId, boolean changeStatus){
+	public void assignCsrValue(Long entityId, String csrId,String userId, boolean changeStatus, String lastModifiedBy){
 		Session session = null;
 		try{
 			session = getSessionFactory().getCurrentSession();
 			OrderEmailQueue orderEmailQueueObj=null;
 			orderEmailQueueObj=(OrderEmailQueue) session.get(OrderEmailQueue.class,entityId);
 			orderEmailQueueObj.setAssignCSR(csrId);
-			orderEmailQueueObj.setLastModifiedBy(userId);
+			orderEmailQueueObj.setLastModifiedBy(lastModifiedBy);
 			orderEmailQueueObj.setLastModifiedDate(new Date());//last modified date added on assign csr click
 			if(changeStatus){
 				orderEmailQueueObj.setStatus(ApplicationConstants.ORDEREMAILQUEUE_UNIDENTIFIED_STATUS);
@@ -615,6 +618,31 @@ OrderEmailQueueDao {
 			return "";
 		}
 
+	}
+	
+	/** Method for getting CSR Name by assignCSR Id
+	 * @param csr
+	 * @return CSR Name
+	 */
+	public String getCSRNameByAssignCSRId(String csr) {
+		String csrName = "";
+		Session session = null;
+		session = getSessionFactory().getCurrentSession();
+		if (csr == null | "".equals(csr) | !NumberUtils.isNumber(csr))
+			return "";
+		Long csrId = Long.parseLong(csr);
+		try {
+			User user = (User) session.get(User.class, csrId);
+			if (user.getFirstName() != null && !"".equals(user.getFirstName())) {
+				csrName += user.getFirstName();
+			}
+			if (user.getLastName() != null && !"".equals(user.getLastName())) {
+				csrName += " " + user.getLastName();
+			}
+			return csrName;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 	
 	/**
