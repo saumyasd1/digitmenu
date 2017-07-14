@@ -184,10 +184,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		return;
     	}
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
-    	var isCustomerOrderQantityIsZero = false;
+    	var isCustomerOrderQantityIsZero = false,
     		isCommentExist = false;
     	store.each(function(record, index){
-    		if(record.get('comment')){
+    		if(record.get('comment') && record.get('status') != AOCLit.cancelStatusOrderLine ){
     			isCommentExist = true;
 	    	}
     		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
@@ -197,7 +197,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	});
     	
     	//For comment column if value exist in comment column
-    	if(isCommentExist ){
+    	if(isCommentExist){
     		Helper.showToast('failure',AOCLit.commentOnOrderLine);
     		return;
     	}
