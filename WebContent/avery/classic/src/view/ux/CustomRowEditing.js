@@ -430,14 +430,6 @@ Ext.override(Ext.grid.RowEditor, {
         // Makes the cursor always be placed at the end of the textfield
         // when the field is being edited for the first time (IE only).
     	
-    	var copyBtn = this.editingPlugin.editor.floatingButtons.queryById('copy');
-//    	if(field.dataIndex == 'additionalLabelInternalItem'){
-//    		copyBtn.show();
-//    		field.focus(true, 100);
-//    	}else{
-//    		copyBtn.hide();
-//    	}
-    	
         if(!this.activeField && Ext.isIE) {
             field.inputEl.dom.value = field.inputEl.dom.value;
         }

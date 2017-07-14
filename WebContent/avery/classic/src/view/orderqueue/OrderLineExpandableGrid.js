@@ -1414,112 +1414,118 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				type:sel,
 				rowNumbererHeaderWidth:0
     	    },
-			columns: [
-				{
-				  xtype: 'rownumberer',
-				  text:'#',
-				  menuDisabled:true,
-				  sortable:false,
-				  resizable:false,
-				  width:50
-				}, 
-				{
-				  text: 'Level',
-				  dataIndex: 'level',
-				  menuDisabled:true,
-				  flex:0.5
-				}, 
-				{
-				  text: 'SKU #',
-				  dataIndex: 'skuno',
-				  flex:0.5,
-				  renderer:function(v, metadata, record){
-					  if(v){
-						  return v;
-					  }return '';
-				  }
-				}, 
-				{
-				  text:'TypeSetterCode',
-				  dataIndex: 'typeSetter',
-				  flex:0.8,
-				  renderer:function(v, metadata, record){
-					  if(v){
-						  return v;
-					  }return '';
-				  }
-				}, 
-				{
-					text: 'Variable Field Name',
-					dataIndex: 'variableFieldName',
-					flex:1.8,
-					renderer:function(v, metadata,rec){
-						
-						var mandatory = rec.get('mandatory');
-						
-						metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>"';
-						if(mandatory == 'Y'){
-							return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
-						}
-						else{
-							return v;
-						}
-					}
-				}, 
-				{
-					text: 'Variable Field Value',
-					dataIndex: 'variableDataValue',
-					flex:2,
-					editor: {
-						xtype:'textareafield',
-						height:40,
-						autoScroll:true,
-						grow:true
-					},
-					renderer:function(v, metadata,rec){
-						var mandatory = rec.get('mandatory'),
-						isContainsFibre = rec.get('level').toLowerCase(),
-						variableDataValue = rec.get('variableDataValue'),
-						fiberPercent = rec.get('fiberPercent');
-						metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
-						if(Ext.isEmpty(v) && mandatory == 'Y'){
-							metadata.style = AOCLit.cellColor;
-						}
-						else if(isContainsFibre.includes('fibre') && (fiberPercent>0 && Ext.isEmpty(variableDataValue) ) ){
-							metadata.style = AOCLit.cellColor;
-						}
-						else{
-							return v;
-						}
-					}
-				}, 
-				{
-				  text: 'Fiber Content Percentage',
-				  dataIndex: 'fiberPercent',
-				  xtype:'gridcolumn',
-				  align:'center',
-				  flex:1,
-				  editor: {
-					  xtype:'textfield'
-				  },
-				  renderer:function(v, metadata,rec){
-						var isContainsFibre = rec.get('level').toLowerCase(),
-						variableDataValue = rec.get('variableDataValue'),
-						fiberPercent = rec.get('fiberPercent');
-						if(isContainsFibre.includes('fibre') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
-							metadata.style = AOCLit.cellColor;
-						}
-						else{
-							return v;
-						}
-					}
+			columns: {
+				defaults:{
+					menuDisabled:true,
+					sortable:false,
+					resizable:false,
+					align:'left'
 				},
-				{
-					text:'Help Message',
-					dataIndex:'helpMessage',
-					flex:1
-				}
-			],
+				items:[
+			       {
+					  xtype: 'rownumberer',
+					  text:'#',
+					  width:50
+					}, 
+					{
+					  text: 'Level',
+					  dataIndex: 'level',
+					  flex:0.5
+					}, 
+					{
+					  text: 'SKU #',
+					  dataIndex: 'skuno',
+					  sortable:true,
+					  flex:0.5,
+					  renderer:function(v, metadata, record){
+						  if(v){
+							  return v;
+						  }return '';
+					  }
+					}, 
+					{
+					  text:'TypeSetterCode',
+					  dataIndex: 'typeSetter',
+					  sortable:true,
+					  flex:0.8,
+					  renderer:function(v, metadata, record){
+						  if(v){
+							  return v;
+						  }return '';
+					  }
+					}, 
+					{
+						text: 'Variable Field Name',
+						dataIndex: 'variableFieldName',
+						flex:1.8,
+						renderer:function(v, metadata,rec){
+							
+							var mandatory = rec.get('mandatory');
+							
+							metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>"';
+							if(mandatory == 'Y'){
+								return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
+							}
+							else{
+								return v;
+							}
+						}
+					}, 
+					{
+						text: 'Variable Field Value',
+						dataIndex: 'variableDataValue',
+						flex:2,
+						editor: {
+							xtype:'textareafield',
+							height:40,
+							autoScroll:true,
+							grow:true
+						},
+						renderer:function(v, metadata,rec){
+							var mandatory = rec.get('mandatory'),
+							isContainsFibre = rec.get('level').toLowerCase(),
+							variableDataValue = rec.get('variableDataValue'),
+							fiberPercent = rec.get('fiberPercent');
+							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
+							if(Ext.isEmpty(v) && mandatory == 'Y'){
+								metadata.style = AOCLit.cellColor;
+							}
+							else if(isContainsFibre.includes('fibre') && (fiberPercent>0 && Ext.isEmpty(variableDataValue) ) ){
+								metadata.style = AOCLit.cellColor;
+							}
+							else{
+								return v;
+							}
+						}
+					}, 
+					{
+					  text: 'Fiber Content Percentage',
+					  dataIndex: 'fiberPercent',
+					  xtype:'gridcolumn',
+					  align:'center',
+					  flex:1,
+					  editor: {
+						  xtype:'textfield'
+					  },
+					  renderer:function(v, metadata,rec){
+							var isContainsFibre = rec.get('level').toLowerCase(),
+							variableDataValue = rec.get('variableDataValue'),
+							fiberPercent = rec.get('fiberPercent');
+							if(isContainsFibre.includes('fibre') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
+								metadata.style = AOCLit.cellColor;
+							}
+							else{
+								return v;
+							}
+						}
+					},
+					{
+						text:'Help Message',
+						dataIndex:'helpMessage',
+						flex:1
+					}
+				]
+			},
 			columnLines: false,
 			width: 1250,
 			plugins: me.getInnerGridPlugin(),
