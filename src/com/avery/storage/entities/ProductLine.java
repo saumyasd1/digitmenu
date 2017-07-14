@@ -760,16 +760,16 @@ public class ProductLine extends MainAbstractEntity {
 			for (int i = 0; i < listofPL.size(); i++) {
 				ProductLine currentProductline = (ProductLine) listofPL.get(i);
 				String lastmodifiedUserId = currentProductline.getLastModifiedBy();
-				if (lastmodifiedUserId != null) {
+				/*if (lastmodifiedUserId != null) {
 					String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 					currentProductline.setLastModifiedBy(LastModifiedByName);
-				}
-				if (currentProductline.getSite() != null && currentProductline.getSite() != 0) {
+				}*/
+				/*if (currentProductline.getSite() != null && currentProductline.getSite() != 0) {
 					int siteId1 = (int) currentProductline.getSite();
 					Site site = siteService.read((long) siteId1);
 					if (site != null)
 						currentProductline.setSitename(site.getName());
-				}
+				}*/
 				listOfPLR.add(currentProductline);
 			}
 			returnproductline.put("productlines", listOfPLR);
@@ -1031,10 +1031,10 @@ public class ProductLine extends MainAbstractEntity {
 			for (int i = 0; i < listofPL.size(); i++) {
 				ProductLine currentProductline = (ProductLine) listofPL.get(i);
 				String lastmodifiedUserId = currentProductline.getLastModifiedBy();
-				if (lastmodifiedUserId != null) {
+				/*if (lastmodifiedUserId != null) {
 					String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 					currentProductline.setLastModifiedBy(LastModifiedByName);
-				}
+				}*/
 				if (currentProductline.getSite() != null && currentProductline.getSite() != 0) {
 					int siteId1 = (int) currentProductline.getSite();
 					Site site = siteService.read((long) siteId1);

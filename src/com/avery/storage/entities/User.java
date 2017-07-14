@@ -158,10 +158,10 @@ public class User extends MainAbstractEntity {
 //						if(site != null)
 //							currentuser.setSiteName(site.getName());
 //					}
-					if (lastmodifiedUserId != null) {
+					/*if (lastmodifiedUserId != null) {
 						String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
 						currentuser.setLastModifiedBy(LastModifiedByName);
-					}
+					}*/
 					listOfPR.add(currentuser);
 				}
 				// Collections.sort(listOfPR, userIdComparator);
@@ -345,7 +345,7 @@ public class User extends MainAbstractEntity {
 				else {
 					user.setPassword(password);
 				}
-				userId=(String) jsonMap.get("userId").toString();
+				userId=(String) jsonMap.get("lastModifiedBy").toString();
 				String systemCsrCodeOwner = user.getSystemCsrCodeOwner();
 				/* ******************************************* */
 				if(systemCsrCodeList != null){

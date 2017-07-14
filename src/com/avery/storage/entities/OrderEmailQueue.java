@@ -235,11 +235,11 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			for (int i = 0; i < listOfTask.size(); i++) {
 				OrderEmailQueue orderEmailQueue = (OrderEmailQueue) listOfTask.get(i);
 				String lastModifiedId=orderEmailQueue.getLastModifiedBy();
-				if(lastModifiedId!=null)
+				/*if(lastModifiedId!=null)
 				{
 					String LastModifiedByName = userService.getUsernameById(lastModifiedId);
 					orderEmailQueue.setLastModifiedBy(LastModifiedByName);
-				}
+				}*/
 //				if(orderEmailQueue.getSiteId()!=null)
 //				{
 //					int siteId=orderEmailQueue.getSiteId();

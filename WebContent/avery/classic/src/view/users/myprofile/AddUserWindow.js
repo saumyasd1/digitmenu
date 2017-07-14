@@ -164,8 +164,9 @@ Ext.define('AOC.view.users.myprofile.AddUserWindow', {
                     regexText: AOCLit.splCharNotAllowed
                 }, {
                     xtype: 'radiogroup',
-                    fieldLabel: AOCLit.iam,
+                    fieldLabel: AOCLit.iam + '<font color=red>*</font>',
                     width: 300,
+                    allowBlank:false,
                     defaults:{
                     	name:'gender',
                     	width:100

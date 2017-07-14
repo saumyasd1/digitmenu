@@ -370,11 +370,11 @@ public class Partner extends MainAbstractEntity {
 				{
 					Partner currentPartner=(Partner) listofPL.get(i);
 					String lastmodifiedUserId=currentPartner.getLastModifiedBy();
-					if(lastmodifiedUserId!=null)
+					/*if(lastmodifiedUserId!=null)
 					{
 					String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
 					currentPartner.setLastModifiedBy(LastModifiedByName);
-					}
+					}*/
 //					if(currentPartner.getSiteId()!=null)
 //					{
 //						int siteId1=currentPartner.getSiteId();
