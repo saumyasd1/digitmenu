@@ -12,7 +12,7 @@ Ext.define('AOC.view.email.CancelEmailWindowController', {
         if (comment != '') {
             parameters = parameters + ',\"comment\":\"' + comment + '\"';
         }
-        parameters = parameters + ',\"lastModifiedBy\":\"' + Helper.setLastModifiedBy + '\"';
+        parameters = parameters + ',\"lastModifiedBy\":\"' + Helper.setLastModifiedBy() + '\"';
         parameters = parameters + '}';
         Ext.Ajax.request({
             url: applicationContext + '/rest/emailqueue/cancelemail/' + id,
