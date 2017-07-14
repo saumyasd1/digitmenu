@@ -108,9 +108,12 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             }, 
             {
                 text: AOCLit.lastmodifieddate,
-                dataIndex: 'lastModifiedDate',
+                dataIndex:'lastModifiedDate',
                 flex:1,
-                renderer:Helper.onDateRendererSiteTimeZoneSpecific
+                renderer: function(v,metadata,rec){
+                	rec.data.siteId = rec.data.site;
+                	return Helper.onDateRendererSiteTimeZoneSpecific(v,metadata,rec);
+                }
             }
         ];
     },
