@@ -853,6 +853,7 @@ Ext.define('AOC.util.Helper',{
 		];
 	},
 	getSiteName:function(siteId){
+		var siteId = Number(siteId);
 		switch (siteId){
 			case 2: return 'South China';
 			case 3: return 'Suzhou';
