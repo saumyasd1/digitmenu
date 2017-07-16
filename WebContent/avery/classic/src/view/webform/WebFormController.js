@@ -13,7 +13,8 @@ Ext.define('AOC.view.webform.WebFormController', {
     	    emailBody = me.lookupReference('emailBody'),
     	    orderFileType = me.lookupReference('orderFileType'),
     	    attachment = me.lookupReference('attachment'),
-    	    additionalDataFileKey = me.lookupReference('additionalDataFileKey');
+    	    additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
+    	    csrCombo = me.lookupReference('assignCSR');
 			
     	if(!Ext.isEmpty(newValue)){
 	    	var store = null;
@@ -33,6 +34,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
     			
     			rboCombo.reset();
+    			csrCombo.reset();
    	    	 	dataStructureCombo.reset();
    	    	 	email.reset();
    	    	 	subject.reset();
