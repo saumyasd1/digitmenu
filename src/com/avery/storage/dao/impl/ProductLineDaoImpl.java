@@ -60,6 +60,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(ProductLine.class);
+		criteria.createAlias("varPartner", "varPartner");
+		criteria.createAlias("rbo", "rbo");
 		/*
 		 * Partner partner = new Partner(); // because of partner profile
 		 * Appreance Change by Rajo String PartnerId = (String)
@@ -80,6 +82,18 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			String productLineType = searchMap.get("productLineType");
 			if (productLineType != null && !"".equals(productLineType)) {
 				criteria.add(Restrictions.ilike("productLineType", productLineType, MatchMode.ANYWHERE));
+			}
+			String partnerDataStructure = searchMap.get("partnerDataStructure");
+			if (partnerDataStructure != null && !"".equals(partnerDataStructure)) {
+				criteria.add(Restrictions.eq("id", Long.parseLong(partnerDataStructure)));
+			}
+			String RBOName = searchMap.get("RBOName");
+			if (RBOName != null && !"".equals(RBOName)) {
+				criteria.add(Restrictions.ilike("rbo.rboName", RBOName, MatchMode.ANYWHERE));
+			}
+			String PartnerName = searchMap.get("PartnerName");
+			if (PartnerName != null && !"".equals(PartnerName)) {
+				criteria.add(Restrictions.ilike("varPartner.partnerName", PartnerName, MatchMode.ANYWHERE));
 			}
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
