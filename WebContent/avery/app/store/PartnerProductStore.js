@@ -3,13 +3,14 @@ Ext.define('AOC.store.PartnerProductStore', {
 	model:'AOC.model.PartnerProductLineModel',
 	autoLoad : false,
 	totalCount:'total',
-//	storeId:'PartnerProductLineStoreStoreId',
+	pageSize:pageSize,
 	proxy: {
         type: 'rest',
         url : applicationContext+'/rest/productLines',
         reader: {
             type: 'json',
-            rootProperty: 'productlines'
+            rootProperty: 'productlines',
+            totalProperty: 'totalCount'
         }
     }
 });
