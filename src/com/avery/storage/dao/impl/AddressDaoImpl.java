@@ -70,7 +70,7 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 				criteria.add(Restrictions.ilike("siteNumber", siteNumber, MatchMode.ANYWHERE));
 			}
 			String siteId = searchMap.get("siteId");
-			if (!siteId.equals("") && siteId != null && !siteId.isEmpty()) {
+			if (siteId != null && !siteId.equals("") && !siteId.isEmpty()) {
 				criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 			}
 		}
