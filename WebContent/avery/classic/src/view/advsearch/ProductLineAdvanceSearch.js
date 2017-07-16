@@ -8,7 +8,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 	requires : ['Ext.window.MessageBox'],
 	
 	layout:'fit',
-	width: 330,
+	width: 580,
 	title:AOCLit.advancedSearchWindowTitle,
 	
 	initComponent:function(){
@@ -30,27 +30,91 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 					labelStyle:Settings.config.defaultFormLabelStyle,
 					labelAlign:Settings.form.topLabelAlign
 				},
-		        items:[
-					{
-						xtype : 'textfield',
-						itemId: 'productlinevalue',
-						fieldLabel : AOCLit.productLineType,
-						name:'productLineType',
-						width:300,
-						labelSeparator : '',
-						labelAlign : 'top',
-						allowBlank : true,
-						selectOnTab : true,
-						tabIndex:1,
-						margin:'5 0 0 0',
-						listeners:{
-							focus: function () {
-								var val=this.getValue().replace(/^\s+|\s+$/g,"");
-								if(val=="")
-									this.setValue('');
+		        items:[{
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.partnerName,
+								name:'PartnerName',
+								flex:1,
+								tabIndex:1,
+								selectOnTab : true,
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
+								
+							},
+							{
+								xtype : 'textfield',
+								fieldLabel : AOCLit.RBO,
+								name:'RBOName',
+								flex:1,
+								tabIndex:2,
+								margin:'0 0 0 10',
+								enableKeyEvents:true,
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
 							}
-						}
-					},				
+						]
+					},{
+						xtype: 'fieldcontainer',
+						layout: 'hbox',
+						margin : '5 0 0 0',
+						defaults:{
+							labelSeparator:'',
+							labelStyle:Settings.config.defaultFormLabelStyle,
+							labelAlign:Settings.form.topLabelAlign
+						},
+						items:[
+							{
+								xtype : 'textfield',
+								itemId: 'productlinevalue',
+								fieldLabel : AOCLit.productLine,
+								name:'productLineType',
+								flex:1,
+								labelSeparator : '',
+								labelAlign : 'top',
+								allowBlank : true,
+								selectOnTab : true,
+								tabIndex:1,
+								margin:'5 0 0 0',
+								listeners:{
+									focus: function () {
+										var val=this.getValue().replace(/^\s+|\s+$/g,"");
+										if(val=="")
+											this.setValue('');
+									}
+								}
+							},
+							{
+								xtype : 'combo',
+								fieldLabel : AOCLit.partnerDataStructure,
+								displayField:'dataStructureName',
+								name:'partnerDataStructure',
+								valueField:'id',
+								typeAhead:true,
+								queryMode :'local',
+								flex:1,
+								tabIndex:6,
+								enableKeyEvents:true,
+								margin:'0 0 0 10',
+								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId'),
+								listeners:{
+									specialkey:'getAdvancedSearchResults'
+								}
+							}
+						]
+					},
 					{
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
