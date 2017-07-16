@@ -154,13 +154,13 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 				{
 					text : AOCLit.rboMatch,
 					flex :1,
-					dataIndex:'RBO Match',
+					dataIndex:'rboMatch',
 					name: 'rboMatch'
 				},
 				{
 					text : AOCLit.productLineMatch,
 					flex :1,
-					dataIndex:'ProductLine Match',
+					dataIndex:'productLineMatch',
 					name: 'productLineMatch'
 				},
 				{
