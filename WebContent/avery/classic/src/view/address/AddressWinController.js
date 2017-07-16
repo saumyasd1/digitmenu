@@ -199,15 +199,14 @@ Ext.define('AOC.view.address.AddressWinController', {
 
     },
     onSystemSelect: function (combo, record) {
-
-        var refs = this.getReferences(),
+        var me = this,
+        	refs = me.getReferences(),
             org = refs.orgName,
             store = org.store,
-            systemId = record.get('id');
-        var form = this.getView();
+            systemId = record.get('id'),
+        	form = me.getView();
         if (form != null && !form.isResubmit) {
             org.reset();
-
         }
 
         org.enable();
@@ -226,7 +225,6 @@ Ext.define('AOC.view.address.AddressWinController', {
         // dynamically add validation for empty store of org (Saumya)
         store.load(function () {
             if (store.getCount() > 0) {
-                var form = this.getView();
                 if (form != null && !form.isResubmit) {
                     org.reset();
                 }
@@ -237,7 +235,7 @@ Ext.define('AOC.view.address.AddressWinController', {
                 var msg = AOCLit.orgCountMsg;
                 Helper.showToast('Success', msg);
             }
-        });
+        },form);
     },
     loadSystemStore: function (systemStore, value) {
         var me = this,
