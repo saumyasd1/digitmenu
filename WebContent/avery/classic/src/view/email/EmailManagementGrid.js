@@ -58,13 +58,11 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                     if (value) {
                         var status = rec.get('status');
                         if (status == AOCLit.emailUnidentifiedStatus | status == AOCLit.emailErrorStatus) {
-                            var comment = Ext.String.htmlEncode(value);
-                            metaData.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+                            metaData.tdStyle = 'cursor:pointer;';
                             return Settings.config.defaultIcons.commentColumnIcon;
                         }
-                    } else {
-                        return '';
-                    }
+                    } 
+                    return '';
                 }
             }, {
                 text: AOCLit.orderSource,

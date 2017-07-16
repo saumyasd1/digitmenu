@@ -18,6 +18,21 @@ Ext.define('AOC.view.email.EmailManagementController', {
     	if(cellIndex == 0){
     		this.createContextMenu(record, e);
     	}
+    	if(cellIndex == 1 && Ext.get(e.target).hasCls('fa-comment-o')){
+    		this.createCustomTooltip(record, e);
+    	}
+    },
+    createCustomTooltip:function(record, e){
+    	if(this.customTip){
+    		this.customTip.hide();
+    		this.customTip.target = Ext.get(e.target);
+    		this.customTip.update(Ext.String.htmlEncode(record.get('comment')));
+    		this.customTip.show();
+    	}else{
+    		var el = Ext.get(e.target);
+    		this.customTip = Helper.createToolTip(el, 'Error', Ext.String.htmlEncode(record.get('comment')), 'left');
+    		this.customTip.show();
+    	}
     },
     onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
     	e.stopEvent();

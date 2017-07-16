@@ -215,12 +215,16 @@ Ext.define('AOC.util.Helper',{
 //			return false;
 //		}
     },
-    createToolTip : function(el,lit,anchor){
-        var me     = this;
+    createToolTip: function(el, title, html, anchor){
         return Ext.create('Ext.tip.ToolTip', {
-            target : el,
-            html   : lit,
-            anchor : (anchor) ? anchor : 'top'
+            target: el,
+            html: '<font color=blue>' + html + '</font>',
+            anchor: (anchor) ? anchor : 'top',
+            title: title,
+            autoHide: false,
+            maxHeight:400,
+            scrollable:true,
+            closable: true
         });
     },
     getSatus:function(obj){
