@@ -58,10 +58,9 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 		String pageNo = (String) queryMap.getFirst("page");
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		String pageNumber = pageNo == null ? "" : pageNo;
-		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber)
-				: 0;
-		int pageSize = (limit != null && !"".equals(limit)) ? Integer
-				.parseInt(limit) : 0;
+		int pageNO = (!"".equals(pageNumber)) ? Integer.parseInt(pageNumber) : 0;
+		int pageSize = (limit != null && !"".equals(limit)) ? Integer.parseInt(limit) : 0;
+		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		if (pageNO != 0) {
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
@@ -72,13 +71,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			criteria.add(Restrictions.eq("id", userId));
 		}
 		if (queryMap.getFirst("siteId") != null) {
-		String siteId=(String) queryMap.getFirst("siteId");
-		if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
-			criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
+			String siteId = (String) queryMap.getFirst("siteId");
+			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
+				criteria.add(Restrictions.eq("siteId", Integer.parseInt(siteId)));
 		}
-		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		entitiesMap.put("totalCount", totalCount);
-		entitiesMap.put("users",criteria.list());
+		entitiesMap.put("users", criteria.list());
 		return entitiesMap;
 	}
 
