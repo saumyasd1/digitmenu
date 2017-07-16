@@ -189,7 +189,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			columns = grid.columns,
 			len = columns.length,
 			store = grid.store,
-			context = grid.lockedGrid.editingPlugin.context
+			context = grid.editingPlugin.context
 			rowIdx = context.rowIdx;
 		
 		store.getAt(rowIdx).set(context.field, value);
@@ -220,7 +220,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	onComboFocus:function(field){
 			var me = this,
 		   	view = me.getView(),
-		   	editor = view.lockedGrid.editingPlugin,
+		   	editor =  view.editingPlugin,//view.lockedGrid.editingPlugin,
 		   	context = editor.context,
 		   	rowIdx = context.rowIdx,
 		   	fieldStore = field.store,
@@ -237,13 +237,14 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 	},
 	onSelectDate: function(df){
 		var view = this.getView(),
-	   	editor = view.lockedGrid.editingPlugin,
+	   	editor = view.editingPlugin,
 	   	context = editor.context,
 		fieldName = context.column.text,
 		orderDate = context.record.get('orderedDate');
 		
 		if(new Date(Ext.util.Format.dateRenderer()(orderDate)) > new Date(Ext.util.Format.dateRenderer()(df.getValue()))){
-			Ext.Msg.alert('Warning',fieldName + ' can not be less than Ordered date ');
+//			Ext.Msg.alert('Warning',fieldName + ' can not be less than Ordered date ');
+			Helper.showToast('validation', fieldName + ' can not be less than Ordered date');
 			df.setValue(orderDate);
 		}
 	}
