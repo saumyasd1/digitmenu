@@ -1074,5 +1074,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				cont1.allowBlank = true;
 			}
 		}
-	 }
+	 },
+	 getAdvancedSearchResults: function(cmp, e) {
+	        var me = this;
+	        if (e.getKey() == e.ENTER) {
+	            me.onSearchBtnClicked();
+	        }
+	    },
 });
