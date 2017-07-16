@@ -167,10 +167,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Query query = session.createQuery(
 				"select new map(id as id, dataStructureName as dataStructureName, site as site, attachmentRequired as attachmentRequired ,"
 						+ "orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1) from ProductLine "
-						+ " where varPartner.id=:partnerId and rbo.id=:rboId and orderInMailBody!=:orderInMailBody");
+						+ " where varPartner.id=:partnerId and rbo.id=:rboId and orderInMailBody!=:orderInMailBody and active!=:active");
 		query.setLong("partnerId", partnerId);
 		query.setLong("rboId", rbo);
 		query.setBoolean("orderInMailBody", true);
+		query.setBoolean("active", false);
 		List list = query.list();
 		return list;
 	}
@@ -216,6 +217,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			}
 		} else {
 			Criteria crit = session.createCriteria(ProductLine.class)
+					.add(Restrictions.ne("active", false))
 					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
 							.add(Projections.property("dataStructureName"), "dataStructureName"))
 					.addOrder(Order.asc("dataStructureName"))
