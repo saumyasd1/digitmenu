@@ -77,24 +77,12 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						},
 						items:[
 							{
-								xtype : 'textfield',
-								itemId: 'productlinevalue',
-								fieldLabel : AOCLit.productLine,
+								xtype:'combo',
+								fieldLabel:AOCLit.productLine,
+								reference:'productLineTypeCombo',
 								name:'productLineType',
 								flex:1,
-								labelSeparator : '',
-								labelAlign : 'top',
-								allowBlank : true,
-								selectOnTab : true,
-								tabIndex:1,
-								margin:'5 0 0 0',
-								listeners:{
-									focus: function () {
-										var val=this.getValue().replace(/^\s+|\s+$/g,"");
-										if(val=="")
-											this.setValue('');
-									}
-								}
+								store:Helper.getProductLineStore()
 							},
 							{
 								xtype : 'combo',
@@ -154,8 +142,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								listeners : {
 									afterrender : function(datefield) {
 										datefield.setValue(new Date());
-									},
-									'focus': 'notifyByMessage'
+									}
 								}
 							}
 						]
