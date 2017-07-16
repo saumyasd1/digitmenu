@@ -95,12 +95,20 @@ Ext.define('AOC.view.partner.OrgController', {
     		store = view.store;
     	
     	if((store.getCount() < view.maxRecord) && (AOCRuntime.getUser().role != 3) ){
-    		store.add({orgCodeId:'', newRecord:true, isDefault:false});
+    		store.add({orgCodeId:'', newRecord:true, defaultSelected:false});
 		}else{
 			if(AOCRuntime.getUser().role != 3){
 				Helper.showToast('validation','Cannot add any more rows.');
 			}
 		}
+    },
+    onOrgCodeSelect:function(view, record){
+    	var store = view.store;
+    	
+    	store.each(function(rec){
+    		rec.set('defaultSelected', false);
+    	});
+    	record.set('defaultSelected', true);
     },
     onRemoveOrgRow:function(grid, rowIndex, colIndex){
     	var me = this,

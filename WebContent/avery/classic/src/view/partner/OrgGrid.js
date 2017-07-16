@@ -13,7 +13,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 	listeners:{
 		'afterrender':function(grid){
 			var store= grid.getStore(),
-				index = store.find('isDefault',true);
+				index = store.find('defaultSelected',true);
 			
 			if(index!=-1){
 				grid.getSelectionModel().select(index);
@@ -21,7 +21,8 @@ Ext.define('AOC.view.partner.OrgGrid', {
 			grid.getView().on('beforerefresh',function(){
 				grid.isOrgGridNotValid=false;
 			});
-		}
+		},
+		select:'onOrgCodeSelect'
 	},
 	initComponent : function(){
 		var me=this;
