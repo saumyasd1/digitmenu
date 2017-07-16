@@ -4,6 +4,7 @@ Ext.define('AOC.store.PartnerProductLineStore', {
 	autoLoad : true,
 	remoteSort: true,
 	totalCount:'total',
+	pageSize:pageSize,
 	storeId:'PartnerProductLineStoreStoreId',
 	proxy: {
         type: 'rest',
