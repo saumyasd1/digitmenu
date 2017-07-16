@@ -128,21 +128,37 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	});
     	}
     },
-    divisionForInterfaceERPORGColumnRenderer: function(v,h,l,k){
+    onDivisionEPORGExpand:function(field){
+		var view = this.getView(),
+			currentRecord = view.editingPlugin.context.record;
+		
+		field.store.filterBy(function(record){
+			if(record.get('id') == currentRecord.get('divisionForInterfaceERPORG')){
+				return true;
+			}
+			return false;
+		});
+	},
+    divisionForInterfaceERPORGColumnRenderer:function(v, h, l, k){
 		var orgCodeName = '';
+		var view = this.getView();
 		if(!Ext.isEmpty(v)){
-			var store=h.column.config.editor.store;
+			h.column.config.editor.store = AOCRuntime.getStoreERPORG();
+			var store = h.column.config.editor.store;
+			
 			if(store){
-				var index = store.find("id",v);
+				var index = store.find("id",v,'',false, false, true);
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						view.invalidComboValid=true;
 						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 					}
 				}else{
-					orgCodeName = store.getAt(index).get('name');
+					orgCodeName = store.getAt(index).get('orgName');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					view.invalidComboValid=true;
 					h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 				}
 			}

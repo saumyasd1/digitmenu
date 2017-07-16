@@ -657,9 +657,12 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             align:'left',
             editor:{
                    xtype:'combo',
-   				   displayField:'name',
+   				   displayField:'orgName',
    				   valueField:'id',
-                   store:AOC.config.Runtime.getStoreERPORG()
+                   store:AOCRuntime.getStoreERPORG(),
+                   listeners:{
+   					expand:'onDivisionEPORGExpand'
+   				}
             },
             renderer:'divisionForInterfaceERPORGColumnRenderer'
         }, {
