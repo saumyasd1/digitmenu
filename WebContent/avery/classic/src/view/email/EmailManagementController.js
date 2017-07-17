@@ -115,14 +115,16 @@ Ext.define('AOC.view.email.EmailManagementController', {
     },
     onMenuItemClick:function(menu, item, e){
 		var me = this;
-		if (item.itemIndex == 0) {
-	         me.onViewMailItemClick();
-		} else if (item.itemIndex == 1) {
-	         me.onViewOrderItemClick();
-		}else if (item.itemIndex == 2) {
-	         me.onAssignCSRMenuItemClick();
-		}else if (item.itemIndex == 3) {
-	         me.onMoveToTaskManagerMenuItemClick();
+		if(item){
+			if (item.itemIndex == 0) {
+		         me.onViewMailItemClick();
+			} else if (item.itemIndex == 1) {
+		         me.onViewOrderItemClick();
+			}else if (item.itemIndex == 2) {
+		         me.onAssignCSRMenuItemClick();
+			}else if (item.itemIndex == 3) {
+		         me.onMoveToTaskManagerMenuItemClick();
+			}
 		}
     },
     onViewMailItemClick:function(menu, item, e){

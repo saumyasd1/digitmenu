@@ -11,168 +11,160 @@ Ext.define('AOC.view.users.manage.UserController', {
             });
         win.showBy(Ext.getBody());
     },
-    init: function () {
-        var me = this;
-        me.menuTpl = me.buildMenuTpl();
-    },
     CancelDetails: function () {
         Ext.getBody().unmask();
         var win = Ext.ComponentQuery.query('#userWindowItemId')[0];
         win.close();
     },
-    onClickMenu: function (obj, rowIndex, colIndex, item, e, record) {
-        var me = this,
-        	gridView = me.getView();
-        
-        var callout = Ext.widget('callout', {
-                cls: 'white more-menu-item-callout extra',
-                html: me.menuTpl.apply(record.data),
-                target: e.target,
-                calloutArrowLocation: 'top-left',
-                relativePosition: 't-b',
-                relativeOffsets: [52, 23],
-                dismissDelay: 0,
-                listeners: {
-                    afterrender: me.onAfterRenderEditCallout,
-                    edit: function (cmp) {
-                        var currentRecord = e.record,
-                            data = currentRecord.data,
-                            id = data.id,
-                            win = Ext.create('AOC.view.users.myprofile.AddUserWindow', {
-	                            mode: 'edit',
-	                            ID: id,
-	                            gridView: gridView,
-	                            bindFlag:true,
-	                            title: 'Edit User'
-                            });
-                        
-                        var refs = win.getReferences(),
-                            profileImage = refs.profileImage,
-                            systemCsrCodeGrid = refs.systemCsrCodeGrid,
-                            systemCsrCodeGridStore = systemCsrCodeGrid.store,
-                            systemCombo = refs.systemName,
-                            userId = AOCRuntime.getUser().id;
-                        
-                        if (id == userId) {
-                            win.down('#site').setDisabled(true);
-                            win.down('#role').setHidden(true);
-                            win.down('#roledisplayfield').setHidden(false);
-                        }
-                        else{
-                        	if(userId == 1){
-	                        	win.down('#newPassword').setHidden(false);
-	                        	win.down('#confirmPassword').setHidden(false);
-                        	}
-                        }
-                        
-                        win.lookupReference('addEditUserWinForm').loadRecord(currentRecord);
-                        profileImage.setSrc(Helper.getFilePath(currentRecord));
-                        
-                        var systemCsrCodeOwner = data.systemCsrCodeOwner,
-                        	systemCsrNonCodeOwner = data.systemCsrNonCodeOwner;
-                        var	systemCsrCombinedCodes ='';
-                        if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
-                            systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
-                        }
-                        else{
-                        	if(!Ext.isEmpty(systemCsrCodeOwner) && !Ext.isEmpty(systemCsrCodeOwner.trim())){
-                           		systemCsrCombinedCodes = systemCsrCodeOwner;
-                        	}
-                        	else if(!Ext.isEmpty(systemCsrNonCodeOwner) && !Ext.isEmpty(systemCsrNonCodeOwner.trim())){
-                           		systemCsrCombinedCodes = systemCsrNonCodeOwner;
-                        	}
-                        }
-                        if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
-                        	Helper.loadSystemCsrCodeGrid(systemCsrCodeGrid, systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
-                        }
-                        if (win.mode == 'edit') {
-                            systemCombo.setDisabled(false);
-                            Helper.getSystemComboList(currentRecord.data.siteId);
-                            systemCombo.store.load();
-                        }
-                        setTimeout(function(){
-                        	win.show();
-                            win.center();
-                        },400);
-                        
-                        callout.destroy();
-                    },
-                    deleteuser: function (cmp) {
-                        currentRecord = e.record;
-                        var ID = record.get('id');
-                        var Msg = AOCLit.deleteUserMsg;
-                        Ext.Msg.confirm('Alert', AOCLit.delUserMsg,
-                            function (btn) {
-                                if (btn == 'yes') {
-                                    Ext.Ajax.request({
-                                        method: 'DELETE',
-                                        url: applicationContext + '/rest/users/' + ID,
-                                        success: function (response, opts) {
-                                            Helper.showToast('Success', Msg);
-                                            AOCRuntime.getActiveGrid().store.load();
-                                        },
-                                        failure: function (response, opts) {
-                                            msg = response.responseText;
-                                            Helper.showToast('failure', msg);
-                                            view.unmask();
-                                            view.close();
-                                        }
-                                    });
-                                }
-                            });
-                        callout.destroy();
-                    }
-                }
-            });
-        callout.show();
-        var heightAbove = e.getY() - Ext.getBody().getScroll().top,
-            heightBelow = Ext.Element.getViewportHeight() - heightAbove;
-
-        if (heightBelow < (callout.getHeight() + 40)) {
-            callout.calloutArrowLocation = 'bottom-left';
-            callout.relativePosition = 'b-t';
-            callout.relativeOffsets = [55, -5];
-        } else {
-            callout.calloutArrowLocation = 'top-left';
-            callout.relativePosition = 't-b';
-            callout.relativeOffsets = [55, 5];
-        }
-        callout.show();
+    
+    onCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e){
+    	if(cellIndex == 0){
+    		this.createContextMenu(record, e);
+    	}
     },
-    onAfterRenderEditCallout: function (cmp) {
-        var me = this;
-        cmp.el.on({
-            delegate: 'div.user-profile-menu-item',
-            click: function (e, element) {
-                var el = Ext.get(element),
-                    event = el.getAttribute('event');
-                if (event && !el.hasCls('edit-menu-disabled')) {
-                    me.fireEvent(event);
-                }
-            }
-        });
+    onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
+    	e.stopEvent();
+    	this.createContextMenu(record, e);
     },
-    buildMenuTpl: function () {
-        return Ext.create('Ext.XTemplate',
-            '<div style="width: 140px !important;border-bottom:{[this.getDeleteUserStyle(values)]};" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="edit">Edit</div>',
-           // '<div style="width: 140px !important;border-bottom: none {[this.getDeleteUserStyle(values)]};" class="user-profile-menu-callout {[this.isDeleteEnable(values)]}"  event="deleteuser">Delete</div>', 
-            {
-                isDeleteEnable: function (v) {
-                	var userinfo = AOCRuntime.getUser(),
-                		roleId = userinfo.role;
-                    if (v.id == 1 || v.role == roleId) {							
-                        return 'order-profile-menu-item';
-                    }
-                    return 'user-profile-menu-item';
-                },
-                getDeleteUserStyle: function (v) {
-                    if (v.id == 1) {
-                        return Helper.getDisableMenuItemStyle();
-                    }
-                    return Helper.getEnableMenuItemStyle();
-                }
-            }
-        );
+    
+    createContextMenu:function(record, e){
+    	var me = this;
+    	AOCRuntime.setCurrentUserRecord(record.data);
+    	
+    	if(me.contextMenu){
+    		me.contextMenu.showAt(e.getXY());
+    	}else{
+    		me.contextMenu = Ext.create('AOC.view.ux.CustomMenu', {
+    			items:[
+    			    {
+    			    	text:'Edit',
+    			    	iconCls:'x-fa fa-pencil-square-o',
+    			    	itemIndex:0,
+    			    	itemId:'editUserMenuItem'
+    			    }
+    			],
+    			listeners:{
+    				scope:me,
+    				click:me.onMenuItemClick,
+    				beforeshow:function(menu){
+    					var editBtn = menu.queryById('editUserMenuItem'),
+	    					currentUserRec = AOCRuntime.getCurrentUserRecord();;
+    					
+    					if(currentUserRec.role == AOCRuntime.getUser().role){
+    						editBtn.setDisabled(true);
+    					}else{
+    						editBtn.setDisabled(false);
+    					}
+    				}
+    			}
+    		});
+    		me.contextMenu.showAt(e.getXY());
+    	}
+    },
+    
+    onMenuItemClick:function(menu, item, e){
+		var me = this;
+		if(item){
+			if (item.itemIndex == 0) {
+		         me.onEditAddressItemClick();
+			} 
+		}
+    },
+    
+    onEditAddressItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0];
+    	
+    	var data = currentRecord.data,
+         	id = data.id,
+         	win = Ext.create('AOC.view.users.myprofile.AddUserWindow', {
+	             mode: 'edit',
+	             ID: id,
+	             gridView: grid,
+	             bindFlag:true,
+	             title:'Edit User'
+         	});
+     
+	     var refs = win.getReferences(),
+	         profileImage = refs.profileImage,
+	         systemCsrCodeGrid = refs.systemCsrCodeGrid,
+	         systemCsrCodeGridStore = systemCsrCodeGrid.store,
+	         systemCombo = refs.systemName,
+	         userId = AOCRuntime.getUser().id;
+	     
+	     if (id == userId) {
+	         win.down('#site').setDisabled(true);
+	         win.down('#role').setHidden(true);
+	         win.down('#roledisplayfield').setHidden(false);
+	     }
+	     else{
+	     	if(userId == 1){
+	         	win.down('#newPassword').setHidden(false);
+	         	win.down('#confirmPassword').setHidden(false);
+	     	}
+	     }
+	     
+	     win.lookupReference('addEditUserWinForm').loadRecord(currentRecord);
+	     profileImage.setSrc(Helper.getFilePath(currentRecord));
+	     
+	     var systemCsrCodeOwner = data.systemCsrCodeOwner,
+     		 systemCsrNonCodeOwner = data.systemCsrNonCodeOwner,
+	     	 systemCsrCombinedCodes = '';
+	     
+	     if((systemCsrCodeOwner != null && !Ext.isEmpty(systemCsrCodeOwner.trim())) 
+	    		 && (systemCsrNonCodeOwner !=null && !Ext.isEmpty(systemCsrNonCodeOwner.trim()))){
+	         systemCsrCombinedCodes = systemCsrCodeOwner+","+systemCsrNonCodeOwner;
+	     }else{
+	     	if(!Ext.isEmpty(systemCsrCodeOwner) && !Ext.isEmpty(systemCsrCodeOwner.trim())){
+	     		systemCsrCombinedCodes = systemCsrCodeOwner;
+	     	}
+	     	else if(!Ext.isEmpty(systemCsrNonCodeOwner) && !Ext.isEmpty(systemCsrNonCodeOwner.trim())){
+        		systemCsrCombinedCodes = systemCsrNonCodeOwner;
+	     	}
+	     }
+	     if(!Ext.isEmpty(systemCsrCombinedCodes.trim())){
+	     	Helper.loadSystemCsrCodeGrid(systemCsrCodeGrid, systemCsrCodeOwner, systemCsrNonCodeOwner, systemCsrCombinedCodes);
+	     }
+	     
+	     if (win.mode == 'edit') {
+	         systemCombo.setDisabled(false);
+	         Helper.getSystemComboList(currentRecord.data.siteId);
+	         systemCombo.store.load();
+	     }
+	     setTimeout(function(){
+	     	win.show();
+	     	win.center();
+	     },400);
+    },
+    onDeleteMenuItemClick:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0];
+    	
+    	 var id = currentRecord.get('id');
+         var msg = AOCLit.deleteUserMsg;
+         
+         Ext.Msg.confirm('Alert', AOCLit.delUserMsg,
+             function (btn) {
+             	if (btn == 'yes') {
+             		Ext.Ajax.request({
+             			method: 'DELETE',
+             			url: applicationContext + '/rest/users/' + id,
+             			success: function (response, opts) {
+             				Helper.showToast('Success', msg);
+             				AOCRuntime.getActiveGrid().store.load();
+             			},
+             			failure: function (response, opts) {
+             				msg = response.responseText;
+             				Helper.showToast('failure', msg);
+             				view.unmask();
+             				view.close();
+             			}
+             		});
+             	}
+         	}
+         );
     },
     hideMandatoryMessage: function () {
         var obj = this.getView();

@@ -56,10 +56,12 @@ Ext.define('AOC.view.taskmanager.TaskManagerController', {
     },
     onMenuItemClick:function(menu, item, e){
 		var me = this;
-		if (item.itemIndex == 0) {
-	         me.onViewMailItemClick();
-		} else if (item.itemIndex == 1) {
-	         me.onAssignCSRMenuItemClick();
+		if(item){
+			if (item.itemIndex == 0) {
+		         me.onViewMailItemClick();
+			} else if (item.itemIndex == 1) {
+		         me.onAssignCSRMenuItemClick();
+			}
 		}
     },
     onViewMailItemClick:function(){

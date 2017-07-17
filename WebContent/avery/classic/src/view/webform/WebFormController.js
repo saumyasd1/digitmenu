@@ -84,13 +84,16 @@ Ext.define('AOC.view.webform.WebFormController', {
 		            url: applicationContext+'/rest/productLines/getdatastructures/'+partnerId+'/'+newValue
 		        });
 			var jsonValue=Ext.decode(response.responseText);
+			
 	    	store =  Ext.create('Ext.data.Store',{
 	    		fields:['id','dataStructureName','attachmentRequired','site'],
 				data : jsonValue
 	    	});
+	    	
 			if(AOCRuntime.getUser().role != '1'){
-		    	store.filter('site',AOCRuntime.getUser().siteId);
+		    	store.filter('site', AOCRuntime.getUser().siteId);
 			}
+			
 	    	if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime  ){
 	    		dataStructureCombo.reset();
    	    	 	obj.isChangedForFirstTime=false;
