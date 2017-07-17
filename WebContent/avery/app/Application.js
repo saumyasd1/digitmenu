@@ -29,7 +29,8 @@ Ext.define('AOC.Application', {
          'EmailManagementStore',
          'AddressStore',
          'OrderQueueStore',
-         'HomePageOders'
+         'HomePageOders',
+         'LocalItemLookupStore'
     ],
     views : ['Viewport'],
     
