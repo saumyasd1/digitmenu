@@ -2,7 +2,6 @@ Ext.define('AOC.model.LocalItemLookupModel',{
     extend: 'Ext.data.Model',
 	idProperty:null,
     fields: [
-             {name: 'id', mapping:'id',type: 'string'},
              {name: 'customerItemNO', mapping:'customerItemNO',type: 'string'},
              {name: 'glid', mapping:'glid',type: 'string'},
              {name: 'identifierValue', mapping:'identifierValue',type: 'string'},
