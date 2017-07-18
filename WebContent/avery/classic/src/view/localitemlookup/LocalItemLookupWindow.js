@@ -36,6 +36,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
         }];
     },
     buildItem: function () {
+    	var rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
+    	rboStore.load();
         return [
         {
             xtype: 'form',
@@ -86,14 +88,21 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     reference: 'identifierValue',
                     flex: 1
                 }, {
-                    xtype: 'textfield',
-                    name: 'partnerName',
-                    fieldLabel: AOCLit.partnerName,
-                    allowBlank: false,
-                    reference: 'partnerName',
-                    margin:'0 0 0 10',
-                    flex: 1
-                }]
+					xtype:'combo',
+					fieldLabel:AOCLit.partnerName,
+					name:'partnerName',
+					reference:'partnerName',
+					store:Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
+					allowBlank: false,
+					queryMode:'local',
+					flex:1,
+					margin:'0 0 0 10',
+					displayField:'partnerName',
+					valueField:'id',
+					listeners:{
+						blue:'onComboBlur'
+					}
+				},]
             }, {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
@@ -105,13 +114,21 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     labelAlign: Settings.form.topLabelAlign
                 },
                 items: [{
-                    xtype: 'textfield',
-                    name: 'rboName',
-                    fieldLabel: AOCLit.RBOName,
-                    allowBlank: false,
-                    reference: 'rboName',
-                    flex: 1
-                }, {
+					xtype:'combo',
+					itemId:'RItemId',
+					name: 'rboId',
+					reference:'rboId',
+					fieldLabel:AOCLit.RBO,
+					allowBlank: false,
+					flex:1,
+					store:rboStore,
+					displayField:'rboName',
+					valueField:'id',
+					queryMode:'local',
+					listeners:{
+						blue:'onComboBlur'
+					}
+				}, {
                     xtype: 'textfield',
                     name: 'orgCode',
                     fieldLabel: AOCLit.orgCode,
