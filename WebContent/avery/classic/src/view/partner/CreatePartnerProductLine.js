@@ -47,17 +47,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		var me = this,
 			siteStore = Ext.data.StoreManager.lookup('siteId')== null ? Ext.create('AOC.store.SiteStore') : Ext.data.StoreManager.lookup('siteId'),
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
+		
 		var fileFormatStore = Ext.create('AOC.store.FileFormatStore');
 		siteStore.load();
 		rboStore.load();
 		
 		return [
-			{
-				xtype:'displayfield',
-				itemId:'messageFieldItemId',
-				hidden:true,
-				anchor:'100%'
-			},
 			{
 				xtype:'form',
 				itemId:'listPanel',
@@ -315,6 +310,20 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						},
 						items:[
 						    {
+						    	xtype:'fieldcontainer',
+						    	items:[
+					    	       {
+								    	xtype:'button',
+								    	text:'View Bill/Ship Mapping',
+								    	iconCls:'x-fa fa-eye',
+								    	hidden:me.mode == 'add',
+								    	margin:'10 0',
+								    	reference:'viewBillShipMappingBtn',
+								    	handler:'onBillShipMappingBtnClick'
+								    }
+						    	]
+						    },
+						    {
 						    	xtype:'label',
 						    	text:'Order',
 						    	style:Settings.form.wiLabelStyle
@@ -339,7 +348,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										 name:'orderFileNameExtension',
 										 emptyText:AOCLit.fileExtensionEmptyText,
 										 fieldLabel:'Order File Format',
-										 
+										 listeners:{
+											 blur:'onFileFormatFieldBlur'
+										 }
 									 },
 						    		 {
 						    			 xtype:'box',
@@ -411,21 +422,22 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									}
 								]
 							},
-							me.getAdditionalField('','1','additionalAttachmentFileCont','additionalAttachment',fileFormatStore),
-							me.getAdditionalField('Another','2','additionalAttachmentFileCont2','additionalAttachmentTwo',fileFormatStore),
+							me.getAdditionalField('','1','additionalAttachmentFileCont','additionalAttachment'),
+							me.getAdditionalField('Another','2','additionalAttachmentFileCont2','additionalAttachmentTwo'),
 							me.getAdditionalSchemaField(1, 'Additional', 'attchmentSchemaCont'),
 							me.getAdditionalSchemaField(2, 'Another Additional', 'attchmentSchemaCont'),
 							me.getSchemaIdentificationItems(),
-							{
-								title:'Grouping Fields',
-								collapsible:true,
-								collapsed:true,
-								titleAlign:'center',
-								frame:true,
-								bodyPadding:10,
-								hidden:me.mode == 'add',
-								reference:'groupingFieldBox'
-							}
+							me.getGroupingField()
+//							{
+//								title:'Grouping Fields',
+//								collapsible:true,
+//								collapsed:true,
+//								titleAlign:'center',
+//								frame:true,
+//								bodyPadding:10,
+//								hidden:me.mode == 'add',
+//								reference:'groupingFieldBox'
+//							}
 						]
 					}
 			   ]
@@ -628,7 +640,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			]
 		};
 	},
-	getAdditionalField:function(fieldLabel, count, fieldContRef, fieldName, fileFormatStore){
+	getAdditionalField:function(fieldLabel, count, fieldContRef, fieldName){
 		return {
 			  xtype:'fieldcontainer',
 			  layout:'hbox',
@@ -646,16 +658,30 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    {
 			    	xtype:'textfield',
 			    	name:'attachmentFileNameExtension_'+count,
-			    	fieldLabel:fieldLabel + ' Additional Attachment Format'
+			    	reference:'attachmentFileNameExtension_'+count,
+			    	fieldLabel:fieldLabel + ' Additional Attachment Format',
+			    	emptyText:AOCLit.fileExtensionEmptyText,
+			    	fieldType:'attachmentFileExt',
+			    	listeners:{
+				    	blur:'onFileFormatFieldBlur'
+			    	}
 	    		 }, {
 	          		 xtype:'textfield',
 	          		 fieldLabel:fieldLabel + ' Additional File Key',
 	          		 name:'attachmentFileNamePattern_'+count,
+	          		 reference:'attachmentFileNamePattern_'+count,
 	          		 margin:'0 0 0 10'
 	          	 }, {
 	          		 xtype:'textfield',
 	          		 fieldLabel:fieldLabel+' Attachment Identifier',
 	          		 name:'attachmentIdentifier_'+count,
+	          		 reference:'attachmentIdentifier_'+count,
+	          		 margin:'0 0 0 10'
+	          	 },{
+	          		 xtype:'textfield',
+	          		 fieldLabel:'Cell No,If Excel',
+	          		 reference:'attachmentFileCellNo_'+count,
+	          		 hidden:true,
 	          		 margin:'0 0 0 10'
 	          	 }
 			  ]
@@ -768,7 +794,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						}
 					}, 
 					me.getSchemaIdentificationKeywordField(type+'RBOKeyword'),
-					me.getOrderFileExcelField(hideFlag, type+'RBOCellNo'),
+					me.getOrderFileExcelField(hideFlag, type+'RBOCellNo', type+'RBOKeyword'),
 					{
 						xtype:'radiogroup',
 						column:2,
@@ -791,7 +817,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						}
 					}, 
 					me.getSchemaIdentificationKeywordField(type+'ProductLineKeyword'),
-					me.getOrderFileExcelField(hideFlag, type+'ProductLineCellNo'),
+					me.getOrderFileExcelField(hideFlag, type+'ProductLineCellNo', type+'ProductLineKeyword'),
 					{
 						xtype:'radiogroup',
 						column:2,
@@ -814,12 +840,12 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						}
 					}, 
 					me.getSchemaIdentificationKeywordField(type+'PartnerFactoryKeyword'),
-					me.getOrderFileExcelField(hideFlag, type+'PartnerFactoryCellNo')
+					me.getOrderFileExcelField(hideFlag, type+'PartnerFactoryCellNo', type+'PartnerFactoryKeyword')
 				]
 			}
 		];
 	},
-	getOrderFileExcelField:function(hideFlag, name){
+	getOrderFileExcelField:function(hideFlag, name, prevItemRefs){
 		if(hideFlag){return;}
 		var index = name.indexOf('fileOrder');
 		return {
@@ -827,7 +853,11 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			fieldLabel:index > -1 ? 'Cell No,If Excel '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderCellNoInfoText)  :'Cell No,If Excel',
 			disabled:true,
 			name:name,
-			reference:name
+			prevItemRefs: prevItemRefs,
+			reference:name,
+			listeners:{
+				blur:'onCellNoBlur'
+			}
 		};
 	},
 	getSchemaIdentificationKeywordField:function(name){
@@ -893,6 +923,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					xtype:'textfield',
 					name:'orderInEmailBodyMatch',
 					reference:'fileOrderEmailBody',
+					allowBlank:false,
 					disabled:true,
 					fieldLabel:'Email Body'
 				}, {
@@ -903,13 +934,18 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				}, {
 					xtype:'textfield',
 					name:'fileOrderFileContent',
+					allowBlank:false,
 					reference:'fileOrderFileContent',
 					fieldLabel:'File Content'
 				}, {
 					xtype:'textfield',
 					name:'fileOrderCellNo',
 					reference:'fileOrderMatch',
-					fieldLabel:'Cell No,If Excel'
+					fieldLabel:'Cell No,If Excel',
+					prevItemRefs: 'fileOrderFileContent',
+					listeners:{
+						blur:'onCellNoBlur'
+					}
 				}
 			]
 		};
@@ -990,6 +1026,27 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				    }
 				]
 			}
+		];
+	},
+	
+	getGroupingField:function(){
+		return {
+			title:'Grouping',
+			titleAlign:'center',
+			collapsible:true,
+			frame:true,
+			layout:'vbox',
+			bodyPadding:10,
+			margin:'20 0 0 0',
+			border:false,
+			reference:'groupingFieldCont',
+			items:this.getGroupingFieldContItem(1)
+		};
+	},
+	getGroupingFieldContItem:function(count){
+		if(this.mode != 'add'){return [];}
+		return [
+		    Helper.getGroupingField(count)
 		];
 	},
 	onDestroy:function(){

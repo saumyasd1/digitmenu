@@ -540,7 +540,7 @@ Ext.define('AOC.lang.lit',{
 	csrCode:'CSR Code',
 	multipleProductLineEmptyText:'WVL:TRUE|HTL:FALSE|',
 	dataStructureNameEmptyText:'RBO/Factory/ProductLine/Site/System',
-	fileExtensionEmptyText:'.xlsx|.xls',
+	fileExtensionEmptyText:'.xlsx|.xls or .pdf',
 	noCSRCode:'Please enter CSR code to insert record into grid.',
 	systemOrgCSRNotEmpty:'System,Org Code,CSR Code or Code Owner can not be empty',
 	codeOwnerNDeleteMsg: 'Are you sure you want to delete this CSR Code from Grid?',

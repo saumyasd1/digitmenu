@@ -906,5 +906,69 @@ Ext.define('AOC.util.Helper',{
 		var firstName = AOCRuntime.getUser().firstName == '' ? '' : AOCRuntime.getUser().firstName,
 	    	lastName = AOCRuntime.getUser().lastName == '' ? '' : AOCRuntime.getUser().lastName;
 	    return firstName+' '+lastName;
+	},
+	
+	getGroupingFieldStore:function(){
+		return new Ext.data.JsonStore({
+			data:[
+			      {name:'None'},{name:'customerPONumber'},{name:'oracleBillToSiteNumber'},{name:'oracleShipToSiteNumber'},
+			      {name:'averyItemNumber'},{name:'shippingMethod'},{name:'pageSize'},{name:'COO'},
+			      {name:'RN'},{name:'CN'},{name:'ArticleNumber'}
+            ],
+			fields:['name']
+		});
+	},
+	getGroupingField:function(count, newFlag, hiddenFlag){
+		return {
+	    	xtype:'fieldcontainer',
+	    	layout:{
+	    		type:'hbox'
+	    	},
+	    	reference:'groupingFieldCont'+count,
+	    	defaults:{
+				labelSeparator:'',
+				labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+				labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+				labelWidth:150
+			},
+	    	items:[
+	    	   {
+	    		   xtype:'combo',
+	    		   displayField:'name',
+	    		   fieldLabel:'Grouping Field'+count,
+	    		   name:'groupingField_'+count,
+	    		   valueField:'name',
+	    		   width:450,
+	    		   queryMode:'local',
+	    		   editable:false,
+	    		   store:Helper.getGroupingFieldStore(),
+	    		   listeners:{
+	    			   select:'onGroupingComboSelect'
+	    		   }
+	    	   },
+	    	   {
+	    		   xtype:'button',
+	    		   iconCls:'x-fa fa-minus',
+	    		   reference:'removeGroupingFieldBtn'+count,
+	    		   tooltip:'Remove',
+	    		   fieldIndex : count,
+	    		   newFlag:newFlag,
+	    		   margin:'0 0 0 10',
+	    		   hidden: count == 1 || hiddenFlag,
+	    		   handler:'onRemoveGroupingFieldBtnClick'
+	    	   },
+	    	   {
+	    		   xtype:'button',
+	    		   tooltip:'Add',
+	    		   iconCls:'x-fa fa-plus',
+	    		   margin:'0 0 0 10',
+	    		   fieldIndex : count,
+	    		   newFlag:newFlag,
+	    		   hidden:hiddenFlag,
+	    		   reference:'addGroupingFieldBtn'+count,
+	    		   handler:'onAddGroupingFieldBtnClick'
+	    	   }
+	    	]
+	    }
 	}
 });

@@ -30,7 +30,8 @@ Ext.define('AOC.Application', {
          'AddressStore',
          'OrderQueueStore',
          'HomePageOders',
-         'LocalItemLookupStore'
+         'LocalItemLookupStore',
+         'BillShipMappingStore'
     ],
     views : ['Viewport'],
     

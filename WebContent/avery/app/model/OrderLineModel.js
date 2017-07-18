@@ -86,8 +86,8 @@ Ext.define('AOC.model.OrderLineModel',{
  		
  		{name: 'bankCharge', mapping:'bankCharge',type: 'number'},
  		{name: 'freightCharge', mapping:'freightCharge',type: 'number'},
- 		{name: 'shippingHold', mapping:'shippingHold',type: 'boolean'},
- 		{name: 'productionHold', mapping:'productionHold',type: 'boolean'},
+ 		{name: 'shippingHold'},
+ 		{name: 'productionHold'},
  		{name: 'splitShipset', mapping:'splitShipset',type: 'string'},
  		{name: 'agreement', mapping:'agreement',type: 'string'},
  		{name: 'modelSerialNumber', mapping:'modelSerialNumber',type: 'string'},

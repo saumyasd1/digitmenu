@@ -1129,10 +1129,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor:{
 				xtype:'combo',
 				editable:false,
-				store:[[true,'Y'],[false,'N']]
-			},
-			renderer:function(value, metadata, record){
-				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+				store:[['Y','Y'],['N','N']]
 			},
 			type:'address',
 			hidden:true
@@ -1145,10 +1142,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor:{
 				xtype:'combo',
 				editable:false,
-				store:[[true,'Y'],[false,'N']]
-			},
-			renderer:function(value, metadata, record){
-				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+				store:[['Y','Y'],['N','N']]
 			},
 			type:'address',
 			hidden:true

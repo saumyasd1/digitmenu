@@ -92,14 +92,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
     },
     onMenuItemClick:function(menu, item, e){
 		var me = this;
-		if (item.itemIndex == 0) {
-	         me.onEditPartnerDataStructureItemClick();
-		} else if (item.itemIndex == 1) {
-	         me.onViewPartnerDataStructureItemClick();
-		}else if (item.itemIndex == 2) {
-	         me.onDeletePartnerDataStructureItemClick();
-		}else if(item.itemIndex == 3){
-			me.onActiveDeactiveItemClick();
+		if(item){
+			if (item.itemIndex == 0) {
+		         me.onEditPartnerDataStructureItemClick();
+			} else if (item.itemIndex == 1) {
+		         me.onViewPartnerDataStructureItemClick();
+			}else if (item.itemIndex == 2) {
+		         me.onDeletePartnerDataStructureItemClick();
+			}else if(item.itemIndex == 3){
+				me.onActiveDeactiveItemClick();
+			}
 		}
     },
     onEditPartnerDataStructureItemClick:function(){
@@ -187,7 +189,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.rboId = record.data.rbo.id;
     	record.data.partnerId = record.data.varPartner.id;
     	
-    	record.data.fileOrderCellNo = me.getOrderCellNo(record.get('fileOrderMatch'));
+    	record.data.fileOrderCellNo = me.getCellNo(record.get('fileOrderMatch'));
     	
     	record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
     	record.data.fileOrderFileContent = me.getFileContent(record.get('fileOrderMatchLocation'));
@@ -265,42 +267,64 @@ Ext.define('AOC.view.productline.ProductLineController', {
     getFileContent:function(value){
     	if(!Ext.isEmpty(value) && value.indexOf('|') > -1){
     		var splitArray = value.split('|');
-	    	return splitArray[1];
+	    	return this.getKeyword(splitArray[1]);
     	}
     	return value;
     },
     getSplitValue:function(str){
-    	if(str.indexOf('_&&_') > -1){
-			var strA = str.split('_&&_');
-			
-			return strA[0]+' AND '+ strA[1];
-		}
-		if(str.indexOf('_._') > -1){
-			var strA = str.split('_._');
-			
-			return strA[0]+' OR '+ strA[1];
-		}
-		return str;
+    	if(str.indexOf(';') > -1){
+    		var strA = str.split(';');
+    		return {keyword: strA[0].split(':')[1], cellNo:strA[1].split(':')[1]};
+    	}
+    	return {keyword:str};
     },
     getKeyword:function(str){
     	if(!Ext.isEmpty(str)){
-	    	if(str.indexOf(';') > -1){
-	    		var leftStr = str.split(';')[0];
-	    		return this.getSplitValue(leftStr.split(':')[1]);
-	    	}else{
-	    		return this.getSplitValue(str);
-	    	}
+    		if(str.indexOf('_&&_') > -1){
+    			var strA = str.split('_&&_'),
+    				leftStr = strA[0],
+    				rightStr = strA[1],
+    				leftObj = this.getSplitValue(leftStr),
+    				rightObj = this.getSplitValue(rightStr);
+    			
+    			return leftObj.keyword + ' AND '+ rightObj.keyword;
+    		}
+    		else if(str.indexOf('_._') > -1){
+    			var strA = str.split('_._'),
+    				leftStr = strA[0],
+    				rightStr = strA[1],
+    				leftObj = this.getSplitValue(leftStr),
+    				rightObj = this.getSplitValue(rightStr);
+    			
+    			return leftObj.keyword + ' OR '+ rightObj.keyword;
+    		}
+    		var obj = this.getSplitValue(str);
+    		return obj.keyword;
     	}
     	return str;
     },
     getCellNo:function(str){
     	if(!Ext.isEmpty(str)){
-	    	if(str.indexOf(';') > -1){
-	    		var rightStr = str.split(';')[1];
-	    		return this.getSplitValue(rightStr.split(':')[1]);
-	    	}else{
-	    		return this.getSplitValue(str);
-	    	}
+    		if(str.indexOf('_&&_') > -1){
+    			var strA = str.split('_&&_'),
+    				leftStr = strA[0],
+    				rightStr = strA[1],
+    				leftObj = this.getSplitValue(leftStr),
+    				rightObj = this.getSplitValue(rightStr);
+    			
+    			return leftObj.cellNo + ' AND '+ rightObj.cellNo;
+    		}
+    		else if(str.indexOf('_._') > -1){
+    			var strA = str.split('_._'),
+    				leftStr = strA[0],
+    				rightStr = strA[1],
+    				leftObj = this.getSplitValue(leftStr),
+    				rightObj = this.getSplitValue(rightStr);
+    			
+    			return leftObj.cellNo + ' OR '+ rightObj.cellNo;
+    		}
+    		var obj = this.getSplitValue(str);
+    		return obj.cellNo;
     	}
     	return str;
     },
@@ -346,21 +370,26 @@ Ext.define('AOC.view.productline.ProductLineController', {
     createGroupingField:function(detail){
     	var me = this,
     		refs = me.getReferences(),
-    		groupingField = refs['groupingFieldBox'];
+    		groupingField = refs['groupingFieldCont']
+    		groupingFieldArray = [];
+    		//count = 1;
     	
     	for(var prop in detail){
     		if(prop.indexOf('groupingField') > -1){
     			if(!Ext.isEmpty(detail[prop])){
-	    			groupingField.add({
-	    				xtype:'displayfield',
-	    				margin:'0 0 5 0',
-	    				value:detail[prop],
-	    				fieldLabel:prop,
-	    				labelSeparator:'',
-						labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-						labelWidth:150
-	    			});
+    				groupingFieldArray.push({prop:detail[prop]});
+	    			//groupingField.add(Helper.getGroupingField(count));
+	    			//count++;
     			}
+    		}
+    	}
+    	
+    	var len = groupingFieldArray.length;
+    	for(var i = 1;i <= len; i++){
+    		if(i == len ){
+    			groupingField.add(Helper.getGroupingField(i, false, false));
+    		}else{
+    			groupingField.add(Helper.getGroupingField(i, false, true));
     		}
     	}
     },
@@ -411,7 +440,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		
 		if(form.isValid()){
-			var values = form.getValues();
+			var values = form.getValues(),
+				orderFileNameExtension = values.orderFileNameExtension;
+			
+			if(!Ext.isEmpty(orderFileNameExtension) && orderFileNameExtension.indexOf('.') == -1){
+				Helper.showToast('validation', 'Order File Format is not correct,please fill correct format.');
+				return;
+			}
+			
 			var valueObj = me.processPostData(values);
 			if(mode == 'edit'){
 				valueObj.id = view.rec.get('id');
@@ -551,8 +587,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			obj.fileOrderMatchLocation = values.fileOrderFileContent;
 		}
 		if(values.fileOrderCellNo){
-			var fileContent = values.fileOrderFileContent ? values.fileOrderFileContent :'';
-			obj.fileOrderMatch = 'Value:'+fileContent +';Cell:'+ values.fileOrderCellNo;
+			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}
 		
 		delete values.fileOrderFileName;
@@ -588,40 +623,31 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		return values;
 	},
 	getCombinedValue:function(keyword, cellNo){
-		var keywordStr = '',
-			cellStr = '';
+		var leftKeyword =''
+			rightKeyword = '',
+			leftCellNo ='',
+			rightCellNo = '',
+			spliter = keyword.indexOf('AND') > -1 ? 'AND' : (keyword.indexOf('OR') > -1 ? 'OR' : '');
 		
-		if(!Ext.isEmpty(keyword)){
-			if(keyword.indexOf('AND') > -1){
-				var strA = keyword.replace(/ /g,''),
-					keywordStr = strA.replace('AND', '_&&_');
+		if(!Ext.isEmpty(keyword) && !Ext.isEmpty(cellNo)){
+			if(spliter){
+				if(keyword.indexOf(spliter) > -1){
+					var strA = keyword.split(spliter);
+					leftKeyword = strA[0].trim();
+					rightKeyword = strA[1].trim();
+				}
+				if(cellNo.indexOf(spliter) > -1){
+					var strA = cellNo.split(spliter);
+					leftCellNo = strA[0].trim();
+					rightCellNo = strA[1].trim();
+				}
+				var spliterFormat = spliter == 'AND' ? '_&&_' : '_._';
+				return 'Value:'+leftKeyword+';Cell:'+leftCellNo + spliterFormat + 'Value:'+rightKeyword+';Cell:'+rightCellNo;
 			}
-			if(keyword.indexOf('OR') > -1){
-				var strA = keyword.replace(/ /g,''),
-					keywordStr = strA.replace('OR', '_._');
-			}
+			return 'Value:'+keyword +';Cell:'+cellNo;
 		}
-		if(!Ext.isEmpty(cellNo)){
-			if(cellNo.indexOf('AND') > -1){
-				var strA = cellNo.replace(/ /g,''),
-					cellStr = strA.replace('AND', '_&&_');
-			}
-			if(cellNo.indexOf('OR') > -1){
-				var strA = cellNo.replace(/ /g,''),
-					cellStr = strA.replace('OR', '_._');
-			}
-		}
-		if(Ext.isEmpty(keywordStr)){
-			keywordStr = keyword;
-		}
-		if(Ext.isEmpty(cellStr)){
-			cellStr = cellNo;
-		}
-		
-		if(keywordStr && cellStr){
-			return 'Value:'+keywordStr +';Cell:'+cellStr;
-		}else if(keywordStr){
-			return 'Value:'+keywordStr;
+		if(!Ext.isEmpty(keyword) && Ext.isEmpty(cellNo)){
+			return 'Value:'+keyword;
 		}
 	},
 	getSKUValidationValue:function(multipleLine, check){
@@ -650,16 +676,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 		FromDate = this.lookupReference('fromDate').getValue(),
 	 		ToDate = this.lookupReference('toDate').getValue();
 	 	
-	 	if(FromDate<=ToDate){
+	 	if(FromDate <= ToDate){
 	    	if(!valueObj.hasOwnProperty('datecriteriavalue')){
 	    		valueObj.datecriteriavalue='createdDate';
 	    	}
     		
 			var parameters = Ext.JSON.encode(valueObj);
-	    	//var grid = AOCRuntime.getActiveGrid();
 	    	
-//	    	var archievegrid=Ext.ComponentQuery.query('#productLineArchiveGrid')[0];
-	    	if(archievegrid !=null){
+	    	if(archievegrid != null){
 	    		var currentView = Ext.ComponentQuery.query('#archivemanageitemId')[0];
 	    		var valueObj=(currentView.lookupReference('cmbformArchive')).getForm().getValues(false,true);
 				var grid = archievegrid;
@@ -682,8 +706,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
         	this.getView().up('window').hide();
  		}
  	 	else{
-		    var productlinesearch=Ext.ComponentQuery.query('#productlinesearchWindowItemId')[0];
-            productlinesearch.down('#messageFieldItemId').setValue(AOCLit.setDateMsg).setVisible(true);
+		    Helper.showToast('validation', AOCLit.setDateMsg);
  		 } 	
 	},
     onSiteSelect:function(cmp){
@@ -853,16 +876,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
             		var refs = cmp.up('#createpartnerproductlineItemId').getReferences (),
             			systemGrid = refs[cmp.name+'systemGrid'],
             			orgGrid = refs[cmp.name+'orgGrid'];
-            			//plusButton = refs[cmp.name+'Plus'];
             		
             		if(newValue){
             			orgGrid.show();
             			systemGrid.show();
-            			//plusButton.show();
             		}else{
             			orgGrid.hide();
             			systemGrid.hide();
-            			//plusButton.hide();
             		}
             	}
             }
@@ -894,27 +914,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			systemId:selectedSystemArray.id,
 	    			reference:selectedSystemArray.name+'orgGrid'
 		       }
-//		       {
-//    				xtype:'button',
-//    				margin:'45 0 0 5',
-//    				maxRecord:totalOrgConfigured,
-//    				text:'Org',
-//    				cls:'blue-btn',
-//    				iconCls:'x-fa fa-plus',
-//    				reference:selectedSystemArray.name+'Plus',
-//    				hidden:true,
-//    				listeners:{
-//    					click:function(cmp, pressed){
-//    						if((orgOrderStore.getCount() < totalOrgConfigured) && (AOCRuntime.getUser().role != 3) ){
-//								orgOrderStore.add({orgCodeId:'',newRecord:true, isDefault:false});
-//    						}else{
-//    							if(AOCRuntime.getUser().role != 3){
-//    								Helper.showToast('validation','Cannot add any more rows.');
-//    							}
-//    						}
-//    					}
-//    				}
-//    			}
 	        ]
 		}];
 	 },
@@ -997,14 +996,26 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			cont1 = refs.additionalAttachmentFileCont,
 			cont2 = refs.additionalAttachmentFileCont2,
 			cont3 = refs['attchmentSchemaCont1'],
-			cont4 = refs['attchmentSchemaCont2'];
+			cont4 = refs['attchmentSchemaCont2'],
+			attachmentFileNameExtension_1 = refs['attachmentFileNameExtension_1'],
+			attachmentFileNamePattern_1 = refs['attachmentFileNamePattern_1'],
+			attachmentIdentifier_1 = refs['attachmentIdentifier_1'];
+			
 		
 		if(newValue.attachmentRequired == 'true'){
+			attachmentFileNameExtension_1.allowBlank = false;
+			attachmentFileNamePattern_1.allowBlank = false;
+			attachmentIdentifier_1.allowBlank = false;
+			
 			cont1.setDisabled(false);
 			cont2.setDisabled(false);
 			cont3.setDisabled(false);
 			cont4.setDisabled(false);
 		}else{
+			attachmentFileNameExtension_1.allowBlank = true;
+			attachmentFileNamePattern_1.allowBlank = true;
+			attachmentIdentifier_1.allowBlank = true;
+			
 			cont1.setDisabled(true);
 			cont2.setDisabled(true);
 			cont3.setDisabled(true);
@@ -1044,11 +1055,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			
 			emailSubject.setDisabled(false);
 			emailBody.setDisabled(false);
+			emailBody.allowBlank = false;
+			fileContentField.allowBlank = true; 
 			
 		}else{
 			fileNameField.setDisabled(false);
 			fileContentField.setDisabled(false);
 			cellNo.setDisabled(false);
+			
+			emailBody.allowBlank = true;
+			fileContentField.allowBlank = false; 
 			
 			emailSubject.setDisabled(true);
 			emailBody.setDisabled(true);
@@ -1075,10 +1091,136 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			}
 		}
 	 },
+	 
 	 getAdvancedSearchResults: function(cmp, e) {
-	        var me = this;
-	        if (e.getKey() == e.ENTER) {
-	            me.onSearchBtnClicked();
-	        }
-	    },
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearchBtnClicked();
+        }
+	 },
+	 
+	 onCellNoBlur:function(field){
+		var me = this,
+		  	refs = me.getReferences(),
+		  	prevItemRefs = refs[field.prevItemRefs],
+		  	value = field.getValue(),
+		  	andFlag = false,
+		  	orFlag = false;
+		
+		if(prevItemRefs.getValue().indexOf('AND') > -1){
+			andFlag = true;
+		}
+		if(prevItemRefs.getValue().indexOf('OR') > -1){
+			orFlag = true;
+		}
+		if((andFlag && value.indexOf('AND') == -1) || (orFlag && value.indexOf('OR') == -1)){
+			field.setValue('');
+			field.allowBlank =false;
+			Helper.showToast('validation', 'Cell No should be followed same format as Keyword contains');
+			return;
+		}
+		field.allowBlank = true;
+	 },
+	 
+	 onAddGroupingFieldBtnClick:function(btn){
+		 var me = this,
+		 	 refs = me.getReferences(),
+		 	 groupingFieldCont = refs['groupingFieldCont'],
+		 	 count = btn.fieldIndex,
+		 	 removeGroupingFieldBtn = refs['removeGroupingFieldBtn'+count];
+		 
+		 if(count > 20){
+			 Helper.showToast('validation', 'You can not add more grouping field');
+			 return;
+		 }
+		 
+		 groupingFieldCont.add(Helper.getGroupingField(++count, true));
+		 removeGroupingFieldBtn.hide();
+		 btn.hide();
+	 },
+	 
+	 onRemoveGroupingFieldBtnClick:function(btn){
+		 if(btn.newFlag){
+			 var me = this,
+		 		 refs = me.getReferences(),
+		 		 count = btn.fieldIndex,
+		 		 groupingFieldCont = refs['groupingFieldCont'],
+		 		 groupingFieldsetCont = refs['groupingFieldCont'+count],
+		 		 prevCount = --count,
+		 		 removeGroupingFieldBtn = refs['removeGroupingFieldBtn'+prevCount],
+		 		 addGroupingFieldBtn = refs['addGroupingFieldBtn'+prevCount]
+			 
+			 groupingFieldCont.remove(groupingFieldsetCont);
+			 
+			 if(prevCount != 1){
+				 removeGroupingFieldBtn.show();
+			 }
+			 addGroupingFieldBtn.show();
+		 }
+	 },
+	 
+	 onGroupingComboSelect:function(field){
+		 if(field.getValue() == 'None'){
+			 field.setValue('');
+		 }
+	 },
+	 
+	 onBillShipMappingBtnClick:function(btn){
+		var me = this,
+		 	refs = me.getReferences(),
+		 	view = me.getView(),
+		 	win = Ext.create('AOC.view.base.NewBaseWindow',{
+		 		title:'Bill/Ship Mapping Table',
+		 		width:Ext.getBody().getWidth()-100,
+		 		height:Ext.getBody().getHeight()-100,
+		 		resizable:false,
+		 		draggable:false,
+		 		layout:'border',
+		 		items:[
+		 		    {
+		 		    	xtype:'billshipmappinggrid',
+		 		    	region:'center',
+		 		    	refs:'billShipMappingGrid',
+		 		    	listeners:{
+		 		    		afterrender:function(grid){
+		 		    			grid.store.load({
+		 		    				params:{id:view.rec.get('id')}
+		 		    			});
+		 		    		}
+		 		    	}
+		 		    }
+		 		],
+		 		buttons:[
+		 		     '->',
+		 		    {
+		 		    	text:'Close',
+		 		    	iconCls:'x-fa fa-times',
+		 		    	handler:function(){
+		 		    		win.close();
+		 		    	}
+		 		    }
+		 		]
+		 	});
+		
+		win.show();
+	 },
+	 
+	 onFileFormatFieldBlur:function(field){
+		var me = this,
+			refs = me.getReferences(),
+			attachmentFileCellNo_1 = refs['attachmentFileCellNo_1'],
+		 	value = field.getValue();
+		 
+		 if(value && value.indexOf('.') == -1){
+			 field.setValue('');
+			 field.allowBlank = false;
+			 Helper.showToast('validation', 'Please follow format to fill file format.');
+		 }
+		 if(field.fieldType == 'attachmentFileExt' && (value && value.indexOf('xls') > -1)){
+			 attachmentFileCellNo_1.show();
+		 }else{
+			 attachmentFileCellNo_1.hide();
+		 }
+		 
+	 }
 });
