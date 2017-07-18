@@ -1,6 +1,7 @@
 package com.avery.storage.entities;
 
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +20,14 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.service.LocalItemService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 
 /**
  * @author Vishal
@@ -35,7 +40,7 @@ public class LocalItem extends MainAbstractEntity {
 	/**
 	 * 
 	 */
-
+ 
 	public LocalItem() {
 
 	}
@@ -100,6 +105,85 @@ public class LocalItem extends MainAbstractEntity {
 		}
 		return rb.build();
 
+	}
+	@Override
+	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
+		Long id;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			LocalItem localItem = mapper.readValue(data, LocalItem.class);
+			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
+					.getBean("localItemService");
+			id = localItemService.create(localItem);
+			return Response.ok(id).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+
+	@Override
+	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id, String data) {
+		Response.ResponseBuilder rb = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
+					.getBean("localItemService");
+			// read existing entity from database
+			LocalItem localItem = localItemService.read(Long.parseLong(id));
+			if (localItem == null) {
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			ObjectReader updater = mapper.readerForUpdating(localItem);
+			// build updated entity object from input data
+			localItem = updater.readValue(data);
+			localItem.setLastModifiedDate(new Date());
+			// update entity in database
+			localItemService.update(localItem);
+			// prepare response
+			mapper.writeValue(writer, localItem);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in updating data entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in updating data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@Override
+	public Response deleteEntity(UriInfo ui, HttpHeaders hh, String id) {
+		try {
+			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
+					.getBean("localItemService");
+			// read existing entity from database
+			LocalItem localItem = localItemService.read(Long.parseLong(id));
+			if (localItem == null) {
+				throw new WebApplicationException(
+						Response.status(Status.BAD_REQUEST).entity("Data entity with id \"" + id + "\" doesn't exist")
+								.type(MediaType.TEXT_PLAIN_TYPE).build());
+			}
+			// prepare response
+			localItemService.delete(localItem);
+			return Response.ok(id).build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in deleting Data entity with id " + id, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in deleting data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
