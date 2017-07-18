@@ -3,10 +3,13 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
     itemId: 'localItemLookupGridItemId',
     alias: 'widget.localitemlookupgrid',
     requires: ['AOC.view.ux.CustomSearchField'],
-//    controller: 'addresscontroller',
+    controller: 'localitemlookupcontroller',
     emptyText: AOCLit.emptyDataMsg,
     cls: 'aoc-panel',
-    
+    listeners: {
+        rowcontextmenu:'onRowContextMenu',
+        cellclick:'onCellClick'
+    },
     initComponent: function () {
         var me = this;
 
@@ -32,13 +35,14 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
         var me = this;
         return [
                 {
-		            text: '#',
-		            width: 35,
-		            sortable: true,
-		            align:'center',
-		            dataIndex: 'id'
-		        },
-                {
+	        		header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
+	                width: 40,
+	                sortable:false,
+	                menuDisabled:true,
+	                resizable:false,
+	                align:'center',
+	                renderer:Helper.actionColumnRenderer
+                },{
 		            text: AOCLit.customerItemNO,
 		            width: 120,
 		            sortable: true,
@@ -112,8 +116,14 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 xtype: 'tbtext',
                 itemId: 'localItemLookupTextItemId',
                 text: '<div style="color:"><b>Local Item Lookup</b></div>'
-            },
-            '->', {
+            },{
+                text: 'New',
+                itemId: 'newAddress',
+                iconCls: 'fa fa-plus',
+                cls: 'blue-btn',
+                handler: 'openLocalItemLookupWindow'
+            },'->',
+            {
                 xtype: 'customsearchfield',
                 searchCriteria: '',
                 message: 'Showing all accounts with',
