@@ -67,14 +67,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    					activeDeactiveBtn = menu.queryById('activeDeactiveProductLineMenuItem'),
 	    					activeStatus = AOCRuntime.getCurrentProductLineStatus(record.get('active'));
     					
-    					if(activeStatus){
-    						activeDeactiveBtn.setText('Deactive');
-    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-off');
-    					}else{
-    						activeDeactiveBtn.setText('Active');
-    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-on');
-    					}
-    					
     					if (AOCRuntime.getUser().role == AOCLit.userRole.CSR) {
     						editBtn.setDisabled(true);
     						activeDeactiveBtn.setDisabled(true);
@@ -84,6 +76,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
  	                    	activeDeactiveBtn.setDisabled(false);
     						deleteBtn.setDisabled(false);
  	                    }
+    					if(activeStatus){
+    						activeDeactiveBtn.setText('Deactive');
+    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-off');
+    						editBtn.setDisabled(false);
+    					}else{
+    						activeDeactiveBtn.setText('Active');
+    						editBtn.setDisabled(true);
+    						activeDeactiveBtn.setIconCls('x-fa fa-toggle-on');
+    					}
     				}
     			}
     		});
@@ -191,8 +192,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	record.data.fileOrderCellNo = me.getCellNo(record.get('fileOrderMatch'));
     	
-    	record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
-    	record.data.fileOrderFileContent = me.getFileContent(record.get('fileOrderMatchLocation'));
+    	//record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
+    	record.data.fileOrderFileContent = me.getKeyword(record.get('fileOrderMatch'));
     	
     	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
     	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
@@ -443,6 +444,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			var values = form.getValues(),
 				orderFileNameExtension = values.orderFileNameExtension;
 			
+			values.assignCSRName = me.assignCSRName;
+				
 			if(!Ext.isEmpty(orderFileNameExtension) && orderFileNameExtension.indexOf('.') == -1){
 				Helper.showToast('validation', 'Order File Format is not correct,please fill correct format.');
 				return;
@@ -488,6 +491,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	processSystemOrgGrid:function(){
 		var me = this,
 			refs = me.getReferences(),
+			defaultSystemCombo = refs['defaultSystemCombo'],
 			systemcontainer = refs['systemcontainer'],
 			checkboArray = systemcontainer.checkboArray,
 			len = checkboArray.length,
@@ -495,7 +499,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			systemGridStore,
 			orgGridStore,
 			currentOrgGrid = '',
-			currentSystemGrid = '';
+			currentSystemGrid = '',
+			defaultSystemComboVal = defaultSystemCombo.getRawValue();
 		
 		var listOrderSystemInfo = new Array(),
 			isCheckBoxSelected = false;
@@ -532,6 +537,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 						delete currentRec.id;
 					}
 					listOrgInfo.push(currentRec);
+				}
+				if(currentcheckBox.name == defaultSystemComboVal){
+					this.assignCSRName = systemGridStore.getAt(0).data.csrName;
 				}
 				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
 				if(systemGridStore.getAt(0).data.newRecord){
@@ -577,15 +585,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		obj.factoryMOQCheck = me.getSKUValidationValue(values.factoryMoqValidationMultipleProductLine, values.factoryMOQCheck);
 		
 		//order received in email body
-		if(values.fileOrderFileName && values.fileOrderFileContent){
-			obj.fileOrderMatchLocation = values.fileOrderFileName + '|'+ values.fileOrderFileContent;
+		if(values.orderFileNamePattern && values.fileOrderFileContent){
+			obj.fileOrderMatchLocation = values.orderFileNamePattern + '|'+ values.fileOrderFileContent;
 		}
-		else if(values.fileOrderFileName){
-			obj.fileOrderMatchLocation = values.fileOrderFileName;
-		}
-		else if(values.fileOrderFileContent){
-			obj.fileOrderMatchLocation = values.fileOrderFileContent;
-		}
+//		else if(values.fileOrderFileName){
+//			obj.fileOrderMatchLocation = values.fileOrderFileName;
+//		}
+//		else if(values.fileOrderFileContent){
+//			obj.fileOrderMatchLocation = values.fileOrderFileContent;
+//		}
 		if(values.fileOrderCellNo){
 			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}
@@ -619,17 +627,17 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		delete values.cooValidationMultipleProductLine;
 		delete values.factoryMoqValidationMultipleProductLine;
 		
-		Ext.apply(values,obj)
+		Ext.apply(values, obj);
 		return values;
 	},
 	getCombinedValue:function(keyword, cellNo){
-		var leftKeyword =''
+		var leftKeyword ='',
 			rightKeyword = '',
 			leftCellNo ='',
-			rightCellNo = '',
-			spliter = keyword.indexOf('AND') > -1 ? 'AND' : (keyword.indexOf('OR') > -1 ? 'OR' : '');
+			rightCellNo = '';
 		
 		if(!Ext.isEmpty(keyword) && !Ext.isEmpty(cellNo)){
+			var spliter = keyword.indexOf('AND') > -1 ? 'AND' : (keyword.indexOf('OR') > -1 ? 'OR' : '');
 			if(spliter){
 				if(keyword.indexOf(spliter) > -1){
 					var strA = keyword.split(spliter);

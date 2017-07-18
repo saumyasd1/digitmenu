@@ -928,7 +928,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					fieldLabel:'Email Body'
 				}, {
 					xtype:'textfield',
-					name:'fileOrderFileName',
+					name:'orderFileNamePattern',
 					reference:'fileOrderFileName',
 					fieldLabel:'File Name'
 				}, {
