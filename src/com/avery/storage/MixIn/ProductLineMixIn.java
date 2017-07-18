@@ -4,13 +4,12 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.avery.storage.entities.BillShipMapping;
 import com.avery.storage.entities.OrderFileAttachment;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.OrgInfo;
-import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.ProductLine;
-import com.avery.storage.entities.RBO;
 import com.avery.storage.entities.SystemInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,4 +49,7 @@ public abstract class ProductLineMixIn {
 	public abstract Set<OrderSystemInfo> getListOrderSystemInfo();
 //
 //	public abstract List<OrderSystemInfo> getListOrderSystemInfo();
+	
+	@JsonIgnore
+	public abstract List<BillShipMapping> getListBillShipMapping();
 }

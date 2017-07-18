@@ -360,10 +360,13 @@ public class ProductLine extends MainAbstractEntity {
 
 	@OneToMany(mappedBy = "varProductLine", fetch = FetchType.LAZY)
 	private Set<OrderSystemInfo> listOrderSystemInfo;
+	
+	@OneToMany(mappedBy = "varProductLine", fetch = FetchType.LAZY)
+	private List<BillShipMapping> listBillShipMapping;
 
 	// New Column added to match the POJO with DEV DB
 
-	@Column(name = "revisecancelorder", length = 50)
+	@Column(name = "revisecancelorder", length = 100)
 	private String revisecancelorder;
 
 	@Column(name = "defaultBillToCode", length = 255)
@@ -504,8 +507,7 @@ public class ProductLine extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<ProductLine> productline = null;
-		Map entitiesMap = null;
+		Map<?,?> entitiesMap = null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -664,7 +666,6 @@ public class ProductLine extends MainAbstractEntity {
 						.entity("Product Line entity with id \"" + id + "\" doesn't exist")
 						.type(MediaType.TEXT_PLAIN_TYPE).build());
 			Set<OrderSystemInfo> obj = productline.getListOrderSystemInfo();
-			int count = 0;
 			if (obj.size() != 0) {
 				for (OrderSystemInfo oSysInfoObj : obj) {
 					SystemInfo sysInfoList = oSysInfoObj.getVarSystem();
@@ -733,9 +734,7 @@ public class ProductLine extends MainAbstractEntity {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getByPartnerID(@Context UriInfo ui, @Context HttpHeaders hh, @PathParam("id") String partnerId) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> productline = new HashMap();
-		;
-		Map returnproductline = new HashMap();
+		Map productline = new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -752,30 +751,7 @@ public class ProductLine extends MainAbstractEntity {
 			productline = productLineService.readAllByPartnerID(queryParamMap);
 			if (productline == null)
 				throw new Exception("Unable to find Product Line");
-			List listofPL = (List) productline.get("productlines");
-			List listOfPLR = new LinkedList<ProductLine>();
-			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-
-			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-			for (int i = 0; i < listofPL.size(); i++) {
-				ProductLine currentProductline = (ProductLine) listofPL.get(i);
-				String lastmodifiedUserId = currentProductline.getLastModifiedBy();
-				/*if (lastmodifiedUserId != null) {
-					String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
-					currentProductline.setLastModifiedBy(LastModifiedByName);
-				}*/
-				/*if (currentProductline.getSite() != null && currentProductline.getSite() != 0) {
-					int siteId1 = (int) currentProductline.getSite();
-					Site site = siteService.read((long) siteId1);
-					if (site != null)
-						currentProductline.setSitename(site.getName());
-				}*/
-				listOfPLR.add(currentProductline);
-			}
-			returnproductline.put("productlines", listOfPLR);
-			if (productline.containsKey("totalCount"))
-				returnproductline.put("totalCount", productline.get("totalCount"));
-			mapper.writeValue(writer, returnproductline);
+			mapper.writeValue(writer, productline);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
@@ -2362,4 +2338,13 @@ public class ProductLine extends MainAbstractEntity {
 	public void setSizeCheck(String sizeCheck) {
 		this.sizeCheck = sizeCheck;
 	}
+
+	public List<BillShipMapping> getListBillShipMapping() {
+		return listBillShipMapping;
+	}
+
+	public void setListBillShipMapping(List<BillShipMapping> listBillShipMapping) {
+		this.listBillShipMapping = listBillShipMapping;
+	}
+	
 }
