@@ -552,6 +552,11 @@ Ext.define('AOC.lang.lit',{
 	customerItemNO : 'Customer Item No.',
 	glid:'GLID',
 	identifierValue:'Identifier Value',
-	system:'System'
+	system:'System',
+	entryExist:'An entry already exist for this record',
+	updateLocalItem:'Local Item Lookup updated successfully',
+	addLocalItem:'Local Item Lookup added successfully',
+	deleteLocalItemMsg:'Are you sure you want to delete the record?',
+	deleteLocalItemSuccessMsg:'Record deleted successfully'
 	
 });
