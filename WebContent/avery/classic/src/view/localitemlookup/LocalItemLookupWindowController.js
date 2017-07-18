@@ -72,5 +72,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
         Ext.getBody().unmask();
         this.getView().close();
         AOCRuntime.setWindowInEditMode(false);
-	}
+	},
+	onComboBlur:function(field){
+    	Helper.clearCombo(field);
+    },
 });
