@@ -1,249 +1,195 @@
 package com.avery.storage.entities;
 
-import java.sql.Date;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 
+import com.avery.app.config.SpringConfig;
+import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.service.LocalItemService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+/**
+ * @author Vishal
+ *
+ */
 @Entity
-@Table(name="localitem")
-public class LocalItem {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id")
-	private Long id;
+@Table(name = "localitem")
+@Path("localitem")
+public class LocalItem extends MainAbstractEntity {
+	/**
+	 * 
+	 */
 
-	@Column(name="system",length=500)
+	public LocalItem() {
+
+	}
+
+	private static final long serialVersionUID = -2512073737961840032L;
+
+	@Column(name = "system", length = 500)
 	private String system;
 
-	@Column(name="site",length=50)
-	private String site;
+//	@Column(name = "site", length = 50)
+//	private String site;
 
-	@Column(name="partnerName",length=500)
+	@Column(name = "partnerName", length = 500)
 	private String partnerName;
 
-	@Column(name="rboName",length=500)
+	@Column(name = "rboName", length = 500)
 	private String rboName;
 
-	@Column(name="customerItemNO",length=250)
+	@Column(name = "customerItemNO", length = 250)
 	private String customerItemNO;
 
-	@Column(name="identifier",length=255)
-	private String identifier;
+	@Column(name = "identifierValue", length = 250)
+	private String identifierValue;
 
-	@Column(name="identifierVariable",length=250)
-	private String identifierVariable;
+//	@Column(name = "identifierVariable", length = 250)
+//	private String identifierVariable;
 
-	@Column(name="internalItemNo",length=250)
-	private String internalItemNo;
+//	@Column(name = "internalItemNo", length = 250)
+//	private String internalItemNo;
 
-	@Column(name="cancelItem")
-	private Boolean cancelItem;
+//	@Column(name = "cancelItem")
+//	private Boolean cancelItem;
 
-	@Column(name="glid")
-	private Long glid;
+	@Column(name = "glid", length = 100)
+	private String glid;
 
-	@Column(name="createdBy",length=50)
-	private String createdBy;
+	@Column(name = "orgCode", length = 50)
+	private String orgCode;
 
-	@Column(name="createdDate")
-	private Date createdDate;
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		Map<?, ?> entitiesMap = new HashMap();
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
+					.getBean("localItemService");
+			entitiesMap = localItemService.readWithCriteria(queryParamMap);
+			if (entitiesMap == null || entitiesMap.isEmpty())
+				throw new Exception("Unable to find any data");
+			mapper.writeValue(writer, entitiesMap);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
 
-	@Column(name="lastModifiedBy",length=50)
-	private String lastModifiedBy;
-	
-	@Column(name="lastModifiedDate")
-	private Date lastModifiedDate;
-	
-	
-	
-	public LocalItem() {}
-
-
-
-	public Long getId() {
-		return id;
 	}
 
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public String getSystem() {
 		return system;
 	}
 
-
-
 	public void setSystem(String system) {
 		this.system = system;
 	}
 
-
-
-	public String getSite() {
-		return site;
-	}
-
-
-
-	public void setSite(String site) {
-		this.site = site;
-	}
-
-
+//	public String getSite() {
+//		return site;
+//	}
+//
+//	public void setSite(String site) {
+//		this.site = site;
+//	}
 
 	public String getPartnerName() {
 		return partnerName;
 	}
 
-
-
 	public void setPartnerName(String partnerName) {
 		this.partnerName = partnerName;
 	}
-
-
 
 	public String getRboName() {
 		return rboName;
 	}
 
-
-
 	public void setRboName(String rboName) {
 		this.rboName = rboName;
 	}
-
-
 
 	public String getCustomerItemNO() {
 		return customerItemNO;
 	}
 
-
-
 	public void setCustomerItemNO(String customerItemNO) {
 		this.customerItemNO = customerItemNO;
 	}
 
-
-
-	public String getIdentifier() {
-		return identifier;
+	public String getIdentifierValue() {
+		return identifierValue;
 	}
 
-
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setIdentifierValue(String identifierValue) {
+		this.identifierValue = identifierValue;
 	}
 
+//	public String getIdentifierVariable() {
+//		return identifierVariable;
+//	}
+//
+//	public void setIdentifierVariable(String identifierVariable) {
+//		this.identifierVariable = identifierVariable;
+//	}
+//
+//	public String getInternalItemNo() {
+//		return internalItemNo;
+//	}
+//
+//	public void setInternalItemNo(String internalItemNo) {
+//		this.internalItemNo = internalItemNo;
+//	}
+//
+//	public Boolean getCancelItem() {
+//		return cancelItem;
+//	}
+//
+//	public void setCancelItem(Boolean cancelItem) {
+//		this.cancelItem = cancelItem;
+//	}
 
-
-	public String getIdentifierVariable() {
-		return identifierVariable;
-	}
-
-
-
-	public void setIdentifierVariable(String identifierVariable) {
-		this.identifierVariable = identifierVariable;
-	}
-
-
-
-	public String getInternalItemNo() {
-		return internalItemNo;
-	}
-
-
-
-	public void setInternalItemNo(String internalItemNo) {
-		this.internalItemNo = internalItemNo;
-	}
-
-
-
-	public Boolean getCancelItem() {
-		return cancelItem;
-	}
-
-
-
-	public void setCancelItem(Boolean cancelItem) {
-		this.cancelItem = cancelItem;
-	}
-
-
-
-	public Long getGlid() {
+	public String getGlid() {
 		return glid;
 	}
 
-
-
-	public void setGlid(Long glid) {
+	public void setGlid(String glid) {
 		this.glid = glid;
 	}
 
-
-
-	public String getCreatedBy() {
-		return createdBy;
+	public String getOrgCode() {
+		return orgCode;
 	}
 
-
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 
-
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-
-
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-
-
-
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
-
-
-
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-
-
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
-	
-
-	
-	
 }

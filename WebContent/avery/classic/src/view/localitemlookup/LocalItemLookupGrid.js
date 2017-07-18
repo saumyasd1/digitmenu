@@ -14,8 +14,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
             columns: this.buildColumns(),
             columnLines: false,
             tbar: {
-                height: AOC.config.Settings.config.defaultTbarHeight
-//                items: me.buildtbar()
+                height: AOC.config.Settings.config.defaultTbarHeight,
+                items: me.buildtbar()
             },
             store: Ext.create('AOC.store.LocalItemLookupStore', {
                 storeId: 'localItemLookupStoreId'
@@ -30,7 +30,15 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
     },
     buildColumns: function () {
         var me = this;
-        return [{
+        return [
+                {
+		            text: '#',
+		            width: 35,
+		            sortable: true,
+		            align:'center',
+		            dataIndex: 'id'
+		        },
+                {
 		            text: AOCLit.customerItemNO,
 		            width: 120,
 		            sortable: true,
@@ -49,7 +57,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
 		            width: 120,
 		            sortable: true,
 		            align:'left',
-		            dataIndex: 'glid',
+		            dataIndex: 'identifierValue',
 		            flex: 1
 		        },{
 		            text: AOCLit.partnerName,
