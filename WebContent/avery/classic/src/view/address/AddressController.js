@@ -176,7 +176,7 @@ Ext.define('AOC.view.address.AddressController', {
     },
     openAddAddressWindow: function (currentRecord, id, title) {
         var mode = AOCRuntime.getWindowInEditMode(),
-//        	title = mode ? 'Edit Address' : 'Add Address';
+        	title = mode ? 'Edit Address' : 'Add Address';
            	win = Ext.create('AOC.view.address.AddAddressWin', {
                 title: title,
                 rec: currentRecord,
