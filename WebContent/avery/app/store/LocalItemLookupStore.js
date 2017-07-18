@@ -9,7 +9,7 @@ Ext.define('AOC.store.LocalItemLookupStore', {
 		url: applicationContext+'/rest/localitem',
 		reader:{
 	        type:'json', 
-	        rootProperty:'emailqueue',
+	        rootProperty:'localitem',
             totalProperty: 'totalCount'
 	    }
 	},
