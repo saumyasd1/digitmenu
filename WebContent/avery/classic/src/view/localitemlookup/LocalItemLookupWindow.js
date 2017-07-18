@@ -98,7 +98,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					flex:1,
 					margin:'0 0 0 10',
 					displayField:'partnerName',
-					valueField:'id',
+					valueField:'partnerName',
 					listeners:{
 						blue:'onComboBlur'
 					}
@@ -116,14 +116,14 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                 items: [{
 					xtype:'combo',
 					itemId:'RItemId',
-					name: 'rboId',
+					name: 'rboName',
 					reference:'rboId',
 					fieldLabel:AOCLit.RBO,
 					allowBlank: false,
 					flex:1,
 					store:rboStore,
 					displayField:'rboName',
-					valueField:'id',
+					valueField:'rboName',
 					queryMode:'local',
 					listeners:{
 						blue:'onComboBlur'
