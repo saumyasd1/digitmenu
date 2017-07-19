@@ -54,10 +54,10 @@ public class ExcelUtils {
 		try {
 			int rowIndex=1,columncellCount=0;
 			Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
-			Date date = null;
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
+				Date date = null;
 				OrderQueue obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsrName());
@@ -160,9 +160,9 @@ public class ExcelUtils {
 		try {
 			int rowIndex=1,columncellCount=0;
 			Iterator<SalesOrder> CrunchifyIterator = salesOrder.iterator();
-			Date date = null;
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
+				Date date = null;
 				SalesOrder obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsr());
@@ -207,9 +207,9 @@ public class ExcelUtils {
 		try {
 			int rowIndex=1,columncellCount=0;
 			Iterator<OrderLine> CrunchifyIterator = orderLine.iterator();
-			Date date = null;
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
+				Date date = null;
 				OrderLine obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsr());
