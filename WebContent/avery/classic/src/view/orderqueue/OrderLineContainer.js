@@ -10,66 +10,69 @@ Ext.define('AOC.view.orderqueue.OrderLineContainer', {
 		var me = this;
 		me.items = me.buildItems();
 		me.buttons = me.buildButtons();
-		Ext.apply(this, {
-			tbar:{
-				height:AOC.config.Settings.config.defaultTbarHeight,
-				items:me.buildTbar()
-			}
-	 	});
 	 	me.callParent(arguments);
 	},
-	buildTbar:function(){
-		return [
-			{
-				xtype:'tbtext',
-				style:AOC.config.Settings.config.tabHeaderTitleStyle,
-				reference:'orderLineTitle'
-			},'->',
-			{
-				xtype:'form',
-				reference:'orderLineForm',
-				margin:'0 0 0 20',
-				width:'100%',
-				height:40,
-				border:false,
-				items:[
-					{
-						xtype:'fieldcontainer',
-						layout:'hbox',
-						margin:'0 0 0 0',
-						style:'padding-top:4px;',
-						flex:1,
-						defaults:{
-							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-							labelSeparator:'',
-							labelWidth:80,
-							xtype:'displayfield'
-						},
-						items:[
-							{
-								fieldLabel:'Partner',
-								name:'PartnerName',
-								flex:1
+	dockedItems:[
+	    {
+	    	 xtype: 'toolbar',
+	         dock: 'top',
+	         items:[
+				{
+					xtype:'tbtext',
+					style:AOC.config.Settings.config.tabHeaderTitleStyle,
+					reference:'orderLineTitle'
+				},
+				{
+					xtype:'form',
+					reference:'orderLineForm',
+					margin:'0 0 0 20',
+					width:'85%',
+					border:false,
+					items:[
+						{
+							xtype:'fieldcontainer',
+							layout:'hbox',
+							margin:'0 0 0 0',
+							style:'padding-top:4px;',
+							flex:1,
+							defaults:{
+								labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+								labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+								labelWidth:50,
+								xtype:'displayfield'
 							},
-							{
-								fieldLabel : 'RBO',
-								name:'RBOName',
-								margin:'0 0 0 10',
-								flex:.6
-							},
-							{
-								fieldLabel : 'Subject',
-								name:'Subject',
-								margin:'0 5 0 10',
-								flex:2
-							}
-						]
-					}
-				]
-			}
-		];
-	},
+							items:[
+								{
+									fieldLabel:'Partner',
+									name:'PartnerName',
+									flex:.8
+								},
+								{
+									fieldLabel : 'RBO',
+									name:'RBOName',
+									margin:'0 0 0 10',
+									flex:.5
+								},
+								{
+									fieldLabel : 'Subject',
+									name:'Subject',
+									margin:'0 5 0 10',
+									flex:1
+								},
+								{
+									fieldLabel: 'Site Name',
+									name:'SiteName',
+									labelWidth:70,
+									margin:'0 5 0 10',
+									flex:.5
+								}
+							]
+						}
+					]
+				}
+			]
+	    }
+	],
 	buildButtons:function(){
 		return [
 			{
