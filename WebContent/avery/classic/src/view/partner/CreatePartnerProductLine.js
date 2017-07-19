@@ -661,8 +661,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	reference:'attachmentFileNameExtension_'+count,
 			    	fieldLabel:fieldLabel + ' Additional Attachment Format',
 			    	emptyText:AOCLit.fileExtensionEmptyText,
-			    	fieldType:'attachmentFileExt',
-			    	count : count,
+//			    	fieldType:'attachmentFileExt',
+//			    	count : count,
 			    	listeners:{
 				    	blur:'onFileFormatFieldBlur'
 			    	}
@@ -678,13 +678,14 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	          		 name:'attachmentIdentifier_'+count,
 	          		 reference:'attachmentIdentifier_'+count,
 	          		 margin:'0 0 0 10'
-	          	 },{
-	          		 xtype:'textfield',
-	          		 fieldLabel:'Cell No,If Excel',
-	          		 reference:'attachmentFileCellNo_'+count,
-	          		 hidden:true,
-	          		 margin:'0 0 0 10'
 	          	 }
+//	          	 {
+//	          		 xtype:'textfield',
+//	          		 fieldLabel:'Cell No,If Excel',
+//	          		 reference:'attachmentFileCellNo_'+count,
+//	          		 hidden:true,
+//	          		 margin:'0 0 0 10'
+//	          	 }
 			  ]
 		  };
 	},
