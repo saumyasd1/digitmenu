@@ -586,7 +586,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.skuQtyDifference ,
 			dataIndex: 'skuQtyDifference',
-			width: 150
+			width: 150,
+			type:'address',
+			hidden:true
 		},
 		{
 			text: AOCLit.averyMOQ+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Legacy MOQ on SKU level</font>" class="fa fa-info-circle"></i>',
