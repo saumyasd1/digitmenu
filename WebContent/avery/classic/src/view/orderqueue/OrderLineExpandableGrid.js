@@ -389,7 +389,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 140
 		},
 		{
-			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHK/ADNS/ADNL</br>SZ - SZ/PXSH</font>" class="fa fa-info-circle"></i>',
+			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHKT/POKL/ADNS/ADNL/ADHK</br>SZ - SZ/PXSH</br>VN - VN/PXVN</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'divisionForInterfaceERPORG',
 			align:'left',
 			menuDisabled:true,
@@ -588,6 +588,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			} 
 		},
 		{
+			text: AOCLit.skuQtyDifference ,
+			dataIndex: 'skuQtyDifference',
+			width: 150
+		},
+		{
 			text: AOCLit.averyMOQ+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Legacy MOQ on SKU level</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'averyMOQ',
 			width: 120,
@@ -696,11 +701,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer:function(v, metadata, record){
 				return Helper.onOrderLineDateRenderer(v, metadata, record);
 			}
-		},
-		{
-			text: AOCLit.skuQtyDifference ,
-			dataIndex: 'skuQtyDifference',
-			width: 150
 		},
 		{
 			text: AOCLit.apoType,
