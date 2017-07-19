@@ -373,14 +373,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		refs = me.getReferences(),
     		groupingField = refs['groupingFieldCont']
     		groupingFieldArray = [];
-    		//count = 1;
     	
     	for(var prop in detail){
     		if(prop.indexOf('groupingField') > -1){
     			if(!Ext.isEmpty(detail[prop])){
     				groupingFieldArray.push({prop:detail[prop]});
-	    			//groupingField.add(Helper.getGroupingField(count));
-	    			//count++;
     			}
     		}
     	}
@@ -392,6 +389,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		}else{
     			groupingField.add(Helper.getGroupingField(i, false, true));
     		}
+    	}
+    	if(len == 0){
+    		groupingField.add(Helper.getGroupingField(1, false, false));
     	}
     },
     setReadOnlyView: function (readOnlyFlag) {
