@@ -307,6 +307,7 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadAllVariableComboStore('APOType');
         Helper.loadAllVariableComboStore('EndCustomer');
         Helper.loadAllVariableComboStore('SplitShipset');
+        Helper.loadAllVariableComboStore('CSR');
         
         this.getServerSystemOffset();
         //this.getTimeZone();

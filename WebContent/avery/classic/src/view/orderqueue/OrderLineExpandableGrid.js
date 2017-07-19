@@ -202,21 +202,17 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
             resizable:false,
 			editor:{
 				xtype:'combo',
-				displayField:'variableFieldName',
-				valueField:'variableFieldName',
+				displayField:'name',
+				valueField:'name',
 				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('CSRId') == null ? Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
-			    listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+				store:Ext.data.StoreManager.lookup('CSRId1') != null ? Ext.data.StoreManager.lookup('CSRId1') : Helper.getAllVariableComboStore('CSR', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
 			},
-			renderer:'comboColumnRenderer'
+			renderer:'variableComboColumnRenderer'
 		}, 
 		{
 			text: AOCLit.atoMandatory+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Mandatory variable field checking</font>" class="fa fa-info-circle"></i>',
@@ -1004,6 +1000,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode :'local',
 				reference:'shippingMethodCombo',
 				variableName:'ShippingMethod',
+				matchFieldWidth:false,
+				listConfig:{
+					width:250
+				},
 				store:Ext.data.StoreManager.lookup('ShippingMethodId1') != null ? Ext.data.StoreManager.lookup('ShippingMethodId1') : Helper.getAllVariableComboStore('ShippingMethod', true),
 				listeners:{
 					focus:'onVariableComboFocus',
@@ -1025,6 +1025,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				queryMode :'local',
 				reference:'freightTermscombo',
 				variableName:'FreightTerms',
+				matchFieldWidth:false,
+				listConfig:{
+					width:180
+				},
 				store:Ext.data.StoreManager.lookup('FreightTermsId1') != null ? Ext.data.StoreManager.lookup('FreightTermsId1') : Helper.getAllVariableComboStore('FreightTerms', true),
 				listeners:{
 					focus:'onVariableComboFocus',
