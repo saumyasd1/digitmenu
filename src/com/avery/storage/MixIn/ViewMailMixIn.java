@@ -1,8 +1,10 @@
 package com.avery.storage.MixIn;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
+import com.avery.storage.entities.BillShipMapping;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.RBO;
@@ -321,4 +323,7 @@ public abstract class ViewMailMixIn {
 	
 	@JsonIgnore
 	public abstract Date getLastModifiedDate();
+	
+	@JsonIgnore
+	public abstract List<BillShipMapping> getListBillShipMapping();
 }

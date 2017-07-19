@@ -458,6 +458,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			//app default params need to post for identification process as: 11/07/2017
 			Ext.apply(valueObj, Helper.getDefaultProuctLineFieldParams());
 			
+			if(valueObj.fileOrderFileContent){
+				valueObj.fileOrderMatchRequired = true;
+				delete valueObj.fileOrderFileContent;
+			}
+			
 			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+ (!Ext.isEmpty(AOCRuntime.getUser().lastName) ? AOCRuntime.getUser().lastName : '');
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
@@ -586,20 +591,18 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		
 		//order received in email body
 		if(values.orderFileNamePattern && values.fileOrderFileContent){
-			obj.fileOrderMatchLocation = values.orderFileNamePattern + '|'+ values.fileOrderFileContent;
+			obj.fileOrderMatchLocation = 'FileName|FileContent';
 		}
-//		else if(values.fileOrderFileName){
-//			obj.fileOrderMatchLocation = values.fileOrderFileName;
-//		}
-//		else if(values.fileOrderFileContent){
-//			obj.fileOrderMatchLocation = values.fileOrderFileContent;
-//		}
+		if(!values.orderFileNamePattern && values.fileOrderFileContent){
+			obj.fileOrderMatchLocation = 'FileContent';
+		}
+		
 		if(values.fileOrderCellNo){
 			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}
 		
 		delete values.fileOrderFileName;
-		delete values.fileOrderFileContent;
+		//delete values.fileOrderFileContent;
 		delete values.fileOrderCellNo;
 		
 		delete values.emailSubjectProductLineMatchRequired;

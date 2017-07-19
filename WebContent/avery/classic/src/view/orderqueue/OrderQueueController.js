@@ -430,6 +430,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		//active orderline view
 		orderQueueView.getLayout().setActiveItem(1);
 		
+		currentRecord.data.SiteName = Helper.getSiteName(currentRecord.get('siteId'));
+		
 		orderLineForm.setValues(currentRecord.data);//set order line form values
 		orderLineTitle.setText('Order Line   (Order Track#: '+ id + ')'); //set orderline title
 		
