@@ -230,8 +230,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				}
 			}
 		} else {
-			Criteria crit = session.createCriteria(ProductLine.class)
-					.add(Restrictions.ne("active", false))
+			Criteria crit = session.createCriteria(ProductLine.class).add(Restrictions.ne("active", false))
 					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
 							.add(Projections.property("dataStructureName"), "dataStructureName"))
 					.addOrder(Order.asc("dataStructureName"))
@@ -312,7 +311,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			productLine.setCreatedDate(new Date());
 			productlineId = productLineService.create(productLine);
 			List orderSystemInfo = (ArrayList) entitiesMap.get("listOrderSystemInfo");
-			saveListOrderSystemInfo(productlineId, orderSystemInfo);
+			saveListOrderSystemInfo(productlineId, orderSystemInfo, true);
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Error while creating productline " + e);
 			throw e;
@@ -325,15 +324,16 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	 * 
 	 * @param productlineId
 	 * @param orderSystemInfo
+	 * @param createdDateFlag
 	 * @throws Exception
 	 */
-	public void saveListOrderSystemInfo(long productlineId, List orderSystemInfo) throws Exception {
+	public void saveListOrderSystemInfo(long productlineId, List orderSystemInfo, boolean createdFlag)
+			throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		ProductLine productLineObj = new ProductLine();
 		productLineObj.setId(productlineId);
 		Session session = null;
-		Long entityId = 0L;
 		try {
 			session = getSessionFactory().getCurrentSession();
 			for (Object obj : orderSystemInfo) {
@@ -346,10 +346,16 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 					systemInfoObj.setId(systemId.longValue());
 					orderSystemInfoObj.setVarSystem(systemInfoObj);
 				}
+				if (createdFlag) {
+					orderSystemInfoObj.setCreatedDate(new Date());
+					orderSystemInfoObj.setCreatedBy("Web");
+				}
+				orderSystemInfoObj.setLastModifiedBy("Web");
+				orderSystemInfoObj.setLastModifiedDate(new Date());
 				orderSystemInfoObj.setVarProductLine(productLineObj);
 				session.saveOrUpdate(orderSystemInfoObj);
 				List<OrgInfo> listOrgInfo = orderSystemInfoObj.getListOrgInfo();
-				saveListOrgInfo(orderSystemInfoObj.getId(), listOrgInfo);
+				saveListOrgInfo(orderSystemInfoObj.getId(), listOrgInfo, createdFlag);
 			}
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Error while updating productline " + e);
@@ -362,9 +368,11 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	 * 
 	 * @param orderSystemInfoId
 	 * @param listOrgInfo
+	 * @param createdDateFlag
 	 * @throws Exception
 	 */
-	public void saveListOrgInfo(long orderSystemInfoId, List<OrgInfo> listOrgInfo) throws Exception {
+	public void saveListOrgInfo(long orderSystemInfoId, List<OrgInfo> listOrgInfo, boolean createdFlag)
+			throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		Session session = null;
@@ -379,6 +387,12 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 				// orgInfoObj =
 				// mapper.readValue(mapper.writeValueAsString(entityMap),
 				// OrgInfo.class);
+				if (createdFlag) {
+					orgInfoObj.setCreatedDate(new Date());
+					orgInfoObj.setCreatedBy("Web");
+				}
+				orgInfoObj.setLastModifiedBy("Web");
+				orgInfoObj.setLastModifiedDate(new Date());
 				orgInfoObj.setVarOrderSystemInfo(orderSystemInfoObj);
 				session.saveOrUpdate(orgInfoObj);
 			}
@@ -404,7 +418,8 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			productLine = (ProductLine) session.get(ProductLine.class, productlineId);
 			ObjectReader updater = mapper.readerForUpdating(productLine);
 			productLine = updater.readValue(productLineData);
-//			productLine = mapper.readValue(productLineData, ProductLine.class);
+			// productLine = mapper.readValue(productLineData,
+			// ProductLine.class);
 			ProductLineService productLineService = (ProductLineService) SpringConfig.getInstance()
 					.getBean("productLineService");
 			// productlineId = productLineService.create(productLine);
@@ -420,7 +435,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			session.update(productLine);
 			// productlineId = productLine.getId();
 			List orderSystemInfo = (ArrayList) entitiesMap.get("listOrderSystemInfo");
-			saveListOrderSystemInfo(productlineId, orderSystemInfo);
+			saveListOrderSystemInfo(productlineId, orderSystemInfo, false);
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Error while updating productline " + e);
 			throw e;
