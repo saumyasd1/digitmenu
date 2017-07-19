@@ -92,11 +92,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     				var fieldStore = column.getEditor(rec).store;
 	    			if(fieldStore && !Ext.isEmpty(rec.get(dataIndex))){
 	    				
-	    				if(dataIndex == 'csr'){
-	    					index = fieldStore.find('variableFieldName', rec.get(dataIndex),'', false, false, true);
-	    				}else{
-	    					index = fieldStore.find('name', rec.get(dataIndex),'', false, false, true);
-	    				}
+	    				var index = fieldStore.find('name', rec.get(dataIndex),'', false, false, true);
 	    				
 	    				if(index == -1){
 	    					if(rec.get('status') == AOCLit.waitingForCSRStatusOrderLine){
