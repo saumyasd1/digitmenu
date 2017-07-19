@@ -1133,6 +1133,17 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		field.allowBlank = true;
 	 },
 	 
+	 onKeywordFieldBlur:function(field){
+		 var value = field.getValue();
+		 if(field.fileOrderType){
+			 if(value.indexOf('and') > -1 || value.indexOf('or') > -1){
+				 field.setValue('');
+				 field.focus();
+				 Helper.showToast('validation', 'Please enter value with "AND" or "OR".');
+			 }
+		 }
+	 },
+	 
 	 onAddGroupingFieldBtnClick:function(btn){
 		 var me = this,
 		 	 refs = me.getReferences(),
