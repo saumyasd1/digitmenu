@@ -186,7 +186,7 @@ public class ExcelUtils {
 				Cell cell19 = row.createCell(++columncellCount);
 				if(obj.getCustomerRequestDate()!=null)
 					date = obj.getCustomerRequestDate();
-					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
+					cell19.setCellValue(convertDate(date, timeZone));
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(obj.getVarOrderFileQueue().getId());
 				columncellCount=0;
