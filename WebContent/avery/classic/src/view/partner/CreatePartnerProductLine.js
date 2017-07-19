@@ -662,6 +662,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	fieldLabel:fieldLabel + ' Additional Attachment Format',
 			    	emptyText:AOCLit.fileExtensionEmptyText,
 			    	fieldType:'attachmentFileExt',
+			    	count : count,
 			    	listeners:{
 				    	blur:'onFileFormatFieldBlur'
 			    	}
@@ -1034,6 +1035,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	},
 	
 	getGroupingField:function(){
+		var me = this;
 		return {
 			title:'Grouping',
 			titleAlign:'center',
@@ -1044,6 +1046,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			margin:'20 0 0 0',
 			border:false,
 			reference:'groupingFieldCont',
+			disabled:me.mode == 'view',
 			items:this.getGroupingFieldContItem(1)
 		};
 	},

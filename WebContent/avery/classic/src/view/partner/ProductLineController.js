@@ -1230,7 +1230,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 onFileFormatFieldBlur:function(field){
 		var me = this,
 			refs = me.getReferences(),
-			attachmentFileCellNo_1 = refs['attachmentFileCellNo_1'],
+			attachmentFileCellNo= refs['attachmentFileCellNo_'+field.count],
 		 	value = field.getValue();
 		 
 		 if(value && value.indexOf('.') == -1){
@@ -1239,10 +1239,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			 Helper.showToast('validation', 'Please follow format to fill file format.');
 		 }
 		 if(field.fieldType == 'attachmentFileExt' && (value && value.indexOf('xls') > -1)){
-			 attachmentFileCellNo_1.show();
+			 attachmentFileCellNo.show();
 		 }else{
-			 attachmentFileCellNo_1.hide();
+			 attachmentFileCellNo.hide();
 		 }
-		 
+		 me.getView().updateLayout();
 	 }
 });
