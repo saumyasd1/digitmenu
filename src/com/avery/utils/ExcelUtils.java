@@ -233,7 +233,7 @@ public class ExcelUtils {
 				Cell cell19 = row.createCell(++columncellCount);
 				if(obj.getRequestedDeliveryDate() != null)
 					date = obj.getRequestedDeliveryDate();
-					cell19.setCellValue(convertDateUsingTimezone(date, timeZone));
+					cell19.setCellValue(convertDate(date, timeZone));
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(orderTrack);
 				columncellCount=0;
@@ -264,6 +264,15 @@ public class ExcelUtils {
 			return "";
 		}
 		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ 		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
+		return formatter1.format(date);
+	}
+	private static String convertDate(Date date, String timeZone) {
+		if(date==null)
+		{
+			return "";
+		}
+		DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
  		formatter1.setTimeZone(TimeZone.getTimeZone(timeZone));
 		return formatter1.format(date);
 	}
