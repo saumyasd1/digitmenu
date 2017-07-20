@@ -856,6 +856,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			disabled:true,
 			name:name,
 			prevItemRefs: prevItemRefs,
+			emptyText:index > -1 ? AOCLit.orderFileCellNoEmptyText : '',
 			reference:name,
 			listeners:{
 				blur:'onCellNoBlur'
@@ -870,6 +871,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			disabled:true,
 			fileOrderType:index > -1 ? true : false,
 			margin:'0 0 5 0',
+			emptyText:index > -1 ? AOCLit.orderFileKeywordEmptyText : '',
 			name:name,
 			reference:name,
 			listeners:{
