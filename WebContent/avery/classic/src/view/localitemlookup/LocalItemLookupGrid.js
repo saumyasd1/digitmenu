@@ -137,7 +137,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 iconCls: 'fa fa-search',
                 iconAlign: "right",
                 cls: 'blue-btn',
-//                handler: 'openAdvancedSearchWindow'
+                handler: 'openAdvancedSearchWindow'
             }, {
                 hidden: true,
                 iconCls: 'fa fa-times',
