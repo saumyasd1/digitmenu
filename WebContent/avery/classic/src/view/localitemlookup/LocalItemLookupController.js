@@ -88,5 +88,54 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
                 });
             }
         }, grid);
-    }
+    },
+    getQuickSearchResults: function(cmp) {
+    	var view = this.getView(),
+        value = cmp.getValue();
+        Helper.quickSearch(view,{id: value}),
+        cmp.orderedTriggers[0].show();
+    },
+    getSearchResults: function(cmp, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.getQuickSearchResults(cmp);
+        }
+    },
+    openAdvancedSearchWindow:function(){
+    	var advanceSearchWin = Ext.create('AOC.view.advsearch.LocalItemLookupAdvancedSearch',{contextGrid:this.getView()});
+    	if(!advanceSearchWin.isVisible()){
+    		advanceSearchWin.show();
+    	}
+    },
+    getAdvancedSearchResults: function(cmp, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearchBtnClicked();
+        }
+    },
+    clearSearchResults: function(cmp) {
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        cmp.setValue('');
+        cmp.orderedTriggers[0].hide();
+    },
+    clearAdvancedSearch:function(btn){
+        var grid = this.getView();
+        var store = grid.store;
+        store.clearFilter();
+        store.loadPage(1);
+        btn.hide();
+    },
+    onSearchBtnClicked:function(btn){
+    	  var view = this.getView(),
+    	  	  refs = view.getReferences(),
+    	  	  form = refs.localItemLookupAdvanceSearchForm.getForm(),
+    	  	  values = form.getValues();
+    	  
+        values.datecriteriavalue = 'receivedDate';
+    	  store = view.contextGrid.store;
+        Helper.advancedSearch(view, values);
+      }
 });
