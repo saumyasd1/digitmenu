@@ -376,7 +376,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	for(var prop in detail){
     		if(prop.indexOf('groupingField') > -1){
-    			if(!Ext.isEmpty(detail[prop])){
+    			if(!Ext.isEmpty(detail[prop]) && detail[prop] != 'id'){
     				groupingFieldArray.push({prop:detail[prop]});
     			}
     		}

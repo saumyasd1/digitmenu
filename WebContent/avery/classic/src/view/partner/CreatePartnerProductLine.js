@@ -48,7 +48,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			siteStore = Ext.data.StoreManager.lookup('siteId')== null ? Ext.create('AOC.store.SiteStore') : Ext.data.StoreManager.lookup('siteId'),
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
 		
-		var fileFormatStore = Ext.create('AOC.store.FileFormatStore');
+//		var fileFormatStore = Ext.create('AOC.store.FileFormatStore');
 		siteStore.load();
 		rboStore.load();
 		
