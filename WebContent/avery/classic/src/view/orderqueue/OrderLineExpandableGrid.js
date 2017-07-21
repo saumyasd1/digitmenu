@@ -385,7 +385,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 140
 		},
 		{
-			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHKT/POKL/ADNS/ADNL/ADHK</br>SZ - SZ/PXSH</br>VN - VN/PXVN</font>" class="fa fa-info-circle"></i>',
+			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHKT/POHKL/ADNS/ADNL/ADHK</br>SZ - SZ/PXSH</br>VN - VN/PXVN</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'divisionForInterfaceERPORG',
 			align:'left',
 			menuDisabled:true,
