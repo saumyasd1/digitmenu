@@ -1380,7 +1380,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			for(var i = 0; i < len; i++){
 				if(!Ext.isEmpty(data[i].level) || !Ext.isEmpty(data[i].typeSetter)){
 					data[i].skuno = parseInt(data[i].skuno);
-					data[i].typeSetter = parseInt(data[i].typeSetter);
+					data[i].typeSetter = data[i].typeSetter;//parseInt(data[i].typeSetter);
 					items.push(data[i]);
 				}
 			}
