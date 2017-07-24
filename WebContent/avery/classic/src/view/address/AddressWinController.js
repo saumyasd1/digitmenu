@@ -4,10 +4,9 @@ Ext.define('AOC.view.address.AddressWinController', {
     runTime: AOC.config.Runtime,
     
     onSaveBtnClick: function () {
-    	Ext.getBody().mask('Saving....');
-        var me = this;
+    	var me = this;
         var view = me.getView();
-        view.el.mask('Saving....');
+     
         var Msg = '';
         var createaddress = this.getView();
         var grid = Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
@@ -150,25 +149,25 @@ Ext.define('AOC.view.address.AddressWinController', {
 
         if (length > 0) {
             if (panel.getForm().isValid()) {
+            	   view.el.mask('Saving....');
                 Ext.Ajax.request({
                     method: methodMode,
                     jsonData: parameters,
                     url: url,
                     success: function (response, opts) {
-                    	Ext.getBody().unmask();
-                        createaddress.destroy();
+                     view.el.unmask();
+                     createaddress.destroy();
                         Helper.showToast('Success', Msg);
                         grid.store.load();
 
                     },
                     failure: function (response, opts) {
-                    	Ext.getBody().unmask();
-                    	createaddress.destroy();
+                    	view.el.unmask();
+                        createaddress.destroy();
                     }
                 });
             } else {
-          //      createaddress.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
-                Helper.showToast('validation', 'Please fill all mandatory(*) field');
+            	Helper.showToast('validation', 'Please fill all mandatory(*) field');
             }
             this.runTime.setWindowInEditMode(false);
         } else {
@@ -177,7 +176,7 @@ Ext.define('AOC.view.address.AddressWinController', {
     },
     
     onSiteSelect: function (combo, record) {
-    		var me = this,
+    	var me = this,
             refs = me.getReferences(),
             org = refs.orgName,
             shippingMethod = refs.shippingMethod,
