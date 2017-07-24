@@ -358,7 +358,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		var detail = view.rec.data;
     		detail.partnerId = detail.partnerId;
     		detail.rboId = detail.rboId;
-    		me.createGroupingField(detail);
+    		detail = me.createGroupingField(detail);
     		form.loadRecord(new Ext.data.Record(detail));
     	}
     	if(view.mode == 'view'){
@@ -378,6 +378,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		if(prop.indexOf('groupingField') > -1){
     			if(!Ext.isEmpty(detail[prop]) && detail[prop] != 'id'){
     				groupingFieldArray.push({prop:detail[prop]});
+    			}else if(detail[prop] === 'id'){
+    				detail[prop] = '';
     			}
     		}
     	}
@@ -393,6 +395,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	if(len == 0){
     		groupingField.add(Helper.getGroupingField(1, false, false));
     	}
+    	return detail;
     },
     setReadOnlyView: function (readOnlyFlag) {
 	    var me = this,
