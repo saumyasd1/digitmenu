@@ -640,7 +640,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			rightCellNo = '';
 		
 		if(!Ext.isEmpty(keyword) && !Ext.isEmpty(cellNo)){
-			var spliter = keyword.indexOf('AND') > -1 ? 'AND' : (keyword.indexOf('OR') > -1 ? 'OR' : '');
+			var spliter = keyword.indexOf(' AND ') > -1 ? ' AND ' : (keyword.indexOf(' OR ') > -1 ? ' OR ' : '');
 			if(spliter){
 				if(keyword.indexOf(spliter) > -1){
 					var strA = keyword.split(spliter);
@@ -652,7 +652,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					leftCellNo = strA[0].trim();
 					rightCellNo = strA[1].trim();
 				}
-				var spliterFormat = spliter == 'AND' ? '_&&_' : '_._';
+				var spliterFormat = spliter == ' AND ' ? '_&&_' : '_._';
 				return 'Value:'+leftKeyword+';Cell:'+leftCellNo + spliterFormat + 'Value:'+rightKeyword+';Cell:'+rightCellNo;
 			}
 			return 'Value:'+keyword +';Cell:'+cellNo;
@@ -1118,13 +1118,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		  	andFlag = false,
 		  	orFlag = false;
 		
-		if(prevItemRefs.getValue().indexOf('AND') > -1){
+		if(prevItemRefs.getValue().indexOf(' AND ') > -1){
 			andFlag = true;
 		}
-		if(prevItemRefs.getValue().indexOf('OR') > -1){
+		if(prevItemRefs.getValue().indexOf(' OR ') > -1){
 			orFlag = true;
 		}
-		if((andFlag && value.indexOf('AND') == -1) || (orFlag && value.indexOf('OR') == -1)){
+		if((andFlag && value.indexOf(' AND ') == -1) || (orFlag && value.indexOf(' OR ') == -1)){
 			field.setValue('');
 			field.allowBlank =false;
 			Helper.showToast('validation', 'Cell No should be followed same format as Keyword contains');
@@ -1136,7 +1136,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 onKeywordFieldBlur:function(field){
 		 var value = field.getValue();
 		 if(field.fileOrderType){
-			 if(value.indexOf('and') > -1 || value.indexOf('or') > -1){
+			 if(value.indexOf(' and ') > -1 || value.indexOf(' or ') > -1){
 				 field.setValue('');
 				 field.focus();
 				 Helper.showToast('validation', 'Please enter value with "AND" or "OR".');
