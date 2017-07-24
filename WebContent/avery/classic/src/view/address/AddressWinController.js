@@ -4,8 +4,10 @@ Ext.define('AOC.view.address.AddressWinController', {
     runTime: AOC.config.Runtime,
     
     onSaveBtnClick: function () {
+    	Ext.getBody().mask('Saving....');
         var me = this;
-        me.getView().el.mask('Saving....');
+        var view = me.getView();
+        view.el.mask('Saving....');
         var Msg = '';
         var createaddress = this.getView();
         var grid = Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
@@ -153,19 +155,20 @@ Ext.define('AOC.view.address.AddressWinController', {
                     jsonData: parameters,
                     url: url,
                     success: function (response, opts) {
-                        me.getView().unmask();
+                    	Ext.getBody().unmask();
                         createaddress.destroy();
                         Helper.showToast('Success', Msg);
                         grid.store.load();
 
                     },
                     failure: function (response, opts) {
-                        Ext.getBody().unmask();
-                        createaddress.destroy();
+                    	Ext.getBody().unmask();
+                    	createaddress.destroy();
                     }
                 });
             } else {
-                createaddress.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
+          //      createaddress.down('#messageFieldItemId').setValue(AOCLit.fillMandatoryFieldMsg).setVisible(true);
+                Helper.showToast('validation', 'Please fill all mandatory(*) field');
             }
             this.runTime.setWindowInEditMode(false);
         } else {
@@ -174,7 +177,7 @@ Ext.define('AOC.view.address.AddressWinController', {
     },
     
     onSiteSelect: function (combo, record) {
-        var me = this,
+    		var me = this,
             refs = me.getReferences(),
             org = refs.orgName,
             shippingMethod = refs.shippingMethod,
