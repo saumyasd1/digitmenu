@@ -8,7 +8,9 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
     cls: 'aoc-panel',
     listeners: {
         rowcontextmenu:'onRowContextMenu',
-        cellclick:'onCellClick'
+        cellclick:'onCellClick',
+        select:'onSelectRecord',
+        deselect:'onSelectRecord'
     },
     initComponent: function () {
         var me = this;
@@ -128,7 +130,9 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 text: 'Delete',
                 itemId: 'deleteLocalItemLookup',
                 iconCls: 'fa fa-trash',
+                reference:'deleteBtn',
                 cls: 'blue-btn',
+                disabled:true,
                 handler: 'deleteRecords'
             },'->',
             {

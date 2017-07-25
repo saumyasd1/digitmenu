@@ -163,5 +163,19 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
                 });
             }
         }, grid);
+    },
+    onSelectRecord:function(){
+    	var me = this,
+    		grid = me.getView(),
+    		refs = me.getReferences(),
+    		deleteBtn = refs.deleteBtn,
+    		recordCount = grid.getSelectionModel().getSelection().length;
+    	
+    	if(recordCount > 1 ){
+    		deleteBtn.setDisabled(false);
+    	}
+    	else if(recordCount == 1 ){
+    		deleteBtn.setDisabled(true);
+    	}
     }
 });
