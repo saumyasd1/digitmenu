@@ -50,7 +50,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
 		            text: AOCLit.customerItemNO,
 		            width: 120,
 		            sortable: true,
-		            align:'right',
+		            align:'left',
 		            dataIndex: 'customerItemNO',
 		            flex: 1
 		        },{
