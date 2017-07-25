@@ -12,7 +12,10 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
@@ -56,6 +59,32 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 		return null;
 	}
 	
-	
-	
+	@Override
+	public List<SystemInfo> getDistinctSystem(){
+		
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			ProjectionList proj = Projections.projectionList()
+					.add(Projections.property("id"), "id")
+					.add(Projections.property("name"), "name")
+					.add(Projections.groupProperty("name"));
+			criteria = session.createCriteria(SystemInfo.class)
+					.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SystemInfo.class));
+			return criteria.list();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching system name", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching system name", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
 }

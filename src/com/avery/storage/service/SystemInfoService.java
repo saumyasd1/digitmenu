@@ -32,6 +32,13 @@ public class SystemInfoService extends GenericEntityService<SystemInfo, Long>{
 		
 		return getSystemInfoDao().readAllBySiteId(entityId);
 		
-	} 
+	}
+	
+	@Transactional
+	public List<SystemInfo> getDistinctSystem(){
+		
+		return getSystemInfoDao().getDistinctSystem();
+		
+	}
 
 }

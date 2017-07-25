@@ -30,8 +30,10 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrgMixIn;
+import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrgService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -207,5 +209,37 @@ public class Org extends MainAbstractEntity {
 					.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 		return rb.build();
+	}
+	
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<Org> Org = null;
+		try {
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			mapper.addMixIn(Org.class, OrgMixIn.class);
+			OrgService OrgService = (OrgService) SpringConfig
+					.getInstance().getBean("orgService");
+			Org = OrgService.readAll();
+			if (Org == null)
+				throw new Exception("Unable to find order configuration");
+			mapper.writeValue(writer, Org);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order configuration " , ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order configuration " ,e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+
 	}
 }

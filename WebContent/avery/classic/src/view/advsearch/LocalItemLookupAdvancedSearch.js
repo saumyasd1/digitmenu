@@ -16,7 +16,14 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 		me.callParent(arguments);
 	},
 	buildItems :function(){
-		var me = this;
+		var me = this,
+			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId'),
+			orgStore = Ext.data.StoreManager.lookup('orgComboId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboId'),
+			systemStore = Ext.data.StoreManager.lookup('systemId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemId');
+			
+		rboStore.load();
+		orgStore.load();
+		systemStore.load();
 		return [
 		    {
 		    	xtype:'form',
@@ -85,14 +92,18 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
-							},
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.partnerName,
-								name:'partnerName',
-								flex:1,
-								margin:'0 0 0 10',
+							},{
+								xtype:'combo',
+								fieldLabel:AOCLit.partnerName,
+								name:'partnerId',
+								reference:'partnerCombo',
+								store:Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
+								queryMode:'local',
 								tabIndex:4,
+								flex:1,
+								displayField:'partnerName',
+								valueField:'partnerName',
+								margin:'0 0 0 10',
 								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
@@ -110,28 +121,37 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 							labelAlign:Settings.form.topLabelAlign
 						},
 						items:[
-							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.RBOName,
-								name:'rboName',
+						       {
+								xtype:'combo',
+								name: 'rboName',
+								fieldLabel:AOCLit.RBO,
+								store:rboStore,
+								displayField:'rboName',
 								flex:1,
+								valueField:'rboName',
+								queryMode:'local',
 								tabIndex:5,
 								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
-							},{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.orgCode,
+						       },
+						       {
+								xtype:'combo',
 								name:'orgCode',
+								store:orgStore,
+								displayField:'name',
+								fieldLabel:AOCLit.orgCode,
+								queryMode:'local',
+								valueField:'name',
 								flex:1,
-								margin:'0 0 0 10',
 								tabIndex:6,
+								margin:'0 0 0 10',
 								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
-							}
+						       }
 						]
 					},
 					{
@@ -145,12 +165,17 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						},
 						items:[
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.system,
+								xtype:'combo',
+								fieldLabel:AOCLit.system,
 								name:'system',
+								reference:'systemCombo',
+								displayField:'name',
+								valueField:'name',
+								tabIndex:7,
 								flex:1,
-								tabIndex:6,
 								enableKeyEvents:true,
+								queryMode:'local',
+								store:systemStore,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
