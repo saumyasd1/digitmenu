@@ -138,7 +138,14 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				editor:{
 					xtype:'combo',
 					editable:false,
-					store:[['Y','Y'],['N','N']]
+					store:[['None', 'None'],['Y','Y'],['N','N']],
+					listeners:{
+						select:function(field){
+							if(field.getValue() === 'None'){
+								field.setValue('');
+							}
+						}
+					}
 				}
 			}
         ];
