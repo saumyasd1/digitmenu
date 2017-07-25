@@ -173,7 +173,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		}
     },
     onViewOrderMenuItemClick:function(){
-    	debugger
     	var me = this,
     		grid = me.getView(),
     		currentRecord = grid.getSelectionModel().getSelection()[0];
