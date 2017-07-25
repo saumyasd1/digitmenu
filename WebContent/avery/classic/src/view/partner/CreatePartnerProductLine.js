@@ -105,7 +105,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								margin:'0 0 0 10',
 								blankTexts: 'RBO Name is required',
 								listeners:{
-									blue:'onComboBlur'
+									blur:'onComboBlur'
 								}
 							}
 						]
