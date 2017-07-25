@@ -145,8 +145,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			  align:'center',
 			  menuDisabled:true,
 			  sortable:false,
-			  resizable:false,
-			  //locked:true
+			  resizable:false
+//			  locked:true
 		},{
             header: Settings.config.defaultIcons.commentColumnIcon,
             width: 40,
@@ -205,7 +205,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField:'name',
 				valueField:'name',
 				queryMode:'local',
-				store:AOCRuntime.getStoreCSR(),//Ext.data.StoreManager.lookup('CSRId1') != null ? Ext.data.StoreManager.lookup('CSRId1') : Helper.getAllVariableComboStore('CSR', true),
+				store:Ext.data.StoreManager.lookup('configCSRStoreId') != null ? Ext.data.StoreManager.lookup('configCSRStoreId') : Ext.create('AOC.store.ConfigurationCSRStore'),
 				listeners:{
 					focus:'onVariableComboFocus',
 					select:'onVariableComboBlur',
