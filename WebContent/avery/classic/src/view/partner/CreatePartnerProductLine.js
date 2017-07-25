@@ -853,7 +853,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return {
 			xtype:'textfield',
 			fieldLabel:index > -1 ? 'Cell No,If Excel '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderCellNoInfoText)  :'Cell No,If Excel',
-			disabled:true,
+//			disabled:true,
 			name:name,
 			prevItemRefs: prevItemRefs,
 			emptyText:index > -1 ? AOCLit.orderFileCellNoEmptyText : '',
