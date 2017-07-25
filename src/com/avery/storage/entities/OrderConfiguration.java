@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 @Entity
-@Table(name = "AOC_OrderConfiguration")
+@Table(name = "aoc_orderconfiguration")
 @Path("orderconfigurations")
 public class OrderConfiguration extends MainAbstractEntity {
 	

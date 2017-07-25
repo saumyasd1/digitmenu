@@ -48,6 +48,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.UserMixIn;
+import com.avery.storage.service.OrderConfigurationService;
 import com.avery.storage.service.SiteService;
 import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.storage.service.UserService;
@@ -220,7 +221,7 @@ public class User extends MainAbstractEntity {
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig.getInstance()
 					.getBean("systemCsrCodeService");
-			
+			OrderConfigurationService orderConfigurationService = (OrderConfigurationService) SpringConfig.getInstance().getBean("orderConfigurationService");
 			/* *******************************************************  */
 			String systemCsrCodeOwner = "";
 			if(systemCsrCodeList != null){
@@ -247,6 +248,32 @@ public class User extends MainAbstractEntity {
 						systemCsrCode.setCreatedDate(new Date());
 						systemCsrCode.setLastModifiedDate(new Date());
 						Long systemCsrCodeId = systemCsrCodeService.create(systemCsrCode);
+						OrderConfiguration orderConfiguration=orderConfigurationService.readByPropertyNameSystemIdOrgCodeId("CSR", systeminfoId, orgCodeId);
+						if(orderConfiguration != null)
+						{
+							String propertyValue=orderConfiguration.getPropertyValue().trim();
+							String[] value=propertyValue.split("|");
+							boolean contains=false;
+							for(int j=0; j<value.length; j++)
+							{
+								contains=value[j].contains(systemCsrCode.getCsrCode());
+							}
+							if(!contains)
+							{
+								propertyValue=propertyValue+"|"+systemCsrCode.getCsrCode();
+								orderConfiguration.setPropertyValue(propertyValue);
+								orderConfigurationService.update(orderConfiguration);
+							}
+						}else
+						{
+							OrderConfiguration orderConfigurationObjectToCreate=new OrderConfiguration();
+							orderConfigurationObjectToCreate.setLastModifiedDate(new Date());
+							orderConfigurationObjectToCreate.setPropertyName("CSR");
+							orderConfigurationObjectToCreate.setPropertyValue(systemCsrCode.getCsrCode());
+							orderConfigurationObjectToCreate.setSystemId(systeminfoId);
+							orderConfigurationObjectToCreate.setOrgCodeId(orgCodeId);
+							Long orderConfigurationObject = orderConfigurationService.create(orderConfigurationObjectToCreate);
+						}
 						if(systemCsrCodeOwner.isEmpty()){
 							systemCsrCodeOwner = systemCsrCodeOwner + String.valueOf(systemCsrCodeId);
 						}else{
@@ -287,6 +314,7 @@ public class User extends MainAbstractEntity {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		String userId = "";
 		try {
+			OrderConfigurationService orderConfigurationService = (OrderConfigurationService) SpringConfig.getInstance().getBean("orderConfigurationService");
 			Map<String, Object> jsonMap = ApplicationUtils.convertJSONtoObjectMaps(data);
 			List list  = (ArrayList) jsonMap.get("newCSRCodeArray");
 			List <SystemCsrCode> systemCsrCodeList = new ArrayList<SystemCsrCode>();
@@ -378,6 +406,32 @@ public class User extends MainAbstractEntity {
 							systemCsrCode.setLastModifiedBy(userId);
 							systemCsrCode.setCreatedBy(userId);
 							Long systemCsrCodeId = systemCsrCodeService.create(systemCsrCode);
+							OrderConfiguration orderConfiguration=orderConfigurationService.readByPropertyNameSystemIdOrgCodeId("CSR", systeminfoId, orgCodeId);
+							if(orderConfiguration != null)
+							{
+								String propertyValue=orderConfiguration.getPropertyValue().trim();
+								String[] value=propertyValue.split("|");
+								boolean contains=false;
+								for(int j=0; j<value.length; j++)
+								{
+									contains=value[j].contains(systemCsrCode.getCsrCode());
+								}
+								if(!contains)
+								{
+									propertyValue=propertyValue+"|"+systemCsrCode.getCsrCode();
+									orderConfiguration.setPropertyValue(propertyValue);
+									orderConfigurationService.update(orderConfiguration);
+								}
+							}else
+							{
+								OrderConfiguration orderConfigurationObjectToCreate=new OrderConfiguration();
+								orderConfigurationObjectToCreate.setLastModifiedDate(new Date());
+								orderConfigurationObjectToCreate.setPropertyName("CSR");
+								orderConfigurationObjectToCreate.setPropertyValue(systemCsrCode.getCsrCode());
+								orderConfigurationObjectToCreate.setSystemId(systeminfoId);
+								orderConfigurationObjectToCreate.setOrgCodeId(orgCodeId);
+								Long orderConfigurationObject = orderConfigurationService.create(orderConfigurationObjectToCreate);
+							}
 							if(systemCsrCodeOwner.isEmpty()){
 								systemCsrCodeOwner = systemCsrCodeOwner + String.valueOf(systemCsrCodeId);
 							}else{

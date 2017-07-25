@@ -56,11 +56,11 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 		}
 	}
 
-	@Override
+/*	@Override
 	public Long create(OrderConfiguration newInstance) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	@Override
 	public OrderConfiguration read(Long id) {
@@ -92,5 +92,28 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 		}
 
 	}
+	@Override
+	public OrderConfiguration readByPropertyNameSystemIdOrgCodeId(String propertyName, Long systemId, Long orgCodeId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(OrderConfiguration.class);
 
+			criteria.add(Restrictions.eq("systemId", systemId));
+			criteria.add(Restrictions.eq("propertyName", propertyName));
+			criteria.add(Restrictions.eq("orgCodeId", orgCodeId));
+			return (OrderConfiguration) criteria.uniqueResult();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order conf for system id " + systemId, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in fetching order conf for system id " + systemId, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
 }

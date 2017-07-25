@@ -10,5 +10,5 @@ public interface OrderConfigurationDao extends GenericDao<OrderConfiguration, Lo
 	
 	public List<OrderConfiguration> readByPropertyName(String propertyName) throws Exception;
 	public List<OrderConfiguration> readByPropertyName(String propertyName, Long systemId, Long orgCodeId) throws Exception;
-
+	public OrderConfiguration readByPropertyNameSystemIdOrgCodeId(String propertyName, Long systemId, Long orgCodeId) throws Exception;
 }
