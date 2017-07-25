@@ -1,17 +1,17 @@
 Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
     extend: 'Ext.grid.Panel',
     xtype: 'salesrrderexpandablegrid',
-    itemId: 'salesrrderexpandablegrid',
+//    itemId: 'salesrrderexpandablegrid',
     requires: ['AOC.view.ux.RowExpanderGrid'],
     controller: 'salesorder',
     emptyText: AOCLit.emptyDataMsg,
-    autoHeight: true,
     columnLines: true,
     nestedGridRefrence: 'listSalesOrderDetails',
     columnLines: false,
     viewConfig: {
         stripeRows: true
     },
+    layout:'fit',
     columns:{
     	defaults:{
     		sortable:false,
@@ -268,8 +268,8 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 	    		});
 				return Ext.create('Ext.grid.Panel',{
 					modal: 'AOC.model.VariableHeaderModel',
-					cls: 'nestedGrid',
 					store:store,
+					width:1200,
 					columnLines: false,
 					columns:{ 
 						defaults:{
@@ -278,69 +278,66 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 						items:[
 							{
 								xtype: 'rownumberer',
-								text:'#'
+								text:'#',
+								align:'center',
+								width:50
 							}, 
 							{
 								text: AOCLit.Level,
 								dataIndex: 'level',
-								width: 100
+								width: 150
 							}, 
 							{
 								text: "SKU #",
 								dataIndex: 'skuno',
-								width: 100
+								width: 150
 							}, 
 							{
 								text: "TypeSetterCode",
 								dataIndex: 'typeSetter',
-								align:'right',
-								width: 130
+								width: 180
 							}, 
 							{
 								text: AOCLit.variableFieldName,
 								dataIndex: 'variableFieldName',
-								width: 140
+								width: 200
 							}, 
 							{
 								text: "Variable Field Value",
 								dataIndex: 'variableDataValue',
-								width: 140
+								flex: 1
 							}, 
 							{
 								text: AOCLit.fiberContentPercent,
 								dataIndex: 'fiberPercent',
-								align:'right',
-								xtype:'gridcolumn',
-								width: 155
-							},
-							{
-							  text:'',
-							  flex:1
+								align:'center',
+								width: 150
 							}
 						]
 					},
-					border: true,
 					autoHeight: true,
-					frame: false,
+					frame: true,
 					header: false
 				});
 		    }
 		}
     ],
-    tbar: {
-        height: AOC.config.Settings.config.defaultTbarHeight,
-        items: [
-			{
-				xtype:'tbtext',
-				text:'Sales Order',
-				style:AOC.config.Settings.config.tabHeaderTitleStyle
-			}
-		]
-    },
+    docketItems:[
+        {
+        	xtype:'toolbar',
+        	dock:'top',
+        	items:[
+        	    {
+					xtype:'tbtext',
+					text:'Sales Order',
+					style:AOC.config.Settings.config.tabHeaderTitleStyle
+				}   
+        	]
+        }
+    ],
     buttonAlign:'left',
     buttons:[
 		{
-			//xtype:'button',
 			text:'Back',
 			handler:'backButton'
 		}
