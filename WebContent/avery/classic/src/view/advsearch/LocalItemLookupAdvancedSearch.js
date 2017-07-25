@@ -5,7 +5,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 	reference:'localItemLookupAdvanceSearchWin',
 	controller : 'localitemlookupcontroller',
 	requires : ['Ext.window.MessageBox'],
-	
+	draggable:false,
 	layout:'fit',
 	width: 580,
 	title:AOCLit.advancedSearchWindowTitle,
@@ -24,6 +24,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 		rboStore.load();
 		orgStore.load();
 		systemStore.load();
+		
 		return [
 		    {
 		    	xtype:'form',
@@ -95,7 +96,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 							},{
 								xtype:'combo',
 								fieldLabel:AOCLit.partnerName,
-								name:'partnerId',
+								name:'partnerName',
 								reference:'partnerCombo',
 								store:Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
 								queryMode:'local',
