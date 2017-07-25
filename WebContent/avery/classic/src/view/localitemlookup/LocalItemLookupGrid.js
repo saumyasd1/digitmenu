@@ -31,18 +31,20 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
         });
         this.callParent(arguments);
     },
+    selType: 'checkboxmodel',
     buildColumns: function () {
         var me = this;
         return [
                 {
 	        		header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
-	                width: 40,
+	                width: 50,
 	                sortable:false,
 	                menuDisabled:true,
 	                resizable:false,
 	                align:'center',
 	                renderer:Helper.actionColumnRenderer
-                },{
+                },
+                {
 		            text: AOCLit.customerItemNO,
 		            width: 120,
 		            sortable: true,
@@ -118,10 +120,16 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 text: '<div style="color:"><b>Local Item Lookup</b></div>'
             },{
                 text: 'New',
-                itemId: 'newAddress',
+                itemId: 'newLocalItemLookup',
                 iconCls: 'fa fa-plus',
                 cls: 'blue-btn',
                 handler: 'openLocalItemLookupWindow'
+            },{
+                text: 'Delete',
+                itemId: 'deleteLocalItemLookup',
+                iconCls: 'fa fa-trash',
+                cls: 'blue-btn',
+                handler: 'deleteRecords'
             },'->',
             {
                 xtype: 'customsearchfield',

@@ -3,7 +3,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     alias: 'controller.localitemlookupcontroller',
     
     onCellClick:function(obj, td, cellIndex, record, tr, rowIndex, e){
-    	if(cellIndex == 0){
+    	if(cellIndex == 1){
     		this.createContextMenu(record, e);
     	}
     },
@@ -137,5 +137,31 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
         values.datecriteriavalue = 'lastModifiedDate';
     	  store = view.contextGrid.store;
         Helper.advancedSearch(view, values);
-      }
+      },
+    deleteRecords:function(){
+    	var me = this,
+			grid = me.getView(),
+			currentRecord = grid.getSelectionModel().getSelection(),
+    		len = currentRecord.length,
+    		idArray = [];
+    	
+    	for(i = 0 ; i < len ; i++){
+    		idArray.push(currentRecord[i].get('id'));
+    	}
+    	
+    	Ext.Msg.confirm('Alert', AOCLit.deleteLocalItemMsg, function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    method: 'DELETE',
+                    url: applicationContext + '/rest/localitem',
+                    params:{recordId:idArray.join()},
+                    success: function (response, opts) {
+                        Helper.showToast('Success', AOCLit.deleteLocalItemSuccessMsg);
+                        grid.store.load();
+                    },
+                    failure: function (response, opts) {}
+                });
+            }
+        }, grid);
+    }
 });
