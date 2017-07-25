@@ -868,7 +868,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return {
 			xtype:'textfield',
 			fieldLabel:index > -1 ? 'Keyword '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderKeywordInfoText)  :'Keyword',
-			disabled:true,
+//			disabled:true,
 			fileOrderType:index > -1 ? true : false,
 			margin:'0 0 5 0',
 			emptyText:index > -1 ? AOCLit.orderFileKeywordEmptyText : '',

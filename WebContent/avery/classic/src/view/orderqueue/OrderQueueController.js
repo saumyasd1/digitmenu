@@ -217,11 +217,12 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
     	var id = currentRecord.get('id');
+    	
 		AOCRuntime.setOrderQueueId(id);
 		AOCRuntime.setOrderQueueActiveRecord(currentRecord);
 		AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
 		AOCRuntime.setAllowOrderLineEdit(true);
-		var bulkUpdate = Ext.ComponentQuery.query('#bulkUpdateItemId')[0];
+		
 		var owner = me.getView().ownerCt;
 		var store = Ext.create('AOC.store.SalesOrderStore', {
 			proxy: {

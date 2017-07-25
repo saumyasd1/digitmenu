@@ -1092,14 +1092,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			cont2 = refs[field.childCont2];
 		
 		if(newValue[name] == 'true'){
-			cont1.setDisabled(false);
-			cont2 ? cont2.setDisabled(false) : '';
+			//cont1.setDisabled(false);
+			//cont2 ? cont2.setDisabled(false) : '';
 			if(cont1.xtype == 'textfield'){
 				cont1.allowBlank = false;
 			}
 		}else{
-			cont1.setDisabled(true);
-			cont2 ? cont2.setDisabled(true)  :'';
+			//cont1.setDisabled(true);
+			//cont2 ? cont2.setDisabled(true)  :'';
 			if(cont1.xtype == 'textfield'){
 				cont1.allowBlank = true;
 			}
