@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -21,16 +20,13 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderConfiguration;
-import com.avery.storage.entities.Org;
-import com.avery.storage.entities.SystemInfo;
 
 @Repository
-public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration, Long> implements
-	OrderConfigurationDao {
+public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration, Long>
+		implements OrderConfigurationDao {
 
 	@Override
-	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
-			throws Exception {
+	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap) throws Exception {
 		// TODO Auto-generated method stub
 		Map entitiesMap = new HashMap();
 		Session session = null;
@@ -40,31 +36,25 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 		return null;
 	}
 
-
 	@Override
 	public List<OrderConfiguration> readByPropertyName(String propertyName) throws Exception {
-		
+
 		Session session = null;
 		Criteria criteria = null;
-		try{
+		try {
 			session = getSessionFactory().getCurrentSession();
 			criteria = session.createCriteria(OrderConfiguration.class);
 			criteria.add(Restrictions.eq("propertyName", propertyName));
 			return criteria.list();
-		}catch (WebApplicationException ex) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching values for propert name::"+propertyName, ex);
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching values for propert name::" + propertyName, ex);
 			throw ex;
 		} catch (Exception e) {
-			AppLogger.getSystemLogger().error(
-					"Error in fetching values for propert name::"+propertyName, e);
-			throw new WebApplicationException(Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(ExceptionUtils.getRootCauseMessage(e))
-					.type(MediaType.TEXT_PLAIN_TYPE).build());
+			AppLogger.getSystemLogger().error("Error in fetching values for propert name::" + propertyName, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-
 
 	@Override
 	public Long create(OrderConfiguration newInstance) {
@@ -72,46 +62,35 @@ public class OrderConfigurationDaoImpl extends GenericDaoImpl<OrderConfiguration
 		return null;
 	}
 
-
 	@Override
 	public OrderConfiguration read(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@Override
-	 public List<OrderConfiguration> readByPropertyName(String propertyName,
-	   Long systemInfoId, Long orgCodeId) throws Exception {
-	  // TODO Auto-generated method stub
-	  Session session = null;
-	  Criteria criteria = null;
-	  try{
-	   session = getSessionFactory().getCurrentSession();
-	   
-	   Query query = session.createQuery("select varSystem.id from OrderSystemInfo where id=:id");
-	   query.setLong("id", systemInfoId);
-	   Long systemId = (Long) query.list().get(0);
-	   criteria = session.createCriteria(OrderConfiguration.class);
+	public List<OrderConfiguration> readByPropertyName(String propertyName, Long systemId, Long orgCodeId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSessionFactory().getCurrentSession();
+			criteria = session.createCriteria(OrderConfiguration.class);
 
-	   criteria.add(Restrictions.eq("systemId", systemId));
-	   criteria.add(Restrictions.eq("propertyName", propertyName));
-	   criteria.add(Restrictions.eq("orgCodeId", orgCodeId));
-	   return criteria.list();
-	  }catch (WebApplicationException ex) {
-	   AppLogger.getSystemLogger().error(
-	     "Error in fetching order conf for system id " + systemInfoId, ex);
-	   throw ex;
-	  } catch (Exception e) {
-	   AppLogger.getSystemLogger().error(
-	     "Error in fetching order conf for site id " + systemInfoId, e);
-	   throw new WebApplicationException(Response
-	     .status(Status.INTERNAL_SERVER_ERROR)
-	     .entity(ExceptionUtils.getRootCauseMessage(e))
-	     .type(MediaType.TEXT_PLAIN_TYPE).build());
-	  }
-	  
-	  
-	 }
+			criteria.add(Restrictions.eq("systemId", systemId));
+			criteria.add(Restrictions.eq("propertyName", propertyName));
+			criteria.add(Restrictions.eq("orgCodeId", orgCodeId));
+			return criteria.list();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error in fetching order conf for system id " + systemId, ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error in fetching order conf for system id " + systemId, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+
+	}
 
 }
