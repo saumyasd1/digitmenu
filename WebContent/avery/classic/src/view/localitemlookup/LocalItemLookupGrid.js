@@ -129,7 +129,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 message: 'Showing all accounts with',
                 store: Ext.data.StoreManager.lookup(me.store),
                 width: 200,
-                emptyText: "Quick Search"
+                emptyText: "Search by GLID"
             }, {
                 xtype: 'button',
                 refrence: 'advancesearchbutton',

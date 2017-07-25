@@ -152,19 +152,19 @@ Ext.define('AOC.view.main.Main', {
     	     }
     	  ]
        },
-//       {
-//     	  title:'LOCAL ITEM LOOKUP',
-//     	  iconCls:'fa fa-map-signs',
-//     	  layout:'fit',
-//     	  itemId:'localItemLookUp',
-//     	  listType:'localItemLookupGrid',
-//     	  items:[
-//     	     {
-//     	    	 xtype:'localitemlookup'
-////     	    	 style:'border-top:solid 1px #ccc;'
-//     	     }
-//     	  ]
-//        }
+       {
+     	  title:'LOCAL ITEM LOOKUP',
+     	  iconCls:'fa fa-map-signs',
+     	  layout:'fit',
+     	  itemId:'localItemLookUp',
+     	  listType:'localItemLookupGrid',
+     	  items:[
+     	     {
+     	    	 xtype:'localitemlookup'
+//     	    	 style:'border-top:solid 1px #ccc;'
+     	     }
+     	  ]
+        }
     ] 
 });
 
