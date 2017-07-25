@@ -174,7 +174,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	if(recordCount > 1 ){
     		deleteBtn.setDisabled(false);
     	}
-    	else if(recordCount == 1 ){
+    	else{
     		deleteBtn.setDisabled(true);
     	}
     }
