@@ -1458,6 +1458,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						text: 'Variable Field Name',
 						dataIndex: 'variableFieldName',
 						flex:1.8,
+						sortable:true,
 						renderer:function(v, metadata,rec){
 							
 							var mandatory = rec.get('mandatory');
