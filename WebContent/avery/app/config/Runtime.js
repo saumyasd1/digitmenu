@@ -25,6 +25,7 @@ Ext.define('AOC.config.Runtime',{
         openRow:[],
         user: {},
         storeERPORG:null,
+        storeCSR:null,
         orderLineCurrenProductLine:0,
         timeZone:null,
         wiId:null,

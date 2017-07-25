@@ -205,7 +205,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField:'name',
 				valueField:'name',
 				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('CSRId1') != null ? Ext.data.StoreManager.lookup('CSRId1') : Helper.getAllVariableComboStore('CSR', true),
+				store:AOCRuntime.getStoreCSR(),//Ext.data.StoreManager.lookup('CSRId1') != null ? Ext.data.StoreManager.lookup('CSRId1') : Helper.getAllVariableComboStore('CSR', true),
 				listeners:{
 					focus:'onVariableComboFocus',
 					select:'onVariableComboBlur',

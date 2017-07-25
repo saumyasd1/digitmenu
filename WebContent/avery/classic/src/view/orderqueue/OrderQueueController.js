@@ -173,6 +173,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 		}
     },
     onViewOrderMenuItemClick:function(){
+    	debugger
     	var me = this,
     		grid = me.getView(),
     		currentRecord = grid.getSelectionModel().getSelection()[0];
@@ -191,6 +192,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setAllowOrderLineEdit(true);
         Helper.loadAllVariableComboStore('CSR');
         
+        var storeCSR = Ext.data.StoreManager.lookup('CSRId1') != null ? Ext.data.StoreManager.lookup('CSRId1') : Helper.getAllVariableComboStore('CSR', true);
+        AOCRuntime.setStoreCSR(storeCSR);
         var storeERPORG = Ext.create('Ext.data.Store', {
 			fields:['id','name'],
 			proxy: {
@@ -209,6 +212,11 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
 			AOCRuntime.setStoreERPORG(storeERPORG);
 			me.viewOrderLineScreen(currentRecord);
 			
+			Ext.getBody().unmask();
+		});
+		
+		storeCSR.load(function(){
+			AOCRuntime.setStoreCSR(storeCSR);
 			Ext.getBody().unmask();
 		});
     },
