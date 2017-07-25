@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
+import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
@@ -99,7 +100,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 	}
 	
 	@Override
-	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, String partnerId, String systemId, String siteId, String orgCodeId){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> insertAddress, Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId, String lastModifiedBy){
 		ObjectMapper mapper = MapperUtils.getObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
@@ -135,6 +136,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 						insertShipAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 				}
 			}
+			OrderQueue orderqueue=(OrderQueue) session.get(OrderQueue.class,orderQueueId);
+			orderqueue.setLastModifiedBy(lastModifiedBy);
+			orderqueue.setLastModifiedDate(new Date());
+			session.update(orderqueue);
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing bulk update ", ex);
@@ -236,7 +241,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		}
 	}
 	@Override
-	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId){
+	public void bulkUpdateAllById(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId, String orgCodeId, String lastModifiedBy){
 		ObjectMapper mapper = MapperUtils.getObjectMapper();
 		ObjectReader updater=null;
 		Session session = null;
@@ -267,6 +272,10 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					insertAddress=false;
 				}
 			}
+			OrderQueue orderqueue=(OrderQueue) session.get(OrderQueue.class,orderQueueId);
+			orderqueue.setLastModifiedBy(lastModifiedBy);
+			orderqueue.setLastModifiedDate(new Date());
+			session.update(orderqueue);
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing bulk update ", ex);

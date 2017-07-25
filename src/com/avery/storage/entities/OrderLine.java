@@ -1715,16 +1715,17 @@ public class OrderLine extends MainAbstractEntity{
 			flagMap.put("insertBillAddress", insertBillAddress);
 			flagMap.put("insertShipAddress", insertShipAddress);
 			updateAll=Boolean.parseBoolean((String)jsonMap.get("updateAll"));
+			bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
+			String lastModifiedBy=jsonMap.get("lastModifiedBy");
 			if(updateAll){
-				if((String)jsonMap.get("orderQueueId")!=null){
-					bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
-					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId);
+				if((String)jsonMap.get("orderQueueId")!=null){					
+					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId,lastModifiedBy);
 				}else{
 					throw new Exception("Unable to update all records as the Order Queue Id is not present");
 				}
 			}
 			else
-				orderLineService.bulkUpdate(jsonData, flagMap, partnerId, systemId, siteId, orgCodeId);
+				orderLineService.bulkUpdate(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){

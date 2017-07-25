@@ -257,8 +257,10 @@ public class OrderLineDetail extends MainAbstractEntity{
 			OrderLineDetailService orderLineDetailService = (OrderLineDetailService) SpringConfig
 					.getInstance().getBean("orderLineDetailService");
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
+			String lastModifiedBy=jsonMap.get("lastModifiedBy");
+			Long orderQueueId=Long.parseLong(jsonMap.get("orderQueueId"));
 			jsonData=(String)jsonMap.get("data");
-			orderLineDetailService.bulkUpdate(jsonData);
+			orderLineDetailService.bulkUpdate(jsonData, lastModifiedBy, orderQueueId);
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){

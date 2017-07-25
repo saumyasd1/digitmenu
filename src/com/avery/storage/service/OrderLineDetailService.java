@@ -46,8 +46,8 @@ public class OrderLineDetailService extends GenericEntityService<OrderLineDetail
 	}
 
 	@Transactional
-	public void bulkUpdate(String jsonData) {
-		getOrderLineDetailDao().bulkUpdate(jsonData);
+	public void bulkUpdate(String jsonData, String lastModifiedBy, Long orderQueueId) {
+		getOrderLineDetailDao().bulkUpdate(jsonData, lastModifiedBy, orderQueueId);
 		
 	}
 

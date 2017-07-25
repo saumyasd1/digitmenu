@@ -1,5 +1,6 @@
 package com.avery.storage.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Repository;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.OrderLineDetail;
+import com.avery.storage.entities.OrderQueue;
+import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -107,12 +110,13 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 	}
 	
 	@Override
-	public void bulkUpdate(String jsonData){
+	public void bulkUpdate(String jsonData, String lastModifiedBy, Long orderQueueId){
 		ObjectMapper mapper = new ObjectMapper();
 		Long currentObjId=0L;
 		ObjectReader updater=null;
 		String[] objArray=jsonData.split("@@@");
 		Session session = null;
+		Map<String,String> jsonMap=null;
 		try{
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
@@ -129,6 +133,10 @@ public class OrderLineDetailDaoImpl extends GenericDaoImpl<OrderLineDetail, Long
 				orderLineDetail.preUpdateOp();
 				session.update(orderLineDetail);
 			}
+			OrderQueue orderqueue=(OrderQueue) session.get(OrderQueue.class,orderQueueId);
+			orderqueue.setLastModifiedBy(lastModifiedBy);
+			orderqueue.setLastModifiedDate(new Date());
+			session.update(orderqueue);
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing bulk update ", ex);

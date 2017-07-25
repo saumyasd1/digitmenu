@@ -33,16 +33,16 @@ public class OrderLineService extends GenericEntityService<OrderLine, Long>{
 	} 
 	
 	@Transactional
-	public void bulkUpdate(String jsonData,Map<String,Boolean> flagMap, String partnerId, String systemId, String siteId,  String orgCodeId){
+	public void bulkUpdate(String jsonData,Map<String,Boolean> flagMap, Long orderQueueId, String partnerId, String systemId, String siteId,  String orgCodeId, String lastModifiedBy){
 		
-		getOrderLineDao().bulkUpdate(jsonData, flagMap, partnerId, systemId, siteId, orgCodeId);
+		getOrderLineDao().bulkUpdate(jsonData, flagMap, orderQueueId, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
 		
 	}
 	
 	@Transactional
-	public void bulkUpdateAll(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId,  String orgCodeId){
+	public void bulkUpdateAll(String jsonData,Map<String,Boolean> flagMap,Long orderQueueId, String partnerId, String systemId, String siteId,  String orgCodeId,String lastModifiedBy){
 		
-		getOrderLineDao().bulkUpdateAllById(jsonData,flagMap,orderQueueId, partnerId, systemId, siteId, orgCodeId);
+		getOrderLineDao().bulkUpdateAllById(jsonData,flagMap,orderQueueId, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
 		
 	}
 

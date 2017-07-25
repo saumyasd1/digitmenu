@@ -14,7 +14,7 @@ public interface OrderLineDetailDao extends GenericDao<OrderLineDetail, Long>{
 	
 	public Map readByVariableName(Long orderID,String variablfieldename);
 
-	public void bulkUpdate(String jsonData);
+	public void bulkUpdate(String jsonData, String lastModifiedBy, Long orderQueueId);
 
 	public void bulkUpdateAllById(String jsonData, Long orderQueueId,String variableName);
 	
