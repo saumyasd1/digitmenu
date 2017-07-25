@@ -62,7 +62,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 				        type:'json', 
 				        rootProperty: 'ArrayList'
 				    }
-			}
+				}
 			});
 		   owner.insert({
 			   	xtype:'salesrrderexpandablegrid',
