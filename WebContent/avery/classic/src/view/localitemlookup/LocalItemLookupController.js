@@ -92,7 +92,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
         value = cmp.getValue();
-        Helper.quickSearch(view,{id: value}),
+        Helper.quickSearch(view,{glid: value}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {
@@ -134,7 +134,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	  	  form = refs.localItemLookupAdvanceSearchForm.getForm(),
     	  	  values = form.getValues();
     	  
-        values.datecriteriavalue = 'receivedDate';
+        values.datecriteriavalue = 'lastModifiedDate';
     	  store = view.contextGrid.store;
         Helper.advancedSearch(view, values);
       }

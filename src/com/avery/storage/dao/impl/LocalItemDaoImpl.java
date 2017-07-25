@@ -81,6 +81,31 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 			if(rboName!=null && !"".equals(rboName.trim())){
 				criteria.add(Restrictions.ilike("rboName",rboName,MatchMode.ANYWHERE));
 			}
+			
+			String customerItemNO=searchMap.get("customerItemNO");
+			if(customerItemNO!=null && !"".equals(customerItemNO.trim())){
+				criteria.add(Restrictions.ilike("customerItemNO",customerItemNO,MatchMode.ANYWHERE));
+			}
+			
+			String glid=searchMap.get("glid");
+			if(glid!=null && !"".equals(glid.trim())){
+				criteria.add(Restrictions.ilike("glid",glid,MatchMode.ANYWHERE));
+			}
+			
+			String identifierValue=searchMap.get("identifierValue");
+			if(identifierValue!=null && !"".equals(identifierValue.trim())){
+				criteria.add(Restrictions.ilike("identifierValue",identifierValue,MatchMode.ANYWHERE));
+			}
+			
+			String orgCode=searchMap.get("orgCode");
+			if(orgCode!=null && !"".equals(orgCode.trim())){
+				criteria.add(Restrictions.ilike("orgCode",orgCode,MatchMode.ANYWHERE));
+			}
+			
+			String system=searchMap.get("system");
+			if(system!=null && !"".equals(system.trim())){
+				criteria.add(Restrictions.ilike("system",system,MatchMode.ANYWHERE));
+			}
 		}
 		return criteria;
 	}
