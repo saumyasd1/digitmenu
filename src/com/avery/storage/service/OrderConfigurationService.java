@@ -34,4 +34,8 @@ public class OrderConfigurationService extends GenericEntityService<OrderConfigu
 		return orderConfigurationDao.readByPropertyName(propertyName,SystemId,OrgCodeId);
 	}
 
+	@Transactional
+	public OrderConfiguration readByPropertyNameSystemIdOrgCodeId(String propertyName, Long SystemId,Long OrgCodeId) throws Exception {
+		return orderConfigurationDao.readByPropertyNameSystemIdOrgCodeId(propertyName,SystemId,OrgCodeId);
+	}
 }
