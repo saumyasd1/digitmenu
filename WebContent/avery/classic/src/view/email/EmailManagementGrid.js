@@ -101,6 +101,27 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 align: 'left',
                 menuDisabled: true,
                 sortable: false
+            },{
+                text: AOCLit.siteName,
+                sortable: true,
+                align: 'left',
+                width: 120,
+                dataIndex: 'siteId',
+                align: 'left',
+                listeners: {
+                	'afterrender': Helper.siteNameForSuperAdminOnly
+                },
+                renderer:function(v, metadata, rec){
+                	return Helper.getSiteName(v);
+                }
+            },{
+                text: AOCLit.Status,
+                width: 180,
+                dataIndex: 'status',
+                align: 'left',
+                renderer: function (v, metadata, rec) {
+                    return Helper.getSatus(rec);
+                }
             }, {
                 text: AOCLit.senderEmailID,
                 width: 180,
@@ -120,14 +141,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 align: 'left',
                 dataIndex: 'Email'
             }, {
-                text: AOCLit.Status,
-                width: 180,
-                dataIndex: 'status',
-                align: 'left',
-                renderer: function (v, metadata, rec) {
-                    return Helper.getSatus(rec);
-                }
-            }, {
                 text: AOCLit.ccMailId,
                 width: 180,
                 align: 'left',
@@ -140,19 +153,6 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 width: 120,
                 align: 'left',
                 dataIndex: 'csrName'
-            },{
-                text: AOCLit.siteName,
-                sortable: true,
-                align: 'left',
-                width: 120,
-                dataIndex: 'siteId',
-                align: 'left',
-                listeners: {
-                	'afterrender': Helper.siteNameForSuperAdminOnly
-                },
-                renderer:function(v, metadata, rec){
-                	return Helper.getSiteName(v);
-                }
             }, {
                 text: AOCLit.receivedDate,
                 width: 150,
