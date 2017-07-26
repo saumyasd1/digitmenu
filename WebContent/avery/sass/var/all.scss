@@ -207,3 +207,6 @@ orderline-expandable-grid .x-grid-row-editor-wrap .x-grid-row-editor .x-panel-bo
 .x-tab.x-tab-active.x-tab-default .x-tab-inner-default{
   color: #404040 !important;
 }
+.hide-row-expander .custom-row-expander {
+    visibility: hidden;
+}
