@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -52,12 +53,12 @@ public class ExcelUtils {
 	}
 	private static void getReportData(XSSFSheet sheet,List<OrderQueue> OrderQueueList,int headerLength, String timeZone){
 		try {
+			Date date = null;
 			int rowIndex=1,columncellCount=0;
 			Iterator<OrderQueue> CrunchifyIterator = OrderQueueList.iterator();
 			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
-				Date date = null;
 				OrderQueue obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsrName());
@@ -90,12 +91,16 @@ public class ExcelUtils {
 				cell10.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 				Cell cell11 = row.createCell(++columncellCount);
 				if(obj.getReceivedDate()!=null)
+				{
 					date = obj.getReceivedDate();
-				cell11.setCellValue(convertDateUsingTimezone(date, timeZone));
+					cell11.setCellValue(convertDateUsingTimezone(date, timeZone));
+				}
 				Cell cell12 = row.createCell(++columncellCount);
 				if(obj.getCreatedDate()!=null)
+				{
 					date = obj.getCreatedDate();
 					cell12.setCellValue(convertDateUsingTimezone(date, timeZone));
+				}
 				Cell cell13 = row.createCell(++columncellCount);
 				cell13.setCellValue(obj.getSenderEmailId());
 				Cell cell14 = row.createCell(++columncellCount);
@@ -104,12 +109,16 @@ public class ExcelUtils {
 				cell15.setCellValue(obj.getSubmittedBy());
 				Cell cell16 = row.createCell(++columncellCount);
 				if(obj.getSubmittedDate()!=null)
+				{
 						date = obj.getSubmittedDate();
 						cell16.setCellValue(convertDateUsingTimezone(date, timeZone));
+				}
 				Cell cell17 = row.createCell(++columncellCount);
 				if(obj.getFeedbackAcknowledgementDate()!=null)
+				{
 					date = obj.getFeedbackAcknowledgementDate();
-				cell17.setCellValue(convertDateUsingTimezone(date, timeZone));
+					cell17.setCellValue(convertDateUsingTimezone(date, timeZone));
+				}
 				Cell cell18 = row.createCell(++columncellCount);
 				cell18.setCellValue(csrName);
 				Cell cell19 = row.createCell(++columncellCount);
@@ -136,6 +145,27 @@ public class ExcelUtils {
         String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
 				 "CSR name", "Customer request date", "AOC Order Track #"};
         addHeader(sheet, headerNames);
+        for(int i=0; i<salesOrder.size(); i++)
+		{
+			List<SalesOrder> duplicateSales=new ArrayList<>();
+			SalesOrder sales=salesOrder.get(i);
+			String internalItemNumber=sales.getOracleItemNumber();
+			String po=sales.getCustomerPoNumber();
+			for(int j=i+1; j<salesOrder.size(); j++)
+			{
+				SalesOrder currentSales=salesOrder.get(j);
+				String currentInternalItemNumber=currentSales.getOracleItemNumber();
+				String currentpo=currentSales.getCustomerPoNumber();
+				if(internalItemNumber.equals(currentInternalItemNumber) && po.equals(currentpo))
+				{
+					int Qty=Integer.parseInt(sales.getCustomerOrderedQty());
+					int currentQty=Integer.parseInt(currentSales.getCustomerOrderedQty());
+					sales.setCustomerOrderedQty(""+(Qty+currentQty));
+					duplicateSales.add(currentSales);
+				}
+			}
+			salesOrder.removeAll(duplicateSales);
+		}
         getMaterialReportData(sheet, salesOrder, headerNames.length, timeZone, time, date, rboName);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
             workbook.write(outputStream);
@@ -149,6 +179,27 @@ public class ExcelUtils {
         String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
 				 "CSR name", "Customer request date", "AOC Order Track #"};
         addHeader(sheet, headerNames);
+    	for(int i=0; i<orderLine.size(); i++)
+		{
+			List<OrderLine> duplicateOrder=new ArrayList<>();
+			OrderLine order=orderLine.get(i);
+			String internalItemNumber=order.getAveryItemNumber();
+			String po=order.getPoNumber();
+			for(int j=i+1; j<orderLine.size(); j++)
+			{
+				OrderLine currentorderLine=orderLine.get(j);
+				String currentInternalItemNumber=currentorderLine.getAveryItemNumber();
+				String currentpo=currentorderLine.getPoNumber();
+				if(internalItemNumber.equals(currentInternalItemNumber) && po.equals(currentpo))
+				{
+					int Qty=Integer.parseInt(order.getCustomerOrderedQty());
+					int currentQty=Integer.parseInt(currentorderLine.getCustomerOrderedQty());
+					order.setCustomerOrderedQty(""+(Qty+currentQty));
+					duplicateOrder.add(currentorderLine);
+				}
+			}
+			orderLine.removeAll(duplicateOrder);
+		}
         getMaterialReportDataOrderline(sheet, orderLine, headerNames.length, timeZone, time, date, rboName, orderTrack);
         try(ByteArrayOutputStream  outputStream = new ByteArrayOutputStream ()) {
             workbook.write(outputStream);
@@ -158,11 +209,11 @@ public class ExcelUtils {
 	
 	private static void getMaterialReportData(XSSFSheet sheet,List<SalesOrder> salesOrder,int headerLength, String timeZone, String time, String date1, String rboName){
 		try {
+			Date date = null;
 			int rowIndex=1,columncellCount=0;
 			Iterator<SalesOrder> CrunchifyIterator = salesOrder.iterator();
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
-				Date date = null;
 				SalesOrder obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsr());
@@ -185,8 +236,10 @@ public class ExcelUtils {
 				cell8.setCellValue(csrName);
 				Cell cell19 = row.createCell(++columncellCount);
 				if(obj.getCustomerRequestDate()!=null)
+				{
 					date = obj.getCustomerRequestDate();
 					cell19.setCellValue(convertDate(date, timeZone));
+				}
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(obj.getVarOrderFileQueue().getId());
 				columncellCount=0;
@@ -205,11 +258,11 @@ public class ExcelUtils {
 
 	private static void getMaterialReportDataOrderline(XSSFSheet sheet,List<OrderLine> orderLine,int headerLength, String timeZone, String time, String date1, String rboName,String orderTrack){
 		try {
+			Date date = null;
 			int rowIndex=1,columncellCount=0;
 			Iterator<OrderLine> CrunchifyIterator = orderLine.iterator();
 			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
 			while (CrunchifyIterator.hasNext()) {
-				Date date = null;
 				OrderLine obj=CrunchifyIterator.next();
 				String csrName="";
 				csrName=userService.getUsernameById(obj.getCsr());
@@ -232,8 +285,10 @@ public class ExcelUtils {
 				cell8.setCellValue(csrName);
 				Cell cell19 = row.createCell(++columncellCount);
 				if(obj.getRequestedDeliveryDate() != null)
+				{
 					date = obj.getRequestedDeliveryDate();
 					cell19.setCellValue(convertDate(date, timeZone));
+				}
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(orderTrack);
 				columncellCount=0;
