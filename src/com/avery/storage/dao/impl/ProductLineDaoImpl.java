@@ -71,6 +71,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		 */
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
+		String siteId = (String) queryMap.getFirst("siteId");
 		if (queryString != null) {
 			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
@@ -95,6 +96,9 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			if (PartnerName != null && !"".equals(PartnerName)) {
 				criteria.add(Restrictions.ilike("varPartner.partnerName", PartnerName, MatchMode.ANYWHERE));
 			}
+		}
+		if (siteId != null && !"".equals(siteId)) {
+			criteria.add(Restrictions.eq("site", Integer.parseInt(siteId)));
 		}
 		totalCount = HibernateUtils.getAllRecordsCountWithCriteria(criteria);
 		criteria.addOrder(Order.desc("lastModifiedDate"));
