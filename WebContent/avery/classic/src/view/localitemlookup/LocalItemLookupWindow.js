@@ -88,7 +88,6 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     xtype: 'textfield',
                     name: 'identifierValue',
                     fieldLabel: AOCLit.identifierValue,
-                    allowBlank: false,
                     reference: 'identifierValue',
                     flex: 1
                 }, {
