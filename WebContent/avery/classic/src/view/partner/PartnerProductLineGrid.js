@@ -143,7 +143,7 @@ Ext.define('AOC.view.partner.PartnerProductLineGrid', {
             	searchCriteria:'',
     			store : Ext.data.StoreManager.lookup(me.store),
     			width: 200,
-    			emptyText: "Search by ProductLine"
+    			emptyText: "Search Partner Data Structure"
 	          },
 	          {
 				xtype:'button',
