@@ -378,21 +378,28 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		if(prop.indexOf('groupingField') > -1){
     			if(!Ext.isEmpty(detail[prop]) && detail[prop] != 'id'){
     				groupingFieldArray.push({prop:detail[prop]});
-    			}else if(detail[prop] === 'id'){
-    				detail[prop] = '';
     			}
+//    			else if(detail[prop] === 'id'){
+//    				detail[prop] = '';
+//    			}
     		}
     	}
     	
     	var len = groupingFieldArray.length;
     	for(var i = 1;i <= len; i++){
-    		if(i == len ){
+    		if(i == 1 && detail.groupingField_1 == 'id'){
+    			groupingField.add(Helper.getGroupingField(2, false, false));
+    		}
+    		else if(i == len ){
     			groupingField.add(Helper.getGroupingField(i, false, false));
     		}else{
     			groupingField.add(Helper.getGroupingField(i, false, true));
     		}
     	}
-    	if(len == 0){
+    	
+    	if(len == 0 && detail.groupingField_1 == 'id'){
+    		groupingField.add(Helper.getGroupingField(2, false, false));
+    	}else if(len == 0){
     		groupingField.add(Helper.getGroupingField(1, false, false));
     	}
     	return detail;
