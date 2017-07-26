@@ -118,6 +118,7 @@ public class LocalItem extends MainAbstractEntity {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
 			LocalItem localItem = mapper.readValue(data, LocalItem.class);
+			localItem.setCreatedDate(new Date());
 			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
 					.getBean("localItemService");
 			id = localItemService.create(localItem);
