@@ -509,13 +509,27 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	},
 	onDivisionEPORGExpand:function(field){
 		var view = this.getView(),
-			currentRecord = view.editingPlugin.context.record;
+			currentRecord = view.editingPlugin.context.record,
+			systemId = currentRecord.data.systemId;
 		
-		field.store.filterBy(function(record){
-			if(record.get('id') == currentRecord.get('divisionForInterfaceERPORG')){
-				return true;
+//		field.store.filterBy(function(record){
+//			if(record.get('id') == currentRecord.get('divisionForInterfaceERPORG')){
+//				return true;
+//			}
+//			return false;
+//		});
+		field.store.removeAll();
+		Ext.Ajax.request({
+			method:'GET',
+			url:applicationContext+'/rest/org/system/'+systemId,
+			success:function(response){
+				var jsonString = JSON.parse(response.responseText);
+				field.store.loadData(jsonString);
+				Ext.getBody().unmask();
+			},
+			failure:function(){
+				Ext.getBody().unmask();
 			}
-			return false;
 		});
 	},
 	divisionForInterfaceERPORGColumnRenderer:function(v, h, l, k){
