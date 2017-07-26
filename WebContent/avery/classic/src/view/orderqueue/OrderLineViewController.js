@@ -547,7 +547,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 					}
 				}else{
-					orgCodeName = store.getAt(index).get('orgName');
+					orgCodeName = store.getAt(index).get('name');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){

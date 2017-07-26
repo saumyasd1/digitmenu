@@ -13,7 +13,7 @@ public class OrgInfoName {
 
 	private int orgCodeId;
 
-	private String orgName;
+	private String name;
 
 	public int getId() {
 		return id;
@@ -31,12 +31,12 @@ public class OrgInfoName {
 		this.orgCodeId = orgCodeId;
 	}
 
-	public String getOrgName() {
-		return orgName;
+	public String getName() {
+		return name;
 	}
 
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
