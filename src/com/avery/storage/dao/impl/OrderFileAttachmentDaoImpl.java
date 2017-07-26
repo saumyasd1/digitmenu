@@ -308,9 +308,15 @@ public class OrderFileAttachmentDaoImpl extends GenericDaoImpl<OrderFileAttachme
 		try {
 			session = getSessionFactory().getCurrentSession();
 			OrderEmailQueue orderEmailQueue = (OrderEmailQueue) session.get(OrderEmailQueue.class, entityId);
-			criteria = session.createCriteria(OrderFileAttachment.class)
-					.add(Restrictions.eq("varOrderEmailQueue", orderEmailQueue))
-					.add(Restrictions.ne("fileContentType", "Disregard"));
+			criteria = session.createCriteria(OrderFileAttachment.class);
+			Disjunction disjunction = Restrictions.disjunction();
+			disjunction.add(Restrictions.ne("fileContentType", "Disregard"));
+			disjunction.add(Restrictions.isNull("fileContentType"));
+
+			Conjunction conjunction = Restrictions.conjunction();
+			conjunction.add(Restrictions.eq("varOrderEmailQueue", orderEmailQueue));
+			conjunction.add(disjunction);
+			criteria.add(conjunction);
 			List list = criteria.list();
 			if (list.size() == 0 | list == null) {
 				String s = "update OrderEmailQueue set status=:status where id =:id ";
