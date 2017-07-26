@@ -20,7 +20,6 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             form.updateRecord();
             method = 'PUT';
             valueObj = form.getRecord().getChanges(false, true, false, true);
-            Ext.apply(valueObj,{lastModifiedBy:Helper.setLastModifiedBy()});
             length = Object.keys(valueObj).length;
             msg = AOCLit.updateLocalItem;
         } else {
@@ -30,6 +29,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             length = 1;
             msg = AOCLit.addLocalItem;
         }
+        valueObj.createdBy = Helper.setLastModifiedBy();
+        valueObj.lastModifiedBy = Helper.setLastModifiedBy();
         var parameters = Ext.JSON.encode(valueObj);
         
         if (length > 0) {
