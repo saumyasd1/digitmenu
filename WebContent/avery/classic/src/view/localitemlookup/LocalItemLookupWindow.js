@@ -104,7 +104,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					displayField:'partnerName',
 					valueField:'partnerName',
 					listeners:{
-						blue:'onComboBlur'
+						blur:'onComboBlur'
 					}
 				},]
             }, {
@@ -130,7 +130,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					valueField:'rboName',
 					queryMode:'local',
 					listeners:{
-						blue:'onComboBlur'
+						blur:'onComboBlur'
 					}
 				},{
                 	xtype:'combo',
@@ -141,7 +141,10 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					queryMode:'local',
 					valueField:'name',
 					flex:1,
-					margin:'0 0 0 10'
+					margin:'0 0 0 10',
+					listeners:{
+						blur:'onComboBlur'
+					}
                 }]
             }, {
                 xtype: 'fieldcontainer',
@@ -162,7 +165,10 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					valueField:'name',
 					flex:1,
 					queryMode:'local',
-					store:systemStore
+					store:systemStore,
+					listeners:{
+						blur:'onComboBlur'
+					}
                 }]
             }]
         }];
