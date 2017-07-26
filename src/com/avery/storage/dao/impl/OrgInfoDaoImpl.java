@@ -67,7 +67,7 @@ OrgInfoDao {
 		try{
 			session = getSessionFactory().getCurrentSession();
 			SQLQuery query = session.createSQLQuery(
-					"select distinct orginfo.id as id, orginfo.orgCodeId as orgCodeId, org.name as name from orginfo orginfo "
+					"select distinct orginfo.id as id, orginfo.orgCodeId as orgCodeId, orginfo.orderSystemInfoId as orderSystemInfoId, org.name as name from orginfo orginfo "
 							+ "inner join org org on orginfo.orgCodeId = org.id");
 			query.setResultTransformer(Transformers.aliasToBean(OrgInfoName.class));
 			entitiesMap.put("data", query.list());

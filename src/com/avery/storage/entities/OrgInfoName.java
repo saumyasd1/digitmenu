@@ -14,6 +14,8 @@ public class OrgInfoName {
 	private int orgCodeId;
 
 	private String name;
+	
+	private int orderSystemInfoId;
 
 	public int getId() {
 		return id;
@@ -39,4 +41,12 @@ public class OrgInfoName {
 		this.name = name;
 	}
 
+	public int getOrderSystemInfoId() {
+		return orderSystemInfoId;
+	}
+
+	public void setOrderSystemInfoId(int orderSystemInfoId) {
+		this.orderSystemInfoId = orderSystemInfoId;
+	}
+	
 }
