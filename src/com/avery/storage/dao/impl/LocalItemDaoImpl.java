@@ -1,23 +1,39 @@
 package com.avery.storage.dao.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.LocalItem;
+import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.HibernateUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sun.research.ws.wadl.Application;
 
 /**
  * @author Vishal
@@ -108,6 +124,37 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 			}
 		}
 		return criteria;
+	}
+	
+	@Override//{"recordId":"14,13"}
+	public void deleteRecords(String recordId) {
+		Session session = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			String[] records=recordId.replace("{", "").replace("}", "").replace("recordId", "").replace(":", "").replace("\"", "").replace(" ", "").split(",");
+			Integer[] idArray =new Integer[records.length];
+			for(int i = 0; i<records.length ; i++){
+				idArray[i] = Integer.parseInt(records[i]);
+			}
+			for(int i = 0; i<idArray.length ; i++){
+			String s = "DELETE FROM LocalItem WHERE id=:id"; 
+			Query q = session.createQuery(s);
+			q.setInteger("id", idArray[i]);
+			q.executeUpdate();
+			}
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error while deleting records", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error while deleting records", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
 	}
 
 }

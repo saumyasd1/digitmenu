@@ -36,8 +36,12 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
         }];
     },
     buildItem: function () {
-    	var rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId');
+    	var rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId'),
+			orgStore = Ext.data.StoreManager.lookup('orgComboId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboId'),
+			systemStore = Ext.data.StoreManager.lookup('systemId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemId');
     	rboStore.load();
+    	orgStore.load();
+    	systemStore.load();
         return [
         {
             xtype: 'form',
@@ -128,14 +132,16 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					listeners:{
 						blue:'onComboBlur'
 					}
-				}, {
-                    xtype: 'textfield',
-                    name: 'orgCode',
-                    fieldLabel: AOCLit.orgCode,
-                    allowBlank: false,
-                    reference: 'orgCode',
-                    margin:'0 0 0 10',
-                    flex: 1
+				},{
+                	xtype:'combo',
+					name:'orgCode',
+					store:orgStore,
+					displayField:'name',
+					fieldLabel:AOCLit.orgCode,
+					queryMode:'local',
+					valueField:'name',
+					flex:1,
+					margin:'0 0 0 10'
                 }]
             }, {
                 xtype: 'fieldcontainer',
@@ -148,12 +154,15 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     labelAlign: Settings.form.topLabelAlign
                 },
                 items: [{
-                    xtype: 'textfield',
-                    name: 'system',
-                    width:260,
-                    allowBlank: false,
-                    fieldLabel: AOCLit.system,
-                    reference:'system'
+                	xtype:'combo',
+					fieldLabel:AOCLit.system,
+					name:'system',
+					reference:'systemCombo',
+					displayField:'name',
+					valueField:'name',
+					flex:1,
+					queryMode:'local',
+					store:systemStore
                 }]
             }]
         }];

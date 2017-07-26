@@ -141,23 +141,29 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     deleteRecords:function(){
     	var me = this,
 			grid = me.getView(),
+			refs = me.getReferences(),
+			deleteBtn = refs.deleteBtn,
 			currentRecord = grid.getSelectionModel().getSelection(),
     		len = currentRecord.length,
     		idArray = [];
+    		
     	
     	for(i = 0 ; i < len ; i++){
     		idArray.push(currentRecord[i].get('id'));
     	}
+    	var values = Ext.JSON.encode({recordId:idArray.join()});
     	
     	Ext.Msg.confirm('Alert', AOCLit.deleteLocalItemMsg, function (btn) {
             if (btn == 'yes') {
                 Ext.Ajax.request({
-                    method: 'DELETE',
-                    url: applicationContext + '/rest/localitem',
-                    params:{recordId:idArray.join()},
+                    method: 'PUT',
+                    url: applicationContext + '/rest/localitem/deleterecords',
+                    jsonData:values,
                     success: function (response, opts) {
                         Helper.showToast('Success', AOCLit.deleteLocalItemSuccessMsg);
                         grid.store.load();
+                        deleteBtn.setDisabled(true);
+                        
                     },
                     failure: function (response, opts) {}
                 });

@@ -9,4 +9,5 @@ import com.avery.storage.entities.LocalItem;
  */
 public interface LocalItemDao extends GenericDao<LocalItem, Long> {
 
+	public void deleteRecords(String recordId);
 }

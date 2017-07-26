@@ -8,8 +8,11 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -23,6 +26,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.service.LocalItemService;
+import com.avery.storage.service.OrderEmailQueueService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -181,6 +185,31 @@ public class LocalItem extends MainAbstractEntity {
 			throw ex;
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error("Error in deleting data entity with id " + id, e);
+			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+	}
+	
+	@PUT
+	@Path("deleterecords")
+	public Response deleteRecords(@Context UriInfo ui, @Context HttpHeaders hh, String recordId) {
+		try {
+			Response.ResponseBuilder rb = null;
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			Map<String, String> responseMap = new HashMap<String, String>();
+			LocalItemService localItemService = (LocalItemService) SpringConfig.getInstance()
+					.getBean("localItemService");
+			localItemService.deleteRecords(recordId);
+			responseMap.put("success","true");
+			mapper.writeValue(writer, responseMap);
+			rb = Response.ok(writer.toString());
+			return rb.build();
+		} catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error("Error while deleting records", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error("Error while deleting records", e);
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}

@@ -2,6 +2,7 @@ package com.avery.storage.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.avery.storage.dao.impl.LocalItemDao;
 import com.avery.storage.entities.LocalItem;
@@ -24,4 +25,8 @@ public class LocalItemService extends GenericEntityService<LocalItem, Long> {
 		this.localItemDao = localItemDao;
 	}
 	
+	@Transactional
+	public void deleteRecords(String recordId) {
+		getLocalItemDao().deleteRecords(recordId);
+	}
 }
