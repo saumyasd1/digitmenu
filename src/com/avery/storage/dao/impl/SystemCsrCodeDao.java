@@ -21,4 +21,6 @@ public interface SystemCsrCodeDao extends GenericDao<SystemCsrCode, Long> {
 	boolean checkIfCsrCodeExists(long systemId, long orgId, String csrCode);
 
 	public boolean removeCSRCode(String entityId) throws CsrCodeNotFoundException;
+
+	SystemCsrCode getEntitiesWithCsrCode(String csrCode) throws Exception;
 }

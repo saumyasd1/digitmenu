@@ -54,4 +54,8 @@ public class SystemCsrCodeService extends GenericEntityService<SystemCsrCode, Lo
 		return systemCsrCodeDao.removeCSRCode(entityId);
 	}
 
+	@Transactional
+	public SystemCsrCode getEntitiesWithCsrCode(String csrCode) throws Exception{
+		return systemCsrCodeDao.getEntitiesWithCsrCode(csrCode);
+	}
 }

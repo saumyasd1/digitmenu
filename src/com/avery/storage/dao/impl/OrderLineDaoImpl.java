@@ -18,6 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
@@ -27,7 +28,12 @@ import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Org;
 import com.avery.storage.entities.Partner;
+import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.SystemInfo;
+import com.avery.storage.entities.User;
+import com.avery.storage.service.OrderLineService;
+import com.avery.storage.service.OrderQueueService;
+import com.avery.storage.service.SystemCsrCodeService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.MapperUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -136,10 +142,34 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 						insertShipAddress(orderLine,partnerId, systemId, siteId, orgCodeId);
 				}
 			}
-			OrderQueue orderqueue=(OrderQueue) session.get(OrderQueue.class,orderQueueId);
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			OrderQueue orderqueue=orderQueueService.read(orderQueueId);
+			OrderLineService orderLineService = (OrderLineService) SpringConfig
+					.getInstance().getBean("orderLineService");
+			List<OrderLine> orderLine = null;
+			orderLine = orderLineService.readAllByOrderID(orderQueueId);
+			if (orderLine != null)
+			{
+				OrderLine orderLineObject=orderLine.get(0);
+				String csrCode=orderLineObject.getCsr();
+				SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig
+						.getInstance().getBean("systemCsrCodeService");
+				SystemCsrCode SystemCsrCode=systemCsrCodeService.getEntitiesWithCsrCode(csrCode);
+				if(SystemCsrCode != null)
+				{
+					User user=SystemCsrCode.getVarUser();
+					Long id=user.getId();
+					String code=id.toString();
+					orderqueue.setCsrCode(code);
+				}
+			}
+			
 			orderqueue.setLastModifiedBy(lastModifiedBy);
 			orderqueue.setLastModifiedDate(new Date());
 			session.update(orderqueue);
+			
+			
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
 					"Error while Performing bulk update ", ex);
@@ -272,7 +302,28 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					insertAddress=false;
 				}
 			}
-			OrderQueue orderqueue=(OrderQueue) session.get(OrderQueue.class,orderQueueId);
+			OrderQueueService orderQueueService = (OrderQueueService) SpringConfig
+					.getInstance().getBean("orderQueueService");
+			OrderQueue orderqueue=orderQueueService.read(orderQueueId);
+			OrderLineService orderLineService = (OrderLineService) SpringConfig
+					.getInstance().getBean("orderLineService");
+			List<OrderLine> orderLine = null;
+			orderLine = orderLineService.readAllByOrderID(orderQueueId);
+			if (orderLine != null)
+			{
+				OrderLine orderLineObject=orderLine.get(0);
+				String csrCode=orderLineObject.getCsr();
+				SystemCsrCodeService systemCsrCodeService = (SystemCsrCodeService) SpringConfig
+						.getInstance().getBean("systemCsrCodeService");
+				SystemCsrCode SystemCsrCode=systemCsrCodeService.getEntitiesWithCsrCode(csrCode);
+				if(SystemCsrCode != null)
+				{
+					User user=SystemCsrCode.getVarUser();
+					Long id=user.getId();
+					orderqueue.setCsrCode(id.toString());
+				}
+			}
+			
 			orderqueue.setLastModifiedBy(lastModifiedBy);
 			orderqueue.setLastModifiedDate(new Date());
 			session.update(orderqueue);

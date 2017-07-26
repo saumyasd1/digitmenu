@@ -240,4 +240,16 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 		}
 		return flag;
 	}
+	
+	@Override
+	public SystemCsrCode getEntitiesWithCsrCode(String csrCode) throws Exception {
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(SystemCsrCode.class).createAlias("varUser", "varUser")
+		.add(Restrictions.eq("isActive", "true")).add(Restrictions.eq("csrCode", csrCode));
+		List systemCsrCodeList=criteria.list();
+		SystemCsrCode systemCsrCode=null;
+		if(systemCsrCodeList != null)
+		systemCsrCode=(SystemCsrCode) systemCsrCodeList.get(0);
+		return systemCsrCode;
+	}
 }
