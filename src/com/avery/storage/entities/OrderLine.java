@@ -1758,6 +1758,7 @@ public class OrderLine extends MainAbstractEntity{
 			@QueryParam("additional") String additionalLabel) {
 		OrderLine orderLine = null;
 		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Date now = new Date();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -1768,10 +1769,14 @@ public class OrderLine extends MainAbstractEntity{
 			List<OrderLineDetail> listOrderLineDetail = orderLine.getListOrderlineDetails();
 			for(OrderLineDetail orderLineDetail : listOrderLineDetail){
 				orderLineDetail.setId(0);
+				orderLineDetail.setCreatedDate(now);
+				orderLineDetail.setLastModifiedDate(null);
 			}
 			orderLine.setAveryItemNumber(additionalLabel);
 			orderLine.setListOrderlineDetails(listOrderLineDetail);
 			orderLine.setId(0);
+			orderLine.setCreatedDate(now);
+			orderLine.setLastModifiedDate(null);
 			Long newId = orderLineService.create(orderLine);
 			responseMap.put("id", newId);
 			responseMap.put("success", true);
