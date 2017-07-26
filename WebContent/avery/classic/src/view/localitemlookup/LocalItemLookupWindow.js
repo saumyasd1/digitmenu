@@ -140,6 +140,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
 					fieldLabel:AOCLit.orgCode,
 					queryMode:'local',
 					valueField:'name',
+					allowBlank:false,
 					flex:1,
 					margin:'0 0 0 10',
 					listeners:{
