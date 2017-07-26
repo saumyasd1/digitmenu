@@ -399,7 +399,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				store:AOCRuntime.getStoreERPORG(),
 				queryMode:'local',
 				listeners:{
-					//'select':'onERPORGSelect'
+//					select:'onERPORGSelect',
 					expand:'onDivisionEPORGExpand'
 				}
 			},
