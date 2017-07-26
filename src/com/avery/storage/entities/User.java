@@ -257,6 +257,8 @@ public class User extends MainAbstractEntity {
 							for(int j=0; j<value.length; j++)
 							{
 								contains=value[j].contains(systemCsrCode.getCsrCode());
+								if(contains == true)
+									break;
 							}
 							if(!contains)
 							{
@@ -415,6 +417,8 @@ public class User extends MainAbstractEntity {
 								for(int j=0; j<value.length; j++)
 								{
 									contains=value[j].contains(systemCsrCode.getCsrCode());
+									if(contains == true)
+										break;
 								}
 								if(!contains)
 								{
