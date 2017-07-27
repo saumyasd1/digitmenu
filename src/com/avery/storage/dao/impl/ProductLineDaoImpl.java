@@ -259,15 +259,22 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Session session = null;
 		Criteria criteria = null;
 		session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(ProductLine.class);
+		criteria = session.createCriteria(ProductLine.class)
+				.createAlias("varPartner", "varPartner")
+				.createAlias("rbo", "rbo")
+				.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("rbo.id"), "id")
+						.add(Projections.property("rbo.rboName"), "rboName")
+						.add(Projections.property("site"), "site")))
+				.setResultTransformer(Transformers.aliasToBean(RBO.class));
+				
 		String[] partnerIdList = partnerId.split(",");
 		List<Long> idList = new ArrayList<Long>();
 		for (int i = 0; i < partnerIdList.length; i++) {
 			idList.add(Long.parseLong(partnerIdList[i]));
 		}
-		criteria.createAlias("varPartner", "varPartner");
+//		criteria.createAlias("varPartner", "varPartner");
 		criteria.add(Restrictions.in("varPartner.id", idList));
-		entitiesMap.put("productlines", criteria.list());
+		entitiesMap.put("rbo", criteria.list());
 		return entitiesMap;
 
 	}

@@ -3,7 +3,6 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,8 +48,6 @@ import com.avery.storage.MixIn.ProductLineMixIn;
 import com.avery.storage.MixIn.RboMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
 import com.avery.storage.service.ProductLineService;
-import com.avery.storage.service.SiteService;
-import com.avery.storage.service.UserService;
 import com.avery.utils.MessageUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -983,8 +980,6 @@ public class ProductLine extends MainAbstractEntity {
 			@QueryParam("partnerId") String partnerId) {
 		Response.ResponseBuilder rb = null;
 		Map<?, ?> productline = new HashMap();
-		;
-		Map returnproductline = new HashMap();
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
@@ -1000,27 +995,7 @@ public class ProductLine extends MainAbstractEntity {
 			productline = productLineService.getRboListById(partnerId);
 			if (productline == null)
 				throw new Exception("Unable to find Product Line");
-			List listofPL = (List) productline.get("productlines");
-			List listOfPLR = new LinkedList<ProductLine>();
-			SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-			UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");
-			for (int i = 0; i < listofPL.size(); i++) {
-				ProductLine currentProductline = (ProductLine) listofPL.get(i);
-				String lastmodifiedUserId = currentProductline.getLastModifiedBy();
-				/*if (lastmodifiedUserId != null) {
-					String LastModifiedByName = userService.getUsernameById(lastmodifiedUserId);
-					currentProductline.setLastModifiedBy(LastModifiedByName);
-				}*/
-				if (currentProductline.getSite() != null && currentProductline.getSite() != 0) {
-					int siteId1 = (int) currentProductline.getSite();
-					Site site = siteService.read((long) siteId1);
-					if (site != null)
-						currentProductline.setSitename(site.getName());
-				}
-				listOfPLR.add(currentProductline);
-			}
-			returnproductline.put("productlines", listOfPLR);
-			mapper.writeValue(writer, returnproductline);
+			mapper.writeValue(writer, productline);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
