@@ -119,8 +119,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "attachmentFileOrderMatch", length = 100)
 	private String attachmentFileOrderMatch;// 100
 
-	// @Column(name = "attachmentFileOrderMatchLocation", length = 100)
-	// private String attachmentFileOrderMatchLocation;// 100
+	 @Column(name = "attachmentFileOrderMatchLocation", length = 100)
+	 private String attachmentFileOrderMatchLocation;// 100
 
 	@Column(name = "attachmentFileOrderMatchRequired")
 	private Boolean attachmentFileOrderMatchRequired;
@@ -1320,14 +1320,14 @@ public class ProductLine extends MainAbstractEntity {
 		this.attachmentFileOrderMatch = attachmentFileOrderMatch;
 	}
 
-	// public String getAttachmentFileOrderMatchLocation() {
-	// return attachmentFileOrderMatchLocation;
-	// }
-	//
-	// public void setAttachmentFileOrderMatchLocation(String
-	// attachmentFileOrderMatchLocation) {
-	// this.attachmentFileOrderMatchLocation = attachmentFileOrderMatchLocation;
-	// }
+	 public String getAttachmentFileOrderMatchLocation() {
+	 return attachmentFileOrderMatchLocation;
+	 }
+	
+	 public void setAttachmentFileOrderMatchLocation(String
+	 attachmentFileOrderMatchLocation) {
+	 this.attachmentFileOrderMatchLocation = attachmentFileOrderMatchLocation;
+	 }
 
 	public Boolean isAttachmentFileOrderMatchRequired() {
 		return attachmentFileOrderMatchRequired;

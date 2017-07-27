@@ -195,6 +195,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	//record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
     	record.data.fileOrderFileContent = me.getKeyword(record.get('fileOrderMatch'));
     	
+    	record.data.attachmentFileKeyWording = me.getKeyword(record.get('attachmentFileOrderMatch'));
+    	record.data.attachmentCellNo = me.getCellNo(record.get('attachmentFileOrderMatch'));
+    	
     	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
     	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
     	record.data.emailSubjectProductLineKeyword = record.get('emailSubjectProductLineMatch');
@@ -225,6 +228,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.fiberpercentagecheck = me.getSKUValidationRadioValue(record.get('fiberpercentagecheck'));
     	record.data.coocheck = me.getSKUValidationRadioValue(record.get('coocheck'));
     	record.data.factoryMOQCheck = me.getSKUValidationRadioValue(record.get('factoryMOQCheck'));
+    	
+    	delete record.get('attachmentFileOrderMatch');
     	
     	delete record.get('fileOrderMatchLocation');
     	delete record.get('fileOrderMatch');
@@ -611,6 +616,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}
 		
+		obj.attachmentFileOrderMatch = me.getCombinedValue(values.attachmentFileKeyWording, values.attachmentCellNo);
+    	
+		delete values.attachmentFileKeyWording;
+		delete values.attachmentCellNo;
 		delete values.fileOrderFileName;
 		//delete values.fileOrderFileContent;
 		delete values.fileOrderCellNo;
@@ -670,6 +679,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		if(!Ext.isEmpty(keyword) && Ext.isEmpty(cellNo)){
 			return 'Value:'+keyword;
 		}
+		return '';
 	},
 	getSKUValidationValue:function(multipleLine, check){
 		if(!Ext.isEmpty(multipleLine)){
@@ -1054,7 +1064,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			refs = me.getReferences(),
 			attachmentFieldCont = refs.attachmentFieldCont;
 		
-		if(newValue.attachmentFileRequired == 'true'){
+		if(newValue.attachmentFileMatchRequired == 'true'){
 			attachmentFieldCont.setDisabled(false);
 		}else{
 			attachmentFieldCont.setDisabled(true);

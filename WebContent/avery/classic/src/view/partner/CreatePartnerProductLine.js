@@ -756,7 +756,90 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				}
 			]).concat(me.getSchemaIdentificationFields('fileOrder', false, 'Order'))
 			.concat(me.getIdentificationFields())
+			.concat(me.getAdditionalFileItems())
 		};	
+	},
+	getAdditionalFileItems:function(){
+		//var orderFileTypeQtipTitle = 'What is the rule in order file to identify the schema (i.e. PFL) <br>Like:KeyWording:use | to separate the wordings if there could possibly be more than one set of key wordings';
+		return [
+			{
+				xtype:'box',
+				html:'Attachment File',
+			    style:'font-weight:bold;color:#2c3e50;font-size:15px;margin-top:5px;'
+			},
+			{
+				items:[
+					{
+						xtype:'radiogroup',
+						column:2,
+						width:230,
+						defaults:{
+							name:'attachmentFileMatchRequired'
+						},
+						margin:'0 0 5 0',
+						items:[
+						    {boxLabel:'Required', inputValue:'true'},
+						    {boxLabel:'Not Required', inputValue:'false', checked:true}
+						],
+						listeners:{
+							change:'onAttachmentRequiredRadioChange'
+						}
+					}
+				]
+			},
+			{
+				xtype:'fieldcontainer',
+				margin:'0 0 5 0',
+				flex:1,
+				reference:'attachmentFieldCont',
+				disabled:true,
+				layout:{
+					type:'hbox',
+					align:'stretch'
+				},
+				defaults:{
+					labelSeparator:'',
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.topLabelAlign
+				},
+				items:[
+				    {
+				    	xtype:'combo',
+				    	fieldLabel:'File Name / File Content',
+				    	reference:'attachmentFileOrderMatchLocation',
+				    	name:'attachmentFileOrderMatchLocation',
+				    	editable:false,
+				    	store:Helper.getFileNameContentStore(),
+				    	flex:1,
+				    	listeners:{
+				    		select:function(field){
+				    			if(field.getValue() == 'None'){
+				    				field.setValue('');
+				    			}
+				    		}
+				    	}
+				    },
+				    {
+				    	xtype:'textfield',
+				    	name:'attachmentFileKeyWording',
+				    	reference:'attachmentFileKeyWording',
+				    	maxLength:Settings.wiConfig.maxLength100,
+				    	fieldLabel:'Key Wordings',
+				    	flex:1,
+				    	margin:'0 0 0 10'
+				    },
+				    {
+				    	xtype:'textfield',
+				    	name:'attachmentCellNo',
+				    	reference:'attachmentCellNo',
+				    	maxLength:Settings.wiConfig.maxLength100,
+				    	fieldLabel:'Cell No,If Excel',
+				    	flex:1,
+				    	margin:'0 0 0 10'
+				    }
+				]
+			}
+		];
 	},
 	getSchemaIdentificationFields:function(type, hideFlag, fileType, hideEmailBody){
 		var me = this;
@@ -958,85 +1041,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			]
 		};
 	},
-	getAdditionalFileItems:function(){
-		var orderFileTypeQtipTitle = 'What is the rule in order file to identify the schema (i.e. PFL) <br>Like:KeyWording:use | to separate the wordings if there could possibly be more than one set of key wordings';
-		return [
-			{
-				xtype:'box',
-				html:'Attachment File <i class="fa fa-info-circle" data-qtip="<font>'+ orderFileTypeQtipTitle +'</font>" ></i>',
-			    style:'font-weight:bold;color:#2c3e50;font-size:15px;margin-top:5px;'
-			},
-			{
-				items:[
-					{
-						xtype:'radiogroup',
-						column:2,
-						width:230,
-						defaults:{
-							name:'attachmentFileRequired'
-						},
-						margin:'0 0 5 0',
-						items:[
-						    {boxLabel:'Required', inputValue:'true'},
-						    {boxLabel:'Not Required', inputValue:'false', checked:true}
-						],
-						listeners:{
-							change:'onAttachmentRequiredRadioChange'
-						}
-					}
-				]
-			},
-			{
-				xtype:'fieldcontainer',
-				margin:'0 0 5 0',
-				flex:1,
-				reference:'attachmentFieldCont',
-				disabled:true,
-				layout:{
-					type:'hbox',
-					align:'stretch'
-				},
-				defaults:{
-					labelSeparator:'',
-					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
-					labelAlign:AOC.config.Settings.form.topLabelAlign
-				},
-				items:[
-				    {
-				    	xtype:'combo',
-				    	fieldLabel:'File Name / File Content',
-				    	reference:'attachmentFileNameContent',
-				    	name:'attachmentFileNameContent',
-				    	editable:false,
-				    	store:Helper.getFileNameContentStore(),
-				    	flex:1,
-				    	listeners:{
-				    		select:'onComboSelect'
-				    	}
-				    },
-				    {
-				    	xtype:'textfield',
-				    	name:'attachmentFileKeyWording',
-				    	reference:'attachmentFileKeyWording',
-				    	maxLength:Settings.wiConfig.maxLength100,
-				    	fieldLabel:'Key Wordings',
-				    	flex:1,
-				    	margin:'0 0 0 10'
-				    },
-				    {
-				    	xtype:'textfield',
-				    	name:'attachmentCellNo',
-				    	reference:'attachmentCellNo',
-				    	maxLength:Settings.wiConfig.maxLength100,
-				    	fieldLabel:'Cell No,If Excel',
-				    	flex:1,
-				    	margin:'0 0 0 10'
-				    }
-				]
-			}
-		];
-	},
-	
 	getGroupingField:function(){
 		var me = this;
 		return {
