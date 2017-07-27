@@ -156,6 +156,7 @@ Ext.define('AOC.view.email.EmailManagementController', {
 		
 		emailAttachmentInfoGrid.trackingId = id;
 		emailAttachmentInfoGrid.status = currentRecord.get('status');
+		emailAttachmentInfoGrid.siteId = currentRecord.get('siteId');
 		emailAttachmentInfoGrid.bindStore(store); //Bind Store to viewmail grid
 		
 		panel.getLayout().setActiveItem(1);

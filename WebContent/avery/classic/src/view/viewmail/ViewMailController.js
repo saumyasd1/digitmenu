@@ -296,5 +296,17 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 				siteId:view.currentSiteId
 			});
 		assignCsrWin.show();
+	},
+	onFocusRenderDataStructure: function(combo){
+		var me = this,
+			view = me.getView();	
+		
+		combo.store.filterBy(function(record){
+			if(record.get('site') == view.siteId){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	}
 });
