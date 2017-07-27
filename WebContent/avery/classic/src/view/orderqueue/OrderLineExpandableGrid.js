@@ -199,7 +199,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 160,
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
+            resizable:true,
 			editor:{
 				xtype:'combo',
 				displayField:'name',

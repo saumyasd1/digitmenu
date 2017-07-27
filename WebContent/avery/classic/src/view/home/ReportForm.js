@@ -33,18 +33,22 @@ Ext.define('AOC.view.home.ReportForm',{
 						xtype:'combo',
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
-						store : Ext.data.StoreManager.lookup('reportPartnerId') != null ? Ext.data.StoreManager.lookup('reportPartnerId')  :Ext.create('AOC.store.PartnerManagementStore',{storeId:'reportPartnerId'}),
 						valueField:'id',
+						store:Ext.data.StoreManager.lookup('reportPartnerId') != null ? Ext.data.StoreManager.lookup('reportPartnerId')  :Ext.create('AOC.store.UniquePartnerStore',{storeId:'reportPartnerId'}),
 						name:'partnerName',
 						allowBlank : false,
 						reference:'partner',
 						flex:1.5,
-						displayField:'partnerName',
+						displayField:'name',
 						emptyText:'Select Partner',
 						queryMode:'local',
 						listeners:{
 							select:'onPartnerSelect',
 							afterrender:'onPartnerComboAfterRender',
+							focus:function(field){
+								field.store.load();
+							},
+							expand:'onPartnerComboExpand',
 							blur:function(field){
 								Helper.clearCombo(field);
 							}
@@ -61,14 +65,15 @@ Ext.define('AOC.view.home.ReportForm',{
 						disabled:true,
 						emptyText:'Select RBO',
 						queryMode:'local',
-						store:Ext.create('Ext.data.Store',{
-				     	   	 fields : ['rboName','id','productLineType'],	
+						store:Ext.create('Ext.data.JsonStore',{
+				     	   	 fields : ['rboName','id','site'],	
 					         data : []
 				        }),
 				        listeners:{
 				        	blur:function(field){
 								Helper.clearCombo(field);
-							}
+							},
+							expand:'onRBOComboExpand'
 				        }
 	                },
 					{

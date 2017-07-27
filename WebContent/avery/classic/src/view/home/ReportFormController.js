@@ -33,7 +33,9 @@ Ext.define('AOC.view.home.ReportFormController', {
 	 	if(rboCombo.getValue() == 'all'){
 	 		rboStore.each(function(rec){
 				if(rec.get('id') != 'all' ){
-					rboName.push(rec.get('rboName'));
+					if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
+						rboName.push(rec.get('rboName'));
+					}
 				}
 			});
 		}else{
@@ -42,8 +44,10 @@ Ext.define('AOC.view.home.ReportFormController', {
 	
 		if(partnerCombo.getValue() == 'all'){
 			partnerStore.each(function(rec){
-				if(rec.get('id') != 'all' ){
-					partnerName.push(rec.get('id'));
+				if(rec.get('id') != 'all'){
+					if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
+						partnerName.push(rec.get('id'));
+					}
 				}
 			});
 		}else{
@@ -136,7 +140,9 @@ Ext.define('AOC.view.home.ReportFormController', {
     	if(partnerCombo.getValue() == 'all'){
     		partnerStore.each(function(rec){
     			if(rec.get('id') != 'all'){
-    				partnerId.push(rec.get('id'));
+    				if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
+						partnerName.push(rec.get('id'));
+					}
     			}
     		});
     	}else{
@@ -148,35 +154,50 @@ Ext.define('AOC.view.home.ReportFormController', {
     		method:'GET',
     		params:{partnerId:partnerId.join()},
     		success : function(response, opts) {
-				var jsonValue = Ext.decode(response.responseText).productlines;
+				var jsonValue = Ext.decode(response.responseText).rbo;
     				serviceStoreData = [];
     	      	
+    				debugger
+    				
     	    	if(jsonValue.length>0){
-    	    		jsonValue.forEach(function(item){
-    	    			serviceStoreData.push(item);
-    	    		});
+    	    		var rboStore = rboCombo.store;
+    	    		rboStore.loadData(jsonValue);
     	    		
-    		    	var store =  Ext.create('Ext.data.Store',{
-    		    		fields:['id'],
-    		            data : serviceStoreData
-    		    	});
-    		    	var uniqueValueArray = [],
-    		    		rboStoreData= [];
-    		    	
-    		    	store.each(function(rec,index){
-    		    		uniqueValueArray.push(rec.get('rbo'));
-    		    	})
-    		    	
-    		    	rboStoreData.push({id:'all', rboName:'Select All'});
-    		    	
-    		    	if(uniqueValueArray.length > 0){
-    		    		var rboStore = rboCombo.store;
-    		    		
-    		    		 uniqueValueArray.forEach(function(item){
-    		    			 rboStoreData.push(item);
-    		    		 });
-    		    		 rboStore.loadData(rboStoreData);
-    		    	}
+    	    		rboStore.filterBy(function(rboRec){
+    	    			var userSiteId = AOCRuntime.getUser().siteId;
+    					if(userSiteId){
+    						if(rboRec.get('site') == userSiteId){
+    							return true;
+    						}
+    						return false;
+    					}
+    					return true;
+    	    		});
+//    	    		jsonValue.forEach(function(item){
+//    	    			serviceStoreData.push(item);
+//    	    		});
+//    	    		
+//    		    	var store =  Ext.create('Ext.data.Store',{
+//    		    		fields:['id'],
+//    		            data : serviceStoreData
+//    		    	});
+//    		    	var uniqueValueArray = [],
+//    		    		rboStoreData= [];
+//    		    	
+//    		    	store.each(function(rec,index){
+//    		    		uniqueValueArray.push(rec.get('rbo'));
+//    		    	})
+//    		    	
+//    		    	rboStoreData.push({id:'all', rboName:'Select All'});
+//    		    	
+//    		    	if(uniqueValueArray.length > 0){
+//    		    		var rboStore = rboCombo.store;
+//    		    		
+//    		    		 uniqueValueArray.forEach(function(item){
+//    		    			 rboStoreData.push(item);
+//    		    		 });
+//    		    		 rboStore.loadData(rboStoreData);
+//    		    	}
     		    	
     	    	}else{
     	    		Helper.showToast('failure', AOCLit.noRboMsg);
@@ -235,18 +256,40 @@ Ext.define('AOC.view.home.ReportFormController', {
 			store.insert(0,new Ext.data.Record(obj));
 		},store);
     },
-    onPartnerComboAfterRender:function(combo){
-    	var store = combo.store,
-			obj ={id:'all', partnerName:'Select All'};
+    onRBOComboExpand:function(field){
+    	var store = field.store,
+    		obj ={id:'all', rboName:'Select All', site:AOCRuntime.getUser().siteId};
     	
-		store.load({
-			callback:function(records, operation, success){
-				var index = store.find('id', 'all');
-				if(index == -1){
-					store.insert(0, new Ext.data.Record(obj));
-				}
-			}
-		}, store);
+    	var index = store.find('id', 'all');
+		if(index == -1){
+			store.insert(0, new Ext.data.Record(obj));
+		}
+    },
+
+    onPartnerComboExpand:function(field){
+    	var store = field.store,
+    		obj ={id:'all', name:'Select All', site:AOCRuntime.getUser().siteId};
+    	
+    	var index = store.find('id', 'all');
+		if(index == -1){
+			store.insert(0, new Ext.data.Record(obj));
+		}
+    },
+    onPartnerComboAfterRender:function(combo){
+    	var store = combo.store;
+    	
+    	store.on('load',function(store){
+    		var userSiteId = AOCRuntime.getUser().siteId;
+    		store.filterBy(function(rec){
+    			if(userSiteId){
+    				if(rec.get('site') == userSiteId){
+    					return true;
+    				}
+    				return false;
+    			}
+    			return true;
+    		});
+    	}, store);
     },
     onStatusComboAfterRender:function(combo){
     	var store = combo.store,
