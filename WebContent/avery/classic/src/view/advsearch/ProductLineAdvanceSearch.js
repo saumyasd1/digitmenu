@@ -89,7 +89,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								fieldLabel : AOCLit.partnerDataStructure,
 								displayField:'dataStructureName',
 								name:'partnerDataStructure',
-								valueField:'id',
+								valueField:'dataStructureName',
 								typeAhead:true,
 								queryMode :'local',
 								flex:1,
