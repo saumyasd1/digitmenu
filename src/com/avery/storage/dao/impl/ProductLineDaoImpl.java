@@ -156,7 +156,9 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(ProductLine.class).createAlias("rbo", "rbo").setProjection(
 				Projections.distinct(Projections.projectionList().add(Projections.property("rbo.id"), "id")
-						.add(Projections.property("rbo.rboName"), "rboName")));
+						.add(Projections.property("rbo.rboName"), "rboName")
+						.add(Projections.property("site"), "site")))
+				.setResultTransformer(Transformers.aliasToBean(RBO.class));
 		Conjunction disCriteria = Restrictions.conjunction();
 		disCriteria.add(Restrictions.eq("varPartner" + ".id", Long.valueOf(partnerId)));
 		disCriteria.add(Restrictions.ne("orderInMailBody", true));

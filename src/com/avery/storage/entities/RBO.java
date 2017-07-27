@@ -61,6 +61,7 @@ public class RBO extends MainAbstractEntity{
 //	public void setVarProductLine(List<ProductLine> varProductLine) {
 //		this.varProductLine = varProductLine;
 //	}
+	private transient Integer site;
 
 	public String getRboName() {
 		return rboName;
@@ -84,6 +85,14 @@ public class RBO extends MainAbstractEntity{
 
 	public void setProductLine(Set<ProductLine> productLine) {
 		this.productLine = productLine;
+	}
+	
+	public Integer getSite() {
+		return site;
+	}
+
+	public void setSite(Integer site) {
+		this.site = site;
 	}
 
 	@Override
