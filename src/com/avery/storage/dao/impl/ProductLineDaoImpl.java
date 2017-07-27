@@ -230,13 +230,15 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 					Map<String, String> dataStructureValue = new HashMap<>();
 					dataStructureValue.put("id", productLineId.toString());
 					dataStructureValue.put("dataStructureName", productLine.getDataStructureName());
+					dataStructureValue.put("site", productLine.getSite().toString());
 					dataStructures.add(dataStructureValue);
 				}
 			}
 		} else {
 			Criteria crit = session.createCriteria(ProductLine.class).add(Restrictions.ne("active", false))
 					.setProjection(Projections.projectionList().add(Projections.property("id"), "id")
-							.add(Projections.property("dataStructureName"), "dataStructureName"))
+							.add(Projections.property("dataStructureName"), "dataStructureName")
+							.add(Projections.property("site"), "site"))
 					.addOrder(Order.asc("dataStructureName"))
 					.setResultTransformer(Transformers.aliasToBean(ProductLine.class));
 
