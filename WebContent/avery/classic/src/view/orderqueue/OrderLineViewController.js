@@ -589,7 +589,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
 			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
         }
-		
+		if(fieldName == 'csr'){
+			field.store.load();
+		}
 		var divisionEPORGStore = AOCRuntime.getStoreERPORG();
 		var eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
 			orgId = eporgRecord.get('orgCodeId');

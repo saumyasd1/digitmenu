@@ -189,7 +189,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setOrderQueueActiveRecord(currentRecord);
         AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
         AOCRuntime.setAllowOrderLineEdit(true);
-        Helper.loadAllVariableComboStore('CSR');
         
         var storeERPORG = Ext.create('Ext.data.Store', {
 			fields:['id','name'],

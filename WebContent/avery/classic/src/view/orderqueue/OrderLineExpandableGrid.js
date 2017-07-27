@@ -1532,7 +1532,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 1250,
 			plugins: me.getInnerGridPlugin(),
 			autoHeight: true,
-//			frame: true,
+			frame: true,
 			header: false
 		});
     },
