@@ -156,8 +156,6 @@ Ext.define('AOC.view.home.ReportFormController', {
     		success : function(response, opts) {
 				var jsonValue = Ext.decode(response.responseText).rbo;
     				serviceStoreData = [];
-    	      	
-    				debugger
     				
     	    	if(jsonValue.length>0){
     	    		var rboStore = rboCombo.store;
@@ -173,32 +171,6 @@ Ext.define('AOC.view.home.ReportFormController', {
     					}
     					return true;
     	    		});
-//    	    		jsonValue.forEach(function(item){
-//    	    			serviceStoreData.push(item);
-//    	    		});
-//    	    		
-//    		    	var store =  Ext.create('Ext.data.Store',{
-//    		    		fields:['id'],
-//    		            data : serviceStoreData
-//    		    	});
-//    		    	var uniqueValueArray = [],
-//    		    		rboStoreData= [];
-//    		    	
-//    		    	store.each(function(rec,index){
-//    		    		uniqueValueArray.push(rec.get('rbo'));
-//    		    	})
-//    		    	
-//    		    	rboStoreData.push({id:'all', rboName:'Select All'});
-//    		    	
-//    		    	if(uniqueValueArray.length > 0){
-//    		    		var rboStore = rboCombo.store;
-//    		    		
-//    		    		 uniqueValueArray.forEach(function(item){
-//    		    			 rboStoreData.push(item);
-//    		    		 });
-//    		    		 rboStore.loadData(rboStoreData);
-//    		    	}
-    		    	
     	    	}else{
     	    		Helper.showToast('failure', AOCLit.noRboMsg);
     	    	}
