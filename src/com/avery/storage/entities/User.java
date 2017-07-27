@@ -252,7 +252,7 @@ public class User extends MainAbstractEntity {
 						if(orderConfiguration != null)
 						{
 							String propertyValue=orderConfiguration.getPropertyValue().trim();
-							String[] value=propertyValue.split("|");
+							String[] value=propertyValue.replace("|", ",").replace("[", "").replace("]", "").split(",");
 							boolean contains=false;
 							for(int j=0; j<value.length; j++)
 							{
@@ -412,7 +412,7 @@ public class User extends MainAbstractEntity {
 							if(orderConfiguration != null)
 							{
 								String propertyValue=orderConfiguration.getPropertyValue().trim();
-								String[] value=propertyValue.split("|");
+								String[] value=propertyValue.replace("|", ",").replace("[", "").replace("]", "").split(",");
 								boolean contains=false;
 								for(int j=0; j<value.length; j++)
 								{
