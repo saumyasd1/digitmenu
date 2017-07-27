@@ -541,5 +541,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 //	};
 	obj.getStore().load();
 	
+	},
+	onAfterRenderPartner: function(combo){
+		Helper.getPartnerListBySiteId(combo);
 	}
 });
