@@ -145,7 +145,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 	public List getAllDistantPartners(MultivaluedMap queryMap) throws Exception {
 		Session session = getSessionFactory().getCurrentSession();
 		String queryString = "";
-		queryString = "select distinct new map(varPartner.id as id, varPartner.partnerName as name, site as site) from ProductLine where orderInMailBody<> true ";
+		queryString = "select distinct new map(varPartner.id as id, varPartner.partnerName as name, site as site) from ProductLine where orderInMailBody<> true order by name";
 		Query query = session.createQuery(queryString);
 		List list = query.list();
 		return list;
