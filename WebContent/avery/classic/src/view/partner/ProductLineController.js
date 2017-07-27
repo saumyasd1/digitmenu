@@ -948,7 +948,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		 Ext.resumeLayouts(true);
 		 return invalidFields;
 	 },
-	 /////////////Advance Search
+	 //Advance Search
 	 openAdvancedSearchWindow:function(){
 	    	var advanceSearchWin = Ext.create('AOC.view.advsearch.ProductLineAdvanceSearch',{contextGrid:this.getView()});
 	    	if(!advanceSearchWin.isVisible()){
@@ -965,16 +965,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
               Helper.advancedSearch(view,values);
 	 },
 	 clearAdvancedSearch:function(btn){
-        var grid = this.getView();
-        var store = grid.store;
+        var grid = this.getView(),
+        	store = grid.store;
         store.clearFilter();
         store.loadPage(1);
         btn.hide();
 	 },
 	 getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
-        value = cmp.getValue();
-        Helper.quickSearch(view,{productLineType: value}),
+        	value = cmp.getValue();
+        Helper.quickSearch(view,{partnerDataStructure: value}),
         cmp.orderedTriggers[0].show();
 	 },
 	 getSearchResults: function(cmp, e) {
