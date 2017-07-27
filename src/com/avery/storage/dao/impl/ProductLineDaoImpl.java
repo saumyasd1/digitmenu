@@ -86,7 +86,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			}
 			String partnerDataStructure = searchMap.get("partnerDataStructure");
 			if (partnerDataStructure != null && !"".equals(partnerDataStructure)) {
-				criteria.add(Restrictions.eq("id", Long.parseLong(partnerDataStructure)));
+				criteria.add(Restrictions.like("dataStructureName", partnerDataStructure,MatchMode.ANYWHERE));
 			}
 			String RBOName = searchMap.get("RBOName");
 			if (RBOName != null && !"".equals(RBOName)) {
