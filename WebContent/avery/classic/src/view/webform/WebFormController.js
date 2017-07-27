@@ -23,8 +23,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 	            url:applicationContext+'/rest/productLines/rbo/'+newValue
 	        });
 	      	var jsonValue = Ext.decode(response.responseText);
-			store = Ext.create('Ext.data.ArrayStore',{
-				fields:['id','rboName'],
+			store = Ext.create('Ext.data.JsonStore',{
+				fields:['id','rboName','site'],
 				data: jsonValue
 			});
     		if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
@@ -54,7 +54,18 @@ Ext.define('AOC.view.webform.WebFormController', {
     		}
     		emailBody.reset();
 			dataStructureCombo.disable();
+			
 			rboCombo.bindStore(store);
+			rboCombo.store.filterBy(function(storeRec){
+				var userSiteId = AOCRuntime.getUser().siteId;
+				if(userSiteId){
+					if(storeRec.get('site') == userSiteId){
+						return true;
+					}
+					return false;
+				}
+				return true;
+			});
 			
 			if(me.getView().rboId){
 				var index = store.find('id',me.getView().rboId);

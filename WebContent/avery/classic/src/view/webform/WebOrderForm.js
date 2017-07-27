@@ -92,12 +92,13 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						itemId:'rboCombo',
 						editable:false,
 						displayField:'rboName',
+						valueField:'id',
 						name:'rboName',
 						flex:1,
 						isChangedForFirstTime:true,
 						margin:'0 10 0 10',
-						valueField:'id',
 						allowBlank : false, 
+						queryMode:'local',
 						disabled:true,
 						listeners:{
 							'change':'onRBOChange'
