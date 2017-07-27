@@ -896,7 +896,6 @@ Ext.define('AOC.util.Helper',{
 			fileMatchRequired:false,
 			attachmentFileProductlineMatchRequired:false,
 			attachmentFileOrderMatchRequired:false,
-			attachmentFileMatchRequired:false,
 			productLineMatchFlag:false,
 			active:true,
 			revisecancelorder:'revise,update,change,correct,amend,cancel,Recall,修改,修正,改正,取消,作废,废除,撤销'
