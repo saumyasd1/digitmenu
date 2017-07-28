@@ -68,6 +68,9 @@ public class OrderSystemInfo extends MainAbstractEntity {
 
 	@Column(name = "variableDataBreakdown", length = 500)
 	String variableDataBreakdown;
+	
+	@Column(name = "defaultSelected")
+	private Boolean defaultSelected;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productLineId")
@@ -177,6 +180,14 @@ public class OrderSystemInfo extends MainAbstractEntity {
 
 	public void setListOrgInfo(List<OrgInfo> listOrgInfo) {
 		this.listOrgInfo = listOrgInfo;
+	}
+	
+	public Boolean getDefaultSelected() {
+		return defaultSelected;
+	}
+
+	public void setDefaultSelected(Boolean defaultSelected) {
+		this.defaultSelected = defaultSelected;
 	}
 
 	@GET
