@@ -886,7 +886,6 @@ Ext.define('AOC.util.Helper',{
 		return {
 			shippingMark:false,
 			discountOffer:false,
-			averyItem:false,
 			localItem:false,
 			localBilling:false,
 			waiveMOA:false,

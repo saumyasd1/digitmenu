@@ -467,6 +467,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			}
 			
 			var valueObj = me.processPostData(values);
+			
+			if(!valueObj.waiveMOQ){
+				valueObj.waiveMOQ = false;
+			}
+			
 			if(mode == 'edit'){
 				valueObj.id = view.rec.get('id');
 			}

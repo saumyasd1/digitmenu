@@ -292,6 +292,25 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							}
 						]
 					},
+					{
+						xtype:'radiogroup',
+						column:2,
+						width:500,
+						margin:'0 0 5 0',
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.defaultLabelAlign,
+						labelWidth:150,
+						reference:'averyItem',
+						defaults:{
+							name:'averyItem'
+						},
+						fieldLabel:'GLID/Customer Item #?',
+						items:[
+						    { boxLabel: 'GLID', inputValue:true},
+						    { boxLabel: 'Customer Item #', inputValue:false, checked:true}
+						]
+			         },
 					me.getSKUValidationItems(),
 					{
 						frame:true,
