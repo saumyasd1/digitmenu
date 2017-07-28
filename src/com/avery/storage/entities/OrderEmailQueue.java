@@ -153,6 +153,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Column(name = "siteId")
 	private Integer siteId;
 	
+	@Column(name = "error", columnDefinition = "longtext")
+	private String error;
+	
 	// transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -1122,5 +1125,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 
 	public void setEmailSubjectPartnerMatch(String emailSubjectPartnerMatch) {
 		this.emailSubjectPartnerMatch = emailSubjectPartnerMatch;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 }

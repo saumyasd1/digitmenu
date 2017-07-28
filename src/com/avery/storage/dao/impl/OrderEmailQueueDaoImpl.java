@@ -79,7 +79,8 @@ OrderEmailQueueDao {
 				.add(Projections.property("emailBodyProductLineMatch"), "emailBodyProductLineMatch")
 				.add(Projections.property("emailBodyRBOMatch"), "emailBodyRBOMatch")
 				.add(Projections.property("emailSubjectPartnerMatch"), "emailSubjectPartnerMatch")
-				.add(Projections.property("assignCSR"), "assignCSR");
+				.add(Projections.property("assignCSR"), "assignCSR")
+				.add(Projections.property("error"), "error");
 		
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		
