@@ -3,6 +3,7 @@ Ext.define('AOC.store.PartnerProductLineStore', {
 	model:'AOC.model.PartnerProductLineModel',
 	remoteSort: true,
 	totalCount:'total',
+	autoLoad:true,
 	storeId:'PartnerProductLineStoreStoreId',
 	proxy: {
         type: 'rest',

@@ -10,7 +10,9 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 	layout:'fit',
 	width: 580,
 	title:AOCLit.advancedSearchWindowTitle,
-	
+	listeners:{
+		'afterrender':Helper.getDataStructureListInAdvSearch
+	},
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
@@ -91,6 +93,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								name:'partnerDataStructure',
 								valueField:'dataStructureName',
 								typeAhead:true,
+								reference:'dataStructureCombo',
 								queryMode :'local',
 								flex:1,
 								tabIndex:6,

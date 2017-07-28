@@ -989,5 +989,10 @@ Ext.define('AOC.util.Helper',{
 			});
 			
 		});
+	},
+	getDataStructureListInAdvSearch: function(){
+		var me = this,
+			dataStructureCombo = me.getReferences().dataStructureCombo;
+		dataStructureCombo.store.load();
 	}
 });
