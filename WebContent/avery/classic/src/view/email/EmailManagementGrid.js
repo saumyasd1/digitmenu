@@ -75,7 +75,7 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                     if (value) {
 //                        var error = Ext.String.htmlEncode(rec.data.error);
 //                        metadata.tdAttr = 'data-qtip="<font color=blue>' + error + '</font>"';
-                        metaData.tdStyle = 'cursor:pointer;';
+                    	metadata.tdStyle = 'cursor:pointer;';
                         return Settings.config.defaultIcons.errorColumnIcon;
                     } else {
                         return '';
