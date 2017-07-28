@@ -155,8 +155,15 @@ Ext.define('AOC.view.address.AddressWinController', {
                     jsonData: parameters,
                     url: url,
                     success: function (response, opts) {
-                     view.el.unmask();
-                     createaddress.destroy();
+                    	var jsonString = Ext.JSON.decode(response.responseText),
+                        valueExist = jsonString.valueExist;
+                    if (!valueExist) {
+                    	view.unmask();
+                        Helper.showToast('failure',AOCLit.addressExistMsg);
+                        return false;
+                    }
+                     	view.el.unmask();
+                     	createaddress.destroy();
                         Helper.showToast('Success', Msg);
                         grid.store.load();
 
