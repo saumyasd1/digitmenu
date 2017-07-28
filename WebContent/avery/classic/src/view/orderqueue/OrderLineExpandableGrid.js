@@ -199,7 +199,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 160,
 			menuDisabled:true,
             sortable:false,
-            resizable:true,
 			editor:{
 				xtype:'combo',
 				displayField:'name',
@@ -221,7 +220,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var checkvalue = value ? value.trim()  :'',
 					listOrderlineDetails = rec.get('listOrderlineDetails'),
@@ -252,7 +250,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var bulkSampleValidationFlag=rec.data.bulkSampleValidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -267,7 +264,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 140,
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var customerPOFlag=rec.data.customerPOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -282,7 +278,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var duplicatePOFlag=rec.data.duplicatePOFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -298,7 +293,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var htlSizePageValidationFlag=rec.get('htlsizePageValidationFlag');
 				var checkvalue = value ? value.trim()  :'';
@@ -313,7 +307,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			width: 120,
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
@@ -332,7 +325,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var cooTranslationFlag= rec.data.cooTranslationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -349,7 +341,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var febricPercentageFlag= rec.data.febricPercentageFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -366,7 +357,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			renderer:function(value, metadata,rec){
 				var reviseOrderFlag= rec.data.reviseOrderFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -381,7 +371,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'left',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			width: 140
 		},
 		{
@@ -390,7 +379,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'left',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			width: 220,
 			editor: {
 				xtype:'combo',
@@ -411,7 +399,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'left',
 			menuDisabled:true,
             sortable:false,
-            resizable:false,
 			width: 115,
 			editor: {
 				xtype: 'combo',
