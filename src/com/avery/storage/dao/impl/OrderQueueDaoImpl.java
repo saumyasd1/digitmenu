@@ -61,8 +61,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(OrderQueue.class)
 				.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
-				.createAlias("varOrderFileAttachment.varOrderEmailQueue",
-						"orderemailqueue")
+				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varProductLine",
 						"varProductLine")
 				.createAlias("varProductLine.varPartner", "partner")
@@ -118,7 +117,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varProductLine.productLineType"), "productLineType")
 				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
-				.add(Projections.property("orderemailqueue.assignCSR"), "csrCode")
+				.add(Projections.property("csrCode"), "csrCode")
 				// .add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("varProductLine.defaultShipToCode"), "defaultShipToCode")
@@ -330,10 +329,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 					userIds.add(String.valueOf(systemCsrCode));
 				}
 				if (userIds.size() > 0)
-					criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+					criteria.add(Restrictions.in("csrCode", userIds));
 			} else if (filterCsrCode != null && !"".equals(filterCsrCode)) {
 				List<String> userIds = ApplicationUtils.convertStringToList(filterCsrCode);
-				criteria.add(Restrictions.in("varOrderEmailQueue.assignCSR", userIds));
+				criteria.add(Restrictions.in("csrCode", userIds));
 			}
 
 			if (filterSiteId != null && !"".equals(filterSiteId) && !filterSiteId.isEmpty()) {
@@ -421,7 +420,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String assignCSR = searchMap.get("assignCSR");
 			if (assignCSR != null && !"".equals(assignCSR)) {
 				List<String> assignCSRList = ApplicationUtils.convertStringToList(assignCSR);
-				criteria.add(Restrictions.in("orderemailqueue.assignCSR",assignCSRList));
+				criteria.add(Restrictions.in("csrCode",assignCSRList));
 			}
 
 			String emailQueueId = searchMap.get("emailQueueId");
@@ -459,7 +458,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
-				.add(Projections.property("orderemailqueue.assignCSR"), "csrName")
+				.add(Projections.property("csrCode"), "csrName")
 				.add(Projections.property("orderemailqueue.siteId"), "siteId")
 				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
@@ -528,7 +527,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String csrId = searchMap.get("csrId");
 			if (csrId != null && !"".equals(csrId)) {
 				String[] csrIdList = csrId.split(",");
-				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
+				criteria.add(Restrictions.in("csrCode", csrIdList));
 			}
 		}
 		return criteria;
@@ -538,7 +537,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		Session session = getSessionFactory().getCurrentSession();
 		ProjectionList proj = Projections.projectionList();
 		proj.add(Projections.property("orderemailqueue.id"), "emailQueueId")
-				.add(Projections.property("orderemailqueue.assignCSR"), "csrName")
+				.add(Projections.property("csrCode"), "csrName")
 				.add(Projections.property("orderemailqueue.siteId"), "siteId")
 				.add(Projections.property("orderemailqueue.receivedDate"), "receivedDate")
 				.add(Projections.property("orderemailqueue.senderEmailId"), "senderEmailId")
@@ -610,7 +609,7 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 			String csrId = searchMap.get("csrId");
 			if (csrId != null && !"".equals(csrId)) {
 				String[] csrIdList = csrId.split(",");
-				criteria.add(Restrictions.in("orderemailqueue.assignCSR", csrIdList));
+				criteria.add(Restrictions.in("csrCode", csrIdList));
 			}
 		}
 		return criteria;

@@ -141,7 +141,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     		partnerStore.each(function(rec){
     			if(rec.get('id') != 'all'){
     				if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
-						partnerName.push(rec.get('id'));
+    					partnerId.push(rec.get('id'));
 					}
     			}
     		});
@@ -160,7 +160,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     	    	if(jsonValue.length>0){
     	    		var rboStore = rboCombo.store;
     	    		rboStore.loadData(jsonValue);
-    	    		
+    	    		rboCombo.setDisabled(false);
     	    		rboStore.filterBy(function(rboRec){
     	    			var userSiteId = AOCRuntime.getUser().siteId;
     					if(userSiteId){

@@ -248,7 +248,7 @@ public class SystemCsrCodeDaoImpl extends GenericDaoImpl<SystemCsrCode, Long> im
 		.add(Restrictions.eq("isActive", "true")).add(Restrictions.eq("csrCode", csrCode));
 		List systemCsrCodeList=criteria.list();
 		SystemCsrCode systemCsrCode=null;
-		if(systemCsrCodeList != null)
+		if(systemCsrCodeList != null && systemCsrCodeList.size() > 0)
 		systemCsrCode=(SystemCsrCode) systemCsrCodeList.get(0);
 		return systemCsrCode;
 	}
