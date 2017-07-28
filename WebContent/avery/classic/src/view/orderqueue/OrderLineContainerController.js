@@ -190,7 +190,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		isCommentExist = false;
     	store.each(function(record, index){
     		if(record.get('comment') && record.get('status') != AOCLit.cancelStatusOrderLine ){
-    			isCommentExist = true;
+    			isCommentExist = record.get('comment');
 	    	}
     		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
@@ -200,7 +200,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	
     	//For comment column if value exist in comment column
     	if(isCommentExist){
-    		Helper.showToast('failure',AOCLit.commentOnOrderLine);
+    		Helper.showToast('failure', isCommentExist);
+//    		Helper.showToast('failure',AOCLit.commentOnOrderLine);
     		return;
     	}
     	//For Invalid Combo 
