@@ -202,6 +202,8 @@ public class Address extends MainAbstractEntity {
 	@Override
 	public Response createEntity(UriInfo ui, HttpHeaders hh, String data) {
 		Long id;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		StringWriter writer = new StringWriter();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -209,8 +211,17 @@ public class Address extends MainAbstractEntity {
 			Address address = mapper.readValue(data, Address.class);
 			address.setCreatedDate(new Date());
 			AddressService addressService = (AddressService) SpringConfig.getInstance().getBean("addressService");
-			id = addressService.create(address);
-			return Response.ok(id).build();
+			boolean siteIdExist = addressService.checkDuplicateSiteId(address);
+			if (siteIdExist) {
+				responseMap.put("valueExist", true);
+				mapper.writeValue(writer, responseMap);
+			} else {
+				responseMap.put("valueExist", false);
+				id = addressService.create(address);
+				mapper.writeValue(writer, responseMap);
+			}
+			//return Response.ok(id).build();
+			return Response.ok(writer.toString()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR)
