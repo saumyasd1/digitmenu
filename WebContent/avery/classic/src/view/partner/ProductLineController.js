@@ -282,7 +282,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		var strA = str.split(';');
     		return {keyword: strA[0].split(':')[1], cellNo:strA[1].split(':')[1]};
     	}
-    	return {keyword:str};
+    	return {keyword:str.split(':')[1]};
     },
     getKeyword:function(str){
     	if(!Ext.isEmpty(str)){
@@ -533,7 +533,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		for(var i=0; i < len; i++){
 			currentcheckBox = refs[checkboArray[i]];
 			
-			if(currentcheckBox && currentcheckBox.getValue()){
+			if(currentcheckBox){
 				isCheckBoxSelected = true;
 				currentSystemGrid = refs[checkboArray[i]+'systemGrid'];
 				currentOrgGrid = refs[checkboArray[i]+'orgGrid'];
@@ -567,6 +567,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					this.assignCSRName = systemGridStore.getAt(0).data.csrName;
 				}
 				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
+				
+				if(currentcheckBox.getValue()){
+					systemGridStore.getAt(0).data.defaultSelected = true;
+				}else{
+					systemGridStore.getAt(0).data.defaultSelected = false;
+				}
+				
 				if(systemGridStore.getAt(0).data.newRecord){
 					delete systemGridStore.getAt(0).data.id;
 				}
@@ -618,6 +625,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}
 		
 		if(values.fileOrderCellNo){
+			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
+		}else{
 			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}
 		
@@ -811,12 +820,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	    			var listLen = listOrderSystemInfo.length;
 	    			
 	    			for(var i = 0; i < listLen; i++){
-	    				var system = listOrderSystemInfo[i].varSystem,
+	    				var item = listOrderSystemInfo[i]
+	    					system = item.varSystem,
 	    					systemName = system.name,
 	    					checkBox = refs[systemName],
 	    					orgGrid = refs[systemName+'orgGrid'];
 	    				
-	    				checkBox.setValue(true);
+	    				if(item.defaultSelected){
+	    					checkBox.setValue(true);
+	    				}
 	    				
 	    				var systemStore = Ext.data.StoreManager.lookup('systemStore'+system.id),
 	    					orgStore = Ext.data.StoreManager.lookup('orgInfoStore'+system.id);
