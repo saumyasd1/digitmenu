@@ -28,4 +28,9 @@ public class AddressService extends GenericEntityService<Address, Long>{
 		return getAddressDao().getAddress(siteId);
 	}
 
+	@Transactional
+	public Boolean checkDuplicateSiteId(Address addrObj){
+		return getAddressDao().checkDuplicateSiteId(addrObj);
+	}
+	
 }
