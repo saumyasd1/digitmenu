@@ -59,7 +59,21 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
                 method: 'GET'
             });
         }
-        
+        if(cellIndex == 2 && Ext.get(e.target).hasCls('fa-exclamation-circle')){
+    		this.createCustomErrorTooltip(record, e);
+    	}
+    },
+    createCustomErrorTooltip:function(record, e){
+    	if(this.customErrorTip){
+    		this.customErrorTip.hide();
+    		this.customErrorTip.target = Ext.get(e.target);
+    		this.customErrorTip.update('<font color=blue>'+Ext.String.htmlEncode(record.get('error'))+'</font>');
+    		this.customErrorTip.show();
+    	}else{
+    		var el = Ext.get(e.target);
+    		this.customErrorTip = Helper.createToolTip(el, 'Error', '<font color=blue>'+Ext.String.htmlEncode(record.get('error'))+'</font>', 'left');
+    		this.customErrorTip.show();
+    	}
     },
     onRowContextMenu:function(obj, record, tr, rowIndex, e, eOpts){
     	e.stopEvent();

@@ -67,8 +67,7 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             align:'center',
             renderer: function (value, metadata, rec) {
                 if (value) {
-                    var error = Ext.String.htmlEncode(rec.data.error);
-                    metadata.tdAttr = 'data-qtip="<font color=blue>' + error + '</font>"';
+                	metadata.tdStyle = 'cursor:pointer;';
                     return Settings.config.defaultIcons.errorColumnIcon;
                 } else {
                     return '';

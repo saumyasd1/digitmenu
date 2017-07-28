@@ -65,6 +65,23 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                     return '';
                 }
             }, {
+                header: Settings.config.defaultIcons.errorColumnIcon,
+                width: 40,
+                dataIndex: 'error',
+                tooltip: 'Error',
+                menuDisabled: true,
+                align:'center',
+                renderer: function (value, metadata, rec) {
+                    if (value) {
+//                        var error = Ext.String.htmlEncode(rec.data.error);
+//                        metadata.tdAttr = 'data-qtip="<font color=blue>' + error + '</font>"';
+                        metaData.tdStyle = 'cursor:pointer;';
+                        return Settings.config.defaultIcons.errorColumnIcon;
+                    } else {
+                        return '';
+                    }
+                }
+            }, {
                 text: AOCLit.orderSource,
                 width: 120,
                 align: 'center',
