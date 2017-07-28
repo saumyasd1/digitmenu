@@ -8,5 +8,6 @@ import com.avery.storage.entities.Address;
 public interface AddressDao extends GenericDao<Address, Long>{
 
 	List<Address> getAddress(String siteId);
+	Boolean checkDuplicateSiteId(Address addrObj);
 	
 }
