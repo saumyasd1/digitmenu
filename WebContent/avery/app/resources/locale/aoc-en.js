@@ -517,6 +517,7 @@ Ext.define('AOC.lang.lit',{
     uploadPhoto:'Upload Photo',
     invalidImgFormat:'Please select a valid image format',
     userExistMsg:'An entry already exist for given email address',
+    addressExistMsg:'An entry already exist for given site address',
     csrCodeOwnerName:'CSR Code Owner name',
     csrNonCodeOwnerName:'CSR Non-Code Owner name',
     csrCodeExist:'An entry already exist for selected System,Org Code & CSR code',
