@@ -220,7 +220,6 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 			Conjunction disCriteria = Restrictions.conjunction();
 			disCriteria.add(Restrictions.eq("siteType", siteType));
 			disCriteria.add(Restrictions.eq("siteNumber", siteNumber));
-			disCriteria.add(Restrictions.eq("siteType", siteType));
 			disCriteria.add(Restrictions.eq("address1", address1));
 			disCriteria.add(Restrictions.eq("address2", address2));
 
