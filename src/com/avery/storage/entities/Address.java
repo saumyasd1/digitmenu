@@ -232,6 +232,7 @@ public class Address extends MainAbstractEntity {
 	@Override
 	public Response updateEntity(UriInfo ui, HttpHeaders hh, String id, String data) {
 		Response.ResponseBuilder rb = null;
+		Map<String, Object> responseMap = new HashMap<String, Object>();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
@@ -244,18 +245,27 @@ public class Address extends MainAbstractEntity {
 			AddressService addressService = (AddressService) SpringConfig.getInstance().getBean("addressService");
 			// read existing entity from database
 			Address address = addressService.read(Long.parseLong(id));
+			ObjectReader updater = mapper.readerForUpdating(address);
+			address = updater.readValue(data);
 			if (address == null) {
 				throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
 						.entity("address entity with id \"" + id + "\" doesn't exist").type(MediaType.TEXT_PLAIN_TYPE)
 						.build());
 			}
-			ObjectReader updater = mapper.readerForUpdating(address);
+			
+			boolean siteIdExist = addressService.checkDuplicateSiteId(address);
 			// build updated entity object from input data
-			address = updater.readValue(data);
+			if (siteIdExist) {
+				responseMap.put("valueExist", true);
+				mapper.writeValue(writer, responseMap);
+			} else {
 			// update entity in database
 			addressService.update(address);
+			responseMap.put("valueExist", false);
+			responseMap.put("address", address);
+			mapper.writeValue(writer, responseMap);
 			// prepare response
-			mapper.writeValue(writer, address);
+			}
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error("Error in updating address entity with id " + id, ex);
