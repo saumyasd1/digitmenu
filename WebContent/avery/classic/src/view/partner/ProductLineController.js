@@ -72,17 +72,19 @@ Ext.define('AOC.view.productline.ProductLineController', {
     						activeDeactiveBtn.setDisabled(true);
     						deleteBtn.setDisabled(true);
  	                    }else{
- 	                    	editBtn.setDisabled(false);
+ 	                    	if(activeStatus){
+ 	                    		editBtn.setDisabled(false);
+ 	                    	}else{
+ 	                    		editBtn.setDisabled(true);
+ 	                    	}
  	                    	activeDeactiveBtn.setDisabled(false);
     						deleteBtn.setDisabled(false);
  	                    }
     					if(activeStatus){
     						activeDeactiveBtn.setText('Deactive');
     						activeDeactiveBtn.setIconCls('x-fa fa-toggle-off');
-    						editBtn.setDisabled(false);
     					}else{
     						activeDeactiveBtn.setText('Active');
-    						editBtn.setDisabled(true);
     						activeDeactiveBtn.setIconCls('x-fa fa-toggle-on');
     					}
     				}

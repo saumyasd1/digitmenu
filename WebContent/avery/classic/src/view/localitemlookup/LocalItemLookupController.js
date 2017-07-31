@@ -197,15 +197,18 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
 			case 2: grid.getStore().proxy.extraParams = {
 					orgCode:scOrgCode.join(),
 					systemName:scSZSystem.join()
-			};
+				};
+				break;
 			case 3:  grid.getStore().proxy.extraParams = {
 					orgCode:szOrgCode.join(),
 					systemName:scSZSystem.join()
-			};
+				};
+				break;
 			case 4:  grid.getStore().proxy.extraParams = {
 					orgCode:vtOrgCode.join(),
 					systemName:vtSystem.join()
-			};
+				};
+				break;
         }
     }
 });
