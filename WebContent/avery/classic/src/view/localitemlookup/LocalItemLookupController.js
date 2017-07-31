@@ -185,8 +185,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	}
     },
     onActivateGrid:function(grid){
-        var values =
-        	userInfo = AOCRuntime.getUser(),
+        var userInfo = AOCRuntime.getUser(),
             siteId = userInfo.siteId,
         	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'];
         	szOrgCode =['VN','PXVN'],
