@@ -10,9 +10,6 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 	layout:'fit',
 	width: 580,
 	title:AOCLit.advancedSearchWindowTitle,
-	listeners:{
-		'afterrender':Helper.getDataStructureListInAdvSearch
-	},
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
@@ -99,9 +96,11 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								tabIndex:6,
 								enableKeyEvents:true,
 								margin:'0 0 0 10',
-								store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId'),
+								store:Ext.data.StoreManager.lookup('productLineStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore',{storeId:'productLineStoreId'}) : Ext.data.StoreManager.lookup('productLineStoreId'),
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									expand:Helper.onPartnerDSComboExpand,
+									afterrender:Helper.onParterDSComboAfterRender
 								}
 							}
 						]

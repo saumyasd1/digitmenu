@@ -989,9 +989,19 @@ Ext.define('AOC.util.Helper',{
 			
 		});
 	},
-	getDataStructureListInAdvSearch: function(){
-		var me = this,
-			dataStructureCombo = me.getReferences().dataStructureCombo;
-		dataStructureCombo.store.load();
+	onPartnerDSComboExpand:function(field){
+		field.store.filterBy(function(rec){
+			var siteId = AOCRuntime.getUser().siteId;
+			if(siteId){
+				if(rec.get('site') == siteId){
+					return true;
+				}
+				return false;
+			}
+			return true;
+		});
+	},
+	onParterDSComboAfterRender:function(field){
+		field.store.load();
 	}
 });
