@@ -434,6 +434,15 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name= "skuQtyDifference", length = 100)
 	private String skuQtyDifference;
 	
+	@Column(name = "systemOrgCode", length = 50)
+	private String systemOrgCode;
+	
+	@Column(name = "queryOrgCode", length = 50)
+	private String queryOrgCode;
+	
+	@Column(name = "division", length = 50)
+	private String division;
+	
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -1500,6 +1509,30 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setSystemId(Long systemId) {
 		this.systemId = systemId;
+	}
+	
+	public String getSystemOrgCode() {
+		return systemOrgCode;
+	}
+
+	public void setSystemOrgCode(String systemOrgCode) {
+		this.systemOrgCode = systemOrgCode;
+	}
+
+	public String getQueryOrgCode() {
+		return queryOrgCode;
+	}
+
+	public void setQueryOrgCode(String queryOrgCode) {
+		this.queryOrgCode = queryOrgCode;
+	}
+
+	public String getDivision() {
+		return division;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
 	}
 
 	@Override

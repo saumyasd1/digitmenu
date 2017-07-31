@@ -177,7 +177,7 @@ public class ExcelUtils {
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
         String[] headerNames = {"Local Report Export Time","Local Report Export Date","RBO name","Customer PO#","Customer item #", "Avery Internal item #", "Qty",
-				 "CSR name", "Customer request date", "AOC Order Track #"};
+				 "CSR Code", "Customer request date", "AOC Order Track #"};
         addHeader(sheet, headerNames);
     	for(int i=0; i<orderLine.size(); i++)
 		{
