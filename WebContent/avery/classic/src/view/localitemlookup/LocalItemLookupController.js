@@ -188,8 +188,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
         var userInfo = AOCRuntime.getUser(),
             siteId = userInfo.siteId,
         	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'];
-        	szOrgCode =['VN','PXVN'],
-        	vtOrgCode = ['SZ','PXSH'],
+        	vtOrgCode =['VN','PXVN'],
+        	szOrgCode = ['SZ','PXSH'],
         	scSZSystem =['Oracle','VIPS'],
         	vtSystem = ['Sparrow','VIPS'];
         	

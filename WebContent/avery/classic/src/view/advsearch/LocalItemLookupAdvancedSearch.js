@@ -17,9 +17,16 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 	},
 	buildItems :function(){
 		var me = this,
+			userInfo = AOCRuntime.getUser(),
+			currentRecSiteId = userInfo.siteId,
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId'),
 			orgStore = Ext.data.StoreManager.lookup('orgComboId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboId'),
-			systemStore = Ext.data.StoreManager.lookup('systemId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemId');
+			systemStore = Ext.data.StoreManager.lookup('systemId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemId'),
+			scOrgCodeStore = [['PYT','PYT'],['PYL','PYL'],['POHKT','POHKT'],['POHKL','POHKL'],['ADNS','ADNS'],['ADNL','ADNL'],['ADHK','ADHK']],
+			vtOrgCodeStore =[['VN','VN'],['PXVN','PXVN']],
+			szOrgCodeStore = [['SZ','SZ'],['PXSH','PXSH']],
+			scSZSystemStore =['Oracle','VIPS'],
+        	vtSystemStore = ['Sparrow','VIPS'];
 			
 		rboStore.load();
 		orgStore.load();
@@ -140,7 +147,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						       {
 								xtype:'combo',
 								name:'orgCode',
-								store:orgStore,
+								store:currentRecSiteId == null ?  orgStore: ((currentRecSiteId == 2) ? scOrgCodeStore : ((currentRecSiteId == 3)? szOrgCodeStore : vtOrgCodeStore )),
 								displayField:'name',
 								fieldLabel:AOCLit.orgCode,
 								queryMode:'local',
@@ -176,7 +183,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								flex:1,
 								enableKeyEvents:true,
 								queryMode:'local',
-								store:systemStore,
+								store: currentRecSiteId == null ?  systemStore: ((currentRecSiteId == 4) ? vtSystemStore : scSZSystemStore ),
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
