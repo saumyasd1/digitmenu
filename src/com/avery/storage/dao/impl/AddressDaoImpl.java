@@ -216,13 +216,20 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 				.add(Projections.property("shippingInstructions"), "shippingInstructions")
 				.add(Projections.property("phone2"), "phone2");
 		criteria.createAlias("varOrgCode", "varOrgCode");
-		if (siteNumber != null && !"".equals(siteNumber) && siteType!=null && !"".equals(siteType) && address1 != null && !"".equals(address1) && address2 != null && !"".equals(address2)) {
+		if (siteNumber != null && !"".equals(siteNumber) && siteType!=null && !"".equals(siteType) && address1 != null && !"".equals(address1)) {
 			Conjunction disCriteria = Restrictions.conjunction();
 			disCriteria.add(Restrictions.eq("siteType", siteType));
 			disCriteria.add(Restrictions.eq("siteNumber", siteNumber));
 			disCriteria.add(Restrictions.eq("address1", address1));
+			if(address2 != null && !"".equals(address2) && address2 != null ){
 			disCriteria.add(Restrictions.eq("address2", address2));
-
+			}
+			if(address3 != null && !"".equals(address3) && address3 != null){
+				disCriteria.add(Restrictions.eq("address3", address3));
+			}
+			if(address4 != null && !"".equals(address4) && address4 != null ){
+				disCriteria.add(Restrictions.eq("address4", address4));
+			}
 			if (id != 0) {
 				disCriteria.add(Restrictions.ne("id", id));
 			}
