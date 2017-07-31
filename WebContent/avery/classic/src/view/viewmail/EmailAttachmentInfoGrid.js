@@ -126,9 +126,12 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						valueField:'id',
 						queryMode :'local',
 						editable:true,
-						store:Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore') : Ext.data.StoreManager.lookup('PartnerProductLineStoreStoreId'),
+						store:Ext.data.StoreManager.lookup('viewMailProductLineStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore',{storeId:'viewMailProductLineStoreId'}) : Ext.data.StoreManager.lookup('viewMailProductLineStoreId'),
 						listeners:{
-							focus:'onFocusRenderDataStructure'
+							focus:'onFocusRenderDataStructure',
+							afterrender:function(field){
+								field.store.load();
+							}
 						}
 					},
 					renderer:function(value, metaData, record){
