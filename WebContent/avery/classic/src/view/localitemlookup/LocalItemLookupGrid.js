@@ -10,7 +10,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
         rowcontextmenu:'onRowContextMenu',
         cellclick:'onCellClick',
         select:'onSelectRecord',
-        deselect:'onSelectRecord'
+        deselect:'onSelectRecord',
+        activate:'onActivateGrid'
     },
     initComponent: function () {
         var me = this;

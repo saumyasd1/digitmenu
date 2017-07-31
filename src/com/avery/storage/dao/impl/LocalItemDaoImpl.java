@@ -114,13 +114,15 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 			}
 			
 			String orgCode=searchMap.get("orgCode");
+			List<String> orgCodeArr = ApplicationUtils.convertStringToList(orgCode);
 			if(orgCode!=null && !"".equals(orgCode.trim())){
-				criteria.add(Restrictions.ilike("orgCode",orgCode,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.in("orgCode",orgCodeArr));
 			}
 			
 			String system=searchMap.get("system");
+			List<String> systemArr = ApplicationUtils.convertStringToList(system);
 			if(system!=null && !"".equals(system.trim())){
-				criteria.add(Restrictions.ilike("system",system,MatchMode.ANYWHERE));
+				criteria.add(Restrictions.in("system",systemArr));
 			}
 		}
 		return criteria;

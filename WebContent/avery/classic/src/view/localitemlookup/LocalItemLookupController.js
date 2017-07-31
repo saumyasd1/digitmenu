@@ -183,5 +183,34 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	else{
     		deleteBtn.setDisabled(true);
     	}
+    },
+    onActivateGrid:function(grid){
+        var values={},
+        	userInfo = AOCRuntime.getUser(),
+            siteId = userInfo.siteId,
+            store = grid.store,
+        	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'],
+        	szOrgCode =['VN','PXVN'],
+        	vtOrgCode = ['SZ','PXSH'],
+        	scSZSystem =['Oracle','VIPS'],
+        	vtSystem = ['Sparrow','VIPS'];
+        
+        switch (siteId){
+			case 2: values.orgCode = scOrgCode.join();
+					values.system = scSZSystem.join();
+					break;
+			
+			case 3: values.orgCode = szOrgCode.join();
+					values.system = scSZSystem.join();
+					break;
+					
+			case 4: values.orgCode = vtOrgCode.join();
+					values.system = vtSystem.join();
+					break;
+        }
+        var query = Ext.JSON.encode(values);
+        store.proxy.extraParams = {
+	         query: query
+	     };
     }
 });
