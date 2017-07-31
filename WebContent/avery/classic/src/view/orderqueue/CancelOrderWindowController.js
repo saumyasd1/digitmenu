@@ -18,6 +18,7 @@ Ext.define('AOC.view.orderqueue.CancelOrderWindowController', {
             parameters.comment = comment
         }
         
+        parameters.lastModifiedBy = Helper.setLastModifiedBy();
         Ext.getBody().mask(AOCLit.pleaseWait);
         Ext.Ajax.request({
             url: applicationContext + '/rest/orders/cancelorder/' + id,
