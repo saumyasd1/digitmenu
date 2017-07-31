@@ -157,7 +157,7 @@ Ext.define('AOC.view.address.AddressWinController', {
                     success: function (response, opts) {
                     	var jsonString = Ext.JSON.decode(response.responseText),
                         valueExist = jsonString.valueExist;
-                    if (!valueExist) {
+                    if (valueExist) {
                     	view.unmask();
                         Helper.showToast('failure',AOCLit.addressExistMsg);
                         return false;
