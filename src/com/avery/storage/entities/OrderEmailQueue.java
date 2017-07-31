@@ -684,7 +684,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 		Map<String, String> jsonMap = null;
 		Response.ResponseBuilder rb = null;
 		String assignCSR = "";
-		String lastModifiedId = "";
+		String lastModifiedBy = "";
 		OrderEmailQueue orderEmailQueueObj = new OrderEmailQueue();
 		Date now = new Date();
 		Long orderEmailQueueId = 0L;
@@ -699,7 +699,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			jsonMap = ApplicationUtils.convertJSONtoMaps(data);
 			
 			assignCSR = jsonMap.get("assignCSR");
-			lastModifiedId = jsonMap.get("userId");
+			lastModifiedBy = jsonMap.get("lastModifiedBy");
 			String siteId = jsonMap.get("siteId");
 			String emailId = jsonMap.get("email");
 			String emailBody = jsonMap.get("emailBody");
@@ -722,7 +722,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			if(siteId != null && !siteId.isEmpty() && siteId !="")
 			orderEmailQueueObj.setSiteId(Integer.parseInt(siteId));
 			orderEmailQueueObj.setAssignCSR(assignCSR);
-			orderEmailQueueObj.setLastModifiedBy(lastModifiedId);
+			orderEmailQueueObj.setLastModifiedBy(lastModifiedBy);
+			orderEmailQueueObj.setLastModifiedDate(now);
 			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
 			if (isResubmit) {
 				orderEmailQueueObj.setStatus(ApplicationConstants.Order_Email_Processed);
@@ -753,6 +754,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 						.read(Long.parseLong(oldOrderFileId));
 				orderFileAttachmentObj.setId(0);
 				orderFileAttachmentObj.setCreatedDate(now);
+				orderFileAttachmentObj.setLastModifiedBy(lastModifiedBy);
+				orderFileAttachmentObj.setLastModifiedDate(now);
 				orderFileAttachmentObj.setStatus(ApplicationConstants.NEW_ATTACHMENT_STATUS);
 				// orderQueue.setPrevOrderQueueId(Integer.parseInt(oldOrderQueueId));
 				orderFileAttachmentObj.setVarOrderEmailQueue(orderEmailQueueObj);
@@ -763,6 +766,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					OrderQueue orderQueue = orderQueueService.read(Long.parseLong(oldOrderQueueId));
 					orderQueue.setId(0);
 					orderQueue.setCreatedDate(now);
+					orderQueue.setLastModifiedBy(lastModifiedBy);
+					orderQueue.setLastModifiedDate(now);
 					orderQueue.setComment("");
 					orderQueue.setStatus(ApplicationConstants.DEFAULT_ORDERQUEUE_STATUS);
 					orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
@@ -810,7 +815,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			@FormDataParam("fileContentType") String fileContentType,
 			@FormDataParam("sendAcknowledgementFlag") String sendAcknowledgementFlag,
 			@FormDataParam("email") String emailId, @FormDataParam("isResubmit") String resubmitFlag,
-			@FormDataParam("oldOrderId") String oldOrderId) {
+			@FormDataParam("oldOrderId") String oldOrderId,
+			@FormDataParam("lastModifiedBy") String lastModifiedBy) {
 		Response.ResponseBuilder rb = null;
 		long orderEmailQueueId = 0L;
 		long productLineId = 0L;
@@ -835,6 +841,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			orderEmailQueueObj.setId(orderEmailQueueId);
 			productLineObj.setId(productLineId);
 
+			orderFileAttachmentObj.setLastModifiedBy(lastModifiedBy);
+			orderFileAttachmentObj.setLastModifiedDate(now);
 			orderFileAttachmentObj.setFileName(fileName);
 			orderFileAttachmentObj.setFileExtension(fileExtension);
 			orderFileAttachmentObj.setFileContentType(fileContentType);
@@ -853,6 +861,8 @@ public class OrderEmailQueue extends MainAbstractEntity {
 					.getBean("orderQueueService");
 			if (fileContentType.equals("Order") && isResubmit) {
 				OrderQueue orderQueue = new OrderQueue();
+				orderQueue.setLastModifiedBy(lastModifiedBy);
+				orderQueue.setLastModifiedDate(now);
 				orderQueue.setVarOrderFileAttachment(orderFileAttachmentObj);
 				orderQueue.setVarProductLine(productLineObj);
 				orderQueue.setCreatedDate(now);
