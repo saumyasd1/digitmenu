@@ -443,6 +443,8 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "division", length = 50)
 	private String division;
 	
+	@Column(name = "siteId", length = 50)
+	private String siteId;
 	//transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -1533,6 +1535,14 @@ public class OrderLine extends MainAbstractEntity{
 
 	public void setDivision(String division) {
 		this.division = division;
+	}
+	
+	public String getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
 	}
 
 	@Override
