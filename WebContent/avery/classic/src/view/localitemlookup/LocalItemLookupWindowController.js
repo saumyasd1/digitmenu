@@ -24,7 +24,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             msg = AOCLit.updateLocalItem;
         } else {
             url = applicationContext + '/rest/localitem';
-            valueObj = form.getValues(false, true, false, true);
+            valueObj = form.getValues();
             method = 'POST';
             length = 1;
             msg = AOCLit.addLocalItem;
