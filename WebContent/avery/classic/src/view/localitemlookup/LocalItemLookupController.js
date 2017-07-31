@@ -185,32 +185,28 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	}
     },
     onActivateGrid:function(grid){
-        var values={},
+        var values =
         	userInfo = AOCRuntime.getUser(),
             siteId = userInfo.siteId,
-            store = grid.store,
-        	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'],
+        	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'];
         	szOrgCode =['VN','PXVN'],
         	vtOrgCode = ['SZ','PXSH'],
         	scSZSystem =['Oracle','VIPS'],
         	vtSystem = ['Sparrow','VIPS'];
-        
+        	
         switch (siteId){
-			case 2: values.orgCode = scOrgCode.join();
-					values.system = scSZSystem.join();
-					break;
-			
-			case 3: values.orgCode = szOrgCode.join();
-					values.system = scSZSystem.join();
-					break;
-					
-			case 4: values.orgCode = vtOrgCode.join();
-					values.system = vtSystem.join();
-					break;
+			case 2: grid.getStore().proxy.extraParams = {
+					orgCode:scOrgCode.join(),
+					systemName:scSZSystem.join()
+			};
+			case 3:  grid.getStore().proxy.extraParams = {
+					orgCode:szOrgCode.join(),
+					systemName:scSZSystem.join()
+			};
+			case 4:  grid.getStore().proxy.extraParams = {
+					orgCode:vtOrgCode.join(),
+					systemName:vtSystem.join()
+			};
         }
-        var query = Ext.JSON.encode(values);
-        store.proxy.extraParams = {
-	         query: query
-	     };
     }
 });
