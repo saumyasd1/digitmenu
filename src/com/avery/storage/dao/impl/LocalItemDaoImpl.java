@@ -124,6 +124,18 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 			if(system!=null && !"".equals(system.trim())){
 				criteria.add(Restrictions.in("system",systemArr));
 			}
+		}else
+		{
+			String system = (String) queryMap.getFirst("systemName");			
+			List<String> systemArr = ApplicationUtils.convertStringToList(system);
+			if(system!=null && !"".equals(system.trim())){
+				criteria.add(Restrictions.in("system",systemArr));
+			}
+			String orgCode = (String) queryMap.getFirst("orgCode");
+			List<String> orgCodeArr = ApplicationUtils.convertStringToList(orgCode);
+			if(orgCode!=null && !"".equals(orgCode.trim())){
+				criteria.add(Restrictions.in("orgCode",orgCodeArr));
+			}
 		}
 		return criteria;
 	}
