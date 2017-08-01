@@ -239,13 +239,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		}
 		}
     	
-		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
+		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
 		
 		Ext.Ajax.request({
 			method:'PUT',
 			jsonData:params,
 			url : applicationContext+'/rest/orderLines/bulkupdate',
 			success : function(response, opts) {
+				var jsonString = Ext.JSON.decode(response.responseText),
+                valueExist = jsonString.valueExist;
+            if (valueExist) {
+            	Ext.getBody().unmask();
+                Helper.showToast('failure',AOCLit.addressExistMsg);
+                return false;
+            }
 				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
 				Helper.showToast('success','Order line successfully updated');
 				Ext.getBody().unmask();
@@ -313,12 +320,19 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		          			insertShipAddress=true;
 		          		}
 		              }
-		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
+		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
 		            Ext.Ajax.request({
 		                method: 'PUT',
 		                jsonData: obj,
 		                url: applicationContext + '/rest/orderLines/bulkupdate',
 		                success: function(response, opts) {
+		                	var jsonString = Ext.JSON.decode(response.responseText),
+		                    valueExist = jsonString.valueExist;
+		                if (valueExist) {
+		                	Ext.getBody().unmask();
+		                    Helper.showToast('failure',AOCLit.addressExistMsg);
+		                    return false;
+		                }
 		                	Helper.showToast('success','Order line successfully updated');
 		                    Ext.getBody().unmask();
 		                    ctx.grid.openedRecordIndex ='';
