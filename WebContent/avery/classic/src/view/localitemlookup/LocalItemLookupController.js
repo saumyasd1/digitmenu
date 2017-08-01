@@ -210,5 +210,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
 				};
 				break;
         }
+    },
+    onComboBlur:function(field){
+    	Helper.clearCombo(field);
     }
 });

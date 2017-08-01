@@ -114,7 +114,8 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								margin:'0 0 0 10',
 								enableKeyEvents:true,
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
 							}
 						]
@@ -141,7 +142,8 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								tabIndex:5,
 								enableKeyEvents:true,
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
 						       },
 						       {
@@ -152,13 +154,13 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								fieldLabel:AOCLit.orgCode,
 								queryMode:'local',
 								valueField:'name',
-								editable:false,
 								flex:1,
 								tabIndex:6,
 								margin:'0 0 0 10',
 								enableKeyEvents:true,
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
 						       }
 						]
@@ -181,13 +183,13 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								displayField:'name',
 								valueField:'name',
 								tabIndex:7,
-								editable:false,
 								flex:1,
 								enableKeyEvents:true,
 								queryMode:'local',
 								store: currentRecSiteId == null ?  systemStore: ((currentRecSiteId == 4) ? vtSystemStore : scSZSystemStore ),
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
 							}
 						]
