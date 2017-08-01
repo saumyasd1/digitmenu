@@ -154,7 +154,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 						h.style = AOCLit.cellColor;//change cell color if value is not exist in store
 					}
 				}else{
-					orgCodeName = store.getAt(index).get('orgName');
+					orgCodeName = store.getAt(index).get('name');
 				}
 			}else{
 				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
@@ -164,6 +164,82 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			}
 		}
 		return orgCodeName;
+	},
+	onVariableComboFocus:function(field){
+		var me = this,
+		   	view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context,
+		   	rowIdx = context.rowIdx,
+		   	fieldStore = field.store,
+		   	currentRecord = context.record,
+		   	fieldName = context.field,
+		   	systemId = currentRecord.get('systemId'),
+		   	currentValue = field.getValue();
+		
+		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+        }
+		if(fieldName == 'csr'){
+			field.store.load();
+		}
+		var divisionEPORGStore = AOCRuntime.getStoreERPORG();
+		var eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
+			orgId = eporgRecord.get('orgCodeId');
+		
+		field.store.filterBy(function(record){
+			if(record.get('systemId') == systemId && orgId == record.get('orgId')){
+				return true;
+			}
+			return false;
+		}, systemId);
+		
+		if(!Ext.isEmpty(context.record.get(fieldName))){
+			//filter variable field store for current record systemId and Orgid
+			//remove value from current record and field if value is not exist in store
+			var index = fieldStore.find("name", currentValue,'', false, false, true);
+			if(index == -1){
+				field.setValue('');
+			  	context.store.getAt(rowIdx).set(fieldName,'');
+			}
+		}
+	},
+	onVariableComboBlur:function(field){
+		var me = this,
+			fieldStore = field.store,
+			view = me.getView(),
+		   	editor = view.editingPlugin,
+		   	context = editor.context,
+		   	fieldName = context.field,
+		   	rowIdx = context.rowIdx;
+		
+		var index = fieldStore.find('name', field.getValue(),'', false, false, true);
+		if(index == -1 || field.getValue() == 'None'){
+			field.setValue('');
+		  	context.store.getAt(rowIdx).set(fieldName,'');
+		}
+	},
+	variableComboColumnRenderer:function(v,h,l,k){
+		var view = this.getView();
+		
+		if(!Ext.isEmpty(v)){
+			var store = h.column.config.editor.store;
+			if(store){
+				var index = store.find('name',v,'',false,false,true);
+				if(index == -1){
+					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+						view.invalidComboValid = true;
+						h.style = AOCLit.cellColor; // change cell color if value is not exist in store
+					}
+				}
+			}else{
+				if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+					view.invalidComboValid = true;
+					h.style = AOCLit.cellColor; //change cell color if value is not exist in store
+				}
+			}
+		}
+		return v;
 	},
 	comboColumnRenderer:function(v,h,l,k){
 		if(!Ext.isEmpty(v)){

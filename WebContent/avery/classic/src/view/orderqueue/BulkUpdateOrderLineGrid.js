@@ -53,67 +53,34 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     },
     buildColumns : function(){
     	var me=this;
-    	helper = AOC.util.Helper;
         return [
-                {
-                	xtype: 'rownumberer',
-                    width: 46,
-                    tdCls: me.rowNumbererTdCls,
-                    cls: me.rowNumbererHeaderCls,
-                    locked: true,
-                    text:'#'
-                },
-                {
-                    text: AOCLit.roundQty,
-                    dataIndex: 'roundQty',
-                    align:'left',
-                    width: 50,
-                    renderer:function(value, metadata, record){
-        				return Helper.qtyColumnRenderer(value, metadata, record);
-        			}
-                },
-                {
-                    text: AOCLit.MOQDiffQty,
-                    dataIndex: 'moqdiffQty',
-                    align:'left',
-                    width: 55,
-                    renderer:function(value, metadata, record){
-        				return Helper.qtyColumnRenderer(value, metadata, record);
-        			}
-                },
-                {
-                    text: AOCLit.custOrderedQty+'<font color=red>*</font>',
-                    dataIndex: 'customerOrderedQty',
-                    align:'left',
-                    width: 106,
-                    editor: 'numberfield',
-                    renderer : function(value, metadata, record) {
-        				return Helper.onCustomerOrderQty(value, metadata, record);
-        			} 
-                },
-                {
-                    text: AOCLit.updateQty,
-                    dataIndex: 'updateMOQ',
-                    align:'left',
-                    width: 50,
-                    renderer:function(value, metadata,rec){
-                    	return Helper.onUpdateMoqRenderer(value, metadata,rec);
-                    }
-                },
-                {
-                    text: AOCLit.waiveMOQ,
-                    dataIndex: 'waiveMOQ',
-                    align:'left',
-                    width: 59,
-                    editor:{
-                    	xtype:'combo',
-                    	editable:false,
-                    	store:[[true,'Y'],[false,'N']]
-                    },
-                    renderer:function(value, metadata, record){
-        				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
-        			}
-                }, {
+            {
+            	xtype: 'rownumberer',
+                width: 46,
+                tdCls: me.rowNumbererTdCls,
+                cls: me.rowNumbererHeaderCls,
+                locked: true,
+                text:'#',
+                align:'center'
+            },{
+                header: Settings.config.defaultIcons.commentColumnIcon,
+                width: 40,
+                dataIndex: 'Comments',
+                tooltip: 'Comments',
+                align:'center',
+                menuDisabled:true,
+                sortable:false,
+                resizable:false,
+                renderer: function (value, metadata, rec) {
+                   var comment = Ext.String.htmlEncode(rec.data.comment);
+                	if(comment){
+                        metadata.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
+                        return Settings.config.defaultIcons.commentColumnIcon;
+                	}else{
+                		return '';
+                	}
+                }
+    		},{
 	            text: AOCLit.Status,
 	            dataIndex: 'status',
                 align:'left',
@@ -139,94 +106,258 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				renderer:function(v, metadata, rec){
 					return Helper.getSatus(rec);
 				}
-        },{
-            text: AOCLit.PONumber+'<font color=red>*</font>',
-            dataIndex: 'poNumber',
-            align:'left',
-            width: 120
-        },
-        {
-            text: AOCLit.averyItem,
-            dataIndex: 'averyItemNumber',
-            align:'left',
-            width: 88,
-            renderer : function(value, meta,record) {
-                return Helper.onAveryItemNumberColumnRenderer(value, meta,record);
-            }
-        }, {
-            text: AOCLit.custItemNo,
-            dataIndex: 'customerItemNumber',
-            align:'left',
-            width: 88
-        },{
-            text: AOCLit.customerColorCode,
-            dataIndex: 'customerColorCode',
-            align:'left',
-            width: 102
-        }, {
-            text: AOCLit.customerColorDescription,
-            dataIndex: 'customerColorDescription',
-            align:'left',
-            width: 102
-        },{
-            text: AOCLit.Bulk,
-            dataIndex: 'bulk',
-            align:'left',
-            width: 50,
-            editor:{
-            	xtype:'combo',
-            	editable:false,
-            	store:[['Y','Y'],['N','N']]
+            },{
+                text: AOCLit.roundQty,
+                dataIndex: 'roundQty',
+                align:'left',
+                width: 50,
+                renderer:function(value, metadata, record){
+    				return Helper.qtyColumnRenderer(value, metadata, record);
+    			}
             },
-            renderer:function(value, metadata,rec){
-				return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
-			}
-        }, 
-        {
-			text: AOCLit.averyATO,
-			dataIndex: 'averyATO',
-            align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.bulkItem,
-			dataIndex: 'averyBulk',
-            align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyMOQ,
-			dataIndex: 'averyMOQ',
-            align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyProduction,
-			dataIndex: 'averyProductLineType',
-            align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		}, 
-		{
-			text: AOCLit.averyRegion,
-			dataIndex: 'averyRegion',
-            align:'left',
-			width: 93,
-			renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-		},
+            {
+                text: AOCLit.MOQDiffQty,
+                dataIndex: 'moqdiffQty',
+                align:'left',
+                width: 55,
+                renderer:function(value, metadata, record){
+    				return Helper.qtyColumnRenderer(value, metadata, record);
+    			}
+            },
+            {
+                text: AOCLit.custOrderedQty+'<font color=red>*</font>',
+                dataIndex: 'customerOrderedQty',
+                align:'left',
+                width: 106,
+                editor: 'numberfield',
+                renderer : function(value, metadata, record) {
+    				return Helper.onCustomerOrderQty(value, metadata, record);
+    			} 
+            },
+            {
+                text: AOCLit.updateQty,
+                dataIndex: 'updateMOQ',
+                align:'left',
+                width: 50,
+                renderer:function(value, metadata,rec){
+                	return Helper.onUpdateMoqRenderer(value, metadata,rec);
+                }
+            },
+            {
+                text: AOCLit.waiveMOQ,
+                dataIndex: 'waiveMOQ',
+                align:'left',
+                width: 59,
+                editor:{
+                	xtype:'combo',
+                	editable:false,
+                	store:[[true,'Y'],[false,'N']]
+                },
+                renderer:function(value, metadata, record){
+    				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+    			}
+            }, {
+	            text: AOCLit.Bulk,
+	            dataIndex: 'bulk',
+	            align:'left',
+	            width: 50,
+	            editor:{
+	            	xtype:'combo',
+	            	editable:false,
+	            	store:[['Y','Y'],['N','N']]
+	            },
+	            renderer:function(value, metadata,rec){
+					return Helper.onBulkOrderColumnRenderer(value, metadata,rec);
+				}
+	        }, {
+				text: AOCLit.bulkItem,
+				dataIndex: 'averyBulk',
+		        align:'left',
+				width: 93,
+				renderer:function(value, metadata, record){
+					return Helper.onAtoColumnRenderer(value, metadata, record);
+				}
+			}, 
+			{
+				text: AOCLit.averyMOQ,
+				dataIndex: 'averyMOQ',
+		        align:'left',
+				width: 93,
+				renderer:function(value, metadata, record){
+					return Helper.onAtoColumnRenderer(value, metadata, record);
+				}
+			}, {
+    			text: AOCLit.CSR+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: CSR</br>Phx: Dept No</font>" class="fa fa-info-circle"></i>',
+    			dataIndex: 'csr',
+    			align:'left',
+    			width: 160,
+    			menuDisabled:true,
+                sortable:false,
+    			editor:{
+    				xtype:'combo',
+    				displayField:'name',
+    				valueField:'name',
+    				queryMode:'local',
+    				store:Ext.data.StoreManager.lookup('configCSRStoreId') != null ? Ext.data.StoreManager.lookup('configCSRStoreId') : Ext.create('AOC.store.ConfigurationCSRStore'),
+    				listeners:{
+    					focus:'onVariableComboFocus',
+    					select:'onVariableComboBlur',
+    					blur:'onVariableComboBlur'
+    			    }
+    			},
+    			renderer:'variableComboColumnRenderer'
+    		}, {
+    			text: AOCLit.targetSystem,
+    			dataIndex: 'targetSystemName',
+    			align:'left',
+    			menuDisabled:true,
+                sortable:false,
+    			width: 140
+    		},{
+                text: AOCLit.divisionforInterfaceERPORG,
+                dataIndex: 'divisionForInterfaceERPORG',
+                width: 120,
+                align:'left',
+                editor:{
+                       xtype:'combo',
+       				   displayField:'orgName',
+       				   valueField:'id',
+                       store:AOCRuntime.getStoreERPORG(),
+                       listeners:{
+                    	   expand:'onDivisionEPORGExpand'
+                       }
+                },
+                renderer:'divisionForInterfaceERPORGColumnRenderer'
+            }, {
+    			text: AOCLit.orderType,
+    			dataIndex: 'orderType',
+    			align:'left',
+    			menuDisabled:true,
+                sortable:false,
+    			width: 115,
+    			editor: {
+    				xtype: 'combo',
+    				displayField: 'name',
+    				valueField: 'name',
+    				queryMode :'local',
+    				matchFieldWidth:false,
+    				listConfig:{
+    					width:180
+    				},
+    				reference:'OrdertypeCombo',
+    				variableName:'OrderType',
+    				store:Ext.data.StoreManager.lookup('OrderTypeId1') != null ? Ext.data.StoreManager.lookup('OrderTypeId1') : Helper.getAllVariableComboStore('OrderType', true),
+    				listeners:{
+    					focus:'onVariableComboFocus',
+    					select:'onVariableComboBlur',
+    					blur:'onVariableComboBlur'
+    			    }
+    			},
+    			renderer:'variableComboColumnRenderer'
+    		}, {
+                text: AOCLit.soldToRbo+'<font color=red>*</font>',
+                dataIndex: 'soldToRBONumber',
+                align:'left',
+                width: 100,
+                editor: 'textfield',
+                renderer:function(value, metadata, record){
+    				return Helper.onAtoColumnRenderer(value, metadata, record);
+    			}
+            }, {
+                text: AOCLit.custName,
+                dataIndex: 'partnerCustomerName',
+                align:'left',
+                width: 126,
+                editor: 'textfield'
+            }, {
+	            text: AOCLit.PONumber+'<font color=red>*</font>',
+	            dataIndex: 'poNumber',
+	            align:'left',
+	            width: 120
+	        }, {
+	            text: AOCLit.averyItem,
+	            dataIndex: 'averyItemNumber',
+	            align:'left',
+	            width: 88,
+	            renderer : function(value, meta,record) {
+	                return Helper.onAveryItemNumberColumnRenderer(value, meta,record);
+	            }
+	        },{
+				text: AOCLit.averyProduction,
+				dataIndex: 'averyProductLineType',
+	            align:'left',
+				width: 93,
+				renderer:function(value, metadata, record){
+					return Helper.onAtoColumnRenderer(value, metadata, record);
+				}
+			}, {
+				text: AOCLit.averyATO,
+				dataIndex: 'averyATO',
+	            align:'left',
+				width: 93,
+				renderer:function(value, metadata, record){
+					return Helper.onAtoColumnRenderer(value, metadata, record);
+				}
+			}, {
+				text: AOCLit.averyRegion,
+				dataIndex: 'averyRegion',
+	            align:'left',
+				width: 93,
+				renderer:function(value, metadata, record){
+					return Helper.onAtoColumnRenderer(value, metadata, record);
+				}
+			}, {
+				text: AOCLit.additionalLabel,
+				dataIndex: 'additionalLabelInternalItem',
+				width: 150,
+	            align:'left',
+				editor: 'textfield'
+			}, {
+	            text: AOCLit.custItemNo,
+	            dataIndex: 'customerItemNumber',
+	            align:'left',
+	            width: 88
+	        }, {
+	            text: AOCLit.customerColorCode,
+	            dataIndex: 'customerColorCode',
+	            align:'left',
+	            width: 102
+	        }, {
+	            text: AOCLit.customerColorDescription,
+	            dataIndex: 'customerColorDescription',
+	            align:'left',
+	            width: 102
+	        }, {
+	            text:AOCLit.customerSize,
+	            dataIndex: 'customerSize',
+	            align:'left',
+	            width: 72,
+	            editor: 'textfield',
+	            renderer:function(value, metadata,rec){
+	            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+				}
+	        }, {
+	            text: AOCLit.itemDescription,
+	            dataIndex: 'pageSize',
+	            width: 102,
+	            align:'left',
+	            editor: 'textfield',
+	            renderer:function(value, metadata,rec){
+	            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
+				}
+	        }, {
+	            text: AOCLit.styleNo,
+	            dataIndex: 'styleNo',
+	            align:'left',
+	            width: 111,
+	            editor: 'textfield'
+	        }, {
+	            text: AOCLit.custSeason,
+	            dataIndex: 'customerSeason',
+	            align:'left',
+	            width: 93,
+	            editor: 'textfield'
+	        }, 
 		{
 			text: AOCLit.averyRoundupQty,
 			dataIndex: 'averyRoundupQty',
@@ -236,13 +367,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		},
-        {
-            text: AOCLit.custName,
-            dataIndex: 'partnerCustomerName',
-            align:'left',
-            width: 126,
-            editor: 'textfield'
-        }, {
+       {
             text: AOCLit.vendorName,
             dataIndex: 'partnerVendorName',
             align:'left',
@@ -459,15 +584,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 93,
             hidden:true
         }, {
-            text: AOCLit.soldToRbo+'<font color=red>*</font>',
-            dataIndex: 'soldToRBONumber',
-            align:'left',
-            width: 100,
-            editor: 'textfield',
-            renderer:function(value, metadata, record){
-				return Helper.onAtoColumnRenderer(value, metadata, record);
-			}
-        },  {
             text: AOCLit.shipToSite+'<font color=red>*</font>',
             dataIndex: 'oracleShipToSiteNumber',
             align:'left',
@@ -477,69 +593,40 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
         }, {
-            text: AOCLit.shippingMethod,
-            dataIndex: 'shippingMethod',
-            align:'left',
-            width: 170,
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                queryMode :'local',
-                editable:false,
-                store: Ext.data.StoreManager.lookup('ShippingMethodId') == null ? AOC.util.Helper.getVariableComboStore('ShippingMethod') : Ext.data.StoreManager.lookup('ShippingMethodId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+			text: AOCLit.shippingMethod,
+			dataIndex: 'shippingMethod',
+			align:'left',
+			width: 170,
+			editor: {
+				xtype: 'combo',
+				displayField: 'name',
+				valueField: 'name',
+				queryMode :'local',
+				reference:'shippingMethodCombo',
+				variableName:'ShippingMethod',
+				matchFieldWidth:false,
+				listConfig:{
+					width:250
+				},
+				store:Ext.data.StoreManager.lookup('ShippingMethodId1') != null ? Ext.data.StoreManager.lookup('ShippingMethodId1') : Helper.getAllVariableComboStore('ShippingMethod', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
+			},
+			renderer:'variableComboColumnRenderer'
+		}, {
             text: AOCLit.retailerPO_CustomerJob,
             dataIndex: 'retailerPO_CustomerJob',
             width: 115,
             align:'left',
             editor: 'textfield'
-        }, {
-            text: AOCLit.itemDescription,
-            dataIndex: 'pageSize',
-            width: 102,
-            align:'left',
-            editor: 'textfield',
-            renderer:function(value, metadata,rec){
-            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
-        }, {
-            text:AOCLit.customerSize,
-            dataIndex: 'customerSize',
-            align:'left',
-            width: 72,
-            editor: 'textfield',
-            renderer:function(value, metadata,rec){
-            	return Helper.onPageSizeColumnRenderer(value, metadata,rec);
-			}
-        }, {
+        },   {
             text: AOCLit.contractNo,
             dataIndex: 'contractNumber',
             align:'left',
             width: 130,
-            editor: 'textfield'
-        }, {
-            text: AOCLit.styleNo,
-            dataIndex: 'styleNo',
-            align:'left',
-            width: 111,
-            editor: 'textfield'
-        }, {
-            text: AOCLit.custSeason,
-            dataIndex: 'customerSeason',
-            align:'left',
-            width: 93,
             editor: 'textfield'
         }, {
             text: AOCLit.orderedDate+'<font color=red>*</font>',
@@ -587,52 +674,30 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 				return Helper.onOrderLineDateRenderer(v, metadata, record);
 			}
         }, {
-            text: AOCLit.freightTerm,
-            dataIndex: 'freightTerms',
-            align:'left',
-            width: 130,
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('FreightTermsId') == null ? AOC.util.Helper.getVariableComboStore('FreightTerms') : Ext.data.StoreManager.lookup('FreightTermsId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+			text: AOCLit.freightTerm,
+			dataIndex: 'freightTerms',
+			align:'left',
+			width: 130,
+			editor: {
+				xtype: 'combo',
+				displayField: 'name',
+				valueField: 'name',
+				queryMode :'local',
+				reference:'freightTermscombo',
+				variableName:'FreightTerms',
+				matchFieldWidth:false,
+				listConfig:{
+					width:180
+				},
+				store:Ext.data.StoreManager.lookup('FreightTermsId1') != null ? Ext.data.StoreManager.lookup('FreightTermsId1') : Helper.getAllVariableComboStore('FreightTerms', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
-            text: AOCLit.CSR,
-            dataIndex: 'csr',
-            align:'left',
-            width: 160,
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('CSRId') == null ? AOC.util.Helper.getVariableComboStore('CSR') : Ext.data.StoreManager.lookup('CSRId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
-			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
+			},
+			renderer:'variableComboColumnRenderer'
+		},{
             text: AOCLit.packingInstruction,
             dataIndex: 'packingInstruction',
             width: 180,
@@ -650,21 +715,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 119,
             align:'left',
             editor: 'textfield'
-        }, {
-            text: AOCLit.divisionforInterfaceERPORG,
-            dataIndex: 'divisionForInterfaceERPORG',
-            width: 120,
-            align:'left',
-            editor:{
-                   xtype:'combo',
-   				   displayField:'orgName',
-   				   valueField:'id',
-                   store:AOCRuntime.getStoreERPORG(),
-                   listeners:{
-   					expand:'onDivisionEPORGExpand'
-   				}
-            },
-            renderer:'divisionForInterfaceERPORGColumnRenderer'
         }, {
             text: AOCLit.artworkHold,
             dataIndex: 'artWorkhold',
@@ -701,71 +751,43 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             align:'left',
             editor: 'textfield'
         }, {
-            text: AOCLit.orderType,
-            dataIndex: 'orderType',
-            width: 115,
-            align:'left',
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('OrderTypeId') == null ? AOC.util.Helper.getVariableComboStore('OrderType') : Ext.data.StoreManager.lookup('OrderTypeId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
-			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
             text: AOCLit.orderBy,
             dataIndex: 'orderBy',
             width: 115,
             align:'left',
             editor: 'textfield'
         }, {
-            text: AOCLit.endCust,
-            dataIndex: 'endCustomer',
-            width: 115,
-            align:'left',
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('EndCustomerId') == null ? AOC.util.Helper.getVariableComboStore('EndCustomer') : Ext.data.StoreManager.lookup('EndCustomerId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onComboSelect(combo);
-					}
+			text: AOCLit.endCust,
+			dataIndex: 'endCustomer',
+			align:'left',
+			width: 120,
+			editor: {
+				xtype: 'combo',
+				displayField: 'name',
+				valueField: 'name',
+				queryMode :'local',
+				reference:'EndCustomerCombo',
+				variableName:'EndCustomer',
+				matchFieldWidth:false,
+				listConfig:{
+					width:200
+				},
+				store:Ext.data.StoreManager.lookup('EndCustomerId1') != null ? Ext.data.StoreManager.lookup('EndCustomerId1') : Helper.getAllVariableComboStore('EndCustomer', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
-            },
-            renderer:'comboColumnRenderer'
-        },{
+			},
+			renderer:'variableComboColumnRenderer'
+		},{
 			text: AOCLit.shipMark,
 			dataIndex: 'shipMark',
 			width: 150,
             align:'left',
 			editor: 'textfield'
 		},
-		{
-			text: AOCLit.additionalLabel,
-			dataIndex: 'additionalLabelInternalItem',
-			width: 150,
-            align:'left',
-			editor: 'textfield'
-		}, {
+		 {
             text: AOCLit.bankCharge,
             dataIndex: 'bankCharge',
             width: 90,
@@ -793,7 +815,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor:{
             	xtype:'combo',
             	editable:false,
-            	store:[[true,'Y'],[false,'N']]
+            	store:[['Y','Y'],['N','N']]
             },
             renderer:function(value, metadata, record){
 				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
@@ -806,35 +828,32 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor:{
             	xtype:'combo',
             	editable:false,
-            	store:[[true,'Y'],[false,'N']]
+            	store:[['Y','Y'],['N','N']]
             },
             renderer:function(value, metadata, record){
 				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
 			}
         }, {
-            text: AOCLit.splitShipset,
-            dataIndex: 'splitShipset',
-            width: 81,
-            align:'left',
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('SplitShipsetId') == null ? AOC.util.Helper.getVariableComboStore('SplitShipset') : Ext.data.StoreManager.lookup('SplitShipsetId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onSplitShipsetAfterRender(combo);
-					},
-					select:function(combo){
-						Helper.onSplitShipsetSelect(combo);
-					}
+			text: AOCLit.splitShipset,
+			dataIndex: 'splitShipset',
+			align:'left',
+			width: 120,
+			editor: {
+				xtype: 'combo',
+				displayField: 'name',
+				valueField: 'name',
+				queryMode :'local',
+				reference:'splitShipsetCombo',
+				variableName:'SplitShipset',
+				store:Ext.data.StoreManager.lookup('SplitShipsetId1') != null ? Ext.data.StoreManager.lookup('SplitShipsetId1') : Helper.getAllVariableComboStore('SplitShipset', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
+			},
+			renderer:'variableComboColumnRenderer'
+		},{
             text: AOCLit.agreement,
             dataIndex: 'agreement',
             width: 102,
@@ -846,29 +865,26 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             width: 180,
             editor: 'textfield'
         }, {
-            text: AOCLit.apoType,
-            dataIndex: 'apoType',
-            width: 55,
-            align:'left',
-            editor: {
-                xtype: 'combo',
-                displayField: 'variableFieldName',
-                valueField: 'variableFieldName',
-                editable:false,
-                queryMode :'local',
-                store: Ext.data.StoreManager.lookup('APOTypeId') == null ? AOC.util.Helper.getVariableComboStore('APOType') : Ext.data.StoreManager.lookup('APOTypeId'),
-        		listeners:{
-					focus:'onComboFocus',
-					afterrender:function(combo){
-						Helper.onComboAfterRender(combo);
-				     },
-				     select:function(combo){
-				    	 Helper.onComboSelect(combo);
-				     }
+			text: AOCLit.apoType,
+			dataIndex: 'apoType',
+			align:'left',
+			width: 100,
+			editor: {
+				xtype: 'combo',
+				displayField: 'name',
+				valueField: 'name',
+				queryMode :'local',
+				reference:'APOTypeCombo',
+				variableName:'APOType',
+				store:Ext.data.StoreManager.lookup('APOTypeId1') != null ? Ext.data.StoreManager.lookup('APOTypeId1') : Helper.getAllVariableComboStore('APOType', true),
+				listeners:{
+					focus:'onVariableComboFocus',
+					select:'onVariableComboBlur',
+					blur:'onVariableComboBlur'
 			    }
-            },
-            renderer:'comboColumnRenderer'
-        }, {
+			},
+			renderer:'variableComboColumnRenderer'
+		}, {
             text: AOCLit.sentToOracleDate,
             dataIndex: 'sentToOracleDate',
             width: 100,
@@ -889,12 +905,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			width: 100,
             align:'left',
 			editor: 'textfield'
-		},
-		{
-			text: AOCLit.targetSystem,
-			dataIndex: 'targetSystemName',
-            align:'left',
-			width: 100
 		}];
     },
     buttons: [ 

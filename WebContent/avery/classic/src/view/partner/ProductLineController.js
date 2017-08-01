@@ -545,10 +545,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				currentSystemGrid.showValidationError = true;
 				currentSystemGrid.getView().refresh();
 				
-				if(currentSystemGrid.isSystemGridNotValid){
-					Helper.showToast('validation', AOCLit.fillMandatoryCellMsg);
-					return false;
-				}
+//				if(currentSystemGrid.isSystemGridNotValid){
+//					Helper.showToast('validation', AOCLit.fillMandatoryCellMsg);
+//					return false;
+//				}
 				
 				orgGridStore = currentOrgGrid.getStore();
 				var listOrgInfo = new Array();

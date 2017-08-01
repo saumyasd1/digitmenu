@@ -833,7 +833,7 @@ Ext.define('AOC.util.Helper',{
 		return [['None','None'],['Yes','Yes'],['No','No']];
 	},
 	getFileNameContentStore:function(){
-		return [['None','None'],['File Name','File Name'],['File Content','File Content']];
+		return [['None','None'],['FileName','File Name'],['FileContent','File Content']];
 	},
 	getIdentificationTypeStore:function(){
 		return [['None','None'],['RBO','RBO'],['Product Line','Product Line']];

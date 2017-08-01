@@ -44,10 +44,10 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				dataIndex:'csrName',
 				editor:{
 					xtype:'textfield'
-				},
-				renderer:function(value,metadata){
-					return me.validationRendered(value, metadata);
 				}
+//				renderer:function(value,metadata){
+//					return me.validationRendered(value, metadata);
+//				}
 			},
 			{
 				text : 'Packing Instruction',
