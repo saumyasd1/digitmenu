@@ -33,4 +33,8 @@ public class AddressService extends GenericEntityService<Address, Long>{
 		return getAddressDao().checkDuplicateSiteId(addrObj);
 	}
 	
+	@Transactional
+	public Boolean checkDuplicateAddress(String billToSiteNumber, String shipToSiteNumber, Boolean billType, Boolean shipType, String siteId, String billToAddress, String billToAddress2, String billToAddress3, String shipToAddress, String shipToAddress2, String shipToAddress3){
+		return getAddressDao().checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId, billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+	}
 }
