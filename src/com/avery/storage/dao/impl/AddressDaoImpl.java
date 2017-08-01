@@ -243,5 +243,113 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 	}
 
 	
+	@Override
+	public Boolean checkDuplicateAddress(String billToSiteNumber, String shipToSiteNumber, Boolean billType, Boolean shipType, String siteId, String billToAddress,String billToAddress2, String billToAddress3, String shipToAddress, String shipToAddress2, String shipToAddress3){
+		Session session = null;
+		Criteria criteria = null;
+		int totalCount = 0;
+		Address addrObj = new Address();
+		Long id = addrObj.getId();
+		Boolean siteExist = false;
+		String siteType = "";
+		List<Address> address = null;
+		session = getSessionFactory().getCurrentSession();
+		 Conjunction disCriteria = Restrictions.conjunction();
+		criteria = session.createCriteria(Address.class);
+		ProjectionList proj = Projections.projectionList();
+		proj.add(Projections.property("varOrgCode.name"), "orgCodeName")
+				.add(Projections.property("varPartner.partnerName"), "partnerName")
+				.add(Projections.property("varOrgCode.id"), "orgCodeId")
+				.add(Projections.property("varPartner.id"), "partnerId")
+				.add(Projections.property("address1"), "address1").add(Projections.property("address2"), "address2")
+				.add(Projections.property("address3"), "address3").add(Projections.property("address4"), "address4")
+				.add(Projections.property("siteNumber"), "siteNumber").add(Projections.property("contact"), "contact")
+				.add(Projections.property("phone1"), "phone1").add(Projections.property("fax"), "fax")
+				.add(Projections.property("email"), "email").add(Projections.property("siteType"), "siteType")
+				.add(Projections.property("description"), "description")
+				.add(Projections.property("freightTerms"), "freightTerms").add(Projections.property("state"), "state")
+				.add(Projections.property("city"), "city").add(Projections.property("siteId"), "siteId")
+				.add(Projections.property("system"), "system").add(Projections.property("country"), "country")
+				.add(Projections.property("shippingMethod"), "shippingMethod").add(Projections.property("zip"), "zip")
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("shippingInstructions"), "shippingInstructions")
+				.add(Projections.property("phone2"), "phone2");
+		criteria.createAlias("varOrgCode", "varOrgCode");
+		if(billType){
+			 siteType = "B";
+			
+			 if(billToSiteNumber != null && !"".equals(billToSiteNumber) && billToSiteNumber!= null && siteType!=null && !"".equals(siteType)){
+					disCriteria.add(Restrictions.eq("siteNumber", billToSiteNumber));
+					disCriteria.add(Restrictions.eq("siteType", siteType));
+					disCriteria.add(Restrictions.eq("address1", billToAddress));
+					if(shipToAddress != null && !"".equals(shipToAddress)){
+						disCriteria.add(Restrictions.eq("address1", shipToAddress));
+					}
+					if(shipToAddress2 != null && !"".equals(shipToAddress2)){
+						disCriteria.add(Restrictions.eq("address2", shipToAddress2));
+					}
+					if(shipToAddress3 != null && !"".equals(shipToAddress3)){
+						disCriteria.add(Restrictions.eq("address3", shipToAddress3));
+					}
+					if(billToAddress != null && !"".equals(billToAddress)){
+						disCriteria.add(Restrictions.eq("address1", billToAddress));
+					}
+					if(billToAddress2 != null && !"".equals(billToAddress2)){
+						disCriteria.add(Restrictions.eq("address2", billToAddress2));
+					}
+					if(billToAddress3 != null && !"".equals(billToAddress3)){
+						disCriteria.add(Restrictions.eq("address3", billToAddress3));
+					}
+			if (id != 0) {
+					disCriteria.add(Restrictions.ne("id", id));
+				}
+				criteria.add(disCriteria);
+				address = criteria.list();
+				totalCount = address.size();
+				if (totalCount > 0)
+					siteExist = true;
+			
+		}
+		}
+		if(shipType){
+			 siteType = "S";
+			if(shipToSiteNumber != null && !"".equals(shipToSiteNumber) && shipToSiteNumber!= null && siteType!=null && !"".equals(siteType)){
+					disCriteria.add(Restrictions.eq("siteNumber", shipToSiteNumber));
+					disCriteria.add(Restrictions.eq("siteType", siteType));
+					disCriteria.add(Restrictions.eq("address1", shipToAddress));
+					if(billToAddress != null && !"".equals(billToAddress)){
+						disCriteria.add(Restrictions.eq("address1", billToAddress));
+					}
+					if(billToAddress2 != null && !"".equals(billToAddress2)){
+						disCriteria.add(Restrictions.eq("address2", billToAddress2));
+					}
+					if(billToAddress3 != null && !"".equals(billToAddress3)){
+						disCriteria.add(Restrictions.eq("address3", billToAddress3));
+					}
+					if(shipToAddress != null && !"".equals(shipToAddress)){
+						disCriteria.add(Restrictions.eq("address1", shipToAddress));
+					}
+					if(shipToAddress2 != null && !"".equals(shipToAddress2)){
+						disCriteria.add(Restrictions.eq("address2", shipToAddress2));
+					}
+					if(shipToAddress3!= null && !"".equals(shipToAddress3)){
+						disCriteria.add(Restrictions.eq("address3", shipToAddress3));
+					}
+			if (id != 0) {
+				disCriteria.add(Restrictions.ne("id", id));
+			}
+			criteria.add(disCriteria);
+			address = criteria.list();
+			totalCount = address.size();
+			if (totalCount > 0)
+				siteExist = true;
+		}
+		}
+		return siteExist;
+	}
+
+	
+
+	
 
 }
