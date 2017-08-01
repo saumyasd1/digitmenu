@@ -278,22 +278,10 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 		if(billType){
 			 siteType = "B";
 			
-			 if(billToSiteNumber != null && !"".equals(billToSiteNumber) && billToSiteNumber!= null && siteType!=null && !"".equals(siteType)){
+			 if(billToSiteNumber != null && !"".equals(billToSiteNumber) && billToSiteNumber!= null && siteType!=null && !"".equals(siteType) && billToAddress != null && !"".equals(billToAddress)){
 					disCriteria.add(Restrictions.eq("siteNumber", billToSiteNumber));
 					disCriteria.add(Restrictions.eq("siteType", siteType));
 					disCriteria.add(Restrictions.eq("address1", billToAddress));
-					if(shipToAddress != null && !"".equals(shipToAddress)){
-						disCriteria.add(Restrictions.eq("address1", shipToAddress));
-					}
-					if(shipToAddress2 != null && !"".equals(shipToAddress2)){
-						disCriteria.add(Restrictions.eq("address2", shipToAddress2));
-					}
-					if(shipToAddress3 != null && !"".equals(shipToAddress3)){
-						disCriteria.add(Restrictions.eq("address3", shipToAddress3));
-					}
-					if(billToAddress != null && !"".equals(billToAddress)){
-						disCriteria.add(Restrictions.eq("address1", billToAddress));
-					}
 					if(billToAddress2 != null && !"".equals(billToAddress2)){
 						disCriteria.add(Restrictions.eq("address2", billToAddress2));
 					}
@@ -313,22 +301,10 @@ public class AddressDaoImpl extends GenericDaoImpl<Address, Long> implements Add
 		}
 		if(shipType){
 			 siteType = "S";
-			if(shipToSiteNumber != null && !"".equals(shipToSiteNumber) && shipToSiteNumber!= null && siteType!=null && !"".equals(siteType)){
+			if(shipToSiteNumber != null && !"".equals(shipToSiteNumber) && shipToSiteNumber!= null && siteType!=null && !"".equals(siteType) && shipToAddress != null && !"".equals(shipToAddress)){
 					disCriteria.add(Restrictions.eq("siteNumber", shipToSiteNumber));
 					disCriteria.add(Restrictions.eq("siteType", siteType));
 					disCriteria.add(Restrictions.eq("address1", shipToAddress));
-					if(billToAddress != null && !"".equals(billToAddress)){
-						disCriteria.add(Restrictions.eq("address1", billToAddress));
-					}
-					if(billToAddress2 != null && !"".equals(billToAddress2)){
-						disCriteria.add(Restrictions.eq("address2", billToAddress2));
-					}
-					if(billToAddress3 != null && !"".equals(billToAddress3)){
-						disCriteria.add(Restrictions.eq("address3", billToAddress3));
-					}
-					if(shipToAddress != null && !"".equals(shipToAddress)){
-						disCriteria.add(Restrictions.eq("address1", shipToAddress));
-					}
 					if(shipToAddress2 != null && !"".equals(shipToAddress2)){
 						disCriteria.add(Restrictions.eq("address2", shipToAddress2));
 					}
