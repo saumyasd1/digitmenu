@@ -38,6 +38,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.OrderLineMixIn;
+import com.avery.storage.service.AddressService;
 import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
@@ -1732,8 +1733,12 @@ public class OrderLine extends MainAbstractEntity{
 	public Response updateEntities(@Context UriInfo ui,
 			@Context HttpHeaders hh, String data) {
 		String jsonData="";
+		StringWriter writer = new StringWriter();
+		Map<String, Object> responseMap = new HashMap<String, Object>();
 		boolean insertShipAddress=false;
 		boolean insertBillAddress=false;
+		boolean billType = false;
+		boolean shipType = false;
 		boolean updateAll=true;
 		String partnerId=null;
 		String systemId=null;
@@ -1750,6 +1755,16 @@ public class OrderLine extends MainAbstractEntity{
 			jsonMap=ApplicationUtils.convertJSONtoMaps(data);
 			insertShipAddress=Boolean.parseBoolean((String)jsonMap.get("insertShipAddress"));
 			insertBillAddress=Boolean.parseBoolean((String)jsonMap.get("insertBillAddress"));
+			String billToAddress=(String)jsonMap.get("billToAddress");
+			String shipToAddress=(String)jsonMap.get("shipToAddress");
+			String billToAddress2=(String)jsonMap.get("billToAddress2");
+			String shipToAddress2=(String)jsonMap.get("shipToAddress2");
+			String billToAddress3=(String)jsonMap.get("billToAddress3");
+			String shipToAddress3=(String)jsonMap.get("shipToAddress3");
+			String billToSiteNumber=(String)jsonMap.get("billToSiteNumber");
+			String shipToSiteNumber=(String)jsonMap.get("shipToSiteNumber");
+			 billType = Boolean.parseBoolean((String)jsonMap.get("billType"));
+			 shipType = Boolean.parseBoolean((String)jsonMap.get("shipType"));
 			partnerId=((String)jsonMap.get("partnerId"));
 			systemId=((String)jsonMap.get("systemId"));
 			siteId=((String)jsonMap.get("siteId"));
@@ -1761,14 +1776,33 @@ public class OrderLine extends MainAbstractEntity{
 			bulkUpdateAllById = Long.parseLong((String)jsonMap.get("orderQueueId"));
 			String lastModifiedBy=jsonMap.get("lastModifiedBy");
 			if(updateAll){
-				if((String)jsonMap.get("orderQueueId")!=null){					
-					orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId,lastModifiedBy);
-				}else{
+				if((String)jsonMap.get("orderQueueId")!=null){	
+					AddressService addressService = (AddressService) SpringConfig
+							.getInstance().getBean("addressService");
+					boolean siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+					if (siteIdExist) {
+						responseMap.put("valueExist", true);
+					} else {
+						responseMap.put("valueExist", false);
+						orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId,lastModifiedBy);
+				
+					}
+					}else{
 					throw new Exception("Unable to update all records as the Order Queue Id is not present");
 				}
 			}
 			else
-				orderLineService.bulkUpdate(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
+			{
+				AddressService addressService = (AddressService) SpringConfig
+						.getInstance().getBean("addressService");
+				boolean siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+				if (siteIdExist) {
+					responseMap.put("valueExist", true);
+				} else {
+					responseMap.put("valueExist", false);
+					orderLineService.bulkUpdate(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
+			}
+			}
 			boolean triggerValidationFlow = PropertiesConfig
 					.getBoolean(PropertiesConstants.TRIGGER_VALIDATION_ON_SAVE_FLAG);
 			if(triggerValidationFlow){
@@ -1776,9 +1810,8 @@ public class OrderLine extends MainAbstractEntity{
 				router.validateOrder(Long.parseLong((String)jsonMap.get("orderQueueId")));
 			}
 			Map entitiesMap = new HashMap();
-			StringWriter writer = new StringWriter();
-			entitiesMap.put("success", true);
-			mapper.writeValue(writer, entitiesMap);
+			responseMap.put("success", true);
+			mapper.writeValue(writer, responseMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(
