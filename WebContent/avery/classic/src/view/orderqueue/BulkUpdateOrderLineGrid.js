@@ -219,13 +219,16 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
                 width: 120,
                 align:'left',
                 editor:{
-                       xtype:'combo',
-       				   displayField:'orgName',
-       				   valueField:'id',
-                       store:AOCRuntime.getStoreERPORG(),
-                       listeners:{
-                    	   expand:'onDivisionEPORGExpand'
-                       }
+                   xtype:'combo',
+                   displayField:'name',
+   				   valueField:'id',
+       			   editable:false,
+       			   store:AOCRuntime.getStoreERPORG(),
+       			   queryMode:'local',
+                   listeners:{
+                	   select:'onERPORGSelect',
+                	   expand:'onDivisionEPORGExpand'
+                   }
                 },
                 renderer:'divisionForInterfaceERPORGColumnRenderer'
             }, {

@@ -384,10 +384,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				xtype:'combo',
 				displayField:'name',
 				valueField:'id',
+				editable:false,
 				store:AOCRuntime.getStoreERPORG(),
 				queryMode:'local',
 				listeners:{
-//					select:'onERPORGSelect',
+					select:'onERPORGSelect',
 					expand:'onDivisionEPORGExpand'
 				}
 			},

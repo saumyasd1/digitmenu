@@ -128,12 +128,22 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	});
     	}
     },
+    onERPORGSelect:function(cmp, record){
+    	var me = this,
+			view = me.getView(),
+			eporgStore = AOCRuntime.getStoreERPORG();
+	
+    	eporgStore.clearFilter();
+    },
     onDivisionEPORGExpand:function(field){
-		var view = this.getView(),
-			currentRecord = view.editingPlugin.context.record;
-		
+    	var view = this.getView(),
+			currentRecord = view.editingPlugin.context.record,
+			systemId = currentRecord.get('systemId'),
+			targetSystemInfoId = currentRecord.get('targetSystem'),
+			divisionForInterfaceERPORGId  = currentRecord.get('divisionForInterfaceERPORG');
+	
 		field.store.filterBy(function(record){
-			if(record.get('id') == currentRecord.get('divisionForInterfaceERPORG')){
+			if(record.get('orderSystemInfoId') == targetSystemInfoId){
 				return true;
 			}
 			return false;
@@ -147,6 +157,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			var store = h.column.config.editor.store;
 			
 			if(store){
+				store.clearFilter();
 				var index = store.find("id",v,'',false, false, true);
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){

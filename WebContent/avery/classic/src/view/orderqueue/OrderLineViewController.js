@@ -410,12 +410,10 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     
     onERPORGSelect:function(cmp, record){
     	var me = this,
-    		view = me.getView(),
-    		eporgStore = AOCRuntime.getStoreERPORG(),
-    		currentRecord = view.editingPlugin.context.record,
-    		systemId = 0,
-    		params = {systemId:currentRecord('targetSystem'), orgId:cmp.getValue()};
-    	
+			view = me.getView(),
+			eporgStore = AOCRuntime.getStoreERPORG();
+	
+    	eporgStore.clearFilter();
 //    	var freightTermStore = AOC.util.Helper.getVariableComboStore('FreightTerms'),
 //    		splitShipsetStore = AOC.util.Helper.getVariableComboStore('SplitShipset'),
 //    		shippingMethodStore = AOC.util.Helper.getVariableComboStore('ShippingMethod'),
@@ -548,6 +546,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			var store = h.column.config.editor.store;
 			
 			if(store){
+				store.clearFilter();
 				var index = store.find("id",v,'',false, false, true);
 				if(index == -1){
 					if(l.get('status') == AOCLit.waitingForCSRStatusOrderLine){
