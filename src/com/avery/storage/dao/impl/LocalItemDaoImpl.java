@@ -140,7 +140,7 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 		return criteria;
 	}
 	
-	@Override//{"recordId":"14,13"}
+	@Override
 	public void deleteRecords(String recordId) {
 		Session session = null;
 		try{
