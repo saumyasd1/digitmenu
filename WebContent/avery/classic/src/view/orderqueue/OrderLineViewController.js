@@ -225,6 +225,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var billToCode = runTime.getCurrentDefaultBillToCode();
     	var shipToCode = runTime.getCurrentDefaultShipToCode();
     	obj.id = currentRecord.id;
+    	var orgCodeId = '';
+    	
+    	var orgStore = AOCRuntime.getStoreERPORG(),
+    		orgInfoId = currentRecord.get('divisionForInterfaceERPORG');
+    	
+    	orgStore.each(function(orgRec){
+    		if(orgRec.get('id') == orgInfoId){
+    			orgCodeId = orgRec.get('orgCodeId');
+    			return;
+    		}
+    	});
     	
     	if(idx == rowIdx){
     		if(billToCode == 'true'){
@@ -239,7 +250,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     		}
 		}
     	
-		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
+		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+orgCodeId+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
 		
 		Ext.Ajax.request({
 			method:'PUT',
@@ -314,7 +325,17 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			        	runTime = AOC.config.Runtime;
 		        	var partnerId = runTime.getCurrentOrderQueuePartnerId();
 		        	
-		        	if(idx == rowIdx){
+		        	if(idx == rowIdx){var orgCodeId = '';
+		        	
+		        	var orgStore = AOCRuntime.getStoreERPORG(),
+		        		orgInfoId = currentRecord.get('divisionForInterfaceERPORG');
+		        	
+		        	orgStore.each(function(orgRec){
+		        		if(orgRec.get('id') == orgInfoId){
+		        			orgCodeId = orgRec.get('orgCodeId');
+		        			return;
+		        		}
+		        	});
 		          		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!=''&& currentRecord.getModified('oracleBillToSiteNumber')==''){
 		          			insertBillAddress=true;
 		          		}
@@ -322,7 +343,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		          			insertShipAddress=true;
 		          		}
 		              }
-		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+runTime.getCurrentOrderQueueOrgCodeId()+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
+		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+orgCodeId+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
 		            Ext.Ajax.request({
 		                method: 'PUT',
 		                jsonData: obj,
