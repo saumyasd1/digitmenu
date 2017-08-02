@@ -332,8 +332,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		                    valueExist = jsonString.valueExist;
 		                if (valueExist) {
 		                	Ext.getBody().unmask();
-		                	Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
-		                	me.getView().view.refresh();
+		                	 ctx.grid.openedRecordIndex ='';
+			                 Helper.loadOrderLineGridStore(ctx.store, runTime.getOrderQueueId());
+			                 ctx.view.refresh();
 		                    Helper.showToast('failure',AOCLit.addressExistMsg);
 		                    return false;
 		                }
