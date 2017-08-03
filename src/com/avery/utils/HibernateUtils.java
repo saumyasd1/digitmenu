@@ -38,13 +38,21 @@ public class HibernateUtils {
 	}
 	
 	public static Criteria getCriteriaBasedOnDate(Criteria criteria,String dateType,String sDate,String eDate) throws ParseException{
-		Date startDate = sdfDate.parse(sDate + " "+ "00:00:00");
-		Date endDate = sdfDate.parse(eDate + " "+ "00:00:00");
+		Date startDate=null;
+		if(sDate != null && !sDate.equals(" 00:00:00"))
+		startDate = sdfDate.parse(sDate + " "+ "00:00:00");
+		Date endDate=null;
+		if(eDate != null && !eDate.equals(" 00:00:00"))
+		{
+		endDate = sdfDate.parse(eDate + " "+ "00:00:00");
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(endDate); 
 		c.add(Calendar.DATE, 1);
 		endDate = c.getTime();
+		}
+		if(startDate != null && !startDate.equals(""))
 		criteria.add(Restrictions.ge(dateType, startDate)); 
+		if(endDate != null && !endDate.equals(""))
 		criteria.add(Restrictions.lt(dateType, endDate));
 		return criteria;
 	}

@@ -123,12 +123,6 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								flex:1,
 								selectOnTab : true,
 								tabIndex:2,
-								value:new Date(),
-								listeners : {
-									afterrender : function(datefield) {
-										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									}
-								}
 							},
 							{
 								xtype : 'datefield',
@@ -141,11 +135,6 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								hidden:false,
 								allowBlank : true,
 								selectOnTab : true,
-								listeners : {
-									afterrender : function(datefield) {
-										datefield.setValue(new Date());
-									}
-								}
 							}
 						]
 					}  

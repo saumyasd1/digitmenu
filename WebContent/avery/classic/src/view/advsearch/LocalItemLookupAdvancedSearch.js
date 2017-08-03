@@ -218,13 +218,6 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								selectOnTab : true,
 								tabIndex:10,
 								enableKeyEvents:true,
-								value:new Date(),
-								listeners : {
-									afterrender : function(datefield) {
-										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									},
-									specialkey:'getAdvancedSearchResults'
-								}
 							},
 							{
 								xtype : 'datefield',
@@ -238,12 +231,6 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								allowBlank : true,
 								selectOnTab : true,
 								tabIndex:11,
-								listeners : {
-									afterrender : function(datefield) {
-										datefield.setValue(new Date());
-									},
-									specialkey:'getAdvancedSearchResults'
-								}
 							}
 						]
 					}

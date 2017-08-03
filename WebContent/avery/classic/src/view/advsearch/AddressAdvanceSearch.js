@@ -154,12 +154,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								tabIndex:5,
 								allowBlank : true,
 								selectOnTab : true,
-								listeners : {
-									afterrender : function(datefield) {
-										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
-									},
-									specialkey:'getAdvancedSearchResults'
-								}
 							},
 							{
 								xtype : 'datefield',
@@ -171,13 +165,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								selectOnTab : true,
-								value:new Date(),
-								listeners : {
-									afterrender : function(datefield) {
-										//datefield.setValue(new Date());
-									},
-									specialkey:'getAdvancedSearchResults'
-								}
 							}
 						]
 					}  
