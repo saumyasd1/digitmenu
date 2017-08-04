@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -214,15 +215,16 @@ public class Org extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		List<Org> Org = null;
+		Map<?, ?> Org = null;
 		try {
+			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.addMixIn(Org.class, OrgMixIn.class);
 			OrgService OrgService = (OrgService) SpringConfig
 					.getInstance().getBean("orgService");
-			Org = OrgService.readAll();
+			Org = OrgService.readWithCriteria(queryParamMap);
 			if (Org == null)
 				throw new Exception("Unable to find order configuration");
 			mapper.writeValue(writer, Org);

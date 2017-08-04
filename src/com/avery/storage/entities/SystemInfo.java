@@ -18,6 +18,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -145,6 +146,14 @@ public class SystemInfo extends MainAbstractEntity{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSystemNameList(@Context UriInfo ui,
 			@Context HttpHeaders hh) {
+		MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
+		Long siteId = 0L;
+		if (queryParamMap.getFirst("siteId") != null && queryParamMap.getFirst("siteId") != "")
+		{
+			String site = (String) queryParamMap.getFirst("siteId");
+			if (site != null && !site.equals("") && !site.isEmpty())
+			siteId = Long.parseLong(site);
+		}
 		Response.ResponseBuilder rb = null;
 		List<SystemInfo> systems = null;
 		try{
@@ -154,7 +163,7 @@ public class SystemInfo extends MainAbstractEntity{
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			SystemInfoService systemInfoService = (SystemInfoService) SpringConfig
 					.getInstance().getBean("systemInfoService");
-			systems = systemInfoService.getDistinctSystem();
+			systems = systemInfoService.readAllBySiteId(siteId);
 			if (systems == null)
 				throw new Exception("Unable to find Systems");
 			mapper.setDateFormat(ApplicationUtils.df);

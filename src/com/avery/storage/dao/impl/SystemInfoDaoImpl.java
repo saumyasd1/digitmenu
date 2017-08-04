@@ -36,8 +36,11 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 			session = getSessionFactory().getCurrentSession();;
 			criteria = session.createCriteria(SystemInfo.class);
 			Site site = new Site();
-			site.setId(siteId);
-			criteria.add(Restrictions.eq("site", site));
+			if(siteId != null && siteId != 0L)
+			{
+				site.setId(siteId);
+				criteria.add(Restrictions.eq("site", site));
+			}
 			return criteria.list();
 		}catch (WebApplicationException ex) {
 			AppLogger.getSystemLogger().error(

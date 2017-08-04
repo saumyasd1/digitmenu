@@ -18,6 +18,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +32,9 @@ import com.avery.storage.entities.Org;
 import com.avery.storage.entities.OrgInfo;
 import com.avery.storage.entities.ProductLine;
 import com.avery.storage.entities.SystemInfo;
+import com.avery.storage.entities.User;
 import com.avery.storage.service.ProductLineService;
+import com.avery.utils.HibernateUtils;
 
 @Repository
 public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
@@ -65,7 +70,21 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 	@Override
 	public Map getAllEntitiesWithCriteria(MultivaluedMap queryMap)
 			throws Exception {
-		return null;
+		Map entitiesMap = new HashMap();
+		Criteria criteria = null;
+		Session session = getSessionFactory().getCurrentSession();
+		ProjectionList proj = Projections.projectionList()
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("name"), "name");
+		criteria = session.createCriteria(Org.class).createAlias("system", "system").createAlias("system.site", "site");
+		criteria.setProjection(proj);
+		if (queryMap.getFirst("siteId") != null && queryMap.getFirst("siteId") != "") {
+			String siteId = (String) queryMap.getFirst("siteId");
+			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
+				criteria.add(Restrictions.eq("site.id", Integer.parseInt(siteId)));
+		}
+		entitiesMap.put("org", criteria.list());
+		return entitiesMap;
 	}
 	
 	@Override
