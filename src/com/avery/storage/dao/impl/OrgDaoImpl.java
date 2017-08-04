@@ -73,11 +73,7 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		Map entitiesMap = new HashMap();
 		Criteria criteria = null;
 		Session session = getSessionFactory().getCurrentSession();
-		ProjectionList proj = Projections.projectionList()
-				.add(Projections.property("id"), "id")
-				.add(Projections.property("name"), "name");
 		criteria = session.createCriteria(Org.class).createAlias("system", "system").createAlias("system.site", "site");
-		criteria.setProjection(proj);
 		if (queryMap.getFirst("siteId") != null && queryMap.getFirst("siteId") != "") {
 			String siteId = (String) queryMap.getFirst("siteId");
 			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
