@@ -122,7 +122,8 @@ $enable-font-awesome: dynamic(true);
 	background-color:#65beed !important;
 	border-color:#65beed !important ;
 }
-.x-btn.blue-btn.x-toolbar-item.x-btn-over .x-btn-inner,.x-btn.blue-btn.x-toolbar-item .x-btn-inner{
+.x-btn.blue-btn.x-toolbar-item.x-btn-over .x-btn-inner,.x-btn.blue-btn.x-toolbar-item .x-btn-inner,
+.x-btn.blue-btn .x-btn-icon-el{
 	color:#fff;
 }
 .x-btn.blue-btn.x-toolbar-item.x-btn-focus.x-btn-pressed{
