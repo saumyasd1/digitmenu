@@ -42,6 +42,7 @@ import com.avery.storage.service.AddressService;
 import com.avery.storage.service.OrderLineService;
 import com.avery.utils.ApplicationUtils;
 import com.avery.utils.PropertiesConstants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -64,6 +65,7 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "customerPONumber", length = 50)
 	private String customerPONumber;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "orderedDate")
 	Date orderedDate;
 	
@@ -148,6 +150,7 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "billToEmail", length = 100)
 	private String billToEmail;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "requestedDevliveryDate")
 	Date requestedDeliveryDate;
 	
@@ -226,6 +229,7 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "customerRequestDate")
 	Date customerRequestDate;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm:ss")
 	@Column(name = "promiseDate")
 	Date promiseDate;
 	
@@ -1714,7 +1718,7 @@ public class OrderLine extends MainAbstractEntity{
 			orderLineMap.put("salesOrderCount", salesOrderCount);
 			*/
 			orderLineMap.put("orderLine", orderLine);
-			mapper.setDateFormat(ApplicationUtils.df);
+//			mapper.setDateFormat(ApplicationUtils.df);
 			mapper.writeValue(writer, orderLineMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
