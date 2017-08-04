@@ -188,25 +188,33 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		   	systemId = currentRecord.get('systemId'),
 		   	currentValue = field.getValue();
 		
-		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
-			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
-        }
-		if(fieldName == 'csr'){
-			field.store.load();
-		}
-		var divisionEPORGStore = AOCRuntime.getStoreERPORG();
-		var eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
+		var divisionEPORGStore = AOCRuntime.getStoreERPORG(),
+			eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
 			orgId = eporgRecord.get('orgCodeId');
-		
-		field.store.filterBy(function(record){
-			if(record.get('systemId') == systemId && orgId == record.get('orgId')){
-				return true;
-			}
-			return false;
-		}, systemId);
-		
+	
+		if(fieldName == 'csr'){
+			field.store.load({
+				callback:function(records, operations, success){
+					field.store.clearFilter();
+					field.store.filterBy(function(record){
+						if(record.get('systemId') == systemId && orgId == record.get('orgId')){
+							return true;
+						}
+						return false;
+					}, systemId);
+				}
+			}, field, orgId);
+		}
+		else{
+			field.store.clearFilter();
+			field.store.filterBy(function(record){
+				if(record.get('systemId') == systemId && orgId == record.get('orgId')){
+					return true;
+				}
+				return false;
+			}, systemId);
+		}
 		if(!Ext.isEmpty(context.record.get(fieldName))){
-			//filter variable field store for current record systemId and Orgid
 			//remove value from current record and field if value is not exist in store
 			var index = fieldStore.find("name", currentValue,'', false, false, true);
 			if(index == -1){

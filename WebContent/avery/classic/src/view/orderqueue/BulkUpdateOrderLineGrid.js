@@ -736,11 +736,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
             editor:{
             	xtype:'combo',
             	editable:false,
-            	store:[[true,'Y'],[false,'N']]
-            },
-            renderer:function(value, metadata, record){
-				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
-			}
+            	store:[['Y','Y'],['N','N']]
+            }
         }, {
             text: AOCLit.variableDataBreakdown,
             dataIndex: 'variableDataBreakdown',

@@ -121,20 +121,16 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
-								selectOnTab : true,
-								tabIndex:2,
+								selectOnTab : true
 							},
 							{
 								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								tabIndex:3,
 								flex:1,
 								margin:'0 0 0 10',
-								hidden:false,
-								allowBlank : true,
-								selectOnTab : true,
+								selectOnTab : true
 							}
 						]
 					}  

@@ -150,10 +150,7 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								fieldLabel : AOCLit.fromDate,
 								flex:1,
 								enableKeyEvents:true,
-								hidden:false,
-								tabIndex:5,
-								allowBlank : true,
-								selectOnTab : true,
+								selectOnTab : true
 							},
 							{
 								xtype : 'datefield',
@@ -161,10 +158,9 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								name:'toDate',
 								reference:'toDate',
 								flex:1,
-								tabIndex:6,
 								enableKeyEvents:true,
 								margin:'0 0 0 10',
-								selectOnTab : true,
+								selectOnTab : true
 							}
 						]
 					}  

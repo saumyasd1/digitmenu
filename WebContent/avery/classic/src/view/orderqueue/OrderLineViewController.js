@@ -1,15 +1,37 @@
 Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderline',
-    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel','AOC.util.Helper'],
-    runTime : AOC.config.Runtime,
+    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.model.VariableHeaderModel'],
 
+    cellPosition : '',
+    init:function(){
+    	this.getButtonPanel();
+    },
+    
+    onInnerGridCellClick:function(view, td, cellIndex, record, tr, rowIndex, e){
+    	if(cellIndex == 7 && record.get('helpMessage')){
+    		this.createHelpMsgTooltip(record, e);
+    	}
+    },
+    createHelpMsgTooltip:function(record, e){
+    	if(this.customHelpMsgTip){
+    		this.customHelpMsgTip.hide();
+    		this.customHelpMsgTip.target = Ext.get(e.target);
+    		this.customHelpMsgTip.update('<font color=blue>'+Ext.String.htmlEncode(record.get('helpMessage'))+'</font>');
+    		this.customHelpMsgTip.show();
+    	}else{
+    		var el = Ext.get(e.target);
+    		this.customHelpMsgTip = Helper.createToolTip(el, 'Help Message', '<font color=blue>'+Ext.String.htmlEncode(record.get('helpMessage'))+'</font>', 'left');
+    		this.customHelpMsgTip.show();
+    	}
+    },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		var grid=obj;
 		var el = Ext.get(e.target);
+		this.cellPosition = e.getXY();
+//		this.stopEditing();
 		if(el.hasCls('EnableUpdateMoq')){
 			var Id=record.get('id'),
-				runTime = AOC.config.Runtime,
 				MoqDiffQty=record.get('moqdiffQty'),
 				roundQty=record.get('roundQty'),
 				customerOrderedQty=record.get('customerOrderedQty');
@@ -20,7 +42,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			var insertBillAddress= false,
 				insertShipAddress=false;
 			
-			var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+			var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+AOCRuntime.getOrderQueueId()+'"}';
 			
 			Ext.MessageBox.confirm('Confirm Action',AOCLit.updateCustQtyMsg , function(response) {
 				if (response == 'yes') {
@@ -114,7 +136,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	
     	if(newValue.rb == '2'){
     		Ext.getBody().mask('Loading..');
-    		var id= this.runTime.getOrderQueueId();
+    		var id= AOCRuntime.getOrderQueueId();
     		Ext.Ajax.request({
     			method:'GET',
     			url : applicationContext+'/rest/orderlinedetails/order/'+id,
@@ -151,7 +173,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			refs = me.getReferences(),
 			height = Ext.getBody().getHeight()-100,
 			width = Ext.getBody().getWidth()-100,
-			id = me.runTime.getOrderQueueId(),
+			id = AOCRuntime.getOrderQueueId(),
 			radioGroupValue = refs.radioGroup.getValue().rb,
 			store,
 			innerGridType,
@@ -210,74 +232,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		});
 		win.show();
     },
-    updateOrderLine:function(editor, context, eOpts){
-    	Ext.getBody().mask('Saving...');
-    	
-    	var me = this,
-    		ctx = context,
-        	idx = ctx.rowIdx,
-        	rowIdx = ctx.rowIdx,
-        	currentRecord = ctx.store.getAt(idx),
-        	obj = currentRecord.getChanges(),
-        	insertBillAddress = false,
-        	insertShipAddress = false,
-        	runTime = AOC.config.Runtime;
-    	var billToCode = runTime.getCurrentDefaultBillToCode();
-    	var shipToCode = runTime.getCurrentDefaultShipToCode();
-    	obj.id = currentRecord.id;
-    	var orgCodeId = '';
-    	
-    	var orgStore = AOCRuntime.getStoreERPORG(),
-    		orgInfoId = currentRecord.get('divisionForInterfaceERPORG');
-    	
-    	orgStore.each(function(orgRec){
-    		if(orgRec.get('id') == orgInfoId){
-    			orgCodeId = orgRec.get('orgCodeId');
-    			return;
-    		}
-    	});
-    	
-    	if(idx == rowIdx){
-    		if(billToCode == 'true'){
-    		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!='' && currentRecord.getModified('oracleBillToSiteNumber')==''){
-    			insertBillAddress=true;
-    	  }
-    		}
-    		if(shipToCode =='true'){
-    		if(currentRecord.isModified('oracleShipToSiteNumber') &&  currentRecord.get('oracleShipToSiteNumber')!=null && currentRecord.get('oracleShipToSiteNumber')!='' && currentRecord.getModified('oracleShipToSiteNumber')==''){
-    			insertShipAddress=true;
-    		}
-    		}
-		}
-    	
-		var params='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+orgCodeId+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
-		
-		Ext.Ajax.request({
-			method:'PUT',
-			jsonData:params,
-			url : applicationContext+'/rest/orderLines/bulkupdate',
-			success : function(response, opts) {
-				var jsonString = Ext.JSON.decode(response.responseText),
-                valueExist = jsonString.valueExist;
-            if (valueExist) {
-            	Ext.getBody().unmask();
-            	Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
-            	me.getView().view.refresh();
-                Helper.showToast('failure',AOCLit.addressExistMsg);
-                return false;
-            }
-				//AOC.util.Helper.fadeoutMessage('Success', AOCLit.updateOrdLineMsg);
-				Helper.showToast('success','Order line successfully updated');
-				Ext.getBody().unmask();
-				me.getView().openedRecordIndex ='';
-				Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
-		  		me.getView().view.refresh();
-			},
-			failure: function(response, opts) {
-				Ext.getBody().unmask();
-			}
-		});
-    },
     updateOrderLinedetail:function(editor, context, eOpts){
     	Ext.getBody().mask('Saving...');
     	var ctx = context,me=this,
@@ -285,8 +239,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         currentRecord = ctx.store.getAt(idx),parms='';
     	var obj=currentRecord.getChanges( ) ;
     	obj.id=currentRecord.id;
-    	var runTime = AOC.config.Runtime;
-		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
+		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+AOCRuntime.getOrderQueueId()+'"}';
     	Ext.Ajax.request({
     		method:'PUT',
 	        jsonData:obj,
@@ -294,7 +247,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        success : function(response, opts) {
 		        	Helper.showToast('success','Order line Detail successfully updated');
 			  		Ext.getBody().unmask();
-			  		Helper.loadOrderLineGridStore(me.getView().store, runTime.getOrderQueueId());
+			  		Helper.loadOrderLineGridStore(me.getView().store, AOCRuntime.getOrderQueueId());
 			  		me.getView().view.refresh();
 		        },
 		        failure: function(response, opts) {
@@ -302,7 +255,120 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        }
 		  });
     },
+   
+    getBulkUpdateParams:function(updateFlag){
+    	var me = this,
+			grid = me.getView(),
+	    	currentRecord = grid.getSelectionModel().getSelection()[0],
+	    	obj = currentRecord.getChanges(),
+	    	insertBillAddress = false,
+	    	insertShipAddress = false,
+	    	orgCodeId = me.getOrgCodeId(currentRecord.get('divisionForInterfaceERPORG'));
+    	
+    	var billToCode = AOCRuntime.getCurrentDefaultBillToCode();
+    	var shipToCode = AOCRuntime.getCurrentDefaultShipToCode();
+    	
+    	if(!updateFlag){
+    		obj.id = currentRecord.id;
+    	}
+    	
+    	if(obj.orderedDate){
+            obj.orderedDate = Ext.util.Format.date(obj.orderedDate, 'Y-m-d H:i:s');
+        }
+        if(obj.requestedDeliveryDate){
+            obj.requestedDeliveryDate = Ext.util.Format.date(obj.requestedDeliveryDate, 'Y-m-d H:i:s');
+        }
+        if(obj.promiseDate){
+            obj.promiseDate = Ext.util.Format.date(obj.promiseDate, 'Y-m-d H:i:s');
+        }
+    	
+		if(billToCode == 'true'){
+			if(currentRecord.isModified('oracleBillToSiteNumber') 
+					&&  currentRecord.get('oracleBillToSiteNumber')!=null 
+					&& currentRecord.get('oracleBillToSiteNumber')!='' 
+						&& currentRecord.getModified('oracleBillToSiteNumber')==''){
+    			insertBillAddress = true;
+			}
+		}
+		if(shipToCode =='true'){
+    		if(currentRecord.isModified('oracleShipToSiteNumber') 
+    				&&  currentRecord.get('oracleShipToSiteNumber')!=null 
+    				&& currentRecord.get('oracleShipToSiteNumber')!='' 
+    					&& currentRecord.getModified('oracleShipToSiteNumber')==''){
+    			insertShipAddress = true;
+    		}
+		}
+		
+		return {
+			insertBillAddress:insertBillAddress,
+			insertShipAddress : insertShipAddress,
+			shipToAddress:currentRecord.get('shipToAddress1'),
+			billToAddress:currentRecord.get('billToAddress1'),
+			billType:currentRecord.isModified('oracleBillToSiteNumber'),
+			shipType:currentRecord.isModified('oracleShipToSiteNumber'),
+			billToSiteNumber:currentRecord.isModified('oracleBillToSiteNumber'),
+			shipToSiteNumber:currentRecord.isModified('oracleShipToSiteNumber'),
+			billToAddress2:currentRecord.isModified('billToAddress2'),
+			billToAddress3:currentRecord.isModified('billToAddress3'),
+			shipToAddress:currentRecord.isModified('shipToAddress1'),
+			
+			shipToAddress2:currentRecord.isModified('shipToAddress2'),
+			shipToAddress3:currentRecord.isModified('shipToAddress3'),
+			shipToAddress:currentRecord.isModified('shipToAddress1'),
+			data:Ext.encode(obj),
+			
+			updateAll:updateFlag,
+			
+			orderQueueId:AOCRuntime.getOrderQueueId(),
+			partnerId:AOCRuntime.getCurrentOrderQueuePartnerId(),
+			systemId:currentRecord.isModified('systemId'),
+			siteId:AOCRuntime.getCurrentOrderQueueSiteId(),
+			orgCodeId:orgCodeId,
+			lastModifiedBy:Helper.getLastModifiedBy()
+		};
+    },
+    updateOrderLineRecord:function(params){
+    	var me = this;
+    	
+    	Ext.getBody().mask(AOCLit.pleaseWait);
+		Ext.Ajax.request({
+			method:'PUT',
+			jsonData:Ext.encode(params),
+			url : applicationContext+'/rest/orderLines/bulkupdate',
+			success : function(response, opts) {
+				var jsonString = Ext.JSON.decode(response.responseText),
+                	valueExist = jsonString.valueExist;
+				
+				Ext.getBody().unmask();
+	            if (valueExist) {
+	                Helper.showToast('failure', AOCLit.addressExistMsg);
+	            }else{
+	            	Helper.showToast('success','Order line successfully updated');
+					me.getView().openedRecordIndex ='';
+	            }
+	            Helper.loadOrderLineGridStore(me.getView().store, AOCRuntime.getOrderQueueId());
+			},
+			failure: function(response, opts) {
+				Ext.getBody().unmask();
+			}
+		});
+    },
+    getOrgCodeId:function(orgInfoId){
+    	var orgStore = AOCRuntime.getStoreERPORG();
+
+		orgStore.each(function(orgRec){
+			if(orgRec.get('id') == orgInfoId){
+				return orgRec.get('orgCodeId');
+			}
+		});
+    },
+    updateOrderLine:function(editor, context, eOpts){
+    	var me = this;
+		me.updateOrderLineRecord(me.getBulkUpdateParams(false));
+    },
     outerGridBulkUpdate:function(editorPlugin, editor, context){
+    	var me = this;
+    	
     	Ext.Msg.show({
 		    title:'Update All',
 		    message: 'Are you sure, you want to update for all?',
@@ -310,78 +376,130 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		    icon: Ext.Msg.QUESTION,
 		    fn: function(btn) {
 		        if (btn === 'yes') {
-		        	Ext.getBody().mask('Saving...');
-		        	editorPlugin.suspendEvent('edit');
-		        	editorPlugin.completeEdit();
-		        	editorPlugin.resumeEvent('edit');
-		        	
-		        	var ctx = editorPlugin.context,
-			            idx = ctx.rowIdx,
-			            rowIdx = ctx.rowIdx,
-			            currentRecord = ctx.store.getAt(idx),
-			            obj = currentRecord.getChanges(),
-			    		insertBillAddress=false,
-			    		insertShipAddress=false,
-			        	runTime = AOC.config.Runtime;
-		        	var partnerId = runTime.getCurrentOrderQueuePartnerId();
-		        	
-		        	if(idx == rowIdx){var orgCodeId = '';
-		        	
-		        	var orgStore = AOCRuntime.getStoreERPORG(),
-		        		orgInfoId = currentRecord.get('divisionForInterfaceERPORG');
-		        	
-		        	orgStore.each(function(orgRec){
-		        		if(orgRec.get('id') == orgInfoId){
-		        			orgCodeId = orgRec.get('orgCodeId');
-		        			return;
-		        		}
-		        	});
-		          		if(currentRecord.isModified('oracleBillToSiteNumber') &&  currentRecord.get('oracleBillToSiteNumber')!=null && currentRecord.get('oracleBillToSiteNumber')!=''&& currentRecord.getModified('oracleBillToSiteNumber')==''){
-		          			insertBillAddress=true;
-		          		}
-		          		if(currentRecord.isModified('oracleShipToSiteNumber') &&  currentRecord.get('oracleShipToSiteNumber')!=null && currentRecord.get('oracleShipToSiteNumber')!=''&& currentRecord.getModified('oracleShipToSiteNumber')==''){
-		          			insertShipAddress=true;
-		          		}
-		              }
-		        	var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"shipToAddress":"'+currentRecord.get('shipToAddress1')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billType":"'+currentRecord.isModified('oracleBillToSiteNumber')+'","shipType":"'+currentRecord.isModified('oracleShipToSiteNumber')+'","billToSiteNumber":"'+currentRecord.get('oracleBillToSiteNumber')+'","shipToSiteNumber":"'+currentRecord.get('oracleShipToSiteNumber')+'","billToAddress":"'+currentRecord.get('billToAddress1')+'","billToAddress2":"'+currentRecord.get('billToAddress2')+'","billToAddress3":"'+currentRecord.get('billToAddress3')+'","shipToAddress":"'+currentRecord.get('shipToAddress1')+'","shipToAddress2":"'+currentRecord.get('shipToAddress2')+'","shipToAddress3":"'+currentRecord.get('shipToAddress3')+'","data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + runTime.getOrderQueueId() + '","partnerId":"'+runTime.getCurrentOrderQueuePartnerId()+'","systemId":"'+runTime.getCurrentOrderQueueDefaultSystem()+'","siteId":"'+runTime.getCurrentOrderQueueSiteId()+'","orgCodeId":"'+orgCodeId+'","lastModifiedBy":"'+Helper.setLastModifiedBy()+'"}';
-		            Ext.Ajax.request({
-		                method: 'PUT',
-		                jsonData: obj,
-		                url: applicationContext + '/rest/orderLines/bulkupdate',
-		                success: function(response, opts) {
-		                	var jsonString = Ext.JSON.decode(response.responseText),
-		                    valueExist = jsonString.valueExist;
-		                if (valueExist) {
-		                	Ext.getBody().unmask();
-		                	 ctx.grid.openedRecordIndex ='';
-			                 Helper.loadOrderLineGridStore(ctx.store, runTime.getOrderQueueId());
-			                 ctx.view.refresh();
-		                    Helper.showToast('failure',AOCLit.addressExistMsg);
-		                    return false;
-		                }
-		                	Helper.showToast('success','Order line successfully updated');
-		                    Ext.getBody().unmask();
-		                    ctx.grid.openedRecordIndex ='';
-		                    Helper.loadOrderLineGridStore(ctx.store, runTime.getOrderQueueId());
-		                    ctx.view.refresh();
-		                },
-		                failure: function(response, opts) {
-		                    Ext.getBody().unmask();
-		                }
-		            });
+		        	me.updateOrderLineRecord(me.getBulkUpdateParams(true));
 		        } 
 		    }
 		});
     },
-    outerGridBeforeEditEvent:function(editor, context){
+    onCopyBtnClick:function(editorPlugin, editor, context){
+		var me = this,
+			view = me.getView(),
+			currentRecord = view.getSelectionModel().getSelection()[0];
+		
+    	var obj = currentRecord.getChanges();
+    	
+		var id = currentRecord.get('id'),
+			additional = obj.additionalLabelInternalItem;
+		
+		if(Ext.isEmpty(additional)){
+			additional = currentRecord.get('additionalLabelInternalItem');
+		}
+		
+		if(!Ext.isEmpty(additional) && !Ext.isEmpty(additional.trim())){
+			Ext.getBody().mask(AOCLit.pleaseWait);
+			Ext.Ajax.request({
+				method:'GET',
+				url:applicationContext+'/rest/orderLines/copy/additional',
+				params:{id:id, additional: additional.trim()},
+				success:function(response){
+					var jsonString = JSON.parse(response.responseText);
+					var newRecId = jsonString.id;
+					
+					view.store.load({
+						params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
+						callback:function(records, operation, success){
+							var record = view.store.getById(newRecId);
+							view.getSelectionModel().select(record);
+						}
+					}, view, newRecId);
+					
+					Ext.getBody().unmask();
+				},
+				failure:function(){
+					Ext.getBody().unmask();
+				}
+			});
+		}
+	},
+    getButtonPanel:function(){
+    	var me = this;
+    	this.buttonPanel =  new Ext.create('Ext.panel.Panel',{
+    		bodyStyle:{
+    			background:'transparent',
+    			padding:10
+    		},
+    		minWidth:200,
+    		width:'28%',
+    		style:'z-index:2;position:absolute;',
+    		header:false,
+    		constrain:true,
+    		renderTo:Ext.getBody(),
+    		items:[
+    		    {
+    		    	xtype:'button',
+		            cls: 'blue-btn',
+		            iconCls:'x-fa fa-pencil-square-o',
+		            text: 'Update',
+		            handler:function(){
+		            	me.stopEditing();
+		            	me.updateOrderLine();
+		            }
+		        }, {
+		        	xtype:'button',
+		            cls: 'blue-btn',
+		            margin:'0 0 0 5',
+		            iconCls:'x-fa fa-pencil-square-o',
+		            text: 'Update All',
+		            handler:function(){
+		            	me.stopEditing();
+		            	me.outerGridBulkUpdate();
+		            }
+		        },{
+		        	xtype:'button',
+		            cls: 'blue-btn',
+		            margin:'0 0 0 5',
+		            iconCls:'x-fa fa-times',
+		            text: 'Cancel',
+		            scope:me,
+		            handler:function(){
+		            	me.stopEditing();
+		            }
+		        },{
+		        	xtype:'button',
+		            cls: 'blue-btn',
+		            itemId:'copyButton',
+		            margin:'0 0 0 5',
+		            hidden:true,
+		            iconCls:'x-fa fa-clone',
+		            text: 'Copy',
+		            handler:function(){
+		            	me.stopEditing();
+		            	me.onCopyBtnClick();
+		            }
+		        }
+    		]
+    	});
+    },
+    stopEditing:function(){
     	var me = this,
-    		orderQueueStatus = me.runTime.getOrderQueueStatus(),
+    		view = me.getView();
+    	
+    	me.buttonPanel.hide();
+    	if(view.editingPlugin.activeEditor && view.editingPlugin.activeEditor.editing){
+			view.focus();
+    	}
+    },
+    outerGridBeforeEditEvent:function(editor, context, e){
+    	var pos = context.column.getPosition();
+    	var me = this,
+    		orderQueueStatus = AOCRuntime.getOrderQueueStatus(),
     		rowIdx = context.rowIdx,
     		currentRecord = context.store.getAt(rowIdx),
     		currentRecordStatus = currentRecord.get('status'),
     		columns = editor.grid.columns,
 			len = columns.length,
-			gridView = me.getView();
+			gridView = me.getView(),
+			store = gridView.store;
     	
     	editor.grid.lastScrollLeftPosition = gridView.view.el.dom.scrollLeft;
     	
@@ -392,25 +510,48 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     						|| currentRecordStatus == AOCLit.customerQtyMismatchStatusOrderline)){
     		
     		for(var i = 0; i< len; i++){
-    			columns[i].getEditor().enable();
+//    			columns[i].getEditor().enable();
+    			columns[i].getEditor(store.getAt(rowIdx)) ? columns[i].getEditor(store.getAt(rowIdx)).enable() : '';
     		}
+    		this.showHideButtonWin(context, pos);
     		return true;
     	}
     	//if disable all fields except status field for current record status except above
     	if(orderQueueStatus == AOCLit.waitingForCSRStatusOrderQueue && context.field == 'status'){
     		for(var i = 0; i< len; i++){
-    			if(columns[i].getEditor().dataIndex == 'status'){
-    				columns[i].getEditor().enable();
+//    			if(columns[i].getEditor().dataIndex == 'status'){
+    			if(columns[i].dataIndex == 'status'){
+    				columns[i].getEditor(store.getAt(rowIdx)) ? columns[i].getEditor(store.getAt(rowIdx)).enable() : '';
+    				//columns[i].getEditor().enable();
     			}else{
-    				columns[i].getEditor().disable();
+//    				columns[i].getEditor().disable();
+    				columns[i].getEditor(store.getAt(rowIdx)) ? columns[i].getEditor(store.getAt(rowIdx)).disable() : '';
     			}
     		}
+    		this.showHideButtonWin(context, pos);
     		return true;
     	}
     	return false;
     },
+    showHideButtonWin:function(context, post){
+    	if(this.buttonPanel.isVisible()){
+    		this.buttonPanel.hide();
+    		this.stopEditing();
+		}
+    	this.buttonPanel.show();
+    	var pos = this.cellPosition,
+    		copyButton = this.buttonPanel.queryById('copyButton');
+    	
+    	if(context.field == 'additionalLabelInternalItem'){
+    		copyButton.show();
+    	}else{
+    		copyButton.hide();
+    	}
+    	
+		this.buttonPanel.setPosition(post[0]-10, pos[1]+15);
+    },
     innerGridBeforeEditEvent:function(context){
-    	if(!this.runTime.getAllowOrderLineEdit()){
+    	if(!AOCRuntime.getAllowOrderLineEdit()){
     		return false;
     	}
     	
@@ -453,7 +594,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 //    	Ext.getBody().unmask();
 //    	var response = Ext.Ajax.request({
 //			async: false,
-//			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+me.runTime.getOrderLineCurrenProductLine()+'/'+record.get('id')
+//			url: applicationContext+'/rest/orginfo/orgsysteminfo/'+AOCRuntime.getOrderLineCurrenProductLine()+'/'+record.get('id')
 //		});
 //		var jsonValue=Ext.decode(response.responseText),refs=view.refs;
 //		if(jsonValue.length > 0){
@@ -549,9 +690,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	onDivisionEPORGExpand:function(field){
 		var view = this.getView(),
 			currentRecord = view.editingPlugin.context.record,
-			systemId = currentRecord.get('systemId'),
-			targetSystemInfoId = currentRecord.get('targetSystem'),
-			divisionForInterfaceERPORGId  = currentRecord.get('divisionForInterfaceERPORG');
+			targetSystemInfoId = currentRecord.get('targetSystem');
 		
 		field.store.filterBy(function(record){
 			if(record.get('orderSystemInfoId') == targetSystemInfoId){
@@ -614,23 +753,35 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		   	systemId = currentRecord.get('systemId'),
 		   	currentValue = field.getValue();
 		
-		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
-			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
-        }
-		if(fieldName == 'csr'){
-			field.store.load();
-		}
-		var divisionEPORGStore = AOCRuntime.getStoreERPORG();
-		var eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
+//		if(context.grid && !Ext.isEmpty(context.grid.lastScrollLeftPosition)){
+//			context.grid.view.el.dom.scrollLeft = context.grid.lastScrollLeftPosition;
+//        }
+		var divisionEPORGStore = AOCRuntime.getStoreERPORG(),
+			eporgRecord = divisionEPORGStore.getById(currentRecord.get('divisionForInterfaceERPORG')),
 			orgId = eporgRecord.get('orgCodeId');
 		
-		field.store.filterBy(function(record){
-			if(record.get('systemId') == systemId && orgId == record.get('orgId')){
-				return true;
-			}
-			return false;
-		}, systemId);
-		
+		if(fieldName == 'csr'){
+			field.store.load({
+				callback:function(records, operations, success){
+					field.store.clearFilter();
+					field.store.filterBy(function(record){
+						if(record.get('systemId') == systemId && orgId == record.get('orgId')){
+							return true;
+						}
+						return false;
+					}, systemId);
+				}
+			}, field, orgId);
+		}
+		else{
+			field.store.clearFilter();
+			field.store.filterBy(function(record){
+				if(record.get('systemId') == systemId && orgId == record.get('orgId')){
+					return true;
+				}
+				return false;
+			}, systemId);
+		}
 		if(!Ext.isEmpty(context.record.get(fieldName))){
 			//filter variable field store for current record systemId and Orgid
 			//remove value from current record and field if value is not exist in store
@@ -715,17 +866,33 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	onStatusSelect:function(combo){
 		var value = combo.getValue(),
 			grid = this.getView(),
+			currentRecord = grid.getSelectionModel().getSelection()[0],
+			store = grid.store,
 			columns = grid.columns,
 			len = columns.length;
 		
+		currentRecord.set('status', combo.getValue());
+		currentRecord.set('codeValue', combo.getRawValue());
+		
+		if(value == AOCLit.cancelStatusOrderLine){
+			currentRecord.set('iconName', 'cancel');
+			currentRecord.set('colorCode', '#808080');
+		}else{
+			currentRecord.set('iconName', 'warning');
+			currentRecord.set('colorCode', '#FF0000');
+		}
+		
 		for(var i = 0; i< len; i++){
 			if(value == AOCLit.waitingForCSRStatusOrderLine){
-				columns[i].getEditor().enable();
+				columns[i].getEditor(currentRecord) ? columns[i].getEditor(currentRecord).enable():'';
+//				columns[i].getEditor().enable();
 			}else{
-				if(columns[i].getEditor().dataIndex == 'status'){
-    				columns[i].getEditor().enable();
+				if(columns[i].dataIndex == 'status'){
+					columns[i].getEditor(currentRecord) ? columns[i].getEditor(currentRecord).enable():'';
+//    				columns[i].getEditor().enable();
     			}else{
-    				columns[i].getEditor().disable();
+    				columns[i].getEditor(currentRecord) ? columns[i].getEditor(currentRecord).disable():'';
+//    				columns[i].getEditor().disable();
     			}
 			}
 		}
@@ -763,53 +930,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		}
 	},
 	
-	onCopyBtnClick:function(editorPlugin, editor, context){
-		var me = this,
-			view = me.getView();
-		
-		editorPlugin.suspendEvent('edit');
-    	editorPlugin.completeEdit();
-    	editorPlugin.resumeEvent('edit');
-    	
-    	var ctx = editorPlugin.context,
-            idx = ctx.rowIdx,
-            currentRecord = ctx.store.getAt(idx),
-            obj = currentRecord.getChanges();
-    	
-		var id = currentRecord.get('id'),
-			additional = obj.additionalLabelInternalItem;
-		
-		if(Ext.isEmpty(additional)){
-			additional = currentRecord.get('additionalLabelInternalItem');
-		}
-		
-		if(!Ext.isEmpty(additional) && !Ext.isEmpty(additional.trim())){
-			Ext.getBody().mask(AOCLit.pleaseWait);
-			Ext.Ajax.request({
-				method:'GET',
-				url:applicationContext+'/rest/orderLines/copy/additional',
-				params:{id:id, additional: additional},
-				success:function(response){
-					var jsonString = JSON.parse(response.responseText);
-					var newRecId = jsonString.id;
-					
-					view.store.load({
-						params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
-						callback:function(records, operation, success){
-							var record = view.store.getById(newRecId);
-							view.view.select(record);
-						}
-					}, view, newRecId);
-					
-					Ext.getBody().unmask();
-				},
-				failure:function(){
-					Ext.getBody().unmask();
-				}
-			});
-		}
-	},
 	onRefreshClick:function(){
+		this.stopEditing();
 		this.getView().store.load({params:{id:AOCRuntime.getCurrentConfig().orderQueueId}});
 	}
 });

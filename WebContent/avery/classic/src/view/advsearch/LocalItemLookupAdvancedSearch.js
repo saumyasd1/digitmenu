@@ -204,33 +204,24 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							selectOnTab: true
 						},
+						defaultType:'datefield',
 						items:[
 							{
-								xtype : 'datefield',
 								name:'fromDate',
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
-								flex:1,
-								hidden:false,
-								allowBlank : true,
-								selectOnTab : true,
-								tabIndex:10,
-								enableKeyEvents:true,
+								enableKeyEvents:true
 							},
 							{
-								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
 								margin:'0 0 0 10',
-								hidden:false,
-								enableKeyEvents:true,
-								allowBlank : true,
-								selectOnTab : true,
-								tabIndex:11,
+								enableKeyEvents:true
 							}
 						]
 					}

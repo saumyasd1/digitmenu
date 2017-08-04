@@ -19,27 +19,35 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	
     	var ordeQueueGrid = orderQueueView.getLayout().activeItem;
         ordeQueueGrid.store.load();
+        this.hideOrderLineEditing();
         this.getView().destroy();
     },
+    hideOrderLineEditing:function(){
+    	var refs = this.getView().getReferences(),
+ 			orderLineExpandableGrid = refs['orderLineExpandableGrid'];
+    	
+    	orderLineExpandableGrid.getController().stopEditing();
+    },
     validateOrderLine:function(){
-    	Ext.getBody().mask('Validating....');
+    	this.hideOrderLineEditing();
+    	
     	var me = this,
     		id=this.runTime.getOrderQueueId();
     	
+    	Ext.getBody().mask('Validating....');
     	Ext.Ajax.request({
     		method:'GET',
     		url : applicationContext+'/rest/router/orderqueue/'+id,
 	        success : function(response, opts) {
 	        	var jsonValue=Ext.decode(response.responseText);
-	        	var status=jsonValue.status;
+	        	var status = jsonValue.status;
 	        	if(status=='success'){
-	        		Helper.showToast('Success',AOCLit.orderValidation);
+	        		Helper.showToast('Success', AOCLit.orderValidation);
 	        	}
 	        	else{
 	        		Helper.showToast('failure', AOCLit.validateErrorMsg);
 	        	}
 		  		Ext.getBody().unmask();
-		  		//Helper.loadOrderLineGridStore(me.getView().store, id);
 	        },
 	        failure: function(response, opts) {
 	        	Helper.showToast('failure', AOCLit.validateErrorMsg);
@@ -48,22 +56,24 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	    }); 
     },
     viewSalesOrder:function(){
+    	this.hideOrderLineEditing();
     	Ext.getBody().mask('Loading....');
-    	var id=this.runTime.getOrderQueueId(),me=this;
-    	//salesOrderCount=this.runTime.getSalesOrderCount();
-    	var proceed=true;
+    	var me=this,
+    		id=AOCRuntime.getOrderQueueId(),
+    		proceed=true;
+    	
     	if(proceed){
-    	var owner=me.getView().ownerCt;
-		   var store=Ext.create('AOC.store.SalesOrderStore', {
-				proxy : {
-					type : 'rest',
-					 url : applicationContext+'/rest/salesorders/order/'+id,
-					reader:{
-				        type:'json', 
-				        rootProperty: 'ArrayList'
-				    }
-				}
-			});
+    		var owner = me.getView().ownerCt,
+    			store = Ext.create('AOC.store.SalesOrderStore', {
+					proxy : {
+						type : 'rest',
+						 url : applicationContext+'/rest/salesorders/order/'+id,
+						reader:{
+					        type:'json', 
+					        rootProperty: 'ArrayList'
+					    }
+					}
+				});
 		   owner.insert({
 			   	xtype:'salesrrderexpandablegrid',
 			    flex:1,
@@ -288,6 +298,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		refs = me.getReferences(),
     		grid = refs.orderLineExpandableGrid;
     	
+    	this.hideOrderLineEditing();
     	Ext.getBody().mask(AOCLit.pleaseWaitTitle); // show mask on body
     	
     	Ext.Ajax.request({
@@ -360,6 +371,7 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 		  });
     },
     cancelOrder:function(){
+    	this.hideOrderLineEditing();
     	var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
     },

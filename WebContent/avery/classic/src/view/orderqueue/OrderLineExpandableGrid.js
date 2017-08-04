@@ -204,7 +204,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField:'name',
 				valueField:'name',
 				queryMode:'local',
-				store:Ext.data.StoreManager.lookup('configCSRStoreId') != null ? Ext.data.StoreManager.lookup('configCSRStoreId') : Ext.create('AOC.store.ConfigurationCSRStore'),
+				store:Ext.data.StoreManager.lookup('configCSRStoreId') != null ? Ext.data.StoreManager.lookup('configCSRStoreId') : Ext.create('AOC.store.ConfigurationCSRStore',{storeId:'configCSRStoreId'}),
 				listeners:{
 					focus:'onVariableComboFocus',
 					select:'onVariableComboBlur',
@@ -379,7 +379,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'left',
 			menuDisabled:true,
             sortable:false,
-			width: 220,
+			width: 120,
 			editor: {
 				xtype:'combo',
 				displayField:'name',
@@ -410,7 +410,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				listConfig:{
 					width:180
 				},
-				reference:'OrdertypeCombo',
 				variableName:'OrderType',
 				store:Ext.data.StoreManager.lookup('OrderTypeId1') != null ? Ext.data.StoreManager.lookup('OrderTypeId1') : Helper.getAllVariableComboStore('OrderType', true),
 				listeners:{
@@ -699,7 +698,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField: 'name',
 				valueField: 'name',
 				queryMode :'local',
-				reference:'APOTypeCombo',
 				variableName:'APOType',
 				store:Ext.data.StoreManager.lookup('APOTypeId1') != null ? Ext.data.StoreManager.lookup('APOTypeId1') : Helper.getAllVariableComboStore('APOType', true),
 				listeners:{
@@ -989,7 +987,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField: 'name',
 				valueField: 'name',
 				queryMode :'local',
-				reference:'shippingMethodCombo',
 				variableName:'ShippingMethod',
 				matchFieldWidth:false,
 				listConfig:{
@@ -1014,7 +1011,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField: 'name',
 				valueField: 'name',
 				queryMode :'local',
-				reference:'freightTermscombo',
 				variableName:'FreightTerms',
 				matchFieldWidth:false,
 				listConfig:{
@@ -1110,10 +1106,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			editor:{
 				xtype:'combo',
 				editable:false,
-				store:[[true,'Y'],[false,'N']]
-			},
-			renderer:function(value, metadata, record){
-				return Helper.onWaveMoqColumnRenderer(value, metadata, record);
+				store:[['Y','Y'],['N','N']]
 			}
 		}, 
 		{
@@ -1152,7 +1145,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField: 'name',
 				valueField: 'name',
 				queryMode :'local',
-				reference:'splitShipsetCombo',
 				variableName:'SplitShipset',
 				store:Ext.data.StoreManager.lookup('SplitShipsetId1') != null ? Ext.data.StoreManager.lookup('SplitShipsetId1') : Helper.getAllVariableComboStore('SplitShipset', true),
 				listeners:{
@@ -1201,7 +1193,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				displayField: 'name',
 				valueField: 'name',
 				queryMode :'local',
-				reference:'EndCustomerCombo',
 				variableName:'EndCustomer',
 				matchFieldWidth:false,
 				listConfig:{
@@ -1329,6 +1320,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     		    },
     		    onExpand: function(rowNode, record, expandRow) {
     		    	this.grid.ownerGrid.editingPlugin ? this.grid.ownerGrid.editingPlugin.cancelEdit() : '';
+    		    	me.getController().stopEditing();
     		    	
     		    	//(Amit Kumar)after refresh grid view need to create inner grid view again bcz after store load inner view destroyed
     		    	if(Ext.isEmpty(rowNode.querySelector('.nestedGrid1'))){
@@ -1399,6 +1391,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			cls: 'nestedGrid1',
 			store:store,
 			recordId:recordId,
+			listeners:{
+    	    	cellclick:function(view, td, cellIndex, record, tr, rowIndex, e){
+    	    		me.getController().onInnerGridCellClick(view, td, cellIndex, record, tr, rowIndex, e);
+    	    	}
+    	    },
 			selModel: {
 				type:sel,
 				rowNumbererHeaderWidth:0
@@ -1473,10 +1470,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						},
 						renderer:function(v, metadata,rec){
 							var mandatory = rec.get('mandatory'),
-							isContainsFibre = rec.get('level').toLowerCase(),
-							variableDataValue = rec.get('variableDataValue'),
-							fiberPercent = rec.get('fiberPercent');
-							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
+								isContainsFibre = rec.get('level').toLowerCase(),
+								variableDataValue = rec.get('variableDataValue'),
+								fiberPercent = rec.get('fiberPercent');
+								metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
 							if(Ext.isEmpty(v) && mandatory == 'Y'){
 								metadata.style = AOCLit.cellColor;
 							}
@@ -1499,20 +1496,26 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					  },
 					  renderer:function(v, metadata,rec){
 							var isContainsFibre = rec.get('level').toLowerCase(),
-							variableDataValue = rec.get('variableDataValue'),
-							fiberPercent = rec.get('fiberPercent');
+								variableDataValue = rec.get('variableDataValue'),
+								fiberPercent = rec.get('fiberPercent');
+							
 							if(isContainsFibre.includes('fibre') && (!Ext.isEmpty(variableDataValue) && Ext.isEmpty(fiberPercent))){
 								metadata.style = AOCLit.cellColor;
 							}
-							else{
-								return v;
-							}
+							return v;
 						}
 					},
 					{
 						text:'Help Message',
 						dataIndex:'helpMessage',
-						flex:1
+						flex:1,
+						align:'center',
+						renderer:function(v, metadata, record){
+							if(v){
+								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" class="x-fa fa-question-circle help-message"></i>';
+							}
+							return '';
+						}
 					}
 				]
 			},
@@ -1558,12 +1561,12 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
     },
     getOuterGridRowEditor:function(){
 		var rowEditor={
-			ptype:'rowediting',
+			ptype:'cellediting',
 			clicksToEdit: 2,
 			autoCancel:false,
 			saveAndNextBtn: true,
 			listeners: {
-				'edit': 'updateOrderLine',
+				//'edit': 'updateOrderLine',
 				'beforeEdit':'outerGridBeforeEditEvent'
 			},
 			bulKUpdate: function(editor,context){

@@ -939,7 +939,11 @@ Ext.define('AOC.util.Helper',{
 	    	lastName = AOCRuntime.getUser().lastName == '' ? '' : AOCRuntime.getUser().lastName;
 	    return firstName+' '+lastName;
 	},
-	
+	getLastModifiedBy: function(){
+		var firstName = AOCRuntime.getUser().firstName == '' ? '' : AOCRuntime.getUser().firstName,
+	    	lastName = AOCRuntime.getUser().lastName == '' ? '' : AOCRuntime.getUser().lastName;
+	    return firstName+' '+lastName;
+	},
 	getGroupingFieldStore:function(){
 		return new Ext.data.JsonStore({
 			data:[
@@ -1037,5 +1041,12 @@ Ext.define('AOC.util.Helper',{
 	},
 	onParterDSComboAfterRender:function(field){
 		field.store.load();
+	},
+	hideOrderLineEditing:function(){
+    	var orderLineExpandableGrid = Ext.ComponentQuery.query('#orderlineexpandablegridrowmodel')[0];
+    	
+    	if(orderLineExpandableGrid){
+    		orderLineExpandableGrid.getController().stopEditing();
+    	}
 	}
 });

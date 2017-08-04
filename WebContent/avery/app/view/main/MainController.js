@@ -33,11 +33,12 @@ Ext.define('AOC.view.main.MainController', {
     	this.selectTabPanelView(tab.initialConfig.card);
     },
     selectTabPanelView:function(tab){
+    	Helper.hideOrderLineEditing();
     	var me = this,
     		tabPanel = me.getView(),
     		refs = tabPanel.getReferences(),
     		listType = tab.listType;
-	
+    	
 		switch(listType){
 			case 'orderQueueStatusList':
 				var orderQueueStatusListRefs = refs['homewrapper'].getReferences().orderQueueStatusList.getReferences(),
