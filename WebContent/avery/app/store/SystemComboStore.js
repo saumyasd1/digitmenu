@@ -1,7 +1,7 @@
 Ext.define('AOC.store.SystemComboStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','name'],
-	autoLoad:false,
+	storeId:'systemComboStoreId',
 	proxy: {
         type: 'rest',
         url: applicationContext+'/rest/system/systemlist',

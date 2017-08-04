@@ -1049,14 +1049,21 @@ Ext.define('AOC.util.Helper',{
     		orderLineExpandableGrid.getController().stopEditing();
     	}
 	},
-	loadOrgStore: function(){
+	loadOrgSystemStore: function(){
 		var currentUserSiteId = AOCRuntime.getUser().siteId,
-			store = Ext.create('AOC.store.OrgComboStore',{
+			orgStore = Ext.create('AOC.store.OrgComboStore',{
 			storeId:'orgComboStoreId'
 		});
-		store.proxy.extraParams = {
+		var systemStore = Ext.create('AOC.store.SystemComboStore',{
+			storeId:'systemComboStoreId'
+		});
+		orgStore.proxy.extraParams = {
 			siteId:currentUserSiteId	
 		};
-		store.load();
+		systemStore.proxy.extraParams = {
+			siteId : currentUserSiteId
+		};
+		orgStore.load();
+		systemStore.load();
 	}
 });
