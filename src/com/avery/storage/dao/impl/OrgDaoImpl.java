@@ -81,7 +81,7 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		if (queryMap.getFirst("siteId") != null && queryMap.getFirst("siteId") != "") {
 			String siteId = (String) queryMap.getFirst("siteId");
 			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())
-				criteria.add(Restrictions.eq("site.id", Integer.parseInt(siteId)));
+				criteria.add(Restrictions.eq("site.id", Long.parseLong(siteId)));
 		}
 		entitiesMap.put("org", criteria.list());
 		return entitiesMap;
