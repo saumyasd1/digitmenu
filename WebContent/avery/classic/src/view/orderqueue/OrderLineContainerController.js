@@ -1,7 +1,11 @@
 Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderlinecontainer',
-    requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.view.orderqueue.BulkUpdateVariableHeaderrGrid','AOC.model.VariableHeaderModel'],
+    requires : [
+        'AOC.view.orderqueue.BulkUpdateOrderLineGrid',
+        'AOC.view.orderqueue.BulkUpdateVariableHeaderGrid',
+        'AOC.model.VariableHeaderModel'
+    ],
     runTime : AOC.config.Runtime,
     config: {
         listen: {

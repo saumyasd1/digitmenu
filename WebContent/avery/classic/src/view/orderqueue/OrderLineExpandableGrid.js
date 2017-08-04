@@ -1411,7 +1411,8 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			       {
 					  xtype: 'rownumberer',
 					  text:'#',
-					  width:50
+					  align:'center',
+					  width:40
 					}, 
 					{
 					  text: 'Level',

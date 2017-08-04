@@ -29,7 +29,6 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		var grid=obj;
 		var el = Ext.get(e.target);
 		this.cellPosition = e.getXY();
-//		this.stopEditing();
 		if(el.hasCls('EnableUpdateMoq')){
 			var Id=record.get('id'),
 				MoqDiffQty=record.get('moqdiffQty'),
@@ -144,18 +143,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		        	var jsonValue=Ext.decode(response.responseText);
 		        	var serviceStoreData = [];
 		        	if(jsonValue.length>0){
-		        	jsonValue.forEach(function(item){
-                		var service = [item];
-                		//fixed bug#40 IT UAT Issue log(Amit Kumar),check only for SIZE,QTY,SIZE CHART
-                        if(item.toLowerCase() != AOCLit.qtyVariableLabel && item.toLowerCase() != AOCLit.sizeVariableLabel && item.toLowerCase() != 'size chart'){
-                         serviceStoreData.push(service);
-                        }
-                	});
-		        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
-                 	   		fields : ['variableFieldName'],	
-            	            data : serviceStoreData
-                    });
-		        	comboField.bindStore(serviceStore);
+			        	jsonValue.forEach(function(item){
+	                		var service = [item];
+	                		//fixed bug#40 IT UAT Issue log(Amit Kumar),check only for SIZE,QTY,SIZE CHART
+	                        if(item.toLowerCase() != AOCLit.qtyVariableLabel && item.toLowerCase() != AOCLit.sizeVariableLabel && item.toLowerCase() != 'size chart'){
+	                        	serviceStoreData.push(service);
+	                        }
+	                	});
+			        	var serviceStore =  Ext.create('Ext.data.ArrayStore',{
+		             	   		fields : ['variableFieldName'],	
+		        	            data : serviceStoreData
+		                    });
+			        	comboField.bindStore(serviceStore);
 		        	}
 		        	comboField.setVisible(true);
 		        	Ext.getBody().unmask();
@@ -187,7 +186,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
       			Helper.showToast('validation', AOCLit.selectValueDrpMsg);
       			return false;
       		}
-      		innerGridType = 'bulkUpdateVariableHeaderrGrid';
+      		innerGridType = 'bulkupdatevariableheadergrid';
       		height = height - 180;
       		width = width - 240;
 			
