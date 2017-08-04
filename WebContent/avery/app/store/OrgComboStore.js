@@ -1,7 +1,7 @@
 Ext.define('AOC.store.OrgComboStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','name'],
-	autoLoad:false,
+	storeId:'orgComboStoreId',
 	proxy: {
         type: 'rest',
         url : applicationContext+'/rest/org',
