@@ -626,20 +626,33 @@ Ext.define('AOC.util.Helper',{
 		}
 	},
 	onOrderLineDateRenderer:function(v, metadata, record){
+		var siteId;
+		if(Ext.isEmpty(record.data.siteId)){
+			siteId = 2;
+		}
+		else{
+			siteId = record.data.siteId;
+		}
  		if(!Ext.isEmpty(v) && new Date(Ext.util.Format.dateRenderer()(record.get('orderedDate'))) > new Date(Ext.util.Format.dateRenderer()(v))
  				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
  			metadata.style = AOCLit.cellColor;
- 			return Ext.Date.format(v, AOCLit.dateFormat);
+ 			return this.onOrderlineDateRendererSiteTimeZoneSpecific(v, siteId);
  		}
- 		return !Ext.isEmpty(v) ? Ext.Date.format(v, AOCLit.dateFormat) : '';
+ 		return !Ext.isEmpty(v) ? this.onOrderlineDateRendererSiteTimeZoneSpecific(v, siteId) : '';
  	},
  	onOrdererDateRenderer:function(value, metadata,record){
+ 		if(Ext.isEmpty(record.data.siteId)){
+			siteId = 2;
+		}
+		else{
+			siteId = record.data.siteId;
+		}
  		if(value=='' || value == null) {
   			metadata.style = AOCLit.cellColor;
           }
           else{
-        	return Ext.Date.format(value,'Y-m-d');
-         	return Ext.Date.format(value, AOCLit.dateFormat);
+        	//return Ext.Date.format(value,'Y-m-d');
+         	return this.onOrderlineDateRendererSiteTimeZoneSpecific(value, siteId);
           }
   	},
 	onAtoColumnRenderer:function(value, metadata, record){
@@ -870,14 +883,35 @@ Ext.define('AOC.util.Helper',{
 			v = v.replace(' ', 'T');
 			var time = new Date(v).getTime();
 //				utcTime = time - (estOffset);
-			
+			siteId = siteId.toString();
 			switch(siteId){
-				case 2: var siteTime = time + hktCstOffset;
+				case '2': var siteTime = time + hktCstOffset;
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-				case 3: var siteTime = time + hktCstOffset;
+				case '3': var siteTime = time + hktCstOffset;
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
-				case 4: var siteTime = time + vitnamOffset;
+				case '4': var siteTime = time + vitnamOffset;
 					return Ext.util.Format.date(new Date(siteTime),'Y-m-d H:i:s');
+			}
+		}
+		return '';
+	},
+	onOrderlineDateRendererSiteTimeZoneSpecific:function(v, siteId){
+		if(!Ext.isEmpty(v)){
+			var estOffset = AOCRuntime.getTimeOffset(),
+				hktCstOffset = 480 *(60*1000),
+				vitnamOffset = 420 *(60*1000);
+			
+//			v = v.replace(' ', 'T');
+			var time = new Date(v).getTime();
+//				utcTime = time - (estOffset);
+			siteId = siteId.toString();
+			switch(siteId){
+				case '2': var siteTime = time + hktCstOffset;
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d');
+				case '3': var siteTime = time + hktCstOffset;
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d');
+				case '4': var siteTime = time + vitnamOffset;
+					return Ext.util.Format.date(new Date(siteTime),'Y-m-d');
 			}
 		}
 		return '';
