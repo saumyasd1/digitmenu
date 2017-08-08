@@ -118,9 +118,9 @@ Ext.define('AOC.view.address.AddAddressWin',{
 								queryMode:'local',
 								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
 								listeners : {
-									blur:'onComboBlur'
+									blur:'onComboBlur',
 									//afterrender:'onAfterRenderPartnerCombo'
-//									expand:'onPartnerComboExpand'
+									expand:'onPartnerComboExpand'
 								}
 							},
 							{

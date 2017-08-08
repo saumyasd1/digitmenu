@@ -191,7 +191,7 @@ Ext.define('AOC.view.address.AddressWinController', {
 		}else{
 			siteId = siteCombo.getValue();
 		}
-		
+		combo.store.clearFilter();
 		me.filterStoreBySiteId(combo.store, siteId);
     },
     onOrgComboExpand:function(combo){
@@ -268,6 +268,7 @@ Ext.define('AOC.view.address.AddressWinController', {
     	refs['orgName'].store.clearFilter();
     	refs['freightTerms'].store.clearFilter();
     	refs['shippingMethod'].store.clearFilter();
+    	refs['partnerName'].store.clearFilter();
     },
    
     deleteResource: function (record) {
