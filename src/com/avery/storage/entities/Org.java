@@ -215,7 +215,8 @@ public class Org extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> Org = null;
+		Map<?, ?> OrgMap = null;
+		List<Org> Org=null;
 		try {
 			MultivaluedMap<String, String> queryParamMap = ui.getQueryParameters();
 			StringWriter writer = new StringWriter();
@@ -224,7 +225,8 @@ public class Org extends MainAbstractEntity {
 			mapper.addMixIn(Org.class, OrgMixIn.class);
 			OrgService OrgService = (OrgService) SpringConfig
 					.getInstance().getBean("orgService");
-			Org = OrgService.readWithCriteria(queryParamMap);
+			OrgMap = OrgService.readWithCriteria(queryParamMap);
+			Org=(List) OrgMap.get("org");
 			if (Org == null)
 				throw new Exception("Unable to find order configuration");
 			mapper.writeValue(writer, Org);

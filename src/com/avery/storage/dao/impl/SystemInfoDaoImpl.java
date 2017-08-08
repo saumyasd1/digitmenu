@@ -33,9 +33,14 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 		Session session = null;
 		Criteria criteria = null;
 		try{
-			session = getSessionFactory().getCurrentSession();;
-			criteria = session.createCriteria(SystemInfo.class);
+			session = getSessionFactory().getCurrentSession();
 			Site site = new Site();
+			ProjectionList proj = Projections.projectionList()
+					.add(Projections.property("id"), "id")
+					.add(Projections.property("name"), "name")
+					.add(Projections.groupProperty("name"));
+			criteria = session.createCriteria(SystemInfo.class)
+					.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SystemInfo.class));
 			if(siteId != null && siteId != 0L)
 			{
 				site.setId(siteId);

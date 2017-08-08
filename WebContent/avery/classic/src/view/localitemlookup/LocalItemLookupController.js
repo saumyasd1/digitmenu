@@ -91,8 +91,22 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     },
     getQuickSearchResults: function(cmp) {
     	var view = this.getView(),
-        value = cmp.getValue();
-        Helper.quickSearch(view,{glid: value}),
+	        value = cmp.getValue(),
+	        orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
+			systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemComboStoreId');
+			orgCodeArray = [],
+			systemArray = [];
+		if(orgStore.getCount() > 0){
+    		orgStore.each(function(rec){
+    			orgCodeArray.push(rec.get('name'));
+    		});
+		}
+		if(systemStore.getCount() > 0){
+    		systemStore.each(function(rec){
+    			systemArray.push(rec.get('name'));
+    		});
+		}
+        Helper.quickSearch(view,{glid: value,orgCode:orgCodeArray.join(),systemName:systemArray.join()}),
         cmp.orderedTriggers[0].show();
     },
     getSearchResults: function(cmp, e) {
@@ -135,7 +149,28 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	  	  values = form.getValues();
     	  
         values.datecriteriavalue = 'lastModifiedDate';
-    	  store = view.contextGrid.store;
+        store = view.contextGrid.store;
+        
+        if(values.orgCode == ''){
+        	var orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
+				orgCodeArray = [];
+			if(orgStore.getCount() > 0){
+	    		orgStore.each(function(rec){
+	    			orgCodeArray.push(rec.get('name'));
+	    		});
+			}
+    	  values.orgCode = orgCodeArray.join();
+        }
+        if(values.systemName == ''){
+        	var systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemComboStoreId'),
+    			systemArray = [];
+        	if(systemStore.getCount() > 0){
+	    		systemStore.each(function(rec){
+	    			systemArray.push(rec.get('name'));
+	    		});
+			}
+        	values.systemName = systemArray.join();
+        }
         Helper.advancedSearch(view, values);
       },
     deleteRecords:function(){
@@ -185,31 +220,25 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
     	}
     },
     onActivateGrid:function(grid){
-        var userInfo = AOCRuntime.getUser(),
-            siteId = userInfo.siteId,
-        	scOrgCode = ['PYT','PYL','POHKT','POHKL','ADNS','ADNL','ADHK'];
-        	vtOrgCode =['VN','PXVN'],
-        	szOrgCode = ['SZ','PXSH'],
-        	scSZSystem =['Oracle','VIPS'],
-        	vtSystem = ['Sparrow','VIPS'];
-        	
-        switch (siteId){
-			case 2: grid.getStore().proxy.extraParams = {
-					orgCode:scOrgCode.join(),
-					systemName:scSZSystem.join()
-				};
-				break;
-			case 3:  grid.getStore().proxy.extraParams = {
-					orgCode:szOrgCode.join(),
-					systemName:scSZSystem.join()
-				};
-				break;
-			case 4:  grid.getStore().proxy.extraParams = {
-					orgCode:vtOrgCode.join(),
-					systemName:vtSystem.join()
-				};
-				break;
-        }
+        var orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
+    		systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemComboStoreId');
+    		orgCodeArray = [],
+    		systemArray = [];
+    		if(orgStore.getCount() > 0){
+	    		orgStore.each(function(rec){
+	    			orgCodeArray.push(rec.get('name'));
+	    		});
+    		}
+    		if(systemStore.getCount() > 0){
+	    		systemStore.each(function(rec){
+	    			systemArray.push(rec.get('name'));
+	    		});
+    		}
+    		
+    		grid.getStore().proxy.extraParams = {
+				orgCode:orgCodeArray.join(),
+				systemName:systemArray.join()
+			};
     },
     onComboBlur:function(field){
     	Helper.clearCombo(field);

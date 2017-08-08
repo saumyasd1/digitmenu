@@ -20,13 +20,13 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 			userInfo = AOCRuntime.getUser(),
 			currentRecSiteId = userInfo.siteId,
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId'),
-			orgStore = Ext.data.StoreManager.lookup('orgComboId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboId'),
-			systemStore = Ext.data.StoreManager.lookup('systemId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemId'),
-			scOrgCodeStore = [['PYT','PYT'],['PYL','PYL'],['POHKT','POHKT'],['POHKL','POHKL'],['ADNS','ADNS'],['ADNL','ADNL'],['ADHK','ADHK']],
-			vtOrgCodeStore =[['VN','VN'],['PXVN','PXVN']],
-			szOrgCodeStore = [['SZ','SZ'],['PXSH','PXSH']],
-			scSZSystemStore =['Oracle','VIPS'],
-        	vtSystemStore = ['Sparrow','VIPS'];
+			orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
+			systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemComboStoreId');
+//			scOrgCodeStore = [['PYT','PYT'],['PYL','PYL'],['POHKT','POHKT'],['POHKL','POHKL'],['ADNS','ADNS'],['ADNL','ADNL'],['ADHK','ADHK']],
+//			vtOrgCodeStore =[['VN','VN'],['PXVN','PXVN']],
+//			szOrgCodeStore = [['SZ','SZ'],['PXSH','PXSH']],
+//			scSZSystemStore =['Oracle','VIPS'],
+//        	vtSystemStore = ['Sparrow','VIPS'];
 			
 		rboStore.load();
 		orgStore.load();
@@ -151,7 +151,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						       {
 								xtype:'combo',
 								name:'orgCode',
-								store:currentRecSiteId == null ?  orgStore: ((currentRecSiteId == 2) ? scOrgCodeStore : ((currentRecSiteId == 3)? szOrgCodeStore : vtOrgCodeStore )),
+								store:orgStore,
 								displayField:'name',
 								fieldLabel:AOCLit.orgCode,
 								queryMode:'local',
@@ -181,7 +181,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 							{
 								xtype:'combo',
 								fieldLabel:AOCLit.system,
-								name:'system',
+								name:'systemName',
 								reference:'systemCombo',
 								displayField:'name',
 								valueField:'name',
@@ -190,7 +190,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								flex:1,
 								enableKeyEvents:true,
 								queryMode:'local',
-								store: currentRecSiteId == null ?  systemStore: ((currentRecSiteId == 4) ? vtSystemStore : scSZSystemStore ),
+								store: systemStore,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
