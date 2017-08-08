@@ -6,7 +6,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		'Ext.grid.Panel', 
 		'AOC.view.ux.RowExpanderGrid', 
 		'AOC.view.ux.CustomRowEditing', 
-		'AOC.util.Helper',
 		'Ext.grid.RowEditor',
 		'Ext.grid.plugin.Clipboard'
 	],

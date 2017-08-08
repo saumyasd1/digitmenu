@@ -5,6 +5,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     active:false,
     requires:['AOC.view.advsearch.ProductLineAdvanceSearch'],
     
+    onComboBlur:function(combo, e){
+    	Helper.clearCombo(combo,e);
+    },
     onActivateGrid:function(grid){
     	grid.down('pagingtoolbar').bindStore(grid.getStore());
     	
@@ -539,6 +542,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				isCheckBoxSelected = true;
 				currentSystemGrid = refs[checkboArray[i]+'systemGrid'];
 				currentOrgGrid = refs[checkboArray[i]+'orgGrid'];
+				
+				if(currentSystemGrid.editingPlugin.editing){
+					currentSystemGrid.focus();
+				}
+				if(currentOrgGrid.editingPlugin.editing){
+					currentOrgGrid.focus();
+				}
 				
 				systemGridStore = currentSystemGrid.getStore();
 				

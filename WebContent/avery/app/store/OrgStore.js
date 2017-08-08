@@ -1,14 +1,15 @@
 Ext.define('AOC.store.OrgStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','name','systemId'],
-	//storeId:'siteId',
-	autoLoad:false,
+	autoLoad:true,
 	proxy: {
         type: 'rest',
+        limitParam:'',
+        startParam:'',
+        pageParam:'',
         url : applicationContext+'/rest/org',
         reader: {
-            type: 'json',
-            rootProperty : 'org'
+            type: 'json'
         }
     }
 });

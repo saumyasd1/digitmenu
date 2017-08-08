@@ -3,347 +3,273 @@ Ext.define('AOC.view.address.AddressWinController', {
     alias: 'controller.addresswincontroller',
     runTime: AOC.config.Runtime,
     
-    onSaveBtnClick: function () {
-    	var me = this;
-        var view = me.getView();
-     
-        var Msg = '';
-        var createaddress = this.getView();
-        var grid = Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
-        var panel = createaddress.down('#listPanel');
-        var valueObj = '',
-            form = this.getView().down('form');
-        var refs = this.getReferences();
-        var editMode = this.getView().editMode,
-            url = '';
-        var methodMode = '';
-        var length = 0;
-        if (editMode) {
-            ID = createaddress.ID;
-            url = applicationContext + '/rest/address/' + ID;
-            form.updateRecord();
-            methodMode = 'PUT';
-            valueObj = form.getRecord().getChanges();
-            var formData =  form.getValues();
-            if (valueObj.partnerId != null) {
-                var varPartner = valueObj.partnerId;
-                var partnerCombo = refs.partnerName;
-                var store = partnerCombo.store;
-                store.each(function (rec) {
-                    if (rec.get('id') == partnerCombo.getValue()) {
-                        valueObj.address = rec.get('address')
-                        valueObj.partnerName = rec.get('partnerName')
-                        valueObj.contactPerson = rec.get('contactPerson')
-                        valueObj.phone = rec.get('phone')
-                        valueObj.active = rec.get('active')
-                        valueObj.lastModifiedBy = rec.get('lastModifiedBy')
-                        valueObj.lastModifiedDate = rec.get('lastModifiedDate')
-                    }
-                });
-                valueObj.varPartner = {
-                    id: valueObj.partnerId
-                };
-            }
-            else{
-            	valueObj.varPartner = {
-                        id: formData.partnerId
-                    };
-            }
-            if (valueObj.orgCodeId != null) {
-                var varOrgCode = valueObj.orgCodeId;
-                var orgCodeCombo = refs.orgName;
-                var orgStore = orgCodeCombo.store;
-                var siteCombo = refs.siteName;
-                var systemCombo = refs.systemName;
-                valueObj.orgName = orgCodeCombo.getRawValue();
-                valueObj.siteName = siteCombo.getRawValue();
-                valueObj.systemName = systemCombo.getRawValue();
-
-                orgStore.each(function (rec) {
-                    if (rec.get('id') == orgCodeCombo.getValue()) {
-                        valueObj.systemId = rec.get('systemId')
-                    }
-                });
-                valueObj.varOrgCode = {
-                    id: valueObj.orgCodeId
-                };
-            }
-            else{
-            	valueObj.varOrgCode = {
-                        id: formData.orgCodeId
-                    };
-            }
-
-            length = Object.keys(valueObj).length;
-            //Msg='Address Updated Successfully';
-            var Msg = AOCLit.updateAddressMsg;
-            var parameters = Ext.JSON.encode(valueObj);
-        } else {
-            url = applicationContext + '/rest/address';
-            valueObj = form.getValues(false, true, false, true);
-            var partnerCombo = refs.partnerName;
-            var orgCodeCombo = refs.orgName;
-            var siteCombo = refs.siteName;
-            var systemCombo = refs.systemName;
-            valueObj.orgName = orgCodeCombo.getRawValue();
-            valueObj.siteName = siteCombo.getRawValue();
-            valueObj.systemName = systemCombo.getRawValue();
-            var store = partnerCombo.store;
-            var orgStore = orgCodeCombo.store;
-
-            orgStore.each(function (rec) {
-                if (rec.get('id') == orgCodeCombo.getValue()) {
-                    valueObj.systemId = rec.get('systemId')
-                }
-            });
-            store.each(function (rec) {
-                if (rec.get('id') == partnerCombo.getValue()) {
-                    valueObj.address = rec.get('address')
-                    valueObj.partnerName = rec.get('partnerName')
-                    valueObj.contactPerson = rec.get('contactPerson')
-                    valueObj.phone = rec.get('phone')
-                    valueObj.active = rec.get('active')
-                    valueObj.lastModifiedBy = rec.get('lastModifiedBy')
-                    valueObj.lastModifiedDate = rec.get('lastModifiedDate')
-                }
-            });
-
-            valueObj.orgName = orgCodeCombo.getRawValue();
-            methodMode = 'POST';
-            length = 1;
-            //Msg='Address Added Successfully';
-            var Msg = AOCLit.addAddressMsg;
-            var parameters = {
-                varOrgCode: {
-                    id: valueObj.orgCodeId
-                },
-                orgName: valueObj.orgName,
-                system: valueObj.system,
-                siteId: valueObj.siteId,
-                partnerId: valueObj.partnerId,
-                siteNumber: valueObj.siteNumber,
-                description: valueObj.description,
-                address1: valueObj.address1,
-                address2: valueObj.address2,
-                address3: valueObj.address3,
-                address4: valueObj.address4,
-                address: valueObj.address,
-                city: valueObj.city,
-                state: valueObj.state,
-                country: valueObj.country,
-                zip: valueObj.zip,
-                contact: valueObj.contact,
-                phone1: valueObj.phone1,
-                phone2: valueObj.phone2,
-                fax: valueObj.fax,
-                email: valueObj.email,
-                shippingMethod: valueObj.shippingMethod,
-                freightTerms: valueObj.freightTerms,
-                shippingInstructions: valueObj.shippingInstructions,
-                siteType: valueObj.siteType,
-                varPartner: {
-                    id: valueObj.partnerId
-                }
-            }
-        }
-
-        if (length > 0) {
-            if (panel.getForm().isValid()) {
-            	   view.el.mask('Saving....');
-                Ext.Ajax.request({
-                    method: methodMode,
-                    jsonData: parameters,
-                    url: url,
-                    success: function (response, opts) {
-                    	var jsonString = Ext.JSON.decode(response.responseText),
-                        valueExist = jsonString.valueExist;
-                    if (valueExist) {
-                    	view.unmask();
-                        Helper.showToast('failure',AOCLit.addressExistMsg);
-                        return false;
-                    }
-                     	view.el.unmask();
-                     	createaddress.destroy();
-                        Helper.showToast('Success', Msg);
-                        grid.store.load();
-
-                    },
-                    failure: function (response, opts) {
-                    	view.el.unmask();
-                        createaddress.destroy();
-                    }
-                });
-            } else {
-            	Helper.showToast('validation', 'Please fill all mandatory(*) field');
-            }
-            this.runTime.setWindowInEditMode(false);
-        } else {
-            createaddress.down('#messageFieldItemId').setValue(AOCLit.editFieldEntryMsg).setVisible(true);
-        }
+    onComboBlur:function(combo, e){
+    	Helper.clearCombo(combo,e);
     },
     
-    onSiteSelect: function (combo, record) {
+    onSaveBtnClick:function(btn){
     	var me = this,
-            refs = me.getReferences(),
-            org = refs.orgName,
-            shippingMethod = refs.shippingMethod,
-            freightTerms = refs.freightTerms,
-            system = refs.systemName,
-            systemStore = system.store,
+    		view = me.getView(),
+    		refs = me.getReferences(),
+    		formPanel = refs['addressForm'],
+    		form = formPanel.getForm(),
+    		mode = view.mode,
+    		url,
+    		values = form.getValues();
+    	
+    	if(mode == 'add'){
+    		method = 'POST';
+    		url = applicationContext + '/rest/address';
+    	}else if(mode == 'edit'){
+    		method = 'PUT';
+    		url = applicationContext + '/rest/address/' + view.rec.id;
+    	}
+    	
+    	if(form.isValid()){
+    		values.varPartner = {
+                id: values.partnerId
+            };
+    		
+    		values.varOrgCode = {
+                id: values.orgCodeId
+            },
+            
+            delete values.partnerId;
+            delete values.orgCodeId;
+            
+    		me.saveAddress(values, method, url);
+    	}else{
+    		Helper.showToast('validation', 'Please fill all mandatory(*) fields.');
+    	}
+    },
+    saveAddress:function(params, method, url){
+    	var me = this,
+    		view = this.getView();
+    	
+    	view.el.mask(AOCLit.pleaseWait);
+    	
+    	Ext.Ajax.request({
+            method: method,
+            jsonData: params,
+            url: url,
+            success: function (response, opts) {
+            	var jsonData = Ext.JSON.decode(response.responseText),
+                	valueExist = jsonData.valueExist;
+            	
+            	view.el.unmask();
+            	
+	            if (valueExist) {
+	                Helper.showToast('validation', AOCLit.addressExistMsg);
+	            }else{
+	            	me.clearStoreFilter();
+	            	Helper.showToast('Success', 'Address has been saved successfully!!');
+	                view.contextGrid.store.load();
+	                view.close();
+	            }
+            },
+            failure: function (response, opts) {
+            	view.el.unmask();
+            }
+        });
+    },
+    onSiteComboExpand:function(combo){
+    	 var siteId = AOCRuntime.getUser().siteId;
+ 	    
+    	 combo.store.filterBy(function(rec){
+ 	    	if(siteId){
+ 		    	if(rec.get('id') == siteId){
+ 		    		return true;
+ 		    	}
+ 		    	return false;
+ 	    	}
+ 	    	return true;
+ 	    });
+    },
+    onSiteSelect: function (combo, record) {
+    	combo.store.clearFilter();
+    	var me = this,
             siteId = record.get('id');
-
-        me.loadSystemStore(systemStore, siteId);
-        var form = me.getView();
-        if (form != null && !form.isResubmit) {
-            system.reset();
-            org.reset();
-            shippingMethod.reset();
-            freightTerms.reset();
-            shippingMethod.disable();
-            freightTerms.disable();
-            org.disable();
-        }
-        system.enable();
-        system.bindStore(systemStore);
-
+    	
+    	me.resetFields();
+    	me.filterSystemStore(siteId);
+    },
+    resetFields:function(){
+    	var me = this,
+	        refs = me.getReferences(),
+	        org = refs.orgName,
+	        shippingMethod = refs.shippingMethod,
+	        freightTerms = refs.freightTerms,
+	        system = refs.systemName;
+    	
+    	system.reset();
+    	org.reset();
+    	shippingMethod.reset();
+    	freightTerms.reset();
+    	shippingMethod.disable();
+    	freightTerms.disable();
+    	org.disable();
+    },
+    filterSystemStore:function(siteId){
+    	var me = this,
+        	refs = me.getReferences(),
+        	system = refs.systemName,
+            systemStore = system.store;
+    	
+    	systemStore.clearFilter();
+    	system.enable();
+    	me.filterStoreBySiteId(systemStore, siteId);
+    	
+    	if(systemStore.getCount() == 0){
+    		system.disable();
+    	}
+    },
+    filterStoreBySiteId:function(store, siteId){
+    	store.filterBy(function(rec){
+    		if(siteId){
+ 		    	if(rec.get('siteId') == siteId){
+ 		    		return true;
+ 		    	}
+ 		    	return false;
+ 	    	}
+ 	    	return true;
+    	});
+    },
+    onSystemComboExpand:function(combo){
+    	var me = this,
+    		view = me.getView();
+    	
+    	if(view.mode != 'add'){
+    		var siteId = view.rec.get('siteId');
+    		me.filterSystemStore(siteId);
+    	}
     },
     onSystemSelect: function (combo, record) {
         var me = this,
         	refs = me.getReferences(),
-            org = refs.orgName,
-            store = org.store,
-            systemId = record.get('id'),
-        	form = me.getView();
-        if (form != null && !form.isResubmit) {
-            org.reset();
-        }
-
-        org.enable();
-        var proxy = new Ext.data.proxy.Rest({
-            url: applicationContext + '/rest/org/system/' + combo.getValue(),
-            appendId: true,
-            reader: {
-                type: 'json',
-                rootProperty: 'org',
-                totalProperty: 'totalCount'
-            },
-            autoLoad: true
-        });
-
-        store.setProxy(proxy);
-        // dynamically add validation for empty store of org (Saumya)
-        store.load(function () {
-            if (store.getCount() > 0) {
-                if (form != null && !form.isResubmit) {
-                    org.reset();
-                }
-
-                org.enable();
-            } else {
-                org.disable();
-                var msg = AOCLit.orgCountMsg;
-                Helper.showToast('Success', msg);
-            }
-        },form);
+        	siteName = refs['siteName'],
+            systemId = record.get('id');
+        
+        me.filterOrgStore(systemId, siteName.getValue());
     },
-    loadSystemStore: function (systemStore, value) {
-        var me = this,
-            refs = me.getReferences(),
-            org = refs.orgName,
-            shippingMethod = refs.shippingMethod,
-            freightTerms = refs.freightTerms,
-            system = refs.systemName,
-            systemStore = system.store;
-        var proxy = new Ext.data.proxy.Rest({
-            url: applicationContext + '/rest/system/site/' + value,
-            appendId: true,
-            reader: {
-                type: 'json',
-                rootProperty: 'system',
-                totalProperty: 'totalCount'
-            },
-            autoLoad: true
-        });
-
-        systemStore.setProxy(proxy);
-        //calcuting store count for adding validation (Saumya)		  
-        systemStore.load(function () {
-            if (systemStore.getCount() > 0) {
-                var form = me.getView();
-                if (form != null && !form.isResubmit) {
-                    system.reset();
-                    org.reset();
-                    shippingMethod.reset();
-                    freightTerms.reset();
-                    shippingMethod.disable();
-                    freightTerms.disable();
-                    org.disable();
-                }
-                if (systemStore.getCount() > 0) {
-                    system.enable();
-                }
-
-                system.bindStore(systemStore);
-            } else {
-                system.disable();
-                var msg = AOCLit.systemCountMsg;
-                Helper.showToast('Success', msg);
-
-            }
-        });
+    filterOrgStore:function(systemId, siteId){
+    	var me = this,
+	    	refs = me.getReferences(),
+	        org = refs.orgName,
+	        orgStore = org.store;
+    	
+    	orgStore.clearFilter();
+    	orgStore.filterBy(function(rec){
+    		if(rec.get('systemId') == systemId && rec.get('siteId') == siteId){
+    			return true;
+    		}
+    		return false;
+    	});
+    	if (orgStore.getCount() > 0) {
+            org.enable();
+        }else {
+            org.disable();
+            var msg = AOCLit.orgCountMsg;
+            Helper.showToast('validation', msg);
+        } 
     },
     onOrgSelect: function (combo, record) {
-
         var me = this,
-            refs = me.getReferences(),
-            systemRefs = refs.systemName,
-            shippingMethod = refs.shippingMethod,
-            freightTerms = refs.freightTerms,
-            freightStore = freightTerms.store,
-            shippinStore = shippingMethod.store,
-            systemId = systemRefs.getValue(),
-            shipingUrl = 'ShippingMethod/' + systemId + '/' + combo.getValue(),
-            freightUrl = 'FreightTerms/' + systemId + '/' + combo.getValue();
+            refs = me.getReferences();
 
-        me.loadShippingMethodStore(shippinStore, shipingUrl);
-        me.loadShippingMethodStore(freightStore, freightUrl);
-        var form = me.getView();
-        if (form != null && !form.isResubmit) {
-            shippingMethod.reset();
-            freightTerms.reset();
-        }
+        me.loadShippingMethodStore(refs['shippingMethod'], refs['shippingMethod'].store);
+        me.loadShippingMethodStore(refs['freightTerms'], refs['freightTerms'].store);
+    },
+    onPartnerComboExpand:function(combo){
+    	var me = this,
+			view = me.getView(),
+			refs = me.getReferences(),
+			siteCombo = refs['siteName'],
+			siteId;
+		
+		if(view.mode != 'add'){
+			siteId = view.rec.get('siteId');
+		}else{
+			siteId = siteCombo.getValue();
+		}
+		
+		me.filterStoreBySiteId(combo.store, siteId);
+    },
+    onOrgComboExpand:function(combo){
+    	var me = this,
+			view = me.getView();
+    	
+    	if(view.mode != 'add'){
+    		var siteId = view.rec.get('siteId'),
+    			systemId = view.rec.get('system');
+    		me.filterOrgStore(systemId, siteId);
+    	}
+    },
+    onShippingMethodComboExpand:function(combo){
+    	var me = this,
+			view = me.getView();
+	
+		if(view.mode != 'add'){
+			var systemId = view.rec.get('system');
+		        orgId = view.rec.get('orgCodeId');
+	    	
+	    	me.filterShippingFreightStore(combo, systemId, orgId);
+		}
+    },
+    onFreightTermComboExpand:function(combo){
+    	var me = this,
+		view = me.getView();
 
-        shippingMethod.enable();
-        freightTerms.enable();
-
+		if(view.mode != 'add'){
+			var siteId = view.rec.get('siteId'),
+				systemId = view.rec.get('system');
+		        orgId = view.rec.get('orgCodeId');
+	    	
+	    	me.filterShippingFreightStore(combo, systemId, orgId);
+		}
+    },
+    filterShippingFreightStore:function(field, systemId, orgId){
+    	var store = field.store;
+    	
+    	store.clearFilter();
+    	store.filterBy(function(rec){
+    		if(rec.get('systemId') == systemId && rec.get('orgId') == orgId){
+    			return true;
+    		}
+    		return false;
+    	});
+    	if (store.getCount() > 0) {
+            field.enable();
+        }else {
+        	field.disable();
+        } 
+    },
+    loadShippingMethodStore: function (field, store) {
+    	var me = this,
+	        refs = me.getReferences(),
+	        systemId = refs['systemName'].getValue(),
+	        orgId = refs['orgName'].getValue();
+    	
+    	me.filterShippingFreightStore(field, systemId, orgId);
     },
     closeWindow: function () {
-        Ext.getBody().unmask();
+    	this.clearStoreFilter();
         this.getView().close();
-        this.runTime.setWindowInEditMode(false);
+        AOCRuntime.setWindowInEditMode(false);
         var grid = Ext.ComponentQuery.query('#AddressManageGriditemId')[0];
         grid.store.load();
     },
-    loadShippingMethodStore: function (store, url) {
-        var response = Ext.Ajax.request({
-            async: false,
-            url: applicationContext + '/rest/orderconfigurations/orgId/' + url
-        });
-
-        var items = Ext.decode(response.responseText);
-        var jsonValue = Ext.decode(response.responseText);
-        var serviceStoreData = [];
-
-        if (jsonValue.length > 0) {
-            Ext.Array.forEach(jsonValue, function (item) {
-                var service = [item];
-                serviceStoreData.push(service);
-            });
-            store.loadRawData(serviceStoreData);
-        } else {
-            store.removeAll();
-        }
+    clearStoreFilter:function(){
+    	var me = this,
+	        refs = me.getReferences();
+    	
+    	refs['shippingMethod'].store.clearFilter();
+    	refs['freightTerms'].store.clearFilter();
+    	refs['systemName'].store.clearFilter();
+    	refs['orgName'].store.clearFilter();
+    	refs['freightTerms'].store.clearFilter();
+    	refs['shippingMethod'].store.clearFilter();
     },
+   
     deleteResource: function (record) {
         var ID = record.get('id');
         var me = this;
@@ -361,33 +287,39 @@ Ext.define('AOC.view.address.AddressWinController', {
             }
         });
     },
-    HideMandatoryMessage: function () {
-        var createaddress = this.getView();
-        createaddress.down('#messageFieldItemId').setValue('').setVisible(true);
-        createaddress.down('#messageFieldItemId').setHidden('true');
-    },
-    notifyByMessage: function () {
-        var addresssearch = Ext.ComponentQuery.query('#addressAdvancedSerachwindow')[0];
-        addresssearch.down('#messageFieldItemId').setValue('').setVisible(true);
-        addresssearch.down('#messageFieldItemId').setHidden('true');
-    },
     onAfterRenderSiteCombo:function(obj){
-	    var userInfo = AOCRuntime.getUser(),
-	    	userId = userInfo.id,
-	    	siteId = userInfo.siteId;
-    	obj.getStore().proxy.extraParams = {
-		    siteId: siteId,
-		    userId: userId
-		};
-    	obj.getStore().load();
+	    var siteId = AOCRuntime.getUser().siteId;
+	    
+	    obj.store.filterBy(function(rec){
+	    	if(siteId){
+		    	if(rec.get('id') == siteId){
+		    		return true;
+		    	}
+		    	return false;
+	    	}
+	    	return true;
+	    });
     },
     onAfterRenderPartnerCombo:function(obj){
-	    var userInfo = AOCRuntime.getUser(),
+	    var me = this,
+	    	view = me.getView(),
+	    	userInfo = AOCRuntime.getUser(),
 	    	siteId = userInfo.siteId;
+	    
 	    obj.getStore().proxy.extraParams = {
-	    siteId: siteId
+	    	siteId: siteId
 	    };
-	    obj.getStore().load();
+	    
+	    if(view.mode != 'add'){
+	    	view.mask(AOCLit.pleaseWait);
+	    }
+	    obj.getStore().load({
+	    	callback:function(records, operation, success){
+	    		if(view && view.mode != 'add'){
+	    			view.unmask();
+	    		}
+	    	}
+	    }, view);
     },
     
     onAddressAfterRender:function(){
@@ -397,24 +329,22 @@ Ext.define('AOC.view.address.AddressWinController', {
     		userinfo = AOCRuntime.getUser(),
     		roleId = userinfo.role;
 	
-		if(view.rec!=null){
-			if(view.rec.data!=null){
+		if(view.rec != null){
+			if(view.rec.data != null){
 				var orgName = refs['orgName'],
 					siteId = view.rec.get('siteId'),
 					systemId = view.rec.get('system');
 				
-				refs['partnerName'].store.load();
 				refs['siteName'].store.load();
 				
 				refs['shippingMethod'].enable();
 				refs['freightTerms'].enable();
 				orgName.enable();
+				refs['systemName'].enable();
 				
-				me.loadSystemStoreA(refs['systemName'].store,siteId);
-				me.loadOrgStoreA(orgName.store,systemId);
+				refs['systemName'].store.load();
+				orgName.store.load();
 				
-				refs['addressForm'].getForm().loadRecord(view.rec);
-			}else{
 				refs['addressForm'].getForm().loadRecord(view.rec);
 			}
 		}
@@ -422,36 +352,6 @@ Ext.define('AOC.view.address.AddressWinController', {
 			me.setReadOnlyView(true);
 		}
     },
-    loadSystemStoreA:function(systemStore, value){
-		var proxy = new Ext.data.proxy.Rest({
-			url: applicationContext+'/rest/system/site/'+ value,
-			appendId: true,
-			reader: {
-				type:'json',
-				rootProperty: 'system',
-				totalProperty: 'totalCount'
-			},
-			autoLoad:true
-		});
-
-		systemStore.setProxy(proxy);
-		systemStore.load();
-	},
-	loadOrgStoreA:function(orgStore, value){
-		var proxy = new Ext.data.proxy.Rest({
-			url: applicationContext+'/rest/org/system/'+ value,
-			appendId: true,
-			reader: {
-				type: 'json',
-				rootProperty: 'org',
-				totalProperty: 'totalCount'
-			},
-			autoLoad:true
-		});
-
-		orgStore.setProxy(proxy);
-		orgStore.load();
-	},
     setReadOnlyView: function (readOnlyFlag) {
 	    var refs = this.getReferences(),
 	        addressForm = refs.addressForm,

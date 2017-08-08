@@ -53,21 +53,24 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupController', {
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
-    	AOCRuntime.setWindowInEditMode(true);
-        me.openLocalItemLookupWindow(currentRecord, currentRecord.get('id'));
-    
+        me.openLocalItemLookupWindow(currentRecord, 'edit', 'Edit Local Item Lookup');
     },
-    openLocalItemLookupWindow: function(currentRecord,id){
+    onAddBtnClick:function(btn){
+    	this.openLocalItemLookupWindow('', 'add', 'Add Local Item Lookup');
+    },
+    openLocalItemLookupWindow: function(currentRecord, mode, title){
         var me = this,
-        	mode = AOCRuntime.getWindowInEditMode(),
-        	title = mode ? 'Edit Local Item Lookup' : 'Add Local Item Lookup';
            	win = Ext.create('AOC.view.localitemlookup.LocalItemLookupWindow', {
                 title: title,
-                editMode: mode,
-                ID: id,
+                mode: mode,
+                rec:currentRecord,
                 gridView:me.getView()
             });
-       	win.lookupReference('localItemLookupForm').loadRecord(currentRecord);
+        
+        if(mode == 'edit'){
+        	win.lookupReference('localItemLookupForm').loadRecord(currentRecord);
+        }
+        
         win.show(); 	
     },
     onDeleteMenuItemClick:function(){

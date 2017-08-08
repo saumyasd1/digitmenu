@@ -2,6 +2,9 @@ Ext.define('AOC.view.email.EmailManagementController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.emailManagementController',
     
+    onComboBlur:function(combo, e){
+    	Helper.clearCombo(combo,e);
+    },
     onActivateGrid:function(grid){
     	grid.down('pagingtoolbar').bindStore(grid.getStore());
     	

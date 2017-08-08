@@ -1,20 +1,15 @@
 Ext.define('AOC.store.SystemStore', {
 	extend : 'Ext.data.Store',
 	fields:['id','name','siteId'],
-	autoLoad:false,
-	remoteSort: true,
-	totalCount:'total',
-	pageSize:pageSize,
+	autoLoad:true,
 	proxy: {
         type: 'rest',
+        limitParam:'',
+        startParam:'',
+        pageParam:'',
         url: applicationContext+'/rest/system',
         reader: {
-            type: 'json',
-            rootProperty: 'system',
-            totalProperty: 'totalCount'
-        },
-        headers: {
-            "Authorization": "Basic YWRtaW46aW5kaWdvMQ=="
+            type: 'json'
         }
     }
 });

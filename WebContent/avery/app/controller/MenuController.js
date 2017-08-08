@@ -288,6 +288,20 @@ Ext.define('AOC.controller.MenuController', {
         rec ? cmp.getSelectionModel().select(rec) : cmp.getSelectionModel().deselectAll();
     },
     loadStores: function () {
+    	 var partnerStore = Ext.data.StoreManager.lookup('localItemPartnerStoreId') == null ? Ext.create('AOC.store.PartnerManagementStore',{storeId:'localItemPartnerStoreId'}) : Ext.data.StoreManager.lookup('localItemPartnerStoreId');
+ 		partnerStore.load({
+ 			callback:function(records, operation, success){
+ 				var siteId = AOCRuntime.getUser().siteId;
+ 				partnerStore.filterBy(function(rec){
+ 					if(siteId){
+ 						if(rec.get('siteId') == siteId){
+ 							return true;
+ 						}return false;
+ 					}return true;
+ 				});
+ 			}
+ 		},partnerStore);
+ 		
         Helper.loadVariableComboStore('FreightTerms');
         Helper.loadVariableComboStore('ShippingMethod');
         Helper.loadVariableComboStore('CSR');

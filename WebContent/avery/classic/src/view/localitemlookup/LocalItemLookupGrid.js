@@ -38,81 +38,80 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
     buildColumns: function () {
         var me = this;
         return [
-                {
-	        		header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
-	                width: 50,
-	                sortable:false,
-	                menuDisabled:true,
-	                resizable:false,
-	                align:'center',
-	                renderer:Helper.actionColumnRenderer
-                },
-                {
-		            text: AOCLit.customerItemNO,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'customerItemNO',
-		            flex: 1
-		        },{
-		            text: AOCLit.glid,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'glid',
-		            flex: 1
-		        },{
-		            text: AOCLit.identifierValue,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'identifierValue',
-		            flex: 1
-		        },{
-		            text: AOCLit.partnerName,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'partnerName',
-		            flex: 1
-		        },{
-		            text: AOCLit.RBOName,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'rboName',
-		            flex: 1
-		        },{
-		            text: AOCLit.orgCode,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'orgCode',
-		            flex: 1
-		        },{
-		            text: AOCLit.system,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'system',
-		            flex: 1
-		        },{
-		            text: AOCLit.lastModifiedBy,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'lastModifiedBy',
-		            flex: 1
-		        },{
-		            text: AOCLit.lastModifiedDate,
-		            width: 120,
-		            sortable: true,
-		            align:'left',
-		            dataIndex: 'lastModifiedDate',
-		            flex: 1
-		        }
+            {
+        		header: '<img src="' + AOC.config.Settings.buttonIcons.menuIcon + '" />',
+                width: 50,
+                sortable:false,
+                menuDisabled:true,
+                resizable:false,
+                align:'center',
+                renderer:Helper.actionColumnRenderer
+            },
+            {
+	            text: AOCLit.customerItemNO,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'customerItemNO',
+	            flex: 1
+	        },{
+	            text: AOCLit.glid,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'glid',
+	            flex: 1
+	        },{
+	            text: AOCLit.identifierValue,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'identifierValue',
+	            flex: 1
+	        },{
+	            text: AOCLit.partnerName,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'partnerName',
+	            flex: 1
+	        },{
+	            text: AOCLit.RBOName,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'rboName',
+	            flex: 1
+	        },{
+	            text: AOCLit.orgCode,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'orgCode',
+	            flex: 1
+	        },{
+	            text: AOCLit.system,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'system',
+	            flex: 1
+	        },{
+	            text: AOCLit.lastModifiedBy,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'lastModifiedBy',
+	            flex: 1
+	        },{
+	            text: AOCLit.lastModifiedDate,
+	            width: 120,
+	            sortable: true,
+	            align:'left',
+	            dataIndex: 'lastModifiedDate',
+	            flex: 1
+	        }
         ];
-        
     },
     buildtbar: function () {
         var me = this;
@@ -126,7 +125,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupGrid', {
                 itemId: 'newLocalItemLookup',
                 iconCls: 'fa fa-plus',
                 cls: 'blue-btn',
-                handler: 'openLocalItemLookupWindow'
+                handler: 'onAddBtnClick'
             },{
                 text: 'Delete',
                 itemId: 'deleteLocalItemLookup',

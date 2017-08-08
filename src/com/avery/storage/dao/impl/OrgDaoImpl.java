@@ -78,9 +78,12 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 				.add(Projections.property("id"), "id")
 				.add(Projections.property("site.id"), "siteId")
 				.add(Projections.property("name"), "name")
+				.add(Projections.property("system.id"), "systemId")
 				.add(Projections.groupProperty("name"));
+		
 		criteria = session.createCriteria(Org.class).createAlias("system", "system").createAlias("system.site", "site")
 				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Org.class));
+		
 		if (queryMap.getFirst("siteId") != null && queryMap.getFirst("siteId") != "") {
 			String siteId = (String) queryMap.getFirst("siteId");
 			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())

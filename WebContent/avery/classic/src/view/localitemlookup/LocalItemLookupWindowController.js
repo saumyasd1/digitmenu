@@ -7,8 +7,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
     		refs = me.getReferences(),
     		view = me.getView(),
     		form = refs.localItemLookupForm,
-    		grid = view.gridView,
-    		editMode = view.editMode,
+    		editMode = view.mode == 'edit' ? true : false,
     		url = '',
     		valueObj ='',
     		method ='',
@@ -16,7 +15,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
     	
         var length = 0;
         if (editMode) {
-            url = applicationContext + '/rest/localitem/' + view.ID;
+            url = applicationContext + '/rest/localitem/' + view.rec.id;
             form.updateRecord();
             method = 'PUT';
             valueObj = form.getRecord().getChanges(false, true, false, true);
@@ -29,6 +28,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             length = 1;
             msg = AOCLit.addLocalItem;
         }
+        valueObj.partnerName = refs['partnerName'].getRawValue();
         valueObj.createdBy = Helper.setLastModifiedBy();
         valueObj.lastModifiedBy = Helper.setLastModifiedBy();
         var parameters = Ext.JSON.encode(valueObj);
@@ -43,15 +43,15 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
                     success: function(response, opts) {
                         var jsonString = Ext.JSON.decode(response.responseText),
                         	valueExist = jsonString.valueExist;
-                        if (valueExist) {
-                        	view.unmask();
-                        	Helper.showToast('failure',AOCLit.entryExist)
-                            return false;
-                        }
+                        
                         view.unmask();
-                        view.close();
-                        Helper.showToast('success',msg);
-                        grid.store.load();
+                        if (valueExist) {
+                        	Helper.showToast('validation', AOCLit.entryExist)
+                        }else{
+                        	Helper.showToast('success',msg);
+                            view.gridView.store.load();
+                            view.close();
+                        }
                     },
                     failure: function(response, opts) {
                     	msg = response.responseText;
@@ -61,18 +61,46 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
                     }
                 });
             } else {
-            	Helper.showToast('failure',AOCLit.fillMandatoryFieldMsg);
+            	Helper.showToast('validation', AOCLit.fillMandatoryFieldMsg);
             }
             AOCRuntime.setWindowInEditMode(false);
         } else {
-        	Helper.showToast('failure',AOCLit.editFieldEntryMsg);
+        	Helper.showToast('validation', AOCLit.editFieldEntryMsg);
         }
-    
+    },
+    onPartnerComboSelect:function(combo, record){
+    	var me = this,
+    		refs = me.getReferences(),
+    		rboCombo = refs['rboName'];
+    	
+    	var response = Ext.Ajax.request({
+	            async: false,
+	            url:applicationContext+'/rest/productLines/rbo/'+combo.getValue()
+        	});
+    	
+    	var jsonValue = Ext.decode(response.responseText);
+    	if(jsonValue && jsonValue.length > 0){
+    		rboCombo.setDisabled(false);
+    		rboCombo.store.loadData(jsonValue);
+    	}else{
+    		Helper.showToast('validation', 'No RBO found for selected Partner.Please select another partner to proceed.')
+    		rboCombo.setDisabled(true);
+    	}
+    },
+    onPartnerComboExpand:function(combo){
+    	var siteId = AOCRuntime.getUser().siteId;
+    	
+    	combo.store.clearFilter();
+    	combo.store.filterBy(function(rec){
+    		if(siteId){
+    			if(rec.get('siteId') == siteId){
+    				return true;
+    			}return false;
+    		}return true;
+    	});
     },
     closeBtnClick: function () {
-        Ext.getBody().unmask();
         this.getView().close();
-        AOCRuntime.setWindowInEditMode(false);
 	},
 	onComboBlur:function(field){
     	Helper.clearCombo(field);

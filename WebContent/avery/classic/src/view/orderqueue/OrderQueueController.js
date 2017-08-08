@@ -4,6 +4,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
     requires: ['AOC.view.orderqueue.SalesOrderExpandableGrid', 
        'AOC.view.advsearch.OrderQueueAdvanceSearch'
     ],
+    
+    onComboBlur:function(combo, e){
+    	Helper.clearCombo(combo,e);
+    },
     getOrdersBasedOnSearchParameters: function() {
         var OrderQueueStore = Ext.create('AOC.store.OrderQueueStore', {storeId:'OrderQueueId'});
         var bulkupdategrid = this.getView();

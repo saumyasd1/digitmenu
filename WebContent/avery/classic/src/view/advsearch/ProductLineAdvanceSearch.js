@@ -40,17 +40,21 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						},
 						items:[
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.partnerName,
-								name:'PartnerName',
+								xtype:'combo',
+								fieldLabel:AOCLit.partnerName,
+								name:'partnerName',
+								reference:'partnerCombo',
+								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
+								queryMode:'local',
+								tabIndex:4,
 								flex:1,
-								tabIndex:1,
-								selectOnTab : true,
+								displayField:'partnerName',
+								valueField:'partnerName',
 								enableKeyEvents:true,
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
-								
 							},
 							{
 								xtype : 'textfield',

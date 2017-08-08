@@ -1,8 +1,6 @@
 Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 	extend : 'AOC.view.base.NewBaseWindow',
 	alias : 'widget.addressadvancesearchwin',
-	itemId : 'addressAdvanceSearchWin',
-	reference:'addressAdvanceSearchWin',
 	controller : 'addresscontroller',
 	requires : ['Ext.window.MessageBox'],
 	
@@ -52,15 +50,20 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								}
 							},
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.partnerName,
+								xtype:'combo',
+								fieldLabel:AOCLit.partnerName,
 								name:'partnerName',
+								reference:'partnerCombo',
+								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
+								queryMode:'local',
 								flex:1,
-								enableKeyEvents:true,
+								displayField:'partnerName',
+								valueField:'partnerName',
 								margin:'0 0 0 10',
-								tabIndex:2,
+								enableKeyEvents:true,
 								listeners:{
-									specialkey:'getAdvancedSearchResults'
+									specialkey:'getAdvancedSearchResults',
+									blur:'onComboBlur'
 								}
 							}
 						]

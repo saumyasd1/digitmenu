@@ -12,6 +12,10 @@ Ext.define('AOC.view.address.AddressManageGrid', {
         rowcontextmenu:'onRowContextMenu',
         cellclick:'onCellClick'
     },
+    viewConfig: {
+        stripeRows: true,
+        enableTextSelection: true
+    },
     initComponent: function () {
         var me = this;
 
@@ -25,11 +29,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             store: Ext.create('AOC.store.AddressStore', {
                 storeId: 'AddressStoreId'
             }),
-            dockedItems: this.buildDockedItems(),
-            viewConfig: {
-                stripeRows: true,
-                enableTextSelection: true
-            }
+            
         });
         this.callParent(arguments);
     },
@@ -74,21 +74,25 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             }, {
                 text: AOCLit.Contact,
                 width: 150,
+                align:'left',
                 dataIndex: 'contact',
                 flex: 1
             }, {
                 text: AOCLit.Phone1,
                 width: 150,
+                align:'left',
                 dataIndex: 'phone1',
                 flex: 1
             }, {
                 text: AOCLit.fax,
                 width: 150,
+                align:'left',
                 dataIndex: 'fax',
                 flex: 1
             }, {
                 text: AOCLit.Email,
                 width: 150,
+                align:'left',
                 dataIndex: 'email',
                 flex: 1
             },{
@@ -110,7 +114,6 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 dataIndex: 'siteType',
                 flex: 1
             }
-
         ];
     },
     buildtbar: function () {
@@ -125,7 +128,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 itemId: 'newAddress',
                 iconCls: 'fa fa-plus',
                 cls: 'blue-btn',
-                handler: 'openAddAddressWindow',
+                handler: 'onAddAddressBtnClick',
                 listeners:{
                 	'afterrender':function(btn){
                 		if(AOCRuntime.getUser().role == 3) btn.setHidden(true);
@@ -158,18 +161,15 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             }
         ];
     },
-    buildDockedItems: function () {
-        return [{
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            ui: 'darktoolbar',
-            itemId: 'pagingtoolbar',
-            displayInfo: true,
-            pageSize: pageSize,
-            plugins: Ext.create('Ext.ux.ProgressBarPager', {
-                width: 250
-            })
-
-        }];
-    }
+    dockedItems: [{
+        xtype: 'pagingtoolbar',
+        dock: 'bottom',
+        ui: 'darktoolbar',
+        itemId: 'pagingtoolbar',
+        displayInfo: true,
+        pageSize: pageSize,
+        plugins: Ext.create('Ext.ux.ProgressBarPager', {
+            width: 250
+        })
+    }]
 });

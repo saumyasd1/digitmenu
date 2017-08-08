@@ -1,10 +1,7 @@
 Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 	extend : 'AOC.view.base.NewBaseWindow',
 	alias : 'widget.localitemlookupadvancesearch',
-	itemId : 'localItemLookupAdvanceSearchWin',
-	reference:'localItemLookupAdvanceSearchWin',
 	controller : 'localitemlookupcontroller',
-	requires : ['Ext.window.MessageBox'],
 	draggable:false,
 	layout:'fit',
 	width: 580,
@@ -22,11 +19,6 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 			rboStore = Ext.data.StoreManager.lookup('rboId') == null ? Ext.create('AOC.store.RBOStore') : Ext.data.StoreManager.lookup('rboId'),
 			orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgComboStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
 			systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemComboStore') : Ext.data.StoreManager.lookup('systemComboStoreId');
-//			scOrgCodeStore = [['PYT','PYT'],['PYL','PYL'],['POHKT','POHKT'],['POHKL','POHKL'],['ADNS','ADNS'],['ADNL','ADNL'],['ADHK','ADHK']],
-//			vtOrgCodeStore =[['VN','VN'],['PXVN','PXVN']],
-//			szOrgCodeStore = [['SZ','SZ'],['PXSH','PXSH']],
-//			scSZSystemStore =['Oracle','VIPS'],
-//        	vtSystemStore = ['Sparrow','VIPS'];
 			
 		rboStore.load();
 		orgStore.load();
@@ -105,7 +97,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								fieldLabel:AOCLit.partnerName,
 								name:'partnerName',
 								reference:'partnerCombo',
-								store:Ext.data.StoreManager.lookup('PartnerManagementStoreId')== null ? Ext.create('AOC.store.PartnerManagementStore') : Ext.data.StoreManager.lookup('PartnerManagementStoreId'),
+								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
 								queryMode:'local',
 								tabIndex:4,
 								editable:false,

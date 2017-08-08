@@ -72,6 +72,9 @@ public class Org extends MainAbstractEntity {
 	
 	@Transient
 	private Long siteId;
+	
+	@Transient
+	private Long systemId;
 
 	public List<Address> getAddressList() {
 		return addressList;
@@ -121,6 +124,14 @@ public class Org extends MainAbstractEntity {
 
 	public void setSiteId(Long siteId) {
 		this.siteId = siteId;
+	}
+
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
 	}
 
 	@GET

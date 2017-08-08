@@ -3,6 +3,7 @@ Ext.define('AOC.store.PartnerManagementStore', {
 	model:'AOC.model.PartnerManagementModel',
 	storeId:'PartnerManagementStoreId',
 	autoLoad:true,
+	remoteSort:false,
 	proxy: {
         type: 'rest',
         limitParam:'',
@@ -11,18 +12,8 @@ Ext.define('AOC.store.PartnerManagementStore', {
         url: applicationContext+'/rest/partners/all',
         reader: {
             type: 'json',
-            rootProperty: 'partners',
-            totalProperty: 'totalCount'
-        },
-        headers: {
-            "Authorization" : "Basic YWRtaW46aW5kaWdvMQ=="
+            rootProperty: 'partners'
         }
     }
-//    sorters:[
-//       {
-//    	   property:'partnerName',
-//    	   direction:'ASC'
-//       }
-//    ]
 });
 

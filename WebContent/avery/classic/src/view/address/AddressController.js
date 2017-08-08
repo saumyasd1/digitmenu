@@ -3,6 +3,9 @@ Ext.define('AOC.view.address.AddressController', {
     alias: 'controller.addresscontroller',
     requires: ['AOC.view.advsearch.AddressAdvanceSearch'],
     
+    onComboBlur:function(combo, e){
+    	Helper.clearCombo(combo,e);
+    },
     onActivateGrid:function(obj){
     	obj.down('pagingtoolbar').bindStore(obj.getStore());
     	 var userInfo = AOCRuntime.getUser(),
@@ -88,8 +91,8 @@ Ext.define('AOC.view.address.AddressController', {
 			grid = me.getView(),
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
-    	AOCRuntime.setWindowInEditMode(true);
-        me.openAddAddressWindow(currentRecord, currentRecord.get('id'), 'Edit Address');
+//    	AOCRuntime.setWindowInEditMode(true);
+        me.openAddAddressWindow(currentRecord, currentRecord.get('id'), 'Edit Address', 'edit');
     },
     onViewAddressItemClick:function(){
     	var me = this,
@@ -97,7 +100,7 @@ Ext.define('AOC.view.address.AddressController', {
 			currentRecord = grid.getSelectionModel().getSelection()[0];
     	
     	 AOCRuntime.setWindowInEditMode(true);
-         me.openAddAddressWindow(currentRecord, currentRecord.get('id'), 'View Address');
+         me.openAddAddressWindow(currentRecord, currentRecord.get('id'), 'View Address', 'view');
     },
     onDeleteAddressMenuItemClick:function(){
     	var me = this,
@@ -174,16 +177,16 @@ Ext.define('AOC.view.address.AddressController', {
         store = view.contextGrid.store;
         Helper.advancedSearch(view, values);
     },
-    openAddAddressWindow: function (currentRecord, id, title) {
-        var mode = AOCRuntime.getWindowInEditMode(),
-        	title = mode ? 'Edit Address' : 'Add Address';
-           	win = Ext.create('AOC.view.address.AddAddressWin', {
-                title: title,
-                rec: currentRecord,
-                editMode: mode,
-                ID: id
-            });
-           	
-         win.show(); 	
+    onAddAddressBtnClick:function(btn){
+    	this.openAddAddressWindow('','','Add Address', 'add');
+    },
+    openAddAddressWindow: function (currentRecord, id, title, mode) {
+    	var me =this;
+        Ext.create('AOC.view.address.AddAddressWin', {
+            title: title,
+            mode: mode,
+            rec: currentRecord,
+            contextGrid:me.getView()
+        }).show();
     }
 });
