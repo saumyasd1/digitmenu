@@ -1,5 +1,7 @@
 package com.avery.storage.dao.impl;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
+import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.Site;
 import com.avery.storage.entities.SystemInfo;
 
@@ -88,6 +91,36 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 		} catch (Exception e) {
 			AppLogger.getSystemLogger().error(
 					"Error in fetching system name", e);
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		
+	}
+	
+	@Override
+	public List getAllEntitiesList() {
+		Session session = null;
+		Criteria criteria = null;
+		try{
+			session = getSessionFactory().getCurrentSession();
+			Site site = new Site();
+			ProjectionList proj = Projections.projectionList()
+					.add(Projections.property("id"), "id")
+					.add(Projections.property("site.id"), "siteId")
+					.add(Projections.property("name"), "name")
+					.add(Projections.groupProperty("name"));
+			criteria = session.createCriteria(SystemInfo.class).createAlias("site", "site")
+					.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SystemInfo.class));
+			return criteria.list();
+		}catch (WebApplicationException ex) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line for site id ", ex);
+			throw ex;
+		} catch (Exception e) {
+			AppLogger.getSystemLogger().error(
+					"Error in fetching order line for site id " , e);
 			throw new WebApplicationException(Response
 					.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(ExceptionUtils.getRootCauseMessage(e))

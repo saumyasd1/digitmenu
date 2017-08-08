@@ -2,6 +2,7 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,8 +28,11 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.avery.app.config.SpringConfig;
+import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
+import com.avery.storage.MixIn.OrgMixIn;
 import com.avery.storage.MixIn.SystemInfoMixIn;
+import com.avery.storage.service.OrgService;
 import com.avery.storage.service.SystemInfoService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,6 +53,9 @@ public class SystemInfo extends MainAbstractEntity{
 	@Column(name = "name",length=50,unique=true)
 	private String name;
 	
+	@Transient
+	private Long siteId;
+
 	@Column(name = "comment",length=250)
 	private String comment;
 	
@@ -105,6 +113,14 @@ public class SystemInfo extends MainAbstractEntity{
 
 	public void setVarSystemCsrCode(List<SystemCsrCode> varSystemCsrCode) {
 		this.varSystemCsrCode = varSystemCsrCode;
+	}
+	
+	public Long getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(Long siteId) {
+		this.siteId = siteId;
 	}
 
 	@GET
@@ -164,6 +180,35 @@ public class SystemInfo extends MainAbstractEntity{
 			SystemInfoService systemInfoService = (SystemInfoService) SpringConfig
 					.getInstance().getBean("systemInfoService");
 			systems = systemInfoService.readAllBySiteId(siteId);
+			if (systems == null)
+				throw new Exception("Unable to find Systems");
+			mapper.setDateFormat(ApplicationUtils.df);
+			mapper.writeValue(writer, systems);
+			rb = Response.ok(writer.toString());
+		} catch (WebApplicationException ex) {
+			throw ex;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(ExceptionUtils.getRootCauseMessage(e))
+					.type(MediaType.TEXT_PLAIN_TYPE).build());
+		}
+		return rb.build();
+	}
+	
+	@Override
+	public Response getEntities(UriInfo ui, HttpHeaders hh) {
+		Response.ResponseBuilder rb = null;
+		List<SystemInfo> systems = null;
+		try{
+			StringWriter writer = new StringWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixIn(SystemInfo.class, SystemInfoMixIn.class);
+			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+			SystemInfoService systemInfoService = (SystemInfoService) SpringConfig
+					.getInstance().getBean("systemInfoService");
+			systems = systemInfoService.getAllEntitiesList();
 			if (systems == null)
 				throw new Exception("Unable to find Systems");
 			mapper.setDateFormat(ApplicationUtils.df);

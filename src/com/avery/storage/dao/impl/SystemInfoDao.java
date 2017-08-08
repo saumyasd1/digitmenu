@@ -13,4 +13,6 @@ public interface SystemInfoDao extends GenericDao<SystemInfo, Long>{
 	public List<SystemInfo> readAllBySiteId(Long siteId);
 	
 	public List<SystemInfo> getDistinctSystem();
+
+	List getAllEntitiesList();
 }

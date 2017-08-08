@@ -41,4 +41,8 @@ public class SystemInfoService extends GenericEntityService<SystemInfo, Long>{
 		
 	}
 
+	public List<SystemInfo> getAllEntitiesList() {
+		return getSystemInfoDao().getAllEntitiesList();
+	}
+
 }
