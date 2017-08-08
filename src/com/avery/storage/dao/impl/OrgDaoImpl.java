@@ -22,6 +22,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.avery.app.config.SpringConfig;
@@ -73,7 +74,13 @@ public class OrgDaoImpl extends GenericDaoImpl<Org, Long> implements
 		Map entitiesMap = new HashMap();
 		Criteria criteria = null;
 		Session session = getSessionFactory().getCurrentSession();
-		criteria = session.createCriteria(Org.class).createAlias("system", "system").createAlias("system.site", "site");
+		ProjectionList proj = Projections.projectionList()
+				.add(Projections.property("id"), "id")
+				.add(Projections.property("site.id"), "siteId")
+				.add(Projections.property("name"), "name")
+				.add(Projections.groupProperty("name"));
+		criteria = session.createCriteria(Org.class).createAlias("system", "system").createAlias("system.site", "site")
+				.setProjection(proj).setResultTransformer(Transformers.aliasToBean(Org.class));
 		if (queryMap.getFirst("siteId") != null && queryMap.getFirst("siteId") != "") {
 			String siteId = (String) queryMap.getFirst("siteId");
 			if (!siteId.equals("") && siteId != null && !siteId.isEmpty())

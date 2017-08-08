@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -68,6 +69,9 @@ public class Org extends MainAbstractEntity {
 	
 	@OneToMany(mappedBy = "varOrg", fetch = FetchType.LAZY)
 	private List<Org> varOrg;
+	
+	@Transient
+	private Long siteId;
 
 	public List<Address> getAddressList() {
 		return addressList;
@@ -109,6 +113,14 @@ public class Org extends MainAbstractEntity {
 
 	public void setVarOrg(List<Org> varOrg) {
 		this.varOrg = varOrg;
+	}
+	
+	public Long getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(Long siteId) {
+		this.siteId = siteId;
 	}
 
 	@GET
