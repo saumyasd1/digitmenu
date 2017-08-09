@@ -33,7 +33,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
         }];
     },
     buildItem: function () {
-        var orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
+        var me = this,
+        	orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
             systemStore =Ext.data.StoreManager.lookup('localItemSystemComboStoreId') == null ?  Ext.create('AOC.store.SystemStore',{storeId:'localItemSystemComboStoreId'}) :Ext.data.StoreManager.lookup('localItemSystemComboStoreId');
         return [{
             xtype: 'form',
@@ -75,7 +76,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                         fields: ['id', 'rboName', 'site'],
                         data: []
                     }),
-                    disabled: true,
+                    disabled: me.mode == 'edit' ? false :  true,
                     margin: '0 0 0 10',
                     displayField: 'rboName',
                     valueField: 'rboName',
@@ -104,7 +105,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     displayField: 'name',
                     valueField: 'id',
                     queryMode: 'local',
-                    disabled: true,
+                    disabled:  me.mode == 'edit' ? false :  true,
                     store: systemStore,
                     listeners: {
                         blur: 'onComboBlur',
@@ -120,7 +121,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     queryMode: 'local',
                     valueField: 'name',
                     margin: '0 0 0 10',
-                    disabled: true,
+                    disabled:  me.mode == 'edit' ? false :  true,
                     listeners: {
                         blur: 'onComboBlur'
                     }
