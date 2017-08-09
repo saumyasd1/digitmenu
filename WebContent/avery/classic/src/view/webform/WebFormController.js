@@ -521,7 +521,6 @@ Ext.define('AOC.view.webform.WebFormController', {
 			record = context.record,
 			attachmentField = view.lookupReference('attachment'), 
 			additionalDataFileKey = view.lookupReference('additionalDataFileKey');
-		
 	},
 	beforeEditorShow:function(editor,context){
 		view=this.getView(),
@@ -532,29 +531,8 @@ Ext.define('AOC.view.webform.WebFormController', {
 			return false;
 		}
 	},
-	afterRenderPartnerCombo: function(obj){
-        var userInfo = AOCRuntime.getUser(),
-        roleId = userInfo.role,
-        siteId = userInfo.siteId,
-        userId = userInfo.id,
-        userEmailId = userInfo.email;
-    obj.getStore().proxy.extraParams = {
-        siteId: siteId,
-        roleId: roleId,
-        userId: userId,
-        userEmailId: userEmailId
-    };
-   },
-   onAfterRenderCSRList: function(obj){
-//	    var userInfo = AOCRuntime.getUser(),
-//	    roleId = userInfo.role,
-//	    siteId = userInfo.siteId;
-//	obj.getStore().proxy.extraParams = {
-//	    siteId: siteId,
-//	    roleId: roleId
-//	};
-	obj.getStore().load();
-	
+	onAfterRenderCSRList: function(obj){
+	   obj.getStore().load();
 	},
 	onAfterRenderPartner: function(combo){
 		Helper.getPartnerListBySiteId(combo);

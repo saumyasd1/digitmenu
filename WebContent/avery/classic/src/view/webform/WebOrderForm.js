@@ -11,9 +11,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	alias:'widget.weborderform',
 	itemId:'weborderformItemId',
 	bodyPadding: '10',
-	requires: [
-	    'AOC.lang.lit'
-	],
 	border:false,
 	attachmentFileNameExtension_1:null,
 	attachmentCount:1,
@@ -71,8 +68,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
 						isChangedForFirstTime:true,
-						store:Ext.create('AOC.store.UniquePartnerStore'),
-						valueField:'id',
+						store: Ext.data.StoreManager.lookup('uniquePartnerStoreId'),
 						name:'partnerName',
 						editable:false,
 						allowBlank : false,
@@ -80,9 +76,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						margin:'0 0 0 155',
 						flex:1,
 						displayField:'name',
+						valueField:'id',
 						listeners:{
-							'change':'onPartnerChange',
-							'afterrender':'onAfterRenderPartner'
+							'change':'onPartnerChange'
 						}
 					},
 					{

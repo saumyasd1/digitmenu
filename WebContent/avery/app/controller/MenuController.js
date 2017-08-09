@@ -322,8 +322,16 @@ Ext.define('AOC.controller.MenuController', {
         Helper.loadAllVariableComboStore('EndCustomer');
         Helper.loadAllVariableComboStore('SplitShipset');
         Helper.loadOrgSystemStore();
-        
+        this.loadUniquePartner();
         this.getServerSystemOffset();
+    },
+    loadUniquePartner:function(){
+    	var store = Ext.data.StoreManager.lookup('uniquePartnerStoreId') != null ?  Ext.data.StoreManager.lookup('uniquePartnerStoreId') : Ext.create('AOC.store.UniquePartnerStore',{storeId:'uniquePartnerStoreId'}),
+    		siteId = AOCRuntime.getUser().siteId;
+    	
+    	 store.proxy.extraParams = {
+	         siteId: siteId,
+	     };
     },
     loadCsrList:function(){
     	var userInfo = AOCRuntime.getUser(),

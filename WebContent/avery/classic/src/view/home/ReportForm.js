@@ -34,7 +34,7 @@ Ext.define('AOC.view.home.ReportForm',{
 						reference:'partnerCombo',
 						itemId:'partnerCombo',
 						valueField:'id',
-						store:Ext.data.StoreManager.lookup('reportPartnerId') != null ? Ext.data.StoreManager.lookup('reportPartnerId')  :Ext.create('AOC.store.UniquePartnerStore',{storeId:'reportPartnerId'}),
+						store:Ext.data.StoreManager.lookup('reportPartnerId') != null ? Ext.data.StoreManager.lookup('reportPartnerId') :Ext.create('AOC.store.UniquePartnerStore',{storeId:'reportPartnerId'}),
 						name:'partnerName',
 						allowBlank : false,
 						reference:'partner',
@@ -44,8 +44,13 @@ Ext.define('AOC.view.home.ReportForm',{
 						queryMode:'local',
 						listeners:{
 							select:'onPartnerSelect',
-							afterrender:'onPartnerComboAfterRender',
+							//afterrender:'onPartnerComboAfterRender',
 							focus:function(field){
+								var siteId = AOCRuntime.getUser().siteId;
+								field.store.proxy.extraParams = {
+									siteId: siteId,
+								};
+								
 								field.store.load();
 							},
 							expand:'onPartnerComboExpand',

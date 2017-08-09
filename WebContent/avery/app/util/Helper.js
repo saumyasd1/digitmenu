@@ -1008,10 +1008,11 @@ Ext.define('AOC.util.Helper',{
 	    }
 	},
 	getPartnerListBySiteId: function(combo){
-		combo.store.on('load',function(){
+		combo.store.on('load', function(){
 			var userInfo = AOCRuntime.getUser(),
 				role = userInfo.role,
 				currentUserSiteId = userInfo.siteId;
+			
 			combo.store.filterBy(function(record){
 				if(role == AOCLit.userRole.superAdmin){
 					return true;
@@ -1024,7 +1025,6 @@ Ext.define('AOC.util.Helper',{
 					}
 				}
 			});
-			
 		});
 	},
 	onPartnerDSComboExpand:function(field){
