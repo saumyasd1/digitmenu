@@ -2,14 +2,11 @@ package com.avery.storage.entities;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -37,12 +33,7 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.MainAbstractEntity;
 import com.avery.storage.MixIn.PartnerMixIn;
-import com.avery.storage.MixIn.ProductLineMixIn;
-import com.avery.storage.MixIn.RboMixIn;
-import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.PartnerService;
-import com.avery.storage.service.SiteService;
-import com.avery.storage.service.UserService;
 import com.avery.utils.ApplicationUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,42 +109,18 @@ public class Partner extends MainAbstractEntity {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ProductLine> varProductLine = new ArrayList<ProductLine>();
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@OneToMany(mappedBy = "varPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	List<SalesOrder> listSalesOrderLine = new ArrayList<SalesOrder>();
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@OneToMany(mappedBy = "varPartner", fetch = FetchType.LAZY)
-//	List<Address> addressList = new ArrayList<Address>();
-//	
-//	public List<Address> getAddressList() {
-//		return addressList;
-//	}
-//
-//
-//
-//	public void setAddressList(List<Address> addressList) {
-//		this.addressList = addressList;
-//	}
-
-
 
 	public Partner(){
 		
 	}
-	
-	
 
 	public String getPartnerName() {
 		return partnerName;
 	}
 
-
-
 	public void setPartnerName(String partnerName) {
 		this.partnerName = partnerName;
 	}
-
-
 
 	public String getEmailDomain() {
 		return emailDomain;
@@ -300,22 +267,6 @@ public class Partner extends MainAbstractEntity {
 		this.varProductLine = varProductLine;
 	}
 	
-//	public void setSitename(String siteName) {
-//		this.siteName = siteName;
-//	}
-//	
-//	public String getSiteName() {
-//		return siteName;
-//	}
-
-//	public List<SalesOrder> getListSalesOrderLine() {
-//		return listSalesOrderLine;
-//	}
-//
-//	public void setListSalesOrderLine(List<SalesOrder> listSalesOrderLine) {
-//		this.listSalesOrderLine = listSalesOrderLine;
-//	}
-	
 	private transient int productLineCount;
 	private transient int addressCount;
 	
@@ -339,58 +290,19 @@ public class Partner extends MainAbstractEntity {
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;
-		Map<?, ?> entitiesMap=new HashMap();;
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		List<Partner> partnerList = null;
+		Map<?, ?> entitiesMap=null;
 		try {
 			StringWriter writer = new StringWriter();
 			ObjectMapper mapper = new ObjectMapper();
 			MultivaluedMap<String, String> queryParamMap =ui.getQueryParameters();
-			String siteId = null;
-			siteId = queryParamMap.getFirst("siteId");
 			mapper.addMixIn(Partner.class,PartnerMixIn.class);
-			mapper.addMixIn(ProductLine.class, ProductLineMixIn.class);
-			mapper.addMixIn(SalesOrder.class, SalesOrderMixIn.class);
-			mapper.addMixIn(RBO.class, RboMixIn.class);
-			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			PartnerService partnerService = (PartnerService) SpringConfig
 					.getInstance().getBean("partnerService");
-			/**if (siteId == null || siteId.isEmpty() || siteId.equals("1")) {	*/			
 			entitiesMap = partnerService.readWithCriteria( queryParamMap);
 			if (entitiesMap == null || entitiesMap.isEmpty())
 				throw new Exception("Unable to find partners");
-			else{
-				List listofPL=(List) entitiesMap.get("partners");
-				List listOfPR=new LinkedList<Partner>();
-				SiteService siteService = (SiteService) SpringConfig.getInstance().getBean("siteService");
-				
-				UserService userService = (UserService) SpringConfig.getInstance().getBean("userService");		
-				for(int i=0;i<listofPL.size();i++)
-				{
-					Partner currentPartner=(Partner) listofPL.get(i);
-					String lastmodifiedUserId=currentPartner.getLastModifiedBy();
-					/*if(lastmodifiedUserId!=null)
-					{
-					String LastModifiedByName=userService.getUsernameById(lastmodifiedUserId);
-					currentPartner.setLastModifiedBy(LastModifiedByName);
-					}*/
-//					if(currentPartner.getSiteId()!=null)
-//					{
-//						int siteId1=currentPartner.getSiteId();
-//						Site site = siteService.read((long)siteId1);
-//						if(site != null)
-//						currentPartner.setSitename(site.getName());
-//					}
-					listOfPR.add(currentPartner);
-				}
-				responseMap.put("partners", listOfPR);
-				mapper.writeValue(writer, responseMap);
-				}
-			if(entitiesMap.containsKey("totalCount"))
-			responseMap.put("totalCount", entitiesMap.get("totalCount"));
-			if(entitiesMap.containsKey("rbo"))
-			responseMap.put("rbo", entitiesMap.get("rbo"));
+			mapper.writeValue(writer, entitiesMap);
 			rb = Response.ok(writer.toString());
 		} catch (WebApplicationException ex) {
 			throw ex;
