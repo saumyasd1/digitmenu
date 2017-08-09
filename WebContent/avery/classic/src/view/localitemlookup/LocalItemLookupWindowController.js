@@ -1,18 +1,18 @@
 Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.localitemlookupwindowcontroller',
-    
-    saveBtnClick:function(){
-    	var me = this,
-    		refs = me.getReferences(),
-    		view = me.getView(),
-    		form = refs.localItemLookupForm,
-    		editMode = view.mode == 'edit' ? true : false,
-    		url = '',
-    		valueObj ='',
-    		method ='',
-    		msg ='';
-    	
+
+    saveBtnClick: function () {
+        var me = this,
+            refs = me.getReferences(),
+            view = me.getView(),
+            form = refs.localItemLookupForm,
+            editMode = view.mode == 'edit' ? true : false,
+            url = '',
+            valueObj = '',
+            method = '',
+            msg = '';
+
         var length = 0;
         if (editMode) {
             url = applicationContext + '/rest/localitem/' + view.rec.id;
@@ -32,77 +32,100 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
         valueObj.createdBy = Helper.setLastModifiedBy();
         valueObj.lastModifiedBy = Helper.setLastModifiedBy();
         var parameters = Ext.JSON.encode(valueObj);
-        
+
         if (length > 0) {
             if (form.isValid()) {
-            	view.mask('Saving....');
+                view.mask('Saving....');
                 Ext.Ajax.request({
                     method: method,
                     jsonData: parameters,
                     url: url,
-                    success: function(response, opts) {
+                    success: function (response, opts) {
                         var jsonString = Ext.JSON.decode(response.responseText),
-                        	valueExist = jsonString.valueExist;
-                        
+                            valueExist = jsonString.valueExist;
+
                         view.unmask();
                         if (valueExist) {
-                        	Helper.showToast('validation', AOCLit.entryExist)
-                        }else{
-                        	Helper.showToast('success',msg);
+                            Helper.showToast('validation', AOCLit.entryExist)
+                        } else {
+                            Helper.showToast('success', msg);
                             view.gridView.store.load();
                             view.close();
                         }
                     },
-                    failure: function(response, opts) {
-                    	msg = response.responseText;
-                    	msg = msg.replace("Exception:", " ");
+                    failure: function (response, opts) {
+                        msg = response.responseText;
+                        msg = msg.replace("Exception:", " ");
                         Helper.showToast('failure', msg);
                         view.unmask();
                     }
                 });
             } else {
-            	Helper.showToast('validation', AOCLit.fillMandatoryFieldMsg);
+                Helper.showToast('validation', AOCLit.fillMandatoryFieldMsg);
             }
             AOCRuntime.setWindowInEditMode(false);
         } else {
-        	Helper.showToast('validation', AOCLit.editFieldEntryMsg);
+            Helper.showToast('validation', AOCLit.editFieldEntryMsg);
         }
     },
-    onPartnerComboSelect:function(combo, record){
-    	var me = this,
-    		refs = me.getReferences(),
-    		rboCombo = refs['rboName'];
-    	
-    	var response = Ext.Ajax.request({
-	            async: false,
-	            url:applicationContext+'/rest/productLines/rbo/'+combo.getValue()
-        	});
-    	
-    	var jsonValue = Ext.decode(response.responseText);
-    	if(jsonValue && jsonValue.length > 0){
-    		rboCombo.setDisabled(false);
-    		rboCombo.store.loadData(jsonValue);
-    	}else{
-    		Helper.showToast('validation', 'No RBO found for selected Partner.Please select another partner to proceed.')
-    		rboCombo.setDisabled(true);
-    	}
+    onPartnerComboSelect: function (combo, record) {
+        var me = this,
+            refs = me.getReferences(),
+            rboCombo = refs['rboName'];
+
+        var response = Ext.Ajax.request({
+            async: false,
+            url: applicationContext + '/rest/productLines/rbo/' + combo.getValue()
+        });
+
+        var jsonValue = Ext.decode(response.responseText);
+        if (jsonValue && jsonValue.length > 0) {
+            rboCombo.setDisabled(false);
+            rboCombo.store.loadData(jsonValue);
+        } else {
+            Helper.showToast('validation', 'No RBO found for selected Partner.Please select another partner to proceed.')
+            rboCombo.setDisabled(true);
+        }
     },
-    onPartnerComboExpand:function(combo){
-    	var siteId = AOCRuntime.getUser().siteId;
-    	
-    	combo.store.clearFilter();
-    	combo.store.filterBy(function(rec){
-    		if(siteId){
-    			if(rec.get('siteId') == siteId){
-    				return true;
-    			}return false;
-    		}return true;
-    	});
+    onPartnerComboExpand: function (combo) {
+        var siteId = AOCRuntime.getUser().siteId;
+
+        combo.store.clearFilter();
+        combo.store.filterBy(function (rec) {
+            if (siteId) {
+                if (rec.get('siteId') == siteId) {
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        });
     },
     closeBtnClick: function () {
         this.getView().close();
-	},
-	onComboBlur:function(field){
-    	Helper.clearCombo(field);
-	}
+    },
+    onComboBlur: function (field) {
+        Helper.clearCombo(field);
+    },
+    onSystemSelect: function (combo) {
+        var me = this,
+            view = me.getView(),
+            refs = view.getReferences(),
+            orgCombo = refs.orgCombo,
+            systemId = combo.getValue(),
+            orgStore = orgCombo.store;
+
+        AOCRuntime.setCurrentUserSystemId(systemId);
+        var proxy = new Ext.data.proxy.Rest({
+            url: applicationContext + '/rest/org/system/' + systemId,
+            appendId: true,
+            reader: {
+                type: 'json'
+            },
+            autoLoad: true
+        });
+        orgStore.setProxy(proxy);
+        orgStore.load();
+        orgCombo.enable();
+    }
 });
