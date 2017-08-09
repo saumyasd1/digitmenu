@@ -119,7 +119,7 @@ public class LocalItemDaoImpl extends GenericDaoImpl<LocalItem, Long> implements
 				criteria.add(Restrictions.in("orgCode",orgCodeArr));
 			}
 			
-			String system=searchMap.get("system");
+			String system=searchMap.get("systemName");
 			List<String> systemArr = ApplicationUtils.convertStringToList(system);
 			if(system!=null && !"".equals(system.trim())){
 				criteria.add(Restrictions.in("system",systemArr));
