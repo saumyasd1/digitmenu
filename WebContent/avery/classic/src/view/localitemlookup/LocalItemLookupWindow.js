@@ -36,6 +36,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
         var me = this,
         	orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
             systemStore =Ext.data.StoreManager.lookup('localItemSystemComboStoreId') == null ?  Ext.create('AOC.store.SystemStore',{storeId:'localItemSystemComboStoreId'}) :Ext.data.StoreManager.lookup('localItemSystemComboStoreId');
+            
         return [{
             xtype: 'form',
             reference: 'localItemLookupForm',
@@ -64,8 +65,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     valueField: 'id',
                     listeners: {
                         blur: 'onComboBlur',
-                        select: 'onPartnerComboSelect',
-                        change:'onPartnerChange'
+                        select: 'onPartnerComboSelect'
+//                        change:'onPartnerChange'
                     }
                 }, {
                     itemId: 'RItemId',
@@ -109,8 +110,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     store: systemStore,
                     listeners: {
                         blur: 'onComboBlur',
-                        select: 'onSystemSelect',
-                        change:'onSystemComboChange'
+                        select: 'onSystemSelect'
+//                        change:'onSystemComboChange'
                     }
                 }, {
                     name: 'orgCode',

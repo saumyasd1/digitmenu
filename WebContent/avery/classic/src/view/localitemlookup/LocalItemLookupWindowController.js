@@ -73,6 +73,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
         var me = this,
             refs = me.getReferences(),
             rboCombo = refs['rboName'];
+        
+        me.resetRBOOrgFields();
 
         var response = Ext.Ajax.request({
             async: false,
@@ -102,6 +104,18 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             return true;
         });
     },
+    resetRBOOrgFields:function(){
+    	var me = this,
+	        view = me.getView(),
+	        refs = view.getReferences(),
+	        orgCombo = refs.orgCombo,
+	        rboCombo = refs.rboName,
+	        systemCombo = refs.systemCombo;
+		
+		orgCombo.reset();
+		rboCombo.reset();
+		systemCombo.reset();
+    },
     onPartnerChange:function(combo){
     	var me = this,
 	        view = me.getView(),
@@ -109,6 +123,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
 	        orgCombo = refs.orgCombo,
 	        rboCombo = refs.rboName,
 	        systemCombo = refs.systemCombo;
+    	
     	orgCombo.reset();
     	rboCombo.reset();
     	systemCombo.reset();
