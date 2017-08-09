@@ -75,7 +75,7 @@ Ext.define('AOC.model.OrderLineModel',{
  		{name: 'invoicelineInstruction', mapping:'invoicelineInstruction',type: 'string'},
  		{name: 'divisionForInterfaceERPORG', mapping:'divisionForInterfaceERPORG',type: 'string'},
  		{name: 'artWorkhold'},
- 		{name: 'artworkAttachment', type: 'boolean'},
+ 		{name: 'artworkAttachment'},
  		{name: 'variableDataBreakdown',type: 'string'},
  		{name: 'manufacturingNotes', type: 'string'},
  		{name: 'orderType', type: 'string'},
