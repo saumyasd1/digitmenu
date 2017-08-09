@@ -116,10 +116,9 @@ Ext.define('AOC.view.address.AddAddressWin',{
 								valueField:'id',
 								reference:'partnerName',
 								queryMode:'local',
-								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
+								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								listeners : {
 									blur:'onComboBlur',
-									//afterrender:'onAfterRenderPartnerCombo'
 									expand:'onPartnerComboExpand'
 								}
 							},

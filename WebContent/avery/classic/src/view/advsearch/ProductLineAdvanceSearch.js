@@ -44,7 +44,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								fieldLabel:AOCLit.partnerName,
 								name:'partnerName',
 								reference:'partnerCombo',
-								store:Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
+								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								queryMode:'local',
 								tabIndex:4,
 								flex:1,
