@@ -34,8 +34,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
     },
     buildItem: function () {
         var orgStore = Ext.data.StoreManager.lookup('orgComboStoreId') == null ? Ext.create('AOC.store.OrgStore') : Ext.data.StoreManager.lookup('orgComboStoreId'),
-            systemStore = Ext.data.StoreManager.lookup('systemComboStoreId') == null ? Ext.create('AOC.store.SystemStore') : Ext.data.StoreManager.lookup('systemComboStoreId');
-
+            systemStore =Ext.data.StoreManager.lookup('localItemSystemComboStoreId') == null ?  Ext.create('AOC.store.SystemStore',{storeId:'localItemSystemComboStoreId'}) :Ext.data.StoreManager.lookup('localItemSystemComboStoreId');
         return [{
             xtype: 'form',
             reference: 'localItemLookupForm',
@@ -57,14 +56,15 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     fieldLabel: AOCLit.partnerName,
                     name: 'partnerName',
                     reference: 'partnerName',
-                    store: Ext.data.StoreManager.lookup('localItemPartnerStoreId'),
+                    store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
                     allowBlank: false,
                     queryMode: 'local',
                     displayField: 'partnerName',
                     valueField: 'id',
                     listeners: {
                         blur: 'onComboBlur',
-                        select: 'onPartnerComboSelect'
+                        select: 'onPartnerComboSelect',
+                        change:'onPartnerChange'
                     }
                 }, {
                     itemId: 'RItemId',
@@ -81,7 +81,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     valueField: 'rboName',
                     queryMode: 'local',
                     listeners: {
-                        blur: 'onComboBlur'
+                        blur: 'onComboBlur',
+                        select:'onRBOSelect'
                     }
                 }]
             }, {
@@ -107,7 +108,8 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                     store: systemStore,
                     listeners: {
                         blur: 'onComboBlur',
-                        select: 'onSystemSelect'
+                        select: 'onSystemSelect',
+                        change:'onSystemComboChange'
                     }
                 }, {
                     name: 'orgCode',
@@ -150,12 +152,11 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindow', {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
                 margin: '0 0 5 0',
-                flex: 1,
                 defaults: {
                     labelSeparator: '',
                     labelStyle: Settings.config.defaultFormLabelStyle,
                     labelAlign: Settings.form.topLabelAlign,
-                    flex: 1
+                    width:280
                 },
                 items: [{
                     xtype: 'textfield',

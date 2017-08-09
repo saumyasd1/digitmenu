@@ -29,6 +29,7 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             msg = AOCLit.addLocalItem;
         }
         valueObj.partnerName = refs['partnerName'].getRawValue();
+        valueObj.system = refs['systemCombo'].getRawValue();
         valueObj.createdBy = Helper.setLastModifiedBy();
         valueObj.lastModifiedBy = Helper.setLastModifiedBy();
         var parameters = Ext.JSON.encode(valueObj);
@@ -101,11 +102,30 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
             return true;
         });
     },
+    onPartnerChange:function(combo){
+    	var me = this,
+	        view = me.getView(),
+	        refs = view.getReferences(),
+	        orgCombo = refs.orgCombo,
+	        rboCombo = refs.rboName,
+	        systemCombo = refs.systemCombo;
+    	orgCombo.reset();
+    	rboCombo.reset();
+    	systemCombo.reset();
+    },
     closeBtnClick: function () {
         this.getView().close();
     },
     onComboBlur: function (field) {
         Helper.clearCombo(field);
+    },
+    onRBOSelect:function(combo,record){
+    	var me = this,
+	        view = me.getView(),
+	        siteId = record.get('site'),
+	        refs = view.getReferences(),
+	        systemCombo = refs['systemCombo'];
+    	me.filterSystemStore(siteId);
     },
     onSystemSelect: function (combo) {
         var me = this,
@@ -127,5 +147,37 @@ Ext.define('AOC.view.localitemlookup.LocalItemLookupWindowController', {
         orgStore.setProxy(proxy);
         orgStore.load();
         orgCombo.enable();
+    },
+    filterSystemStore:function(siteId){
+    	var me = this,
+        	refs = me.getReferences(),
+        	systemCombo = refs.systemCombo,
+            systemStore = systemCombo.store;
+    	
+    	systemStore.clearFilter();
+    	systemCombo.enable();
+    	me.filterStoreBySiteId(systemStore, siteId);
+    	
+    	if(systemStore.getCount() == 0){
+    		systemCombo.disable();
+    	}
+    },
+    filterStoreBySiteId:function(store, siteId){
+    	store.filterBy(function(rec){
+    		if(siteId){
+ 		    	if(rec.get('siteId') == siteId){
+ 		    		return true;
+ 		    	}
+ 		    	return false;
+ 	    	}
+ 	    	return true;
+    	});
+    },
+    onSystemComboChange:function(combo){
+    	var me = this,
+	        view = me.getView(),
+	        refs = view.getReferences(),
+	        orgCombo = refs.orgCombo;
+    	orgCombo.reset();
     }
 });
