@@ -109,8 +109,8 @@ public class SystemInfoDaoImpl extends GenericDaoImpl<SystemInfo, Long> implemen
 			ProjectionList proj = Projections.projectionList()
 					.add(Projections.property("id"), "id")
 					.add(Projections.property("site.id"), "siteId")
-					.add(Projections.property("name"), "name")
-					.add(Projections.groupProperty("name"));
+					.add(Projections.property("name"), "name");
+					//.add(Projections.groupProperty("name"));
 			criteria = session.createCriteria(SystemInfo.class).createAlias("site", "site")
 					.setProjection(proj).setResultTransformer(Transformers.aliasToBean(SystemInfo.class));
 			return criteria.list();
