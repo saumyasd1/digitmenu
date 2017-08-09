@@ -1065,5 +1065,11 @@ Ext.define('AOC.util.Helper',{
 		};
 		orgStore.load();
 		systemStore.load();
+	},
+	loadPartnerComboStore:function(){
+		var store = Ext.data.StoreManager.lookup('partnerComboStoreId');
+		store.load({
+			params:{siteId:AOCRuntime.getUser().siteId}
+		});
 	}
 });

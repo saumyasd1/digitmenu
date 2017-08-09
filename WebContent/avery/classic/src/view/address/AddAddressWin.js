@@ -118,8 +118,8 @@ Ext.define('AOC.view.address.AddAddressWin',{
 								queryMode:'local',
 								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								listeners : {
-									blur:'onComboBlur',
-									expand:'onPartnerComboExpand'
+									blur:'onComboBlur'
+//									expand:'onPartnerComboExpand'
 								}
 							},
 							{
@@ -421,6 +421,7 @@ Ext.define('AOC.view.address.AddAddressWin',{
 		];
 	},
 	onDestroy:function(){
+		Helper.loadPartnerComboStore();
 		this.contextGrid.store.load();
 		this.callParent(arguments);
 	}

@@ -37,5 +37,9 @@ public abstract class PartnerMixIn {
 	
 	@JsonIgnore
 	public abstract List<Address> getAddressList();
+	
+	@JsonIgnore
+	public abstract Integer getSiteId();
+	
 
 }

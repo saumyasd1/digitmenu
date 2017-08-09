@@ -52,56 +52,56 @@ public class Partner extends MainAbstractEntity {
 	@Column(name = "partnerName", length = 250)
 	private String partnerName;
 	
-	@Column(name = "emailDomain", length = 100)
-	private String emailDomain;
-	
-	@Column(name = "emailId", length = 100)
-	private String emailId;
-	
-	@Column(name = "address1", length = 250)
-	private String address1;
-	
-	@Column(name = "address2", length = 250)
-	private String address2;
-	
-	@Column(name = "address3", length = 250)
-	private String address3;
-	
-	@Column(name = "city", length = 250)
-	private String city;
-	
-	@Column(name = "state", length = 250)
-	private String state;
-	
-	@Column(name = "country", length = 250)
-	private String country;
-	
-	@Column(name = "phone", length = 250)
-	private String phone;
-	
-	@Column(name = "alternatePhone", length = 250)
-	private String alternatePhone;
-	
-	@Column(name = "fax", length = 250)
-	private String fax;
-	
-	@Column(name = "contactPerson", length = 250)
-	private String contactPerson;
-	
+//	@Column(name = "emailDomain", length = 100)
+//	private String emailDomain;
+//	
+//	@Column(name = "emailId", length = 100)
+//	private String emailId;
+//	
+//	@Column(name = "address1", length = 250)
+//	private String address1;
+//	
+//	@Column(name = "address2", length = 250)
+//	private String address2;
+//	
+//	@Column(name = "address3", length = 250)
+//	private String address3;
+//	
+//	@Column(name = "city", length = 250)
+//	private String city;
+//	
+//	@Column(name = "state", length = 250)
+//	private String state;
+//	
+//	@Column(name = "country", length = 250)
+//	private String country;
+//	
+//	@Column(name = "phone", length = 250)
+//	private String phone;
+//	
+//	@Column(name = "alternatePhone", length = 250)
+//	private String alternatePhone;
+//	
+//	@Column(name = "fax", length = 250)
+//	private String fax;
+//	
+//	@Column(name = "contactPerson", length = 250)
+//	private String contactPerson;
+//	
 	@Column(name = "active")
 	private Boolean active;
 	
-	@Column(name = "comment", length = 250)
-	private String comment;
-	
-	@Column(name = "siteId")
-	private Integer siteId;
-	
-	@Column(name="zip",length=50)
-	private String zip;
-	
-	@Column(name = "orgCode", length = 50)
-	private String orgCode;
+//	@Column(name = "comment", length = 250)
+//	private String comment;
+//	
+//	@Column(name = "siteId")
+//	private Integer siteId;
+//	
+//	@Column(name="zip",length=50)
+//	private String zip;
+//	
+//	@Column(name = "orgCode", length = 50)
+//	private String orgCode;
 	
 //	@Transient
 //	private String siteName;
@@ -122,101 +122,101 @@ public class Partner extends MainAbstractEntity {
 		this.partnerName = partnerName;
 	}
 
-	public String getEmailDomain() {
-		return emailDomain;
-	}
-
-	public void setEmailDomain(String emailDomain) {
-		this.emailDomain = emailDomain;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public String getAddress1() {
-		return address1;
-	}
-
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
-
-	public String getAddress2() {
-		return address2;
-	}
-
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
-
-	public String getAddress3() {
-		return address3;
-	}
-
-	public void setAddress3(String address3) {
-		this.address3 = address3;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAlternatePhone() {
-		return alternatePhone;
-	}
-
-	public void setAlternatePhone(String alternatePhone) {
-		this.alternatePhone = alternatePhone;
-	}
-
-	public String getFax() {
-		return fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	public String getContactPerson() {
-		return contactPerson;
-	}
-
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
-	}
+//	public String getEmailDomain() {
+//		return emailDomain;
+//	}
+//
+//	public void setEmailDomain(String emailDomain) {
+//		this.emailDomain = emailDomain;
+//	}
+//
+//	public String getEmailId() {
+//		return emailId;
+//	}
+//
+//	public void setEmailId(String emailId) {
+//		this.emailId = emailId;
+//	}
+//
+//	public String getAddress1() {
+//		return address1;
+//	}
+//
+//	public void setAddress1(String address1) {
+//		this.address1 = address1;
+//	}
+//
+//	public String getAddress2() {
+//		return address2;
+//	}
+//
+//	public void setAddress2(String address2) {
+//		this.address2 = address2;
+//	}
+//
+//	public String getAddress3() {
+//		return address3;
+//	}
+//
+//	public void setAddress3(String address3) {
+//		this.address3 = address3;
+//	}
+//
+//	public String getCity() {
+//		return city;
+//	}
+//
+//	public void setCity(String city) {
+//		this.city = city;
+//	}
+//
+//	public String getState() {
+//		return state;
+//	}
+//
+//	public void setState(String state) {
+//		this.state = state;
+//	}
+//
+//	public String getCountry() {
+//		return country;
+//	}
+//
+//	public void setCountry(String country) {
+//		this.country = country;
+//	}
+//
+//	public String getPhone() {
+//		return phone;
+//	}
+//
+//	public void setPhone(String phone) {
+//		this.phone = phone;
+//	}
+//
+//	public String getAlternatePhone() {
+//		return alternatePhone;
+//	}
+//
+//	public void setAlternatePhone(String alternatePhone) {
+//		this.alternatePhone = alternatePhone;
+//	}
+//
+//	public String getFax() {
+//		return fax;
+//	}
+//
+//	public void setFax(String fax) {
+//		this.fax = fax;
+//	}
+//
+//	public String getContactPerson() {
+//		return contactPerson;
+//	}
+//
+//	public void setContactPerson(String contactPerson) {
+//		this.contactPerson = contactPerson;
+//	}
 
 	public Boolean isActive() {
 		return active;
@@ -226,37 +226,37 @@ public class Partner extends MainAbstractEntity {
 		this.active = active;
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public Integer getSiteId() {
-		return siteId;
-	}
-
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
-
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
+//	public String getComment() {
+//		return comment;
+//	}
+//
+//	public void setComment(String comment) {
+//		this.comment = comment;
+//	}
+//
+//	public Integer getSiteId() {
+//		return siteId;
+//	}
+//
+//	public void setSiteId(Integer siteId) {
+//		this.siteId = siteId;
+//	}
+//
+//	public String getZip() {
+//		return zip;
+//	}
+//
+//	public void setZip(String zip) {
+//		this.zip = zip;
+//	}
+//
+//	public String getOrgCode() {
+//		return orgCode;
+//	}
+//
+//	public void setOrgCode(String orgCode) {
+//		this.orgCode = orgCode;
+//	}
 
 	
 	public List<ProductLine> getVarProductLine() {

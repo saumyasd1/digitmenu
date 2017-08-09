@@ -28,12 +28,16 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements Par
 		Map<String, Object> entitiesMap = new HashMap<String, Object>();
 		Session session = null;
 		Criteria criteria = null;
-		Long totalCount = 0l;
+//		Long totalCount = 0l;
 		String queryString = (String) queryMap.getFirst("query");
 		session = getSessionFactory().getCurrentSession();
 		criteria = session.createCriteria(Partner.class).createAlias("varProductLine", "varProductLine");
 		String limit = (String) queryMap.getFirst("limit");
 		String pageNo = (String) queryMap.getFirst("page");
+		String siteId = (String) queryMap.getFirst("siteId");
+		if (siteId != null && !"".equals(siteId) && !siteId.isEmpty()) {
+			criteria.add(Restrictions.eq("varProductLine.site", Integer.parseInt(siteId)));
+		}
 		if (queryString != null) {
 			Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(queryString);
 			String dateType = searchMap.get("datecriteriavalue");
@@ -46,12 +50,12 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements Par
 			if (partnerName != null && !"".equals(partnerName)) {
 				criteria.add(Restrictions.ilike("partnerName", partnerName, MatchMode.ANYWHERE));
 			}
-			String siteId = searchMap.get("siteId");
-			if (siteId != null && !"".equals(siteId) && !siteId.isEmpty()) {
-				criteria.add(Restrictions.eq("varProductLine.site", Integer.parseInt(siteId)));
-			}
+//			String siteId = searchMap.get("siteId");
+//			if (siteId != null && !"".equals(siteId) && !siteId.isEmpty()) {
+//				criteria.add(Restrictions.eq("varProductLine.site", Integer.parseInt(siteId)));
+//			}
 		}
-		totalCount = (Long) session.createQuery("select count(distinct partner.id) from Partner partner inner join partner.varProductLine").uniqueResult();
+//		totalCount = (Long) session.createQuery("select count(distinct partner.id) from Partner partner inner join partner.varProductLine").uniqueResult();
 		criteria.addOrder(Order.desc("lastModifiedDate"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		String pageNumber = pageNo == null ? "" : pageNo;
@@ -61,7 +65,7 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements Par
 			criteria.setFirstResult((pageNO - 1) * pageSize);
 			criteria.setMaxResults(pageSize);
 		}
-		entitiesMap.put("totalCount", totalCount);
+//		entitiesMap.put("totalCount", totalCount);
 		entitiesMap.put("partners", criteria.list());
 		return entitiesMap;
 	}
@@ -122,11 +126,11 @@ public class PartnerDaoImpl extends GenericDaoImpl<Partner, Long> implements Par
 				partner = partnerIter;
 				partner.setId(partner.getId());
 				partner.setPartnerName(partner.getPartnerName());
-				partner.setAddress1(partner.getAddress1());
-				partner.setAddress2(partner.getAddress2());
-				partner.setAddress3(partner.getAddress3());
-				partner.setEmailDomain(partner.getEmailDomain());
-				partner.setEmailId(partner.getEmailId());
+//				partner.setAddress1(partner.getAddress1());
+//				partner.setAddress2(partner.getAddress2());
+//				partner.setAddress3(partner.getAddress3());
+//				partner.setEmailDomain(partner.getEmailDomain());
+//				partner.setEmailId(partner.getEmailId());
 				partnerlist.add(partner);
 			}
 

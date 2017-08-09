@@ -88,10 +88,15 @@ Ext.define('AOC.view.address.AddressWinController', {
     onSiteSelect: function (combo, record) {
     	combo.store.clearFilter();
     	var me = this,
+    		refs = me.getView().getReferences(),
+    		partnerCombo = refs['partnerName'],
             siteId = record.get('id');
     	
     	me.resetFields();
     	me.filterSystemStore(siteId);
+    	partnerCombo.store.load({
+    		params:{siteId:siteId}
+    	});
     },
     resetFields:function(){
     	var me = this,
@@ -268,7 +273,7 @@ Ext.define('AOC.view.address.AddressWinController', {
     	refs['orgName'].store.clearFilter();
     	refs['freightTerms'].store.clearFilter();
     	refs['shippingMethod'].store.clearFilter();
-    	refs['partnerName'].store.clearFilter();
+    	Helper.loadPartnerComboStore();
     },
    
     deleteResource: function (record) {
