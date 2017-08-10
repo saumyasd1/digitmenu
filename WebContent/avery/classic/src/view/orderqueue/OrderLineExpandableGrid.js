@@ -1391,9 +1391,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			store:store,
 			recordId:recordId,
 			listeners:{
-    	    	cellclick:function(view, td, cellIndex, record, tr, rowIndex, e){
-    	    		me.getController().onInnerGridCellClick(view, td, cellIndex, record, tr, rowIndex, e);
-    	    	}
+    	    	render:function(view){
+    	    		view.tip = Ext.create('Ext.tip.ToolTip', {
+    	        	    target: view.getId(),
+    	        	    delegate: '.help-message',
+    	        	    trackMouse: true,
+    	        	    renderTo: Ext.getBody(),
+    	        	    listeners: {
+    	        	        beforeshow: function updateTipBody(tip) {
+    	        	            tip.update('<font color=blue>'+tip.triggerElement.getAttribute('message')+'</font>');
+    	        	        }
+    	        	    }
+    	        	});
+    	    	},
+    	    	destroy: function(view) {
+                    delete view.tip; 
+                }
     	    },
 			selModel: {
 				type:sel,
@@ -1446,12 +1459,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 						flex:1.8,
 						sortable:true,
 						renderer:function(v, metadata,rec){
-							
 							var mandatory = rec.get('mandatory');
-							
 							metadata.tdAttr = 'data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>"';
 							if(mandatory == 'Y'){
-								return '<div>'+ v + ' <font size=2 color=red>*</font></div>';
+								return v + ' <font size=2 color=red>*</font>';
 							}
 							else{
 								return v;
@@ -1473,7 +1484,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								isContainsFibre = rec.get('level').toLowerCase(),
 								variableDataValue = rec.get('variableDataValue'),
 								fiberPercent = rec.get('fiberPercent');
-								metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
+							
+							metadata.tdAttr = 'data-qtip="<font color=blue>' +  Ext.util.Format.htmlEncode(v) + '</font>"';
+							
 							if(Ext.isEmpty(v) && mandatory == 'Y'){
 								metadata.style = AOCLit.cellColor;
 							}
@@ -1481,14 +1494,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 								metadata.style = AOCLit.cellColor;
 							}
 							else{
-								return v;
+								return '<span message="'+v+'" class="help-message">'+v+'</span>';
 							}
 						}
 					}, 
 					{
 					  text: 'Fiber Content Percentage',
 					  dataIndex: 'fiberPercent',
-					  xtype:'gridcolumn',
 					  align:'center',
 					  flex:1,
 					  editor: {
@@ -1508,11 +1520,11 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					{
 						text:'Help Message',
 						dataIndex:'helpMessage',
-						flex:1,
+						flex:.5,
 						align:'center',
 						renderer:function(v, metadata, record){
 							if(v){
-								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" class="x-fa fa-question-circle help-message"></i>';
+								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" message="'+v+'" class="x-fa fa-question-circle help-message"></i>';
 							}
 							return '';
 						}

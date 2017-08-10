@@ -7,28 +7,11 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     init:function(){
     	this.getButtonPanel();
     },
-    
-    onInnerGridCellClick:function(view, td, cellIndex, record, tr, rowIndex, e){
-    	if(cellIndex == 7 && record.get('helpMessage')){
-    		this.createHelpMsgTooltip(record, e);
-    	}
-    },
-    createHelpMsgTooltip:function(record, e){
-    	if(this.customHelpMsgTip){
-    		this.customHelpMsgTip.hide();
-    		this.customHelpMsgTip.target = Ext.get(e.target);
-    		this.customHelpMsgTip.update('<font color=blue>'+Ext.String.htmlEncode(record.get('helpMessage'))+'</font>');
-    		this.customHelpMsgTip.show();
-    	}else{
-    		var el = Ext.get(e.target);
-    		this.customHelpMsgTip = Helper.createToolTip(el, 'Help Message', '<font color=blue>'+Ext.String.htmlEncode(record.get('helpMessage'))+'</font>', 'left');
-    		this.customHelpMsgTip.show();
-    	}
-    },
     onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 		var grid=obj;
 		var el = Ext.get(e.target);
 		this.cellPosition = e.getXY();
+		
 		if(el.hasCls('EnableUpdateMoq')){
 			var Id=record.get('id'),
 				MoqDiffQty=record.get('moqdiffQty'),
