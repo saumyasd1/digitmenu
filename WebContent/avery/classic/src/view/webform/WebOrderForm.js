@@ -12,6 +12,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	itemId:'weborderformItemId',
 	bodyPadding: '10',
 	border:false,
+	
 	attachmentFileNameExtension_1:null,
 	attachmentCount:1,
 	orderFileAttachmentCount:1,
@@ -19,6 +20,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 	maximumOrderFileCount:10,
 	maxAttachmentCount:10,
 	isResubmit:false,
+	
 	autoScroll:true,
 	requires:['AOC.store.WebformStore'],
 	
@@ -41,7 +43,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
         me.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
     },
     initComponent : function(){
-    	var me = this;
 		Ext.apply(this,{
 			items:this.buildItems()
 		});
@@ -54,7 +55,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				xtype:'fieldcontainer',
 				layout:'hbox',
 				flex:1,
-				margin:'5 0 5 0',
+				margin:'0 0 5 0',
 				defaults:{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
@@ -215,7 +216,6 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						height:100,
 						allowBlank: false,
 						flex:1.8,
-						//margin:'0 50 0 0',
 						listeners:{
 							blur : this.notifyByImage
 						}
@@ -234,7 +234,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						enforceMaxLength: true,
 						blankText :'Order File Type is required',
 						listeners:{
-							'change':'onOrderFileChange',
+							change:'onOrderFileChange',
 							blur : this.notifyByImage
 						}
 					}
@@ -274,7 +274,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank: false,
 						hidden:true,
 						listeners:{
-							'change':'onAttachmentChange',
+							change:'onAttachmentChange',
 							blur : this.notifyByImage
 						}
 					}
@@ -310,7 +310,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				reference:'oldAdditionalFileId',
 				value:''
 			}
-		]
+		];
 	},
 	notifyByImage : function(config){
 		if(config.isValid()){

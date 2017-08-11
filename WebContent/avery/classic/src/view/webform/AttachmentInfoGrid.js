@@ -1,25 +1,24 @@
 Ext.define('AOC.view.webform.AttachmentInfoGrid', {
 	extend : 'Ext.grid.Panel',
     alias : 'widget.attachmentinfoGrid',
-    itemId:'AttachmentInfoGriditemId',
-    controller:'webFormMain',
+//    itemId:'AttachmentInfoGriditemId',
     requires: [
          'Ext.grid.column.Action'
     ],
+    listeners:{
+		'cellclick':'onAttachmentGridCellClick',
+		'edit':'onAdditionalDataKeyCellChange',
+		'beforeedit':'beforeEditorShow'
+	},
+	layout:'fit',
     initComponent : function(){
         Ext.apply(this,{
             columns : this.buildColumns(),
 			columnLines:true,
-			layout:'fit',
 			plugins: {
 		        ptype: 'cellediting',
 		        clicksToEdit: 1
-		    },
-			listeners:{
-				'cellclick':'onAttachmentGridCellClick',
-				'edit':'onAdditionalDataKeyCellChange',
-				'beforeedit':'beforeEditorShow'
-			}
+		    }
         });
         this.callParent(arguments);
     },
@@ -31,10 +30,13 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
                 hideable :false,
                 resizable:false,
                 align:'left'
-               },
+           },
            items:[
               {
-            	  xtype:'rownumberer'
+            	  xtype:'rownumberer',
+            	  text:'#',
+            	  width:30,
+            	  align:'center'
               }, {
             	  text : 'File Name',
             	  flex :1,
@@ -55,6 +57,7 @@ Ext.define('AOC.view.webform.AttachmentInfoGrid', {
               },
               {
 	            text: 'Delete',
+	            xtype:'actioncolumn',
 	            width :60,
 	            align:'center',
 	            renderer:function(v,cell,record){

@@ -546,27 +546,20 @@ Ext.define('AOC.util.Helper',{
 	showToast: function(type, msg) {
 		var style = '',
 			title = '',
-			iconCls = '',
-			bodyStyle='';
+			iconCls = '';
 		
 		switch(type){
 			case 'failure':
-				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f5b4a5;';
 				title='Failure';
 				iconCls='fa fa-exclamation-circle failure-icon';
-				//bodyStyle='background-color:#f5b4a5;font-size:13px;color#2c3e50;';
 				break;
 			case 'validation':
-				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#f7f985;';
 				title='Warning';
 				iconCls='fa fa-exclamation-triangle warning-icon';
-				//bodyStyle='background-color:#f7f985;font-size:13px;color#2c3e50;';
 				break;
 			default:
-				//style = 'box-shadow:0px 0px 4px 0px #808080;background-color:#ebffeb;',
 				title = 'Success';
 				iconCls = 'fa fa-check success-icon';
-				//bodyStyle='background-color:#ebffeb;font-size:13px;color:#2c3e50;';
 				break;
 		}
 		
@@ -574,8 +567,7 @@ Ext.define('AOC.util.Helper',{
             html: msg,
             closable: true,
             title:title,
-//            bodyStyle:bodyStyle,
-            style:style,
+            style:'border:0px;box-shadow:0px 0px 4px 0px #808080',
             iconCls:iconCls,
             align: 't',
             slideInDuration: 400,

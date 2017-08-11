@@ -74,7 +74,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'homewrapper',
-//    	    	 style:'border-top:solid 1px #ccc;',
     	    	 reference:'homewrapper'
     	     }
     	  ]
@@ -87,7 +86,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'taskmanager'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -99,7 +97,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'emailmanagement'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -111,7 +108,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'orderqueueview'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -124,7 +120,6 @@ Ext.define('AOC.view.main.Main', {
     	     {
     	    	 xtype:'weborderview',
     	    	 reference:'webOrderView'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -136,7 +131,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'partnermanagement'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        }, {
@@ -148,7 +142,6 @@ Ext.define('AOC.view.main.Main', {
     	  items:[
     	     {
     	    	 xtype:'addressmanage'
-//    	    	 style:'border-top:solid 1px #ccc;'
     	     }
     	  ]
        },
@@ -161,7 +154,6 @@ Ext.define('AOC.view.main.Main', {
      	  items:[
      	     {
      	    	 xtype:'localitemlookup'
-//     	    	 style:'border-top:solid 1px #ccc;'
      	     }
      	  ]
         }

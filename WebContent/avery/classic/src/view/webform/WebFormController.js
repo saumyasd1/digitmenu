@@ -1,6 +1,6 @@
 Ext.define('AOC.view.webform.WebFormController', {
 	extend: 'Ext.app.ViewController',
-    alias: 'controller.webFormMain',
+    alias: 'controller.webformcontroller',
     runTime : AOC.config.Runtime,
     fileArray:[],
     totalFileCount:0,
@@ -264,14 +264,14 @@ Ext.define('AOC.view.webform.WebFormController', {
 		
 		form.setValues({"oldFileIds":oldFileIds});
 		if(form.isValid()){
-			var url='',
+			var url=applicationContext+'/rest/emailqueue/newweborder',
 				oldOrderId = webOrderFormView.down('#oldOrderId').getValue();
 			
-			if(webOrderFormView.isResubmit){
-				url=applicationContext+'/rest/emailqueue/newweborder';
-			}else{
-				url=applicationContext+'/rest/emailqueue/newweborder';
-			}
+//			if(webOrderFormView.isResubmit){
+//				url=applicationContext+'/rest/emailqueue/newweborder';
+//			}else{
+//				url=applicationContext+'/rest/emailqueue/newweborder';
+//			}
 			var fieldParams = form.getValues(false,false,false,true),
 				assignCsrStore = refs.assignCSR.store,
 				index = assignCsrStore.find('userId',fieldParams.assignCSR);
@@ -352,21 +352,35 @@ Ext.define('AOC.view.webform.WebFormController', {
 	        				Helper.resetWebOrderForm(me.getView());
 	    					webOrderFormView.resetFormFields();
 	    					me.totalFileCount = 0;
-	    					Helper.showToast('success',AOCLit.webSubmissionSuccesFulMsg);
 	    					Ext.getBody().unmask();
+	    					me.goToEmailQueueScreen(emailQueueId);
 	        			}else{
 	        				console.log('File Uploaded');
 		        			me.uploadFiles(emailQueueId, filePath);
 	        			}
-	        			break;
+        			break;
 	        	}
 	        }
     	}else{
     		Helper.resetWebOrderForm(me.getView());
 			webOrderFormView.resetFormFields();
-			Helper.showToast('success',AOCLit.webSubmissionSuccesFulMsg);
     		Ext.getBody().unmask();
+    		me.goToEmailQueueScreen(emailQueueId);
     	}
+    },
+    goToEmailQueueScreen:function(emailQueueId){
+//    	Helper.showToast('success', AOCLit.webSubmissionSuccesFulMsg);
+    	Ext.Msg.show({
+		    title:'Go To Email Screen',
+		    message: 'Are you sure, you want to go to Email Screen to see <b>Email#'+emailQueueId+'</b>?',
+		    buttons: Ext.Msg.YESNO,
+		    icon: Ext.Msg.QUESTION,
+		    fn: function(btn) {
+		        if (btn === 'yes') {
+		        	Helper.changeScreen('emailmanagement', AOCLit.tablist.emailQueueTabIndex);
+		        } 
+		    }
+		});
     },
     onAttachmentChange:function(obj, value){
     	if(!Ext.isEmpty(value)){
