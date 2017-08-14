@@ -366,10 +366,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				String eDate = searchMap.get("toDate") + " 00:00:00";
 				criteria = HibernateUtils.getCriteriaBasedOnDate(criteria, dateType, sDate, eDate);
 			}
-			String partnerName = searchMap.get("PartnerName");
+			String partnerName = searchMap.get("partnerName");
 			if (partnerName != null && !"".equals(partnerName)) {
 				// criteria.createAlias("partner", "partner");
-				criteria.add(Restrictions.ilike("partner.partnerName", partnerName, MatchMode.ANYWHERE));
+				criteria.add(Restrictions.eq("partner.partnerName", partnerName));
 			}
 			String RBOName = searchMap.get("RBOName");
 			if (RBOName != null && !"".equals(RBOName)) {
