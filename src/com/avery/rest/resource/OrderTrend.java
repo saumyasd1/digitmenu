@@ -217,7 +217,7 @@ public class OrderTrend {
 		list.add(unidentifiedMap);
 		Map<String, Object> unrecognizedMap = buildMapForTaskManager("Unrecognized", "4");
 		list.add(unrecognizedMap);
-		Map<String, Object> oracleErrorMap = buildMap("Oracle Error", "56");
+		Map<String, Object> oracleErrorMap = buildMap("ERP Error", "56");
 		list.add(oracleErrorMap);
 		Map<String, Object> toatalCount = buildMapForTotalCount("Total Count");
 		list.add(toatalCount);
