@@ -9,7 +9,6 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		me.buttons = me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -43,32 +42,25 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'textfield',
+							listeners:{
+								specialkey:'getAdvancedSearchResults'
+							}
 						},
 						items:[
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.customerItemNO,
 								name:'customerItemNO',
-								flex:1,
-								enableKeyEvents:true,
-								selectOnTab : true,
-								tabIndex:1,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:1
 							},
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.glid,
 								name:'glid',
-								flex:1,
-								enableKeyEvents:true,
 								margin:'0 0 0 10',
-								tabIndex:2,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:2
 							}
 						]
 					},				
@@ -79,16 +71,16 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.identifierValue,
 								name:'identifierValue',
-								flex:1,
-								enableKeyEvents:true,
 								tabIndex:3,
+								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -101,11 +93,9 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 								queryMode:'local',
 								tabIndex:4,
 								editable:false,
-								flex:1,
 								displayField:'partnerName',
 								valueField:'partnerName',
 								margin:'0 0 0 10',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
@@ -120,16 +110,16 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							xtype:'combo'
 						},
 						items:[
-						       {
-								xtype:'combo',
+					       {
 								name: 'rboName',
 								fieldLabel:AOCLit.RBO,
 								store:rboStore,
 								displayField:'rboName',
-								flex:1,
 								editable:false,
 								valueField:'rboName',
 								queryMode:'local',
@@ -139,16 +129,14 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
 								}
-						       },
-						       {
-								xtype:'combo',
+					       },
+					       {
 								name:'orgCode',
 								store:orgStore,
 								displayField:'name',
 								fieldLabel:AOCLit.orgCode,
 								queryMode:'local',
 								valueField:'name',
-								flex:1,
 								editable:false,
 								tabIndex:6,
 								margin:'0 0 0 10',
@@ -157,7 +145,7 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
 								}
-						       }
+					       }
 						]
 					},
 					{
@@ -221,20 +209,18 @@ Ext.define('AOC.view.advsearch.LocalItemLookupAdvancedSearch', {
 		    }
 		]
 	},
-	getButtons :function(){
-		return [ 
-			{
-				text : 'Search',
-				iconCls:'x-fa fa-search',
-				disabled : false,
-				formBind : true,
-				success : true,
-				enableKeyEvents:true,
-				listeners : {
-					click  : 'onSearchBtnClicked',
-					specialkey:'getAdvancedSearchResults'
-				}
+	buttons:[ 
+		{
+			text : 'Search',
+			iconCls:'x-fa fa-search',
+			disabled : false,
+			formBind : true,
+			success : true,
+			enableKeyEvents:true,
+			listeners : {
+				click  : 'onSearchBtnClicked',
+				specialkey:'getAdvancedSearchResults'
 			}
-		]	
-	}
+		}
+	]	
 });

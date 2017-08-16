@@ -10,7 +10,6 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		me.buttons = me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
@@ -34,16 +33,15 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.address,
 								name:'address',
-								flex:1,
-								enableKeyEvents:true,
-								selectOnTab : true,
 								tabIndex:1,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
@@ -52,15 +50,14 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 							{
 								xtype:'combo',
 								fieldLabel:AOCLit.partnerName,
+								tabIndex:2,
 								name:'partnerName',
 								reference:'partnerCombo',
 								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								queryMode:'local',
-								flex:1,
 								displayField:'partnerName',
 								valueField:'partnerName',
 								margin:'0 0 0 10',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
@@ -75,15 +72,17 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype:'combobox',
 								name: 'siteType',
+								tabIndex:3,
 								displayField: 'siteType',
 								fieldLabel:AOCLit.siteType,
-								flex:1,
 								store :[['B','Bill To Site Number'],['S','Ship To Site Number']],
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
@@ -93,10 +92,8 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.siteNumber,
 								name:'siteNumber',
-								flex:1,
 								margin:'0 0 0 10',
 								tabIndex:4,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -143,48 +140,42 @@ Ext.define('AOC.view.advsearch.AddressAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'datefield',
+							selectOnTab:true
 						},
 						items:[
 							{
-								xtype : 'datefield',
 								name:'fromDate',
 								reference:'fromDate',
-								fieldLabel : AOCLit.fromDate,
-								flex:1,
-								enableKeyEvents:true,
-								selectOnTab : true
+								fieldLabel : AOCLit.fromDate
 							},
 							{
-								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
-								enableKeyEvents:true,
-								margin:'0 0 0 10',
-								selectOnTab : true
+								margin:'0 0 0 10'
 							}
 						]
 					}  
 		        ]
 		    }
-		]
+		];
 	},
-	getButtons :function(){
-		return [ 
-			{
-				text : 'Search',
-				iconCls:'x-fa fa-search',
-				disabled : false,
-				formBind : true,
-				success : true,
-				enableKeyEvents:true,
-				listeners : {
-					click  : 'onSearchBtnClicked',
-					specialkey:'getAdvancedSearchResults'
-				}
+	buttons : [ 
+		{
+			text : 'Search',
+			iconCls:'x-fa fa-search',
+			disabled : false,
+			formBind : true,
+			success : true,
+			enableKeyEvents:true,
+			listeners : {
+				click  : 'onSearchBtnClicked',
+				specialkey:'getAdvancedSearchResults'
 			}
-		]	
-	}
+		}
+	]	
 });

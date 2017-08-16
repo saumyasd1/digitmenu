@@ -4,41 +4,6 @@ Ext.define('AOC.util.Helper',{
     config : {
         mainContainerTip : null
     },
-    constructor : function(config){
-		var ordderColorMap =new Ext.util.HashMap();
-		ordderColorMap.add('Received','#ED2691');
-		ordderColorMap.add('Waiting CS Review','#FFC500');
-		ordderColorMap.add('Waiting System Response','#25B3EE');
-		ordderColorMap.add('Successful','#09CF86');
-		ordderColorMap.add('Failed','#FF0000');
-		
-		this.orderColorMap = ordderColorMap;
-    },
-	getSwitchButtonHtml: function(event, status, cssClass){
-		var switchBorder='',
-		circlePadding;
-		if('on' == status){
-		  circlePadding = '16px';
-		}else{
-		  switchBorder = 'style="border:1px solid #bcbcbc;"';
-		  circlePadding = '0px';
-		}
-		var leftStyle = !Ext.isEmpty(cssClass)?'style="top:1px;"':'';
-		cssClass = Ext.isEmpty(cssClass)?'':cssClass;
-		
-		var html = '<span class="text-style-switch'+cssClass+'">';
-		//#AC-3110 Change the literal for off text.
-		html +='<span class="onoff-text'+cssClass+'"><b>'+'InActive'+'</b></span>';
-		html +='<div '+leftStyle+' event="'+event+'" class="onoffswitch">';
-		html +='<label event="'+event+'"'+switchBorder+'  class="onoffswitch-label">';
-		html +='<span event="'+event+'" class="onoffswitch-inner-'+status+'"></span>';
-		html +='<span event="'+event+'" style="left:'+circlePadding+';" class="onoffswitch-switch"></span>';
-		html +='</label>';
-		html+='</div>';
-		html +='<span class="on-text'+cssClass+'">'+'<b>Active'+'</b></span>';
-		html+='</span>';
-		return html;
-	},
 	getVariableComboStore:function(variableName){
 		var store=Ext.data.StoreManager.lookup(variableName+'Id');
 		if(Ext.isEmpty(store)) {
@@ -110,22 +75,6 @@ Ext.define('AOC.util.Helper',{
 	},
 	getVariableFieldStore:function(variableName){
 		return Ext.data.StoreManager.lookup(variableName+'Id1');
-//		return new Ext.data.Store({
-//			autoLoad:false,
-//			storeId:variableField+'Id1',
-//			proxy : {
-//				type : 'rest',
-//				method:'GET',
-//				limitParam:'',
-//		        startParam:'',
-//		        pageParam:'',
-//				url: applicationContext+'/rest/orderconfigurations/orgid/systemid',
-//				reader:{
-//			        type:'json'
-//			     }
-//		    },
-//			field:['name']
-//		});
 	},
 	
 	BulkUpdate:function(grid, selection, eOpts){
@@ -178,7 +127,7 @@ Ext.define('AOC.util.Helper',{
 				}
 			});
 		}
-		return store
+		return store;
     },
 	loadCodeStore:function(type){
 		var store=this.getCodeStore(type);
@@ -191,7 +140,6 @@ Ext.define('AOC.util.Helper',{
 				async: false,
 				url: applicationContext+'/rest/code'+appendUrl
 			});
-			var items = Ext.decode(response.responseText);
 			var jsonValue=Ext.decode(response.responseText);
 			if(jsonValue.ArrayList.length>0){
 				Ext.Array.forEach(jsonValue.ArrayList,function(item){
@@ -284,83 +232,6 @@ Ext.define('AOC.util.Helper',{
         }
       });
         return data;
-	},
-	fadeoutMessage : function(parm1,parm2,parm3,param4){        
-			var el,
-			title,
-			msg,
-			ms,
-			nextStepMsg,
-			zindex,
-			m,
-			slideFrom;
-			 nextStepMsg = !Ext.isEmpty(param4)?'<br><br>'+param4:'';
-		if (typeof arguments[0] !== "object"){
-			el = document.body;
-			title = parm1;
-			msg = parm2 || '';
-			//AC:3967 - Update fade out duration
-			ms = (!parm3) ? 30000 : parm3;
-			slideFrom = 't';
-		} else {
-			el = parm1.el || document.body;
-			title = parm1.title || '';
-			msg = parm1.msg || '';
-			ms = parm1.ms || 2000;
-			slideFrom = parm1.slideFrom || 't';
-		}
-		var style="";
-		if(!el.msgCt){
-			 var w = 480,
-			 h = 60,
-			 left = Ext.getBody().getViewSize().width,
-			 l = (left-w)/2;
-			zindex='width:'+w+'px;min-height:'+h+'px;left:'+l+'px;'; 
-			style='style="min-height:'+h+'px;"';
-			el.msgCt = Ext.core.DomHelper.insertFirst(el, {
-				id:'aoc-msg-div',
-				style:zindex
-			}, true);
-			el.msgCt.on({click:function(event,el){
-				 var event=el.getAttribute('event');
-				 if(event){
-					 m.hide();
-					 m.destroy();
-					 el.msgCt=null;
-				 }
-			}});
-		} else {
-			el.msgCt.update('<div '+style+' class="aoc-msg"><div style="width:23px;height:60px;top:5px;float:left;"><img src="avery/resources/images/tick.png" /></div><div style="float:left;word-wrap: break-word;width:91%;">' + msg +nextStepMsg+'</div><div style="float:left;"><img style="cursor:pointer;" event="close" src="avery/resources/images/close-round-alt.png" /></div></div>');
-			return;
-		}
-		m = Ext.core.DomHelper.append(el.msgCt, '<div '+style+' class="aoc-msg"><div style="width:23px;height:60px;top:5px;float:left;"><img src="avery/resources/images/tick.png" /></div><div style="float:left;word-wrap: break-word;width:91%;">' + msg +nextStepMsg+'</div><div  style="float:left;"><img style="cursor:pointer;" event="close" src="avery/resources/images/close-round-alt.png" /></div></div>', true);
-		m.hide();
-		m.slideIn(slideFrom, {
-			easing: 'easeOut',
-			duration: 500}).ghost(slideFrom, {
-			duration: 10,
-			delay: ms,
-			remove: true,
-			callback:function(){
-				el.msgCt.remove();
-				el.msgCt=null;
-			}
-		});
-	},
-	notifyByImage : function(config){
-		if(config.isValid()){
-			config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.success+');background-repeat:no-repeat;background-position:right;');
-		}else{
-			config.setFieldStyle('background-image:url('+AOC.config.Settings.buttonIcons.invalid_field+');background-repeat:no-repeat;background-position:right;');
-		}
-	},
-	hideMandatoryMessage:function(obj){
-		obj.down('#messageFieldItemId').setValue('').setVisible(true);
-		obj.down('#messageFieldItemId').setHidden('true');
-	},
-	notifyByMessage: function(obj) {
-		obj.down('#messageFieldItemId').setValue('').setVisible(true);
-		obj.down('#messageFieldItemId').setHidden('true');
 	},
 	
 	//(Amit Kumar) add showHideEMailBodySubjectField in ViewMailDetail from Email and TaskManager
@@ -643,7 +514,6 @@ Ext.define('AOC.util.Helper',{
   			metadata.style = AOCLit.cellColor;
           }
           else{
-        	//return Ext.Date.format(value,'Y-m-d');
          	return this.onOrderlineDateRendererSiteTimeZoneSpecific(value, siteId);
           }
   	},
@@ -740,26 +610,15 @@ Ext.define('AOC.util.Helper',{
         user.fileSrc = viewModel.get('userInfo.fileSrc') ? viewModel.get('userInfo.fileSrc') : this.getFilePath();
         viewModel.set('userInfo', user);
     },
-//    updateHeaderUserName: function () {
-//        var userInfo = AOCRuntime.getUser(),
-//            name = userInfo.firstName,
-//            name = (!Ext.isEmpty(userInfo.lastName)) ? name + ' ' + userInfo.lastName : name,
-//    		aocheader = Ext.ComponentQuery.query('viewport aocheader')[0],
-//    		viewModel = aocheader.getViewModel(),
-//    		profileImage = aocheader.down('#profileImage');
-//        
-//    	profileImage.setSrc(Helper.getFilePath());
-//    	viewModel.set('userInfo.name', name);
-//    },
     getFilePath:function(record){
     	if(record){
     		var data = record.data,
     			fileName = data.fileName,
     			filePath = data.filePath;
-		if(fileName){
-			var str = filePath ? filePath :'',
-				fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
-				filePath = fPath+'/'+fileName;
+    		if(fileName){
+    			var str = filePath ? filePath :'',
+					fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+					filePath = fPath+'/'+fileName;
 	    		   
 				return filePath;
     	  	}
@@ -769,13 +628,13 @@ Ext.define('AOC.util.Helper',{
 	    		fileName = userinfo.fileName,
 	    		filePath = userinfo.filePath;
 	    	  if(fileName){
-	    	   var str = filePath ? filePath :'',
-	    		   fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
-	    		   filePath = fPath+'/'+fileName;
-	    		 return filePath;
+	    		  var str = filePath ? filePath :'',
+    				  fPath = str ? (str.indexOf('AveryDennison') > -1 ? str.substr(str.indexOf('FileStore')) : ''):'';
+    				  filePath = fPath+'/'+fileName;
+				  return filePath;
 	    	  }
-	    	 }
-    	},
+    	 }
+	},
 	siteNameForSuperAdminOnly:function(obj){
 		if(AOCRuntime.getUser().role != 1 ) obj.setHidden(true);
 		if(obj.xtype == 'combo' || obj.xtype == 'combobox') { obj.getStore().load();}
@@ -827,7 +686,6 @@ Ext.define('AOC.util.Helper',{
          });
     },
     loadAdvanceCSRStore:function(field){
-    	var store = field.store;
     	field.store.load({params:{siteId:AOCRuntime.getUser().siteId}});
     },
     //partner screen
@@ -893,9 +751,7 @@ Ext.define('AOC.util.Helper',{
 				hktCstOffset = 480 *(60*1000),
 				vitnamOffset = 420 *(60*1000);
 			
-//			v = v.replace(' ', 'T');
 			var time = new Date(v).getTime();
-//				utcTime = time - (estOffset);
 			siteId = siteId.toString();
 			switch(siteId){
 				case '2': var siteTime = time + hktCstOffset;
@@ -997,7 +853,7 @@ Ext.define('AOC.util.Helper',{
 	    		   handler:'onAddGroupingFieldBtnClick'
 	    	   }
 	    	]
-	    }
+	    };
 	},
 	getPartnerListBySiteId: function(combo){
 		combo.store.on('load', function(){

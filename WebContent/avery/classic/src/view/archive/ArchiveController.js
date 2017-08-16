@@ -144,10 +144,6 @@ Ext.define('AOC.view.archive.ArchiveController', {
 					widget.setVisible(false);
 					var temp=grid.down('#advancesearchbutton');
 				    temp.enable();
-			},
-			  notifyByMessage:function()
-			    {
-				  var archivesearch=Ext.ComponentQuery.query('#archivesearchItemIdwin')[0];
-				  archivesearch.down('#messageFieldItemId').setValue('').setVisible(true);
-			    }
+			}
+			  
 });

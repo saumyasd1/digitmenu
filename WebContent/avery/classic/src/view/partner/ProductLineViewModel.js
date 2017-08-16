@@ -70,11 +70,7 @@ Ext.define('AOC.view.partner.ProductLineViewModel', {
                 maxLength: '250',
                 margin: '0 0 0 15',
                 blankText: AOCLit.partnerNameReq,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'HideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, {
                 xtype: 'tbspacer',
                 width: 20
@@ -92,11 +88,7 @@ Ext.define('AOC.view.partner.ProductLineViewModel', {
                 margin: '5 0 0 15',
                 blankText: AOCLit.addReq,
                 maxLength: '500',
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'HideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, {
                 xtype: 'tbspacer',
                 width: 10
@@ -113,11 +105,7 @@ Ext.define('AOC.view.partner.ProductLineViewModel', {
                 margin: '5 0 0 15',
                 blankText: AOCLit.contactPerson,
                 maxLength: '100',
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'HideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, {
 
                 xtype: 'textfield',
@@ -133,11 +121,7 @@ Ext.define('AOC.view.partner.ProductLineViewModel', {
                 blankText: AOCLit.phoneReqMsg,
                 maxLength: '100',
                 regex: /^(\d+-?)+\d+$/,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'HideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, {
                 xtype: 'tbspacer',
                 width: 100,

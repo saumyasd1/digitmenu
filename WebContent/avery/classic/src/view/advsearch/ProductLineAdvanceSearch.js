@@ -10,20 +10,19 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 	layout:'fit',
 	width: 580,
 	title:AOCLit.advancedSearchWindowTitle,
+	
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		me.buttons =me.getButtons();
 		me.callParent(arguments);
 	},
 	buildItems :function(){
-		var me = this;
 		return [
 		    {
 		    	xtype:'form',
 		        reference:'productlineAdvanceSearchForm',
 		        border:false,
-		        padding:'10 10 5 10',
+		        padding:'10',
 				defaults:{
 					labelSeparator:'',
 					labelStyle:Settings.config.defaultFormLabelStyle,
@@ -36,7 +35,9 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
@@ -46,24 +47,20 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								reference:'partnerCombo',
 								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								queryMode:'local',
-								tabIndex:4,
-								flex:1,
+								tabIndex:1,
 								displayField:'partnerName',
 								valueField:'partnerName',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
 								}
 							},
 							{
-								xtype : 'textfield',
-								fieldLabel : AOCLit.RBO,
+								xtype:'textfield',
+								fieldLabel: AOCLit.RBO,
 								name:'RBOName',
-								flex:1,
 								tabIndex:2,
 								margin:'0 0 0 10',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -76,19 +73,20 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'combo'
 						},
 						items:[
 							{
-								xtype:'combo',
 								fieldLabel:AOCLit.productLine,
+								tabIndex:3,
 								reference:'productLineTypeCombo',
 								name:'productLineType',
-								flex:1,
 								store:Helper.getProductLineStore()
 							},
 							{
-								xtype : 'combo',
 								fieldLabel : AOCLit.partnerDataStructure,
 								displayField:'dataStructureName',
 								name:'partnerDataStructure',
@@ -96,9 +94,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								typeAhead:true,
 								reference:'dataStructureCombo',
 								queryMode :'local',
-								flex:1,
-								tabIndex:6,
-								enableKeyEvents:true,
+								tabIndex:4,
 								margin:'0 0 0 10',
 								store:Ext.data.StoreManager.lookup('productLineStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore',{storeId:'productLineStoreId'}) : Ext.data.StoreManager.lookup('productLineStoreId'),
 								listeners:{
@@ -116,25 +112,23 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'datefield',
+							selectOnTab:true
 						},
 						items:[
 							{
-								xtype : 'datefield',
 								name:'fromDate',
 								reference:'fromDate',
-								fieldLabel : AOCLit.fromDate,
-								flex:1,
-								selectOnTab : true
+								fieldLabel : AOCLit.fromDate
 							},
 							{
-								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
 								margin:'0 0 0 10',
-								selectOnTab : true
 							}
 						]
 					}  
@@ -142,20 +136,18 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 		    }
 		]
 	},
-	getButtons :function(){
-		return [ 
-			{
-				text : 'Search',
-				iconCls:'x-fa fa-search',
-				disabled : false,
-				formBind : true,
-				success : true,
-				tabIndex:4,
-				listeners : {
-					click  : 'onSearchBtnClicked'
-				}
+	buttons :[ 
+		{
+			text : 'Search',
+			iconCls:'x-fa fa-search',
+			disabled : false,
+			formBind : true,
+			success : true,
+			tabIndex:4,
+			listeners : {
+				click  : 'onSearchBtnClicked'
 			}
-		]	
-	}
+		}
+	]	
 });
 

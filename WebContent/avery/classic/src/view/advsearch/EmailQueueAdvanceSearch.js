@@ -23,7 +23,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 		    {
 		    	xtype:'form',
 		        reference:'emailQueueAdvanceSearchForm',
-		        border:false,
 		        padding:'10 10 5 10',
 		        items:[
 					{
@@ -33,7 +32,9 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
@@ -43,11 +44,9 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								reference:'partnerCombo',
 								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								queryMode:'local',
-								tabIndex:4,
-								flex:1,
+								tabIndex:1,
 								displayField:'partnerName',
 								valueField:'partnerName',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
@@ -57,10 +56,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.RBO,
 								name:'RBOName',
-								flex:1,
 								margin:'0 0 0 10',
 								tabIndex:2,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -74,16 +71,16 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
-								flex:1,
 								tabIndex:3,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -92,10 +89,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.TrackingNo,
 								name:'id',
-								flex:1,
 								margin:'0 0 0 10',
 								tabIndex:4,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -109,34 +104,32 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'combo',
+							queryMode :'local',
+							xtype:'combo'
 						},
 						items:[
 							{
-								xtype : 'combo',
 								fieldLabel : AOCLit.emailStatus,
 								name:'Status',
-								flex:1,
 								displayField:'value',
 								valueField:'code',
-								queryMode :'local',
 								tabIndex:5,
-								typeAhead:true,
-								enableKeyEvents:true,
 								store: Ext.data.StoreManager.lookup('orderemailqueueId') == null ? AOC.util.Helper.getCodeStore('orderemailqueue') : Ext.data.StoreManager.lookup('orderemailqueueId'),
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
-								xtype:'combo',
 								name: 'siteId',
 								fieldLabel:'Site',
-								flex:1,
 							 	editable:false,
+							 	tabIndex:6,
 								displayField:'name',
 								margin:'0 0 0 10',
-								queryMode :'local',
 								reference:'siteCombo',
 								valueField: 'id',
 								store:Ext.data.StoreManager.lookup('advSiteStoreId') != null ? Ext.data.StoreManager.lookup('advSiteStoreId') : Ext.create('AOC.store.SiteStore',{storeId:'advSiteStoreId'}),
@@ -158,31 +151,25 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'textfield',
+							listeners:{
+								specialkey:'getAdvancedSearchResults'
+							}
 						},
 						items:[
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
-								flex:1,
-								tabIndex:6,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:7
 							},
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.receiverEmailID,
 								name:'ReceiverEmailID',
-								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:7,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:8
 							}
 						]
 					},
@@ -193,16 +180,16 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.ccMailId,
 								name:'ccMailId',
-								flex:1,
-								tabIndex:8,
-								enableKeyEvents:true,
+								tabIndex:9,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -218,9 +205,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								store:Ext.data.StoreManager.lookup('advEQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advEQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advEQCSRStoreId'}),
 								typeAhead:true,
 								triggerAction:'all',
-								flex:1,
-								tabIndex:9,
-								enableKeyEvents:true,
+								tabIndex:10,
 								margin:'0 0 0 10',
 								listeners:{
 									blur:function(combo,e){
@@ -241,7 +226,11 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							xtype:'datefield',
+							selectOnTab : true,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
@@ -249,12 +238,7 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								name:'fromDate',
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
-								flex:1,
-								hidden:false,
-								allowBlank : true,
-								selectOnTab : true,
-								tabIndex:10,
-								enableKeyEvents:true,
+								tabIndex:11,
 								value:new Date(),
 								listeners : {
 									afterrender : function(datefield) {
@@ -268,13 +252,8 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
 								margin:'0 0 0 10',
-								hidden:false,
-								enableKeyEvents:true,
-								allowBlank : true,
-								selectOnTab : true,
-								tabIndex:11,
+								tabIndex:12,
 								listeners : {
 									afterrender : function(datefield) {
 										datefield.setValue(new Date());

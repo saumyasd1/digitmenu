@@ -940,8 +940,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
 				        success : function(response, opts) {
 				        	Ext.getBody().unmask();
-				        	AOC.util.Helper.fadeoutMessage('Success',AOCLit.updatedCustomerQtyMsg);
-							//Ext.Msg.alert('Alert Message','<b>Customer Qty. Updated Succesfully</b>');
+				        	Helper.showToast('success', AOCLit.updatedCustomerQtyMsg);
 							grid.store.load();
 				        },
 				        failure: function(response, opts) {

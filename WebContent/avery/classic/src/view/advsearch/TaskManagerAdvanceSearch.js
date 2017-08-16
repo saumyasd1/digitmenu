@@ -13,17 +13,14 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 	initComponent:function(){
 		var me = this;
 		me.items = me.buildItems();
-		me.buttons=me.getButtons();
 		me.callParent(arguments);
 	},
-	buildItems :function(){
-		var me = this;
+	buildItems:function(){
 		return [
 		    {
 		    	xtype:'form',
 		        reference:'taskManagerAdvanceSearchForm',
-		        border:false,
-		        padding:'10 10 5 10',
+		        padding:'10',
 		        items:[
 					
 					{
@@ -33,31 +30,26 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'textfield',
+							listeners:{
+								specialkey:'getAdvancedSearchResults'
+							}
 						},
 						items:[
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.TrackingNo,
 								name:'id',
-								flex:1,
-								tabIndex:1,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:1
+								
 							},
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
-								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:2,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:2
 							}
 						]
 					},
@@ -68,31 +60,25 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							xtype:'textfield',
+							listeners:{
+								specialkey:'getAdvancedSearchResults'
+							}
 						},
 						items:[
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
-								flex:1,
-								tabIndex:3,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:3
 							},
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.receiverEmailID,
 								name:'ReceiverEmailID',
-								flex:1,
 								tabIndex:4,
-								margin:'0 0 0 10',
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								margin:'0 0 0 10'
 							}
 						]
 					},
@@ -103,16 +89,16 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.ccMailId,
 								name:'ccMailId',
-								flex:1,
 								tabIndex:5,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -127,9 +113,7 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								store:Ext.create('AOC.store.AssignCSRStore',{storeId:'advTmCSRStoreId'}),
 								typeAhead:true,
 								triggerAction:'all',
-								width:275,
 								margin:'0 0 0 10',
-								enableKeyEvents:true,
 								tabIndex:6,
 								listeners:{
 									blur:function(combo,e){
@@ -181,21 +165,19 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							xtype:'datefield',
+							enableKeyEvents:true,
+							selectOnTab:true
 						},
 						items:[
 							{
-								xtype : 'datefield',
 								name:'fromDate',
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
-								flex:1,
-								hidden:false,
-								allowBlank : true,
-								selectOnTab : true,
 								value:new Date(),
 								tabIndex:7,
-								enableKeyEvents:true,
 								listeners : {
 									afterrender : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
@@ -204,16 +186,10 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 								}
 							},
 							{
-								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
 								margin:'0 0 0 10',
-								hidden:false,
-								allowBlank : true,
-								selectOnTab : true,
-								enableKeyEvents:true,
 								tabIndex:8,
 								listeners : {
 									afterrender : function(datefield) {
@@ -228,21 +204,19 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 		    }
 		]
 	},
-	getButtons:function(){ 
-		return [ 
-			{
-				text : 'Search',
-				iconCls:'x-fa fa-search',
-				disabled : false,
-				formBind : true,
-				success : true,
-				tabIndex:9,
-				enableKeyEvents:true,
-				listeners : {
-					click  : 'onSearchBtnClicked',
-					specialkey:'getAdvancedSearchResults'
-				}
+	buttons:[ 
+		{
+			text : 'Search',
+			iconCls:'x-fa fa-search',
+			disabled : false,
+			formBind : true,
+			success : true,
+			tabIndex:9,
+			enableKeyEvents:true,
+			listeners : {
+				click  : 'onSearchBtnClicked',
+				specialkey:'getAdvancedSearchResults'
 			}
-		];	
-	}
+		}
+	]
 });

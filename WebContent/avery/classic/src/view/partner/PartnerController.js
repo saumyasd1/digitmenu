@@ -328,17 +328,6 @@ Ext.define('AOC.view.partner.PartnerController', {
         store.loadPage(1);
         cmp.setValue('');
         cmp.orderedTriggers[0].hide();
-    },
-    hideMandatoryMessage: function() {
-        var obj = this.getView();
-        Helper.hideMandatoryMessage(obj);
-    },
-    notifyByMessage: function() {
-        var obj = this.getView();
-        Helper.notifyByMessage(obj);
-    },
-    notifyByImage: function(config) {
-        Helper.notifyByImage(config);
     }
 
 });

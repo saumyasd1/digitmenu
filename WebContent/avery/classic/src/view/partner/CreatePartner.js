@@ -83,11 +83,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 maxLength: '250',
                 margin:'0 0 5 0',
                 blankText: AOCLit.partnerNameReq,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
                 xtype: 'textfield',
@@ -99,11 +95,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 margin:'0 0 5 0',
                 blankText: AOCLit.addReq,
                 maxLength: 500,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
                 xtype: 'textfield',
@@ -115,11 +107,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 margin:'0 0 5 0',
                 blankText: AOCLit.contactPersonReq,
                 maxLength: 100,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }, 
             {
 
@@ -133,11 +121,7 @@ Ext.define('AOC.view.partner.CreatePartner', {
                 blankText: AOCLit.phoneReqMsg,
                 maxLength: 20,
                 regex: /^(\d+-?)+\d+$/,
-                enforceMaxLength: true,
-                listeners: {
-                    'blur': 'notifyByImage',
-                    'focus': 'hideMandatoryMessage'
-                }
+                enforceMaxLength: true
             }]
         }]
     },

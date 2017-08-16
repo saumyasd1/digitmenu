@@ -219,7 +219,6 @@ Ext.define('AOC.view.home.ReportForm',{
 							afterrender : function(datefield) {
 								datefield.setValue(new Date());
 							}
-							//focus: 'notifyByMessage'
 						}
 					}
 				]

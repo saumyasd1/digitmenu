@@ -484,11 +484,6 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         var win = Ext.create('AOC.view.orderqueue.CancelOrderWindow');
         win.show();
     },
-//    notifyByMessage:function(){
-//    	var ordersearch=Ext.ComponentQuery.query('#orderqueueadvancesearchIDWindow')[0];
-//	 	ordersearch.down('#messageFieldItemId').setValue('').setVisible(true);
-//	 	ordersearch.down('#messageFieldItemId').setHidden('true');
-//    },
     backButton:function(){
  	   var panel=Ext.ComponentQuery.query('#emailPanel')[0];
 	       var emailManagement=panel.down('#EmailMangementitemId');

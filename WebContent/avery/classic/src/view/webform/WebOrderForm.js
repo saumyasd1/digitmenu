@@ -166,10 +166,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						fieldLabel:'Sender Email',
 						disabled:true,
 						allowBlank: false,
-						blankText : 'Sender Email is required',
-						listeners:{
-							 blur : this.notifyByImage
-						 }
+						blankText : 'Sender Email is required'
 					},
 					{
 						xtype:'textfield',
@@ -183,10 +180,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank: false,
 						disabled:true,
 						maxLength : '100',
-						blankText : AOCLit.emailSubReq,
-						listeners:{
-						  blur : this.notifyByImage
-						}
+						blankText : AOCLit.emailSubReq
 					}
 				]
 			},
@@ -215,10 +209,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						disabled:true,
 						height:100,
 						allowBlank: false,
-						flex:1.8,
-						listeners:{
-							blur : this.notifyByImage
-						}
+						flex:1.8
 					},
 					{ 
 						xtype : 'fileuploadfield', 
@@ -232,11 +223,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						disabled:true,
 						forceSelection : true,
 						enforceMaxLength: true,
-						blankText :'Order File Type is required',
-						listeners:{
-							change:'onOrderFileChange',
-							blur : this.notifyByImage
-						}
+						blankText :'Order File Type is required'
 					}
 				]
 			},
@@ -274,8 +261,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						allowBlank: false,
 						hidden:true,
 						listeners:{
-							change:'onAttachmentChange',
-							blur : this.notifyByImage
+							change:'onAttachmentChange'
 						}
 					}
 				]
@@ -311,13 +297,5 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 				value:''
 			}
 		];
-	},
-	notifyByImage : function(config){
-		if(config.isValid()){
-			config.setFieldStyle('background-image:url( AOC.config.Settings.buttonIcons.valid_field);background-repeat:no-repeat;background-position:right;');
-		}
-		else{
-			config.setFieldStyle('background-image:url(AOC.config.Settings.buttonIcons.invalid_field);background-repeat:no-repeat;background-position:right;');
-		}
-	 }
+	}
 });

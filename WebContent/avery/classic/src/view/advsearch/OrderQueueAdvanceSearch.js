@@ -18,7 +18,6 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 		me.callParent(arguments);
 	},
 	buildItems :function(){
-		var me = this;
 		return [
 		    {
 		    	xtype:'form',
@@ -33,7 +32,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
@@ -43,11 +44,9 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								reference:'partnerCombo',
 								store:Ext.data.StoreManager.lookup('partnerComboStoreId'),
 								queryMode:'local',
-								tabIndex:4,
-								flex:1,
+								tabIndex:1,
 								displayField:'partnerName',
 								valueField:'partnerName',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults',
 									blur:'onComboBlur'
@@ -57,10 +56,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.RBO,
 								name:'RBOName',
-								flex:1,
 								tabIndex:2,
 								margin:'0 0 0 10',
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -74,31 +71,25 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							enableKeyEvents:true,
+							flex:1,
+							xtype:'textfield',
+							listeners:{
+								specialkey:'getAdvancedSearchResults'
+							}
 						},
 						items:[
 							{
-								xtype : 'textfield',
 								fieldLabel : AOCLit.Subject,
 								name:'Subject',
-								flex:1,
-								tabIndex:3,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:3
 							},
 							{
-								xtype : 'textfield',
 								fieldLabel :AOCLit.TrackingNo,
 								name:'emailQueueId',
-								flex:1,
 								margin:'0 0 0 10',
-								tabIndex:4,
-								enableKeyEvents:true,
-								listeners:{
-									specialkey:'getAdvancedSearchResults'
-								}
+								tabIndex:4
 							}
 						]
 					},
@@ -109,35 +100,31 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true,
+							typeAhead:true,
+							queryMode :'local',
+							xtype:'combo'
 						},
 						items:[
 							{
-								xtype : 'combo',
 								fieldLabel : AOCLit.orderStatus,
 								name:'Status',
-								flex:1,
 								displayField:'value',
 								valueField:'code',
-								queryMode :'local',
 								tabIndex:5,
-								enableKeyEvents:true,
-								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? AOC.util.Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
+								store: Ext.data.StoreManager.lookup('orderfilequeueid') == null ? Helper.getCodeStore('orderfilequeue') : Ext.data.StoreManager.lookup('orderfilequeueid'),
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
-								xtype : 'combo',
 								fieldLabel : AOCLit.partnerDataStructure,
 								displayField:'dataStructureName',
 								name:'partnerDataStructure',
 								valueField:'id',
-								typeAhead:true,
-								queryMode :'local',
-								flex:1,
 								tabIndex:6,
-								enableKeyEvents:true,
 								margin:'0 0 0 10',
 								store:Ext.data.StoreManager.lookup('productLineStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore',{storeId:'productLineStoreId'}) : Ext.data.StoreManager.lookup('productLineStoreId'),
 								listeners:{
@@ -155,16 +142,16 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.senderEmailID,
 								name:'SenderEmailID',
-								flex:1,
 								tabIndex:7,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -173,11 +160,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								xtype : 'textfield',
 								fieldLabel : AOCLit.orderTrackNo,
 								name:'orderQueueId',
-								width:250,
-								flex:1,
 								margin:'0 0 0 10',
 								tabIndex:8,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
@@ -191,14 +175,15 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype:'combo',
 								name: 'siteId',
 								fieldLabel:'Site',
-								flex:1,
 							 	editable:false,
 								displayField:'name',
 								queryMode :'local',
@@ -211,7 +196,8 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 										if(field.getValue() == 'None'){
 											field.setValue('');
 										}
-									}
+									},
+									specialkey:'getAdvancedSearchResults'
 								}
 							}
 						]
@@ -223,42 +209,40 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							enableKeyEvents:true
 						},
 						items:[
 							{
 								xtype : 'textfield',
 								fieldLabel : AOCLit.poNumber,
 								name:'ponumber',
-								flex:1,
 								tabIndex:9,
-								enableKeyEvents:true,
 								listeners:{
 									specialkey:'getAdvancedSearchResults'
 								}
 							},
 							{
-									xtype:'combo',
-									displayField:'csrName',
-									fieldLabel : AOCLit.csrCode,
-									reference:'csrCombo',
-									name:'assignCSR',
-									valueField:'userId',
-									queryMode:'local',
-									store:Ext.data.StoreManager.lookup('advOQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advOQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advOQCSRStoreId'}),
-									typeAhead:true,
-									tabIndex:10,
-									triggerAction:'all',
-									flex:1,
-									enableKeyEvents:true,
-									margin:'0 0 0 10',
-									listeners:{
-										blur:function(combo,e){
-											Helper.clearCSRCombo(combo,e);
-										},
-										specialkey:'getAdvancedSearchResults',
-										afterrender:Helper.loadAdvanceCSRStore
-									}
+								xtype:'combo',
+								displayField:'csrName',
+								fieldLabel : AOCLit.csrCode,
+								reference:'csrCombo',
+								name:'assignCSR',
+								valueField:'userId',
+								queryMode:'local',
+								store:Ext.data.StoreManager.lookup('advOQCSRStoreId') != null ?  Ext.data.StoreManager.lookup('advOQCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'advOQCSRStoreId'}),
+								typeAhead:true,
+								tabIndex:10,
+								triggerAction:'all',
+								margin:'0 0 0 10',
+								listeners:{
+									blur:function(combo,e){
+										Helper.clearCSRCombo(combo,e);
+									},
+									specialkey:'getAdvancedSearchResults',
+									afterrender:Helper.loadAdvanceCSRStore
+								}
 							}
 						]
 					},	
@@ -270,21 +254,19 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 						defaults:{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
-							labelAlign:Settings.form.topLabelAlign
+							labelAlign:Settings.form.topLabelAlign,
+							flex:1,
+							xtype:'datefield',
+							selectOnTab:true,
+							enableKeyEvents:true
 						},
 						items:[
 							{
-								xtype : 'datefield',
 								name:'fromDate',
 								reference:'fromDate',
 								fieldLabel : AOCLit.fromDate,
-								flex:1,
 								hidden:false,
-								allowBlank : true,
 								tabIndex:11,
-								enableKeyEvents:true,
-								selectOnTab : true,
-								value:new Date(),
 								listeners : {
 									afterrender : function(datefield) {
 										datefield.setValue(Ext.Date.subtract (new Date(),Ext.Date.DAY,7));
@@ -293,21 +275,14 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 								}
 							},
 							{
-								xtype : 'datefield',
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								flex:1,
 								margin:'0 0 0 10',
 								hidden:false,
 								tabIndex:12,
-								enableKeyEvents:true,
-								allowBlank : true,
-								selectOnTab : true,
 								value:new Date(),
 								listeners : {
-									afterrender : function(datefield) {
-									},
 									specialkey:'getAdvancedSearchResults'
 								}
 							}
@@ -315,7 +290,7 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 					}  
 		        ]
 		    }
-		]
+		];
 	},
 	getButtons:function(){ 
 		return [ 
@@ -332,6 +307,6 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 					specialkey:'getAdvancedSearchResults'
 				}
 			}
-		]	
+		];	
 	}
 });

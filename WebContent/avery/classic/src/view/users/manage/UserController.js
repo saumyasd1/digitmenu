@@ -166,17 +166,7 @@ Ext.define('AOC.view.users.manage.UserController', {
          	}
          );
     },
-    hideMandatoryMessage: function () {
-        var obj = this.getView();
-        Helper.hideMandatoryMessage(obj);
-    },
-    notifyByMessage: function () {
-        var obj = this.getView();
-        Helper.notifyByMessage(obj);
-    },
-    notifyByImage: function (config) {
-    	Helper.notifyByImage(config);
-    },
+    
     getQuickSearchResults: function (cmp) {
         var store = this.getView().store;
         var value = cmp.getValue();
