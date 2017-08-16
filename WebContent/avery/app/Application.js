@@ -32,7 +32,8 @@ Ext.define('AOC.Application', {
          'HomePageOders',
          'LocalItemLookupStore',
          'BillShipMappingStore',
-         'ConfigurationCSRStore'
+         'ConfigurationCSRStore',
+         'UniquePartnerStore'
     ],
     views : ['Viewport'],
     
