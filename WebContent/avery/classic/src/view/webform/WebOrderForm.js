@@ -223,7 +223,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						disabled:true,
 						forceSelection : true,
 						enforceMaxLength: true,
-						blankText :'Order File Type is required'
+						blankText :'Order File Type is required',
+						listeners:{
+							change:'onOrderFileChange'
+						}
 					}
 				]
 			},

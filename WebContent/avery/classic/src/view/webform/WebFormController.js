@@ -372,7 +372,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 //    	Helper.showToast('success', AOCLit.webSubmissionSuccesFulMsg);
     	Ext.Msg.show({
 		    title:'Go To Email Screen',
-		    message: 'Are you sure, you want to go to Email Screen to see <b>Email#'+emailQueueId+'</b>?',
+		    message: 'Do you want to go to Email Screen to see <b>Email# '+emailQueueId+'</b> ?',
 		    buttons: Ext.Msg.YESNO,
 		    icon: Ext.Msg.QUESTION,
 		    fn: function(btn) {
