@@ -240,7 +240,7 @@ Ext.define('AOC.view.home.ReportFormController', {
 
     onPartnerComboExpand:function(field){
     	var store = field.store,
-    		obj ={id:'all', name:'Select All', site:AOCRuntime.getUser().siteId};
+    		obj ={id:'all', partnerName:'Select All', site:AOCRuntime.getUser().siteId};
     	
     	var index = store.find('id', 'all');
 		if(index == -1){
