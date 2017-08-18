@@ -22,7 +22,6 @@ import com.avery.app.config.SpringConfig;
 import com.avery.logging.AppLogger;
 import com.avery.storage.dao.GenericDaoImpl;
 import com.avery.storage.entities.Address;
-import com.avery.storage.entities.OrderEmailQueue;
 import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
@@ -193,7 +192,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		if(!address.equals("")){
 			Session session = getSessionFactory().getCurrentSession();
 			Address adrObj=new Address();
-			OrderQueue orderqueue = new OrderQueue();
 			adrObj.setSiteNumber(orderLine.getOracleShipToSiteNumber());
 			adrObj.setAddress1(orderLine.getShipToAddress1());
 			adrObj.setAddress2(orderLine.getShipToAddress2());
@@ -212,7 +210,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
 			adrObj.setSiteType("S");
-		    adrObj.setOrgCode(orderLine.getDivisionForInterfaceERPORG());
+		    adrObj.setOrgCode(orgCodeId);
 		    Partner partnerObj=new Partner();
 			Org orgObj=new Org();
 			Long currentPartnerId=Long.parseLong(partnerId);
@@ -229,7 +227,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 		}
 	}
 	private void insertBillAddress(OrderLine orderLine, String partnerId, String systemId, String siteId, String orgCodeId){
-		OrderQueue orderqueue = new OrderQueue();
 		String billToAddress1=orderLine.getBillToAddress1();
 		String billToAddress2=orderLine.getBillToAddress2();
 		String address=(billToAddress2==null?"":billToAddress2)+(billToAddress1==null?"":billToAddress1);
@@ -253,7 +250,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			adrObj.setDescription("Inserted By Adeptia");
 			adrObj.setCreatedBy("Adeptia");
 			adrObj.setCreatedDate(new Date());
-			adrObj.setOrgCode(orderLine.getDivisionForInterfaceERPORG());
+			adrObj.setOrgCode(orgCodeId);
 			adrObj.setSiteType("B");
 			Partner partnerObj=new Partner();
 			Org orgObj=new Org();

@@ -265,18 +265,14 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
         }
     	
 		if(billToCode == 'true'){
-			if(currentRecord.isModified('oracleBillToSiteNumber') 
-					&&  currentRecord.get('oracleBillToSiteNumber')!=null 
-					&& currentRecord.get('oracleBillToSiteNumber')!='' 
-						&& currentRecord.getModified('oracleBillToSiteNumber')==''){
+			if(!Ext.isEmpty(currentRecord.get('oracleBillToSiteNumber')) 
+					&& currentRecord.isModified('oracleBillToSiteNumber')){
     			insertBillAddress = true;
 			}
 		}
 		if(shipToCode =='true'){
-    		if(currentRecord.isModified('oracleShipToSiteNumber') 
-    				&&  currentRecord.get('oracleShipToSiteNumber')!=null 
-    				&& currentRecord.get('oracleShipToSiteNumber')!='' 
-    					&& currentRecord.getModified('oracleShipToSiteNumber')==''){
+    		if(!Ext.isEmpty(currentRecord.get('oracleShipToSiteNumber')) 
+    				&& currentRecord.isModified('oracleShipToSiteNumber')){
     			insertShipAddress = true;
     		}
 		}
@@ -288,22 +284,20 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			billToAddress:currentRecord.get('billToAddress1'),
 			billType:currentRecord.isModified('oracleBillToSiteNumber'),
 			shipType:currentRecord.isModified('oracleShipToSiteNumber'),
-			billToSiteNumber:currentRecord.isModified('oracleBillToSiteNumber'),
-			shipToSiteNumber:currentRecord.isModified('oracleShipToSiteNumber'),
-			billToAddress2:currentRecord.isModified('billToAddress2'),
-			billToAddress3:currentRecord.isModified('billToAddress3'),
-			shipToAddress:currentRecord.isModified('shipToAddress1'),
+			billToSiteNumber:currentRecord.get('oracleBillToSiteNumber'),
+			shipToSiteNumber:currentRecord.get('oracleShipToSiteNumber'),
+			billToAddress2:currentRecord.get('billToAddress2'),
+			billToAddress3:currentRecord.get('billToAddress3'),
 			
-			shipToAddress2:currentRecord.isModified('shipToAddress2'),
-			shipToAddress3:currentRecord.isModified('shipToAddress3'),
-			shipToAddress:currentRecord.isModified('shipToAddress1'),
+			shipToAddress2:currentRecord.get('shipToAddress2'),
+			shipToAddress3:currentRecord.get('shipToAddress3'),
 			data:Ext.encode(obj),
 			
 			updateAll:updateFlag,
 			
 			orderQueueId:AOCRuntime.getOrderQueueId(),
 			partnerId:AOCRuntime.getCurrentOrderQueuePartnerId(),
-			systemId:currentRecord.isModified('systemId'),
+			systemId:currentRecord.get('systemId'),
 			siteId:AOCRuntime.getCurrentOrderQueueSiteId(),
 			orgCodeId:orgCodeId,
 			lastModifiedBy:Helper.getLastModifiedBy()
@@ -336,13 +330,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		});
     },
     getOrgCodeId:function(orgInfoId){
-    	var orgStore = AOCRuntime.getStoreERPORG();
+    	var orgStore = AOCRuntime.getStoreERPORG(),
+    		orgCodeId;
 
 		orgStore.each(function(orgRec){
 			if(orgRec.get('id') == orgInfoId){
-				return orgRec.get('orgCodeId');
+				orgCodeId = orgRec.get('orgCodeId');
+				return;
 			}
 		});
+		if(orgCodeId){
+			return orgCodeId;
+		}
     },
     updateOrderLine:function(editor, context, eOpts){
     	var me = this;
