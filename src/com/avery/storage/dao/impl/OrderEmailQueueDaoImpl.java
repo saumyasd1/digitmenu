@@ -523,7 +523,7 @@ OrderEmailQueueDao {
 				criteria.add(Restrictions.ilike("rbo.rboName",RBOName,MatchMode.ANYWHERE));
 			}
 
-			String partnerName=searchMap.get("PartnerName");
+			String partnerName=searchMap.get("partnerName");
 			if(partnerName!=null && !"".equals(partnerName)){
 				if(flag==0){
 					criteria.createAlias("listOrderFileAttachment", "listOrderFileAttachment")
