@@ -311,14 +311,16 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			{
 				orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
 			}
+			String divisionForInterfaceERPORG= null;
+			if (jsonData != null) 
+			{
+				Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(jsonData);
+				divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
+			}
 			for(OrderLine orderLine:entities){
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(jsonData);
 				orderLine.preUpdateOp();
-				if (jsonData != null) 
-				{
-					Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(jsonData);
-					String divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
 					if(divisionForInterfaceERPORG != null && !divisionForInterfaceERPORG.isEmpty() && divisionForInterfaceERPORG != "")
 					{
 						if(orginfo != null)
@@ -333,7 +335,6 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 							orderLine.setOrderType(null);
 						}
 					}
-				}
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(insertAddress){
