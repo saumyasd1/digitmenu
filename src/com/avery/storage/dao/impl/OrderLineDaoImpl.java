@@ -139,7 +139,7 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 					String divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
 					if(divisionForInterfaceERPORG != null && !divisionForInterfaceERPORG.isEmpty() && divisionForInterfaceERPORG != "")
 					{
-						OrgInfo orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
+						OrgInfo orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(divisionForInterfaceERPORG));
 						if(orginfo != null)
 						{
 							orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
@@ -307,15 +307,13 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
 			OrgInfo orginfo=null;
-			if(orgCodeId != null && !orgCodeId.isEmpty())
-			{
-				orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
-			}
 			String divisionForInterfaceERPORG= null;
 			if (jsonData != null) 
 			{
 				Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(jsonData);
-				divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
+				divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");
+				if(divisionForInterfaceERPORG != null && !divisionForInterfaceERPORG.isEmpty() && divisionForInterfaceERPORG != "")
+				{orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(divisionForInterfaceERPORG));}
 			}
 			for(OrderLine orderLine:entities){
 				updater = mapper.readerForUpdating(orderLine);
