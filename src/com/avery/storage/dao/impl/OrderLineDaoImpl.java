@@ -133,19 +133,24 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(t);
 				orderLine.preUpdateOp();
-				orderLine.setOrderType(null);
-				if(orgCodeId != null && !orgCodeId.isEmpty())
+				if (jsonData != null) 
 				{
-					OrgInfo orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
-					if(orginfo != null)
+					Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(jsonData);
+					String divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
+					if(divisionForInterfaceERPORG != null && !divisionForInterfaceERPORG.isEmpty() && divisionForInterfaceERPORG != "")
 					{
-						orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
-						orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
-						orderLine.setShippingMethod(orginfo.getShippingMethod());
-						orderLine.setFreightTerms(orginfo.getFreightTerm());
-						String shippingInstruction=orderLine.getShippingInstructions();
-						shippingInstruction=shippingInstruction+","+orginfo.getShippingInstruction();
-						orderLine.setShippingInstructions(shippingInstruction);
+						OrgInfo orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
+						if(orginfo != null)
+						{
+							orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
+							orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
+							orderLine.setShippingMethod(orginfo.getShippingMethod());
+							orderLine.setFreightTerms(orginfo.getFreightTerm());
+							String shippingInstruction=orderLine.getShippingInstructions();
+							shippingInstruction=shippingInstruction+"^"+orginfo.getShippingInstruction();
+							orderLine.setShippingInstructions(shippingInstruction);
+							orderLine.setOrderType(null);
+						}
 					}
 				}
 				session.update(orderLine);
@@ -310,17 +315,25 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(jsonData);
 				orderLine.preUpdateOp();
-				orderLine.setOrderType(null);
-					if(orginfo != null)
+				if (jsonData != null) 
+				{
+					Map<String, String> searchMap = ApplicationUtils.convertJSONtoMaps(jsonData);
+					String divisionForInterfaceERPORG = searchMap.get("divisionForInterfaceERPORG");	
+					if(divisionForInterfaceERPORG != null && !divisionForInterfaceERPORG.isEmpty() && divisionForInterfaceERPORG != "")
 					{
-						orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
-						orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
-						orderLine.setShippingMethod(orginfo.getShippingMethod());
-						orderLine.setFreightTerms(orginfo.getFreightTerm());
-						String shippingInstruction=orderLine.getShippingInstructions();
-						shippingInstruction=shippingInstruction+","+orginfo.getShippingInstruction();
-						orderLine.setShippingInstructions(shippingInstruction);
+						if(orginfo != null)
+						{
+							orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
+							orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
+							orderLine.setShippingMethod(orginfo.getShippingMethod());
+							orderLine.setFreightTerms(orginfo.getFreightTerm());
+							String shippingInstruction=orderLine.getShippingInstructions();
+							shippingInstruction=shippingInstruction+"^"+orginfo.getShippingInstruction();
+							orderLine.setShippingInstructions(shippingInstruction);
+							orderLine.setOrderType(null);
+						}
 					}
+				}
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(insertAddress){
