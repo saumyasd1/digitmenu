@@ -141,13 +141,17 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	}
     },
     getOrgCodeId:function(orgInfoId){
-    	var orgStore = AOCRuntime.getStoreERPORG();
+    	var orgStore = AOCRuntime.getStoreERPORG(),
+    		orgCodeId;
 
 		orgStore.each(function(orgRec){
 			if(orgRec.get('id') == orgInfoId){
-				return orgRec.get('orgCodeId');
+				orgCodeId =  orgRec.get('orgCodeId');
 			}
 		});
+		if(orgCodeId){
+			return orgCodeId;
+		}
     },
     cancelChanges:function(){
     	var me = this,

@@ -61,7 +61,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		obj.id = currentRecord.id;
 		var fiberPercent = currentRecord.get('fiberPercent');
 		var isContainsFibre = currentRecord.get('level').toLowerCase();
-		var obj ='{"data":'+Ext.encode(Ext.encode(obj))+',"orderQueueId":"'+AOCRuntime.getOrderQueueId()+'"}';
+		
+		obj.data = Ext.encode(obj);
+		obj.orderQueueId = AOCRuntime.getOrderQueueId();
 		
 		if(isContainsFibre == 'fibre'){
 			if(fiberPercent.includes('.') == true || fiberPercent < 0){
@@ -82,7 +84,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		Ext.getBody().mask('Saving....');
 		Ext.Ajax.request({
 			method:'PUT',
-			jsonData:obj,
+			jsonData:Ext.encode(obj),
 			params:params,
 			url: url,
 			success : function(response, opts) {
@@ -107,7 +109,10 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 			url= applicationContext + '/rest/orderlinedetails/bulkupdate/variable';
         
         var obj = currentRecord.getChanges();
-        obj = '{"data":' + Ext.encode(Ext.encode(obj)) + ',"updateAll":true,"orderQueueId":"' + AOCRuntime.getOrderQueueId() + '"}';
+        obj.data = Ext.encode(obj);
+        obj.updateAll = true;
+        obj.orderQueueId =  AOCRuntime.getOrderQueueId();
+        
         var params = {variablename:currentRecord.get('variableFieldName')};
         
         this.updateVariableBulkData(obj, ctx.grid, url, params)
@@ -215,27 +220,36 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		win.show();
     },
     updateOrderLinedetail:function(editor, context, eOpts){
-    	Ext.getBody().mask('Saving...');
-    	var ctx = context,me=this,
-        idx = ctx.rowIdx,
-        currentRecord = ctx.store.getAt(idx),parms='';
-    	var obj=currentRecord.getChanges( ) ;
-    	obj.id=currentRecord.id;
-		var obj='{"data":'+Ext.encode(Ext.encode(obj))+',"updateAll":false,"orderQueueId":"'+AOCRuntime.getOrderQueueId()+'"}';
-    	Ext.Ajax.request({
+    	var me = this,
+    		ctx = context,
+        	idx = ctx.rowIdx,
+        	currentRecord = ctx.store.getAt(idx),
+        	parms = '';
+    	
+    	var obj = currentRecord.getChanges();
+    	obj.id = currentRecord.id;
+    	
+    	var params = {
+			data:Ext.encode(obj),
+			updateAll:false,
+			orderQueueId:AOCRuntime.getOrderQueueId()
+    	}
+		Ext.getBody().mask('Saving...');
+		Ext.Ajax.request({
     		method:'PUT',
-	        jsonData:obj,
-    		   url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
-		        success : function(response, opts) {
-		        	Helper.showToast('success','Order line Detail successfully updated');
-			  		Ext.getBody().unmask();
-			  		Helper.loadOrderLineGridStore(me.getView().store, AOCRuntime.getOrderQueueId());
-			  		me.getView().view.refresh();
-		        },
-		        failure: function(response, opts) {
-		        	Ext.getBody().unmask();
-		        }
-		  });
+	        jsonData:Ext.encode(params),
+	        url : applicationContext+'/rest/orderlinedetails/variablebulkupdate',
+	        success : function(response, opts) {
+	        	Ext.getBody().unmask();
+	        	
+	        	Helper.showToast('success','Order line Detail successfully updated');
+		  		Helper.loadOrderLineGridStore(me.getView().store, AOCRuntime.getOrderQueueId());
+//		  		me.getView().view.refresh();
+	        },
+	        failure: function(response, opts) {
+	        	Ext.getBody().unmask();
+	        }
+		});
     },
    
     getBulkUpdateParams:function(updateFlag){

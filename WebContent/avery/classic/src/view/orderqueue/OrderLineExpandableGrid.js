@@ -215,7 +215,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.atoMandatory+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Mandatory variable field checking</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
-			width: 140,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -245,7 +245,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.bulkSample+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sample item bulk order fail - cross</br>Others - tick</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'bulkSampleValidationFlag',
-			width: 120,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -260,7 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.custPO,
 			dataIndex: 'customerPOFlag',
 			align:'center',
-			width: 140,
+			width: 80,
 			menuDisabled:true,
             sortable:false,
 			renderer:function(value, metadata,rec){
@@ -273,7 +273,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.dupPO,
 			dataIndex: 'duplicatePOFlag',
-			width: 130,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -288,7 +288,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.sizePage+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Size logic validation per RBO</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'htlsizePageValidationFlag',
-			width: 100,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -306,7 +306,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-			width: 120,
+			width: 80,
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -315,12 +315,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return Helper.getIconClass(checkvalue);
 			}
 		},
-		
-		/*New Field-2*/
 		{
 			text: AOCLit.coo+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>COO logic validation</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'cooTranslationFlag',
-			width: 100,
+			width: 50,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -332,11 +330,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return Helper.getIconClass(checkvalue);
 			}
 		},
-		/*New Field-3*/    
 		{
 			text: AOCLit.febricContent+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Sum of the Fabric Content = Multiple of 100%</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'febricPercentageFlag',
-			width: 140,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -348,11 +345,10 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 				return Helper.getIconClass(checkvalue);
 			}
 		},
-		/*New Field-4*/    
 		{
 			text: AOCLit.reviseOrder+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>alert warning message if it is revise order</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'reviseOrderFlag',
-			width: 120,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -370,7 +366,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'left',
 			menuDisabled:true,
             sortable:false,
-			width: 140
+			width: 100
 		},
 		{
 			text: AOCLit.divisionforInterfaceERPORG+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>PY/NS - PYT/PYL/POHKT/POHKL/ADNS/ADNL/ADHK</br>SZ - SZ/PXSH</br>VN - VN/PXVN</font>" class="fa fa-info-circle"></i>',
