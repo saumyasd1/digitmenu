@@ -26,6 +26,7 @@ import com.avery.storage.entities.OrderLine;
 import com.avery.storage.entities.OrderQueue;
 import com.avery.storage.entities.OrderSystemInfo;
 import com.avery.storage.entities.Org;
+import com.avery.storage.entities.OrgInfo;
 import com.avery.storage.entities.Partner;
 import com.avery.storage.entities.SystemCsrCode;
 import com.avery.storage.entities.SystemInfo;
@@ -132,6 +133,21 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(t);
 				orderLine.preUpdateOp();
+				orderLine.setOrderType(null);
+				if(orgCodeId != null && !orgCodeId.isEmpty())
+				{
+					OrgInfo orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
+					if(orginfo != null)
+					{
+						orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
+						orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
+						orderLine.setShippingMethod(orginfo.getShippingMethod());
+						orderLine.setFreightTerms(orginfo.getFreightTerm());
+						String shippingInstruction=orderLine.getShippingInstructions();
+						shippingInstruction=shippingInstruction+","+orginfo.getShippingInstruction();
+						orderLine.setShippingInstructions(shippingInstruction);
+					}
+				}
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(i==0){
@@ -285,10 +301,26 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 					false);
+			OrgInfo orginfo=null;
+			if(orgCodeId != null && !orgCodeId.isEmpty())
+			{
+				orginfo=(OrgInfo) session.get(OrgInfo.class, Long.parseLong(orgCodeId));
+			}
 			for(OrderLine orderLine:entities){
 				updater = mapper.readerForUpdating(orderLine);
 				orderLine = updater.readValue(jsonData);
 				orderLine.preUpdateOp();
+				orderLine.setOrderType(null);
+					if(orginfo != null)
+					{
+						orderLine.setOracleBillToSiteNumber(orginfo.getBillToCode());
+						orderLine.setOracleShipToSiteNumber(orginfo.getShipToCode());
+						orderLine.setShippingMethod(orginfo.getShippingMethod());
+						orderLine.setFreightTerms(orginfo.getFreightTerm());
+						String shippingInstruction=orderLine.getShippingInstructions();
+						shippingInstruction=shippingInstruction+","+orginfo.getShippingInstruction();
+						orderLine.setShippingInstructions(shippingInstruction);
+					}
 				session.update(orderLine);
 				orderLine.postUpdateOp();
 				if(insertAddress){
