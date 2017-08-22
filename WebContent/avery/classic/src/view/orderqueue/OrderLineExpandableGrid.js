@@ -1423,6 +1423,22 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 					  width:40
 					}, 
 					{
+			            text: Settings.config.defaultIcons.commentColumnIcon,
+			            width: 40,
+			            dataIndex: 'comment',
+			            tooltip: 'Comments',
+			            align:'center',
+			            menuDisabled:true,
+			            sortable:false,
+			            resizable:false,
+			            renderer:function(v, metadata, record){
+							if(v){
+								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" message="'+v+'" class="x-fa fa-comment-o help-message"></i>';
+							}
+							return '';
+						}
+					},
+					{
 					  text: 'Level',
 					  dataIndex: 'level',
 					  flex:0.5
