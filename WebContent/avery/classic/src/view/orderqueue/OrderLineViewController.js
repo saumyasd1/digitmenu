@@ -424,6 +424,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     			padding:10
     		},
     		minWidth:200,
+    		hidden:true,
     		width:'28%',
     		style:'z-index:2;position:absolute;',
     		header:false,

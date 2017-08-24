@@ -25,13 +25,14 @@ Ext.define('AOC.view.partner.OrgController', {
     	});
     	store.load();
 	},
-	onOrgeCodeComboChange:function(cmp,newValue){
+	onOrgCodeComboChange:function(cmp,newValue){
 		if(cmp.getValue() == 'None'){
 			cmp.setValue('');
 			return;
 		}
-//		Ext.getBody().mask()
-		var view=this.getView();
+		
+		var view = this.getView();
+		
 		if(!Ext.isEmpty(newValue)){
 			var gridStore=view.getStore(),
 				alreadyPresent=gridStore.find('orgCodeId',newValue);

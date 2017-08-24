@@ -60,7 +60,7 @@ Ext.define('AOC.view.partner.OrgGrid', {
 					displayField:'name',
 					valueField:'id',
 					listeners:{
-						'change':'onOrgeCodeComboChange'
+						'change':'onOrgCodeComboChange'
 					}
 				},
 				renderer:'onOrgCodeCellRender'
