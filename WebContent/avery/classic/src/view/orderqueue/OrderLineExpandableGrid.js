@@ -215,7 +215,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.atoMandatory+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Mandatory variable field checking</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'mandatoryVariableDataFieldFlag',
-			width: 80,
+			width: 100,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -260,7 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.custPO,
 			dataIndex: 'customerPOFlag',
 			align:'center',
-			width: 80,
+			width: 90,
 			menuDisabled:true,
             sortable:false,
 			renderer:function(value, metadata,rec){
@@ -273,7 +273,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.dupPO,
 			dataIndex: 'duplicatePOFlag',
-			width: 80,
+			width: 90,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -306,7 +306,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			align:'center',
 			menuDisabled:true,
             sortable:false,
-			width: 80,
+			width: 100,
 			renderer:function(value, metadata,rec){
 				var moqValidationFlag=rec.data.moqvalidationFlag;
 				var checkvalue = value ? value.trim()  :'';
@@ -318,7 +318,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.coo+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>COO logic validation</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'cooTranslationFlag',
-			width: 50,
+			width: 80,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -348,7 +348,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 		{
 			text: AOCLit.reviseOrder+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>alert warning message if it is revise order</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'reviseOrderFlag',
-			width: 80,
+			width: 100,
 			align:'center',
 			menuDisabled:true,
             sortable:false,
@@ -963,14 +963,16 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'packingInstruction',
 			align:'left',
 			width: 180,
-			editor: 'textfield'
+			editor: 'textfield',
+			renderer:Helper.onLongTextRenderer
 		}, 
 		{
 			text: AOCLit.shippingInstructions+ ' <i style="color:#2c3e50;" data-qtip="<font color= #3892d3>Oracle: Shipping Instruction</br>VIPS to Oracle/SPW: Shipping instruction</br>VIPS to PHX: Special Instruction</font>" class="fa fa-info-circle"></i>',
 			dataIndex: 'shippingInstructions',
 			align:'left',
 			width: 180,
-			editor: 'textfield'
+			editor: 'textfield',
+			renderer:Helper.onLongTextRenderer
 		}, 
 		{
 			text: AOCLit.shippingMethod,

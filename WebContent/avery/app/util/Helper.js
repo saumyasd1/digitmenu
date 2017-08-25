@@ -353,12 +353,12 @@ Ext.define('AOC.util.Helper',{
         }
 	},
 	getDependendVariableComboStore:function(variableName,systemId,OrgCode){
-			var response = Ext.Ajax.request({
-				async: false,
-				url: applicationContext+'/rest/orderconfigurations/orgId/'+variableName+'/'+systemId+'/'+OrgCode
-			});
-			var jsonValue=Ext.decode(response.responseText);
-			return jsonValue;
+		var response = Ext.Ajax.request({
+			async: false,
+			url: applicationContext+'/rest/orderconfigurations/orgId/'+variableName+'/'+systemId+'/'+OrgCode
+		});
+		var jsonValue=Ext.decode(response.responseText);
+		return jsonValue;
 	},
 	
 	loadOrderLineGridStore:function(store, id){
@@ -536,6 +536,12 @@ Ext.define('AOC.util.Helper',{
         store.filterBy(function(record){
        	 	return (record.get('code') == AOCLit.waitingForCSRStatusOrderLine || record.get('code') == AOCLit.cancelStatusOrderLine);
         });
+	},
+	onLongTextRenderer:function(v, metadata, record){
+		if(v){
+			metadata.tdAttr = 'data-qtip="<font color=blue>'+Ext.htmlEncode(v) +'"';
+		}
+		return v;
 	},
 	onStatusComboFocus:function(combo){
 		var store = combo.store,
