@@ -458,8 +458,9 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		            text: 'Cancel',
 		            scope:me,
 		            handler:function(){
+		            	var view = me.getView();
+		            	view.editingPlugin.cancelEdit();
 		            	me.stopEditing();
-		            	me.onRefreshClick();
 		            }
 		        },{
 		        	xtype:'button',
