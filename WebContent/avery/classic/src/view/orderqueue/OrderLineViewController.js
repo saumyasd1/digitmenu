@@ -459,6 +459,7 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 		            scope:me,
 		            handler:function(){
 		            	me.stopEditing();
+		            	me.onRefreshClick();
 		            }
 		        },{
 		        	xtype:'button',
