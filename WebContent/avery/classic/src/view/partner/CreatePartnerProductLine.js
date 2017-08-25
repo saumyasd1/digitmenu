@@ -233,7 +233,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								name: 'csrSecondaryId',
 								margin:'0 0 0 10',
 								emptyText:'Email Id\'s with ; separated',
-								fieldLabel:'CSR Secondary Email',
+								fieldLabel:'CSR Email',
 								vtype:'multiEmail',
 								blankText : AOCLit.CSRReq
 							}
