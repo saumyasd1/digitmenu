@@ -115,6 +115,7 @@ Ext.define('AOC.model.OrderLineModel',{
  		{name: 'remark', type:'string'},
  		{name: 'reviseOrderFlag', type:'string'},
  		{name: 'shipMark', type:'string'},
- 		{name: 'billToEmail', type:'string'}
+ 		{name: 'billToEmail', type:'string'},
+ 		{name: 'sortingId', type: 'int'}
      ]
 });
