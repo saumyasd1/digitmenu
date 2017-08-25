@@ -451,6 +451,10 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "siteId", length = 50)
 	private String siteId;
 	//transient variables added for getting colorCode and iconName
+	
+	@Column(name = "sortingId")
+	private Long sortingId;
+
 	@Transient
 	private String iconName;
 	
@@ -539,8 +543,6 @@ public class OrderLine extends MainAbstractEntity{
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
 	}
-
-	
 	
 	public String getAveryMOQ() {
 		return averyMOQ;
@@ -1549,6 +1551,14 @@ public class OrderLine extends MainAbstractEntity{
 	public void setSiteId(String siteId) {
 		this.siteId = siteId;
 	}
+	
+	public Long getSortingId() {
+		return sortingId;
+	}
+
+	public void setSortingId(Long sortingId) {
+		this.sortingId = sortingId;
+	}
 
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
@@ -1857,6 +1867,9 @@ public class OrderLine extends MainAbstractEntity{
 			orderLine.setId(0);
 			orderLine.setCreatedDate(now);
 			orderLine.setLastModifiedDate(null);
+			if(orderLine.getSortingId() == null){
+				orderLine.setSortingId(entityId);
+			}
 			Long newId = orderLineService.create(orderLine);
 			responseMap.put("id", newId);
 			responseMap.put("success", true);

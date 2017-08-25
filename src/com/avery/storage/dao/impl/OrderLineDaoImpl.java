@@ -64,6 +64,9 @@ public class OrderLineDaoImpl extends GenericDaoImpl<OrderLine, Long> implements
 			if (statusList == null)
 				throw new Exception("Unable to fetch Status List");
 			for (OrderLine orderLine : list) {
+				if(orderLine.getSortingId() == null){
+					orderLine.setSortingId(orderLine.getId());
+				}
 				String status = orderLine.getStatus();
 				if (status == null | status.equals(""))
 					throw new Exception("Unidentified value found for the statuscode::" + status);
