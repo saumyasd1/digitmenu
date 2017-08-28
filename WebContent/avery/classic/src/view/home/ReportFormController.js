@@ -33,9 +33,7 @@ Ext.define('AOC.view.home.ReportFormController', {
 	 	if(rboCombo.getValue() == 'all'){
 	 		rboStore.each(function(rec){
 				if(rec.get('id') != 'all' ){
-					if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
-						rboName.push(rec.get('rboName'));
-					}
+					rboName.push(rec.get('rboName'));
 				}
 			});
 		}else{
@@ -45,9 +43,7 @@ Ext.define('AOC.view.home.ReportFormController', {
 		if(partnerCombo.getValue() == 'all'){
 			partnerStore.each(function(rec){
 				if(rec.get('id') != 'all'){
-					if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
-						partnerName.push(rec.get('id'));
-					}
+					partnerName.push(rec.get('id'));
 				}
 			});
 		}else{
@@ -140,9 +136,7 @@ Ext.define('AOC.view.home.ReportFormController', {
     	if(partnerCombo.getValue() == 'all'){
     		partnerStore.each(function(rec){
     			if(rec.get('id') != 'all'){
-    				if(AOCRuntime.getUser().siteId == rec.get('site') || AOCRuntime.getUser().role == 1){
-    					partnerId.push(rec.get('id'));
-					}
+					partnerId.push(rec.get('id'));
     			}
     		});
     	}else{
