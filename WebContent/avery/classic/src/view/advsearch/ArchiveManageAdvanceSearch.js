@@ -88,7 +88,7 @@ Ext.define('AOC.view.advsearch.ArchiveManageAdvanceSearch', {
 							listeners : {
 							    render : function(datefield) {
 							        datefield.setValue(new Date());
-							                },
+							                }
 							        }
 						}
 									],

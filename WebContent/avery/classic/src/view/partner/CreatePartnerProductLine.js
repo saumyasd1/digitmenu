@@ -133,7 +133,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								emptyText:AOCLit.dataStructureNameEmptyText,
 								allowBlank: false,
 								fieldLabel: 'Data Structure Name',
-								blankText:'Data Structure Name is required',
+								blankText:'Data Structure Name is required'
 							},
 							{
 								xtype:'combo',
@@ -186,7 +186,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								store:new Ext.data.JsonStore({
 									data:[],
 									fields:['name', 'id']
-								}),
+								})
 							},
 							{
 								xtype:'box',
@@ -217,7 +217,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							labelSeparator:'',
 							labelStyle:Settings.config.defaultFormLabelStyle,
 							labelAlign:Settings.form.topLabelAlign,
-							flex:1,
+							flex:1
 						},
 						items:[
 							{
@@ -288,7 +288,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							{
 								boxLabel : 'Waive MOQ ',
 								inputValue: 'true',
-								reference : 'waiveMOQ',
+								reference : 'waiveMOQ'
 							}
 						]
 					},
@@ -419,7 +419,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									labelSeparator:'',
 									labelStyle:Settings.config.defaultFormLabelStyle,
 									labelAlign:Settings.form.defaultLabelAlign,
-									labelWidth:200,
+									labelWidth:200
 								},
 								items:[
 									{

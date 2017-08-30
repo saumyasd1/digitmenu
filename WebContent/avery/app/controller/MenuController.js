@@ -331,7 +331,7 @@ Ext.define('AOC.controller.MenuController', {
     			siteId = AOCRuntime.getUser().siteId;
     	
    	 	store.proxy.extraParams = {
-	         siteId: siteId,
+	         siteId: siteId
 	     };
    	 	store.load();
     },
@@ -340,7 +340,7 @@ Ext.define('AOC.controller.MenuController', {
     		siteId = AOCRuntime.getUser().siteId;
     	
     	 store.proxy.extraParams = {
-	         siteId: siteId,
+	         siteId: siteId
 	     };
     },
     loadCsrList:function(){

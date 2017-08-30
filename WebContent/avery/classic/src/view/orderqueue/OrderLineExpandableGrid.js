@@ -31,7 +31,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 	},
 	initComponent: function() {
         Ext.apply(this, {
-        	plugins: this.getOuterGridPlugin(),
+        	plugins: this.getOuterGridPlugin()
 		});
         this.callParent(arguments);
     },

@@ -10,8 +10,7 @@ Ext.define('AOC.model.LocalItemLookupModel',{
              {name: 'orgCode', mapping:'orgCode',type: 'string'},
              {name: 'system', mapping:'system',type: 'string'},
              {name: 'lastModifiedBy', mapping:'lastModifiedBy',type: 'string'},
-             {name: 'lastModifiedDate', mapping:'lastModifiedDate',type: 'string'},
-             
+             {name: 'lastModifiedDate', mapping:'lastModifiedDate',type: 'string'}
             ]
 });
 

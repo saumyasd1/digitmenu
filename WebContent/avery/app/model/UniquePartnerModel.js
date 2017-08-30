@@ -4,7 +4,7 @@ Ext.define('AOC.model.UniquePartnerModel',{
     fields: [
         { name: 'id',type: 'string'},
 	    { name: 'name', type: 'string'},
-		{ name: 'site', type: 'string'},
+		{ name: 'site', type: 'string'}
     ]
 });
 

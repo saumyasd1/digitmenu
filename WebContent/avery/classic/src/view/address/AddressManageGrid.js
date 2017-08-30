@@ -28,7 +28,7 @@ Ext.define('AOC.view.address.AddressManageGrid', {
             },
             store: Ext.create('AOC.store.AddressStore', {
                 storeId: 'AddressStoreId'
-            }),
+            })
             
         });
         this.callParent(arguments);

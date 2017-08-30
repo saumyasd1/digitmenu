@@ -128,7 +128,7 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 								fieldLabel : AOCLit.toDate,
 								name:'toDate',
 								reference:'toDate',
-								margin:'0 0 0 10',
+								margin:'0 0 0 10'
 							}
 						]
 					}  
