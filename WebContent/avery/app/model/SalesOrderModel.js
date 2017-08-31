@@ -55,6 +55,7 @@ Ext.define('AOC.model.SalesOrderModel',{
 	 		{name: 'productionLine',mapping:'productionLine',type:'string'},
 	 		{name: 'targetSystemName',mapping:'targetSystemName',type:'string'},
 	 		{name: 'shipMark', mapping:'shipMark', type:'string'},
-	 		{name: 'additionalLabelInternalItem',mapping:'additionalLabelInternalItem', type:'string'}
+	 		{name: 'additionalLabelInternalItem',mapping:'additionalLabelInternalItem', type:'string'},
+	 		{name: 'sortingId', type: 'int'}
 	     ]
 });

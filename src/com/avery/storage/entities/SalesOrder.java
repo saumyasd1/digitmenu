@@ -241,6 +241,9 @@ public class SalesOrder extends MainAbstractEntity{
 	
 	@Transient
 	private String divisionForInterfaceErporgName;
+	
+	@Transient
+	private Long sortingId;
 
 	public String getIconName() {
 		return iconName;
@@ -1092,6 +1095,14 @@ public class SalesOrder extends MainAbstractEntity{
 		this.additionalLabelInternalItem = additionalLabelInternalItem;
 	}
 	
+	public Long getSortingId() {
+		return sortingId;
+	}
+
+	public void setSortingId(Long sortingId) {
+		this.sortingId = sortingId;
+	}
+
 	@Override
 	public Response getEntities(UriInfo ui, HttpHeaders hh) {
 		Response.ResponseBuilder rb = null;

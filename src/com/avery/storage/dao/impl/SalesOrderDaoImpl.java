@@ -78,7 +78,11 @@ public class SalesOrderDaoImpl extends GenericDaoImpl<SalesOrder, Long> implemen
 					SystemInfo systemInfo = orderSystemInfo.getVarSystem();
 					salesOrder.setTargetSystemName(systemInfo.getName());
 				}
-
+				Long sortingId = salesOrder.getVarOrderLine().getSortingId();
+				if(sortingId == null){
+					sortingId = salesOrder.getVarOrderLine().getId();
+				}
+				salesOrder.setSortingId(sortingId);
 			}
 
 			return list;
