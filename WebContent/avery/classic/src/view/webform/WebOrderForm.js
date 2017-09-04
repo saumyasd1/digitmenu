@@ -37,10 +37,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
     	me.isResubmit=false;
         me.form.reset();
         me.queryById('additionalDataFileKey').hide();
-        me.queryById('email').setFieldStyle(AOC.lang.lit.hideImage);
-        me.queryById('subject').setFieldStyle(AOC.lang.lit.hideImage);
-        me.queryById('emailBody').setFieldStyle(AOC.lang.lit.hideImage);
-        me.queryById('orderFileType').setFieldStyle(AOC.lang.lit.hideImage);
+        me.queryById('orderFileType').allowBlank = false;
     },
     initComponent : function(){
 		Ext.apply(this,{
@@ -60,7 +57,11 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:150
+					labelWidth:150,
+					xtype:'combo',
+					allowBlank:false,
+					queryMode:'local',
+					flex:1
 				},
 				items:[
 					{
@@ -72,10 +73,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						store: Ext.data.StoreManager.lookup('uniquePartnerStoreId'),
 						name:'partnerName',
 						editable:false,
-						allowBlank : false,
-						queryMode:'local',
 						margin:'0 0 0 155',
-						flex:1,
 						displayField:'name',
 						valueField:'id',
 						listeners:{
@@ -91,11 +89,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						displayField:'rboName',
 						valueField:'id',
 						name:'rboName',
-						flex:1,
 						isChangedForFirstTime:true,
 						margin:'0 10 0 10',
-						allowBlank : false, 
-						queryMode:'local',
 						disabled:true,
 						listeners:{
 							'change':'onRBOChange'
@@ -108,10 +103,8 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						displayField:'dataStructureName',
 						valueField:'id',
 						editable:false,
-						flex:1,
 						name:'dataStructureName',
 						emptyText:AOCLit.partnerDataStructure,
-						allowBlank : false, 
 						disabled:true,
 						listeners:{
 							'change':'onDataStructureSelection'
@@ -125,15 +118,9 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						emptyText:'CSR Code',
 						reference:'assignCSR',
 						valueField:'userId',
-						queryMode:'local',
-						allowBlank:false,
 						disabled:true,
 						store:Ext.data.StoreManager.lookup('webOrderCSRStoreId') != null ? Ext.data.StoreManager.lookup('webOrderCSRStoreId') : Ext.create('AOC.store.AssignCSRStore',{storeId:'webOrderCSRStoreId'}),
 						typeAhead:true,
-						triggerAction:'all',
-						flex:1,
-						tabIndex:9,
-						enableKeyEvents:true,
 						margin:'0 0 0 10',
 						listeners:{
 							blur:function(combo,e){
@@ -152,7 +139,10 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 					labelSeparator:'',
 					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
 					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
-					labelWidth:150
+					labelWidth:150,
+					xtype:'textfield',
+					flex:1.8,
+					allowBlank:false
 				},
 				items:[
 					{
@@ -161,26 +151,24 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						name: 'email',
 						reference:'email',
 						itemId:'email',
-						flex:1.8,
 						vtype:'email',
+						emptyText:'abc@gmail.com',
 						fieldLabel:'Sender Email',
 						disabled:true,
-						allowBlank: false,
 						blankText : 'Sender Email is required'
 					},
 					{
 						xtype:'textfield',
 						itemId:'RNtemId',
 						name: 'subject',
-						flex:1.8,
 						margin:'0 0 0 10',
 						reference:'subject',
 						fieldLabel:'Email Subject',
 						itemId:'subject',
-						allowBlank: false,
 						disabled:true,
-						maxLength : '100',
-						blankText : AOCLit.emailSubReq
+						maxLength: '100',
+						emptyText:'email subject',
+						blankText: AOCLit.emailSubReq
 					}
 				]
 			},
