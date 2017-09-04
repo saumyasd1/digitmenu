@@ -2,6 +2,22 @@ Ext.define('AOC.view.email.EmailManagementController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.emailManagementController',
     
+    listen : {
+        controller : {
+            '*':{
+            	tabchange:'onTabChange'
+            }
+        }
+    },
+    
+    onTabChange:function(){
+    	if(this.customErrorTip){
+    		this.customErrorTip.hide();
+    	}
+    	if(this.customTip){
+    		this.customTip.hide();
+    	}
+    },
     onComboBlur:function(combo, e){
     	Helper.clearCombo(combo,e);
     },

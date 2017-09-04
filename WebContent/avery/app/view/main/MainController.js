@@ -15,6 +15,7 @@ Ext.define('AOC.view.main.MainController', {
        
     },
     onTabChange:function(tabPanel, newCard, oldCard){
+    	AOC.app.fireEvent('tabchange');
     	this.selectTabPanelView(tabPanel.getActiveTab());
     },
     onTabRenderer:function(tabpanel){

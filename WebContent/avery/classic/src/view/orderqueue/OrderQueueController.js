@@ -5,6 +5,18 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
        'AOC.view.advsearch.OrderQueueAdvanceSearch'
     ],
     
+    listen : {
+        controller : {
+            '*':{
+            	tabchange:'onTabChange'
+            }
+        }
+    },
+    onTabChange:function(){
+    	if(this.customErrorTip){
+    		this.customErrorTip.hide();
+    	}
+    },
     onComboBlur:function(combo, e){
     	Helper.clearCombo(combo,e);
     },
