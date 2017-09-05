@@ -92,7 +92,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 			if (RBOName != null && !"".equals(RBOName)) {
 				criteria.add(Restrictions.ilike("rbo.rboName", RBOName, MatchMode.ANYWHERE));
 			}
-			String PartnerName = searchMap.get("PartnerName");
+			String PartnerName = searchMap.get("partnerName");
 			if (PartnerName != null && !"".equals(PartnerName)) {
 				criteria.add(Restrictions.ilike("varPartner.partnerName", PartnerName, MatchMode.ANYWHERE));
 			}

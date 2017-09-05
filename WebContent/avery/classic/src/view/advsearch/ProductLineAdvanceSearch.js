@@ -3,7 +3,6 @@ Ext.define('AOC.view.advsearch.ProductLineAdvanceSearch', {
 	alias : 'widget.productlineadvancesearchwin',
 	
 	itemId : 'productlineAdvanceSearch',
-	reference:'productlineAdvanceSearch',
 	controller : 'productlineMain',
 	requires : ['Ext.window.MessageBox'],
 	
