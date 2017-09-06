@@ -1793,8 +1793,11 @@ public class OrderLine extends MainAbstractEntity{
 				if((String)jsonMap.get("orderQueueId")!=null){	
 					AddressService addressService = (AddressService) SpringConfig
 							.getInstance().getBean("addressService");
-					boolean siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
-					if (siteIdExist) {
+					boolean siteIdExist = false;
+					if(insertShipAddress == true || insertBillAddress == true){
+						siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+					}
+					if (siteIdExist ) {
 						responseMap.put("valueExist", true);
 					} else {
 						responseMap.put("valueExist", false);
@@ -1809,7 +1812,10 @@ public class OrderLine extends MainAbstractEntity{
 			{
 				AddressService addressService = (AddressService) SpringConfig
 						.getInstance().getBean("addressService");
-				boolean siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+				boolean siteIdExist = false;
+				if(insertShipAddress == true || insertBillAddress == true){
+					siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
+				}
 				if (siteIdExist) {
 					responseMap.put("valueExist", true);
 				} else {
