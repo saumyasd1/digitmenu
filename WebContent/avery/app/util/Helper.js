@@ -953,5 +953,14 @@ Ext.define('AOC.util.Helper',{
 		store.load({
 			params:{siteId:AOCRuntime.getUser().siteId}
 		});
+	},
+	
+	tipRenderer:function(v, metaData, rec){
+		if (v) {
+            metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v) + '</font>"';
+            return Ext.String.htmlEncode(v);
+        } else {
+            return '';
+        }
 	}
 });

@@ -110,14 +110,16 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 align: 'left',
                 menuDisabled: true,
                 sortable: false,
-                dataIndex: 'PartnerName'
+                dataIndex: 'PartnerName',
+                renderer: Helper.tipRenderer
             }, {
                 text: AOCLit.RBO,
                 width: 150,
                 dataIndex: 'RBO',
                 align: 'left',
                 menuDisabled: true,
-                sortable: false
+                sortable: false,
+                renderer: Helper.tipRenderer
             },{
                 text: AOCLit.siteName,
                 sortable: true,
@@ -143,28 +145,26 @@ Ext.define('AOC.view.email.EmailManagementGrid', {
                 text: AOCLit.senderEmailID,
                 width: 180,
                 align: 'left',
-                dataIndex: 'senderEmailId'
+                dataIndex: 'senderEmailId',
+                renderer: Helper.tipRenderer
             }, {
                 text: AOCLit.Subject,
                 width: 120,
                 dataIndex: 'subject',
                 align: 'left',
-                renderer: function (v, metadata) {
-                    return me.tipRenderer(v, metadata);
-                }
+                renderer: Helper.tipRenderer
             }, {
                 text: AOCLit.receiverEmailID,
                 width: 180,
                 align: 'left',
-                dataIndex: 'Email'
+                dataIndex: 'Email',
+                renderer: Helper.tipRenderer
             }, {
                 text: AOCLit.ccMailId,
                 width: 180,
                 align: 'left',
                 dataIndex: 'CC',
-                renderer: function (v, metaData) {
-                    return me.tipRenderer(v, metaData);
-                }
+                renderer: Helper.tipRenderer
             }, {
                 text: AOCLit.CSRName,
                 width: 120,

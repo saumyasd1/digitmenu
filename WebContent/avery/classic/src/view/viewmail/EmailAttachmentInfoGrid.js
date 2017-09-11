@@ -73,7 +73,7 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
                 resizable:false,
                 align:'left'
 			},
-		   items:[
+			items:[
 				{
 					text : AOCLit.fileName,
 					flex :2.3,
@@ -132,19 +132,23 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						}
 					},
 					renderer:function(value, metaData, record){
+						var val = '';
 						if(me.status == AOCLit.emailIdentifiedStatus){
-							return record.get('dataStructureName');
+							val = record.get('dataStructureName');
+						}else{
+							var editor = metaData.column.getEditor(record),    
+					    		storeRecord = editor.store.getById(value);
+							
+							if(storeRecord) {  
+						    	val = storeRecord.data[editor.displayField];
+						    }
 						}
 						
-						var editor = metaData.column.getEditor(record),    
-					    	storeRecord = editor.store.getById(value);
+						if(val){
+							metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.htmlEncode(val) + '<font>"';
+						}
 						
-					    if(storeRecord) {       
-					        return storeRecord.data[editor.displayField];
-					    }
-					    else{         
-					        return null;
-					    }
+						return val;
 					}
 				}, 
 				{
@@ -152,26 +156,30 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					flex :1.3,
 					dataIndex:'additionalDataFileKey',
 					name: 'additionalDataFileKey',
-					editor:'textarea'
+					editor:'textarea',
+					renderer:Helper.tipRenderer
 				}, 
 				{
 					text : AOCLit.rboMatch,
 					flex :1,
 					dataIndex:'rboMatch',
-					name: 'rboMatch'
+					name: 'rboMatch',
+					renderer:Helper.tipRenderer
 				},
 				{
 					text : AOCLit.productLineMatch,
 					flex :1,
 					dataIndex:'productLineMatch',
-					name: 'productLineMatch'
+					name: 'productLineMatch',
+					renderer:Helper.tipRenderer
 				},
 				{
 					text : AOCLit.fileTypeMatch,
 					flex :1.2,
 					dataIndex:'fileContentMatch',
 					resizable:true,
-					name: 'fileContentMatch'
+					name: 'fileContentMatch',
+					renderer:Helper.tipRenderer
 				},
 				{
 					text : 'Partner Match',
@@ -179,7 +187,8 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 					dataIndex:'partnerMatch',
 					sortable:false,
 					resizable:false,
-					name: 'fileContentMatch'
+					name: 'fileContentMatch',
+					renderer:Helper.tipRenderer
 				},
 				{
 					text : AOCLit.Status,
