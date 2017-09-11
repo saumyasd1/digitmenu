@@ -35,21 +35,22 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 	                		if(editor.record.data.contentType==''){
 	                			return false;
 	                		}
+	                		editor.grid.columns[2].field.store.clearFilter();
 	                		//filter partner data structure for perticular attachment
-	     		                Ext.Ajax.request({
-	     		                	url:applicationContext + '/rest/productLines/datastructure/'+editor.record.get('id'),
-	     		                	success:function(response){
-	     		                		var json = JSON.parse(response.responseText);
-	     		                		if(json.dataStructures.length > 0){
-	     		                			editor.grid.columns[2].field.store.loadData(json.dataStructures);
-	     		                		}else{
-	     		                			editor.grid.columns[2].field.store.loadData([]);
-	     		                		}
-	     		                	},
-	     		                	failure:function(){
-	     		                		editor.grid.columns[2].field.store.loadData([]);
-	     		                	}
-	     		                });
+//	     		                Ext.Ajax.request({
+//	     		                	url:applicationContext + '/rest/productLines/datastructure/'+editor.record.get('id'),
+//	     		                	success:function(response){
+//	     		                		var json = JSON.parse(response.responseText);
+//	     		                		if(json.dataStructures.length > 0){
+//	     		                			editor.grid.columns[2].field.store.loadData(json.dataStructures);
+//	     		                		}else{
+//	     		                			editor.grid.columns[2].field.store.loadData([]);
+//	     		                		}
+//	     		                	},
+//	     		                	failure:function(){
+//	     		                		editor.grid.columns[2].field.store.loadData([]);
+//	     		                	}
+//	     		                });
 	     		                return true;
 	                	}else{
 	                		return true;
@@ -126,9 +127,14 @@ Ext.define('AOC.view.viewmail.EmailAttachmentInfoGrid', {
 						valueField:'id',
 						queryMode :'local',
 						editable:true,
+						matchFieldWidth:false,
+						listConfig:{
+							width:300
+						},
 						store:Ext.data.StoreManager.lookup('viewMailProductLineStoreId') == null ? Ext.create('AOC.store.PartnerProductLineStore',{storeId:'viewMailProductLineStoreId'}) : Ext.data.StoreManager.lookup('viewMailProductLineStoreId'),
 						listeners:{
-							focus:'onFocusRenderDataStructure'
+							focus:'onFocusRenderDataStructure',
+							select:'onDSComboSelect'
 						}
 					},
 					renderer:function(value, metaData, record){

@@ -298,14 +298,46 @@ Ext.define('AOC.view.viewmail.ViewMailController', {
 	},
 	onFocusRenderDataStructure: function(combo){
 		var me = this,
-			view = me.getView();	
+			view = me.getView(),
+			record = view.getSelectionModel().getSelection()[0],
+			comment = record.get('comment'),
+			store = combo.store,
+			commentArray = comment ? comment.split(',') : [],
+			len = commentArray.length,
+			numArray = [];
 		
-		combo.store.filterBy(function(record){
-			if(record.get('site') == view.siteId){
-				return true;
-			}else{
-				return false;
+		store.clearFilter();
+		if(len > 0){
+			for(var i=0; i<len;i++){
+				try{
+					var val = parseInt(commentArray[i]);
+					if(Ext.isNumber(val)){
+						numArray.push(val);
+					}
+				}catch(e){
+					
+				}
 			}
-		});
+			store.filterBy(function(rec){
+				if(rec.get('site') == view.siteId && numArray.indexOf(parseInt(rec.get('id'))) > -1){
+					return true;
+				}else{
+					return false;
+				}
+			});
+		}else{
+			store.filterBy(function(rec){
+				if(rec.get('site') == view.siteId){
+					return true;
+				}else{
+					return false;
+				}
+			});
+		}
+	},
+	onDSComboSelect:function(combo){
+		var store = combo.store;
+		
+		store.clearFilter();
 	}
 });
