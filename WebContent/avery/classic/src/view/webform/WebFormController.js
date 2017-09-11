@@ -148,7 +148,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 				
 				attachementField[attachmentRequired ? 'show' : 'hide']();
 				attachementField[attachmentRequired ? 'enable' : 'disable']();
-				attachementField.allowBlank = attachmentRequired ? false : true;
+//				attachementField.allowBlank = attachmentRequired ? false : true;
 				additionalDataFileKey[attachmentRequired ? 'show' : 'hide']();
 				additionalDataFileKey[attachmentRequired ? 'enable' : 'disable']();
 				
@@ -255,9 +255,9 @@ Ext.define('AOC.view.webform.WebFormController', {
 				oldFileIds.push(odFileId);
 			}
 		}
-		if(oldAdditionalFileId.getValue().length>0){
-			attachment.allowBlank = true;
-		}
+//		if(oldAdditionalFileId.getValue().length>0){
+//			attachment.allowBlank = true;
+//		}
 		if(oldFileIds.length>0){
 			orderFileType.allowBlank = orderFileType ? true : '';
 		}
@@ -495,6 +495,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 					form.down('#oldOrderFileDeleted').setValue(true);
 				}
 				form.orderFileAttachmentCount--;
+				if(form.orderFileAttachmentCount == 1){
+					orderFileType = view.lookupReference('orderFileType');
+					orderFileType.allowBlank = false;
+				}
 			}
 			store.remove(record);
 			this.removeFileFromFileArray(record.get('fileId'));
