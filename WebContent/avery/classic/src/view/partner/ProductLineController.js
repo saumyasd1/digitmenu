@@ -366,6 +366,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	if(view.mode != 'add'){
     		var detail = view.rec.data;
+    		view.mask('Loading...');
     		detail.partnerId = detail.partnerId;
     		detail.rboId = detail.rboId;
     		detail = me.createGroupingField(detail);
@@ -386,30 +387,21 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	for(var prop in detail){
     		if(prop.indexOf('groupingField') > -1){
-    			if(!Ext.isEmpty(detail[prop]) && detail[prop] != 'id'){
+    			if(!Ext.isEmpty(detail[prop])){
     				groupingFieldArray.push({prop:detail[prop]});
     			}
-//    			else if(detail[prop] === 'id'){
-//    				detail[prop] = '';
-//    			}
     		}
     	}
     	
     	var len = groupingFieldArray.length;
     	for(var i = 1;i <= len; i++){
-    		if(i == 1 && detail.groupingField_1 == 'id'){
-    			groupingField.add(Helper.getGroupingField(2, false, false));
-    		}
-    		else if(i == len ){
+    		if(i == len ){
     			groupingField.add(Helper.getGroupingField(i, false, false));
     		}else{
     			groupingField.add(Helper.getGroupingField(i, false, true));
     		}
     	}
-    	
-    	if(len == 0 && detail.groupingField_1 == 'id'){
-    		groupingField.add(Helper.getGroupingField(2, false, false));
-    	}else if(len == 0){
+    	if(len == 0){
     		groupingField.add(Helper.getGroupingField(1, false, false));
     	}
     	return detail;
@@ -473,6 +465,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			
 			var valueObj = me.processPostData(values);
 			
+			if(values.groupingLogic == 'true' && Ext.isEmpty(values.groupingField_1)){
+				Helper.showToast('validation', 'Please fill groupingField1.');
+				return;
+			}
+			
 			if(!valueObj.waiveMOQ){
 				valueObj.waiveMOQ = false;
 			}
@@ -490,6 +487,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			
 			valueObj.lastModifiedBy = AOCRuntime.getUser().firstName+' '+ (!Ext.isEmpty(AOCRuntime.getUser().lastName) ? AOCRuntime.getUser().lastName : '');
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
+			
+			//if grouping field_1 is empty or groupinglogic false then default value of groupingField_1:'id'
+			//if(values.groupingLogic == 'false' || Ext.isEmpty(values.groupingField_1)){
+				
+			if(values.groupingLogic == 'false'){
+				values.groupingField_1 = 'id';
+				me.setEmptyGroupingField(values);
+			}
 			
 			view.el.mask(AOCLit.pleaseWait);
 			
@@ -516,6 +521,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			});
 		}else{
 			Helper.showToast('validation', 'Please fill all mandatory(*) field');
+		}
+	},
+	setEmptyGroupingField:function(values){
+		for(var prop in values){
+			if(prop != 'groupingField_1' && prop.indexOf('groupingField') > -1){
+				values[prop] = '';
+			}
 		}
 	},
 	processSystemOrgGrid:function(){
@@ -773,7 +785,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		refs = me.getReferences(),
     		defaultSystemCombo = refs['defaultSystemCombo'];
     	
-    	view.el.mask('Loading...');
     	Ext.Ajax.request( {
 			method: 'GET',
 		    url : applicationContext+'/rest/system/site/'+value,
@@ -791,7 +802,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    	
 	    		if(jsonString.length == 0){
 	    			Helper.showToast('validation','No System Configured for the selected site. Please select another site');
-	    			Ext.getBody().unmask();
 	    			return false;
 	    		}
 	    		
@@ -809,17 +819,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		    			
 		    		}
 	    		}
-		    	view.el.unmask();
+		    	view.unmask();
 	        },
 	        failure: function(response, opts) {
-	        	view.el.unmask();
+	        	view.unmask();
 	        }
 	    });
 	},
 	getListOrderSystemInfo:function(view){
 		var refs = view.getReferences();
 		
-		Ext.getBody().mask(AOCLit.pleaseWait);
 		Ext.Ajax.request({
 			url:applicationContext+'/rest/ordersysteminfo/productline',
 			method:'GET',
@@ -857,10 +866,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		  	    		}
 	    			}
 	    		}
-	    		Ext.getBody().unmask();
 			},
 			failure:function(){
-				Ext.getBody().unmask();
 			}
 		});
 	},
@@ -1196,11 +1203,16 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 onAddGroupingFieldBtnClick:function(btn){
 		 var me = this,
 		 	 refs = me.getReferences(),
+		 	 groupingLogic = refs['groupingLogic'],
 		 	 groupingFieldCont = refs['groupingFieldCont'],
 		 	 count = btn.fieldIndex,
 		 	 removeGroupingFieldBtn = refs['removeGroupingFieldBtn'+count];
 		 
-		 if(count > 20){
+		 if(groupingLogic.getValue().groupingLogic == 'false'){
+			 Helper.showToast('validation', 'If value of Need Grouping Logic is No.You can not add more grouping field.');
+			 return;
+		 }
+		 if(count > AOCLit.maxGroupingFieldCount){
 			 Helper.showToast('validation', 'You can not add more grouping field');
 			 return;
 		 }
@@ -1278,8 +1290,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 
 	 onFileFormatFieldBlur:function(field){
 		var me = this,
-			refs = me.getReferences(),
-			//attachmentFileCellNo= refs['attachmentFileCellNo_'+field.count],
 		 	value = field.getValue();
 		 
 		 if(value && value.indexOf('.') == -1){
@@ -1287,11 +1297,17 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			 field.allowBlank = false;
 			 Helper.showToast('validation', 'Please follow format to fill file format.');
 		 }
-//		 if(field.fieldType == 'attachmentFileExt' && (value && value.indexOf('xls') > -1)){
-//			 attachmentFileCellNo.show();
-//		 }else{
-//			 attachmentFileCellNo.hide();
-//		 }
-//		 me.getView().updateLayout();
+	 },
+	 
+	 onGroupingLogicChange:function(cb, newValue, oldValue){
+		 var me = this,
+		 	 refs = me.getReferences(),
+		 	 groupingFieldCont = refs['groupingFieldCont'];
+		 
+		 if(newValue.groupingLogic == 'true'){
+			// groupingFieldCont.setDisabled(false);
+		 }else{
+			// groupingFieldCont.setDisabled(true);
+		 }
 	 }
 });

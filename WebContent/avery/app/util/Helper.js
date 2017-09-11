@@ -801,11 +801,38 @@ Ext.define('AOC.util.Helper',{
 	getGroupingFieldStore:function(){
 		return new Ext.data.JsonStore({
 			data:[
-			      {name:'None'},{name:'customerPONumber'},{name:'oracleBillToSiteNumber'},{name:'oracleShipToSiteNumber'},
-			      {name:'averyItemNumber'},{name:'shippingMethod'},{name:'pageSize'},{name:'COO'},
-			      {name:'RN'},{name:'CN'},{name:'ArticleNumber'}
+			      {name:'None', value:'None'},
+			      {name:'Avery item#', value:'averyItemNumber'},
+			      {name:'Customer PONumber', value:'customerPONumber'},
+			      {name:'COO', value:'COO'},
+			      {name:'RN', value:'RN'},
+			      {name:'CN', value:'CN'},
+			      {name:'ArticleNumber', value:'ArticleNumber'},
+			      
+			      { name:'PO#',value:'poNumber'},
+			      { name:'Order Type',value:'orderType'},
+			      { name:'Request Date',value:'requestedDeliveryDate'},
+			      { name:'Promise Date',value:'promiseDate'},
+			      { name:'APO Type',value:'apoType'},
+			      { name:'Bill to site #',value:'oracleBillToSiteNumber'},
+			      { name:'Ship to site #',value:'oracleShipToSiteNumber'},
+			      { name:'Manufacturing Note',value:'manufacturingNotes'},
+			      { name:'Invoice Line Instruction',value:'invoicelineInstruction'},
+			      { name:'Packing Instruction',value:'packingInstruction'},
+			      { name:'Shipping Instruction',value:'shippingInstructions'},
+			      { name:'Shipping Method',value:'shippingMethod'},
+			      { name:'Freight Term',value:'freightTerms'},
+			      { name:'Ship Mark',value:'shipMark'},
+			      { name:'Retailer PO/Customer Job',value:'retailerPO_CustomerJob'},
+			      { name:'ITEM spec/Size Page',value:'pageSize'},
+			      { name:'Style No',value:'styleNo'},
+			      { name:'Division For Interface ERPORG',value:'divisionForInterfaceERPORG'},
+			      { name:'Ship to Contact',value:'shipToContact'},
+			      { name:'Bill to Contact',value:'billToContact'},
+			      { name:'Order By',value:'orderBy'},
+			      { name:'Customer Size',value:'customerSize'}
             ],
-			fields:['name']
+			fields:['name','value']
 		});
 	},
 	getGroupingField:function(count, newFlag, hiddenFlag){
@@ -827,7 +854,8 @@ Ext.define('AOC.util.Helper',{
 	    		   displayField:'name',
 	    		   fieldLabel:'Grouping Field'+count,
 	    		   name:'groupingField_'+count,
-	    		   valueField:'name',
+	    		   reference:'groupingField_'+count,
+	    		   valueField:'value',
 	    		   width:450,
 	    		   queryMode:'local',
 	    		   editable:false,

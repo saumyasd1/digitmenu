@@ -548,6 +548,8 @@ Ext.define('AOC.lang.lit',{
 	codeOwnerYDeleteMsg: 'Deleting the CSR Code will delete the relationship of the CS Manager & Clerk. Still want to continue?',
 	atLeastOneCSRMsg:'Please add at least one CSR code in grid',
 	saveDataMsg:'Before closing window please save the data.Press Yes to save data',
+	aocDefaultOneBillToSiteText:'Select Yes if Bill to Site#  has default value',
+	aocDefaultOneShipToSiteText:'Select Yes if Ship to Site#  has default value',
 	
 	//LocalItemLookup table
 	customerItemNO : 'Customer Item No.',
@@ -561,6 +563,8 @@ Ext.define('AOC.lang.lit',{
 	deleteLocalItemSuccessMsg:'Record(s) deleted successfully',
 	
 	orderFileKeywordEmptyText:'eg:NIKE AND Nike PO or Nike OR NIKE or NIKE',
-	orderFileCellNoEmptyText:'eg:A1 AND A2 or A1 OR A1 or A1'
+	orderFileCellNoEmptyText:'eg:A1 AND A2 or A1 OR A1 or A1',
+	
+	maxGroupingFieldCount:20
 	
 });

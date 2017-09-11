@@ -71,10 +71,23 @@ public class ProductLine extends MainAbstractEntity {
 
 	@Column(name = "site")
 	private Integer site;
+	
+	@Column(name = "groupingLogic")
+	private String groupingLogic;
+	
+	
 
 	// @ColumnDefault("''")
 	// @Column(name = "attachmentFileMatchLocation", length = 100)
 	// private String attachmentFileMatchLocation;// 100
+
+	public String getGroupingLogic() {
+		return groupingLogic;
+	}
+
+	public void setGroupingLogic(String groupingLogic) {
+		this.groupingLogic = groupingLogic;
+	}
 
 	@ColumnDefault("''")
 	@Column(name = "attachmentFileMatchRequired")
@@ -437,6 +450,33 @@ public class ProductLine extends MainAbstractEntity {
 
 	@Column(name = "GroupingField_20", length = 100)
 	private String groupingField_20;
+	
+	@Column(name = "GroupingField_21", length = 100)
+	private String groupingField_21;
+	
+	@Column(name = "GroupingField_22", length = 100)
+	private String groupingField_22;
+	
+	@Column(name = "GroupingField_23", length = 100)
+	private String groupingField_23;
+	
+	@Column(name = "GroupingField_24", length = 100)
+	private String groupingField_24;
+	
+	@Column(name = "GroupingField_25", length = 100)
+	private String groupingField_25;
+	
+	@Column(name = "GroupingField_26", length = 100)
+	private String groupingField_26;
+	
+	@Column(name = "GroupingField_27", length = 100)
+	private String groupingField_27;
+	
+	@Column(name = "GroupingField_28", length = 100)
+	private String groupingField_28;
+	
+	@Column(name = "GroupingField_29", length = 100)
+	private String groupingField_29;
 
 	@Column(name = "itemIdentifier", length = 100)
 	private String itemIdentifier;
@@ -2321,5 +2361,78 @@ public class ProductLine extends MainAbstractEntity {
 	public void setListBillShipMapping(List<BillShipMapping> listBillShipMapping) {
 		this.listBillShipMapping = listBillShipMapping;
 	}
+
+	public String getGroupingField_21() {
+		return groupingField_21;
+	}
+
+	public void setGroupingField_21(String groupingField_21) {
+		this.groupingField_21 = groupingField_21;
+	}
+
+	public String getGroupingField_22() {
+		return groupingField_22;
+	}
+
+	public void setGroupingField_22(String groupingField_22) {
+		this.groupingField_22 = groupingField_22;
+	}
+
+	public String getGroupingField_23() {
+		return groupingField_23;
+	}
+
+	public void setGroupingField_23(String groupingField_23) {
+		this.groupingField_23 = groupingField_23;
+	}
+
+	public String getGroupingField_24() {
+		return groupingField_24;
+	}
+
+	public void setGroupingField_24(String groupingField_24) {
+		this.groupingField_24 = groupingField_24;
+	}
+
+	public String getGroupingField_25() {
+		return groupingField_25;
+	}
+
+	public void setGroupingField_25(String groupingField_25) {
+		this.groupingField_25 = groupingField_25;
+	}
+
+	public String getGroupingField_26() {
+		return groupingField_26;
+	}
+
+	public void setGroupingField_26(String groupingField_26) {
+		this.groupingField_26 = groupingField_26;
+	}
+
+	public String getGroupingField_27() {
+		return groupingField_27;
+	}
+
+	public void setGroupingField_27(String groupingField_27) {
+		this.groupingField_27 = groupingField_27;
+	}
+
+	public String getGroupingField_28() {
+		return groupingField_28;
+	}
+
+	public void setGroupingField_28(String groupingField_28) {
+		this.groupingField_28 = groupingField_28;
+	}
+
+	public String getGroupingField_29() {
+		return groupingField_29;
+	}
+
+	public void setGroupingField_29(String groupingField_29) {
+		this.groupingField_29 = groupingField_29;
+	}
+	
 	
 }

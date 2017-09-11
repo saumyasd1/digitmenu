@@ -205,6 +205,47 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						layout:'anchor',
 						labelStyle:Settings.config.defaultFormLabelStyle
 					},
+					{
+				    	xtype:'fieldcontainer',
+				    	margin:'0 0 5 0',
+				    	flex:1,
+				    	defaults:{
+							labelSeparator:'',
+							labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+							labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+							labelWidth:300,
+							width:430
+				    	},
+				    	items:[
+							{
+								xtype:'radiogroup',
+								defaults:{
+									name:'defaultBillToCode'
+								},
+								fieldLabel:'Should AOC default one Bill to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.aocDefaultOneBillToSiteText),
+								reference:'aocDefaultOneBillToSite',
+								margin:'0 0 5 0',
+								scope:me,
+								items:[
+								  { boxLabel:'Yes',inputValue:'true'},
+								  { boxLabel:'No',inputValue:'false', checked:true}
+								]
+							},
+		 	                {
+								xtype:'radiogroup',
+								fieldLabel:'Should AOC default one Ship to Site# only? '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.aocDefaultOneShipToSiteText),
+								reference:'aocDefaultOneShipToSite',
+								margin:'0 0 5 0',
+								defaults:{
+									name:'defaultShipToCode'
+								},
+								items:[
+								  { boxLabel:'Yes',inputValue:'true'},
+								  { boxLabel:'No',inputValue:'false', checked:true}
+								]
+							}
+				    	]
+					},
 	        		{
 						xtype:'fieldcontainer',
 						layout:'hbox',
@@ -446,17 +487,37 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 							me.getAdditionalSchemaField(1, 'Additional', 'attchmentSchemaCont'),
 							me.getAdditionalSchemaField(2, 'Another Additional', 'attchmentSchemaCont'),
 							me.getSchemaIdentificationItems(),
+							{
+								xtype: 'fieldcontainer',
+								layout: 'column',
+								margin : '0 0 5 10',
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.defaultLabelAlign,
+									labelWidth:200
+								},
+								items:[
+									{
+										xtype:'radiogroup',
+										width:350,
+										column:2,
+										defaults:{
+											name:'groupingLogic'
+										},
+										reference:'groupingLogic',
+										fieldLabel:'Need Grouping Logic?',
+										items:[
+										    { boxLabel: 'Yes', inputValue:'true', checked:true},
+										    { boxLabel: 'No', inputValue:'false' }
+										]
+//										listeners:{
+//											change:'onGroupingLogicChange'
+//										}
+									}
+								]
+							},
 							me.getGroupingField()
-//							{
-//								title:'Grouping Fields',
-//								collapsible:true,
-//								collapsed:true,
-//								titleAlign:'center',
-//								frame:true,
-//								bodyPadding:10,
-//								hidden:me.mode == 'add',
-//								reference:'groupingFieldBox'
-//							}
 						]
 					}
 			   ]
