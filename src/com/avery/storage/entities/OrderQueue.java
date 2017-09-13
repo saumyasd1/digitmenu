@@ -57,8 +57,6 @@ import com.avery.storage.MixIn.OrderLineMixIn;
 import com.avery.storage.MixIn.OrderQueueMixIn;
 import com.avery.storage.MixIn.PartnerMixIn;
 import com.avery.storage.MixIn.ProductLineMixIn;
-import com.avery.storage.MixIn.SalesOrderDetailMixIn;
-import com.avery.storage.MixIn.SalesOrderMixIn;
 import com.avery.storage.service.CodeService;
 import com.avery.storage.service.OrderEmailQueueService;
 import com.avery.storage.service.OrderFileAttachmentService;
@@ -235,6 +233,9 @@ public class OrderQueue extends MainAbstractEntity {
 	
 	@Transient
 	private String csrName;
+	
+	@Transient
+	private Boolean billshipRequired;
 
 	/* Business Logic Starts*/
 	@Override
@@ -1361,4 +1362,12 @@ public class OrderQueue extends MainAbstractEntity {
 		this.defaultShipToCode = defaultShipToCode;
 	}
 
+	public Boolean getBillshipRequired() {
+		return billshipRequired;
+	}
+
+	public void setBillshipRequired(Boolean billshipRequired) {
+		this.billshipRequired = billshipRequired;
+	}
+	
 }

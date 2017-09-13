@@ -118,11 +118,10 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varProductLine.defaultSystem"), "defaultSystem")
 				.add(Projections.property("partner.id"), "partnerId")
 				.add(Projections.property("csrCode"), "csrCode")
-				// .add(Projections.property("partner.siteId"), "siteId")
 				.add(Projections.property("varProductLine.id"), "productLineId")
 				.add(Projections.property("varProductLine.defaultShipToCode"), "defaultShipToCode")
 				.add(Projections.property("varProductLine.defaultBillToCode"), "defaultBillToCode")
-				.add(Projections.property("listOrgInfo.orgCodeId"), "orgCodeId")
+				.add(Projections.property("varProductLine.billshipRequired"), "billshipRequired")
 				.add(Projections.property("createdDate"), "createdDate")
 
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName")
@@ -134,8 +133,6 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 		criteria.createAlias("varOrderFileAttachment", "varOrderFileAttachment")
 				.createAlias("varOrderFileAttachment.varOrderEmailQueue", "orderemailqueue")
 				.createAlias("varOrderFileAttachment.varProductLine", "varProductLine")
-				.createAlias("varProductLine.listOrderSystemInfo", "listOrderSystemInfo")
-				.createAlias("listOrderSystemInfo.listOrgInfo", "listOrgInfo")
 				.createAlias("varProductLine.varPartner", "partner").createAlias("varProductLine.rbo", "rbo");
 
 		String siteId1 = (String) queryMap.getFirst("siteId");
