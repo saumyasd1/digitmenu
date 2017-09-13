@@ -387,18 +387,18 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	
     	for(var prop in detail){
     		if(prop.indexOf('groupingField') > -1){
-    			if(!Ext.isEmpty(detail[prop])){
+    			if(detail[prop] != null){
     				groupingFieldArray.push({prop:detail[prop]});
     			}
     		}
     	}
     	
     	var len = groupingFieldArray.length;
-    	for(var i = 1;i <= len; i++){
-    		if(i == len ){
-    			groupingField.add(Helper.getGroupingField(i, false, false));
+    	for(var i = 0;i < len; i++){
+    		if(i+1 == len ){
+    			groupingField.add(Helper.getGroupingField(i+1, false, false));
     		}else{
-    			groupingField.add(Helper.getGroupingField(i, false, true));
+    			groupingField.add(Helper.getGroupingField(i+1, false, true));
     		}
     	}
     	if(len == 0){

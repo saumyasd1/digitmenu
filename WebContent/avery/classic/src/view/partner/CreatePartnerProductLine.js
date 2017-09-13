@@ -383,6 +383,39 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								    }
 						    	]
 						    },
+//						    {
+//								xtype: 'fieldcontainer',
+//								layout: 'column',
+//								margin : '0 0 5 0',
+//								layout:{
+//									type:'hbox'
+//								},
+//								defaults:{
+//									labelSeparator:'',
+//									labelStyle:Settings.config.defaultFormLabelStyle,
+//									labelAlign:Settings.form.defaultLabelAlign,
+//									labelWidth:200
+//								},
+//								items:[
+//									{
+//										xtype:'radiogroup',
+//										column:2,
+//										width:350,
+//										defaults:{
+//											name:'billshipRequired'
+//										},
+//										reference:'billshipRequired',
+//										fieldLabel:'Bill/Ship Required?',
+//										items:[
+//										    { boxLabel: 'Yes', inputValue:'true'},
+//										    { boxLabel: 'No', inputValue:'false', checked:true}
+//										]
+////										listeners:{
+////											change:'onOrderWithAttachmentRadioChange'
+////										}
+//									}
+//								]
+//							},
 						    {
 						    	xtype:'label',
 						    	text:'Order',
@@ -437,6 +470,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										name: 'orderSchemaID',
 										fieldLabel:'Schema',
 										maxLength : '50',
+										disabled:me.mode != 'add',
 										enforceMaxLength: true
 									},
 									{
@@ -444,6 +478,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										margin:'0 0 0 10',
 										name: 'orderMappingID',
 										fieldLabel:'Mapping',
+										disabled:me.mode != 'add',
 										maxLength : '50',
 										enforceMaxLength: true
 									}
