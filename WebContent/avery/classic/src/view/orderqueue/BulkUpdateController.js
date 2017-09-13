@@ -35,6 +35,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     	
     	var billToCode = AOCRuntime.getCurrentDefaultBillToCode();
     	var shipToCode = AOCRuntime.getCurrentDefaultShipToCode();
+    	var billshipcode = AOCRuntime.getBillshipRequired();
 			
     	if(updatedRecords.length==0){
     		Helper.showToast('validation', AOCLit.noRecordsToUpdateMessage);
@@ -45,22 +46,20 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     				Ext.each(updatedRecords, function(currentRecord){
     		    		i = store.find('id', currentRecord.id);
     		    		if(i == 0){
-    		    			if(billToCode == 'true'){
-	    		    			if(currentRecord.isModified('oracleBillToSiteNumber') 
-	    		    					&&  currentRecord.get('oracleBillToSiteNumber') != null 
-	    		    					&& currentRecord.get('oracleBillToSiteNumber') != '' 
-	    		    						&& currentRecord.getModified('oracleBillToSiteNumber')==''){
-	    		    	  			insertBillAddress=true;
-								}
+    		    			
+    		    			if(billToCode == 'true' || billshipcode == false){
+    		    				if(!Ext.isEmpty(currentRecord.get('oracleBillToSiteNumber')) 
+    		    						&& currentRecord.isModified('oracleBillToSiteNumber')){
+    		    	    			insertBillAddress = true;
+    		    				}
     		    			}
-    		    			if(shipToCode == 'true'){
-	    		    	  		if(currentRecord.isModified('oracleShipToSiteNumber') 
-	    		    	  				&& currentRecord.get('oracleShipToSiteNumber') != null 
-	    		    	  				&& currentRecord.get('oracleShipToSiteNumber')!='' 
-	    		    	  					&& currentRecord.getModified('oracleShipToSiteNumber')==''){
-	    		    	  			insertShipAddress=true;
-	    		    	  		}
+    		    			if(shipToCode =='true' || billshipcode == false){
+    		    	    		if(!Ext.isEmpty(currentRecord.get('oracleShipToSiteNumber')) 
+    		    	    				&& currentRecord.isModified('oracleShipToSiteNumber')){
+    		    	    			insertShipAddress = true;
+    		    	    		}
     		    			}
+    		    			
     		    			orgCodeId = me.getOrgCodeId(currentRecord.get('divisionForInterfaceERPORG'));
     		    			shipToAddress = currentRecord.get('shipToAddress1');
     		    			billToAddress = currentRecord.get('billToAddress1');

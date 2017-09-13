@@ -139,22 +139,26 @@ Ext.define('AOC.view.orderqueue.OrderQueueGrid', {
             text: AOCLit.PONumber,
             width: 180,
             align: 'left',
-            dataIndex: 'ponumber'
+            dataIndex: 'ponumber',
+            renderer:Helper.tipRenderer
         }, {
             text: AOCLit.partnerName,
             width: 150,
             align: 'left',
-            dataIndex: 'PartnerName'
+            dataIndex: 'PartnerName',
+            renderer:Helper.tipRenderer
         }, {
             text: AOCLit.RBO,
             width: 120,
             align: 'left',
-            dataIndex: 'RBOName'
+            dataIndex: 'RBOName',
+            renderer:Helper.tipRenderer
         }, {
             text: AOCLit.productLine,
             width: 100,
             align: 'left',
-            dataIndex: 'productLineType'
+            dataIndex: 'productLineType',
+            renderer:Helper.tipRenderer
         }, {
             text: AOCLit.orderStatus,
             width: 200,

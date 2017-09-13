@@ -717,6 +717,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 100,
 			editor: 'textfield',
 			renderer:function(value, metadata, record){
+				if(value){
+					metadata.tdAttr = 'data-qtip="<font color=blue>'+Ext.htmlEncode(value)+'</font>"';
+				}
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		}, 
@@ -835,6 +838,9 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 120,
 			editor: 'textfield',
 			renderer:function(value, metadata, record){
+				if(value){
+					metadata.tdAttr = 'data-qtip="<font color=blue>'+Ext.htmlEncode(value)+'</font>"';
+				}
 				return Helper.onAtoColumnRenderer(value, metadata, record);
 			}
 		}, 
