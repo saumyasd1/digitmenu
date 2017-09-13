@@ -38,7 +38,8 @@ Ext.define('AOC.config.Runtime',{
         currentOrderQueueCount:null,
         currentProductLineStatus:null,
         timeOffset:null,
-        currentUserRecord:null
+        currentUserRecord:null,
+        billshipRequired: null
     },
     constructor : function(config){
         this.initConfig(config);

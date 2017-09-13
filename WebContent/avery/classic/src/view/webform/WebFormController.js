@@ -4,134 +4,179 @@ Ext.define('AOC.view.webform.WebFormController', {
     runTime : AOC.config.Runtime,
     fileArray:[],
     totalFileCount:0,
+    
+    resetWebOrderForm:function(){
+    	var me = this,
+    		refs= me.getReferences(),
+    	    attachment = refs['attachment'],
+    	    additionalDataFileKey = refs['additionalDataFileKey'],
+    		webForm = refs['webform'],
+    		webOrderAttachmentInfoGrid = refs['webOrderAttachmentInfoGrid'];
+    	
+    	refs['rboCombo'].reset();
+    	refs['assignCSR'].reset();
+    	refs['dataStructureCombo'].reset();
+    	refs['email'].reset();
+    	refs['subject'].reset();
+    	refs['emailBody'].reset();
+   	 	
+   	 	webForm.orderFileAttachmentCount=1;
+	 	webForm.attachmentCount =1;
+   	 	me.fileArray = [];
+   	 	
+   	 	webOrderAttachmentInfoGrid.store.removeAll();
+	 	webOrderAttachmentInfoGrid.getView().refresh();
+	 	
+	 	refs['orderFileType'].setDisabled(true);
+	 	
+	 	if(attachment){
+    	 	attachment.hide();
+    	 	additionalDataFileKey.hide();
+    	    attachment.reset();
+    	    additionalDataFileKey.reset();
+   	 	}
+    	
+    },
+    getRBOList:function(newValue){
+    	var me = this,
+    		view = me.getView(),
+    		refs = me.getReferences();
+    	
+    	view.mask(AOCLit.pleaseWait);
+    	
+    	Ext.Ajax.request({
+            async: false,
+            url:applicationContext+'/rest/productLines/rbo/'+newValue,
+            success:function(response){
+            	var jsonData = JSON.parse(response.responseText),
+            		store = Ext.create('Ext.data.JsonStore',{
+        				fields:['id','rboName','site'],
+        				data: jsonData
+        			});
+            	
+            	refs['rboCombo'].bindStore(store);
+            	refs['rboCombo'].enable();
+            	if(view.rboId){
+    				me.setValueInRBOCombo(view.rboId);
+    			}
+            	view.unmask();
+            },
+            failure:function(){
+            	view.unmask();
+            }
+        });
+    },
     onPartnerChange:function(obj, newValue){
     	var me = this,
+    		refs = me.getReferences(),
+    		webForm = refs['webform'],
 			rboCombo = me.lookupReference('rboCombo'),
 			dataStructureCombo = me.lookupReference('dataStructureCombo'),
-    	    email = me.lookupReference('email'),
-    	    subject = me.lookupReference('subject'),
-    	    emailBody = me.lookupReference('emailBody'),
-    	    orderFileType = me.lookupReference('orderFileType'),
-    	    attachment = me.lookupReference('attachment'),
-    	    additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
-    	    csrCombo = me.lookupReference('assignCSR');
-			
+    	    emailBody = me.lookupReference('emailBody');
+    	
     	if(!Ext.isEmpty(newValue)){
-	    	var store = null;
-	        var response = Ext.Ajax.request({
-	            async: false,
-	            url:applicationContext+'/rest/productLines/rbo/'+newValue
-	        });
-	      	var jsonValue = Ext.decode(response.responseText);
-			store = Ext.create('Ext.data.JsonStore',{
-				fields:['id','rboName','site'],
-				data: jsonValue
-			});
-    		if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime){
-    			var refs = this.getReferences(),
-	    			webOrderFormView = refs.webform,
-	    			form = webOrderFormView.getForm(),
-	    			webOrderAttachmentInfoGrid = refs.webOrderAttachmentInfoGrid;
-    			
-    			rboCombo.reset();
-    			csrCombo.reset();
-   	    	 	dataStructureCombo.reset();
-   	    	 	email.reset();
-   	    	 	subject.reset();
-   	    	 	emailBody.reset();
-   	    	 	webOrderFormView.orderFileAttachmentCount=1;
-   	    	 	me.fileArray = [];
-   	    	 	webOrderFormView.attachmentCount =1;
-   	    	 	webOrderAttachmentInfoGrid.store.removeAll();
-   	    	 	webOrderAttachmentInfoGrid.getView().refresh();
-   	    	 	orderFileType.setDisabled(true);
-   	    	 	if(attachment){
-	   	    	 	attachment.hide();
-	   	    	 	additionalDataFileKey.hide();
-	   	    	    attachment.reset();
-	   	    	    additionalDataFileKey.reset();
-   	    	 	}
-    		}
     		emailBody.reset();
 			dataStructureCombo.disable();
 			
-			rboCombo.bindStore(store);
-			rboCombo.store.filterBy(function(storeRec){
-				var userSiteId = AOCRuntime.getUser().siteId;
-				if(userSiteId){
-					if(storeRec.get('site') == userSiteId){
-						return true;
-					}
-					return false;
-				}
-				return true;
-			});
+    		if(!webForm.isResubmit || !obj.isChangedForFirstTime){
+    			me.resetWebOrderForm();
+    		}
+    		
+    		me.getRBOList(newValue);
 			
-			if(me.getView().rboId){
-				var index = store.find('id',me.getView().rboId);
-				if(index != -1){
-					rboCombo.setValue(me.getView().rboId);
-				}else{
-					rboCombo.setValue('');
-				}
-			}
-			rboCombo.enable();
     	}else{
 			dataStructureCombo.disable();
 			rboCombo.disable();
     	}
     },
-	onRBOChange:function(obj,newValue){
+    setValueInRBOCombo:function(rboId){
+    	var me = this,
+			refs = me.getReferences(),
+			rboCombo = refs['rboCombo'],
+			index = rboCombo.store.find('id', rboId);
+    	
+		if(index != -1){
+			rboCombo.setValue(rboId);
+		}else{
+			rboCombo.setValue('');
+		}
+    },
+    
+    getDataStructure:function(partnerId, newValue){
+    	var me = this,
+    		view = me.getView(),
+    		refs = me.getReferences(),
+			dataStructureCombo =refs['dataStructureCombo'];
+    	
+    	view.mask(AOCLit.pleaseWait);
+    	Ext.Ajax.request({
+            async: false,
+            url: applicationContext+'/rest/productLines/getdatastructures/'+partnerId+'/'+newValue,
+            success:function(response){
+            	var jsonValue = Ext.decode(response.responseText),
+	            	store =  Ext.create('Ext.data.Store',{
+	    	    		fields:['id','dataStructureName','attachmentRequired','site'],
+	    				data : jsonValue
+	    	    	});
+            	
+            	if(AOCRuntime.getUser().role != '1'){
+    		    	store.filter('site', AOCRuntime.getUser().siteId);
+    			}
+            	dataStructureCombo.bindStore(store);
+            	dataStructureCombo.enable();
+            	if(view.productLineId){
+            		me.setProductLine(view.productLineId);
+            	}
+            	view.unmask();
+            },
+            failure:function(){
+            	view.unmask();
+            }
+        });
+    },
+    setProductLine:function(productLineId){
+    	var me = this,
+			refs = me.getReferences(),
+			dataStructureCombo =refs['dataStructureCombo'],
+			store = dataStructureCombo.store,
+    		index = store.find('id',productLineId);
+    	
+    	if(index != -1){
+			dataStructureCombo.setValue(productLineId);
+		}else{
+			dataStructureCombo.setValue('');
+		}
+    },
+	onRBOChange:function(obj, newValue){
 		var me = this,
-			dataStructureCombo = me.lookupReference('dataStructureCombo'),
-			partnerCombo = me.lookupReference('partnerCombo'),
+			refs = me.getReferences(),
+			webForm = refs['webform'],
+			dataStructureCombo = refs['dataStructureCombo'],
+			partnerCombo = refs['partnerCombo'],
 			partnerId = partnerCombo.getValue();
 			
-		 if(newValue !=null && newValue!=''){
-			 Ext.getBody().mask('Loading....');
+		if(!Ext.isEmpty(newValue)){
+			me.getDataStructure(partnerId, newValue);
 			
-			 var response = Ext.Ajax.request({
-		            async: false,
-		            url: applicationContext+'/rest/productLines/getdatastructures/'+partnerId+'/'+newValue
-		        });
-			var jsonValue=Ext.decode(response.responseText);
-			
-	    	store =  Ext.create('Ext.data.Store',{
-	    		fields:['id','dataStructureName','attachmentRequired','site'],
-				data : jsonValue
-	    	});
-	    	
-			if(AOCRuntime.getUser().role != '1'){
-		    	store.filter('site', AOCRuntime.getUser().siteId);
-			}
-			
-	    	if(!this.getView().down('#weborderformItemId').isResubmit || !obj.isChangedForFirstTime  ){
+	    	if(!webForm.isResubmit || !obj.isChangedForFirstTime ){
 	    		dataStructureCombo.reset();
-   	    	 	obj.isChangedForFirstTime=false;
+   	    	 	obj.isChangedForFirstTime = false;
     		}
-	    	dataStructureCombo.bindStore(store);
-	    	dataStructureCombo.enable();
-	    	if(me.getView().productLineId){
-	    		var index = store.find('id',me.getView().productLineId);
-				if(index != -1){
-					dataStructureCombo.setValue(me.getView().productLineId);
-				}else{
-					dataStructureCombo.setValue('');
-				}
-			}
 		 }else{
 			 dataStructureCombo.disable();
 		 }
-		 Ext.getBody().unmask();
 	},
+	
 	onDataStructureSelection:function(cmp, newValue, oldValue){
 		var me = this,
+			refs = me.getReferences(),
 			store = cmp.getStore(),
 			index = store.find('id', newValue),
 			view = me.getView(),
 			attachementField = me.lookupReference('attachment'),
 			additionalDataFileKey = me.lookupReference('additionalDataFileKey'),
-			assignCSRCombo = me.lookupReference('assignCSR');
+			assignCSRCombo = me.lookupReference('assignCSR'),
+			enableFlag = false;
 		
 		var record = store.getById(newValue);
 		if(record){
@@ -140,35 +185,37 @@ Ext.define('AOC.view.webform.WebFormController', {
 			
 		if(attachementField){
 			if(!Ext.isEmpty(newValue) && index != -1){
+				enableFlag = true;
 				var record = store.getAt(index),
-					attachmentRequired = record.get('attachmentRequired');
+					attachmentRequired = record.get('attachmentRequired'),
+					attachmentOptional = record.get('attachmentOptional');
 					
 				view.orderFileNameExtension = record.get('orderFileNameExtension');
 				view.attachmentFileNameExtension_1 = record.get('attachmentFileNameExtension_1');
 				
 				attachementField[attachmentRequired ? 'show' : 'hide']();
 				attachementField[attachmentRequired ? 'enable' : 'disable']();
-				attachementField.allowBlank = attachmentRequired ? false : true;
+				
+				//jira issue #AOC-1035
+				attachementField.allowBlank = (attachmentRequired && !record.get('optionalAttachment')) ? false : true;
+				
 				additionalDataFileKey[attachmentRequired ? 'show' : 'hide']();
 				additionalDataFileKey[attachmentRequired ? 'enable' : 'disable']();
 				
-				view.lookupReference('assignCSR').enable();
-				view.lookupReference('emailBody').enable();
-				view.lookupReference('email').enable();
-				view.lookupReference('subject').enable();
-				view.lookupReference('orderFileType').enable();
 			 }else{
-				view.lookupReference('subject').disable();
-				view.lookupReference('emailBody').disable();
-				view.lookupReference('assignCSR').disable();
-				view.lookupReference('email').disable();
-				view.lookupReference('subject').disable();
-				view.orderFileNameExtension=null;
-				view.attachmentFileNameExtension_1=null;
+				view.orderFileNameExtension = null;
+				view.attachmentFileNameExtension_1 = null;
+				
 				attachementField.hide();
 				attachementField.disable();
 				attachementField.allowBlank = true;
 			}
+			
+			refs['assignCSR'][enableFlag ? 'enable' : 'disable']();
+			refs['emailBody'][enableFlag ? 'enable' : 'disable']();
+			refs['email'][enableFlag ? 'enable' : 'disable']();
+			refs['subject'][enableFlag ? 'enable' : 'disable']();
+			refs['orderFileType'][enableFlag ? 'enable' : 'disable']();
 		}
 	},
 
@@ -269,11 +316,12 @@ Ext.define('AOC.view.webform.WebFormController', {
 			
 			var fieldParams = form.getValues(false,false,false,true),
 				assignCsrStore = refs.assignCSR.store,
-				index = assignCsrStore.find('userId',fieldParams.assignCSR);
+				index = assignCsrStore.find('userId', fieldParams.assignCSR);
 			
 			if(index > -1){
 				var record = assignCsrStore.getAt(index);
 				fieldParams.siteId = record.get('siteId');
+				fieldParams.systemCsrCode = record.get('systemCsrCode');
 			}
 			
 			if(webOrderFormView.isResubmit){
@@ -320,6 +368,7 @@ Ext.define('AOC.view.webform.WebFormController', {
 	    	formData.append('fileContentType', fileArray[len-1].fileContentType);
 	    	formData.append('oldOrderId', values.oldOrderId);
 	    	formData.append('lastModifiedBy',Helper.setLastModifiedBy());
+	    	
 	    	if(webOrderFormView.isResubmit){
 	    		formData.append('isResubmit', 'true');
 			}
@@ -364,7 +413,6 @@ Ext.define('AOC.view.webform.WebFormController', {
     	}
     },
     goToEmailQueueScreen:function(emailQueueId){
-//    	Helper.showToast('success', AOCLit.webSubmissionSuccesFulMsg);
     	Ext.Msg.show({
 		    title:'Go To Email Screen',
 		    message: 'Do you want to go to Email Screen to see <b>Email# '+emailQueueId+'</b> ?',

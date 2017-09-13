@@ -383,39 +383,36 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								    }
 						    	]
 						    },
-//						    {
-//								xtype: 'fieldcontainer',
-//								layout: 'column',
-//								margin : '0 0 5 0',
-//								layout:{
-//									type:'hbox'
-//								},
-//								defaults:{
-//									labelSeparator:'',
-//									labelStyle:Settings.config.defaultFormLabelStyle,
-//									labelAlign:Settings.form.defaultLabelAlign,
-//									labelWidth:200
-//								},
-//								items:[
-//									{
-//										xtype:'radiogroup',
-//										column:2,
-//										width:350,
-//										defaults:{
-//											name:'billshipRequired'
-//										},
-//										reference:'billshipRequired',
-//										fieldLabel:'Bill/Ship Required?',
-//										items:[
-//										    { boxLabel: 'Yes', inputValue:'true'},
-//										    { boxLabel: 'No', inputValue:'false', checked:true}
-//										]
-////										listeners:{
-////											change:'onOrderWithAttachmentRadioChange'
-////										}
-//									}
-//								]
-//							},
+						    {
+								xtype: 'fieldcontainer',
+								layout: 'column',
+								margin : '0 0 5 0',
+								layout:{
+									type:'hbox'
+								},
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.defaultLabelAlign,
+									labelWidth:200
+								},
+								items:[
+									{
+										xtype:'radiogroup',
+										column:2,
+										width:350,
+										defaults:{
+											name:'billshipRequired'
+										},
+										reference:'billshipRequired',
+										fieldLabel:'Bill/Ship Required?',
+										items:[
+										    { boxLabel: 'Yes', inputValue:'true'},
+										    { boxLabel: 'No', inputValue:'false', checked:true}
+										]
+									}
+								]
+							},
 						    {
 						    	xtype:'label',
 						    	text:'Order',

@@ -216,6 +216,8 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setCurrentOrderQueueDefaultSystem(currentRecord.get('defaultSystem'));
         AOCRuntime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
         AOCRuntime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
+        AOCRuntime.setBillshipRequired(currentRecord.get('billshipRequired'));
+        
         AOCRuntime.setOrderQueueActiveRecord(currentRecord);
         AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));
         AOCRuntime.setAllowOrderLineEdit(true);
