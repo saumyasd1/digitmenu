@@ -3,7 +3,6 @@ Ext.define('AOC.view.advsearch.TaskManagerAdvanceSearch', {
 	alias : 'widget.taskmanageradvancesearchwin',
 	itemId : 'taskmanagerAdvanceSearchWin',
 	
-	reference:'taskmanagerAdvanceSearchWin',
 	controller : 'taskmanagercontroller',
 	requires : ['Ext.window.MessageBox'],
 

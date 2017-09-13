@@ -3,7 +3,6 @@ Ext.define('AOC.view.advsearch.OrderQueueAdvanceSearch', {
 	alias : 'widget.orderqueueadvancesearchwin',
 	itemId : 'orderQueueAdvanceSearchWin',
 	
-	reference:'orderQueueAdvanceSearchWin',
 	controller : 'orderqueue',
 	requires : ['Ext.window.MessageBox'],
 	

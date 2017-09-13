@@ -3,7 +3,6 @@ Ext.define('AOC.view.advsearch.EmailQueueAdvanceSearch', {
 	alias : 'widget.emailqueueadvancesearchwin',
 	itemId : 'emailQueueAdvanceSearchWin',
 	
-	reference:'emailQueueAdvanceSearchWin',
 	controller : 'emailManagementController',
 	requires : ['Ext.window.MessageBox'],
 

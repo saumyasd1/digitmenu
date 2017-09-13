@@ -3,7 +3,6 @@ Ext.define('AOC.view.advsearch.PartnerAdvanceSearch', {
 	alias : 'widget.partneradvancesearchwin',
 	
 	itemId : 'partnerAdvanceSearch',
-	reference:'partnerAdvanceSearch',
 	controller : 'partnerMain',
 	requires : ['Ext.window.MessageBox'],
 	
