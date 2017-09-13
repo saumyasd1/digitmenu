@@ -156,6 +156,9 @@ public class OrderEmailQueue extends MainAbstractEntity {
 	@Column(name = "error", columnDefinition = "longtext")
 	private String error;
 	
+	@Column(name = "systemCsrCode", length = 100)
+	private String systemCsrCode;
+	
 	// transient variables added for getting colorCode and iconName
 	@Transient
 	private String iconName;
@@ -705,6 +708,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			String emailBody = jsonMap.get("emailBody");
 			String dataStructureId = jsonMap.get("dataStructureName");
 			String oldOrderFileDeleted = jsonMap.get("oldOrderFileDeleted");
+			String systemCsrCode = jsonMap.get("systemCsrCode");
 			boolean isOldOrderFileDeleted = Boolean.parseBoolean(
 					oldOrderFileDeleted == null || oldOrderFileDeleted.equals("") ? "false" : oldOrderFileDeleted);
 			String resubmitFlag = jsonMap.get("isResubmit");
@@ -724,6 +728,7 @@ public class OrderEmailQueue extends MainAbstractEntity {
 			orderEmailQueueObj.setAssignCSR(assignCSR);
 			orderEmailQueueObj.setLastModifiedBy(lastModifiedBy);
 			orderEmailQueueObj.setLastModifiedDate(now);
+			orderEmailQueueObj.setSystemCsrCode(systemCsrCode);
 			orderEmailQueueObj.setOrderSource(ApplicationConstants.EMAIL_ORDER_SOURCE);
 			if (isResubmit) {
 				orderEmailQueueObj.setStatus(ApplicationConstants.Order_Email_Processed);
@@ -1143,5 +1148,13 @@ public class OrderEmailQueue extends MainAbstractEntity {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public String getSystemCsrCode() {
+		return systemCsrCode;
+	}
+
+	public void setSystemCsrCode(String systemCsrCode) {
+		this.systemCsrCode = systemCsrCode;
 	}
 }
