@@ -514,6 +514,12 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "wi_id")
 	private Integer wi_id;
 
+	@Column(name = "optionalAttachment")
+	private Boolean optionalAttachment;
+	
+	@Column(name = "billshipRequired")
+	private Boolean billshipRequired;
+	
 	@Transient
 	private String siteName;
 
@@ -2433,6 +2439,20 @@ public class ProductLine extends MainAbstractEntity {
 	public void setGroupingField_29(String groupingField_29) {
 		this.groupingField_29 = groupingField_29;
 	}
-	
-	
+
+	public Boolean getOptionalAttachment() {
+		return optionalAttachment;
+	}
+
+	public void setOptionalAttachment(Boolean optionalAttachment) {
+		this.optionalAttachment = optionalAttachment;
+	}
+
+	public Boolean getBillshipRequired() {
+		return billshipRequired;
+	}
+
+	public void setBillshipRequired(Boolean billshipRequired) {
+		this.billshipRequired = billshipRequired;
+	}
 }

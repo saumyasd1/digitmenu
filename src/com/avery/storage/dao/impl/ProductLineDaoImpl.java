@@ -192,7 +192,7 @@ public class ProductLineDaoImpl extends GenericDaoImpl<ProductLine, Long> implem
 		Session session = getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(
 				"select new map(id as id, dataStructureName as dataStructureName, site as site, attachmentRequired as attachmentRequired ,"
-						+ "orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1) from ProductLine "
+						+ "orderFileNameExtension as orderFileNameExtension,attachmentFileNameExtension_1 as attachmentFileNameExtension_1, optionalAttachment as optionalAttachment) from ProductLine "
 						+ " where varPartner.id=:partnerId and rbo.id=:rboId and orderInMailBody!=:orderInMailBody and active!=:active");
 		query.setLong("partnerId", partnerId);
 		query.setLong("rboId", rbo);
