@@ -565,6 +565,6 @@ Ext.define('AOC.lang.lit',{
 	orderFileKeywordEmptyText:'eg:NIKE AND Nike PO or Nike OR NIKE or NIKE',
 	orderFileCellNoEmptyText:'eg:A1 AND A2 or A1 OR A1 or A1',
 	
-	maxGroupingFieldCount:20
+	maxGroupingFieldCount:28
 	
 });

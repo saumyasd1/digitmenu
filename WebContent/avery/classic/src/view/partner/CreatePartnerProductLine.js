@@ -4,7 +4,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 	itemId:'createpartnerproductlineItemId',
 	controller:'productlineMain',
 	bodyPadding: 10,
-	width: Ext.getBody().getWidth()-350,
+	width: Ext.getBody().getWidth()-300,
 	height:Ext.getBody().getHeight()-50,
     draggable:false,
     
