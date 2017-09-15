@@ -500,6 +500,37 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										column:2,
 										width:350,
 										defaults:{
+											name:'optionalAttachment'
+										},
+										margin:'0 0 5 0',
+										reference:'isOptionalAttachment',
+										fieldLabel:'Is Attachment Optional?',
+										items:[
+										    { boxLabel: 'Yes', inputValue:'true'},
+										    { boxLabel: 'No', inputValue:'false', checked:true}
+										]
+									}
+								]
+							},
+							{
+								xtype: 'fieldcontainer',
+								layout: 'column',
+								margin : '0 0 5 0',
+								layout:{
+									type:'hbox'
+								},
+								defaults:{
+									labelSeparator:'',
+									labelStyle:Settings.config.defaultFormLabelStyle,
+									labelAlign:Settings.form.defaultLabelAlign,
+									labelWidth:200
+								},
+								items:[
+									{
+										xtype:'radiogroup',
+										column:2,
+										width:350,
+										defaults:{
 											name:'attachmentRequired'
 										},
 										reference:'isOrderWithAttachment',

@@ -489,8 +489,6 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			Ext.apply(valueObj,{listOrderSystemInfo:listOrderSystemInfo});
 			
 			//if grouping field_1 is empty or groupinglogic false then default value of groupingField_1:'id'
-			//if(values.groupingLogic == 'false' || Ext.isEmpty(values.groupingField_1)){
-				
 			if(values.groupingLogic == 'false'){
 				values.groupingField_1 = 'id';
 				me.setEmptyGroupingField(values);
