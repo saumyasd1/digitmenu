@@ -56,27 +56,31 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 sortable: true,
                 align:'left',
                 dataIndex: 'partnerName',
-                flex: 1.5
+                flex: 1.5,
+				renderer:Helper.tipRenderer
             }, {
                 text: AOCLit.address,
                 width: 120,
                 align:'left',
                 sortable: true,
                 dataIndex: 'address',
-                flex: 1.5
+                flex: 1.5,
+				renderer:Helper.tipRenderer
             }, {
                 text: AOCLit.siteNumber,
                 width: 120,
                 align:'left',
                 sortable: true,
                 dataIndex: 'siteNumber',
-                flex: 1.5
+                flex: 1.5,
+				renderer:Helper.tipRenderer
             }, {
                 text: AOCLit.Contact,
                 width: 150,
                 align:'left',
                 dataIndex: 'contact',
-                flex: 1
+                flex: 1,
+				renderer:Helper.tipRenderer
             }, {
                 text: AOCLit.Phone1,
                 width: 150,
@@ -88,13 +92,15 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 width: 150,
                 align:'left',
                 dataIndex: 'fax',
-                flex: 1
+                flex: 1,
+				renderer:Helper.tipRenderer
             }, {
                 text: AOCLit.Email,
                 width: 150,
                 align:'left',
                 dataIndex: 'email',
-                flex: 1
+                flex: 1,
+				renderer:Helper.tipRenderer
             },{
             	text:AOCLit.siteName,
             	sortable:true,
