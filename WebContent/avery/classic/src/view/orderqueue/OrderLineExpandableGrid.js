@@ -1232,6 +1232,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			renderer: function (value, metadata, rec) {
 	               var comment = Ext.String.htmlEncode(rec.data.comment);
 	            	if(comment){
+	            		metadata.tdAttr = 'data-qtip="<font color=blue>' + comment + '</font>"';
 	            		metadata.style = AOCLit.cellColor;
 	            	}
 	            	return value;

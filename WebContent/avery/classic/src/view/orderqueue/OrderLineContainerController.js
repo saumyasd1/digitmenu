@@ -184,7 +184,10 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     		grid = refs.orderLineExpandableGrid,
     		store = grid.store,
     		status,
-    		id=this.runTime.getOrderQueueId();
+    		id = this.runTime.getOrderQueueId();
+    	
+    	startTime = new Date().getTime();
+    	console.log(startTime);
     	
     	grid.invalidComboColumn = '';
     	grid.mandatoryColumnMissing = '';
@@ -202,11 +205,18 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	//(Amit Kumar)(IT UAT Issue Log#117)if any record has customer order qty is zero for WaitingForCSRStaus only then show warning and not submit sales order
     	var isCustomerOrderQantityIsZero = false,
     		isCommentExist = false;
+    	
     	store.each(function(record, index){
-    		if(record.get('comment') && record.get('status') != AOCLit.cancelStatusOrderLine ){
-    			isCommentExist = record.get('comment');
+    		var comment = record.get('comment');
+    		
+    		if(comment && record.get('status') != AOCLit.cancelStatusOrderLine ){
+    			if(comment.includes('Alert:') && comment.indexOf('Alert:') == 0){}
+    			else{
+    				isCommentExist = comment;
+    			}
 	    	}
-    		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) && record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
+    		if((record.get('customerOrderedQty') == '0' || Ext.isEmpty(record.get('customerOrderedQty'))) 
+    				&& record.get('status') == AOCLit.waitingForCSRStatusOrderLine){
     			isCustomerOrderQantityIsZero = true;
     		}
     		return me.validInvalidCombo(record, index, grid);
@@ -215,7 +225,6 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	//For comment column if value exist in comment column
     	if(isCommentExist){
     		Helper.showToast('failure', isCommentExist);
-//    		Helper.showToast('failure',AOCLit.commentOnOrderLine);
     		return;
     	}
     	//For Invalid Combo 
@@ -238,11 +247,11 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	//if mandatoryValidation Missing
     	if(grid.mandatoryValidationColumnMissing){
     		Helper.showToast('validation', grid.mandatoryValidationColumnMissing);
-			grid.showMandatoryValidationField=true;
+			grid.showMandatoryValidationField = true;
 			return;
     	}
-		var records=store.queryBy(function(rec){
-			status=rec.get('status');
+		var records = store.queryBy(function(rec){
+			status = rec.get('status');
 			if(status!=AOCLit.waitingForCSRStatusOrderLine && status!=AOCLit.cancelStatusOrderLine){
 				return;
 			}
@@ -294,6 +303,8 @@ Ext.define('AOC.view.orderqueue.OrderLineContainerController', {
     	}else{
     		me.callSubmitSalesOrderReq();
     	}
+    	endTime = new Date().getTime();
+    	console.log((endTime - startTime)/1000 +' secs');
     },
     
     callSubmitSalesOrderReq:function(){
