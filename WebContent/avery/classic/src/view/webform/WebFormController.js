@@ -315,14 +315,10 @@ Ext.define('AOC.view.webform.WebFormController', {
 				oldOrderId = webOrderFormView.down('#oldOrderId').getValue();
 			
 			var fieldParams = form.getValues(false,false,false,true),
-				assignCsrStore = refs.assignCSR.store,
-				index = assignCsrStore.find('userId', fieldParams.assignCSR);
+				assignCsrSelection = refs['assignCSR'].selection["data"];
 			
-			if(index > -1){
-				var record = assignCsrStore.getAt(index);
-				fieldParams.siteId = record.get('siteId');
-				fieldParams.systemCsrCode = record.get('systemCsrCode');
-			}
+			fieldParams.siteId = assignCsrSelection.siteId;
+			fieldParams.systemCsrCode = assignCsrSelection.csrCode;
 			
 			if(webOrderFormView.isResubmit){
 				fieldParams.isResubmit = 'true';
