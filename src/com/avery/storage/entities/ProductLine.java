@@ -351,7 +351,7 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "productLineMatchFlag", length = 50)
 	private String productLineMatchFlag;
 
-	@Column(name = "email", length = 100)
+	@Column(name = "email", columnDefinition = "text")
 	private String email;
 
 	@Column(name = "sizeCheck", length = 100)

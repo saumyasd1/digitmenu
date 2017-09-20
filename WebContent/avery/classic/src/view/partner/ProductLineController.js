@@ -198,17 +198,18 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.fileOrderCellNo = me.getCellNo(record.get('fileOrderMatch'));
     	
     	//record.data.fileOrderFileName = me.getFileName(record.get('fileOrderMatchLocation'));
+    	record.data.orderInEmailBodyMatch = me.getKeyword(record.get('orderInEmailBodyMatch'));
     	record.data.fileOrderFileContent = me.getKeyword(record.get('fileOrderMatch'));
     	
     	record.data.attachmentFileKeyWording = me.getKeyword(record.get('attachmentFileOrderMatch'));
     	record.data.attachmentCellNo = me.getCellNo(record.get('attachmentFileOrderMatch'));
     	
     	record.data.emailSubjectRBOKeyword = record.get('emailSubjectRBOMatch');
-    	record.data.emailBodyRBOKeyword = record.get('emailBodyRBOMatch');
+    	record.data.emailBodyRBOKeyword = me.getKeyword(record.get('emailBodyRBOMatch'));
     	record.data.emailSubjectProductLineKeyword = record.get('emailSubjectProductLineMatch');
-    	record.data.emailBodyProductLineKeyword = record.get('emailBodyProductLineMatch');
+    	record.data.emailBodyProductLineKeyword = me.getKeyword(record.get('emailBodyProductLineMatch'));
     	record.data.emailSubjectPartnerFactoryKeyword = record.get('emailSubjectPartnerMatch');
-    	record.data.emailBodyPartnerFactoryKeyword = record.get('emailBodyPartnerMatch');
+    	record.data.emailBodyPartnerFactoryKeyword = me.getKeyword(record.get('emailBodyPartnerMatch'));
     	
     	record.data.emailSubjectProductLineMatchRequired = record.get('emailSubjectProductlineMatchRequired');
     	record.data.emailBodyProductLineMatchRequired = record.get('emailBodyProductlineMatchRequired');
@@ -287,7 +288,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
     		var strA = str.split(';');
     		return {keyword: strA[0].split(':')[1], cellNo:strA[1].split(':')[1]};
     	}
-    	return {keyword:str.split(':')[1]};
+    	if(str.indexOf(':') > -1){
+    		return {keyword:str.split(':')[1]};
+    	}
+    	return {keyword:str};
     },
     getKeyword:function(str){
     	if(!Ext.isEmpty(str)){
@@ -323,7 +327,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
     				leftObj = this.getSplitValue(leftStr),
     				rightObj = this.getSplitValue(rightStr);
     			
-    			return leftObj.cellNo + ' AND '+ rightObj.cellNo;
+    			if(!Ext.isEmpty(leftObj.cellNo) && !Ext.isEmpty(rightObj.cellNo)){
+    				return leftObj.cellNo + ' AND '+ rightObj.cellNo;
+    			}
+    			
     		}
     		else if(str.indexOf('_._') > -1){
     			var strA = str.split('_._'),
@@ -619,11 +626,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		obj.emailBodyProductlineMatchRequired = values.emailBodyProductLineMatchRequired;
 		
 		obj.emailSubjectRBOMatch = values.emailSubjectRBOKeyword;
-		obj.emailBodyRBOMatch = values.emailBodyRBOKeyword;
+		obj.emailBodyRBOMatch = me.getCombinedValue(values.emailBodyRBOKeyword);
 		obj.emailSubjectProductLineMatch = values.emailSubjectProductLineKeyword;
-		obj.emailBodyProductLineMatch = values.emailBodyProductLineKeyword;
+		obj.emailBodyProductLineMatch = me.getCombinedValue(values.emailBodyProductLineKeyword);
 		obj.emailSubjectPartnerMatch = values.emailSubjectPartnerFactoryKeyword;
-		obj.emailBodyPartnerMatch = values.emailBodyPartnerFactoryKeyword;
+		obj.emailBodyPartnerMatch = me.getCombinedValue(values.emailBodyPartnerFactoryKeyword);
 		
 		obj.fileRBOMatchRequired = values.fileOrderRBOMatchRequired;
 		obj.fileProductLineMatchRequired = values.fileOrderProductLineMatchRequired;
@@ -649,11 +656,18 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		if(values.fileOrderCellNo){
 			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
 		}else{
-			obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent, values.fileOrderCellNo);
+			if(values.fileOrderFileContent){
+				obj.fileOrderMatch = me.getCombinedValue(values.fileOrderFileContent);
+			}
+		}
+		
+		if(values.orderInEmailBodyMatch){
+			obj.orderInEmailBodyMatch = me.getCombinedValue(values.orderInEmailBodyMatch);
 		}
 		
 		obj.attachmentFileOrderMatch = me.getCombinedValue(values.attachmentFileKeyWording, values.attachmentCellNo);
     	
+		delete values.fileOrderEmailBody;
 		delete values.attachmentFileKeyWording;
 		delete values.attachmentCellNo;
 		delete values.fileOrderFileName;
@@ -692,10 +706,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		var leftKeyword ='',
 			rightKeyword = '',
 			leftCellNo ='',
-			rightCellNo = '';
+			rightCellNo = '',
+			spliter = '';
+		
+		if(!Ext.isEmpty(keyword)){
+			spliter = keyword.indexOf(' AND ') > -1 ? ' AND ' : (keyword.indexOf(' OR ') > -1 ? ' OR ' : '');
+		}
 		
 		if(!Ext.isEmpty(keyword) && !Ext.isEmpty(cellNo)){
-			var spliter = keyword.indexOf(' AND ') > -1 ? ' AND ' : (keyword.indexOf(' OR ') > -1 ? ' OR ' : '');
 			if(spliter){
 				if(keyword.indexOf(spliter) > -1){
 					var strA = keyword.split(spliter);
@@ -713,6 +731,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			return 'Value:'+keyword +';Cell:'+cellNo;
 		}
 		if(!Ext.isEmpty(keyword) && Ext.isEmpty(cellNo)){
+			if(keyword.indexOf(spliter) > -1){
+				var strA = keyword.split(spliter);
+					leftKeyword = strA[0].trim();
+					rightKeyword = strA[1].trim();
+					
+				var spliterFormat = spliter == ' AND ' ? '_&&_' : '_._';
+				return 'Value:'+leftKeyword + spliterFormat + 'Value:'+rightKeyword;
+			}
 			return 'Value:'+keyword;
 		}
 		return '';

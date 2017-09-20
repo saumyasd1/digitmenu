@@ -251,8 +251,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						layout:'hbox',
 						margin : '0 0 5 0',
 						layout:{
-							type:'hbox',
-							align:'center'
+							type:'vbox',
+							align:'stretch'
 						},
 						defaults:{
 							labelSeparator:'',
@@ -262,17 +262,19 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						},
 						items:[
 							{
-								xtype:'textfield',
+								xtype:'textarea',
 								name: 'email',
+								height:120,
+								grow:true,
 								vtype:'multiEmail',
 								emptyText:'Email Id\'s with ; separated',
-								fieldLabel:'Email ID'
+								fieldLabel:'Email ID',
+								maxLength:Settings.wiConfig.textAreaMaxLength
 							},
 							{
 								xtype:'textfield',
 								reference:'CSRSecondaryId',
 								name: 'csrSecondaryId',
-								margin:'0 0 0 10',
 								emptyText:'Email Id\'s with ; separated',
 								fieldLabel:'CSR Email',
 								vtype:'multiEmail',
@@ -1079,7 +1081,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return {
 			xtype:'textfield',
 			fieldLabel:index > -1 ? 'Cell No,If Excel '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderCellNoInfoText)  :'Cell No,If Excel',
-//			disabled:true,
 			name:name,
 			prevItemRefs: prevItemRefs,
 			emptyText:index > -1 ? AOCLit.orderFileCellNoEmptyText : '',
@@ -1094,10 +1095,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 		return {
 			xtype:'textfield',
 			fieldLabel:index > -1 ? 'Keyword '+Ext.String.format(AOCLit.wiInfoIconText, AOCLit.orderKeywordInfoText)  :'Keyword',
-//			disabled:true,
 			fileOrderType:index > -1 ? true : false,
 			margin:'0 0 5 0',
-			emptyText:index > -1 ? AOCLit.orderFileKeywordEmptyText : '',
+			emptyText:(index > -1) || (name.indexOf('emailBody') > -1) ? AOCLit.orderFileKeywordEmptyText : '',
 			name:name,
 			reference:name,
 			listeners:{
@@ -1157,6 +1157,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 					xtype:'textfield',
 					name:'orderInEmailBodyMatch',
 					reference:'fileOrderEmailBody',
+					emptyText:AOCLit.orderFileKeywordEmptyText,
 					allowBlank:false,
 					disabled:true,
 					fieldLabel:'Email Body'
