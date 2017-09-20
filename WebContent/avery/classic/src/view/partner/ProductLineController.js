@@ -339,7 +339,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     				leftObj = this.getSplitValue(leftStr),
     				rightObj = this.getSplitValue(rightStr);
     			
-    			return leftObj.cellNo + ' OR '+ rightObj.cellNo;
+    			if(!Ext.isEmpty(leftObj.cellNo) && !Ext.isEmpty(rightObj.cellNo)){
+    				return leftObj.cellNo + ' OR '+ rightObj.cellNo;
+    			}
     		}
     		var obj = this.getSplitValue(str);
     		return obj.cellNo;
@@ -1135,7 +1137,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			refs = me.getReferences(),
 			fileNameField = refs['fileOrderFileName'],
 			fileContentField = refs['fileOrderFileContent'],
-			cellNo = refs['fileOrderMatch'],
+			cellNo = refs['fileOrderCellNo'],
 			emailSubject = refs['fileOrderEmailSubject'],
 			emailBody = refs['fileOrderEmailBody'];
 	
@@ -1320,6 +1322,35 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			 field.setValue('');
 			 field.allowBlank = false;
 			 Helper.showToast('validation', 'Please follow format to fill file format.');
+		 }
+	 },
+	 
+	 onOrderFileFormatFieldChange:function(field, newValue, oldValue){
+		 if(newValue.indexOf('pdf') > -1){
+			 this.disableCellNo(true);
+		 }else{
+			 this.disableCellNo(false);
+		 }
+	 },
+	 
+	 disableCellNo:function(flag){
+		 var me = this,
+		 	 refs = me.getReferences();
+		 
+		 refs['fileOrderPartnerFactoryCellNo'].setDisabled(flag);
+		 refs['fileOrderProductLineCellNo'].setDisabled(flag);
+		 refs['fileOrderRBOCellNo'].setDisabled(flag);
+		 refs['fileOrderCellNo'].setDisabled(flag);
+	 },
+	 
+	 onAdditionalAttachmentChange:function(field, newValue, oldValue){
+		 var me = this,
+		 	refs = me.getReferences();
+		 
+		 if(newValue.indexOf('pdf') > -1){
+			 refs['attachmentCellNo'].setDisabled(true);
+		 }else{
+			 refs['attachmentCellNo'].setDisabled(false);
 		 }
 	 },
 	 

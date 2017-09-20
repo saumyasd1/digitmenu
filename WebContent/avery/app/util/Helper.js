@@ -801,15 +801,16 @@ Ext.define('AOC.util.Helper',{
 	getGroupingFieldStore:function(){
 		return new Ext.data.JsonStore({
 			data:[
-			      {name:'None', value:'None'},
-			      {name:'Avery item#', value:'averyItemNumber'},
-			      {name:'Customer PONumber', value:'customerPONumber'},
-			      {name:'COO', value:'COO'},
-			      {name:'RN', value:'RN'},
-			      {name:'CN', value:'CN'},
-			      {name:'ArticleNumber', value:'ArticleNumber'},
+			      { name:'None', value:'None'},
+			      { name:'Avery item#', value:'averyItemNumber'},
+			      { name:'Customer PONumber', value:'customerPONumber'},
+			      { name:'COO', value:'COO'},
+			      { name:'RN', value:'RN'},
+			      { name:'CN', value:'CN'},
+			      { name:'ArticleNumber', value:'ArticleNumber'},
+			      { name:'Customer Item Number', value:'customerItemNumber'},
 			      
-			      { name:'PO#',value:'poNumber'},
+			      { name:'PO#', value:'poNumber'},
 			      { name:'Order Type',value:'orderType'},
 			      { name:'Request Date',value:'requestedDeliveryDate'},
 			      { name:'Promise Date',value:'promiseDate'},

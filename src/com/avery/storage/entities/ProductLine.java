@@ -477,6 +477,9 @@ public class ProductLine extends MainAbstractEntity {
 	
 	@Column(name = "GroupingField_29", length = 100)
 	private String groupingField_29;
+	
+	@Column(name = "GroupingField_30", length = 100)
+	private String groupingField_30;
 
 	@Column(name = "itemIdentifier", length = 100)
 	private String itemIdentifier;
@@ -2438,6 +2441,14 @@ public class ProductLine extends MainAbstractEntity {
 
 	public void setGroupingField_29(String groupingField_29) {
 		this.groupingField_29 = groupingField_29;
+	}
+
+	public String getGroupingField_30() {
+		return groupingField_30;
+	}
+
+	public void setGroupingField_30(String groupingField_30) {
+		this.groupingField_30 = groupingField_30;
 	}
 
 	public Boolean getOptionalAttachment() {

@@ -441,7 +441,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 										 emptyText:AOCLit.fileExtensionEmptyText,
 										 fieldLabel:'Order File Format',
 										 listeners:{
-											 blur:'onFileFormatFieldBlur'
+											 blur:'onFileFormatFieldBlur',
+											 change:'onOrderFileFormatFieldChange'
 										 }
 									 },
 						    		 {
@@ -809,7 +810,8 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 //			    	fieldType:'attachmentFileExt',
 //			    	count : count,
 			    	listeners:{
-				    	blur:'onFileFormatFieldBlur'
+				    	blur:'onFileFormatFieldBlur',
+				    	change:'onAdditionalAttachmentChange'
 			    	}
 	    		 }, {
 	          		 xtype:'textfield',
@@ -1175,7 +1177,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 				}, {
 					xtype:'textfield',
 					name:'fileOrderCellNo',
-					reference:'fileOrderMatch',
+					reference:'fileOrderCellNo',
 					fieldLabel:'Cell No,If Excel',
 					prevItemRefs: 'fileOrderFileContent',
 					listeners:{
