@@ -79,8 +79,8 @@ Ext.define('AOC.util.Helper',{
 	
 	BulkUpdate:function(grid, selection, eOpts){
 		if(selection.startCell){
-			var store = grid.store;
-			var intialCell = selection.startCell;
+			var store = grid.store,
+				intialCell = selection.startCell;
 			
 			if(intialCell!=null && store.getCount() > 0){
 				var dataindex=intialCell.column.dataIndex,

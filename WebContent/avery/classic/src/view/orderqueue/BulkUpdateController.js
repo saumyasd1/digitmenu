@@ -4,7 +4,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     requires : [
         'AOC.model.VariableHeaderModel'
     ],
-    
+    idArray:[],
+    additionalValueArray:[],
     saveOrderLine:function(){ // this function is called when the orline line is updated by bulk update
     	var me = this,
 			grid = this.getView(),
@@ -440,5 +441,122 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			Helper.showToast('validation', fieldName + ' can not be less than Ordered date');
 			df.setValue(orderDate);
 		}
-	}
+	},
+	onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+		var grid = obj;
+		if (e.target.className == 'EnableUpdateMoq') {
+		    var Id = record.get('id');
+		    var runTime = AOC.config.Runtime;
+		    var MoqDiffQty = record.get('moqDiffQty');
+		    var roundQty = record.get('roundQty');
+		    var customerOrderedQty = record.get('customerOrderedQty');
+		    customerOrderedQty = parseInt(MoqDiffQty, 10) + parseInt(roundQty, 10) + parseInt(customerOrderedQty);
+		    var value = {
+		        "customerOrderedQty": customerOrderedQty,
+		        "id": Id
+		    };
+		    var insertBillAddress = false,
+		        insertShipAddress = false;
+		    var obj = '{"insertBillAddress":' + insertBillAddress + ',"insertShipAddress":' + insertShipAddress + ',"data":' + Ext.encode(Ext.encode(value)) + ',"updateAll":false,"orderQueueId":"' + runTime.getOrderQueueId() + '"}';
+		    Ext.MessageBox.confirm('Confirm Action', AOCLit.updateCustQtyMsg, function (response) {
+		        if (response == 'yes') {
+		            Ext.getBody().mask('Updating....');
+		            Ext.Ajax.request({
+		                method: 'PUT',
+		                jsonData: obj,
+		                url: applicationContext + '/rest/orderLines/bulkupdate',
+		                success: function (response, opts) {
+		                    Ext.getBody().unmask();
+		                    Helper.showToast('success', AOCLit.updatedCustomerQtyMsg);
+		                    grid.store.load();
+		                },
+		                failure: function (response, opts) {
+		                    Ext.getBody().unmask();
+		                }
+		            });
+		        } else if (response == 'no') {
+		            return true;
+		        }
+		    });
+		}
+	},
+	onBulkUpdateSelectionChange:function( grid, selection, eOpts ){
+		var me = this,
+		    refs = me.getReferences(),
+		    copyBtn = refs.copyBtn,
+		    intialCell = selection.startCell,
+		    store = grid.store;
+		
+		if(!Ext.isEmpty(intialCell)){
+	    	var dataIndex = intialCell.column.dataIndex;
+	    }
+			
+		AOC.util.Helper.BulkUpdate(grid, selection, eOpts);
+		me.idArray = [];
+		me.additionalValueArray = [];
+		if(intialCell != null && store.getCount() > 0){
+			if(dataIndex == 'additionalLabelInternalItem' ){
+				copyBtn.setHidden(false);
+					var initialrowIdx=intialCell.rowIdx,
+						lastrowIdx=selection.endCell.rowIdx,
+						start=initialrowIdx,
+						end=lastrowIdx,
+						value=intialCell.record.get(dataIndex);
+						
+						if(end < start && start > 0){
+							for(var i= start;i >= end; i--){
+								me.idArray.push(store.getAt(i).get('id'));
+								me.additionalValueArray.push(store.getAt(i).get('additionalLabelInternalItem'));
+							}
+						}else if(end > start){
+							for(var i= start;i <= end; i++){
+								me.idArray.push(store.getAt(i).get('id'));
+								me.additionalValueArray.push(store.getAt(i).get('additionalLabelInternalItem'));
+							}
+						}else if (end == start){
+							store.getAt(end).set(dataIndex, value);
+							me.idArray.push(store.getAt(end).get('id'));
+							me.additionalValueArray.push(store.getAt(end).get('additionalLabelInternalItem'));
+						}
+			}else{
+				copyBtn.setHidden(true);
+			}
+		}
+	},
+	copyBtnClick:function(btn){
+		var me = this,
+			view = me.getView(),
+			copyRecIdArray = me.idArray.join(),
+			copyRecAdditionalItemArray = me.additionalValueArray.join();
+		
+		if(view.editingPlugin.editing){
+			view.focus();
+    	}
+		Ext.getBody().mask(AOCLit.pleaseWait);
+		Ext.Ajax.request({
+			method:'GET',
+			url:applicationContext+'/rest/orderLines/copy/additional',
+			params:{id:copyRecIdArray, additional:copyRecAdditionalItemArray},
+			success:function(response){
+				var jsonString = JSON.parse(response.responseText);
+					me.idArray = [];
+					me.additionalValueArray = [];
+				view.store.load({
+					params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
+				}, view);
+				btn.setHidden(true);
+				Ext.getBody().unmask();
+				if(jsonString.success == true){
+					Helper.showToast('Success',AOCLit.copySuccessMsg);
+				}
+			},
+			failure: function (response, opts) {
+				msg = response.responseText;
+				me.idArray = [];
+				me.additionalValueArray = [];
+				Ext.getBody().unmask();
+                Helper.showToast('failure',msg);
+            }
+		});
+		}
 });

@@ -303,6 +303,8 @@ Ext.define('AOC.lang.lit',{
     "productionLine":'Production Line',
     "targetSystem":'Target System',
     "additionalLabel":'Additional Label Internal Item #',
+    "copyRecord":'Copy',
+    "copySuccessMsg":'Record(s) copied successfully',
     //Orderqueue
     "lastmodifiedby":'Last Modified By',
     "lastmodifieddate":'Last Modified Date',

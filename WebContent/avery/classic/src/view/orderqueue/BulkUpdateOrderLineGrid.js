@@ -40,16 +40,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 			    {
 			    	ptype: 'clipboard'
 			    }
-		    ],
-		    listeners:{
-		    	scope:this,
-            	cellclick:'onCellClickToView',
-		    	 'selectionchange':function( grid, selection, eOpts ){
-		    		 AOC.util.Helper.BulkUpdate( grid, selection, eOpts);
-		    	 }
-        	}
-        });
+		    ]
+		});
         me.callParent(arguments);
+    },
+    listeners:{
+    	cellclick:'onCellClickToView',
+    	selectionchange:'onBulkUpdateSelectionChange'
     },
     buildColumns : function(){
     	var me=this;
@@ -909,6 +906,13 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
     },
     buttons: [ 
       {
+		  text:AOCLit.copyRecord,
+		  iconCls:'x-fa fa-clone',
+		  reference:'copyBtn',
+		  handler:'copyBtnClick',
+		  hidden:true
+      },
+      {
 		  text:AOCLit.undoChangesText,
 		  iconCls:'x-fa fa-undo',
 		  handler:'cancelChanges'
@@ -918,39 +922,5 @@ Ext.define('AOC.view.orderqueue.BulkUpdateOrderLineGrid', {
 		  iconCls:'x-fa fa-save',
 		  handler:'saveOrderLine'
       }
-  ],
-  onCellClickToView:function( obj, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-	var grid=obj;
-	 if(e.target.className=='EnableUpdateMoq'){
-		 var Id=record.get('id');
-		 var runTime = AOC.config.Runtime;
-		 var MoqDiffQty=record.get('moqDiffQty');
-		 var roundQty=record.get('roundQty');
-		 var customerOrderedQty=record.get('customerOrderedQty');
-		 customerOrderedQty=parseInt(MoqDiffQty,10)+parseInt(roundQty,10)+parseInt(customerOrderedQty);
-		 var value={"customerOrderedQty":customerOrderedQty,"id":Id};
-	     var insertBillAddress=false,insertShipAddress=false;
-		 var obj='{"insertBillAddress":'+insertBillAddress+',"insertShipAddress":'+insertShipAddress+',"data":'+Ext.encode(Ext.encode(value))+',"updateAll":false,"orderQueueId":"'+runTime.getOrderQueueId()+'"}';
-			   Ext.MessageBox.confirm('Confirm Action', AOCLit.updateCustQtyMsg, function(response) {
-				  if (response == 'yes') {
-						Ext.getBody().mask('Updating....');
-						Ext.Ajax.request({
-							method:'PUT',
-							jsonData:obj,
-			    		   url : applicationContext+'/rest/orderLines/bulkupdate',
-				        success : function(response, opts) {
-				        	Ext.getBody().unmask();
-				        	Helper.showToast('success', AOCLit.updatedCustomerQtyMsg);
-							grid.store.load();
-				        },
-				        failure: function(response, opts) {
-				        	Ext.getBody().unmask();
-		                }
-		        	});
-				  }else if(response == 'no'){
-				  return true;
-				  }
-				  });
-}
-}
+  ]
 });

@@ -1858,26 +1858,33 @@ public class OrderLine extends MainAbstractEntity{
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
-			Long entityId = Long.parseLong(id);
-			OrderLineService orderLineService = (OrderLineService) SpringConfig.getInstance()
-					.getBean("orderLineService");
-			orderLine = orderLineService.read(entityId);
-			List<OrderLineDetail> listOrderLineDetail = orderLine.getListOrderlineDetails();
-			for(OrderLineDetail orderLineDetail : listOrderLineDetail){
-				orderLineDetail.setId(0);
-				orderLineDetail.setCreatedDate(now);
-				orderLineDetail.setLastModifiedDate(null);
+			String[] idArray=id.split(",");
+			String[] additionalItemArray=additionalLabel.split(",");
+			String createdId="";
+			for(int i=0; i<idArray.length; i++)
+			{
+				Long entityId = Long.parseLong(idArray[i]);
+				OrderLineService orderLineService = (OrderLineService) SpringConfig.getInstance()
+						.getBean("orderLineService");
+				orderLine = orderLineService.read(entityId);
+				List<OrderLineDetail> listOrderLineDetail = orderLine.getListOrderlineDetails();
+				for(OrderLineDetail orderLineDetail : listOrderLineDetail){
+					orderLineDetail.setId(0);
+					orderLineDetail.setCreatedDate(now);
+					orderLineDetail.setLastModifiedDate(null);
+				}
+				orderLine.setAveryItemNumber(additionalItemArray[i]);
+				orderLine.setListOrderlineDetails(listOrderLineDetail);
+				orderLine.setId(0);
+				orderLine.setCreatedDate(now);
+				orderLine.setLastModifiedDate(null);
+				if(orderLine.getSortingId() == null){
+					orderLine.setSortingId(entityId);
+				}
+				Long newId = orderLineService.create(orderLine);
+				createdId=createdId+newId+",";
 			}
-			orderLine.setAveryItemNumber(additionalLabel);
-			orderLine.setListOrderlineDetails(listOrderLineDetail);
-			orderLine.setId(0);
-			orderLine.setCreatedDate(now);
-			orderLine.setLastModifiedDate(null);
-			if(orderLine.getSortingId() == null){
-				orderLine.setSortingId(entityId);
-			}
-			Long newId = orderLineService.create(orderLine);
-			responseMap.put("id", newId);
+			responseMap.put("id", createdId);
 			responseMap.put("success", true);
 			mapper.writeValue(writer, responseMap);
 			return Response.ok(writer.toString()).build();
@@ -1890,5 +1897,4 @@ public class OrderLine extends MainAbstractEntity{
 					.entity(ExceptionUtils.getRootCauseMessage(e)).type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
 	}
-
 }
