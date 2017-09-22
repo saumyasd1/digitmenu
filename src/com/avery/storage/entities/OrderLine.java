@@ -1798,7 +1798,10 @@ public class OrderLine extends MainAbstractEntity{
 						siteIdExist = addressService.checkDuplicateAddress(billToSiteNumber, shipToSiteNumber, billType, shipType, siteId,  billToAddress, billToAddress2, billToAddress3, shipToAddress, shipToAddress2, shipToAddress3);
 					}
 					if (siteIdExist ) {
+						flagMap.put("insertBillAddress", false);
+						flagMap.put("insertShipAddress", false);
 						responseMap.put("valueExist", true);
+						orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId,lastModifiedBy);
 					} else {
 						responseMap.put("valueExist", false);
 						orderLineService.bulkUpdateAll(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId,lastModifiedBy);
@@ -1818,6 +1821,9 @@ public class OrderLine extends MainAbstractEntity{
 				}
 				if (siteIdExist) {
 					responseMap.put("valueExist", true);
+					flagMap.put("insertBillAddress", false);
+					flagMap.put("insertShipAddress", false);
+					orderLineService.bulkUpdate(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
 				} else {
 					responseMap.put("valueExist", false);
 					orderLineService.bulkUpdate(jsonData, flagMap,bulkUpdateAllById, partnerId, systemId, siteId, orgCodeId, lastModifiedBy);
