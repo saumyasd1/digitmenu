@@ -667,7 +667,12 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			obj.orderInEmailBodyMatch = me.getCombinedValue(values.orderInEmailBodyMatch);
 		}
 		
-		obj.attachmentFileOrderMatch = me.getCombinedValue(values.attachmentFileKeyWording, values.attachmentCellNo);
+		if(values.attachmentCellNo){
+			obj.attachmentFileOrderMatch = me.getCombinedValue(values.attachmentFileKeyWording, values.attachmentCellNo);
+		}else{
+			obj.attachmentFileOrderMatch = me.getCombinedValue(values.attachmentFileKeyWording);
+		}
+		
     	
 		delete values.fileOrderEmailBody;
 		delete values.attachmentFileKeyWording;
@@ -733,7 +738,8 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			return 'Value:'+keyword +';Cell:'+cellNo;
 		}
 		if(!Ext.isEmpty(keyword) && Ext.isEmpty(cellNo)){
-			if(keyword.indexOf(spliter) > -1){
+			
+			if(spliter && keyword.indexOf(spliter) > -1){
 				var strA = keyword.split(spliter);
 					leftKeyword = strA[0].trim();
 					rightKeyword = strA[1].trim();
