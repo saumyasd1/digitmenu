@@ -269,7 +269,7 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								vtype:'multiEmail',
 								emptyText:'Email Id\'s with ; separated',
 								fieldLabel:'Email ID',
-								maxLength:Settings.wiConfig.textAreaMaxLength
+								maxLength:Settings.wiConfig.maxLength2000
 							},
 							{
 								xtype:'textfield',

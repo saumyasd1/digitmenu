@@ -25,6 +25,7 @@ Ext.define('AOC.config.Settings',{
     	textAreaMaxLength:1000,
     	maxLength50:50,
     	maxLength100:100,
+    	maxLength2000:2000,
     	maxLength250:250,
     	counterLabelStyle:'padding-right:5px;text-align:right;font-style:italic;color:#808080;font-weight:bold;'
     },
