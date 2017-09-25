@@ -5,7 +5,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
         'AOC.model.VariableHeaderModel'
     ],
     idArray:[],
-    additionalValueArray:[],
     saveOrderLine:function(){ // this function is called when the orline line is updated by bulk update
     	var me = this,
 			grid = this.getView(),
@@ -540,7 +539,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			success:function(response){
 				var jsonString = JSON.parse(response.responseText);
 					me.idArray = [];
-					me.additionalValueArray = [];
 				view.store.load({
 					params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
 				}, view);
@@ -553,7 +551,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			failure: function (response, opts) {
 				msg = response.responseText;
 				me.idArray = [];
-				me.additionalValueArray = [];
 				Ext.getBody().unmask();
                 Helper.showToast('failure',msg);
             }
