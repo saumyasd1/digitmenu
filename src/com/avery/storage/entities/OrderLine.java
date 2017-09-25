@@ -1865,7 +1865,7 @@ public class OrderLine extends MainAbstractEntity{
 			ObjectMapper mapper = new ObjectMapper();
 			StringWriter writer = new StringWriter();
 			String[] idArray=id.split(",");
-			String[] additionalItemArray=additionalLabel.split(",");
+//			String[] additionalItemArray=additionalLabel.split(",");
 			String createdId="";
 			for(int i=0; i<idArray.length; i++)
 			{
@@ -1879,7 +1879,7 @@ public class OrderLine extends MainAbstractEntity{
 					orderLineDetail.setCreatedDate(now);
 					orderLineDetail.setLastModifiedDate(null);
 				}
-				orderLine.setAveryItemNumber(additionalItemArray[i]);
+				orderLine.setAveryItemNumber(additionalLabel);
 				orderLine.setListOrderlineDetails(listOrderLineDetail);
 				orderLine.setId(0);
 				orderLine.setCreatedDate(now);

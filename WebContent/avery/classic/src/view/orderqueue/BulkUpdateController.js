@@ -493,31 +493,31 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			
 		AOC.util.Helper.BulkUpdate(grid, selection, eOpts);
 		me.idArray = [];
-		me.additionalValueArray = [];
+		me.additionalValue = '';
 		if(intialCell != null && store.getCount() > 0){
 			if(dataIndex == 'additionalLabelInternalItem' ){
-				copyBtn.setHidden(false);
-					var initialrowIdx=intialCell.rowIdx,
-						lastrowIdx=selection.endCell.rowIdx,
-						start=initialrowIdx,
-						end=lastrowIdx,
-						value=intialCell.record.get(dataIndex);
-						
-						if(end < start && start > 0){
-							for(var i= start;i >= end; i--){
-								me.idArray.push(store.getAt(i).get('id'));
-								me.additionalValueArray.push(store.getAt(i).get('additionalLabelInternalItem'));
-							}
-						}else if(end > start){
-							for(var i= start;i <= end; i++){
-								me.idArray.push(store.getAt(i).get('id'));
-								me.additionalValueArray.push(store.getAt(i).get('additionalLabelInternalItem'));
-							}
-						}else if (end == start){
-							store.getAt(end).set(dataIndex, value);
-							me.idArray.push(store.getAt(end).get('id'));
-							me.additionalValueArray.push(store.getAt(end).get('additionalLabelInternalItem'));
+				var initialrowIdx=intialCell.rowIdx,
+					lastrowIdx=selection.endCell.rowIdx,
+					start=initialrowIdx,
+					end=lastrowIdx,
+					value = intialCell.record.get(dataIndex);
+				
+				if(value){
+					copyBtn.setHidden(false);
+					me.additionalValue = value;
+					if(end < start && start > 0){
+						for(var i= start;i >= end; i--){
+							me.idArray.push(store.getAt(i).get('id'));
 						}
+					}else if(end > start){
+						for(var i= start;i <= end; i++){
+							me.idArray.push(store.getAt(i).get('id'));
+						}
+					}else if (end == start){
+						store.getAt(end).set(dataIndex, value);
+						me.idArray.push(store.getAt(end).get('id'));
+					}
+				}
 			}else{
 				copyBtn.setHidden(true);
 			}
@@ -527,7 +527,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		var me = this,
 			view = me.getView(),
 			copyRecIdArray = me.idArray.join(),
-			copyRecAdditionalItemArray = me.additionalValueArray.join();
+			additionalValue = me.additionalValue;
 		
 		if(view.editingPlugin.editing){
 			view.focus();
@@ -536,7 +536,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		Ext.Ajax.request({
 			method:'GET',
 			url:applicationContext+'/rest/orderLines/copy/additional',
-			params:{id:copyRecIdArray, additional:copyRecAdditionalItemArray},
+			params:{id:copyRecIdArray, additional:additionalValue},
 			success:function(response){
 				var jsonString = JSON.parse(response.responseText);
 					me.idArray = [];
