@@ -122,6 +122,8 @@ public class OrderQueueDaoImpl extends GenericDaoImpl<OrderQueue, Long> implemen
 				.add(Projections.property("varProductLine.defaultShipToCode"), "defaultShipToCode")
 				.add(Projections.property("varProductLine.defaultBillToCode"), "defaultBillToCode")
 				.add(Projections.property("varProductLine.billshipRequired"), "billshipRequired")
+				.add(Projections.property("varProductLine.billToTableType"), "billToTableType")
+				.add(Projections.property("varProductLine.shipToTableType"), "shipToTableType")
 				.add(Projections.property("createdDate"), "createdDate")
 
 				.add(Projections.property("varOrderFileAttachment.fileName"), "orderFileName")

@@ -236,6 +236,12 @@ public class OrderQueue extends MainAbstractEntity {
 	
 	@Transient
 	private Boolean billshipRequired;
+	
+	@Transient
+	private Boolean billToTableType;
+	
+	@Transient
+	private Boolean shipToTableType;
 
 	/* Business Logic Starts*/
 	@Override
@@ -1368,6 +1374,22 @@ public class OrderQueue extends MainAbstractEntity {
 
 	public void setBillshipRequired(Boolean billshipRequired) {
 		this.billshipRequired = billshipRequired;
+	}
+
+	public Boolean getBillToTableType() {
+		return billToTableType;
+	}
+
+	public void setBillToTableType(Boolean billToTableType) {
+		this.billToTableType = billToTableType;
+	}
+
+	public Boolean getShipToTableType() {
+		return shipToTableType;
+	}
+
+	public void setShipToTableType(Boolean shipToTableType) {
+		this.shipToTableType = shipToTableType;
 	}
 	
 }

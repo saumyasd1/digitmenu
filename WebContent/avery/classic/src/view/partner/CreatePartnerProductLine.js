@@ -390,27 +390,54 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								layout: 'column',
 								margin : '0 0 5 0',
 								layout:{
-									type:'hbox'
+									type:'vbox'
 								},
 								defaults:{
 									labelSeparator:'',
 									labelStyle:Settings.config.defaultFormLabelStyle,
 									labelAlign:Settings.form.defaultLabelAlign,
-									labelWidth:200
+									labelWidth:400
 								},
 								items:[
+//									{
+//										xtype:'radiogroup',
+//										column:2,
+//										width:350,
+//										defaults:{
+//											name:'billshipRequired'
+//										},
+//										reference:'billshipRequired',
+//										fieldLabel:'Bill/Ship Required?',
+//										items:[
+//										    { boxLabel: 'Yes', inputValue:'true'},
+//										    { boxLabel: 'No', inputValue:'false', checked:true}
+//										]
+//									}
 									{
 										xtype:'radiogroup',
 										column:2,
-										width:350,
+										width:800,
 										defaults:{
-											name:'billshipRequired'
+											name:'billToTableType'
 										},
-										reference:'billshipRequired',
-										fieldLabel:'Bill/Ship Required?',
+										reference:'billToTableType',
+										fieldLabel:'Bill to: Bill/Ship Mapping Table OR Address Table ?',
 										items:[
-										    { boxLabel: 'Yes', inputValue:'true'},
-										    { boxLabel: 'No', inputValue:'false', checked:true}
+										    { boxLabel: 'Bill/Ship Mapping Table', inputValue:'true'},
+										    { boxLabel: 'Address Table', inputValue:'false', checked:'true'}
+										]
+									},{
+										xtype:'radiogroup',
+										column:2,
+										width:800,
+										defaults:{
+											name:'shipToTableType'
+										},
+										reference:'shipToTableType',
+										fieldLabel:'Ship To: Bill/Ship Mapping Table OR Address Table ?',
+										items:[
+										    { boxLabel: 'Bill/Ship Mapping Table', inputValue:'true'},
+										    { boxLabel: 'Address Table', inputValue:'false', checked:'true'}
 										]
 									}
 								]

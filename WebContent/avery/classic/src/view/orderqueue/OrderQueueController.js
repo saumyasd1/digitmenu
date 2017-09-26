@@ -217,6 +217,10 @@ Ext.define('AOC.view.orderqueue.OrderQueueController', {
         AOCRuntime.setCurrentOrderQueueSiteId(currentRecord.get('siteId'));
         AOCRuntime.setCurrentOrderQueueOrgCodeId(currentRecord.get('orgCodeId'));
         AOCRuntime.setBillshipRequired(currentRecord.get('billshipRequired'));
+        AOCRuntime.setBillToTableType(currentRecord.get('billToTableType'));
+        AOCRuntime.setShipToTableType(currentRecord.get('shipToTableType'));
+        
+    	var shipToTableType = AOCRuntime.getShipToTableType();
         
         AOCRuntime.setOrderQueueActiveRecord(currentRecord);
         AOCRuntime.setOrderQueueStatus(currentRecord.get('Status'));

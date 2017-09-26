@@ -523,6 +523,12 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "billshipRequired")
 	private Boolean billshipRequired;
 	
+	@Column(name = "billToTableType")
+	private Boolean billToTableType;
+	
+	@Column(name = "shipToTableType")
+	private Boolean shipToTableType;
+	
 	@Transient
 	private String siteName;
 
@@ -2466,4 +2472,21 @@ public class ProductLine extends MainAbstractEntity {
 	public void setBillshipRequired(Boolean billshipRequired) {
 		this.billshipRequired = billshipRequired;
 	}
+
+	public Boolean getBillToTableType() {
+		return billToTableType;
+	}
+
+	public void setBillToTableType(Boolean billToTableType) {
+		this.billToTableType = billToTableType;
+	}
+
+	public Boolean getShipToTableType() {
+		return shipToTableType;
+	}
+
+	public void setShipToTableType(Boolean shipToTableType) {
+		this.shipToTableType = shipToTableType;
+	}
+	
 }

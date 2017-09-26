@@ -264,6 +264,8 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
     	var billToCode = AOCRuntime.getCurrentDefaultBillToCode();
     	var shipToCode = AOCRuntime.getCurrentDefaultShipToCode();
     	var billshipcode = AOCRuntime.getBillshipRequired();
+    	var billToTableType = AOCRuntime.getBillToTableType();
+    	var shipToTableType = AOCRuntime.getShipToTableType();
     	
     	if(!updateFlag){
     		obj.id = currentRecord.id;
@@ -279,13 +281,13 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
             obj.promiseDate = Ext.util.Format.date(obj.promiseDate, 'Y-m-d H:i:s');
         }
     	
-		if(billToCode == 'true' || billshipcode == false){
+		if(billToCode == 'true' || billToTableType == false){
 			if(!Ext.isEmpty(currentRecord.get('oracleBillToSiteNumber')) 
 					&& currentRecord.isModified('oracleBillToSiteNumber')){
     			insertBillAddress = true;
 			}
 		}
-		if(shipToCode =='true' || billshipcode == false){
+		if(shipToCode =='true' || shipToTableType == false){
     		if(!Ext.isEmpty(currentRecord.get('oracleShipToSiteNumber')) 
     				&& currentRecord.isModified('oracleShipToSiteNumber')){
     			insertShipAddress = true;
