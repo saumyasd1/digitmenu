@@ -226,6 +226,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								reference:'aocDefaultOneBillToSite',
 								margin:'0 0 5 0',
 								scope:me,
+								listeners:{
+									change:'onChangeDefaultBillToCode'
+								},
 								items:[
 								  { boxLabel:'Yes',inputValue:'true'},
 								  { boxLabel:'No',inputValue:'false', checked:true}
@@ -238,6 +241,9 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 								margin:'0 0 5 0',
 								defaults:{
 									name:'defaultShipToCode'
+								},
+								listeners:{
+									change:'onChangeDefaultShipToCode'
 								},
 								items:[
 								  { boxLabel:'Yes',inputValue:'true'},
@@ -399,20 +405,6 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 									labelWidth:400
 								},
 								items:[
-//									{
-//										xtype:'radiogroup',
-//										column:2,
-//										width:350,
-//										defaults:{
-//											name:'billshipRequired'
-//										},
-//										reference:'billshipRequired',
-//										fieldLabel:'Bill/Ship Required?',
-//										items:[
-//										    { boxLabel: 'Yes', inputValue:'true'},
-//										    { boxLabel: 'No', inputValue:'false', checked:true}
-//										]
-//									}
 									{
 										xtype:'radiogroup',
 										column:2,

@@ -466,6 +466,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				orderFileNameExtension = values.orderFileNameExtension;
 			
 			values.assignCSRName = me.assignCSRName;
+			
+			if(!values.billToTableType){
+				values.billToTableType = false;
+			}
+			if(!values.shipToTableType){
+				values.shipToTableType = false;
+			}
 				
 			if(!Ext.isEmpty(orderFileNameExtension) && orderFileNameExtension.indexOf('.') == -1){
 				Helper.showToast('validation', 'Order File Format is not correct,please fill correct format.');
@@ -1369,6 +1376,30 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			// groupingFieldCont.setDisabled(false);
 		 }else{
 			// groupingFieldCont.setDisabled(true);
+		 }
+	 },
+	 onChangeDefaultBillToCode:function(field,newValue, oldValue, eOpts){
+		 var me = this,
+		 	 fieldValue = field.getValue().defaultBillToCode,
+		 	 refs = me.getReferences(),
+		 	 billToTableType = refs.billToTableType;
+		 
+		 if(fieldValue == 'true'){
+			 billToTableType.setDisabled(true);
+		 }else{
+			 billToTableType.setDisabled(false);
+		 }
+	 },
+	 onChangeDefaultShipToCode:function(field,newValue, oldValue, eOpts){
+		 var me = this,
+		 	 fieldValue = field.getValue().defaultShipToCode,
+		 	 refs = me.getReferences(),
+		 	 shipToTableType = refs.shipToTableType;
+		 
+		 if(fieldValue == 'true'){
+			 shipToTableType.setDisabled(true);
+		 }else{
+			 shipToTableType.setDisabled(false);
 		 }
 	 }
 });
