@@ -305,6 +305,8 @@ Ext.define('AOC.lang.lit',{
     "additionalLabel":'Additional Label Internal Item #',
     "copyRecord":'Copy',
     "copySuccessMsg":'Record(s) copied successfully',
+    "fillAdditionalItemMsg":'Please fill Additional Label Internal Item# before copying the record',
+    "confirmCopyMsg":'Are you sure you want to copy the record(s)?',
     //Orderqueue
     "lastmodifiedby":'Last Modified By',
     "lastmodifieddate":'Last Modified Date',

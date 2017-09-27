@@ -4,7 +4,8 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
     requires : [
         'AOC.model.VariableHeaderModel'
     ],
-    idArray:[],
+    startValue:'',
+    endValue:'',
     saveOrderLine:function(){ // this function is called when the orline line is updated by bulk update
     	var me = this,
 			grid = this.getView(),
@@ -492,68 +493,91 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			
 		AOC.util.Helper.BulkUpdate(grid, selection, eOpts);
 		me.idArray = [];
-		me.additionalValue = '';
 		if(intialCell != null && store.getCount() > 0){
 			if(dataIndex == 'additionalLabelInternalItem' ){
+				copyBtn.setHidden(false);
 				var initialrowIdx=intialCell.rowIdx,
 					lastrowIdx=selection.endCell.rowIdx,
 					start=initialrowIdx,
-					end=lastrowIdx,
-					value = intialCell.record.get(dataIndex);
+					end=lastrowIdx;
 				
-				if(value){
-					copyBtn.setHidden(false);
-					me.additionalValue = value;
-					if(end < start && start > 0){
-						for(var i= start;i >= end; i--){
-							me.idArray.push(store.getAt(i).get('id'));
-						}
-					}else if(end > start){
-						for(var i= start;i <= end; i++){
-							me.idArray.push(store.getAt(i).get('id'));
-						}
-					}else if (end == start){
-						store.getAt(end).set(dataIndex, value);
-						me.idArray.push(store.getAt(end).get('id'));
-					}
-				}
+				me.startValue = start;
+			    me.endValue = end;
 			}else{
 				copyBtn.setHidden(true);
 			}
 		}
 	},
-	copyBtnClick:function(btn){
+	copyBtnClick:function(obj){
 		var me = this,
 			view = me.getView(),
+			store = view.store,
 			copyRecIdArray = me.idArray.join(),
-			additionalValue = me.additionalValue;
+			idArray = [],
+			additionalItemValue = '';
 		
 		if(view.editingPlugin.editing){
 			view.focus();
     	}
-		Ext.getBody().mask(AOCLit.pleaseWait);
-		Ext.Ajax.request({
-			method:'GET',
-			url:applicationContext+'/rest/orderLines/copy/additional',
-			params:{id:copyRecIdArray, additional:additionalValue},
-			success:function(response){
-				var jsonString = JSON.parse(response.responseText);
-					me.idArray = [];
-				view.store.load({
-					params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
-				}, view);
-				btn.setHidden(true);
-				Ext.getBody().unmask();
-				if(jsonString.success == true){
-					Helper.showToast('Success',AOCLit.copySuccessMsg);
-				}
-			},
-			failure: function (response, opts) {
-				msg = response.responseText;
-				me.idArray = [];
-				Ext.getBody().unmask();
-                Helper.showToast('failure',msg);
-            }
-		});
+		
+		start = me.startValue;
+		end = me.endValue;
+		value =  me.additionalItemValue;
+		
+		additionalItemValue = store.getAt(start).get('additionalLabelInternalItem');
+		if(end < start && start > 0){
+			for(var i= start;i >= end; i--){
+				idArray.push(store.getAt(i).get('id'));
+			}
 		}
+		else if(end > start){
+			for(var i= start;i <= end; i++){
+				idArray.push(store.getAt(i).get('id'));
+			}
+		}
+		else if (end == start){
+			idArray.push(store.getAt(end).get('id'));
+		}
+		
+		if(Ext.isEmpty(additionalItemValue)){
+			Helper.showToast('failure',AOCLit.fillAdditionalItemMsg);
+		}else{
+			Ext.Msg.confirm('', AOCLit.confirmCopyMsg,function(btn){
+				if(btn == 'yes'){
+				Ext.getBody().mask(AOCLit.pleaseWait);
+					Ext.Ajax.request({
+						method:'GET',
+						url:applicationContext+'/rest/orderLines/copy/additional',
+						params:{id:idArray.join(), additional:additionalItemValue},
+						success:function(response){
+							var jsonString = JSON.parse(response.responseText);
+								me.idArray = [];
+								me.startValue = '';
+								me.endValue = '';
+								me.additionalItemValue = '';
+							view.store.load({
+								params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
+							}, view);
+							obj.setHidden(true);
+							Ext.getBody().unmask();
+							if(jsonString.success == true){
+								Helper.showToast('Success',AOCLit.copySuccessMsg);
+							}
+						},
+						failure: function (response, opts) {
+							msg = response.responseText;
+							me.idArray = [];
+							me.startValue = '';
+							me.endValue = '';
+							me.additionalItemValue = '';
+							Ext.getBody().unmask();
+			                Helper.showToast('failure',msg);
+			            }
+					});
+				}else{
+					Ext.getBody().unmask();
+				}
+			});
+		}
+	}
 });
