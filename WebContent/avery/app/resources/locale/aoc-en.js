@@ -552,8 +552,8 @@ Ext.define('AOC.lang.lit',{
 	codeOwnerYDeleteMsg: 'Deleting the CSR Code will delete the relationship of the CS Manager & Clerk. Still want to continue?',
 	atLeastOneCSRMsg:'Please add at least one CSR code in grid',
 	saveDataMsg:'Before closing window please save the data.Press Yes to save data',
-	aocDefaultOneBillToSiteText:'Select Yes if Bill to Site#  has default value',
-	aocDefaultOneShipToSiteText:'Select Yes if Ship to Site#  has default value',
+	aocDefaultOneBillToSiteText:'Select Yes if Bill to Site# has default value in partnership profile',
+	aocDefaultOneShipToSiteText:'Select Yes if Ship to Site# has default value in partnership profile',
 	
 	//LocalItemLookup table
 	customerItemNO : 'Customer Item No.',
