@@ -513,8 +513,7 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 			view = me.getView(),
 			store = view.store,
 			copyRecIdArray = me.idArray.join(),
-			idArray = [],
-			additionalItemValue = '';
+			idArray = [];
 		
 		if(view.editingPlugin.editing){
 			view.focus();
@@ -522,7 +521,6 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 		
 		start = me.startValue;
 		end = me.endValue;
-		value =  me.additionalItemValue;
 		
 		additionalItemValue = store.getAt(start).get('additionalLabelInternalItem');
 		if(end < start && start > 0){
@@ -551,10 +549,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 						params:{id:idArray.join(), additional:additionalItemValue},
 						success:function(response){
 							var jsonString = JSON.parse(response.responseText);
-								me.idArray = [];
+								idArray = [];
 								me.startValue = '';
 								me.endValue = '';
-								me.additionalItemValue = '';
 							view.store.load({
 								params:{id:AOCRuntime.getCurrentConfig().orderQueueId},
 							}, view);
@@ -566,10 +563,9 @@ Ext.define('AOC.view.orderqueue.BulkUpdateController', {
 						},
 						failure: function (response, opts) {
 							msg = response.responseText;
-							me.idArray = [];
+							idArray = [];
 							me.startValue = '';
 							me.endValue = '';
-							me.additionalItemValue = '';
 							Ext.getBody().unmask();
 			                Helper.showToast('failure',msg);
 			            }
