@@ -32,7 +32,7 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 				width: 85,
 				renderer:function(v, metaData){
 					if(v){
-						metaData.tdAttr = 'data-qtip="<font color=blue>' + v + '</font>"';
+						metaData.tdAttr = 'data-qtip="<font color=blue>' + Ext.String.htmlEncode(v)+ '</font>"';
 						return v;
 					}else 
 						return '';
