@@ -521,8 +521,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 					var jsonData = JSON.parse(response.responseText);
 					if(jsonData.valueExist){
 						refs['dataStructureName'].focus();
-						Helper.showToast('validation', jsonData.message);
-						return
+						Helper.showToast('validation', AOCLit.pdsExistsMsg);
+						view.el.unmask()
+						return;
 					}
 					Helper.showToast('success', jsonData.message);
 					view.el.unmask();
@@ -603,14 +604,15 @@ Ext.define('AOC.view.productline.ProductLineController', {
 				}
 				if(currentcheckBox.name == defaultSystemComboVal){
 					this.assignCSRName = systemGridStore.getAt(0).data.csrName;
-				}
-				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
-				
-				if(currentcheckBox.getValue()){
 					systemGridStore.getAt(0).data.defaultSelected = true;
 				}else{
 					systemGridStore.getAt(0).data.defaultSelected = false;
 				}
+				systemGridStore.getAt(0).data.listOrgInfo = listOrgInfo;
+				
+//				if(currentcheckBox.getValue()){
+//					systemGridStore.getAt(0).data.defaultSelected = true;
+//				}
 				
 				if(systemGridStore.getAt(0).data.newRecord){
 					delete systemGridStore.getAt(0).data.id;

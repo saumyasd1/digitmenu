@@ -145,6 +145,7 @@ Ext.define('AOC.lang.lit',{
     "orderStatus": 'Order Status',
     "emailStatus":'Email Status',
     "partnerDataStructure":'Partner Data Structure',
+    "pdsExistsMsg":'Partner Data Structure name already exists,please enter unique name for the same.',
     "senderEmailID": 'Sender Email ID',
     "receiverEmailID":'Receiver Email ID',
     "ccMailId":'CC Email ID',
