@@ -214,6 +214,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	record.data.emailSubjectProductLineMatchRequired = record.get('emailSubjectProductlineMatchRequired');
     	record.data.emailBodyProductLineMatchRequired = record.get('emailBodyProductlineMatchRequired');
     	
+    	record.data.attachmentIdentifier_1 = record.get('attachmentIdentifier_1');
+    	record.data.attachmentFileNamePattern_1 = record.get('customerItemIdentifierDescription');
+    	
     	record.data.fileOrderRBOMatchRequired = record.get('fileRBOMatchRequired');
     	record.data.fileOrderProductLineMatchRequired = record.get('fileProductLineMatchRequired');
     	record.data.fileOrderPartnerRequired = record.get('fileOrderPartnerRequired');
@@ -250,9 +253,13 @@ Ext.define('AOC.view.productline.ProductLineController', {
     	delete record.get('emailSubjectPartnerMatch');
     	delete record.get('emailBodyPartnerMatch');
     	
+    	
     	delete record.get('fileRBOMatchRequired');
     	delete record.get('fileProductlineMatchRequired');
     	delete record.get('fileOrderPartnerRequired');
+    	
+    	delete record.get('attachmentIdentifier_1');
+    	delete record.get('customerItemIdentifierDescription');
     	
     	delete record.get('fileRBOMatch');
     	delete record.get('fileProductlineMatch');
@@ -633,6 +640,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		values.partnerId = values.partnerId.toString();
 		values.rboId = values.rboId.toString();
 		
+		obj.attachmentIdentifier_1 = values.attachmentIdentifier_1;
+		obj.customerItemIdentifierDescription = values.attachmentFileNamePattern_1;
+		
     	obj.emailSubjectProductlineMatchRequired = values.emailSubjectProductLineMatchRequired;
 		obj.emailBodyProductlineMatchRequired = values.emailBodyProductLineMatchRequired;
 		
@@ -703,6 +713,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		delete values.fileOrderProductLineMatchRequired;
 		delete values.fileOrderPartnerRequired;
 		delete values.fileOrderRBOKeyword;
+		
+		delete values.attachmentIdentifier_1;
+		delete values.attachmentFileNamePattern_1
 		
 		delete values.fileOrderRBOCellNo;
 		delete values.fileOrderProductLineKeyword;
