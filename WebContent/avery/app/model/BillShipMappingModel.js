@@ -27,7 +27,8 @@ Ext.define('AOC.model.BillShipMappingModel',{
 		{name: 'shipToAddress', type:'string'},
 		{name: 'shipToContact', type:'string'},
 		{name: 'shipToEmail', type:'string'},
-		{name: 'shipToTelephone', type:'string'}
+		{name: 'shipToTelephone', type:'string'},
+		{name: 'applyHold', type:'string'}
     ]
 });
 

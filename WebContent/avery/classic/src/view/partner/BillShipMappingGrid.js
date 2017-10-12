@@ -125,10 +125,10 @@ Ext.define('AOC.view.partner.BillShipMappingGrid', {
 				align:'left',
             	editor:{
 					xtype:'textfield',
-					maxLength:Settings.wiConfig.maxLength250
+					maxLength:Settings.wiConfig.textAreaMaxLength
 				},
             	cellWrap:true,
-            	width:150
+            	width:250
             },
             {
             	text:'Bill to Email',
@@ -177,10 +177,10 @@ Ext.define('AOC.view.partner.BillShipMappingGrid', {
 				align:'left',
             	editor:{
 					xtype:'textfield',
-					maxLength:Settings.wiConfig.maxLength250
+					maxLength:Settings.wiConfig.textAreaMaxLength
 				},
             	cellWrap:true,
-            	width:150
+            	width:250
             },
             {
             	text:'Ship to Email',
@@ -266,6 +266,17 @@ Ext.define('AOC.view.partner.BillShipMappingGrid', {
             	editor:{
 					xtype:'textfield',
 					maxLength:Settings.wiConfig.textAreaMaxLength
+				},
+            	cellWrap:true,
+            	width:400
+            },
+            {
+            	text:'Apply Hold',
+            	dataIndex:'applyHold',
+				align:'left',
+            	editor:{
+					xtype:'textfield',
+					maxLength:Settings.wiConfig.maxLength250
 				},
             	cellWrap:true,
             	width:400
