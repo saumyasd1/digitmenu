@@ -82,11 +82,29 @@ Ext.define('AOC.view.address.AddressManageGrid', {
                 flex: 1,
 				renderer:Helper.tipRenderer
             }, {
-                text: AOCLit.Phone1,
+                text: AOCLit.Phone1,	
                 width: 150,
                 align:'left',
                 dataIndex: 'phone1',
                 flex: 1
+            },{
+                text: AOCLit.freightTerm,
+                width: 150,
+                align:'left',
+                dataIndex: 'freightTerms',
+                flex: 1
+            },{
+                text: AOCLit.shippingMethod,
+                width: 150,
+                align:'left',
+                dataIndex: 'shippingMethod',
+                flex: 1.6
+            },{
+                text: AOCLit.shippingInstructions,
+                width: 150,
+                align:'left',
+                dataIndex: 'shippingInstructions',
+                flex: 1.5
             }, {
                 text: AOCLit.fax,
                 width: 150,
