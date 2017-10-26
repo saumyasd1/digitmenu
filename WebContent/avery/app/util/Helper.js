@@ -713,7 +713,8 @@ Ext.define('AOC.util.Helper',{
 	        ['PFL/WVL','PFL/WVL'],['HTL/WVL','HTL/WVL'],['HTL/PFL','HTL/PFL'],['PFL/WVL/PSI', 'PFL/WVL/PSI'],
 	        ['HTL/Woven/PFL/Hangtag/Sticker', 'HTL/Woven/PFL/Hangtag/Sticker'],['PSI', 'PSI'],['HTL/WVL/Speciality', 'HTL/WVL/Speciality'],
 	        ['Thermal/ PFL', 'Thermal/ PFL'], ['RFID', 'RFID'], ['Offset', 'Offset'], ['OFF/FLE', 'OFF/FLE'],
-	        ['OFF/PFL/WOV/IMP', 'OFF/PFL/WOV/IMP'], ['Woven & Offset', 'Woven & Offset'],['Off/HTL/FLEXO', 'Off/HTL/FLEXO'],['HTL/Offset/Woven','HTL/Offset/Woven']
+	        ['OFF/PFL/WOV/IMP', 'OFF/PFL/WOV/IMP'], ['Woven & Offset', 'Woven & Offset'],['Off/HTL/FLEXO', 'Off/HTL/FLEXO'],
+	        ['HTL/Offset/Woven','HTL/Offset/Woven'],['GG/WVL/HTL','GG/WVL/HTL']
 		];
 	},
 	getSystemStore:function(){
