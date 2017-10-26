@@ -113,7 +113,11 @@ Ext.define('AOC.view.productline.ProductLineController', {
     onEditPartnerDataStructureItemClick:function(){
     	var me = this,
 			grid = me.getView(),
-			currentRecord = grid.getSelectionModel().getSelection()[0];
+			currentRecord = grid.getSelectionModel().getSelection()[0],
+    		revisecancelorder = currentRecord.get("revisecancelorder");
+    		defaultrevisecancelorderLength = '69',
+	    	revisecancelorderLength = revisecancelorder.length,
+	    	currentRecord.data.revisecancelorder = currentRecord.get("revisecancelorder").substring(defaultrevisecancelorderLength,revisecancelorderLength).replace(/^,/g,'');
     	
     	me.openPartnerDatastructureWin(currentRecord, AOCLit.editPartProdLine, 'edit');
     },
@@ -451,6 +455,7 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			view = me.getView(),
 			mode = view.mode,
 			form = refs['partnerProfileForm'].getForm(),
+			revisecancelorder = refs.revisecancelorder,
 			url,
 			method;
 		
@@ -502,6 +507,10 @@ Ext.define('AOC.view.productline.ProductLineController', {
 			}
 			//app default params need to post for identification process as: 11/07/2017
 			Ext.apply(valueObj, Helper.getDefaultProuctLineFieldParams());
+			
+			if(revisecancelorder.getValue() != ''){
+				valueObj.revisecancelorder = valueObj.revisecancelorder+','+revisecancelorder.getValue();
+			}
 			
 			if(valueObj.fileOrderFileContent){
 				valueObj.fileOrderMatchRequired = true;

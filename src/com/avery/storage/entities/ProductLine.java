@@ -376,7 +376,7 @@ public class ProductLine extends MainAbstractEntity {
 
 	// New Column added to match the POJO with DEV DB
 
-	@Column(name = "revisecancelorder", length = 100)
+	@Column(name = "revisecancelorder", length = 200)
 	private String revisecancelorder;
 
 	@Column(name = "defaultBillToCode", length = 255)

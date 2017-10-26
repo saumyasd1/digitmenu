@@ -360,6 +360,21 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 						    { boxLabel: 'Customer Item #', inputValue:false, checked:true}
 						]
 			         },
+			         {
+						xtype:'textarea',
+						name: 'revisecancelorder',
+						reference:'revisecancelorder',
+						height:120,
+						width:1000,
+						labelSeparator:'',
+						labelStyle:Settings.config.defaultFormLabelStyle,
+						labelAlign:Settings.form.topLabelAlign,
+						emptyText:'Default value: revise,update,change,correct,amend,cancel,Recall,修改,修正,改正,取消,作废,废除,撤销',
+						labelWidth:150,
+						grow:true,
+						fieldLabel:'Revise Cancel Order',
+						maxLength:Settings.wiConfig.maxLength200
+			         },
 					me.getSKUValidationItems(),
 					{
 						frame:true,

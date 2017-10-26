@@ -27,6 +27,7 @@ Ext.define('AOC.config.Settings',{
     	maxLength100:100,
     	maxLength2000:2000,
     	maxLength250:250,
+    	maxLength200:200,
     	counterLabelStyle:'padding-right:5px;text-align:right;font-style:italic;color:#808080;font-weight:bold;'
     },
     form:{
