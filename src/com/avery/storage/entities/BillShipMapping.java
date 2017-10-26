@@ -127,8 +127,8 @@ public class BillShipMapping extends MainAbstractEntity {
 	@Column(name = "fileName", columnDefinition = "text")
 	private String fileName;
 	
-	@Column(name = "applyHold", length = 250)
-	private String applyHold;
+//	@Column(name = "applyHold", length = 250)
+//	private String applyHold;
 
 	@Column(name = "defaultId")
 	private int defaultId;
@@ -530,12 +530,12 @@ public class BillShipMapping extends MainAbstractEntity {
 		this.varProductLine = varProductLine;
 	}
 	
-	public String getApplyHold() {
-		return applyHold;
-	}
-
-	public void setApplyHold(String applyHold) {
-		this.applyHold = applyHold;
-	}
+//	public String getApplyHold() {
+//		return applyHold;
+//	}
+//
+//	public void setApplyHold(String applyHold) {
+//		this.applyHold = applyHold;
+//	}
 
 }

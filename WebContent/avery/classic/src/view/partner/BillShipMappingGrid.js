@@ -274,6 +274,7 @@ Ext.define('AOC.view.partner.BillShipMappingGrid', {
             	text:'Apply Hold',
             	dataIndex:'applyHold',
 				align:'left',
+				hidden:true,
             	editor:{
 					xtype:'textfield',
 					maxLength:Settings.wiConfig.maxLength250
