@@ -802,7 +802,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 170,
 			editor: 'textfield',
 			type:'address',
-			hidden:true
+			hidden:true,
+			renderer:function(v, metadata, record){
+				if(v){
+					return Ext.htmlEncode(v);
+				}
+				return '';
+			}
 		}, 
 		{
 			text: AOCLit.billToFax,
@@ -922,7 +928,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 170,
 			editor: 'textfield',
 			type:'address',
-			hidden:true
+			hidden:true,
+			renderer:function(v, metadata, record){
+				if(v){
+					return Ext.htmlEncode(v);
+				}
+				return '';
+			}
 		}, 
 		{
 			text: AOCLit.shipToFax,
