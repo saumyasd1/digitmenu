@@ -142,7 +142,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			}, 
 			{
 				text: AOCLit.billToEmail,
-				dataIndex: 'billToEmail'
+				dataIndex: 'billToEmail',
+				renderer:function(v, metadata, record){
+					if(v){
+						return Ext.htmlEncode(v);
+					}
+					return '';
+				}
 			}, 
 			{
 				text: AOCLit.shipContact,
@@ -158,7 +164,13 @@ Ext.define('AOC.view.orderqueue.SalesOrderExpandableGrid', {
 			}, 
 			{
 				text: AOCLit.shipToEmail,
-				dataIndex: 'shipToEmail'
+				dataIndex: 'shipToEmail',
+				renderer:function(v, metadata, record){
+					if(v){
+						return Ext.htmlEncode(v);
+					}
+					return '';
+				}
 			}, 
 			{
 				text: AOCLit.artworkHold,
