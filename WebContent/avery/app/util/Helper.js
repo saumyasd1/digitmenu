@@ -709,12 +709,13 @@ Ext.define('AOC.util.Helper',{
 	},
 	getProductLineStore:function(){
 		return[['PFL','PFL'],['HTL','HTL'],['WVL','WVL'],
-	        ['GG','GG'],['WVL/GG','WVL/GG'],['PFL/HTL/WVL','PFL/HTL/WVL'],['PFI/HTL/WVL/Offset','PFI/HTL/WVL/Offset'],
+	        ['GG','GG'],['WVL/GG','WVL/GG'],['PFL/HTL/WVL','PFL/HTL/WVL'],['PFL/HTL/WVL/Offset','PFL/HTL/WVL/Offset'],
 	        ['PFL/WVL','PFL/WVL'],['HTL/WVL','HTL/WVL'],['HTL/PFL','HTL/PFL'],['PFL/WVL/PSI', 'PFL/WVL/PSI'],
 	        ['HTL/Woven/PFL/Hangtag/Sticker', 'HTL/Woven/PFL/Hangtag/Sticker'],['PSI', 'PSI'],['HTL/WVL/Speciality', 'HTL/WVL/Speciality'],
 	        ['Thermal/ PFL', 'Thermal/ PFL'], ['RFID', 'RFID'], ['Offset', 'Offset'], ['OFF/FLE', 'OFF/FLE'],
 	        ['OFF/PFL/WOV/IMP', 'OFF/PFL/WOV/IMP'], ['Woven & Offset', 'Woven & Offset'],['Off/HTL/FLEXO', 'Off/HTL/FLEXO'],
-	        ['HTL/Offset/Woven','HTL/Offset/Woven'],['GG/WVL/HTL','GG/WVL/HTL']
+	        ['HTL/Offset/Woven','HTL/Offset/Woven'],['GG/WVL/HTL','GG/WVL/HTL'],['WVL/PFL/GG','WVL/PFL/GG'],['PFL/HTL/WVL/RFID/GG','PFL/HTL/WVL/RFID/GG'],
+	        ['PFL/HTL/WVL/GG','PFL/HTL/WVL/GG']
 		];
 	},
 	getSystemStore:function(){
