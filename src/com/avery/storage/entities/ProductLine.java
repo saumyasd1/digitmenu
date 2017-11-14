@@ -270,8 +270,8 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "fileOrderMatchRequired")
 	private Boolean fileOrderMatchRequired;
 
-	@Column(name = "fileProductlineMatch", length = 100)
-	private String fileProductlineMatch;// 100
+	@Column(name = "fileProductlineMatch", length = 250)
+	private String fileProductlineMatch;
 
 	// @Column(name = "fileProductLineMatchLocation", length = 100)
 	// private String fileProductLineMatchLocation;// 100
