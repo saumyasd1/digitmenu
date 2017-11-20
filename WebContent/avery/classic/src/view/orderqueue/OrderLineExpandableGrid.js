@@ -260,7 +260,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			text: AOCLit.custPO,
 			dataIndex: 'customerPOFlag',
 			align:'center',
-			width: 90,
+			width: 115,
 			menuDisabled:true,
             sortable:false,
 			renderer:function(value, metadata,rec){

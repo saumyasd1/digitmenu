@@ -805,7 +805,7 @@ Ext.define('AOC.util.Helper',{
 			data:[
 			      { name:'None', value:'None'},
 			      { name:'Avery item#', value:'averyItemNumber'},
-			      { name:'Customer PONumber', value:'customerPONumber'},
+			      { name:'Customer PO#/Contract#', value:'customerPONumber'},
 			      { name:'COO', value:'COO'},
 			      { name:'RN', value:'RN'},
 			      { name:'CN', value:'CN'},
