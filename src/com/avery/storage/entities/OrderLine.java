@@ -311,7 +311,7 @@ public class OrderLine extends MainAbstractEntity{
 	@Column(name = "status", length = 100,nullable=false)
 	private String status;
 	
-	@Column(name="reviseOrderFlag",length=50)
+	@Column(name="reviseOrderFlag",length=500)
 	private String reviseOrderFlag;
 	
 	@Column(name="cooTranslationFlag",length=50)

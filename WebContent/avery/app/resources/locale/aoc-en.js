@@ -18,6 +18,8 @@ Ext.define('AOC.lang.lit',{
     "coo":'COO',
     "febricContent":'Fabric Content',
     "reviseOrder":'Revise Order',
+    "reviseCancelDefaultT":'T-revise,update,change,correct,amend,cancel,Recall,修改,修正,改正,取消,作废,废除,撤销',
+    "reviseCancelDefaultW":'W-revise,update,change,correct,amend,cancel,Recall,修改,修正,改正,取消,作废,废除,撤销',
     "averyItem":'Avery Item #<font color=red>*</font>',
     "averyATO":'Avery ATO',
     "bulkItem":'Bulk Item',

@@ -170,6 +170,7 @@ Ext.define('AOC.util.Helper',{
             anchor: (anchor) ? anchor : 'top',
             title: title,
             autoHide: false,
+            minHeight:80,
             maxHeight:400,
             scrollable:true,
             closable: true

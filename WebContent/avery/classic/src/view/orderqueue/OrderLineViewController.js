@@ -2,6 +2,18 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 	extend: 'Ext.app.ViewController',
     alias: 'controller.orderline',
     requires : ['AOC.view.orderqueue.BulkUpdateOrderLineGrid','AOC.model.VariableHeaderModel'],
+    listen : {
+        controller : {
+            '*':{
+            	tabchange:'onTabChange'
+            }
+        }
+    },
+    onTabChange:function(){
+    	if(this.customErrorTip){
+    		this.customErrorTip.hide();
+    	}
+    },
 
     cellPosition : '',
     init:function(){
@@ -47,7 +59,22 @@ Ext.define('AOC.view.orderqueue.OrderLineViewController', {
 				}
 			});
 		}
+		if(cellIndex == 11 && record.get('reviseOrderFlag') != AOCLit.reviseCancelDefaultT && record.get('reviseOrderFlag') != AOCLit.reviseCancelDefaultW ){
+    		this.createCustomErrorTooltip(record, e);
+    	}
 	},
+	createCustomErrorTooltip:function(record, e){
+    	if(this.customErrorTip){
+    		this.customErrorTip.hide();
+    		this.customErrorTip.target = Ext.get(e.target);
+    		this.customErrorTip.update('<font color=blue>'+Ext.String.htmlEncode(record.get('reviseOrderFlag'))+'</font>');
+    		this.customErrorTip.show();
+    	}else{
+    		var el = Ext.get(e.target);
+    		this.customErrorTip = Helper.createToolTip(el, '', '<font color=blue>'+Ext.String.htmlEncode(record.get('reviseOrderFlag'))+'</font>', 'left');
+    		this.customErrorTip.show();
+    	}
+    },
 	
 	//Nested grid RowEditing event section
 	onEditInnerGrid:function(editor, context, eOpts){
