@@ -31,7 +31,7 @@ public class ExcelUtils {
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet 1");
         String[] headerNames = {"Site ","Order track #","Prv Order track#","Order Source", "PO #", "Order File",
-				 "Partner Name", "RBO", "Product Line",
+				 "Partner Name", "RBO", "Product Line","Partner Data Structure",
 				"Order Status","Order Received Date", "Processed Date", "Sender Email ID", "Subject","Submitted By","Submitted Date","Acknowledgement Date","CSR Name ","Comment","Error" };
         addHeader(sheet, headerNames);
         getReportData(sheet,OrderQueueList,headerNames.length, timeZone);
@@ -87,6 +87,9 @@ public class ExcelUtils {
 				Cell cell9 = row.createCell(++columncellCount);
 				if(obj.getProductLineType()!=null && !obj.getProductLineType().equals(""))
 					cell9.setCellValue(obj.getProductLineType());
+				//Adding cell for Partner data structure name
+				Cell cell21 = row.createCell(++columncellCount);
+				cell21.setCellValue(obj.getDataStructureName());
 				Cell cell10 = row.createCell(++columncellCount);
 				cell10.setCellValue(OrderQueue.getCodeMap().get(obj.getStatus()));
 				Cell cell11 = row.createCell(++columncellCount);

@@ -186,6 +186,9 @@ public class OrderQueue extends MainAbstractEntity {
 	private String productLineType;
 
 	@Transient
+	private String dataStructureName;
+	
+	@Transient
 	private String senderEmailId;
 
 	@Transient
@@ -1390,6 +1393,14 @@ public class OrderQueue extends MainAbstractEntity {
 
 	public void setShipToTableType(Boolean shipToTableType) {
 		this.shipToTableType = shipToTableType;
+	}
+	
+	public String getDataStructureName() {
+		return dataStructureName;
+	}
+
+	public void setDataStructureName(String dataStructureName) {
+		this.dataStructureName = dataStructureName;
 	}
 	
 }
