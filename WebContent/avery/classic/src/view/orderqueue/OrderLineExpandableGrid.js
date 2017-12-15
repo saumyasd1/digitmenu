@@ -1454,7 +1454,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			            resizable:false,
 			            renderer:function(v, metadata, record){
 							if(v){
-								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" message="'+v+'" class="x-fa fa-comment-o help-message"></i>';
+								return '<i style="font-size:16px;color#2c3e50;" data-qtip="<font color=blue>' + Ext.util.Format.htmlEncode(v) + '</font>" message="'+Ext.util.Format.htmlEncode(v)+'" class="x-fa fa-comment-o help-message"></i>';
 							}
 							return '';
 						}
