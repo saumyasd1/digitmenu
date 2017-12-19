@@ -569,8 +569,8 @@ Ext.define('AOC.lang.lit',{
 	deleteLocalItemMsg:'Are you sure you want to delete the record?',
 	deleteLocalItemSuccessMsg:'Record(s) deleted successfully',
 	
-	orderFileKeywordEmptyText:'eg:NIKE AND Nike PO or Nike OR NIKE or NIKE',
-	orderFileCellNoEmptyText:'eg:A1 AND A2 or A1 OR A1 or A1',
+	orderFileKeywordEmptyText:'eg:NIKE AND Nike PO / Nike OR NIKE / NIKE',
+	orderFileCellNoEmptyText:'eg:A1 AND A2 / A1 OR A1 / A1',
 	
 	maxGroupingFieldCount:29
 	
