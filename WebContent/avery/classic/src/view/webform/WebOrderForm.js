@@ -72,7 +72,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						isChangedForFirstTime:true,
 						store: Ext.data.StoreManager.lookup('uniquePartnerStoreId'),
 						name:'partnerName',
-						editable:false,
+						editable:true,
 						margin:'0 0 0 155',
 						displayField:'name',
 						valueField:'id',
