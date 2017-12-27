@@ -1231,7 +1231,13 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 120,
 			editor: 'textfield',
 			type:'address',
-			hidden:true
+			hidden:true,
+			renderer:function(v, metadata, record){
+				if(v){
+					return Ext.util.Format.htmlEncode(v);
+				}
+				return '';
+			}
 		}, 
 		{
 			text: AOCLit.comment,
