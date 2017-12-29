@@ -658,7 +658,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			xtype:'datecolumn',
 			editor: {
 				xtype:'datefield',
-				editable:false,
 				listeners:{
 					'select':'onSelectDate'
 				}
@@ -674,7 +673,6 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			width: 120,
 			editor: {
 				xtype:'datefield',
-				editable:false,
 				listeners:{
 					'select':'onSelectDate'
 				}
