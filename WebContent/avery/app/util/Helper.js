@@ -813,7 +813,7 @@ Ext.define('AOC.util.Helper',{
 			      { name:'ArticleNumber', value:'ArticleNumber'},
 			      { name:'Customer Item Number', value:'customerItemNumber'},
 			      
-			      { name:'PO#', value:'poNumber'},
+			      { name:'PO#', value:'PONumber'},
 			      { name:'Order Type',value:'orderType'},
 			      { name:'Request Date',value:'requestedDeliveryDate'},
 			      { name:'Promise Date',value:'promiseDate'},
