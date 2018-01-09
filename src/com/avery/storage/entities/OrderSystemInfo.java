@@ -62,7 +62,10 @@ public class OrderSystemInfo extends MainAbstractEntity {
 
 	@Column(name = "invoiceNote", length = 500)
 	private String invoiceNote;
-
+	
+	@Column(name = "invoicelineInstruction", length = 250)
+	private String invoicelineInstruction;
+	
 	@Column(name = "splitShipSetBy", length = 5)
 	private String splitShipSetBy;
 
@@ -140,6 +143,14 @@ public class OrderSystemInfo extends MainAbstractEntity {
 
 	public void setInvoiceNote(String invoiceNote) {
 		this.invoiceNote = invoiceNote;
+	}
+	
+	public String getInvoicelineInstruction() {
+		return invoicelineInstruction;
+	}
+
+	public void setInvoicelineInstruction(String invoicelineInstruction) {
+		this.invoicelineInstruction = invoicelineInstruction;
 	}
 
 	public String getSplitShipSetBy() {

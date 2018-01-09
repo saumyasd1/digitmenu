@@ -70,10 +70,10 @@ Ext.define('AOC.view.partner.SystemGrid', {
 				}
 			},
 			{
-				text : 'Invoice Note',
+				text : 'Invoice Line Instruction',
 				width:120,
 				align:'left',
-				dataIndex:'invoiceNote',
+				dataIndex:'invoicelineInstruction',
 				flex:1.5,
 				editor:{
 					xtype:'textfield'
