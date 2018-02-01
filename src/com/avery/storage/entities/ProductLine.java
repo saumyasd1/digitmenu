@@ -529,6 +529,10 @@ public class ProductLine extends MainAbstractEntity {
 	@Column(name = "shipToTableType")
 	private Boolean shipToTableType;
 	
+	@Column(name = "rboCheck")
+	private Boolean rboCheck;
+	
+
 	@Transient
 	private String siteName;
 
@@ -2487,6 +2491,14 @@ public class ProductLine extends MainAbstractEntity {
 
 	public void setShipToTableType(Boolean shipToTableType) {
 		this.shipToTableType = shipToTableType;
+	}
+	
+	public Boolean getRboCheck() {
+		return rboCheck;
+	}
+
+	public void setRboCheck(Boolean rboCheck) {
+		this.rboCheck = rboCheck;
 	}
 	
 }

@@ -677,7 +677,27 @@ Ext.define('AOC.view.partner.CreatePartnerProductLine',{
 			    	name:'sizeValidationMultipleProductLine',
 			    	maxLength:Settings.wiConfig.maxLength100,
 			    	reference:'sizeValidationMultipleProductLine'
-			    }, {
+			    },
+			    {
+					xtype:'radiogroup',
+					fieldLabel:'RBO Check '+Ext.String.format(AOCLit.wiInfoIconText, 'It will be enabled when Size Validation is YES'),
+					reference:'rboCheck',
+					width:550,
+					margin:'0 0 5 0',
+					labelSeparator:'',
+					disabled:true,
+					defaults:{
+						name:'rboCheck'
+					},
+					labelStyle:AOC.config.Settings.config.defaultFormLabelStyle,
+					labelAlign:AOC.config.Settings.form.defaultLabelAlign,
+					labelWidth:400,
+					items:[
+					  { boxLabel:'Yes',inputValue:'true'},
+					  { boxLabel:'No',inputValue:'false', checked:true}
+					]
+			    },
+			    {
 					xtype:'label',
 					text:'Fabric Content Validation',
 					style:'font-weight:bold;color:#2c3e50;font-size:15px;'

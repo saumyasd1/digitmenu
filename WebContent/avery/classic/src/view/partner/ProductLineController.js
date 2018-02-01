@@ -1105,10 +1105,14 @@ Ext.define('AOC.view.productline.ProductLineController', {
 	 onSKUValidationRadioChange:function(field, newValue, oldValue){
 		var me = this,
 			refs= me.getReferences(),
+			rboCheck = refs.rboCheck,
 			cont = refs[field.type+'MultipleProductLine'];
 		
 		if(newValue[field.reference] == '1'){
 			cont.setDisabled(false);
+			if(field.type == 'sizeValidation'){
+				rboCheck.setDisabled(false);
+			}
 			if(refs['productLineTypeCombo'].getValue().indexOf('/') > -1){
 				cont.allowBlank = false;
 			}else{
@@ -1118,6 +1122,9 @@ Ext.define('AOC.view.productline.ProductLineController', {
 		}else{
 			cont.allowBlank = true;
 			cont.setDisabled(true);
+			if(field.type == 'sizeValidation'){
+				rboCheck.setDisabled(true);
+			}
 		}
 	 },
 	 onOrderWithAttachmentRadioChange:function(field, newValue, oldValue){
