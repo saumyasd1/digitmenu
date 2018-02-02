@@ -505,7 +505,7 @@ Ext.define('AOC.view.orderqueue.OrderLineExpandableGrid', {
 			dataIndex: 'customerSize',
 			align:'left',
 			width: 120,
-			editor: 'textfield',
+//			editor: 'textfield',
 			renderer:function(value, metadata,rec){
 				return Helper.onPageSizeColumnRenderer(value, metadata,rec);
 			}
