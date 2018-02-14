@@ -77,7 +77,7 @@ Ext.define('AOC.view.webform.WebOrderForm',{
 						displayField:'name',
 						valueField:'id',
 						listeners:{
-							'change':'onPartnerChange'
+							'select':'onPartnerSelect'
 						}
 					},
 					{

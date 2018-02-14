@@ -66,15 +66,16 @@ Ext.define('AOC.view.webform.WebFormController', {
             }
         });
     },
-    onPartnerChange:function(obj, newValue){
+    onPartnerSelect:function(obj, record, eOpts){
     	var me = this,
+    		partnerName = record.get('name'),
     		refs = me.getReferences(),
     		webForm = refs['webform'],
 			rboCombo = me.lookupReference('rboCombo'),
 			dataStructureCombo = me.lookupReference('dataStructureCombo'),
     	    emailBody = me.lookupReference('emailBody');
     	
-    	if(!Ext.isEmpty(newValue)){
+    	if(!Ext.isEmpty(partnerName)){
     		emailBody.reset();
 			dataStructureCombo.disable();
 			
@@ -82,7 +83,7 @@ Ext.define('AOC.view.webform.WebFormController', {
     			me.resetWebOrderForm();
     		}
     		
-    		me.getRBOList(newValue);
+    		me.getRBOList(record.get('id'));
 			
     	}else{
 			dataStructureCombo.disable();
